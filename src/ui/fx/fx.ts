@@ -87,9 +87,16 @@ export function burst(kind: string, x: number, y: number, n = 16, spread = 1): v
 }
 
 let last = performance.now();
+let dirty = false;
 function loop(now: number): void {
   const dt = Math.min(0.05, (now - last) / 1000);
   last = now;
+  // Nothing to draw: skip the full-screen clear (it only needs to happen once after the last particle).
+  if (!ps.length && !dirty) {
+    requestAnimationFrame(loop);
+    return;
+  }
+  dirty = ps.length > 0;
   g.setTransform(dpr, 0, 0, dpr, 0, 0);
   g.clearRect(0, 0, canvas.width, canvas.height);
   for (let i = ps.length - 1; i >= 0; i--) {

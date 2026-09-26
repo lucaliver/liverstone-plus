@@ -23,8 +23,6 @@ export function setLocale(code: string): void {
 
 export const getLocale = (): string => current;
 
-export const hasKey = (key: string): boolean => key in locales[current].dict || key in locales[fallback].dict;
-
 /**
  * Translates `key`, interpolating `{name}` params.
  * Plurals: `{n|card|cards}` picks a form through Intl.PluralRules for the param `n`.

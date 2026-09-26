@@ -23,10 +23,6 @@ export function initApp(el: HTMLElement): void {
   requestAnimationFrame(loop);
 }
 
-export function appRoot(): HTMLElement {
-  return root;
-}
-
 export function show(screen: Screen): void {
   const prev = current;
   if (prev) {

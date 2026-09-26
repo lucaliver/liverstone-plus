@@ -34,7 +34,7 @@ export function titleScreen(cb: TitleCallbacks): Screen {
       btn(t('menu.compendium'), 'secondary small', cb.onCompendium),
       h('div', { class: 'row' }, btn(t('menu.howTo'), 'secondary small', () => openHowTo()), btn(t('menu.settings'), 'secondary small', () => openSettings())),
     ),
-    h('div', { class: 'version' }, 'v0.5'),
+    h('div', { class: 'version' }, `v${__APP_VERSION__}`),
   );
   return { el };
 }

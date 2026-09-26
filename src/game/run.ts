@@ -206,8 +206,6 @@ export function advance(run: RunState): boolean {
   return true;
 }
 
-export const isFinalNode = (run: RunState): boolean => currentNode(run).next.length === 0;
-
 export function saveRun(run: RunState): void {
   store(SAVE_KEY, run);
 }

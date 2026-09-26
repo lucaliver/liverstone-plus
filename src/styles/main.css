@@ -308,12 +308,6 @@ button:focus-visible,
   91% { text-shadow: 2px 6px 0 var(--p), -2px -1px 0 var(--b); }
   94% { text-shadow: 5px 3px 0 var(--p), -4px 1px 0 var(--b); }
 }
-.tagline {
-  margin: 0;
-  font-family: var(--font-ui);
-  font-size: 18px;
-  color: var(--muted-d);
-}
 .title-hero {
   position: relative;
   flex: 1;
@@ -1898,36 +1892,6 @@ button:focus-visible,
 }
 .comp-grid .card.undiscovered .c-art,
 .comp-grid .card.undiscovered .c-face { filter: grayscale(0.7); }
-.card.locked {
-  display: grid;
-  place-items: center;
-  background-color: var(--bg2);
-  background-image: radial-gradient(circle, #3a2f60 34%, transparent 38%);
-  background-size: 8px 8px;
-  border-color: #3a2f60;
-}
-.card.locked span {
-  font-family: var(--font-display);
-  font-size: 40cqw;
-  color: #5a4a8a;
-}
-.comp-toast {
-  position: absolute;
-  left: 50%;
-  bottom: calc(var(--safe-b) + 24px);
-  translate: -50% 0;
-  max-width: 86%;
-  padding: 8px 14px;
-  text-align: center;
-  font-family: var(--font-ui);
-  font-size: 18px;
-  color: var(--paper);
-  background: var(--k);
-  box-shadow: 4px 4px 0 var(--p);
-  pointer-events: none;
-  opacity: 0;
-}
-.comp-toast.show { animation: toast 1.6s steps(6) forwards; }
 
 .section-switch {
   margin: 0 auto 12px;

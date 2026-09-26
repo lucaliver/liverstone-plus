@@ -53,7 +53,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   bolt: { el: 'arcane', svg: `<circle cx="32" cy="32" r="12"/><circle cx="32" cy="32" r="6" fill="#fff" opacity=".7"/>${star4(32, 32, 28)}` },
   ward: { el: 'arcane', svg: `<path d="M32 4l24 14v28L32 60 8 46V18z"/><path fill="#16121f" opacity=".4" d="M32 13l16 9v20l-16 9-16-9V22z"/><path d="M32 20l3 9h9l-7 6 3 9-8-5-8 5 3-9-7-6h9z"/>` },
   frost: { el: 'ice', svg: `<path d="M6 58L40 24l6 6-34 34z" opacity=".5"/>${`<g transform="translate(20 -8) scale(.7)">${snowflake}</g>`}` },
-  book: { el: 'arcane', svg: `<path d="M4 16c10-4 20-3 28 4 8-7 18-8 28-4v38c-10-4-20-3-28 4-8-7-18-8-28-4z"/><path fill="#16121f" opacity=".45" d="M31 20h2v38h-2z"/><g stroke="#16121f" stroke-width="2" opacity=".4"><path d="M10 24c6-2 12-2 17 1M10 32c6-2 12-2 17 1M37 25c5-3 11-3 17-1M37 33c5-3 11-3 17-1"/></g>${star4(32, 8, 7)}` },
   fireball: { el: 'fire', svg: `<path d="M4 58c8-16 16-26 26-32l8 8C32 44 22 52 4 58z" opacity=".55"/><circle cx="40" cy="24" r="17"/><circle cx="40" cy="24" r="9" fill="#fff" opacity=".45"/>` },
   iceLance: { el: 'ice', svg: `<path d="M58 6L48 26 18 56l-8-2-2-8L38 16z"/><path ${HI} d="M58 6L40 18l-2-2z"/><path d="M8 46l10 10-8 4-6-6z"/>` },
   crystal: { el: 'arcane', svg: crystal },
@@ -74,7 +73,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   potionBlue: { el: 'arcane', svg: potion('#3f8cff') },
   bandage: { el: 'nature', svg: `<g transform="rotate(45 32 32)"><rect x="8" y="24" width="48" height="16" rx="8"/></g><g transform="rotate(-45 32 32)"><rect x="8" y="24" width="48" height="16" rx="8"/></g><g fill="#16121f" opacity=".4"><circle cx="29" cy="29" r="1.6"/><circle cx="35" cy="29" r="1.6"/><circle cx="29" cy="35" r="1.6"/><circle cx="35" cy="35" r="1.6"/></g>` },
   dagger: { el: 'steel', svg: `<path d="M54 6l4 4-26 26-5-5z"/><path d="M22 30l12 12-3 3-12-12z"/><path d="M24 40l3 3-13 13a3 3 0 0 1-3-3z"/><g ${S} stroke-width="3" opacity=".7"><path d="M44 30l8 4M38 40l6 8"/></g>` },
-  adrenaline: { el: 'blood', svg: `<g transform="translate(0 2)">${heart}</g><g transform="translate(15 10) scale(.52)" color="#ffd84a">${bolt}</g>` },
   smoke: { el: 'shadow', svg: `<circle cx="22" cy="40" r="14"/><circle cx="40" cy="36" r="16"/><circle cx="30" cy="22" r="12" opacity=".8"/><circle cx="48" cy="18" r="7" opacity=".6"/><circle cx="14" cy="18" r="5" opacity=".5"/>` },
   // ---- curses
   slime: { el: 'curse', svg: `<path d="M10 52c0-18 10-34 22-34s22 16 22 34c0 4-3 6-6 6H16c-3 0-6-2-6-6z"/><circle cx="25" cy="38" r="5" fill="#16121f"/><circle cx="40" cy="38" r="5" fill="#16121f"/><circle cx="26" cy="36.5" r="1.6" fill="#fff"/><circle cx="41" cy="36.5" r="1.6" fill="#fff"/><path ${HI} d="M20 28c3-5 7-8 11-8-4 3-6 6-7 10z"/>` },
@@ -110,7 +108,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   flameCc: { el: 'fire', svg: `<path d="M36 28c3 8 9 12 8 20a10 10 0 0 1-20 0c0-8 7-12 12-20z"/>` },
   bomb: { el: 'curse', svg: `<circle cx="28" cy="38" r="20"/><rect x="36" y="12" width="10" height="10" transform="rotate(45 41 17)"/><path d="M44 12c4-6 10-6 14-2" stroke="currentColor" stroke-width="4" fill="none"/><path ${HI} d="M16 32c2-6 7-10 12-10-2 4-2 8 0 12-5 1-9 0-12-2z"/>${star4(58, 8, 6)}` },
   bone: { el: 'necro', svg: `<path d="M8 50l30-30-3-6a6 6 0 1 1 9-6 6 6 0 1 1 6 9l6 3-30 30 3 6a6 6 0 1 1-9 6 6 6 0 1 1-6-9z"/><path d="M52 4L40 22l4 4 18-12z"/>` },
-  ghost: { el: 'necro', svg: `<path d="M32 4c13 0 22 10 22 24v30l-7-6-7 6-8-6-8 6-7-6-7 6V28C10 14 19 4 32 4z"/><circle cx="24" cy="28" r="4.5" fill="#16121f"/><circle cx="40" cy="28" r="4.5" fill="#16121f"/><ellipse cx="32" cy="41" rx="4" ry="5" fill="#16121f"/>` },
   tomb: { el: 'necro', svg: `<path d="M14 58V24c0-12 8-20 18-20s18 8 18 20v34z"/><path d="M29 16h6v8h8v6h-8v14h-6V30h-8v-6h8z" fill="#16121f"/><rect x="6" y="56" width="52" height="6"/>` },
   gear: { el: 'steel', svg: `<path d="M27 4h10l2 8 6 3 7-4 7 7-4 7 3 6 8 2v10l-8 2-3 6 4 7-7 7-7-4-6 3-2 8H27l-2-8-6-3-7 4-7-7 4-7-3-6-8-2V27l8-2 3-6-4-7 7-7 7 4 6-3z"/><circle cx="32" cy="32" r="10" fill="#16121f"/>` },
   left: { el: 'steel', svg: `<path d="M4 32L30 8v14h30v20H30v14z"/>` },
@@ -140,4 +137,3 @@ export function icon(id: string, cls = ''): string {
   return pixelIcon(id, cls);
 }
 
-export const iconElement = (id: string): Element => ICONS[id]?.el ?? 'steel';

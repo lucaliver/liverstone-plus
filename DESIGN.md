@@ -1,81 +1,74 @@
-# Liverstone — Design Document
+# Liverstone — Design Document (v1.0)
 
-A real-time, conveyor-belt deckbuilding roguelike for mobile browsers (portrait),
-inspired by *Cardstone* (Running Pillow, 2015).
+A real-time, conveyor-belt deckbuilding roguelike for mobile browsers (portrait), inspired by
+*Cardstone* (Running Pillow, 2015). Official look: **risograph pop inks + pixel art, a bit dark/scary**.
 
-## 1. What we keep from Cardstone
-| Original | Liverstone |
-|---|---|
-| Cards drawn automatically, "waft across the screen like sushi boats" | **The Belt**: cards scroll right→left; tap to play before they fall off |
-| Mana regenerates over time; some cards raise the mana cap | Same, with a visible regen tick on the mana bar |
-| One enemy per floor, each with its own attack rate & abilities | Same, plus **telegraphed intents** with a countdown ring |
-| Deck auto-reshuffles when exhausted | Same, with a "Reshuffle" callout |
-| Swap a card after each battle | Reward: **Add** a card, or **Swap** it for one in your deck, or Skip |
-| "Sleeve": hold up to 3 cards (v2.2) | **Sleeve**: 2 slots (relics add a 3rd); drag a card down to stash it |
-| Heroes with unique abilities | Warrior & Mage, each with a passive, a class resource and an active ability |
-| Gold unlocks cards permanently | **Soul Shards** unlock card & relic packs (light meta) |
-| Food/energy timer | Removed |
+## 1. Core loop
 
-## 2. What we improve
-- **Timing-based defence**: Block decays over time, so you play it *just before* the telegraphed hit.
-- **Belt keywords**: *Swift* cards move fast, *Heavy* ones slow; curses clog the belt or explode when they leave.
-- **Real-time control effects**: Stun (enemy timer paused), Chill (timer at half speed), belt slow/haste.
-- **Relics, shop, rest sites, events, card upgrades** between floors.
-- **Pause + game speed** (1×/1.5×/2×), auto-pause when the tab is hidden, and long-press any card to read it.
-- **Run resume**: progress is saved at every floor.
+A run is a sequence of floors (v1: one act of 10 linear floors). Each fight is real time:
 
-## 3. Core combat rules
-- Time runs at `speed × dt` and freezes while paused.
-- **Mana**: `mana` regenerates by 1 every `regen` seconds, up to `maxMana` (cap 10).
-- **Belt**: a card crosses the belt in `BELT_TIME` s. A new card spawns when the gap behind the last one is ≥ `SPACING`.
-  *Draw N* makes N cards spawn at once, overlapping at half spacing. A card that reaches the left edge is discarded.
-- **Sleeve**: stashed cards stay there until played. Only one card is stashed per drag.
-- **Piles**: draw → belt → discard. When the draw pile is empty, the discard pile is shuffled in.
-  *Exhaust* removes a card for the rest of the fight; *Consume* (potions) removes it from the deck permanently.
-- **Enemy**: runs a move pattern. Each move has a wind-up (seconds) shown as an intent icon, a value and a ring timer.
-- **Damage**: `(base + strength) × (weak ? 0.75 : 1) × (vulnerable ? 1.5 : 1)`. Block absorbs damage first.
-- **Block decay**: lose 1 block every 0.6 s (Warrior: every 1.2 s).
-- **Statuses** are time-based (seconds) or stack-based (DoTs tick every 1.5 s and lose 1 stack per tick).
+- **The belt** carries cards right → left. Tap a card to play it, drag it up onto the enemy to play it,
+  drag it down into a **sleeve** slot (a "hand") to keep it. A card that reaches the left edge is lost
+  (it goes to the discard pile) and may trigger its *volatile* effect.
+- **Draw cadence is fixed**: one card every `spacing × beltTime` seconds, whatever the player does.
+- **Mana** refills over time up to the cap. Heroes start with a low cap (2–3) and grow it during
+  the fight with **Innate crystal cards** (Mana Shard +1, Mana Geode +2, empty crystals, once per fight).
+- **The enemy** telegraphs its next move in the **threat bar** above the belt: icon, value, name,
+  fill and seconds left. The hero HP bar previews unblocked damage; the screen edges flash just before it.
+- **Block** absorbs damage and decays over time, so it is played right before the hit.
+- **Hero special**: a once-per-run card waiting in the left hand at the start of every fight.
 
-## 4. Heroes
-| | Warrior | Mage |
-|---|---|---|
-| HP / Mana cap / Regen | 80 / 5 / 1.4 s | 60 / 7 / 1.2 s |
-| Passive | **Iron Hide**: Block decays half as fast | **Spellweave**: spells played within 2.5 s of each other build Weave (max 5); +1 spell damage per Weave |
-| Resource | **Rage** (0–10): +1 per hit taken, +1 per attack played | **Arcana**: fills with mana spent (12) |
-| Ability | **Berserk**: attacks deal double damage for 6 s | **Time Warp**: freezes the enemy for 4 s and halves belt speed |
+After a fight: pick 1 of 3 cards (Add / Skip; **Swap** only after elites). Campfires: heal 35% or upgrade a card.
 
-Adding a hero means adding one entry in `data/heroes.ts`, a card file and its i18n strings.
+## 2. Heroes
 
-## 5. Run structure (v1 = linear)
-3 acts × 10 floors. The run is modelled as a **node graph** (`RunNode.next[]`); v1 builds a straight line, so a
-branching map can reuse it later. Floor pattern:
-`fight, fight, event, fight, rest, elite, shop, fight, rest, boss`.
-After a boss you heal 50% of missing HP.
+| | Warrior | Mage | Necromancer |
+| --- | --- | --- | --- |
+| HP / base mana / regen | 80 / 3 / 1.4 s | 70 / 3 / 1.0 s | 62 / 2 / 1.25 s |
+| Passive | Iron Hide: Block decays 2× slower | Spellweave: chained spells +1 dmg each (max 5) | Virulence: Poison +1 per tick |
+| Resource → Ability | Rage (hits taken, attacks) → Berserk: attacks ×2 for 6 s | Arcana (mana spent) → Time Warp: freeze enemy 4 s, slow belt | Decay (Poison applied) → Pandemic: double enemy Poison |
+| Special (once per run) | Last Stand: 20 Block, 3 Strength | Meteor: 25 dmg, 5 Burn | Death's Door: heal 15, 12 Poison |
 
-Rewards: gold, plus a pick of 3 cards (Add / Swap / Skip). Elites also drop a relic; bosses offer a pick of 3 relics.
+Card pool: 18–19 cards per hero + 10 neutral + 5 curses (Slime, Hex, Bomb, Leech, Toxin).
 
-## 6. Meta progression (light)
-Soul Shards = floors cleared + 5 per elite + 15 per boss. They buy unlock packs (new cards/relics join the pools).
-Stored in `localStorage` together with stats and settings.
+## 3. Enemies (Act 1 — The Forgotten Crypt)
 
-## 7. UX principles
-- Portrait-first: 16 px gutters, safe-area insets, tap targets ≥ 44 px, no hover-only info.
-- Every action gets immediate feedback: sound, particles, floating numbers, haptics (when supported).
-- Telegraph everything dangerous: intent + timer ring, glow on cards about to leave the belt.
-- Unaffordable cards are dimmed and shake when tapped, and a brief hint explains why.
-- First-run tutorial overlay (skippable) and an in-game "How to play".
-- Respect `prefers-reduced-motion`, plus an in-game toggle.
+Crypt Rat, Skeleton, Ooze (slime/toxin curses), Cultist (strength, leech), Goblin Thief (steals cards,
+lights bombs), Bone Knight (elite, enrages at half HP), The Lich (boss: hexes, bombs, a 7 s DOOM charge,
+50% faster below half HP). Global knobs: `CONFIG.enemyHp` / `CONFIG.enemyDmg`.
 
-## 8. Architecture
-```
+## 4. Meta
+
+Card **discovery** (seen in a deck, reward or fight) is stored across runs; the **Compendium** shows every
+card (undiscovered ones flagged) and every enemy with its moves. Settings: music, SFX, speed, reduced
+motion, vibration. Runs are saved at every floor and can be resumed.
+
+## 5. Visual & audio direction
+
+- Night-violet background printed with a faint halftone; cards, buttons and labels are paper "prints".
+- Four inks (fluo pink, blue, yellow, dark ink) plus their overprints. No gradients for shading, no glows,
+  no soft shadows, no fake 3D, no decorative background circles.
+- Pixel sprites are generated at boot from vector sources (`ui/art/riso.ts`): rasterised, quantised to ink
+  swatches with checkerboard halftones, outlined, split into ink layers printed on a paper base.
+- Motion is stepped (`steps()`), hits flash inverted, particles are square ink pixels.
+- Type: Silkscreen (display), Jersey 10 (UI and numbers), Space Grotesk (long text).
+- Procedural chiptune soundtrack (menu, combat, boss, rest) and synthesised SFX (WebAudio).
+
+## 6. Architecture
+
+```text
 src/
-  core/      rng, events, i18n, save, util
-  i18n/      en.ts (all player-facing text)
-  data/      cards/, heroes, enemies, relics, events, config
-  game/      combat engine (pure, UI-agnostic, deterministic with a seed), run state, meta
-  ui/        screens, components, art (SVG), fx (particles, floaters)
-  audio/     sfx (WebAudio synth), music (procedural sequencer)
+  core/        rng (seeded), emitter, i18n, save (safe localStorage), util
+  i18n/        en.ts — every player-facing string
+  data/        config, cards/ (per class), heroes, enemies, statuses, relics (empty, hooks ready)
+  game/        combat (pure engine), run (node graph, rewards, saves), meta (discovery), settings, types
+  ui/          app (screens + modals), dom helpers, art (icons, creatures, riso renderer),
+               components (card view, modals, decor), fx (particles, floaters), screens/*
+  audio/       sfx.ts (synth), music.ts (sequencer)
+tests/         engine unit tests, content integrity, balance bot + simulation
 ```
-The combat engine emits typed events; the UI subscribes to them for animation, so gameplay logic stays testable
-without a DOM (Vitest + a balance simulation bot).
+
+Principles: the combat engine is UI-agnostic and deterministic for a given seed (fixed 1/60 s steps) and
+emits typed events that the UI turns into animation and sound. Content is data (cards, enemies, heroes)
+with small `play` functions. The run is a node graph (`RunNode.next[]`), so a branching map can replace the
+straight line without touching the rest.
