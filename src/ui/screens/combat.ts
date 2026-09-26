@@ -7,6 +7,7 @@ import { MINIONS } from '../../data/minions';
 import type { Combat, Fighter } from '../../game/combat';
 import { currentNode, totalFloors, type RunState } from '../../game/run';
 import { saveSettings, settings } from '../../game/settings';
+import { discover } from '../../game/meta';
 import type { CombatCard, CombatEvent, MoveDef, Side } from '../../game/types';
 import { openModal, type ModalHandle, type Screen } from '../app';
 import { creature } from '../art/creatures';
@@ -290,6 +291,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         sfx('cardSpawn');
         break;
       case 'curseAdded': {
+        discover([e.card.id]);
         const p = enemyPoint();
         burst('curse', p.x, p.y, 20);
         sfx('curse');

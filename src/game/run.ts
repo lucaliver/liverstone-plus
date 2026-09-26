@@ -6,6 +6,7 @@ import { CONFIG } from '../data/config';
 import { ENEMIES, enemiesFor } from '../data/enemies';
 import { HEROES } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
+import { discover } from './meta';
 import type { CardDef, CardInst, EnemyDef, HeroId, Rarity } from './types';
 
 export type NodeType = 'fight' | 'elite' | 'rest' | 'boss';
@@ -56,6 +57,7 @@ export function newRun(hero: HeroId, seed: number): RunState {
   const rng = new Rng(seed);
   const def = HEROES[hero];
   const nodes = buildNodes(rng);
+  discover(def.startDeck);
   return {
     version: 1,
     seed,
@@ -154,6 +156,7 @@ export function rollRewards(run: RunState, kind: 'fight' | 'elite'): CardDef[] {
     if (pool.length) picks.push(rng.pick(pool));
   }
   run.rng = rng.state;
+  discover(picks.map((p) => p.id));
   return picks;
 }
 

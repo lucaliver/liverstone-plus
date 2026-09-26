@@ -1785,6 +1785,58 @@ button:focus-visible,
 .deck-grid.pick .card { cursor: pointer; }
 .deck-grid.pick .card:active { transform: translate(3px, 3px); box-shadow: none; }
 
+/* ------------------------------------------------------------------ compendium */
+.tabs {
+  display: flex;
+  border: var(--line) solid var(--void);
+  background: var(--paper);
+  box-shadow: 3px 3px 0 var(--shadow);
+}
+.tabs button {
+  flex: 1;
+  min-height: 44px;
+  padding: 0 2px;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  color: var(--k);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tabs button + button { border-left: 2px solid var(--void); }
+.tabs button[aria-selected='true'] { background: var(--y); }
+.comp-grid .card { cursor: pointer; }
+.card.locked {
+  display: grid;
+  place-items: center;
+  background-color: var(--bg2);
+  background-image: radial-gradient(circle, #3a2f60 34%, transparent 38%);
+  background-size: 8px 8px;
+  border-color: #3a2f60;
+}
+.card.locked span {
+  font-family: var(--font-display);
+  font-size: 40cqw;
+  color: #5a4a8a;
+}
+.comp-toast {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--safe-b) + 24px);
+  translate: -50% 0;
+  max-width: 86%;
+  padding: 8px 14px;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 18px;
+  color: var(--paper);
+  background: var(--k);
+  box-shadow: 4px 4px 0 var(--p);
+  pointer-events: none;
+  opacity: 0;
+}
+.comp-toast.show { animation: toast 1.6s steps(6) forwards; }
+
 /* ------------------------------------------------------------------ reward / rest / end */
 .reward {
   align-items: center;

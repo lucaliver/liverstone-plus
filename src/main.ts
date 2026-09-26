@@ -22,6 +22,7 @@ import { journeyScreen } from './ui/screens/journey';
 import { restScreen } from './ui/screens/rest';
 import { rewardScreen } from './ui/screens/reward';
 import { titleScreen } from './ui/screens/title';
+import { compendiumScreen } from './ui/screens/compendium';
 
 let run: RunState | null = null;
 
@@ -42,6 +43,7 @@ function goTitle(): void {
         if (loadRun()) confirmModal(t('menu.abandonConfirm'), t('common.confirm'), goHeroSelect, t('common.cancel'));
         else goHeroSelect();
       },
+      onCompendium: () => show(compendiumScreen(goTitle)),
     }),
   );
 }

@@ -11,6 +11,7 @@ export interface TitleCallbacks {
   hasSave: boolean;
   onContinue: () => void;
   onNewRun: () => void;
+  onCompendium: () => void;
 }
 
 export function titleScreen(cb: TitleCallbacks): Screen {
@@ -31,9 +32,10 @@ export function titleScreen(cb: TitleCallbacks): Screen {
       { class: 'menu' },
       cb.hasSave ? btn(t('menu.continue'), '', cb.onContinue) : null,
       btn(t('menu.newRun'), cb.hasSave ? 'secondary' : '', cb.onNewRun),
+      btn(t('menu.compendium'), 'secondary small', cb.onCompendium),
       h('div', { class: 'row' }, btn(t('menu.howTo'), 'secondary small', () => openHowTo()), btn(t('menu.settings'), 'secondary small', () => openSettings())),
     ),
-    h('div', { class: 'version' }, 'v0.2 · MVP'),
+    h('div', { class: 'version' }, 'v0.3 · MVP'),
   );
   return { el };
 }
