@@ -113,27 +113,13 @@ export interface EnemyDef {
   onHalf?: (c: Combat) => void;
 }
 
-export interface MinionDef {
-  id: string;
-  hp: number;
-  dmg: number;
-  /** Seconds between attacks. */
-  interval: number;
-  art: string;
-}
-
-export interface Minion {
-  uid: number;
-  id: string;
-  hp: number;
-  maxHp: number;
-  timer: number;
-}
-
 export interface HeroHooks {
   onCardPlayed?: (c: Combat, card: CombatCard, def: CardDef, manaSpent: number) => void;
   onCardExpired?: (c: Combat, card: CombatCard) => void;
-  onMinionDeath?: (c: Combat) => void;
+  /** Called when the hero applies a status to the enemy. */
+  onEnemyStatus?: (c: Combat, id: string, v: number) => void;
+  /** Extra damage per tick of a damage-over-time status on the enemy. */
+  enemyDotBonus?: (c: Combat, id: string) => number;
   onHeroHit?: (c: Combat, dmg: number) => void;
   /** Extra flat damage for hero damage from a card of the given type. */
   bonusDamage?: (c: Combat, def: CardDef | null) => number;
@@ -205,10 +191,6 @@ export type CombatEvent =
   | { type: 'weave'; n: number }
   | { type: 'relic'; id: string }
   | { type: 'enrage' }
-  | { type: 'minionSummon'; uid: number; id: string }
-  | { type: 'minionAttack'; uid: number }
-  | { type: 'minionHit'; uid: number; amount: number }
-  | { type: 'minionDied'; uid: number }
   | { type: 'end'; result: CombatResult };
 
 export type CombatResult = 'win' | 'lose';

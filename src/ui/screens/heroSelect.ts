@@ -9,7 +9,7 @@ import { icon } from '../art/icons';
 import { openDeck } from '../components/modals';
 import { ABILITY_ICON } from './combat';
 
-const PASSIVE_ICON: Record<string, string> = { warrior: 'shield', mage: 'bolt2', necromancer: 'ghost' };
+const PASSIVE_ICON: Record<string, string> = { warrior: 'shield', mage: 'bolt2', necromancer: 'drop' };
 
 export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => void): Screen {
   let selected: HeroId = 'warrior';

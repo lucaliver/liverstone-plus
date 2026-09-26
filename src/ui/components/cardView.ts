@@ -9,7 +9,7 @@ const KEYWORD_LINE = ['innate', 'exhaust', 'consume', 'fleeting', 'volatile', 'u
 const TAG_ICON: Record<string, string> = { innate: 'up', exhaust: 'cross', consume: 'drop', fleeting: 'wing', volatile: 'combust' };
 
 /** Glyph kind → icon and the unit shown after its value. */
-const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string }> = {
+export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string }> = {
   dmg: { icon: 'sword' },
   block: { icon: 'shield' },
   heal: { icon: 'heart', sign: '+' },
@@ -31,14 +31,10 @@ const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string }> = {
   clog: { icon: 'slime' },
   boom: { icon: 'bomb' },
   drain: { icon: 'crystal', sign: '-' },
-  soul: { icon: 'ghost', sign: '+' },
   crystal: { icon: 'crystal', sign: '+' },
-  raise: { icon: 'skull', sign: '+' },
   poison: { icon: 'drop' },
   vuln: { icon: 'crack', unit: 's' },
-  frenzy: { icon: 'crossed' },
-  might: { icon: 'fist', sign: '+' },
-  sac: { icon: 'combust' },
+  weak: { icon: 'broken', unit: 's' },
 };
 
 export type CardCategory = 'attack' | 'defense' | 'utility' | 'curse';

@@ -189,33 +189,15 @@ describe('combat engine', () => {
     expect(spawnsWith(true)).toBe(spawnsWith(false));
   });
 
-  it('minions attack on their own and take enemy hits first', () => {
-    const c = setup({ hero: HEROES.necromancer, hp: 58, maxHp: 58, enemy: ENEMIES.rat });
+  it('necromancer poison ticks harder and fills Decay', () => {
+    const c = setup({ hero: HEROES.necromancer, hp: 62, maxHp: 62, deck: deckOf(['rot', 'rot']), enemy: ENEMIES.skeleton });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
-    c.summon('skeleton');
-    const ehp = c.enemy.hp;
-    run(c, 2.25);
-    expect(c.enemy.hp).toBeLessThan(ehp);
-    expect(c.hero.hp).toBe(58);
-    expect(c.minions.length === 0 || c.minions[0].hp < 5).toBe(true);
-  });
-
-  it('a full board replaces the oldest minion and grants a Soul', () => {
-    const c = setup({ hero: HEROES.necromancer, hp: 58, maxHp: 58 });
-    run(c, CONFIG.introTime + 0.01);
-    for (let i = 0; i < 4; i++) c.summon('skeleton');
-    expect(c.minions.length).toBe(CONFIG.maxMinions);
-    expect(c.hero.resource).toBe(1);
-  });
-
-  it('necromancer harvests lost cards: +1 Soul and 1 damage', () => {
-    const c = setup({ hero: HEROES.necromancer, hp: 58, maxHp: 58, deck: deckOf(['boneSpike', 'boneSpike']), enemy: ENEMIES.skeleton });
-    c.enemy.def = { ...c.enemy.def, pattern: [{ id: 'guard', intent: 'defend', windup: 999 }] };
-    c.enemy.move = c.enemy.def.pattern[0];
-    const ehp = c.enemy.hp;
-    run(c, CONFIG.introTime + CONFIG.beltTime * 1.2);
-    expect(c.hero.resource).toBeGreaterThan(0);
-    expect(c.enemy.hp).toBeLessThan(ehp);
+    c.applyStatus('enemy', 'poison', 6);
+    expect(c.hero.resource).toBe(6);
+    const hp = c.enemy.hp;
+    run(c, CONFIG.dotInterval + 0.02);
+    expect(hp - c.enemy.hp).toBe(6 + 1);
   });
 
   it('a bomb that reaches the end of the belt explodes on the hero', () => {

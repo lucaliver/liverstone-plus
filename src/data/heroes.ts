@@ -58,34 +58,29 @@ const mage: HeroDef = {
 
 const necromancer: HeroDef = {
   id: 'necromancer',
-  hp: 58,
+  hp: 62,
   maxMana: 2,
   regen: 1.25,
   blockDecay: 0.9,
-  resourceMax: 10,
-  startDeck: [...rep('boneSpike', 3), ...rep('graveWard', 2), ...rep('raiseSkeleton', 2), 'drainLife', 'manaShard', 'manaGeode'],
+  resourceMax: 15,
+  startDeck: [...rep('boneSpike', 3), ...rep('graveWard', 2), ...rep('toxicDart', 2), 'drainLife', 'manaShard', 'manaGeode'],
   color: '#2a8a4a',
   ability: {
-    id: 'armyOfTheDead',
-    use: (c) => {
-      for (let i = 0; i < 3; i++) c.summon('skeleton');
-    },
+    id: 'pandemic',
+    // Double the enemy's Poison (at least +5).
+    use: (c) => c.applyStatus('enemy', 'poison', Math.max(5, c.stacks('enemy', 'poison'))),
   },
   hooks: {
-    // Grave Harvest: a card lost off the belt feeds the dark: +1 Soul and 1 damage.
-    onCardExpired: (c) => {
-      c.addResource(1);
-      c.damage('hero', 'enemy', 1, { raw: true, kind: 'arcane' }, 'hero');
+    // Decay fills with every stack of Poison applied.
+    onEnemyStatus: (c, id, v) => {
+      if (id === 'poison') c.addResource(v);
     },
-    onMinionDeath: (c) => c.addResource(1),
-    tick: (c, dt) => {
-      // Lich Form: a Soul every 3 seconds.
-      if (c.stacks('hero', 'lichForm') <= 0) return;
-      c.mem.lichT = (c.mem.lichT ?? 0) + dt;
-      if (c.mem.lichT >= 3) {
-        c.mem.lichT -= 3;
-        c.addResource(1);
-      }
+    // Virulence: Poison deals +1 per tick (more with Virulent Form).
+    enemyDotBonus: (c, id) => (id === 'poison' ? 1 + c.stacks('hero', 'virulence') : 0),
+    // Plague: Attacks also apply Poison.
+    onCardPlayed: (c, _card, def) => {
+      const plague = c.stacks('hero', 'plague');
+      if (plague > 0 && def.type === 'attack') c.applyStatus('enemy', 'poison', plague, 0, true);
     },
   },
 };

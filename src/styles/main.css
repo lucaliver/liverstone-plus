@@ -665,10 +665,8 @@ button:focus-visible,
 .gk-heal .pico { color: var(--green); }
 .gk-crystal .pico { color: var(--b); --ink2: var(--y); }
 .gk-exit .pico + .pico { color: var(--p); --ink2: var(--y); }
-.gk-soul .pico,
-.gk-raise .pico,
-.gk-poison .pico,
-.gk-might .pico { color: var(--green); --ink2: var(--y); }
+.gk-poison .pico { color: var(--green); --ink2: var(--y); }
+.gk-weak .pico { color: var(--purple); --ink2: var(--y); }
 .gk-vuln .pico,
 .gk-sac .pico { color: var(--p); --ink2: var(--k); }
 .gk-frenzy .pico,
@@ -1424,59 +1422,6 @@ button:focus-visible,
 [data-hero='warrior'] { --res-ink: var(--p); --hero-ink: var(--p); }
 [data-hero='mage'] { --res-ink: var(--b); --hero-ink: var(--b); }
 [data-hero='necromancer'] { --res-ink: var(--green); --hero-ink: var(--green); }
-
-/* minions: the necromancer's front line, standing before the enemy */
-.minions {
-  position: absolute;
-  left: 8px;
-  bottom: 92px;
-  z-index: 2;
-  display: flex;
-  gap: 6px;
-  pointer-events: none;
-}
-.minion {
-  width: 62px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  animation: summon 0.3s steps(3);
-}
-@keyframes summon {
-  from { transform: translateY(24px) scaleY(0.2); opacity: 0; }
-}
-.minion .riso { width: 60px; height: 60px; }
-.minion .mhp {
-  min-width: 34px;
-  padding: 0 4px;
-  text-align: center;
-  font-family: var(--font-ui);
-  font-size: 16px;
-  line-height: 18px;
-  color: var(--paper);
-  background: var(--green);
-  border: 2px solid var(--void);
-}
-.minion .mtimer {
-  width: 44px;
-  height: 5px;
-  background: var(--void);
-}
-.minion .mtimer i {
-  display: block;
-  height: 100%;
-  transform-origin: left;
-  background: var(--y);
-}
-.minion.atk .riso { animation: hop 0.24s steps(2); }
-@keyframes hop {
-  50% { transform: translate(10px, -10px); }
-}
-.minion.hurt .riso { animation: hitflash 0.16s steps(1), jolt 0.2s steps(2); }
-.minion.gone {
-  animation: die 0.4s steps(4) forwards;
-}
 
 /* hero row */
 .hero-row {
