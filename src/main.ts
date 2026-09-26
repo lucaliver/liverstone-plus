@@ -95,9 +95,9 @@ function afterCombat(combat: Combat): void {
     show(endScreen(r, true, () => goHeroSelect(), goTitle));
     return;
   }
-  const picks = combat.result === 'win' && node.type !== 'boss' ? rollRewards(r, node.type === 'elite' ? 'elite' : 'fight') : [];
+  const picks = node.type !== 'boss' ? rollRewards(r, node.type === 'elite' ? 'elite' : 'fight') : [];
   saveRun(r);
-  show(rewardScreen(r, picks, combat.result === 'fled', nextNode));
+  show(rewardScreen(r, picks, nextNode));
 }
 
 function nextNode(): void {

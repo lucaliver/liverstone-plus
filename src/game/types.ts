@@ -75,7 +75,7 @@ export interface StatusVal {
 
 export type Statuses = Record<string, StatusVal>;
 
-export type IntentType = 'attack' | 'defend' | 'buff' | 'debuff' | 'curse' | 'heal' | 'steal' | 'charge' | 'drain' | 'flee';
+export type IntentType = 'attack' | 'defend' | 'buff' | 'debuff' | 'curse' | 'heal' | 'steal' | 'charge' | 'drain';
 
 export interface MoveDef {
   id: string;
@@ -109,8 +109,6 @@ export interface EnemyDef {
   ai?: (c: Combat) => MoveDef;
   /** Statuses the enemy starts with. */
   start?: { id: string; v?: number; t?: number }[];
-  /** Flees after this many resolved moves (the Goblin). */
-  fleeAfter?: number;
   /** Called once when HP drops under 50%. */
   onHalf?: (c: Combat) => void;
 }
@@ -213,4 +211,4 @@ export type CombatEvent =
   | { type: 'minionDied'; uid: number }
   | { type: 'end'; result: CombatResult };
 
-export type CombatResult = 'win' | 'lose' | 'fled';
+export type CombatResult = 'win' | 'lose';

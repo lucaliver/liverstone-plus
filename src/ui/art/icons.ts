@@ -121,7 +121,6 @@ export const INTENT_ICON: Record<string, string> = {
   steal: 'hand',
   charge: 'burst',
   drain: 'crystal',
-  flee: 'wing',
 };
 
 /** Pixel icon (see riso.ts). The vector source above is rasterised once at boot. */

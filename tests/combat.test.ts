@@ -111,12 +111,6 @@ describe('combat engine', () => {
     expect(c.hero.hp).toBe(80 - 4);
   });
 
-  it('goblin flees', () => {
-    const c = setup({ enemy: ENEMIES.goblin, hp: 999, maxHp: 999 });
-    run(c, 30);
-    expect(c.result).toBe('fled');
-  });
-
   it('warrior berserk doubles attack damage', () => {
     const c = setup({ deck: deckOf(['strike', 'strike']) });
     run(c, CONFIG.introTime + 0.01);

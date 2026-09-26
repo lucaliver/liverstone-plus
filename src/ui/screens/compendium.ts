@@ -5,7 +5,7 @@ import { HERO_LIST } from '../../data/heroes';
 import { isDiscovered } from '../../game/meta';
 import type { CardClass, Rarity } from '../../game/types';
 import type { Screen } from '../app';
-import { h } from '../dom';
+import { h, onPress } from '../dom';
 import { icon } from '../art/icons';
 import { cardView } from '../components/cardView';
 import { openCardDetail } from '../components/modals';
@@ -49,7 +49,7 @@ export function compendiumScreen(onBack: () => void): Screen {
       ...cards.map((def) => {
         // Every card can be inspected; undiscovered ones just carry a "?" badge.
         const el = cardView({ uid: -1, id: def.id, up: false }, { cls: isDiscovered(def.id) ? '' : 'undiscovered' });
-        el.addEventListener('click', () => {
+        onPress(el, () => {
           sfx('tap');
           openCardDetail({ uid: -1, id: def.id, up: false });
         });

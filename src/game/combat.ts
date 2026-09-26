@@ -375,10 +375,6 @@ export class Combat {
   private resolveMove(m: MoveDef): void {
     this.events.emit({ type: 'enemyAct', move: m });
     const scale = this.enemy.dmgScale;
-    if (m.intent === 'flee') {
-      this.end('fled');
-      return;
-    }
     if (m.dmg) {
       const hits = m.hits ?? 1;
       for (let i = 0; i < hits && !this.result; i++) {

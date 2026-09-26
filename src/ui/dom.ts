@@ -41,3 +41,29 @@ export function centerOf(el: Element): { x: number; y: number } {
   const r = el.getBoundingClientRect();
   return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
 }
+
+/**
+ * Calls `fn` on a tap/click and also on a long press (so holding a card does the same as tapping it),
+ * without firing twice and without the browser's long-press context menu.
+ */
+export function onPress(el: HTMLElement, fn: () => void, longMs = 420): void {
+  let timer = 0;
+  let firedLong = false;
+  el.addEventListener('pointerdown', () => {
+    firedLong = false;
+    clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      firedLong = true;
+      fn();
+    }, longMs);
+  });
+  const cancel = (): void => clearTimeout(timer);
+  el.addEventListener('pointerup', cancel);
+  el.addEventListener('pointerleave', cancel);
+  el.addEventListener('pointercancel', cancel);
+  el.addEventListener('click', () => {
+    if (firedLong) return;
+    fn();
+  });
+  el.addEventListener('contextmenu', (e) => e.preventDefault());
+}

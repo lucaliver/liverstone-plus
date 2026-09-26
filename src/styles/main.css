@@ -899,10 +899,6 @@ button:focus-visible,
 @keyframes die {
   to { transform: translateY(40px) scaleY(0.2); opacity: 0; }
 }
-.enemy-art.fleeing { animation: flee 0.6s steps(5) forwards; }
-@keyframes flee {
-  to { transform: translateX(150%); opacity: 0; }
-}
 
 /* threat bar: the enemy's next move, right above the belt where the eyes are */
 .threat {

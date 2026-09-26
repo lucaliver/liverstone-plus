@@ -146,12 +146,9 @@ const en: Record<string, string> = {
   'intent.steal': 'Steal',
   'intent.charge': 'Charging!',
   'intent.drain': 'Drain',
-  'intent.flee': 'Fleeing!',
 
   // ------------------------------------------------------------ results
   'reward.victory': 'Victory!',
-  'reward.fled': 'It got away!',
-  'reward.fledDesc': 'The goblin escaped with its loot. No card this time.',
   'reward.choose': 'Choose a card',
   'reward.add': 'Add to deck',
   'reward.swap': 'Swap',
@@ -451,7 +448,6 @@ const en: Record<string, string> = {
   'move.darkBolt': 'Dark Bolt',
   'move.stab': 'Stab',
   'move.snatch': 'Snatch',
-  'move.flee': 'Flee',
   'move.rend': 'Rend',
   'move.cleave': 'Cleave',
   'move.shieldWall': 'Shield Wall',

@@ -37,7 +37,6 @@ const defs: EnemyDef[] = [
       { id: 'snatch', intent: 'steal', windup: 2.4, dmg: 3, steal: 1 },
       { id: 'lightFuse', intent: 'curse', windup: 2.2, curse: { id: 'bomb', n: 1, to: 'belt' } },
       { id: 'snatch', intent: 'steal', windup: 2.4, dmg: 3, steal: 1 },
-      { id: 'flee', intent: 'flee', windup: 3.5 },
     ],
   },
   {

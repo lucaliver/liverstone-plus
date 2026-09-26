@@ -309,7 +309,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       }
       case 'enemyAct':
         if (e.move.dmg) retrigger(r.enemyArt, 'lunge');
-        else if (e.move.intent !== 'flee') retrigger(r.enemyArt, 'cast');
+        else retrigger(r.enemyArt, 'cast');
         break;
       case 'mana': {
         const p = centerOf(r.manaNum);
@@ -388,7 +388,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   const unsub = combat.events.on(onEvent);
 
   // ---------------------------------------------------------------- end of combat
-  const finish = (result: 'win' | 'lose' | 'fled'): void => {
+  const finish = (result: 'win' | 'lose'): void => {
     if (ended) return;
     ended = true;
     cancelDrag();
@@ -398,10 +398,6 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       burst('gold', p.x, p.y, 40, 1.5);
       banner(t('reward.victory'));
       sfx('victory');
-    } else if (result === 'fled') {
-      r.enemyArt.classList.add('fleeing');
-      banner(t('reward.fled'), true);
-      sfx('steal');
     } else {
       banner(t('end.defeat'), true);
       sfx('defeat');

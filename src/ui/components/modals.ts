@@ -6,7 +6,7 @@ import { GAME_SPEEDS } from '../../data/config';
 import { saveSettings, settings } from '../../game/settings';
 import type { CardInst, CardType } from '../../game/types';
 import { openModal, type ModalHandle } from '../app';
-import { h } from '../dom';
+import { h, onPress } from '../dom';
 import { icon } from '../art/icons';
 import { cardKeywords, cardText, cardView } from './cardView';
 
@@ -168,15 +168,25 @@ export function openDeck(deck: CardInst[], opts: { title?: string; onPick?: (c: 
     { class: `deck-grid ${opts.onPick ? 'pick' : ''}` },
     ...cards.map((c) => {
       const el = cardView(opts.preview ? opts.preview(c) : c);
-      el.addEventListener('click', () => {
-        sfx('tap');
-        if (opts.onPick) {
+      if (opts.onPick) {
+        // Picking: tap selects, long press shows the card instead.
+        el.addEventListener('click', () => {
+          sfx('tap');
           handle.close();
-          opts.onPick(c);
-        } else {
+          opts.onPick!(c);
+        });
+        let t0 = 0;
+        el.addEventListener('pointerdown', () => {
+          t0 = window.setTimeout(() => openCardDetail(opts.preview ? opts.preview(c) : c), 420);
+        });
+        ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => el.addEventListener(ev, () => clearTimeout(t0)));
+        el.addEventListener('contextmenu', (e) => e.preventDefault());
+      } else {
+        onPress(el, () => {
+          sfx('tap');
           openCardDetail(c);
-        }
-      });
+        });
+      }
       return el;
     }),
   );
