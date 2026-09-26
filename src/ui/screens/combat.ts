@@ -167,7 +167,9 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   // ---------------------------------------------------------------- layout
   const layout = (): void => {
     beltW = r.belt.clientWidth || el.clientWidth;
-    el.style.setProperty('--cw-belt', `${Math.round(beltW * CONFIG.cardWidth)}px`);
+    // Cards follow the belt width, but shrink on short screens so the layout always fits.
+    const cw = Math.min(beltW * CONFIG.cardWidth, el.clientHeight * 0.108);
+    el.style.setProperty('--cw-belt', `${Math.round(cw)}px`);
   };
 
   // ---------------------------------------------------------------- helpers

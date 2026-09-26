@@ -21,11 +21,11 @@ export function titleScreen(cb: TitleCallbacks): Screen {
   const el = h(
     'div',
     { class: 'screen title-screen' },
-    h('h1', { class: 'logo', html: 'Cardstone<span class="plus">+</span>' }),
+    h('h1', { class: 'logo' }, t('app.title')),
     h('p', { class: 'tagline' }, t('app.tagline')),
     h('div', {
       class: 'title-hero',
-      html: `${motes(18)}${darkEyes([{ x: '8%', y: '20%' }, { x: '82%', y: '12%' }, { x: '76%', y: '70%' }])}<div class="candle l">${icon('flame')}</div><div class="candle r">${icon('flame')}</div>${creature('lich')}`,
+      html: `${motes(18)}${darkEyes([{ x: '8%', y: '20%' }, { x: '82%', y: '12%' }, { x: '76%', y: '70%' }])}<div class="candle l">${icon('flame')}</div><div class="candle r" style="--fd:-.2s">${icon('flame')}</div><div class="candle l2" style="--fd:-.35s">${icon('flame')}</div><div class="candle r2" style="--fd:-.1s">${icon('flame')}</div>${creature('lich')}`,
     }),
     h(
       'div',
@@ -35,7 +35,7 @@ export function titleScreen(cb: TitleCallbacks): Screen {
       btn(t('menu.compendium'), 'secondary small', cb.onCompendium),
       h('div', { class: 'row' }, btn(t('menu.howTo'), 'secondary small', () => openHowTo()), btn(t('menu.settings'), 'secondary small', () => openSettings())),
     ),
-    h('div', { class: 'version' }, 'v0.3 · MVP'),
+    h('div', { class: 'version' }, 'v0.4 · MVP'),
   );
   return { el };
 }

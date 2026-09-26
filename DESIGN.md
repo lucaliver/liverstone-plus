@@ -1,10 +1,10 @@
-# Cardstone+ — Design Document
+# Liverstone — Design Document
 
 A real-time, conveyor-belt deckbuilding roguelike for mobile browsers (portrait),
 inspired by *Cardstone* (Running Pillow, 2015).
 
 ## 1. What we keep from Cardstone
-| Original | Cardstone+ |
+| Original | Liverstone |
 |---|---|
 | Cards drawn automatically, "waft across the screen like sushi boats" | **The Belt**: cards scroll right→left; tap to play before they fall off |
 | Mana regenerates over time; some cards raise the mana cap | Same, with a visible regen tick on the mana bar |

@@ -132,11 +132,14 @@ export function floatText(x: number, y: number, text: string, cls: string, delay
   layer.append(el);
 }
 
+/** Jolts the combat stage (never the whole screen, which would make the layout jump). */
 export function shake(strength: 'small' | 'big' = 'small'): void {
   if (settings.reduceMotion) return;
-  shakeTarget.classList.remove('shake-small', 'shake-big');
-  void shakeTarget.offsetWidth;
-  shakeTarget.classList.add(`shake-${strength}`);
+  const target = shakeTarget.querySelector<HTMLElement>('.screen:not(.leaving) .stage .enemy-wrap');
+  if (!target) return;
+  target.classList.remove('shake-small', 'shake-big');
+  void target.offsetWidth;
+  target.classList.add(`shake-${strength}`);
 }
 
 export function haptic(ms: number | number[]): void {

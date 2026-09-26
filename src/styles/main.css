@@ -7,7 +7,7 @@
 }
 
 /* =====================================================================
-   Cardstone+ — riso-pixel design system
+   Liverstone — riso-pixel design system
    Flat risograph inks on paper, pixel art, hard offsets. No gradients
    for shading, no glows, no soft shadows.
    ===================================================================== */
@@ -84,7 +84,8 @@ button:focus-visible,
   inset: 0;
   margin: 0 auto;
   width: var(--app-w);
-  overflow: hidden;
+  /* clip (not hidden): the container can never be scrolled, e.g. by focusing a button */
+  overflow: clip;
   background-color: var(--bg);
   /* faint violet halftone: the night is printed too */
   background-image: radial-gradient(circle, #2f2450 30%, transparent 34%);
@@ -150,16 +151,14 @@ button:focus-visible,
 .shake-small { animation: shake-s 0.2s steps(4); }
 .shake-big { animation: shake-b 0.36s steps(6); }
 @keyframes shake-s {
-  25% { transform: translate(-4px, 2px); }
-  50% { transform: translate(4px, -2px); }
-  75% { transform: translate(-2px, 0); }
+  33% { transform: translateX(-4px); }
+  66% { transform: translateX(4px); }
 }
 @keyframes shake-b {
-  16% { transform: translate(-10px, 4px); }
-  33% { transform: translate(8px, -6px); }
-  50% { transform: translate(-6px, 4px); }
-  66% { transform: translate(4px, -2px); }
-  83% { transform: translate(-2px, 2px); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(7px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(3px); }
 }
 
 /* ------------------------------------------------------------------ pixel art */
@@ -296,16 +295,14 @@ button:focus-visible,
   text-transform: uppercase;
   color: var(--fg);
   text-shadow: 4px 4px 0 var(--p), -3px 2px 0 var(--b);
+  animation: misprint 3.2s steps(1) infinite;
 }
-.logo .plus {
-  display: inline-block;
-  margin-left: 6px;
-  padding: 0 8px;
-  color: var(--paper);
-  background: var(--p);
-  text-shadow: none;
-  box-shadow: 4px 4px 0 var(--y);
-  transform: rotate(-6deg);
+/* the print "slips" now and then, like a riso drum out of register */
+@keyframes misprint {
+  0%, 86%, 100% { text-shadow: 4px 4px 0 var(--p), -3px 2px 0 var(--b); }
+  88% { text-shadow: 7px 2px 0 var(--p), -5px 4px 0 var(--b); }
+  91% { text-shadow: 2px 6px 0 var(--p), -2px -1px 0 var(--b); }
+  94% { text-shadow: 5px 3px 0 var(--p), -4px 1px 0 var(--b); }
 }
 .tagline {
   margin: 0;
@@ -705,7 +702,23 @@ button:focus-visible,
 .card[data-rarity='unique'] .c-gem { background: var(--y); border-color: var(--p); }
 
 /* ------------------------------------------------------------------ combat layout */
-.combat { padding: 0; }
+.combat { padding: 0; overflow: clip; }
+
+/* short phones: compact the fixed rows so the stage keeps its room and nothing overflows */
+@media (max-height: 740px) {
+  .combat .topbar { padding-top: calc(var(--safe-t) + 4px); }
+  .combat .icon-btn { width: 40px; height: 40px; }
+  .enemy-info .statuses { min-height: 0; }
+  .threat { height: 34px; }
+  .threat .t-val { font-size: 22px; }
+  .mana-row { padding-top: 6px; }
+  .pip { height: 18px; }
+  .action-row { padding: 4px 12px; }
+  .ability-btn { width: 70px; height: 70px; }
+  .ability-btn .pico { font-size: 32px; margin-top: -20px; }
+  .hero-row { padding-top: 4px; padding-bottom: calc(var(--safe-b) + 6px); }
+  .hero-portrait { width: 52px; height: 52px; }
+}
 .combat .topbar {
   display: flex;
   align-items: center;
@@ -786,13 +799,51 @@ button:focus-visible,
   bottom: 100%;
   font-size: 22px;
   translate: -50% 2px;
+  transform-origin: 50% 100%;
   color: var(--y);
   --ink2: var(--p);
-  animation: flicker 0.36s steps(1) infinite;
+  animation: flicker 0.5s steps(1) infinite;
+  animation-delay: var(--fd, 0s);
 }
 @keyframes flicker {
-  50% { transform: scaleX(-1) translateY(-1px); }
+  0% { transform: none; }
+  25% { transform: scaleX(-1) scaleY(1.15); color: #ffe86a; }
+  50% { transform: scaleY(0.9) translateX(1px); }
+  75% { transform: scaleX(-1) scaleY(1.25) translateY(-1px); color: #ffc400; }
 }
+.candle::before {
+  /* pixel halo that breathes around the flame */
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  width: 4px;
+  height: 4px;
+  translate: -50% 0;
+  background: transparent;
+  box-shadow: -14px -8px 0 #ffd90066, 14px -6px 0 #ffd90066, -10px -20px 0 #ff3d9a55, 10px -22px 0 #ff3d9a55, 0 -30px 0 #ffd90044;
+  animation: halo 0.9s steps(1) infinite;
+  animation-delay: var(--fd, 0s);
+}
+@keyframes halo {
+  50% { box-shadow: -16px -10px 0 #ffd90044, 16px -8px 0 #ffd90044, -8px -24px 0 #ff3d9a44, 12px -18px 0 #ff3d9a66, 0 -34px 0 #ffd90066; }
+}
+.candle::after {
+  /* a drip of wax */
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0;
+  width: 3px;
+  height: 8px;
+  background: var(--paper2);
+  box-shadow: 5px 3px 0 var(--paper2);
+}
+.title-hero .candle { bottom: 18%; }
+.title-hero .candle.l { left: 6%; }
+.title-hero .candle.r { right: 8%; }
+.title-hero .candle.l2 { left: 18%; bottom: 12%; height: 22px; }
+.title-hero .candle.r2 { right: 20%; bottom: 10%; height: 18px; }
 .motes {
   position: absolute;
   inset: 0;

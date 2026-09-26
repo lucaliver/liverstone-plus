@@ -110,63 +110,82 @@ ${shadow}
 ${eyes(88, 112, 55, 3.5, '#8af8ff', 'bk-g')}`;
 
 const lich = `
-<defs>${lg('li-r', '#7a4ad0', '#2a1a70')}${lg('li-b', '#fbf4df', '#f6e27a')}${lg('li-c', '#ffe45a', '#ffc800')}${glow('li-g', '#9cff5a')}${glow('li-a', '#8a4aff')}${lg('li-st', '#ff7a4a', '#c03a2a')}</defs>
-<ellipse cx="100" cy="110" rx="96" ry="90" fill="url(#li-a)" opacity=".45"/>
+<defs>${lg('li-r', '#5a3aa0', '#1b1438')}${lg('li-b', '#f4ecd6', '#c9bd98')}${lg('li-c', '#f0c030', '#b08010')}${glow('li-g', '#ff3d9a')}${lg('li-st', '#7a4a2a', '#2a1a0a')}</defs>
 ${shadow}
-<g class="limb"><path d="M162 190l-4-160 7-1 6 161z" fill="url(#li-st)" ${OUT}/><path d="M150 32c0-14 26-14 26 0 0 10-6 14-13 18-7-4-13-8-13-18z" fill="#2a1a3a" ${OUT}/><circle cx="163" cy="30" r="8" fill="#9cff5a"/><circle cx="163" cy="30" r="20" fill="url(#li-g)"/></g>
-<path d="M36 190c6-60 24-100 64-110 40 10 58 50 64 110-20-8-40 0-64-8-24 8-44 0-64 8z" fill="url(#li-r)" ${OUT}/>
-<path d="M100 84l-18 50 18 40 18-40z" fill="#150c26" opacity=".8"/>
-<path d="M60 100c-8 0-26 6-30 30l12 6c4-14 12-22 22-24z" fill="url(#li-r)" ${OUT}/>
-<path d="M26 136c-6-2-10 6-6 10l6 4 10-8z" fill="url(#li-b)" ${OUT}/>
-<path d="M140 100c8 0 16 4 18 18l-10 6c-2-8-6-12-12-14z" fill="url(#li-r)" ${OUT}/>
-<path d="M58 70c0-30 18-48 42-48s42 18 42 48c0 14-6 22-14 26v14H72V96c-8-4-14-12-14-26z" fill="url(#li-b)" ${OUT}/>
-<path d="M70 66c0-8 8-12 16-10l4 14-14 8c-4-2-6-6-6-12zM130 66c0-8-8-12-16-10l-4 14 14 8c4-2 6-6 6-12z" fill="#150c26"/>
-${eyes(84, 116, 68, 4.5, '#b6ff7a', 'li-g')}
-<path d="M95 80l5 10 5-10z" fill="#150c26"/>
-<path d="M76 100h48M84 97v8M92 97v8M100 97v8M108 97v8M116 97v8" stroke="#150c26" stroke-width="2.5"/>
-<path d="M58 36l6-26 14 16 10-20 12 18 12-18 10 20 14-16 6 26c-12-6-26-8-42-8s-30 2-42 8z" fill="url(#li-c)" ${OUT}/>
-<circle cx="100" cy="24" r="5" fill="#9cff5a" ${OUT}/>`;
+<g class="limb"><path d="M166 192l-6-164 8-1 6 165z" fill="url(#li-st)" ${OUT}/><path d="M152 30c0-16 28-16 28 0 0 9-6 14-14 16-8-2-14-7-14-16z" fill="url(#li-b)" ${OUT}/><path d="M158 28h6v6h-6zM168 28h6v6h-6z" fill="#1b1830"/><circle cx="166" cy="18" r="12" fill="url(#li-g)"/><circle cx="166" cy="18" r="4" fill="#ff3d9a"/></g>
+<path d="M34 192l8-14 6 12 8-16 8 14 8-12 8 14 8-14 8 14 8-14 8 12 8-14 8 16 6-12 8 14c-4-64-26-100-66-110-40 10-62 46-66 110z" fill="url(#li-r)" ${OUT}/>
+<path d="M100 86l-14 44 14 42 14-42z" fill="#0c0818"/>
+<path d="M58 104c-12 2-26 12-30 34l12 6c4-12 10-20 20-24z" fill="url(#li-r)" ${OUT}/>
+<path d="M20 146l-8-18 6-2 6 12-2-16 6-1 2 16 2-18 6 1-1 18 6-12 5 3-8 18z" fill="url(#li-b)" ${OUT}/>
+<path d="M142 104c10 2 18 10 20 22l-10 6c-2-10-6-16-12-18z" fill="url(#li-r)" ${OUT}/>
+<path d="M62 70c-2-30 16-52 38-52s40 22 38 52c-1 14-8 24-16 28l-2 22H80l-2-22c-8-4-15-14-16-28z" fill="url(#li-b)" ${OUT}/>
+<path d="M72 60l14-4 10 10-4 18-16 2-6-12zM128 60l-14-4-10 10 4 18 16 2 6-12z" fill="#0c0818"/>
+<circle cx="84" cy="72" r="9" fill="url(#li-g)"/><circle cx="116" cy="72" r="9" fill="url(#li-g)"/>
+<rect x="82" y="70" width="4" height="4" fill="#ff3d9a"/><rect x="114" y="70" width="4" height="4" fill="#ff3d9a"/>
+<path d="M100 82l-8 14h16z" fill="#0c0818"/>
+<path d="M70 86l10 8M130 86l-10 8" stroke="#8a7a5a" stroke-width="3"/>
+<path d="M78 104h44v14H78z" fill="#0c0818"/>
+<path d="M80 104l4 12 4-12 4 14 4-14 4 16 4-16 4 14 4-14 4 12 4-12" fill="url(#li-b)" stroke="#1b1830" stroke-width="1.5"/>
+<path d="M104 22l-6 14 8 8-6 12M76 40l8 6" stroke="#1b1830" stroke-width="3" fill="none"/>
+<path d="M56 34l4-34 12 18 8-24 10 22 10-26 10 26 10-22 8 24 12-18 4 34c-12-6-28-10-44-10s-32 4-44 10z" fill="url(#li-c)" ${OUT}/>
+<rect x="96" y="14" width="8" height="8" fill="#ff3d9a" ${OUT}/>`;
 
 const warrior = `
-<defs>${lg('wa-h', '#9ac0f8', '#1c5fd0', 1, 1)}${lg('wa-p', '#ff6ab0', '#ff3d9a')}${lg('wa-s', '#f0c890', '#a0724a')}${lg('wa-a', '#ff8ac8', '#d03a8a')}</defs>
+<defs>${lg('wa-h', '#9ac0f8', '#1c5fd0', 1, 1)}${lg('wa-s', '#ffb4d4', '#ff86bc')}${lg('wa-a', '#ff8ac8', '#d03a8a')}</defs>
 <path d="M18 200c0-44 34-66 82-66s82 22 82 66z" fill="url(#wa-a)" ${OUT}/>
-<path d="M20 170c0-24 18-40 40-40l10 40zM180 170c0-24-18-40-40-40l-10 40z" fill="url(#wa-h)" ${OUT}/>
-<path d="M84 140h32v20H84z" fill="url(#wa-p)"/>
-<path d="M102 10c26 6 46 26 50 40-14-6-28-8-40-4z" fill="url(#wa-p)" ${OUT}/>
-<path d="M52 92c0-38 20-62 48-62s48 24 48 62v40c0 10-10 18-22 18H74c-12 0-22-8-22-18z" fill="url(#wa-h)" ${OUT}/>
-<path d="M60 90h80v14H60z" fill="#0c0e14"/><path d="M96 104h8v34h-8z" fill="#0c0e14"/>
-<circle cx="84" cy="97" r="3.5" fill="#ffd9a0"/><circle cx="116" cy="97" r="3.5" fill="#ffd9a0"/>
-<path d="M100 30v58" stroke="#e6ecf2" stroke-width="5" opacity=".6"/>
-<path d="M60 70c4-18 16-30 30-34" stroke="#fff" stroke-width="5" opacity=".35" fill="none" stroke-linecap="round"/>
-<g fill="#c9a34a" ${OUT}><circle cx="62" cy="126" r="5"/><circle cx="138" cy="126" r="5"/></g>`;
+<path d="M18 172c0-26 18-42 42-42l12 42zM182 172c0-26-18-42-42-42l-12 42z" fill="url(#wa-h)" ${OUT}/>
+<path d="M78 124h44v22H78z" fill="url(#wa-s)" ${OUT}/>
+<path d="M54 86c0-40 20-66 46-66s46 26 46 66v26c0 20-20 34-46 34S54 132 54 112z" fill="url(#wa-s)" ${OUT}/>
+<path d="M70 34c8-8 18-11 26-11" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+<circle cx="84" cy="40" r="3" fill="#fff" opacity=".85"/>
+<path d="M50 62h100v18H50z" fill="url(#wa-h)" ${OUT}/>
+<path d="M60 64v14M140 64v14M100 64v14" stroke="#fbf4df" stroke-width="3"/>
+<path d="M50 78h18v42c-10-4-18-16-18-28zM150 78h-18v42c10-4 18-16 18-28z" fill="url(#wa-h)" ${OUT}/>
+<path d="M95 78h10v32H95z" fill="url(#wa-h)" ${OUT}/>
+<path d="M72 88h18M110 88h18" stroke="#1b1830" stroke-width="5" stroke-linecap="square"/>
+<rect x="74" y="92" width="14" height="10" fill="#f6f0e4" ${OUT}/><rect x="112" y="92" width="14" height="10" fill="#f6f0e4" ${OUT}/>
+<rect x="78" y="93" width="7" height="8" fill="#2a8a4a"/><rect x="116" y="93" width="7" height="8" fill="#2a8a4a"/>
+<rect x="80" y="95" width="3" height="4" fill="#0c3a1a"/><rect x="118" y="95" width="3" height="4" fill="#0c3a1a"/>
+<path d="M84 126h32" stroke="#1b1830" stroke-width="4"/>
+<path d="M118 108l10 12" stroke="#d03a8a" stroke-width="3"/>
+<g fill="#ffd900" ${OUT}><circle cx="58" cy="148" r="5"/><circle cx="142" cy="148" r="5"/></g>`;
 
 const mage = `
-<defs>${lg('ma-h', '#6a9af8', '#1c4fb0')}${lg('ma-f', '#ffd0e0', '#ff9ac8')}${lg('ma-b', '#fbf4df', '#f6e8a0')}${glow('ma-g', '#7ad8ff')}</defs>
+<defs>${lg('ma-h', '#6a9af8', '#1c4fb0')}${lg('ma-f', '#ffd6e6', '#ff9ac6')}${glow('ma-g', '#7ad8ff')}</defs>
 <path d="M18 200c0-44 34-66 82-66s82 22 82 66z" fill="url(#ma-h)" ${OUT}/>
-<path d="M100 134l-12 66h24z" fill="#c9a34a" opacity=".8"/>
-<path d="M100 2c-8 22-24 40-44 56-4 20 0 40 6 54h76c6-14 10-34 6-54C124 42 108 24 100 2z" fill="url(#ma-h)" ${OUT}/>
-<path d="M72 70c0-16 12-24 28-24s28 8 28 24v26c0 14-12 26-28 26s-28-12-28-26z" fill="url(#ma-f)" ${OUT}/>
-<path d="M64 60c10-10 22-14 36-14s26 4 36 14l-4 14c-10-8-20-10-32-10s-22 2-32 10z" fill="url(#ma-h)" ${OUT}/>
-<g class="eye"><circle cx="88" cy="84" r="9" fill="url(#ma-g)"/><circle cx="112" cy="84" r="9" fill="url(#ma-g)"/><circle cx="88" cy="84" r="3.5" fill="#dff6ff"/><circle cx="112" cy="84" r="3.5" fill="#dff6ff"/></g>
-<path d="M72 98c6 26 18 44 28 58 10-14 22-32 28-58-8 6-18 8-28 8s-20-2-28-8z" fill="url(#ma-b)" ${OUT}/>
-<path d="M88 104c6 4 18 4 24 0" stroke="#7a7e90" stroke-width="3" fill="none"/>
+<path d="M100 150l-12 50h24z" fill="#ffd900" opacity=".85"/>
+<path d="M74 118h52v30H74z" fill="url(#ma-f)" ${OUT}/>
+<path d="M100 2c-8 22-24 40-44 56-4 18-2 34 4 46h80c6-12 8-28 4-46C124 42 108 24 100 2z" fill="url(#ma-h)" ${OUT}/>
+<path d="M66 70c0-14 14-22 34-22s34 8 34 22v34l-6 22c-4 10-14 14-28 14s-24-4-28-14l-6-22z" fill="url(#ma-f)" ${OUT}/>
+<path d="M66 104l6 22c4 10 14 14 28 14s24-4 28-14l6-22-8 4-6 14c-4 6-12 8-20 8s-16-2-20-8l-6-14z" fill="#e07aa8"/>
+<path d="M100 126v12" stroke="#1b1830" stroke-width="3"/>
+<path d="M74 96l10 10M126 96l-10 10" stroke="#e07aa8" stroke-width="4"/>
+<path d="M60 62c10-10 24-14 40-14s30 4 40 14l-4 12c-10-6-22-8-36-8s-26 2-36 8z" fill="url(#ma-h)" ${OUT}/>
+<path d="M76 80l14 2M124 80l-14 2" stroke="#1b1830" stroke-width="4"/>
+<rect x="78" y="86" width="14" height="6" fill="#7ad8ff" ${OUT}/><rect x="108" y="86" width="14" height="6" fill="#7ad8ff" ${OUT}/>
+<path d="M98 92v14h6" stroke="#1b1830" stroke-width="3" fill="none"/>
+<path d="M88 116c8 4 18 4 26-2" stroke="#1b1830" stroke-width="3" fill="none"/>
 <g fill="#ffe08a"><path d="M78 30l3 6 6 1-5 4 1 6-5-3-5 3 1-6-5-4 6-1z"/><path d="M120 44l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z"/></g>`;
 
 
 
 
 const necromancer = `
-<defs>${lg('ne-h', '#3aa05a', '#1a5a30')}${lg('ne-f', '#e8e0f0', '#a898c8')}${glow('ne-g', '#ffe45a')}${lg('ne-s', '#fbf4df', '#f6e27a')}</defs>
+<defs>${lg('ne-h', '#3aa05a', '#1a5a30')}${lg('ne-f', '#eee6f4', '#b8a8d0')}${lg('ne-s', '#fbf4df', '#f6e27a')}${lg('ne-e', '#ffb0d0', '#e07aa8')}</defs>
 <path d="M18 200c0-44 34-66 82-66s82 22 82 66z" fill="url(#ne-h)" ${OUT}/>
 <path d="M100 136l-18 64h36z" fill="#1b1830"/>
 <path d="M60 134l40 20 40-20" stroke="#ff3d9a" stroke-width="5" fill="none"/>
 <path d="M100 8c-30 6-50 34-50 66 0 20 6 42 12 56h76c6-14 12-36 12-56 0-32-20-60-50-66z" fill="url(#ne-h)" ${OUT}/>
+<path d="M60 70c-22-10-40-6-44 6-2 12 14 22 42 22zM140 70c22-10 40-6 44 6 2 12-14 22-42 22z" fill="url(#ne-f)" ${OUT}/>
+<path d="M58 76c-14-4-26-2-30 4 2 6 14 10 30 10zM142 76c14-4 26-2 30 4-2 6-14 10-30 10z" fill="url(#ne-e)"/>
 <path d="M72 76c0-18 12-30 28-30s28 12 28 30v18c0 16-12 28-28 28s-28-12-28-28z" fill="#1b1830"/>
-<path d="M80 80c0-12 8-20 20-20s20 8 20 20v12c0 10-8 18-20 18s-20-8-20-18z" fill="url(#ne-f)" ${OUT}/>
-<path d="M86 80a5 5 0 0 1 10 0v4H86zM104 80a5 5 0 0 1 10 0v4h-10z" fill="#1b1830"/>
-${eyes(91, 109, 84, 3, '#ffe45a', 'ne-g')}
-<path d="M96 96l4 6 4-6z" fill="#1b1830"/>
-<path d="M90 104h20M94 101v6M100 101v6M106 101v6" stroke="#1b1830" stroke-width="2"/>
+<path d="M78 80c0-14 10-22 22-22s22 8 22 22v12c0 12-10 20-22 20s-22-8-22-20z" fill="url(#ne-f)" ${OUT}/>
+<path d="M82 76l12 3M118 76l-12 3" stroke="#1b1830" stroke-width="4"/>
+<rect x="84" y="82" width="12" height="9" fill="#f6f0e4" ${OUT}/><rect x="104" y="82" width="12" height="9" fill="#f6f0e4" ${OUT}/>
+<rect x="87" y="82" width="7" height="9" fill="#c85a20"/><rect x="107" y="82" width="7" height="9" fill="#c85a20"/>
+<rect x="89" y="84" width="3" height="5" fill="#3a1a08"/><rect x="109" y="84" width="3" height="5" fill="#3a1a08"/>
+<path d="M98 94l2 6 2-6" stroke="#1b1830" stroke-width="2.5" fill="none"/>
+<path d="M90 104c6 3 14 3 20 0" stroke="#1b1830" stroke-width="3" fill="none"/>
 <path d="M150 200l8-150" stroke="#1b1830" stroke-width="8"/>
 <path d="M146 44c0-12 20-12 20 0 0 8-4 12-10 14-6-2-10-6-10-14z" fill="url(#ne-s)" ${OUT}/>
 <circle cx="152" cy="46" r="2.5" fill="#1b1830"/><circle cx="160" cy="46" r="2.5" fill="#1b1830"/>`;

@@ -5,7 +5,7 @@
  */
 const en: Record<string, string> = {
   // ---------------------------------------------------------------- app
-  'app.title': 'Cardstone+',
+  'app.title': 'Liverstone',
   'app.tagline': 'A real-time dungeon deckbuilder',
   'menu.continue': 'Continue run',
   'menu.newRun': 'New run',
