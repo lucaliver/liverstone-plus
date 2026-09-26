@@ -99,7 +99,8 @@ export class Combat {
   sleeve: (CombatCard | null)[];
 
   pendingDraws = 0;
-  private refillT = 0;
+  /** Time accumulated towards the next regular draw onto the belt. */
+  private spawnClock = 0;
   beltSpeed = 1;
   beltSlowT = 0;
   beltHasteT = 0;
@@ -391,20 +392,9 @@ export class Combat {
   }
 
   private tickBelt(dt: number): void {
-    const move = (dt / CONFIG.beltTime) * this.beltRate();
-    // Front cards first, so each card knows where the one ahead of it is.
-    const byFront = [...this.belt].sort((a, b) => b.pos - a.pos);
-    const sparse = this.belt.length < CONFIG.minBelt;
-    byFront.forEach((b, i) => {
-      b.pos += move;
-      // Accumulating conveyor: in the right half of the belt, a card with free room ahead
-      // slides forward fast until it is one spacing behind the card in front. The front card
-      // advances into view (further when the belt is nearly empty). Cards never overtake.
-      const ahead = byFront[i - 1];
-      const target = ahead ? ahead.pos - CONFIG.spacing : sparse ? CONFIG.catchUpZone : CONFIG.cardWidth;
-      const limit = Math.min(target, CONFIG.catchUpZone);
-      if (b.pos < limit) b.pos = Math.min(limit, b.pos + move * (CONFIG.entryBoost - 1));
-    });
+    const rate = this.beltRate();
+    const move = (dt / CONFIG.beltTime) * rate;
+    for (const b of this.belt) b.pos += move;
     // Expire cards that fell off the left edge.
     for (let i = this.belt.length - 1; i >= 0; i--) {
       const b = this.belt[i];
@@ -413,18 +403,18 @@ export class Combat {
       this.expire(b.card);
       if (this.result) return;
     }
+    // Draw cadence is a fixed clock (scaled with belt speed so spacing stays constant):
+    // playing cards quickly never makes new ones arrive sooner. Only Draw effects add extra cards.
+    const every = CONFIG.spacing * CONFIG.beltTime;
+    this.spawnClock = Math.min(every, this.spawnClock + dt * rate);
     const gap = this.belt.length ? Math.min(...this.belt.map((b) => b.pos)) : Infinity;
-    this.refillT = Math.max(0, this.refillT - dt);
     if (this.belt.length >= CONFIG.maxHandBelt) return;
     if (this.pendingDraws > 0 && gap >= CONFIG.drawSpacing) {
       if (this.spawnCard(0)) this.pendingDraws--;
       else this.pendingDraws = 0;
-    } else if (gap >= CONFIG.spacing) {
+    } else if (this.spawnClock >= every && gap >= CONFIG.drawSpacing) {
+      this.spawnClock -= every;
       this.spawnCard(0);
-    } else if (this.belt.length < CONFIG.minBelt && this.refillT <= 0 && gap >= CONFIG.drawSpacing) {
-      // Sparse belt: feed the next card early; the entry boost slides it into view.
-      this.spawnCard(0);
-      this.refillT = CONFIG.refillInterval;
     }
   }
 

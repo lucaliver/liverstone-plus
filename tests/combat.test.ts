@@ -156,6 +156,27 @@ describe('combat engine', () => {
     for (let i = 1; i < sorted.length; i++) expect(sorted[i] - sorted[i - 1]).toBeGreaterThanOrEqual(CONFIG.drawSpacing - 1e-9);
   });
 
+  it('draw cadence is fixed: playing fast never draws extra cards', () => {
+    const spawnsWith = (spam: boolean): number => {
+      const c = setup({ deck: deckOf(new Array(12).fill('strike')), enemy: ENEMIES.skeleton });
+      c.enemy.hp = 9999;
+      c.hero.hp = 9999;
+      let n = 0;
+      c.events.on((e) => {
+        if (e.type === 'cardSpawn') n++;
+      });
+      for (let t = 0; t < CONFIG.introTime + 20; t += 1 / 60) {
+        c.tick(1 / 60);
+        if (spam && c.belt.length) {
+          c.hero.mana = 10;
+          c.playCard(c.belt[c.belt.length - 1].card.uid);
+        }
+      }
+      return n;
+    };
+    expect(spawnsWith(true)).toBe(spawnsWith(false));
+  });
+
   it('temp curses never collide with deck uids', () => {
     const c = setup({ enemy: ENEMIES.slime });
     c.addTempCard('slime', 'discard');

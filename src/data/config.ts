@@ -1,7 +1,7 @@
 /** Global tuning constants. Times are in seconds at 1× speed. */
 export const CONFIG = {
   /** Seconds for a card to cross one full belt width. */
-  beltTime: 8.5,
+  beltTime: 7.7,
   /** Card width as a fraction of the belt width (the UI mirrors this). */
   cardWidth: 0.25,
   /** Minimum gap between spawns, in belt widths. */
@@ -19,13 +19,6 @@ export const CONFIG = {
   /** Seconds of "Fight!" intro before the clock starts. */
   introTime: 1.2,
   maxHandBelt: 7,
-  /** Below this many cards the belt refills faster, so fast play isn't punished with an empty belt. */
-  minBelt: 3,
-  refillInterval: 0.55,
-  /** Speed multiplier for a card sliding in while there's room ahead of it. */
-  entryBoost: 5,
-  /** Cards only catch up while in this first part of the belt, so cards near the exit are never rushed. */
-  catchUpZone: 0.45,
 } as const;
 
 /** Where cards enter (0) and expire, in belt-distance units. */
