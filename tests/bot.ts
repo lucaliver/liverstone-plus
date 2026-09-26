@@ -41,14 +41,19 @@ export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
       case 'power':
         return 30;
       case 'skill': {
-        const blockish = /defend|ward|ironWall|frostArmor|unbreakable|parry|secondWind|mirrorImage/.test(card.id);
+        if (/raise|Raise|boneDragon/.test(card.id)) return c.minions.length < 3 ? 22 : 3;
+        if (card.id === 'unholyFrenzy') return c.minions.length >= 2 ? 15 : -1;
+        const blockish = /defend|ward|Ward|ironWall|frostArmor|unbreakable|parry|secondWind|mirrorImage/.test(card.id);
         if (blockish) {
-          const need = incoming > c.hero.block && timeToHit < 1.6;
+          const need = incoming > c.hero.block && timeToHit < 1.6 && c.minions.length === 0;
           return need ? 25 * urgency : c.hero.mana >= c.hero.maxMana ? 1.5 : -1;
         }
         return 6 * urgency;
       }
       default: {
+        if (card.id === 'corpseExplosion') return c.minions.length >= 3 ? 20 : c.minions.length ? 6 : 2;
+        if (card.id === 'rot' || card.id === 'frailty') return 9;
+        if (card.id === 'soulSiphon') return 5;
         const dmg = def.dmg?.length ? c.previewHeroDamage(v[def.dmg[0]], def) * (card.id === 'arcaneMissiles' ? v[1] : 1) : 8;
         return (dmg / cost) * urgency;
       }

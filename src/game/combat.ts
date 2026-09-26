@@ -4,6 +4,7 @@ import { CONFIG, EXPIRE_POS } from '../data/config';
 import { STATUSES } from '../data/statuses';
 import { CARDS } from '../data/cards';
 import { RELICS } from '../data/relics';
+import { MINIONS } from '../data/minions';
 import type {
   BeltCard,
   CardDef,
@@ -13,6 +14,7 @@ import type {
   CombatResult,
   EnemyDef,
   HeroDef,
+  Minion,
   MoveDef,
   Side,
   Statuses,
@@ -97,6 +99,9 @@ export class Combat {
   exhaust: CombatCard[] = [];
   belt: BeltCard[] = [];
   sleeve: (CombatCard | null)[];
+  /** Hero's summoned allies, oldest first. The oldest one takes enemy hits. */
+  minions: Minion[] = [];
+  private minionUid = 0;
 
   pendingDraws = 0;
   /** Time accumulated towards the next regular draw onto the belt. */
@@ -272,6 +277,8 @@ export class Combat {
     if (this.result) return;
     this.tickEnemy(dt);
     if (this.result) return;
+    this.tickMinions(dt);
+    if (this.result) return;
     this.tickBelt(dt);
     for (const id of this.relics) RELICS[id]?.hooks?.tick?.(this, dt);
     this.heroDef.hooks.tick?.(this, dt);
@@ -373,7 +380,10 @@ export class Combat {
     if (m.dmg) {
       const hits = m.hits ?? 1;
       for (let i = 0; i < hits && !this.result; i++) {
-        this.damage('enemy', 'hero', Math.round(m.dmg * scale), { kind: 'claw' }, 'enemy', i);
+        const base = Math.round(m.dmg * scale);
+        // Minions stand in front of the hero and take the hits first.
+        if (this.minions.length) this.hitMinion(this.minions[0], base);
+        else this.damage('enemy', 'hero', base, { kind: 'claw' }, 'enemy', i);
       }
       if (this.result) return;
     }
@@ -438,6 +448,7 @@ export class Combat {
     const def = CARDS[card.id];
     this.events.emit({ type: 'cardExpired', card });
     this.withCard(card, def, () => def.onExpire?.(this, this.cardVals(card), card));
+    this.heroDef.hooks.onCardExpired?.(this, card);
     if (this.keywords(card).includes('fleeting')) this.exhaust.push(card);
     else this.discard.push(card);
   }
@@ -705,6 +716,74 @@ export class Combat {
 
   slowBelt(t: number): void {
     this.beltSlowT = Math.max(this.beltSlowT, t);
+  }
+
+  // ------------------------------------------------------------ minions
+
+  private tickMinions(dt: number): void {
+    for (const m of [...this.minions]) {
+      m.timer += dt;
+      const def = MINIONS[m.id];
+      if (m.timer >= def.interval) {
+        m.timer -= def.interval;
+        this.minionAttack(m);
+        if (this.result) return;
+      }
+    }
+  }
+
+  /** Summons a minion. With a full board, the oldest one crumbles to make room. */
+  summon(id: string): void {
+    if (this.result) return;
+    if (this.minions.length >= CONFIG.maxMinions) this.killMinion(this.minions[0]);
+    const def = MINIONS[id];
+    const m: Minion = { uid: ++this.minionUid, id, hp: def.hp, maxHp: def.hp, timer: 0 };
+    this.minions.push(m);
+    this.events.emit({ type: 'minionSummon', uid: m.uid, id });
+  }
+
+  minionAttack(m: Minion): void {
+    const def = MINIONS[m.id];
+    this.events.emit({ type: 'minionAttack', uid: m.uid });
+    this.damage('hero', 'enemy', def.dmg + this.stacks('hero', 'undeadMight'), { kind: 'claw' }, 'hero');
+    const plague = this.stacks('hero', 'plague');
+    if (plague > 0) this.applyStatus('enemy', 'poison', plague, 0, true);
+  }
+
+  /** Every minion attacks right away (their timers restart). */
+  minionsStrike(): void {
+    for (const m of [...this.minions]) {
+      m.timer = 0;
+      this.minionAttack(m);
+      if (this.result) return;
+    }
+  }
+
+  private hitMinion(m: Minion, base: number): void {
+    let dmg = base + this.stacks('enemy', 'strength');
+    if (this.has('enemy', 'weak')) dmg *= 0.75;
+    dmg = Math.floor(dmg);
+    m.hp -= dmg;
+    this.events.emit({ type: 'minionHit', uid: m.uid, amount: dmg });
+    if (m.hp <= 0) this.killMinion(m);
+  }
+
+  killMinion(m: Minion): void {
+    const i = this.minions.indexOf(m);
+    if (i < 0) return;
+    this.minions.splice(i, 1);
+    this.events.emit({ type: 'minionDied', uid: m.uid });
+    this.heroDef.hooks.onMinionDeath?.(this);
+    const armor = this.stacks('hero', 'boneArmor');
+    if (armor > 0) this.gainBlock('hero', armor);
+  }
+
+  /** Sacrifices the oldest minion. Returns false if there was none. */
+  sacrifice(): boolean {
+    const m = this.minions[0];
+    if (!m) return false;
+    this.killMinion(m);
+    return true;
   }
 
   /** Adds a temporary card (curses, generated cards) to a pile or straight onto the belt. */

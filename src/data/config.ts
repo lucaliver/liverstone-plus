@@ -11,6 +11,7 @@ export const CONFIG = {
   /** A card expires once its left edge is this far past the belt's left edge (fraction of card width). */
   expireOverhang: 0.45,
   sleeveSlots: 2,
+  maxMinions: 3,
   /** Global difficulty knobs applied to every enemy. */
   enemyHp: 0.8,
   enemyDmg: 0.9,

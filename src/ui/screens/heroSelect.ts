@@ -7,6 +7,9 @@ import { h } from '../dom';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { openDeck } from '../components/modals';
+import { ABILITY_ICON } from './combat';
+
+const PASSIVE_ICON: Record<string, string> = { warrior: 'shield', mage: 'bolt2', necromancer: 'ghost' };
 
 export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => void): Screen {
   let selected: HeroId = 'warrior';
@@ -41,8 +44,8 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
           ),
         ),
       ),
-      h('div', { class: 'hero-feature', html: `${icon(id === 'warrior' ? 'shield' : 'bolt2')}<div><b>${t(`hero.${id}.passiveName`)}</b>${t(`hero.${id}.passiveShort`)}</div>` }),
-      h('div', { class: 'hero-feature', html: `${icon(id === 'warrior' ? 'rage' : 'hourglass')}<div><b>${t(`hero.${id}.ability`)}</b>${t(`hero.${id}.abilityShort`)}</div>` }),
+      h('div', { class: 'hero-feature', html: `${icon(PASSIVE_ICON[id])}<div><b>${t(`hero.${id}.passiveName`)}</b>${t(`hero.${id}.passiveShort`)}</div>` }),
+      h('div', { class: 'hero-feature', html: `${icon(ABILITY_ICON[id])}<div><b>${t(`hero.${id}.ability`)}</b>${t(`hero.${id}.abilityShort`)}</div>` }),
     );
     card.addEventListener('click', () => {
       selected = id;

@@ -1,9 +1,10 @@
 import type { CardClass, CardDef, Rarity } from '../../game/types';
 import { mageCards } from './mage';
+import { necromancerCards } from './necromancer';
 import { curseCards, neutralCards } from './neutral';
 import { warriorCards } from './warrior';
 
-const all = [...warriorCards, ...mageCards, ...neutralCards, ...curseCards];
+const all = [...warriorCards, ...mageCards, ...necromancerCards, ...neutralCards, ...curseCards];
 
 export const CARDS: Record<string, CardDef> = Object.fromEntries(all.map((c) => [c.id, c]));
 export const CARD_LIST: readonly CardDef[] = all;

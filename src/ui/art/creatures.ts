@@ -152,7 +152,55 @@ const mage = `
 <path d="M88 104c6 4 18 4 24 0" stroke="#7a7e90" stroke-width="3" fill="none"/>
 <g fill="#ffe08a"><path d="M78 30l3 6 6 1-5 4 1 6-5-3-5 3 1-6-5-4 6-1z"/><path d="M120 44l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z"/></g>`;
 
-export const CREATURES: Record<string, string> = { rat, skeleton, slime, cultist, goblin, boneKnight, lich, warrior, mage };
+
+const zombie = `
+<defs>${rg('zo-s', '#a8c860', '#4a8a3a')}${lg('zo-c', '#7a8ae8', '#2a3a9a')}${lg('zo-p', '#c070d8', '#6a2a9a')}${glow('zo-g', '#ffe45a')}</defs>
+${shadow}
+<path d="M70 186l4-40h52l4 40z" fill="url(#zo-p)" ${OUT}/>
+<path d="M60 150c-2-30 10-52 40-54 30 2 42 24 40 54z" fill="url(#zo-c)" ${OUT}/>
+<path d="M78 118l10 30M112 112l-6 26" stroke="#1b1830" stroke-width="3"/>
+<g class="limb"><path d="M62 112c-22 0-40 6-50 10l4 14c12-4 28-8 46-8z" fill="url(#zo-s)" ${OUT}/><path d="M10 118l-6 4 4 6 6-2zM12 130l-6 6 6 4 4-4z" fill="url(#zo-s)" ${OUT}/></g>
+<path d="M138 112c20 2 34 12 42 20l-8 12c-10-8-20-14-34-16z" fill="url(#zo-s)" ${OUT}/>
+<path d="M64 60c0-24 16-40 38-40s36 16 36 40c0 20-14 38-36 38S64 80 64 60z" fill="url(#zo-s)" ${OUT}/>
+<path d="M84 22c4 8 2 14-4 18M116 20c-2 8 2 12 8 16" stroke="#1b1830" stroke-width="3" fill="none"/>
+<circle cx="86" cy="58" r="10" fill="#f6f0e4" ${OUT}/><circle cx="118" cy="62" r="7" fill="#f6f0e4" ${OUT}/>
+${eyes(87, 118, 60, 3.5, '#ffe45a', 'zo-g')}
+<path d="M84 82c10 6 24 6 32 0l-4 8c-8 4-18 4-24 0z" fill="#1b1830"/>
+<path d="M90 82v6M100 83v7M108 82v6" stroke="#f6f0e4" stroke-width="3"/>
+<path d="M128 44l8 4-4 6" stroke="#ff3d9a" stroke-width="4" fill="none"/>`;
+
+const boneDragon = `
+<defs>${lg('bd-b', '#fbf4df', '#f6e27a')}${lg('bd-w', '#c070d8', '#4a2090')}${glow('bd-g', '#ff3d9a')}</defs>
+${shadow}
+<path d="M100 96L20 40l10 40-18 4 30 22-8 16 44-8z" fill="url(#bd-w)" ${OUT}/>
+<path d="M100 96l80-56-10 40 18 4-30 22 8 16-44-8z" fill="url(#bd-w)" ${OUT}/>
+<path d="M40 60l40 36M60 94l30 4M160 60l-40 36M140 94l-30 4" stroke="#fbf4df" stroke-width="4"/>
+<path d="M78 180c-4-30 2-66 22-80 20 14 26 50 22 80z" fill="url(#bd-b)" ${OUT}/>
+<path d="M86 118h28M84 132h32M84 146h32M86 160h28" stroke="#1b1830" stroke-width="3"/>
+<path d="M122 170c20 4 40 0 52-14" stroke="url(#bd-b)" stroke-width="10" fill="none" stroke-linecap="round"/>
+<path d="M60 70c-4-24 12-44 40-46 28 2 44 22 40 46-2 14-16 22-40 22S62 84 60 70z" fill="url(#bd-b)" ${OUT}/>
+<path d="M72 30l-14-22 22 14zM128 30l14-22-22 14z" fill="url(#bd-b)" ${OUT}/>
+<path d="M76 52c0-6 6-10 12-8l4 12-10 6c-4-2-6-6-6-10zM124 52c0-6-6-10-12-8l-4 12 10 6c4-2 6-6 6-10z" fill="#1b1830"/>
+${eyes(84, 116, 54, 4, '#ff3d9a', 'bd-g')}
+<path d="M80 80l8 8 6-6 6 6 6-6 6 6 8-8" stroke="#1b1830" stroke-width="3" fill="none"/>`;
+
+const necromancer = `
+<defs>${lg('ne-h', '#3aa05a', '#1a5a30')}${lg('ne-f', '#e8e0f0', '#a898c8')}${glow('ne-g', '#ffe45a')}${lg('ne-s', '#fbf4df', '#f6e27a')}</defs>
+<path d="M18 200c0-44 34-66 82-66s82 22 82 66z" fill="url(#ne-h)" ${OUT}/>
+<path d="M100 136l-18 64h36z" fill="#1b1830"/>
+<path d="M60 134l40 20 40-20" stroke="#ff3d9a" stroke-width="5" fill="none"/>
+<path d="M100 8c-30 6-50 34-50 66 0 20 6 42 12 56h76c6-14 12-36 12-56 0-32-20-60-50-66z" fill="url(#ne-h)" ${OUT}/>
+<path d="M72 76c0-18 12-30 28-30s28 12 28 30v18c0 16-12 28-28 28s-28-12-28-28z" fill="#1b1830"/>
+<path d="M80 80c0-12 8-20 20-20s20 8 20 20v12c0 10-8 18-20 18s-20-8-20-18z" fill="url(#ne-f)" ${OUT}/>
+<path d="M86 80a5 5 0 0 1 10 0v4H86zM104 80a5 5 0 0 1 10 0v4h-10z" fill="#1b1830"/>
+${eyes(91, 109, 84, 3, '#ffe45a', 'ne-g')}
+<path d="M96 96l4 6 4-6z" fill="#1b1830"/>
+<path d="M90 104h20M94 101v6M100 101v6M106 101v6" stroke="#1b1830" stroke-width="2"/>
+<path d="M150 200l8-150" stroke="#1b1830" stroke-width="8"/>
+<path d="M146 44c0-12 20-12 20 0 0 8-4 12-10 14-6-2-10-6-10-14z" fill="url(#ne-s)" ${OUT}/>
+<circle cx="152" cy="46" r="2.5" fill="#1b1830"/><circle cx="160" cy="46" r="2.5" fill="#1b1830"/>`;
+
+export const CREATURES: Record<string, string> = { rat, skeleton, slime, cultist, goblin, boneKnight, lich, warrior, mage, zombie, boneDragon, necromancer };
 
 /** Riso-pixel sprite of a creature (see riso.ts). */
 export function creature(id: string, cls = ''): string {

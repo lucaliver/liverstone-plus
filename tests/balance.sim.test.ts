@@ -26,10 +26,10 @@ function report(hero: HeroId, reaction: number, sloppiness: number) {
 
 describe('balance', () => {
   it('good bot clears act 1 most of the time, sloppy bot rarely', () => {
-    for (const hero of ['warrior', 'mage'] as HeroId[]) {
+    for (const hero of ['warrior', 'mage', 'necromancer'] as HeroId[]) {
       const good = report(hero, 0.35, 0.1);
       const sloppy = report(hero, 0.9, 0.5);
       expect(good.winRate).toBeGreaterThanOrEqual(sloppy.winRate);
     }
-  }, 120_000);
+  }, 300_000);
 });

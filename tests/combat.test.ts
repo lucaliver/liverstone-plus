@@ -177,6 +177,35 @@ describe('combat engine', () => {
     expect(spawnsWith(true)).toBe(spawnsWith(false));
   });
 
+  it('minions attack on their own and take enemy hits first', () => {
+    const c = setup({ hero: HEROES.necromancer, hp: 58, maxHp: 58, enemy: ENEMIES.rat });
+    run(c, CONFIG.introTime + 0.01);
+    c.summon('skeleton');
+    const ehp = c.enemy.hp;
+    run(c, 2.25);
+    expect(c.enemy.hp).toBeLessThan(ehp);
+    expect(c.hero.hp).toBe(58);
+    expect(c.minions.length === 0 || c.minions[0].hp < 5).toBe(true);
+  });
+
+  it('a full board replaces the oldest minion and grants a Soul', () => {
+    const c = setup({ hero: HEROES.necromancer, hp: 58, maxHp: 58 });
+    run(c, CONFIG.introTime + 0.01);
+    for (let i = 0; i < 4; i++) c.summon('skeleton');
+    expect(c.minions.length).toBe(CONFIG.maxMinions);
+    expect(c.hero.resource).toBe(1);
+  });
+
+  it('necromancer harvests lost cards: +1 Soul and 1 damage', () => {
+    const c = setup({ hero: HEROES.necromancer, hp: 58, maxHp: 58, deck: deckOf(['boneSpike', 'boneSpike']), enemy: ENEMIES.skeleton });
+    c.enemy.def = { ...c.enemy.def, pattern: [{ id: 'guard', intent: 'defend', windup: 999 }] };
+    c.enemy.move = c.enemy.def.pattern[0];
+    const ehp = c.enemy.hp;
+    run(c, CONFIG.introTime + CONFIG.beltTime * 1.2);
+    expect(c.hero.resource).toBeGreaterThan(0);
+    expect(c.enemy.hp).toBeLessThan(ehp);
+  });
+
   it('temp curses never collide with deck uids', () => {
     const c = setup({ enemy: ENEMIES.slime });
     c.addTempCard('slime', 'discard');

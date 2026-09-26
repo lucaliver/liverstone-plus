@@ -3,6 +3,7 @@ import { sfx, type SoundId } from '../../audio/sfx';
 import { CARDS } from '../../data/cards';
 import { CONFIG, GAME_SPEEDS } from '../../data/config';
 import { STATUSES, STATUS_ORDER } from '../../data/statuses';
+import { MINIONS } from '../../data/minions';
 import type { Combat, Fighter } from '../../game/combat';
 import { currentNode, totalFloors, type RunState } from '../../game/run';
 import { saveSettings, settings } from '../../game/settings';
@@ -17,6 +18,7 @@ import { $, centerOf, h, setHtml, setText, toggle } from '../dom';
 import { burst, floatText, haptic, shake } from '../fx/fx';
 
 const LONG_PRESS_MS = 420;
+export const ABILITY_ICON: Record<string, string> = { warrior: 'rage', mage: 'hourglass', necromancer: 'skull' };
 
 const DRAG_THRESHOLD = 10;
 
@@ -64,6 +66,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       ${darkEyes([{ x: '6%', y: '14%' }, { x: '84%', y: '44%' }])}
       <div class="candle l">${icon('flame')}</div><div class="candle r">${icon('flame')}</div>
       <div class="shade"></div>
+      <div class="minions"></div>
       <div class="enemy-wrap">
         <div class="enemy-art">${creature(enemyDef.art)}</div>
         <div class="intent" role="status">
@@ -93,7 +96,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         <div class="pile discard" aria-label="${t('combat.discardPile')}">${icon('cards')}<span class="js-discard"></span></div>
       </div>
       <button class="ability-btn js-ability" aria-label="${t(`hero.${heroId}.ability`)}">
-        <div class="charge"></div>${icon(heroId === 'warrior' ? 'rage' : 'hourglass')}<span class="albl">${t(`hero.${heroId}.ability`)}</span>
+        <div class="charge"></div>${icon(ABILITY_ICON[heroId])}<span class="albl">${t(`hero.${heroId}.ability`)}</span>
       </button>
     </section>
     <section class="hero-row">
@@ -138,7 +141,9 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     track: $('.belt-track', el),
     beltCards: $('.belt-cards', el),
     speed: $<HTMLButtonElement>('.js-speed', el),
+    minions: $('.minions', el),
   };
+  const minionEls = new Map<number, HTMLElement>();
 
   let paused = false;
   let pauseModal: ModalHandle | null = null;
@@ -325,6 +330,39 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         burst('blood', p.x, p.y, 30, 1.4);
         sfx('enrage');
         shake('big');
+        break;
+      }
+      case 'minionSummon': {
+        const d = MINIONS[e.id];
+        const mEl = h('div', { class: 'minion', html: `${creature(d.art)}<div class="mtimer"><i></i></div><div class="mhp"></div>` });
+        minionEls.set(e.uid, mEl);
+        r.minions.append(mEl);
+        const p = centerOf(mEl);
+        burst('curse', p.x, p.y, 14);
+        sfx('curse');
+        break;
+      }
+      case 'minionAttack': {
+        const mEl = minionEls.get(e.uid);
+        if (mEl) retrigger(mEl, 'atk');
+        break;
+      }
+      case 'minionHit': {
+        const mEl = minionEls.get(e.uid);
+        if (!mEl) break;
+        retrigger(mEl, 'hurt');
+        const p = centerOf(mEl);
+        floatText(p.x, p.y - 20, `${e.amount}`, 'hurt');
+        burst('claw', p.x, p.y, 10);
+        sfx('enemyHit');
+        break;
+      }
+      case 'minionDied': {
+        const mEl = minionEls.get(e.uid);
+        if (!mEl) break;
+        minionEls.delete(e.uid);
+        mEl.classList.add('gone');
+        setTimeout(() => mEl.remove(), 420);
         break;
       }
       case 'end':
@@ -731,8 +769,18 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     });
   };
 
+  const renderMinions = (): void => {
+    for (const m of combat.minions) {
+      const mEl = minionEls.get(m.uid);
+      if (!mEl) continue;
+      setText(mEl.querySelector('.mhp')!, m.hp);
+      (mEl.querySelector('.mtimer i') as HTMLElement).style.transform = `scaleX(${Math.min(1, m.timer / MINIONS[m.id].interval).toFixed(2)})`;
+    }
+  };
+
   const render = (dt: number): void => {
     frameNo++;
+    renderMinions();
     renderBar(r.eHp, r.eBlock, combat.enemy);
     renderBar(r.hHp, r.hBlock, combat.hero);
     renderStatuses('enemy', r.eStatus);

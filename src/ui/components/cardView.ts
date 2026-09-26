@@ -30,6 +30,13 @@ const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string }> = {
   snow: { icon: 'snow' },
   exit: { icon: 'left' },
   clog: { icon: 'slime' },
+  soul: { icon: 'ghost', sign: '+' },
+  raise: { icon: 'skull', sign: '+' },
+  poison: { icon: 'drop' },
+  vuln: { icon: 'crack', unit: 's' },
+  frenzy: { icon: 'crossed' },
+  might: { icon: 'fist', sign: '+' },
+  sac: { icon: 'combust' },
 };
 
 export function cardName(card: CardInst): string {

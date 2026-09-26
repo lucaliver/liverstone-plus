@@ -387,6 +387,7 @@ button:focus-visible,
 }
 .hero-card .portrait .riso { width: 100%; height: 100%; }
 .hero-card .who {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -395,7 +396,8 @@ button:focus-visible,
 .hero-card h3 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: clamp(17px, 5.2vw, 24px);
+  overflow-wrap: anywhere;
   line-height: 1;
   text-transform: uppercase;
 }
@@ -555,6 +557,7 @@ button:focus-visible,
 .card[data-cls='mage'] { --band: var(--b); --band-text: var(--paper); }
 .card[data-cls='neutral'] { --band: var(--y); --band-text: var(--k); }
 .card[data-cls='curse'] { --band: var(--k); --band-text: var(--y); }
+.card[data-cls='necromancer'] { --band: var(--green); --band-text: var(--paper); }
 
 .c-top {
   flex: none;
@@ -621,6 +624,7 @@ button:focus-visible,
 .card[data-el='nature'] .c-art { background-color: var(--y); --art-dot: #7fb0e0; --art-ink2: var(--p); }
 .card[data-el='shadow'] .c-art { --art-dot: #c4bcd2; }
 .card[data-el='holy'] .c-art { background-color: var(--y); --art-dot: var(--paper); }
+.card[data-el='necro'] .c-art { background-color: #d8f0a0; --art-dot: #7a5ac8; --art-ink2: var(--green); }
 .card[data-el='curse'] .c-art { background-color: var(--y); --art-dot: #8a8498; --art-ink2: var(--p); }
 
 .c-face {
@@ -664,6 +668,13 @@ button:focus-visible,
 .gk-rage .pico,
 .gk-burn .pico { color: var(--p); --ink2: var(--y); }
 .gk-heal .pico { color: var(--green); }
+.gk-soul .pico,
+.gk-raise .pico,
+.gk-poison .pico,
+.gk-might .pico { color: var(--green); --ink2: var(--y); }
+.gk-vuln .pico,
+.gk-sac .pico { color: var(--p); --ink2: var(--k); }
+.gk-frenzy .pico,
 .gk-stun .pico,
 .gk-draw .pico,
 .gk-parry .pico,
@@ -1351,8 +1362,8 @@ button:focus-visible,
 }
 .ability-btn .pico {
   position: relative;
-  font-size: 42px;
-  margin-top: -16px;
+  font-size: 40px;
+  margin-top: -24px;
   color: var(--k);
   --ink2: var(--res-ink);
 }
@@ -1361,9 +1372,10 @@ button:focus-visible,
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 2px 0 3px;
+  padding: 2px 2px 3px;
   font-family: var(--font-ui);
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1;
   text-transform: uppercase;
   color: var(--paper);
   background: var(--k);
@@ -1380,6 +1392,60 @@ button:focus-visible,
 .ability-btn:active { transform: translate(var(--off), var(--off)); box-shadow: none; }
 [data-hero='warrior'] { --res-ink: var(--p); --hero-ink: var(--p); }
 [data-hero='mage'] { --res-ink: var(--b); --hero-ink: var(--b); }
+[data-hero='necromancer'] { --res-ink: var(--green); --hero-ink: var(--green); }
+
+/* minions: the necromancer's front line, standing before the enemy */
+.minions {
+  position: absolute;
+  left: 8px;
+  bottom: 92px;
+  z-index: 2;
+  display: flex;
+  gap: 6px;
+  pointer-events: none;
+}
+.minion {
+  width: 62px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  animation: summon 0.3s steps(3);
+}
+@keyframes summon {
+  from { transform: translateY(24px) scaleY(0.2); opacity: 0; }
+}
+.minion .riso { width: 60px; height: 60px; }
+.minion .mhp {
+  min-width: 34px;
+  padding: 0 4px;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 18px;
+  color: var(--paper);
+  background: var(--green);
+  border: 2px solid var(--void);
+}
+.minion .mtimer {
+  width: 44px;
+  height: 5px;
+  background: var(--void);
+}
+.minion .mtimer i {
+  display: block;
+  height: 100%;
+  transform-origin: left;
+  background: var(--y);
+}
+.minion.atk .riso { animation: hop 0.24s steps(2); }
+@keyframes hop {
+  50% { transform: translate(10px, -10px); }
+}
+.minion.hurt .riso { animation: hitflash 0.16s steps(1), jolt 0.2s steps(2); }
+.minion.gone {
+  animation: die 0.4s steps(4) forwards;
+}
 
 /* hero row */
 .hero-row {
