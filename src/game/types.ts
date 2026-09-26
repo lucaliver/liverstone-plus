@@ -3,8 +3,8 @@ import type { Combat } from './combat';
 export type HeroId = 'warrior' | 'mage' | 'necromancer';
 export type CardClass = HeroId | 'neutral' | 'curse';
 export type CardType = 'attack' | 'spell' | 'skill' | 'power' | 'potion' | 'curse';
-export type Rarity = 'starter' | 'common' | 'rare' | 'epic' | 'legendary' | 'special';
-export type Keyword = 'exhaust' | 'consume' | 'fleeting' | 'unplayable' | 'volatile' | 'innate';
+export type Rarity = 'starter' | 'common' | 'rare' | 'epic' | 'legendary' | 'special' | 'unique';
+export type Keyword = 'exhaust' | 'consume' | 'fleeting' | 'unplayable' | 'volatile' | 'innate' | 'unique';
 export type Side = 'hero' | 'enemy';
 
 /** A card in the run deck. */
@@ -137,6 +137,8 @@ export interface HeroDef {
   blockDecay: number;
   resourceMax: number;
   startDeck: string[];
+  /** Once-per-run card that starts each fight in the sleeve (not part of the deck). */
+  special: string;
   starterRelic?: string;
   color: string;
   ability: {

@@ -46,6 +46,7 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
       ),
       h('div', { class: 'hero-feature', html: `${icon(PASSIVE_ICON[id])}<div><b>${t(`hero.${id}.passiveName`)}</b>${t(`hero.${id}.passiveShort`)}</div>` }),
       h('div', { class: 'hero-feature', html: `${icon(ABILITY_ICON[id])}<div><b>${t(`hero.${id}.ability`)}</b>${t(`hero.${id}.abilityShort`)}</div>` }),
+      h('div', { class: 'hero-feature', html: `${icon('star')}<div><b>${t(`card.${hero.special}.name`)}</b>${t('hero.special')}</div>` }),
     );
     card.addEventListener('click', () => {
       selected = id;

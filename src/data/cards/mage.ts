@@ -65,6 +65,15 @@ export const mageCards: CardDef[] = [
     },
   },
 
+  // Unique (hero special, once per run)
+  {
+    id: 'meteor', face: '{dmg:0}|{burn:1}', cls: 'mage', type: 'spell', rarity: 'unique', cost: 0, vals: [25, 5], dmg: [0], keywords: ['unique'], art: 'fireball',
+    play: (c, v) => {
+      c.hit(v[0], { kind: 'fire' });
+      c.applyStatus('enemy', 'burn', v[1]);
+    },
+  },
+
   // Legendary
   { id: 'pyroblast', face: '{dmg:0}', cls: 'mage', type: 'spell', rarity: 'legendary', cost: 6, upCost: 5, vals: [40], dmg: [0], art: 'pyro', play: (c, v) => void c.hit(v[0], { kind: 'fire' }) },
 ];

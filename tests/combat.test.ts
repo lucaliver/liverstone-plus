@@ -209,6 +209,16 @@ describe('combat engine', () => {
     expect(c.hero.hp).toBe(80 - 10);
   });
 
+  it('the hero special starts in the sleeve, stays there, and is flagged once played', () => {
+    const c = setup({ special: 'lastStand' });
+    run(c, CONFIG.introTime + 0.01);
+    expect(c.sleeve[0]?.id).toBe('lastStand');
+    expect(c.stash(c.belt[0].card.uid, 0)).toBe(false);
+    expect(c.playCard(c.sleeve[0]!.uid)).toBe(true);
+    expect(c.specialUsed).toBe(true);
+    expect(c.hero.block).toBe(20);
+  });
+
   it('temp curses never collide with deck uids', () => {
     const c = setup({ enemy: ENEMIES.slime });
     c.addTempCard('slime', 'discard');

@@ -68,6 +68,8 @@ export interface CombatSetup {
   seed: number;
   /** Extra max mana from the run (e.g. Evocation is per-combat, events are permanent). */
   bonusMaxMana?: number;
+  /** Hero special card, placed in the first sleeve slot (omitted once used this run). */
+  special?: string;
 }
 
 interface DamageOpts {
@@ -77,6 +79,9 @@ interface DamageOpts {
   raw?: boolean;
   ignoreBlock?: boolean;
 }
+
+/** Fixed uid of the hero special card during a fight. */
+export const SPECIAL_UID = -1000;
 
 export class Combat {
   readonly events = new Emitter<CombatEvent>();
@@ -107,6 +112,8 @@ export class Combat {
   /** Deck uids permanently removed (potions). */
   consumed: number[] = [];
   cardsPlayed = 0;
+  /** True once the hero special has been played (the run then loses it). */
+  specialUsed = false;
   /** Card currently resolving, so effect helpers know its type. */
   private current: { card: CombatCard; def: CardDef } | null = null;
   /** Free-form per-combat state for relics and powers. */
@@ -152,6 +159,7 @@ export class Combat {
       weaveTimer: 0,
     };
     this.sleeve = new Array(sleeve).fill(null);
+    if (setup.special) this.sleeve[0] = { uid: SPECIAL_UID, id: setup.special, up: false, bonus: 0, temp: true };
 
     const e = setup.enemy;
     const maxHp = Math.round(e.hp * setup.scale.hp);
@@ -462,6 +470,7 @@ export class Combat {
     else this.sleeve[sleeveIdx] = null;
 
     this.cardsPlayed++;
+    if (card.uid === SPECIAL_UID) this.specialUsed = true;
     this.events.emit({ type: 'cardPlayed', card, from: beltIdx >= 0 ? 'belt' : 'sleeve' });
     const vals = this.cardVals(card);
     if (cost < 0) vals.push(spent);
@@ -494,6 +503,8 @@ export class Combat {
     if (target < 0 || target >= this.sleeve.length) return false;
     const b = this.belt[beltIdx];
     const old = this.sleeve[target];
+    // The hero special never leaves its hand.
+    if (old?.uid === SPECIAL_UID) return false;
     this.sleeve[target] = b.card;
     if (old) this.belt[beltIdx] = { card: old, pos: b.pos };
     else this.belt.splice(beltIdx, 1);

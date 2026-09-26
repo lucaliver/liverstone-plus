@@ -65,6 +65,15 @@ export const necromancerCards: CardDef[] = [
   },
   { id: 'virulentForm', face: '{poison}+{0}', cls: 'necromancer', type: 'power', rarity: 'epic', cost: 3, upCost: 2, vals: [2], art: 'crown', play: (c, v) => c.applyStatus('hero', 'virulence', v[0]) },
 
+  // Unique (hero special, once per run)
+  {
+    id: 'deathsDoor', cat: 'defense', face: '{heal:0}|{poison:1}', cls: 'necromancer', type: 'spell', rarity: 'unique', cost: 0, vals: [15, 12], keywords: ['unique'], art: 'tomb',
+    play: (c, v) => {
+      c.heal('hero', v[0]);
+      c.applyStatus('enemy', 'poison', v[1]);
+    },
+  },
+
   // Legendary
   { id: 'blackDeath', face: '{poison:0}', cls: 'necromancer', type: 'spell', rarity: 'legendary', cost: 4, vals: [20], upVals: [28], keywords: ['exhaust'], art: 'skull', play: (c, v) => c.applyStatus('enemy', 'poison', v[0]) },
 ];

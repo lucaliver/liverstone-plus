@@ -701,6 +701,8 @@ button:focus-visible,
 .card[data-rarity='legendary'] .c-gem { background: var(--y); }
 .card[data-rarity='legendary'] { box-shadow: var(--sh) var(--sh) 0 var(--p); }
 .card[data-rarity='special'] .c-gem { background: var(--k); }
+.card[data-rarity='unique'] { border-color: var(--k); box-shadow: 0 0 0 max(2px, calc(var(--cw) * 0.025)) var(--y), var(--sh) var(--sh) 0 var(--p); }
+.card[data-rarity='unique'] .c-gem { background: var(--y); border-color: var(--p); }
 
 /* ------------------------------------------------------------------ combat layout */
 .combat { padding: 0; }
@@ -1335,6 +1337,8 @@ button:focus-visible,
   touch-action: none;
 }
 .sleeve-slot > .pico { font-size: 28px; }
+/* two hands: the left slot shows a mirrored (left) hand */
+.sleeve-slot:first-child > .pico { transform: scaleX(-1); }
 .sleeve-slot.target {
   border-style: solid;
   border-color: var(--k);
@@ -1342,10 +1346,12 @@ button:focus-visible,
   color: var(--k);
 }
 .sleeve-slot .card {
+  --cw: calc(var(--cw-belt) * 0.8 - 12px);
   color: var(--k);
   position: absolute;
-  left: calc(var(--line) * -1);
-  top: calc(var(--line) * -1);
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
   animation: stash-in 0.2s steps(3);
 }
 @keyframes stash-in {

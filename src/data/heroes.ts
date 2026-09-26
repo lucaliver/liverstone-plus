@@ -11,6 +11,7 @@ const warrior: HeroDef = {
   blockDecay: 1.2,
   resourceMax: 10,
   startDeck: [...rep('strike', 4), ...rep('defend', 4), 'bash', 'manaGeode'],
+  special: 'lastStand',
   color: '#d0563f',
   ability: {
     id: 'berserk',
@@ -34,6 +35,7 @@ const mage: HeroDef = {
   blockDecay: 1.0,
   resourceMax: 12,
   startDeck: [...rep('arcaneBolt', 4), ...rep('ward', 3), 'frostbolt', 'manaShard', 'manaGeode'],
+  special: 'meteor',
   color: '#5b8cff',
   ability: {
     id: 'timeWarp',
@@ -64,6 +66,7 @@ const necromancer: HeroDef = {
   blockDecay: 0.9,
   resourceMax: 15,
   startDeck: [...rep('boneSpike', 3), ...rep('graveWard', 2), ...rep('toxicDart', 2), 'drainLife', 'manaShard', 'manaGeode'],
+  special: 'deathsDoor',
   color: '#2a8a4a',
   ability: {
     id: 'pandemic',

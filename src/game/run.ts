@@ -46,6 +46,8 @@ export interface RunState {
   cleared: boolean;
   stats: RunStats;
   uid: number;
+  /** The hero special is once per run. */
+  specialUsed?: boolean;
 }
 
 const SAVE_KEY = 'run';
@@ -57,7 +59,7 @@ export function newRun(hero: HeroId, seed: number): RunState {
   const rng = new Rng(seed);
   const def = HEROES[hero];
   const nodes = buildNodes(rng);
-  discover(def.startDeck);
+  discover([...def.startDeck, def.special]);
   return {
     version: 1,
     seed,
@@ -125,6 +127,7 @@ export function combatSetup(run: RunState): CombatSetup {
     enemy: ENEMIES[node.enemy!],
     scale: enemyScale(node),
     seed,
+    special: run.specialUsed ? undefined : HEROES[run.hero].special,
   };
 }
 
@@ -133,6 +136,7 @@ export function applyCombat(run: RunState, combat: Combat): void {
   run.stats.damageTaken += Math.max(0, run.hp - combat.hero.hp);
   run.hp = Math.max(0, combat.hero.hp);
   run.stats.cardsPlayed += combat.cardsPlayed;
+  if (combat.specialUsed) run.specialUsed = true;
   if (combat.consumed.length) run.deck = run.deck.filter((c) => !combat.consumed.includes(c.uid));
   if (combat.result === 'win') {
     run.stats.kills++;

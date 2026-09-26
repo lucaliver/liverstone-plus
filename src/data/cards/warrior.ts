@@ -78,6 +78,15 @@ export const warriorCards: CardDef[] = [
     },
   },
 
+  // Unique (hero special, once per run)
+  {
+    id: 'lastStand', cat: 'defense', face: '{block:0}|{str:1}', cls: 'warrior', type: 'skill', rarity: 'unique', cost: 0, vals: [20, 3], keywords: ['unique'], art: 'fortress',
+    play: (c, v) => {
+      c.gainBlock('hero', v[0]);
+      c.applyStatus('hero', 'strength', v[1]);
+    },
+  },
+
   // Legendary
   {
     id: 'earthshaker', face: '{dmg:0}|{stun:1}', cls: 'warrior', type: 'attack', rarity: 'legendary', cost: 5, upCost: 4, vals: [24, 3], upVals: [30, 4], dmg: [0], art: 'quake',
