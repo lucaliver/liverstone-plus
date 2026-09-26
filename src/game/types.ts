@@ -127,7 +127,7 @@ export interface HeroDef {
   blockDecay: number;
   resourceMax: number;
   startDeck: string[];
-  starterRelic: string;
+  starterRelic?: string;
   color: string;
   ability: {
     id: string;
