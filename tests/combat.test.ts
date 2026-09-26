@@ -224,6 +224,15 @@ describe('combat engine', () => {
     expect(c.enemy.hp).toBeLessThan(ehp);
   });
 
+  it('a bomb that reaches the end of the belt explodes on the hero', () => {
+    const c = setup({ deck: deckOf(['strike']) });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 0.01);
+    c.addTempCard('bomb', 'belt');
+    run(c, CONFIG.beltTime * EXPIRE_POS + 0.5);
+    expect(c.hero.hp).toBe(80 - 10);
+  });
+
   it('temp curses never collide with deck uids', () => {
     const c = setup({ enemy: ENEMIES.slime });
     c.addTempCard('slime', 'discard');

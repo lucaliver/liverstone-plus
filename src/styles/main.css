@@ -669,6 +669,7 @@ button:focus-visible,
 .gk-burn .pico { color: var(--p); --ink2: var(--y); }
 .gk-heal .pico { color: var(--green); }
 .gk-crystal .pico { color: var(--b); --ink2: var(--y); }
+.gk-exit .pico + .pico { color: var(--p); --ink2: var(--y); }
 .gk-soul .pico,
 .gk-raise .pico,
 .gk-poison .pico,

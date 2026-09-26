@@ -101,6 +101,7 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   cards: { el: 'steel', svg: `<rect x="20" y="6" width="28" height="40" rx="4" transform="rotate(12 34 26)" opacity=".55"/><rect x="14" y="14" width="28" height="40" rx="4"/>` },
   pause: { el: 'steel', svg: `<rect x="16" y="10" width="11" height="44" rx="3"/><rect x="37" y="10" width="11" height="44" rx="3"/>` },
   campfire: { el: 'fire', svg: `<g transform="translate(8 0) scale(.75)">${flame}</g><path d="M6 52l52 8M58 52L6 60" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>` },
+  bomb: { el: 'curse', svg: `<circle cx="28" cy="38" r="20"/><rect x="36" y="12" width="10" height="10" transform="rotate(45 41 17)"/><path d="M44 12c4-6 10-6 14-2" stroke="currentColor" stroke-width="4" fill="none"/><path ${HI} d="M16 32c2-6 7-10 12-10-2 4-2 8 0 12-5 1-9 0-12-2z"/>${star4(58, 8, 6)}` },
   bone: { el: 'necro', svg: `<path d="M8 50l30-30-3-6a6 6 0 1 1 9-6 6 6 0 1 1 6 9l6 3-30 30 3 6a6 6 0 1 1-9 6 6 6 0 1 1-6-9z"/><path d="M52 4L40 22l4 4 18-12z"/>` },
   ghost: { el: 'necro', svg: `<path d="M32 4c13 0 22 10 22 24v30l-7-6-7 6-8-6-8 6-7-6-7 6V28C10 14 19 4 32 4z"/><circle cx="24" cy="28" r="4.5" fill="#16121f"/><circle cx="40" cy="28" r="4.5" fill="#16121f"/><ellipse cx="32" cy="41" rx="4" ry="5" fill="#16121f"/>` },
   tomb: { el: 'necro', svg: `<path d="M14 58V24c0-12 8-20 18-20s18 8 18 20v34z"/><path d="M29 16h6v8h8v6h-8v14h-6V30h-8v-6h8z" fill="#16121f"/><rect x="6" y="56" width="52" height="6"/>` },

@@ -29,6 +29,8 @@ const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string }> = {
   snow: { icon: 'snow' },
   exit: { icon: 'left' },
   clog: { icon: 'slime' },
+  boom: { icon: 'bomb' },
+  drain: { icon: 'crystal', sign: '-' },
   soul: { icon: 'ghost', sign: '+' },
   crystal: { icon: 'crystal', sign: '+' },
   raise: { icon: 'skull', sign: '+' },

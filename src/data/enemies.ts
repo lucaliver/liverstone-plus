@@ -17,6 +17,7 @@ const defs: EnemyDef[] = [
     pattern: [
       { id: 'spit', intent: 'curse', windup: 2.4, curse: { id: 'slime', n: 1, to: 'belt' } },
       atk('slam', 8, 3.6),
+      { id: 'toxicSpit', intent: 'curse', windup: 2.4, curse: { id: 'toxin', n: 1, to: 'draw' } },
       atk('slam', 8, 3.6),
     ],
   },
@@ -25,6 +26,7 @@ const defs: EnemyDef[] = [
     pattern: [
       { id: 'ritual', intent: 'buff', windup: 2.2, status: [{ id: 'strength', v: 2, target: 'enemy' }] },
       atk('darkBolt', 5, 2.8),
+      { id: 'darkPact', intent: 'curse', windup: 2.2, curse: { id: 'leech', n: 1, to: 'draw' } },
       atk('darkBolt', 5, 2.8),
     ],
   },
@@ -33,7 +35,7 @@ const defs: EnemyDef[] = [
     pattern: [
       atk('stab', 5, 2.2),
       { id: 'snatch', intent: 'steal', windup: 2.4, dmg: 3, steal: 1 },
-      atk('stab', 5, 2.2),
+      { id: 'lightFuse', intent: 'curse', windup: 2.2, curse: { id: 'bomb', n: 1, to: 'belt' } },
       { id: 'snatch', intent: 'steal', windup: 2.4, dmg: 3, steal: 1 },
       { id: 'flee', intent: 'flee', windup: 3.5 },
     ],
@@ -53,6 +55,7 @@ const defs: EnemyDef[] = [
       atk('soulBolt', 8, 3.0),
       { id: 'hexes', intent: 'curse', windup: 2.4, curse: { id: 'hex', n: 2, to: 'draw' } },
       { id: 'boneArmor', intent: 'defend', block: 14, windup: 2.0 },
+      { id: 'bombs', intent: 'curse', windup: 2.2, curse: { id: 'bomb', n: 1, to: 'belt' } },
       atk('soulBolt', 8, 3.0),
       atk('doom', 26, 7.0, { intent: 'charge' }),
     ],

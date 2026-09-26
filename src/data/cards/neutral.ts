@@ -23,4 +23,20 @@ export const curseCards: CardDef[] = [
     play: () => {},
     onExpire: (c, v) => c.loseHp(v[0]),
   },
+  {
+    id: 'bomb', face: '{exit}{boom:0}', cls: 'curse', type: 'curse', rarity: 'special', cost: 2, vals: [10], keywords: ['exhaust', 'volatile'], art: 'bomb',
+    play: () => {},
+    // Explodes at the end of the belt. Block absorbs it.
+    onExpire: (c, v) => void c.damage('enemy', 'hero', v[0], { raw: true, kind: 'fire' }, 'dot'),
+  },
+  {
+    id: 'leech', face: '{exit}{drain:0}', cls: 'curse', type: 'curse', rarity: 'special', cost: 1, vals: [2], keywords: ['exhaust', 'volatile'], art: 'fang',
+    play: () => {},
+    onExpire: (c, v) => c.drainMana(v[0]),
+  },
+  {
+    id: 'toxin', face: '{exit}{poison:0}', cls: 'curse', type: 'curse', rarity: 'special', cost: 1, vals: [4], keywords: ['exhaust', 'volatile'], art: 'drop',
+    play: () => {},
+    onExpire: (c, v) => c.applyStatus('hero', 'poison', v[0]),
+  },
 ];

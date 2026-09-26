@@ -394,11 +394,7 @@ export class Combat {
     for (const s of m.status ?? []) this.applyStatus(s.target, s.id, s.v ?? 1, s.t ?? 0);
     if (m.curse) for (let i = 0; i < m.curse.n; i++) this.addTempCard(m.curse.id, m.curse.to);
     if (m.steal) for (let i = 0; i < m.steal; i++) this.stealCard();
-    if (m.drainMana) {
-      const n = Math.min(this.hero.mana, m.drainMana);
-      this.hero.mana -= n;
-      this.events.emit({ type: 'manaDrain', amount: n });
-    }
+    if (m.drainMana) this.drainMana(m.drainMana);
     if (m.beltHaste) this.beltHasteT = Math.max(this.beltHasteT, m.beltHaste);
     m.fx?.(this);
   }
@@ -675,6 +671,12 @@ export class Combat {
     const h = this.hero;
     h.maxMana = Math.min(CONFIG.maxManaCap, h.maxMana + n);
     this.gainMana(n);
+  }
+
+  drainMana(n: number): void {
+    const lost = Math.min(this.hero.mana, n);
+    this.hero.mana -= lost;
+    this.events.emit({ type: 'manaDrain', amount: lost });
   }
 
   /** Adds empty mana crystals: the cap grows, the new crystals fill up over time. */

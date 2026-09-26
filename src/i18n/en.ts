@@ -426,6 +426,12 @@ const en: Record<string, string> = {
   'card.slime.desc': 'Clogs your belt. Pay to clear it.',
   'card.hex.name': 'Hex',
   'card.hex.desc': 'If it leaves the belt, lose {0} HP.',
+  'card.bomb.name': 'Bomb',
+  'card.bomb.desc': 'Pay to defuse it. If it leaves the belt, it explodes: take {0} damage.',
+  'card.leech.name': 'Leech',
+  'card.leech.desc': 'If it leaves the belt, lose {0} mana.',
+  'card.toxin.name': 'Toxin',
+  'card.toxin.desc': 'If it leaves the belt, gain {0} [poison].',
 
   // ------------------------------------------------------------- enemies
   'enemy.rat.name': 'Crypt Rat',
@@ -454,6 +460,10 @@ const en: Record<string, string> = {
   'move.hexes': 'Curse',
   'move.boneArmor': 'Bone Armor',
   'move.doom': 'DOOM',
+  'move.toxicSpit': 'Toxic Spit',
+  'move.darkPact': 'Dark Pact',
+  'move.lightFuse': 'Light Fuse',
+  'move.bombs': 'Bone Bomb',
 };
 
 export default en;
