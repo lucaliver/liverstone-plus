@@ -9,7 +9,8 @@ import { openCardDetail, openDeck } from '../components/modals';
 import { runHud } from './journey';
 
 /** Post-fight reward: Add the card, Swap it for one in the deck (Cardstone's classic), or Skip. */
-export function rewardScreen(run: RunState, picks: CardDef[], onDone: (msg?: string) => void): Screen {
+/** `allowSwap`: only elite rewards let you replace a deck card. */
+export function rewardScreen(run: RunState, picks: CardDef[], onDone: (msg?: string) => void, allowSwap = false): Screen {
   let sel: CardDef | null = null;
   const addBtn = h('button', { class: 'btn', disabled: true }, t('reward.add'));
   const swapBtn = h('button', { class: 'btn secondary', disabled: true }, t('reward.swap'));
@@ -30,7 +31,8 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: (msg?: str
       sfx('tap');
       cardEls.forEach((x, j) => x.classList.toggle('sel', picks[j] === sel));
       row.classList.toggle('has-sel', !!sel);
-      addBtn.disabled = swapBtn.disabled = !sel;
+      addBtn.disabled = !sel;
+      swapBtn.disabled = !sel;
     });
     c.addEventListener('pointerleave', () => clearTimeout(pressTimer));
     return c;
@@ -65,9 +67,9 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: (msg?: str
     row,
     h(
           'div',
-          { class: 'reward-actions' },
+          { class: `reward-actions ${allowSwap ? '' : 'single'}` },
           addBtn,
-          swapBtn,
+          allowSwap ? swapBtn : null,
           h('button', { class: 'btn small secondary full', onclick: () => (sfx('tap'), onDone()) }, t('reward.skip')),
         ),
   );

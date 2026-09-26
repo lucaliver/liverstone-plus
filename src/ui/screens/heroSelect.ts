@@ -7,9 +7,16 @@ import { h } from '../dom';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { openDeck } from '../components/modals';
+import { cardText } from '../components/cardView';
 import { ABILITY_ICON } from './combat';
 
 const PASSIVE_ICON: Record<string, string> = { warrior: 'shield', mage: 'bolt2', necromancer: 'drop' };
+
+const feature = (ic: string, name: string, kind: 'passive' | 'active' | 'special', desc: string): HTMLElement =>
+  h('div', {
+    class: 'hero-feature',
+    html: `${icon(ic)}<div><b>${name} <span class="ftag ${kind}">${t(`hero.tag.${kind}`)}</span></b>${desc}</div>`,
+  });
 
 export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => void): Screen {
   let selected: HeroId = 'warrior';
@@ -44,9 +51,9 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
           ),
         ),
       ),
-      h('div', { class: 'hero-feature', html: `${icon(PASSIVE_ICON[id])}<div><b>${t(`hero.${id}.passiveName`)}</b>${t(`hero.${id}.passiveShort`)}</div>` }),
-      h('div', { class: 'hero-feature', html: `${icon(ABILITY_ICON[id])}<div><b>${t(`hero.${id}.ability`)}</b>${t(`hero.${id}.abilityShort`)}</div>` }),
-      h('div', { class: 'hero-feature', html: `${icon('star')}<div><b>${t(`card.${hero.special}.name`)}</b>${t('hero.special')}</div>` }),
+      feature(PASSIVE_ICON[id], t(`hero.${id}.passiveName`), 'passive', t(`hero.${id}.passiveShort`)),
+      feature(ABILITY_ICON[id], t(`hero.${id}.ability`), 'active', t(`hero.${id}.abilityShort`)),
+      feature('star', t(`card.${hero.special}.name`), 'special', cardText({ uid: -1, id: hero.special, up: false })),
     );
     card.addEventListener('click', () => {
       selected = id;

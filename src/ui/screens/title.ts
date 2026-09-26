@@ -22,7 +22,6 @@ export function titleScreen(cb: TitleCallbacks): Screen {
     'div',
     { class: 'screen title-screen' },
     h('h1', { class: 'logo' }, t('app.title')),
-    h('p', { class: 'tagline' }, t('app.tagline')),
     h('div', {
       class: 'title-hero',
       html: `${motes(18)}${darkEyes([{ x: '8%', y: '20%' }, { x: '82%', y: '12%' }, { x: '76%', y: '70%' }])}<div class="candle l">${icon('flame')}</div><div class="candle r" style="--fd:-.2s">${icon('flame')}</div><div class="candle l2" style="--fd:-.35s">${icon('flame')}</div><div class="candle r2" style="--fd:-.1s">${icon('flame')}</div>${creature('lich')}`,

@@ -42,6 +42,10 @@
   color-scheme: light;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 * {
   box-sizing: border-box;
   font-synthesis: none;
@@ -431,6 +435,22 @@ button:focus-visible,
   font-size: 30px;
   color: var(--hero-ink);
   --ink2: var(--y);
+}
+.hero-feature .ftag {
+  margin-left: 4px;
+  padding: 0 5px 1px;
+  font-size: 14px;
+  color: var(--paper);
+  background: var(--k);
+}
+.hero-feature .ftag.active { background: var(--p); }
+.hero-feature .ftag.special { color: var(--k); background: var(--y); border: 2px solid var(--k); }
+.hero-feature .kwline { display: none; }
+.hero-feature b.kw {
+  display: inline;
+  font-family: inherit;
+  font-size: inherit;
+  text-transform: none;
 }
 .hero-feature b {
   display: block;
@@ -2021,12 +2041,11 @@ button:focus-visible,
 .reward-cards .card {
   --cw: min(calc((min(100vw, 520px) - 32px - 34px) / 3), 150px);
   cursor: pointer;
-  animation: deal 0.3s steps(4) both;
+  /* all three cards enter together and fully opaque (no staggered fades) */
+  animation: deal 0.24s steps(3);
 }
-.reward-cards .card:nth-child(2) { animation-delay: 0.08s; }
-.reward-cards .card:nth-child(3) { animation-delay: 0.16s; }
 @keyframes deal {
-  from { transform: translateY(80px); opacity: 0; }
+  from { transform: translateY(60px); }
 }
 .reward-cards.has-sel .card:not(.sel) { opacity: 0.4; }
 .reward-cards .card.sel {
@@ -2041,6 +2060,7 @@ button:focus-visible,
   gap: 12px;
 }
 .reward-actions .full { grid-column: 1 / -1; }
+.reward-actions.single { grid-template-columns: 1fr; }
 
 .rest-fire {
   position: relative;

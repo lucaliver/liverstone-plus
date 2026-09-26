@@ -151,20 +151,22 @@ const warrior = `
 <g fill="#ffd900" ${OUT}><circle cx="58" cy="148" r="5"/><circle cx="142" cy="148" r="5"/></g>`;
 
 const mage = `
-<defs>${lg('ma-h', '#6a9af8', '#1c4fb0')}${lg('ma-f', '#ffd6e6', '#ff9ac6')}${glow('ma-g', '#7ad8ff')}</defs>
+<defs>${lg('ma-h', '#6a9af8', '#1c4fb0')}${lg('ma-f', '#ffb4d4', '#ff86bc')}${lg('ma-b', '#fbf4df', '#d8d0c0')}</defs>
 <path d="M18 200c0-44 34-66 82-66s82 22 82 66z" fill="url(#ma-h)" ${OUT}/>
 <path d="M100 150l-12 50h24z" fill="#ffd900" opacity=".85"/>
-<path d="M74 118h52v30H74z" fill="url(#ma-f)" ${OUT}/>
 <path d="M100 2c-8 22-24 40-44 56-4 18-2 34 4 46h80c6-12 8-28 4-46C124 42 108 24 100 2z" fill="url(#ma-h)" ${OUT}/>
-<path d="M66 70c0-14 14-22 34-22s34 8 34 22v34l-6 22c-4 10-14 14-28 14s-24-4-28-14l-6-22z" fill="url(#ma-f)" ${OUT}/>
-<path d="M66 104l6 22c4 10 14 14 28 14s24-4 28-14l6-22-8 4-6 14c-4 6-12 8-20 8s-16-2-20-8l-6-14z" fill="#e07aa8"/>
-<path d="M100 126v12" stroke="#1b1830" stroke-width="3"/>
-<path d="M74 96l10 10M126 96l-10 10" stroke="#e07aa8" stroke-width="4"/>
+<path d="M66 70c0-14 14-22 34-22s34 8 34 22v30H66z" fill="url(#ma-f)" ${OUT}/>
+<path d="M62 92l6 36c4 14 16 24 32 24s28-10 32-24l6-36-10 4-8 10H80l-8-10z" fill="url(#ma-b)" ${OUT}/>
+<path d="M76 104c8-6 16-6 24-2 8-4 16-4 24 2-6 6-16 6-24 2-8 4-18 4-24-2z" fill="url(#ma-b)" ${OUT}/>
+<path d="M84 124v14M100 126v18M116 124v14" stroke="#a89880" stroke-width="3"/>
 <path d="M60 62c10-10 24-14 40-14s30 4 40 14l-4 12c-10-6-22-8-36-8s-26 2-36 8z" fill="url(#ma-h)" ${OUT}/>
-<path d="M76 80l14 2M124 80l-14 2" stroke="#1b1830" stroke-width="4"/>
-<rect x="78" y="86" width="14" height="6" fill="#7ad8ff" ${OUT}/><rect x="108" y="86" width="14" height="6" fill="#7ad8ff" ${OUT}/>
-<path d="M98 92v14h6" stroke="#1b1830" stroke-width="3" fill="none"/>
-<path d="M88 116c8 4 18 4 26-2" stroke="#1b1830" stroke-width="3" fill="none"/>
+<path d="M74 76l16 2M126 76l-16 2" stroke="#1b1830" stroke-width="4"/>
+<circle cx="85" cy="88" r="10" fill="#f6f0e4" stroke="#1b1830" stroke-width="4"/>
+<circle cx="115" cy="88" r="10" fill="#f6f0e4" stroke="#1b1830" stroke-width="4"/>
+<path d="M95 88h10M75 86l-9-3M125 86l9-3" stroke="#1b1830" stroke-width="3"/>
+<rect x="81" y="84" width="8" height="8" fill="#c85a20"/><rect x="111" y="84" width="8" height="8" fill="#c85a20"/>
+<rect x="83" y="86" width="4" height="4" fill="#3a1a08"/><rect x="113" y="86" width="4" height="4" fill="#3a1a08"/>
+<path d="M78 82l4-2" stroke="#fff" stroke-width="2"/>
 <g fill="#ffe08a"><path d="M78 30l3 6 6 1-5 4 1 6-5-3-5 3 1-6-5-4 6-1z"/><path d="M120 44l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z"/></g>`;
 
 
