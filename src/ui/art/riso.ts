@@ -206,21 +206,13 @@ export async function preloadArt(): Promise<void> {
   await Promise.all(jobs);
 }
 
-/** Misregistration offsets per ink, in CSS px (stable per sprite id). */
-function offsets(id: string): Record<Ink, [number, number]> {
-  let h = 0;
-  for (const ch of id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  const o = (k: number): [number, number] => [((h >> k) % 3) - 1, ((h >> (k + 2)) % 3) - 1];
-  return { Y: o(1), P: o(5), B: o(9), K: [0, 0] };
-}
-
 /** HTML for a creature sprite (stack of ink layers). */
 export function sprite(id: string, cls = ''): string {
   const s = sprites.get(id);
   if (!s) return `<div class="riso ${cls}"></div>`;
-  const off = offsets(id);
+  // Ink layers stay in perfect register on sprites (misregistration is kept for icons and type only).
   const layers = INK_ORDER.filter((k) => s.layers[k])
-    .map((k) => `<img class="ink ink-${k}" src="${s.layers[k]}" alt="" draggable="false" style="--ox:${off[k][0]}px;--oy:${off[k][1]}px">`)
+    .map((k) => `<img class="ink ink-${k}" src="${s.layers[k]}" alt="" draggable="false">`)
     .join('');
   return `<div class="riso ${cls}" aria-hidden="true"><img class="ink ink-W" src="${s.base}" alt="" draggable="false">${layers}</div>`;
 }
