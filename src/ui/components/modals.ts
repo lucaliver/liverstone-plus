@@ -170,14 +170,20 @@ export function openDeck(deck: CardInst[], opts: { title?: string; onPick?: (c: 
       const el = cardView(opts.preview ? opts.preview(c) : c);
       if (opts.onPick) {
         // Picking: tap selects, long press shows the card instead.
+        let t0 = 0;
+        let long = false;
         el.addEventListener('click', () => {
+          if (long) return;
           sfx('tap');
           handle.close();
           opts.onPick!(c);
         });
-        let t0 = 0;
         el.addEventListener('pointerdown', () => {
-          t0 = window.setTimeout(() => openCardDetail(opts.preview ? opts.preview(c) : c), 420);
+          long = false;
+          t0 = window.setTimeout(() => {
+            long = true;
+            openCardDetail(opts.preview ? opts.preview(c) : c);
+          }, 420);
         });
         ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => el.addEventListener(ev, () => clearTimeout(t0)));
         el.addEventListener('contextmenu', (e) => e.preventDefault());
