@@ -13,19 +13,27 @@ export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMe
   const el = h(
     'div',
     { class: `screen end ${won ? 'win' : 'lose'}` },
-    h('h1', { class: 'h1' }, won ? t('end.victory') : t('end.defeat')),
-    h('div', { class: 'portrait-lg', html: `${motes(10)}${creature(run.hero)}` }),
-    h('p', { class: 'sub' }, won ? t('end.victoryDesc') : t('end.defeatDesc', { n: node.floor })),
     h(
       'div',
-      { class: 'stats' },
-      stat('up', 'end.stats.floor', node.floor),
-      stat('skull', 'end.stats.kills', run.stats.kills),
-      stat('cards', 'end.stats.cards', run.stats.cardsPlayed),
-      stat('blood', 'end.stats.damage', run.stats.damageTaken),
+      { class: 'end-body' },
+      h('h1', { class: 'h1' }, won ? t('end.victory') : t('end.defeat')),
+      h('div', { class: 'portrait-lg', html: `${motes(10)}${creature(run.hero)}` }),
+      h('p', { class: 'sub' }, won ? t('end.victoryDesc') : t('end.defeatDesc', { n: node.floor })),
+      h(
+        'div',
+        { class: 'stats' },
+        stat('up', 'end.stats.floor', node.floor),
+        stat('skull', 'end.stats.kills', run.stats.kills),
+        stat('cards', 'end.stats.cards', run.stats.cardsPlayed),
+        stat('blood', 'end.stats.damage', run.stats.damageTaken),
+      ),
     ),
-    h('button', { class: 'btn block', onclick: () => (sfx('button'), onAgain()) }, t('end.again')),
-    h('button', { class: 'btn secondary block', style: { marginTop: '10px' }, onclick: () => (sfx('tap'), onMenu()) }, t('end.title')),
+    h(
+      'div',
+      { class: 'end-actions' },
+      h('button', { class: 'btn block', onclick: () => (sfx('button'), onAgain()) }, t('end.again')),
+      h('button', { class: 'btn secondary block', onclick: () => (sfx('tap'), onMenu()) }, t('end.title')),
+    ),
   );
   return { el };
 }

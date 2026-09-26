@@ -40,7 +40,7 @@ export const mageCards: CardDef[] = [
   { id: 'timeSlip', face: '{slow:0}', cls: 'mage', type: 'skill', rarity: 'rare', cost: 1, upCost: 0, vals: [6], upVals: [8], art: 'hourglass', play: (c, v) => c.slowBelt(v[0]) },
   { id: 'mirrorImage', face: '{dodge:0}', cls: 'mage', type: 'skill', rarity: 'rare', cost: 1, upCost: 0, vals: [1], art: 'mirror', play: (c, v) => c.applyStatus('hero', 'dodge', v[0]) },
   {
-    id: 'combustion', face: '{burn}×{0}', cls: 'mage', type: 'spell', rarity: 'rare', cost: 2, upCost: 1, vals: [2], upVals: [3], art: 'combust',
+    id: 'combustion', cat: 'attack', face: '{burn}×{0}', cls: 'mage', type: 'spell', rarity: 'rare', cost: 2, upCost: 1, vals: [2], upVals: [3], art: 'combust',
     play: (c, v) => {
       const burn = c.stacks('enemy', 'burn');
       c.removeStatus('enemy', 'burn');

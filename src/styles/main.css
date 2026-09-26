@@ -612,20 +612,15 @@ button:focus-visible,
   background-image: radial-gradient(circle, var(--art-dot, #9bb8ea) 30%, transparent 33%);
   background-size: 7cqw 7cqw;
 }
+.card[data-cat='attack'] .c-art { background-color: #ffc2de; --art-dot: #ff6fb2; --art-ink2: var(--y); }
+.card[data-cat='defense'] .c-art { background-color: #c6d9f8; --art-dot: #6f9be6; --art-ink2: var(--y); }
+.card[data-cat='utility'] .c-art { background-color: #fff0a0; --art-dot: #f0c800; --art-ink2: var(--b); }
+.card[data-cat='curse'] .c-art { background-color: #bfe38a; --art-dot: #5aa04a; --art-ink2: var(--p); }
 .c-art .pico {
   font-size: 34cqw;
   color: var(--k);
   --ink2: var(--art-ink2, var(--p));
 }
-.card[data-el='fire'] .c-art { background-color: var(--y); --art-dot: var(--p); --art-ink2: var(--red); }
-.card[data-el='ice'] .c-art { --art-dot: #8fc0f0; --art-ink2: var(--b); }
-.card[data-el='arcane'] .c-art { background-color: #ffcae4; --art-dot: #8aa8ec; --art-ink2: var(--y); }
-.card[data-el='blood'] .c-art { --art-dot: #ff9ccb; --art-ink2: var(--y); }
-.card[data-el='nature'] .c-art { background-color: var(--y); --art-dot: #7fb0e0; --art-ink2: var(--p); }
-.card[data-el='shadow'] .c-art { --art-dot: #c4bcd2; }
-.card[data-el='holy'] .c-art { background-color: var(--y); --art-dot: var(--paper); }
-.card[data-el='necro'] .c-art { background-color: #d8f0a0; --art-dot: #7a5ac8; --art-ink2: var(--green); }
-.card[data-el='curse'] .c-art { background-color: var(--y); --art-dot: #8a8498; --art-ink2: var(--p); }
 
 .c-face {
   flex: 1;
@@ -909,77 +904,111 @@ button:focus-visible,
   to { transform: translateX(150%); opacity: 0; }
 }
 
-/* intent */
-.intent {
-  position: absolute;
-  right: 0;
-  top: 8px;
-  z-index: 2;
+/* threat bar: the enemy's next move, right above the belt where the eyes are */
+.threat {
+  position: relative;
+  width: 100%;
+  height: 40px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
+  align-items: stretch;
+  color: var(--k);
+  background: var(--paper);
+  border: var(--line) solid var(--void);
+  box-shadow: 4px 4px 0 var(--shadow);
   font-family: var(--font-ui);
 }
-.intent .bubble {
-  color: var(--k);
-  position: relative;
-  width: 74px;
-  height: 74px;
+.threat .t-ico {
+  flex: none;
+  width: 38px;
   display: grid;
   place-items: center;
-  overflow: hidden;
-  background: var(--paper);
-  border: var(--line) solid var(--k);
-  box-shadow: 4px 4px 0 var(--shadow);
-}
-.intent .timer {
-  position: absolute;
-  inset: 0;
-  transform-origin: bottom;
-  background-image: radial-gradient(circle, var(--y) 40%, transparent 44%);
-  background-size: 6px 6px;
-}
-.intent .pico {
-  position: relative;
-  font-size: 36px;
-  margin-top: -12px;
+  font-size: 28px;
+  border-right: 2px solid var(--void);
   --ink2: var(--y);
 }
-.intent .val {
-  position: absolute;
-  bottom: 3px;
-  font-weight: 700;
-  font-size: 24px;
+.threat .t-val {
+  flex: none;
+  min-width: 34px;
+  padding: 0 6px;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
   line-height: 1;
+  border-right: 2px solid var(--void);
+}
+.threat .t-val:empty { display: none; }
+.threat .t-track {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  background-image: radial-gradient(circle, #d8ccb4 30%, transparent 34%);
+  background-size: 5px 5px;
+}
+.threat .t-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  background: var(--t-ink, var(--b));
+  opacity: 0.85;
+}
+.threat .t-lbl {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 19px;
+  white-space: nowrap;
   text-shadow: 2px 0 0 var(--paper), -2px 0 0 var(--paper), 0 2px 0 var(--paper), 0 -2px 0 var(--paper);
 }
-.intent .lbl {
-  padding: 1px 6px 2px;
-  font-size: 17px;
-  white-space: nowrap;
-  color: var(--paper);
-  background: var(--p);
+.threat .t-time {
+  flex: none;
+  width: 46px;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  border-left: 2px solid var(--void);
 }
-.intent[data-intent='attack'] .pico,
-.intent[data-intent='charge'] .pico { color: var(--p); }
-.intent[data-intent='defend'] .pico { color: var(--b); }
-.intent[data-intent='buff'] .pico,
-.intent[data-intent='curse'] .pico { color: var(--purple); }
-.intent[data-intent='charge'] .bubble { background: var(--y); }
-.intent[data-intent='charge'] .timer { --y: var(--p); background-image: radial-gradient(circle, var(--p) 40%, transparent 44%); }
-.intent.pop .bubble { animation: pop 0.2s steps(2); }
+.threat[data-intent='attack'],
+.threat[data-intent='charge'] { --t-ink: var(--p); }
+.threat[data-intent='attack'] .t-ico,
+.threat[data-intent='charge'] .t-ico { color: var(--p); }
+.threat[data-intent='defend'] .t-ico { color: var(--b); }
+.threat[data-intent='buff'] .t-ico,
+.threat[data-intent='curse'] .t-ico { color: var(--purple); }
+.threat[data-intent='curse'],
+.threat[data-intent='buff'] { --t-ink: #9a7ae0; }
+.threat[data-intent='charge'] { background-color: var(--y); }
+.threat.pop { animation: pop 0.2s steps(2); }
 @keyframes pop {
-  from { transform: scale(0.5); }
+  from { transform: scaleY(0.4); }
 }
-.intent.urgent .bubble {
+.threat.urgent {
   border-color: var(--p);
   box-shadow: 4px 4px 0 var(--p);
-  animation: urgent 0.3s steps(2) infinite;
+  animation: urgent 0.24s steps(2) infinite;
 }
-.intent.urgent .timer { background-image: radial-gradient(circle, var(--p) 40%, transparent 44%); }
+.threat.urgent .t-fill { animation: urgentfill 0.24s steps(1) infinite; }
+.threat.urgent .t-time { color: var(--paper); background: var(--p); }
 @keyframes urgent {
-  50% { transform: translate(2px, -2px) rotate(4deg); }
+  50% { transform: translate(2px, -1px); }
+}
+@keyframes urgentfill {
+  50% { background: var(--y); }
+}
+
+/* screen edges flash just before an unblocked hit lands */
+.combat.danger::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 35;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 8px var(--p), inset 0 0 0 12px var(--void);
+  animation: dangerblink 0.2s steps(1) infinite;
+}
+@keyframes dangerblink {
+  50% { opacity: 0; }
 }
 
 .enemy-info {
@@ -1042,6 +1071,14 @@ button:focus-visible,
 .bar .fill {
   background: var(--p);
   transition: transform 0.12s steps(2);
+}
+.bar .incoming {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: repeating-linear-gradient(45deg, var(--k) 0 4px, var(--y) 4px 8px);
+  animation: dangerblink 0.3s steps(1) infinite;
 }
 .bar .txt {
   position: absolute;
@@ -1116,12 +1153,10 @@ button:focus-visible,
   /* The spectral stream: a violet current of drifting ink dots between pixel-toothed banks. */
   position: absolute;
   inset: 0;
-  background-color: #2e1a52;
-  background-image:
-    radial-gradient(circle, #ff3d9a 14%, transparent 17%),
-    radial-gradient(circle, #3a3a9a 28%, transparent 32%);
-  background-size: 32px 28px, 10px 10px;
-  background-position: var(--belt-x, 0) 4px, calc(var(--belt-x, 0px) * 0.6) 0;
+  background-color: #2c2345;
+  background-image: radial-gradient(circle, #362b54 30%, transparent 34%);
+  background-size: 10px 10px;
+  background-position: var(--belt-x, 0) 0;
   border-top: var(--line) solid var(--void);
   border-bottom: var(--line) solid var(--void);
 }
@@ -1135,8 +1170,8 @@ button:focus-visible,
   bottom: 0;
   pointer-events: none;
   background:
-    conic-gradient(from 135deg at 50% 0, var(--void) 90deg, transparent 0) 0 0 / 16px 8px repeat-x,
-    conic-gradient(from -45deg at 50% 100%, var(--void) 90deg, transparent 0) 0 100% / 16px 8px repeat-x;
+    conic-gradient(from 135deg at 50% 0, var(--bg2) 90deg, transparent 0) 0 0 / 10px 5px repeat-x,
+    conic-gradient(from -45deg at 50% 100%, var(--bg2) 90deg, transparent 0) 0 100% / 10px 5px repeat-x;
 }
 .belt-track::before {
   /* the maw: cards that reach the left edge are swallowed by the dark (solid, then dithered) */
@@ -1164,10 +1199,9 @@ button:focus-visible,
   animation: blink 3.4s steps(1) infinite;
 }
 .maw-eyes i {
-  width: 5px;
-  height: 5px;
-  background: var(--p);
-  box-shadow: 0 -5px 0 var(--p);
+  width: 4px;
+  height: 4px;
+  background: #b0306e;
 }
 @keyframes blink {
   0%, 92%, 100% { opacity: 1; }
@@ -1581,9 +1615,23 @@ button:focus-visible,
   white-space: nowrap;
   animation: float 0.8s steps(8) forwards;
 }
-.floater.dmg { text-shadow: 3px 3px 0 var(--p); }
+.floater.dmg,
+.floater.hurt {
+  color: var(--paper);
+  text-shadow:
+    3px 0 0 var(--k), -3px 0 0 var(--k), 0 3px 0 var(--k), 0 -3px 0 var(--k),
+    3px 3px 0 var(--k), -3px -3px 0 var(--k), 3px -3px 0 var(--k), -3px 3px 0 var(--k),
+    6px 6px 0 var(--p);
+  animation: floatfast 0.6s steps(6) forwards;
+}
+@keyframes floatfast {
+  0% { transform: scale(0.5); opacity: 0; }
+  17% { transform: translateY(-8px) scale(1.25); opacity: 1; }
+  34% { transform: translateY(-16px) scale(1); }
+  100% { transform: translateY(-44px); opacity: 0; }
+}
 .floater.big { font-size: 50px; }
-.floater.hurt { color: var(--p); text-shadow: 3px 3px 0 var(--k); }
+.floater.hurt { color: #ffc2de; }
 .floater.heal { color: var(--green); text-shadow: 3px 3px 0 var(--y); }
 .floater.block { color: var(--b); text-shadow: 3px 3px 0 var(--y); font-size: 28px; }
 .floater.blocked { color: var(--b); font-size: 22px; text-shadow: 2px 2px 0 var(--paper); }
@@ -1807,6 +1855,23 @@ button:focus-visible,
 .tabs button + button { border-left: 2px solid var(--void); }
 .tabs button[aria-selected='true'] { background: var(--y); }
 .comp-grid .card { cursor: pointer; }
+.comp-grid .card.undiscovered::after {
+  content: '?';
+  position: absolute;
+  right: -8px;
+  top: -10px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--k);
+  background: var(--y);
+  border: 2px solid var(--void);
+}
+.comp-grid .card.undiscovered .c-art,
+.comp-grid .card.undiscovered .c-face { filter: grayscale(0.7); }
 .card.locked {
   display: grid;
   place-items: center;
@@ -1924,20 +1989,36 @@ button:focus-visible,
   text-align: center;
   gap: 10px;
 }
-.end .h1 { font-size: 40px; margin-top: 6vh; }
+.end .h1 { font-size: 36px; margin-top: 2vh; }
+.end .end-body {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+.end .end-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
+}
 .end .portrait-lg {
   position: relative;
-  width: 180px;
-  height: 180px;
+  width: 132px;
+  height: 132px;
   margin: 8px auto;
   display: grid;
   place-items: center;
 }
-.end .portrait-lg .riso { width: 160px; height: 160px; }
+.end .portrait-lg .riso { width: 124px; height: 124px; }
 .end.lose .portrait-lg .riso { transform: rotate(90deg) translateX(20px); }
 .stats {
   width: min(100%, 340px);
-  margin: 8px 0 auto;
+  margin: 4px 0 8px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -1946,7 +2027,7 @@ button:focus-visible,
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 6px 12px;
   color: var(--k);
   background: var(--paper);
   font-family: var(--font-ui);

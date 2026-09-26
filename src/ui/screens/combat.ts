@@ -70,10 +70,6 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       <div class="minions"></div>
       <div class="enemy-wrap">
         <div class="enemy-art">${creature(enemyDef.art)}</div>
-        <div class="intent" role="status">
-          <div class="bubble"><div class="timer"></div><span class="js-intent-ico"></span><span class="val"></span></div>
-          <div class="lbl"></div>
-        </div>
       </div>
       <div class="enemy-info">
         <div class="enemy-name">${t(`enemy.${enemyDef.id}.name`)}${enemyDef.tier !== 'normal' ? `<span class="tier ${enemyDef.tier}">${t(`journey.node.${enemyDef.tier}`)}</span>` : ''}</div>
@@ -82,6 +78,12 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
           <div class="bar js-ehp"><div class="ghost"></div><div class="fill"></div><div class="txt"></div></div>
         </div>
         <div class="statuses js-estatus"></div>
+        <div class="threat" role="status" aria-live="polite">
+          <div class="t-ico js-intent-ico"></div>
+          <div class="t-val"></div>
+          <div class="t-track"><div class="t-fill"></div><span class="t-lbl"></span></div>
+          <div class="t-time"></div>
+        </div>
       </div>
     </section>
     <section class="belt">
@@ -105,7 +107,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       <div class="hero-info">
         <div class="hpline">
           <div class="block-chip off js-hblock">${icon('shield')}<b></b></div>
-          <div class="bar js-hhp"><div class="ghost"></div><div class="fill"></div><div class="txt"></div></div>
+          <div class="bar js-hhp"><div class="ghost"></div><div class="fill"></div><div class="incoming"></div><div class="txt"></div></div>
         </div>
         <div class="resource"><span class="js-res-lbl"></span><div class="rbar"><div class="rfill js-res"></div></div><span class="weave-badge off js-weave"></span></div>
         <div class="statuses js-hstatus"></div>
@@ -116,11 +118,13 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   const r = {
     stage: $('.stage', el),
     enemyArt: $('.enemy-art', el),
-    intent: $('.intent', el),
+    intent: $('.threat', el),
     intentIco: $('.js-intent-ico', el),
-    intentVal: $('.intent .val', el),
-    intentLbl: $('.intent .lbl', el),
-    timer: $('.intent .timer', el),
+    intentVal: $('.threat .t-val', el),
+    intentLbl: $('.threat .t-lbl', el),
+    timer: $('.threat .t-fill', el),
+    intentTime: $('.threat .t-time', el),
+    incoming: $('.js-hhp .incoming', el),
     eHp: $('.js-ehp', el),
     eBlock: $('.js-eblock', el),
     eStatus: $('.js-estatus', el),
@@ -209,7 +213,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         const delay = e.hitIndex * 90;
         if (e.amount > 0) {
           const big = e.amount >= 15;
-          floatText(p.x, p.y, `${e.amount}`, `${e.target === 'hero' ? 'hurt' : 'dmg'} ${big ? 'big' : ''}`, delay);
+          floatText(p.x, p.y, `-${e.amount}`, `${e.target === 'hero' ? 'hurt' : 'dmg'} ${big ? 'big' : ''}`, delay);
           setTimeout(() => burst(e.kind, p.x, p.y, e.source === 'dot' ? 8 : big ? 30 : 18), delay);
         }
         if (e.blocked > 0) {
@@ -361,7 +365,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         if (!mEl) break;
         retrigger(mEl, 'hurt');
         const p = centerOf(mEl);
-        floatText(p.x, p.y - 20, `${e.amount}`, 'hurt');
+        floatText(p.x, p.y - 20, `-${e.amount}`, 'hurt');
         burst('claw', p.x, p.y, 10);
         sfx('enemyHit');
         break;
@@ -637,10 +641,21 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     }
     setText(r.intentVal, intentValue(m));
     const p = Math.min(1, e.timer / m.windup);
-    r.timer.style.transform = `scaleY(${p.toFixed(3)})`;
+    r.timer.style.transform = `scaleX(${p.toFixed(3)})`;
     const rate = combat.enemyTimeRate();
-    const left = rate > 0 ? (m.windup - e.timer) / rate : Infinity;
-    toggle(r.intent, 'urgent', !ended && (m.intent === 'attack' || m.intent === 'charge') && left < 1.1);
+    const left = rate > 0 ? Math.max(0, (m.windup - e.timer) / rate) : Infinity;
+    setText(r.intentTime, rate > 0 ? `${left.toFixed(1)}s` : '||');
+    const hostile = !ended && (m.intent === 'attack' || m.intent === 'charge');
+    toggle(r.intent, 'urgent', hostile && left < 1.1);
+
+    // Preview how much HP the hit will take (after Block), and flash the screen edges just before it lands.
+    const hs = combat.hero;
+    const incoming = hostile && !combat.minions.length ? Math.max(0, combat.intentDamage(m) * (m.hits ?? 1) - hs.block) : 0;
+    const shown = incoming > 0 && left < 2.2;
+    const lost = Math.min(hs.hp, incoming);
+    r.incoming.style.left = `${((hs.hp - lost) / hs.maxHp) * 100}%`;
+    r.incoming.style.width = shown ? `${(lost / hs.maxHp) * 100}%` : '0';
+    toggle(el, 'danger', shown && left < 0.8);
   };
 
   const renderEnemyState = (): void => {

@@ -49,6 +49,8 @@ export interface CardDef {
    * `|` starts a new line. The full rules text lives in i18n (`card.<id>.desc`).
    */
   face: string;
+  /** Art colour family override (otherwise derived from the face). */
+  cat?: 'attack' | 'defense' | 'utility' | 'curse';
   /** Unlock pack id; cards without a pack are always available. */
   pack?: string;
   play?: (c: Combat, v: number[], card: CombatCard) => void;

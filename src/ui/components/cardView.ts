@@ -3,7 +3,7 @@ import { CARDS } from '../../data/cards';
 import type { Combat } from '../../game/combat';
 import type { CardInst } from '../../game/types';
 import { h } from '../dom';
-import { icon, iconElement } from '../art/icons';
+import { icon } from '../art/icons';
 
 const KEYWORD_LINE = ['innate', 'exhaust', 'consume', 'fleeting', 'volatile', 'unplayable'];
 const TAG_ICON: Record<string, string> = { innate: 'up', exhaust: 'cross', consume: 'drop', fleeting: 'wing', volatile: 'combust' };
@@ -40,6 +40,19 @@ const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string }> = {
   might: { icon: 'fist', sign: '+' },
   sac: { icon: 'combust' },
 };
+
+export type CardCategory = 'attack' | 'defense' | 'utility' | 'curse';
+
+/** Colour family of the card art: attack (incl. burn/poison), defense (block/heal/dodge), utility, curse. */
+export function cardCategory(id: string): CardCategory {
+  const def = CARDS[id];
+  if (def.cat) return def.cat;
+  if (def.type === 'curse') return 'curse';
+  const f = def.face;
+  if (/\{(dmg|burn|poison)/.test(f) && !/^\{(block|heal|dodge)/.test(f)) return 'attack';
+  if (/\{(block|heal|dodge|parry)/.test(f)) return 'defense';
+  return 'utility';
+}
 
 export function cardName(card: CardInst): string {
   return t(`card.${card.id}.name`);
@@ -134,7 +147,7 @@ export function cardView(card: CardInst & { bonus?: number }, opts: CardViewOpts
     'data-cls': def.cls,
     'data-type': def.type,
     'data-rarity': def.rarity,
-    'data-el': iconElement(def.art),
+    'data-cat': cardCategory(def.id),
     'data-uid': card.uid,
     'aria-label': cardName(card),
   });

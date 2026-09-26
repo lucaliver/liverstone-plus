@@ -3,7 +3,7 @@ import { sfx } from '../../audio/sfx';
 import { CARD_LIST } from '../../data/cards';
 import { HERO_LIST } from '../../data/heroes';
 import { isDiscovered } from '../../game/meta';
-import type { CardClass, CardDef, Rarity } from '../../game/types';
+import type { CardClass, Rarity } from '../../game/types';
 import type { Screen } from '../app';
 import { h } from '../dom';
 import { icon } from '../art/icons';
@@ -23,10 +23,6 @@ export function compendiumScreen(onBack: () => void): Screen {
 
   const tabs = h('div', { class: 'tabs', role: 'tablist' });
   const grid = h('div', { class: 'deck-grid comp-grid' });
-  const toastEl = h('div', { class: 'comp-toast', role: 'status' });
-
-  const locked = (def: CardDef): HTMLElement =>
-    h('div', { class: 'card locked', 'data-rarity': def.rarity, 'aria-label': t('compendium.locked'), html: `<span>?</span><div class="c-gem"></div>` });
 
   const render = (): void => {
     tabs.replaceChildren(
@@ -51,17 +47,11 @@ export function compendiumScreen(onBack: () => void): Screen {
     );
     grid.replaceChildren(
       ...cards.map((def) => {
-        const open = isDiscovered(def.id);
-        const el = open ? cardView({ uid: -1, id: def.id, up: false }) : locked(def);
+        // Every card can be inspected; undiscovered ones just carry a "?" badge.
+        const el = cardView({ uid: -1, id: def.id, up: false }, { cls: isDiscovered(def.id) ? '' : 'undiscovered' });
         el.addEventListener('click', () => {
           sfx('tap');
-          if (open) openCardDetail({ uid: -1, id: def.id, up: false });
-          else {
-            toastEl.textContent = t('compendium.locked');
-            toastEl.classList.remove('show');
-            void toastEl.offsetWidth;
-            toastEl.classList.add('show');
-          }
+          openCardDetail({ uid: -1, id: def.id, up: false });
         });
         return el;
       }),
@@ -82,7 +72,6 @@ export function compendiumScreen(onBack: () => void): Screen {
     h('p', { class: 'sub' }, t('compendium.progress', { n: found, total })),
     tabs,
     h('div', { class: 'scroll', style: { flex: '1', marginTop: '12px' } }, grid),
-    toastEl,
   );
   return { el };
 }

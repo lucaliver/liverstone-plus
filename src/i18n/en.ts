@@ -14,7 +14,6 @@ const en: Record<string, string> = {
   'menu.compendium': 'Compendium',
   'compendium.title': 'Compendium',
   'compendium.progress': '{n}/{total} discovered',
-  'compendium.locked': 'Not discovered yet. Find it during a run.',
   'compendium.tab.warrior': 'Warrior',
   'compendium.tab.mage': 'Mage',
   'compendium.tab.necromancer': 'Necro',
