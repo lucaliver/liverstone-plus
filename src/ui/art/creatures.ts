@@ -131,24 +131,27 @@ ${shadow}
 <rect x="96" y="14" width="8" height="8" fill="#ff3d9a" ${OUT}/>`;
 
 const warrior = `
-<defs>${lg('wa-h', '#9ac0f8', '#1c5fd0', 1, 1)}${lg('wa-s', '#ffb4d4', '#ff86bc')}${lg('wa-a', '#ff8ac8', '#d03a8a')}</defs>
-<path d="M18 200c0-44 34-66 82-66s82 22 82 66z" fill="url(#wa-a)" ${OUT}/>
-<path d="M18 172c0-26 18-42 42-42l12 42zM182 172c0-26-18-42-42-42l-12 42z" fill="url(#wa-h)" ${OUT}/>
-<path d="M78 124h44v22H78z" fill="url(#wa-s)" ${OUT}/>
-<path d="M54 86c0-40 20-66 46-66s46 26 46 66v26c0 20-20 34-46 34S54 132 54 112z" fill="url(#wa-s)" ${OUT}/>
-<path d="M70 34c8-8 18-11 26-11" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".85"/>
-<circle cx="84" cy="40" r="3" fill="#fff" opacity=".85"/>
-<path d="M50 62h100v18H50z" fill="url(#wa-h)" ${OUT}/>
-<path d="M60 64v14M140 64v14M100 64v14" stroke="#fbf4df" stroke-width="3"/>
-<path d="M50 78h18v42c-10-4-18-16-18-28zM150 78h-18v42c10-4 18-16 18-28z" fill="url(#wa-h)" ${OUT}/>
-<path d="M95 78h10v32H95z" fill="url(#wa-h)" ${OUT}/>
-<path d="M72 88h18M110 88h18" stroke="#1b1830" stroke-width="5" stroke-linecap="square"/>
-<rect x="74" y="92" width="14" height="10" fill="#f6f0e4" ${OUT}/><rect x="112" y="92" width="14" height="10" fill="#f6f0e4" ${OUT}/>
-<rect x="78" y="93" width="7" height="8" fill="#2a8a4a"/><rect x="116" y="93" width="7" height="8" fill="#2a8a4a"/>
-<rect x="80" y="95" width="3" height="4" fill="#0c3a1a"/><rect x="118" y="95" width="3" height="4" fill="#0c3a1a"/>
-<path d="M84 126h32" stroke="#1b1830" stroke-width="4"/>
-<path d="M118 108l10 12" stroke="#d03a8a" stroke-width="3"/>
-<g fill="#ffd900" ${OUT}><circle cx="58" cy="148" r="5"/><circle cx="142" cy="148" r="5"/></g>`;
+<defs>${lg('wa-h', '#9ac0f8', '#1c5fd0', 1, 1)}${lg('wa-s', '#ffb4d4', '#ff86bc')}${lg('wa-a', '#ff8ac8', '#d03a8a')}${lg('wa-y', '#ffc890', '#ffbc80')}</defs>
+<path d="M14 200c0-46 36-70 86-70s86 24 86 70z" fill="url(#wa-a)" ${OUT}/>
+<path d="M14 176c0-28 18-46 44-48l14 46zM186 176c0-28-18-46-44-48l-14 46z" fill="url(#wa-h)" ${OUT}/>
+<path d="M22 142l-10-20 22 8zM178 142l10-20-22 8zM40 130l-4-22 16 14zM160 130l4-22-16 14z" fill="#fbf4df" ${OUT}/>
+<path d="M72 120h56v26H72z" fill="url(#wa-s)" ${OUT}/>
+<path d="M50 86c0-40 22-66 50-66s50 26 50 66v22c0 24-22 40-50 40S50 132 50 108z" fill="url(#wa-s)" ${OUT}/>
+<path d="M72 34c7-7 15-10 22-10" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+<path d="M46 60h108v18H46z" fill="url(#wa-h)" ${OUT}/>
+<path d="M58 62v14M142 62v14M100 62v14" stroke="#fbf4df" stroke-width="3"/>
+<path d="M46 76h18v40c-10-4-18-16-18-28zM154 76h-18v40c10-4 18-16 18-28z" fill="url(#wa-h)" ${OUT}/>
+<path d="M95 76h10v26H95z" fill="url(#wa-h)" ${OUT}/>
+<path d="M68 84l24 8M132 84l-24 8" stroke="#1b1830" stroke-width="6" stroke-linecap="square"/>
+<rect x="74" y="92" width="14" height="8" fill="#f6f0e4" ${OUT}/><rect x="112" y="92" width="14" height="8" fill="#f6f0e4" ${OUT}/>
+<rect x="78" y="92" width="7" height="8" fill="#2a8a4a"/><rect x="116" y="92" width="7" height="8" fill="#2a8a4a"/>
+<rect x="80" y="94" width="3" height="4" fill="#0c3a1a"/><rect x="118" y="94" width="3" height="4" fill="#0c3a1a"/>
+<path d="M120 80l8 28" stroke="#d03a8a" stroke-width="4"/>
+<path d="M52 102h96v8c-4 24-22 38-48 38s-44-14-48-38z" fill="url(#wa-y)" ${OUT}/>
+<path d="M78 112c8-5 15-5 22-1 7-4 14-4 22 1-4 6-14 7-22 3-8 4-18 3-22-3z" fill="#e8b820" ${OUT}/>
+<path d="M88 124h24" stroke="#1b1830" stroke-width="5"/>
+<path d="M60 116h4M70 128h4M130 128h4M136 116h4M84 136h4M112 136h4M98 142h4" stroke="#b08a10" stroke-width="3"/>
+<g fill="#ffd900" ${OUT}><circle cx="56" cy="152" r="5"/><circle cx="144" cy="152" r="5"/></g>`;
 
 const mage = `
 <defs>${lg('ma-h', '#6a9af8', '#1c4fb0')}${lg('ma-f', '#ffb4d4', '#ff86bc')}${lg('ma-b', '#fbf4df', '#d8d0c0')}</defs>

@@ -438,8 +438,9 @@ button:focus-visible,
 }
 .hero-feature .ftag {
   margin-left: 4px;
-  padding: 0 5px 1px;
-  font-size: 14px;
+  padding: 0 4px 1px;
+  font-size: 11px;
+  vertical-align: 2px;
   color: var(--paper);
   background: var(--k);
 }
@@ -724,21 +725,6 @@ button:focus-visible,
 /* ------------------------------------------------------------------ combat layout */
 .combat { padding: 0; overflow: clip; }
 
-/* short phones: compact the fixed rows so the stage keeps its room and nothing overflows */
-@media (max-height: 740px) {
-  .combat .topbar { padding-top: calc(var(--safe-t) + 4px); }
-  .combat .icon-btn { width: 40px; height: 40px; }
-  .enemy-info .statuses { min-height: 0; }
-  .threat { height: 34px; }
-  .threat .t-val { font-size: 22px; }
-  .mana-row { padding-top: 6px; }
-  .pip { height: 18px; }
-  .action-row { padding: 4px 12px; }
-  .ability-btn { width: 70px; height: 70px; }
-  .ability-btn .pico { font-size: 32px; margin-top: -20px; }
-  .hero-row { padding-top: 4px; padding-bottom: calc(var(--safe-b) + 6px); }
-  .hero-portrait { width: 52px; height: 52px; }
-}
 .combat .topbar {
   display: flex;
   align-items: center;
@@ -813,24 +799,36 @@ button:focus-visible,
 }
 .candle.l { left: 10%; }
 .candle.r { right: 10%; height: 24px; }
-.candle .pico {
+.candle .flame {
   position: absolute;
   left: 50%;
-  bottom: 100%;
-  font-size: 22px;
-  translate: -50% 2px;
-  transform-origin: 50% 100%;
-  color: var(--y);
-  --ink2: var(--p);
-  animation: flicker 0.5s steps(1) infinite;
+  bottom: calc(100% - 3px);
+  width: 28px;
+  height: 28px;
+  translate: -50% 0;
+}
+.candle .ff {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: flameframe 1.2s steps(1) infinite;
   animation-delay: var(--fd, 0s);
 }
-@keyframes flicker {
-  0% { transform: none; }
-  25% { transform: scaleX(-1) scaleY(1.15); color: #ffe86a; }
-  50% { transform: scaleY(0.9) translateX(1px); }
-  75% { transform: scaleX(-1) scaleY(1.25) translateY(-1px); color: #ffc400; }
+/* three frames, each shown for a third of the loop (--fd offsets each candle) */
+.candle .ff:nth-child(2) { animation-delay: calc(var(--fd, 0s) - 0.8s); }
+.candle .ff:nth-child(3) { animation-delay: calc(var(--fd, 0s) - 0.4s); }
+@keyframes flameframe {
+  0% { opacity: 1; }
+  33.33% { opacity: 0; }
 }
+.candle .ff .pico {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.candle .ff .fo { color: var(--y); --ink2: var(--p); }
+.candle .ff .fc { color: var(--paper); }
 .candle::before {
   /* pixel halo that breathes around the flame */
   content: '';
@@ -914,8 +912,10 @@ button:focus-visible,
 }
 .enemy-art {
   position: relative;
-  height: min(100%, 256px);
-  aspect-ratio: 1;
+  /* fixed size, measured once per fight: nothing may resize the stage mid-combat */
+  width: var(--enemy-size, 200px);
+  height: var(--enemy-size, 200px);
+  flex: none;
   animation: bob 1.1s steps(2) infinite;
 }
 .enemy-art .riso {
@@ -1560,7 +1560,15 @@ button:focus-visible,
 .hero-info .statuses {
   justify-content: flex-start;
   min-height: 0;
+  height: 26px;
 }
+/* status rows have a fixed height (one line) so they never push the layout around */
+.enemy-info .statuses,
+.hero-info .statuses {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+.enemy-info .statuses { height: 26px; }
 
 /* banners, toasts, floaters */
 .ability-flash {
@@ -2169,4 +2177,32 @@ button:focus-visible,
 .reduce-motion *, .reduce-motion *::before, .reduce-motion *::after {
   animation-duration: 0.01ms !important;
   animation-iteration-count: 1 !important;
+}
+
+/* ------------------------------------------------------------------ short screens (must stay last) */
+/* short phones: compact the fixed rows so the stage keeps its room and nothing overflows */
+@media (max-height: 740px) {
+  .combat .topbar { padding-top: calc(var(--safe-t) + 4px); }
+  .combat .icon-btn { width: 40px; height: 40px; }
+  .threat { height: 34px; }
+  .threat .t-val { font-size: 22px; }
+  .mana-row { padding-top: 6px; }
+  .pip { height: 18px; }
+  .action-row { padding: 4px 12px; }
+  .ability-btn { width: 70px; height: 70px; }
+  .ability-btn .pico { font-size: 32px; margin-top: -20px; }
+  .hero-row { padding-top: 4px; padding-bottom: calc(var(--safe-b) + 6px); }
+  .hero-portrait { width: 52px; height: 52px; }
+}
+@media (max-height: 700px) {
+  .enemy-name { display: none; }
+  .enemy-info { gap: 4px; }
+  .enemy-info .statuses,
+  .hero-info .statuses { height: 22px; }
+  .status { height: 22px; font-size: 14px; }
+  .status .pico { font-size: 16px; }
+  .hero-info { gap: 3px; }
+  .hero-portrait { width: 46px; height: 46px; }
+  .bar { height: 24px; }
+  .candle { display: none; }
 }

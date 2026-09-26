@@ -3,9 +3,9 @@ export const CONFIG = {
   /** Seconds for a card to cross one full belt width. */
   beltTime: 7.7,
   /** Card width as a fraction of the belt width (the UI mirrors this). */
-  cardWidth: 0.235,
+  cardWidth: 0.25,
   /** Minimum gap between spawns, in belt widths. */
-  spacing: 0.26,
+  spacing: 0.27,
   /** Never spawn a card closer than this to the previous one (e.g. after a belt slow-down). */
   minGap: 0.13,
   /** A card expires once its left edge is this far past the belt's left edge (fraction of card width). */

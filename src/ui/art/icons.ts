@@ -101,6 +101,13 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   cards: { el: 'steel', svg: `<rect x="20" y="6" width="28" height="40" rx="4" transform="rotate(12 34 26)" opacity=".55"/><rect x="14" y="14" width="28" height="40" rx="4"/>` },
   pause: { el: 'steel', svg: `<rect x="16" y="10" width="11" height="44" rx="3"/><rect x="37" y="10" width="11" height="44" rx="3"/>` },
   campfire: { el: 'fire', svg: `<g transform="translate(8 0) scale(.75)">${flame}</g><path d="M6 52l52 8M58 52L6 60" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>` },
+  // Candle flame animation: three frames (outer flame + bright core each).
+  flameA: { el: 'fire', svg: `<path d="M32 4C40 18 50 28 50 42a18 18 0 0 1-36 0c0-12 10-24 18-38z"/>` },
+  flameAc: { el: 'fire', svg: `<path d="M32 26c4 8 10 12 10 20a10 10 0 0 1-20 0c0-8 6-12 10-20z"/>` },
+  flameB: { el: 'fire', svg: `<path d="M22 6c12 12 28 22 26 38a17 17 0 0 1-34 0c-1-12 4-22 8-38z"/>` },
+  flameBc: { el: 'fire', svg: `<path d="M26 28c5 8 12 12 11 20a10 10 0 0 1-20-1c1-7 5-11 9-19z"/>` },
+  flameC: { el: 'fire', svg: `<path d="M42 4c2 14 10 24 8 40a18 18 0 0 1-36-2c0-12 10-18 14-30 2 6 4 8 6 8 2-4 4-8 8-16z"/>` },
+  flameCc: { el: 'fire', svg: `<path d="M36 28c3 8 9 12 8 20a10 10 0 0 1-20 0c0-8 7-12 12-20z"/>` },
   bomb: { el: 'curse', svg: `<circle cx="28" cy="38" r="20"/><rect x="36" y="12" width="10" height="10" transform="rotate(45 41 17)"/><path d="M44 12c4-6 10-6 14-2" stroke="currentColor" stroke-width="4" fill="none"/><path ${HI} d="M16 32c2-6 7-10 12-10-2 4-2 8 0 12-5 1-9 0-12-2z"/>${star4(58, 8, 6)}` },
   bone: { el: 'necro', svg: `<path d="M8 50l30-30-3-6a6 6 0 1 1 9-6 6 6 0 1 1 6 9l6 3-30 30 3 6a6 6 0 1 1-9 6 6 6 0 1 1-6-9z"/><path d="M52 4L40 22l4 4 18-12z"/>` },
   ghost: { el: 'necro', svg: `<path d="M32 4c13 0 22 10 22 24v30l-7-6-7 6-8-6-8 6-7-6-7 6V28C10 14 19 4 32 4z"/><circle cx="24" cy="28" r="4.5" fill="#16121f"/><circle cx="40" cy="28" r="4.5" fill="#16121f"/><ellipse cx="32" cy="41" rx="4" ry="5" fill="#16121f"/>` },
@@ -122,6 +129,11 @@ export const INTENT_ICON: Record<string, string> = {
   charge: 'burst',
   drain: 'crystal',
 };
+
+/** Animated pixel candle flame: three hand-drawn frames cycled slowly. */
+export function candleFlame(): string {
+  return `<span class="flame" aria-hidden="true">${['A', 'B', 'C'].map((f) => `<span class="ff">${pixelIcon(`flame${f}`, 'fo')}${pixelIcon(`flame${f}c`, 'fc')}</span>`).join('')}</span>`;
+}
 
 /** Pixel icon (see riso.ts). The vector source above is rasterised once at boot. */
 export function icon(id: string, cls = ''): string {

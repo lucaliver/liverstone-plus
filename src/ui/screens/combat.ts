@@ -10,7 +10,7 @@ import { discover } from '../../game/meta';
 import type { CombatCard, CombatEvent, MoveDef, Side } from '../../game/types';
 import { openModal, type ModalHandle, type Screen } from '../app';
 import { creature } from '../art/creatures';
-import { icon, INTENT_ICON } from '../art/icons';
+import { candleFlame, icon, INTENT_ICON } from '../art/icons';
 import { cardFace, cardView } from '../components/cardView';
 import { darkEyes, motes } from '../components/decor';
 import { openCardDetail, openHowTo, openSettings, speedSelector } from '../components/modals';
@@ -64,7 +64,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       <div class="stage-floor"></div>
       ${motes(14)}
       ${darkEyes([{ x: '6%', y: '14%' }, { x: '84%', y: '44%' }])}
-      <div class="candle l">${icon('flame')}</div><div class="candle r">${icon('flame')}</div>
+      <div class="candle l">${candleFlame()}</div><div class="candle r">${candleFlame()}</div>
       <div class="shade"></div>
       <div class="enemy-wrap">
         <div class="enemy-art">${creature(enemyDef.art)}</div>
@@ -168,8 +168,15 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   const layout = (): void => {
     beltW = r.belt.clientWidth || el.clientWidth;
     // Cards follow the belt width, but shrink on short screens so the layout always fits.
-    const cw = Math.min(beltW * CONFIG.cardWidth, el.clientHeight * 0.108);
+    const cw = Math.min(beltW * CONFIG.cardWidth, el.clientHeight * 0.118);
     el.style.setProperty('--cw-belt', `${Math.round(cw)}px`);
+    // Measure the enemy's room once (with the belt size applied) and lock the sprite size.
+    requestAnimationFrame(() => {
+      // The wrapper is flex: 1 with min-height 0, so its height is the free room, independent of the sprite.
+      const wrap = r.stage.querySelector<HTMLElement>('.enemy-wrap')!;
+      const size = Math.max(72, Math.min(256, wrap.clientHeight));
+      el.style.setProperty('--enemy-size', `${size}px`);
+    });
   };
 
   // ---------------------------------------------------------------- helpers
