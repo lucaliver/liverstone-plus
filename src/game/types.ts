@@ -4,7 +4,7 @@ export type HeroId = 'warrior' | 'mage' | 'necromancer';
 export type CardClass = HeroId | 'neutral' | 'curse';
 export type CardType = 'attack' | 'spell' | 'skill' | 'power' | 'potion' | 'curse';
 export type Rarity = 'starter' | 'common' | 'rare' | 'epic' | 'legendary' | 'special';
-export type Keyword = 'exhaust' | 'consume' | 'fleeting' | 'unplayable' | 'volatile';
+export type Keyword = 'exhaust' | 'consume' | 'fleeting' | 'unplayable' | 'volatile' | 'innate';
 export type Side = 'hero' | 'enemy';
 
 /** A card in the run deck. */
@@ -199,6 +199,7 @@ export type CombatEvent =
   | { type: 'enemyIntent'; move: MoveDef }
   | { type: 'enemyAct'; move: MoveDef }
   | { type: 'mana'; amount: number }
+  | { type: 'manaCrystal'; amount: number }
   | { type: 'manaDrain'; amount: number }
   | { type: 'ability'; id: string }
   | { type: 'weave'; n: number }

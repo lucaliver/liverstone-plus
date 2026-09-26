@@ -314,6 +314,13 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         sfx('mana');
         break;
       }
+      case 'manaCrystal': {
+        const p = centerOf(r.pips);
+        floatText(p.x, p.y - 16, `+${e.amount} ${t('kw.crystal')}`, 'status good');
+        burst('mana', p.x, p.y, 16);
+        sfx('mana');
+        break;
+      }
       case 'manaDrain':
         retrigger(r.manaRow, 'flash');
         break;
@@ -647,7 +654,8 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     const hs = combat.hero;
     if (hs.maxMana !== lastMaxMana) {
       lastMaxMana = hs.maxMana;
-      r.pips.replaceChildren(...Array.from({ length: hs.maxMana }, () => h('div', { class: 'pip' })));
+      const had = r.pips.children.length;
+      r.pips.replaceChildren(...Array.from({ length: hs.maxMana }, (_, i) => h('div', { class: `pip ${had && i >= had ? 'gain' : ''}` })));
     }
     const pips = r.pips.children;
     for (let i = 0; i < pips.length; i++) {

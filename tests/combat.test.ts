@@ -127,13 +127,31 @@ describe('combat engine', () => {
     expect(hp - c.enemy.hp).toBe(12);
   });
 
+  it('innate cards are on the belt from the start', () => {
+    const c = setup({ deck: deckOf([...new Array(8).fill('strike'), 'manaShard', 'manaGeode']) });
+    const ids = c.belt.map((b) => b.card.id);
+    expect(ids).toContain('manaShard');
+    expect(ids).toContain('manaGeode');
+  });
+
+  it('mana crystals raise the cap empty', () => {
+    const c = setup({ deck: deckOf(['manaGeode', 'strike']) });
+    run(c, CONFIG.introTime + 0.01);
+    const max = c.hero.maxMana;
+    const card = c.belt.find((b) => b.card.id === 'manaGeode')!.card;
+    const mana = c.hero.mana;
+    c.playCard(card.uid);
+    expect(c.hero.maxMana).toBe(max + 2);
+    expect(c.hero.mana).toBe(mana - 1);
+  });
+
   it('mage spellweave adds damage to chained spells', () => {
     const c = setup({ hero: HEROES.mage, hp: 70, maxHp: 70, deck: deckOf(['arcaneBolt', 'arcaneBolt']), enemy: ENEMIES.slime });
     run(c, CONFIG.introTime + 0.01);
     const hp = c.enemy.hp;
     c.playCard(c.belt[0].card.uid);
     c.playCard(c.belt[0].card.uid);
-    expect(hp - c.enemy.hp).toBe(6 + 7);
+    expect(hp - c.enemy.hp).toBe(7 + 8);
   });
 
   it('played cards are never replaced in place: new cards always enter from the right', () => {
@@ -153,7 +171,7 @@ describe('combat engine', () => {
     expect(spawnPositions.every((p) => p === 0)).toBe(true);
     // Cards keep their spacing (no overlap from the entry boost).
     const sorted = c.belt.map((b) => b.pos).sort((a, b) => a - b);
-    for (let i = 1; i < sorted.length; i++) expect(sorted[i] - sorted[i - 1]).toBeGreaterThanOrEqual(CONFIG.drawSpacing - 1e-9);
+    for (let i = 1; i < sorted.length; i++) expect(sorted[i] - sorted[i - 1]).toBeGreaterThanOrEqual(CONFIG.minGap - 1e-9);
   });
 
   it('draw cadence is fixed: playing fast never draws extra cards', () => {

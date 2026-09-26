@@ -668,6 +668,7 @@ button:focus-visible,
 .gk-rage .pico,
 .gk-burn .pico { color: var(--p); --ink2: var(--y); }
 .gk-heal .pico { color: var(--green); }
+.gk-crystal .pico { color: var(--b); --ink2: var(--y); }
 .gk-soul .pico,
 .gk-raise .pico,
 .gk-poison .pico,
@@ -676,7 +677,6 @@ button:focus-visible,
 .gk-sac .pico { color: var(--p); --ink2: var(--k); }
 .gk-frenzy .pico,
 .gk-stun .pico,
-.gk-draw .pico,
 .gk-parry .pico,
 .gk-grow .pico,
 .gk-skull .pico,

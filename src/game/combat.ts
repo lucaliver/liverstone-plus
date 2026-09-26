@@ -103,7 +103,6 @@ export class Combat {
   minions: Minion[] = [];
   private minionUid = 0;
 
-  pendingDraws = 0;
   /** Time accumulated towards the next regular draw onto the belt. */
   private spawnClock = 0;
   beltSpeed = 1;
@@ -182,6 +181,9 @@ export class Combat {
     for (const s of e.start ?? []) this.applyStatus('enemy', s.id, s.v ?? 1, s.t ?? 0, true);
 
     this.draw = this.rng.shuffle(setup.deck.map((c) => ({ ...c, bonus: 0, temp: false })));
+    // Innate cards go on top of the draw pile (the end of the array), so they reach the belt first.
+    const innate = this.draw.filter((c) => this.keywords(c).includes('innate'));
+    this.draw = [...this.draw.filter((c) => !innate.includes(c)), ...innate];
 
     for (const id of this.relics) RELICS[id]?.hooks?.onCombatStart?.(this);
     // Prewarm the belt so the fight starts with something to look at.
@@ -414,15 +416,12 @@ export class Combat {
       if (this.result) return;
     }
     // Draw cadence is a fixed clock (scaled with belt speed so spacing stays constant):
-    // playing cards quickly never makes new ones arrive sooner. Only Draw effects add extra cards.
+    // playing cards quickly never makes new ones arrive sooner.
     const every = CONFIG.spacing * CONFIG.beltTime;
     this.spawnClock = Math.min(every, this.spawnClock + dt * rate);
     const gap = this.belt.length ? Math.min(...this.belt.map((b) => b.pos)) : Infinity;
     if (this.belt.length >= CONFIG.maxHandBelt) return;
-    if (this.pendingDraws > 0 && gap >= CONFIG.drawSpacing) {
-      if (this.spawnCard(0)) this.pendingDraws--;
-      else this.pendingDraws = 0;
-    } else if (this.spawnClock >= every && gap >= CONFIG.drawSpacing) {
+    if (this.spawnClock >= every && gap >= CONFIG.minGap) {
       this.spawnClock -= every;
       this.spawnCard(0);
     }
@@ -678,8 +677,12 @@ export class Combat {
     this.gainMana(n);
   }
 
-  drawCards(n: number): void {
-    this.pendingDraws += n;
+  /** Adds empty mana crystals: the cap grows, the new crystals fill up over time. */
+  addManaCrystals(n: number): void {
+    const h = this.hero;
+    const before = h.maxMana;
+    h.maxMana = Math.min(CONFIG.maxManaCap, h.maxMana + n);
+    if (h.maxMana > before) this.events.emit({ type: 'manaCrystal', amount: h.maxMana - before });
   }
 
   addResource(n: number): void {

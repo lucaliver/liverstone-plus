@@ -2,8 +2,8 @@ import type { CardDef } from '../../game/types';
 
 export const mageCards: CardDef[] = [
   // Starters
-  { id: 'arcaneBolt', face: '{dmg:0}', cls: 'mage', type: 'spell', rarity: 'starter', cost: 1, vals: [6], upVals: [9], dmg: [0], art: 'bolt', play: (c, v) => void c.hit(v[0]) },
-  { id: 'ward', face: '{block:0}', cls: 'mage', type: 'skill', rarity: 'starter', cost: 1, vals: [7], upVals: [10], art: 'ward', play: (c, v) => c.gainBlock('hero', v[0]) },
+  { id: 'arcaneBolt', face: '{dmg:0}', cls: 'mage', type: 'spell', rarity: 'starter', cost: 1, vals: [7], upVals: [10], dmg: [0], art: 'bolt', play: (c, v) => void c.hit(v[0]) },
+  { id: 'ward', face: '{block:0}', cls: 'mage', type: 'skill', rarity: 'starter', cost: 1, vals: [8], upVals: [11], art: 'ward', play: (c, v) => c.gainBlock('hero', v[0]) },
   {
     id: 'frostbolt', face: '{dmg:0}|{chill:1}', cls: 'mage', type: 'spell', rarity: 'starter', cost: 1, vals: [4, 3], upVals: [6, 4], dmg: [0], art: 'frost',
     play: (c, v) => {
@@ -11,7 +11,6 @@ export const mageCards: CardDef[] = [
       c.applyStatus('enemy', 'chill', 1, v[1]);
     },
   },
-  { id: 'arcaneIntellect', face: '{draw:0}', cls: 'mage', type: 'spell', rarity: 'starter', cost: 1, upCost: 0, vals: [2], art: 'book', play: (c, v) => c.drawCards(v[0]) },
 
   // Commons
   {
@@ -38,13 +37,7 @@ export const mageCards: CardDef[] = [
 
   // Rares
   { id: 'arcaneMissiles', face: '{dmg:0}×{1}', cls: 'mage', type: 'spell', rarity: 'rare', cost: 3, vals: [3, 5], upVals: [3, 7], dmg: [0], art: 'missiles', play: (c, v) => void c.hit(v[0], { hits: v[1] }) },
-  {
-    id: 'timeSlip', face: '{slow:0}|{draw:1}', cls: 'mage', type: 'skill', rarity: 'rare', cost: 1, upCost: 0, vals: [5, 1], art: 'hourglass',
-    play: (c, v) => {
-      c.slowBelt(v[0]);
-      c.drawCards(v[1]);
-    },
-  },
+  { id: 'timeSlip', face: '{slow:0}', cls: 'mage', type: 'skill', rarity: 'rare', cost: 1, upCost: 0, vals: [6], upVals: [8], art: 'hourglass', play: (c, v) => c.slowBelt(v[0]) },
   { id: 'mirrorImage', face: '{dodge:0}', cls: 'mage', type: 'skill', rarity: 'rare', cost: 1, upCost: 0, vals: [1], art: 'mirror', play: (c, v) => c.applyStatus('hero', 'dodge', v[0]) },
   {
     id: 'combustion', face: '{burn}×{0}', cls: 'mage', type: 'spell', rarity: 'rare', cost: 2, upCost: 1, vals: [2], upVals: [3], art: 'combust',

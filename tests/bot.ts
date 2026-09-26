@@ -41,6 +41,7 @@ export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
       case 'power':
         return 30;
       case 'skill': {
+        if (/manaShard|manaGeode/.test(card.id)) return 40;
         if (/raise|Raise|boneDragon/.test(card.id)) return c.minions.length < 3 ? 22 : 3;
         if (card.id === 'unholyFrenzy') return c.minions.length >= 2 ? 15 : -1;
         const blockish = /defend|ward|Ward|ironWall|frostArmor|unbreakable|parry|secondWind|mirrorImage/.test(card.id);

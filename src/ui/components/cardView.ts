@@ -5,8 +5,8 @@ import type { CardInst } from '../../game/types';
 import { h } from '../dom';
 import { icon, iconElement } from '../art/icons';
 
-const KEYWORD_LINE = ['exhaust', 'consume', 'fleeting', 'volatile', 'unplayable'];
-const TAG_ICON: Record<string, string> = { exhaust: 'cross', consume: 'drop', fleeting: 'wing', volatile: 'combust' };
+const KEYWORD_LINE = ['innate', 'exhaust', 'consume', 'fleeting', 'volatile', 'unplayable'];
+const TAG_ICON: Record<string, string> = { innate: 'up', exhaust: 'cross', consume: 'drop', fleeting: 'wing', volatile: 'combust' };
 
 /** Glyph kind → icon and the unit shown after its value. */
 const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string }> = {
@@ -19,7 +19,6 @@ const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string }> = {
   chill: { icon: 'snow', unit: 's' },
   slow: { icon: 'hourglass', unit: 's' },
   burn: { icon: 'flame' },
-  draw: { icon: 'cards', sign: '+' },
   str: { icon: 'fist', sign: '+' },
   rage: { icon: 'rage', sign: '+' },
   dodge: { icon: 'mirror' },
@@ -31,6 +30,7 @@ const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string }> = {
   exit: { icon: 'left' },
   clog: { icon: 'slime' },
   soul: { icon: 'ghost', sign: '+' },
+  crystal: { icon: 'crystal', sign: '+' },
   raise: { icon: 'skull', sign: '+' },
   poison: { icon: 'drop' },
   vuln: { icon: 'crack', unit: 's' },
