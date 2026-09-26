@@ -11,13 +11,13 @@ import { openModal, type ModalHandle, type Screen } from '../app';
 import { creature } from '../art/creatures';
 import { icon, INTENT_ICON } from '../art/icons';
 import { cardFace, cardView } from '../components/cardView';
+import { darkEyes, motes } from '../components/decor';
 import { openCardDetail, openHowTo, openSettings, speedSelector } from '../components/modals';
 import { $, centerOf, h, setHtml, setText, toggle } from '../dom';
 import { burst, floatText, haptic, shake } from '../fx/fx';
 
 const LONG_PRESS_MS = 420;
-/** Backdrop ink per enemy, picked so the sprite's own inks contrast with it. */
-const SUN: Record<string, 'y' | 'p' | 'b'> = { goblin: 'p', slime: 'p', skeleton: 'b', lich: 'p' };
+
 const DRAG_THRESHOLD = 10;
 
 type Removal = 'played' | 'expired' | 'stolen' | 'stashed';
@@ -59,7 +59,11 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       <button class="icon-btn speed-btn js-speed" aria-label="${t('combat.speed')}"></button>
     </header>
     <section class="stage">
-      <div class="stage-sun" data-sun="${SUN[enemyDef.id] ?? 'y'}"></div>
+      <div class="stage-floor"></div>
+      ${motes(14)}
+      ${darkEyes([{ x: '6%', y: '14%' }, { x: '84%', y: '44%' }])}
+      <div class="candle l">${icon('flame')}</div><div class="candle r">${icon('flame')}</div>
+      <div class="shade"></div>
       <div class="enemy-wrap">
         <div class="enemy-art">${creature(enemyDef.art)}</div>
         <div class="intent" role="status">
@@ -78,6 +82,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     </section>
     <section class="belt">
       <div class="belt-track"></div>
+      <div class="maw-eyes" aria-hidden="true"><i></i><i></i></div>
       <div class="belt-cards"></div>
     </section>
     <section class="mana-row">${icon('crystal')}<div class="mana-pips"></div><div class="mana-num"></div></section>

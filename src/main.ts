@@ -7,6 +7,7 @@ import './styles/main.css';
 import { setLocale, t } from './core/i18n';
 import { randomSeed } from './core/rng';
 import { setSfxEnabled, unlockAudio } from './audio/sfx';
+import { playMusic, setMusicEnabled, suspendMusic } from './audio/music';
 import { Combat } from './game/combat';
 import { advance, applyCombat, clearRun, combatSetup, currentNode, loadRun, newRun, rollRewards, saveRun, type RunState } from './game/run';
 import { settings } from './game/settings';
@@ -25,6 +26,7 @@ import { titleScreen } from './ui/screens/title';
 let run: RunState | null = null;
 
 function goTitle(): void {
+  playMusic('menu');
   const saved = loadRun();
   show(
     titleScreen({
@@ -55,6 +57,7 @@ function startRun(hero: HeroId): void {
 
 function goJourney(): void {
   if (!run) return goTitle();
+  playMusic('menu');
   saveRun(run);
   show(journeyScreen(run, enterNode, abandon));
 }
@@ -63,9 +66,11 @@ function enterNode(): void {
   if (!run) return;
   const node = currentNode(run);
   if (node.type === 'rest') {
+    playMusic('rest');
     show(restScreen(run, nextNode));
     return;
   }
+  playMusic(node.type === 'boss' ? 'boss' : 'combat');
   const combat = new Combat(combatSetup(run));
   if (import.meta.env.DEV) Object.assign(window, { __combat: combat });
   saveRun(run);
@@ -76,6 +81,7 @@ function afterCombat(combat: Combat): void {
   if (!run) return;
   const r = run;
   applyCombat(r, combat);
+  playMusic('menu');
   const node = currentNode(r);
   if (combat.result === 'lose') {
     clearRun();
@@ -111,6 +117,8 @@ function abandon(): void {
 async function boot(): Promise<void> {
   setLocale(settings.locale);
   setSfxEnabled(settings.sound);
+  setMusicEnabled(settings.music);
+  document.addEventListener('visibilitychange', () => suspendMusic(document.hidden));
   document.documentElement.classList.toggle('reduce-motion', settings.reduceMotion);
   const root = document.getElementById('app')!;
   initApp(root);

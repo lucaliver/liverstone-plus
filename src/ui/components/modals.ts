@@ -1,5 +1,6 @@
 import { availableLocales, getLocale, setLocale, t } from '../../core/i18n';
 import { setSfxEnabled, sfx } from '../../audio/sfx';
+import { setMusicEnabled } from '../../audio/music';
 import { CARDS } from '../../data/cards';
 import { GAME_SPEEDS } from '../../data/config';
 import { saveSettings, settings } from '../../game/settings';
@@ -51,6 +52,10 @@ export function openSettings(onChange?: () => void): ModalHandle {
   const body = h(
     'div',
     null,
+    toggleRow(t('settings.music'), () => settings.music, (v) => {
+      settings.music = v;
+      setMusicEnabled(v);
+    }),
     toggleRow(t('settings.sound'), () => settings.sound, (v) => {
       settings.sound = v;
       setSfxEnabled(v);

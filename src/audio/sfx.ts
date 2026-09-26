@@ -4,8 +4,20 @@
  */
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
+let bus: AudioNode | null = null;
 let noiseBuf: AudioBuffer | null = null;
 let enabled = true;
+const unlockListeners: (() => void)[] = [];
+
+/** Shared audio graph for other modules (music). Null until the first user gesture. */
+export function audioGraph(): { ctx: AudioContext; bus: AudioNode; noise: AudioBuffer } | null {
+  return ctx && bus && noiseBuf ? { ctx, bus, noise: noiseBuf } : null;
+}
+
+export function onAudioUnlock(fn: () => void): void {
+  if (ctx) fn();
+  else unlockListeners.push(fn);
+}
 
 export function setSfxEnabled(on: boolean): void {
   enabled = on;
@@ -20,9 +32,11 @@ export function unlockAudio(): void {
     master.gain.value = 0.55;
     const comp = ctx.createDynamicsCompressor();
     master.connect(comp).connect(ctx.destination);
+    bus = comp;
     noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
     const d = noiseBuf.getChannelData(0);
     for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    unlockListeners.splice(0).forEach((fn) => fn());
   }
   if (ctx.state === 'suspended') void ctx.resume();
 }

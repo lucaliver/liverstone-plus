@@ -5,6 +5,7 @@ import type { Screen } from '../app';
 import { h } from '../dom';
 import { icon } from '../art/icons';
 import { openDeck } from '../components/modals';
+import { motes } from '../components/decor';
 import { runHud } from './journey';
 
 export function restScreen(run: RunState, onDone: () => void): Screen {
@@ -19,7 +20,7 @@ export function restScreen(run: RunState, onDone: () => void): Screen {
     runHud(run),
     h('h1', { class: 'h1', style: { marginTop: '12px' } }, t('rest.title')),
     h('p', { class: 'sub' }, t('rest.desc')),
-    h('div', { class: 'rest-fire', html: `<div class="sun"></div>${icon('campfire')}` }),
+    h('div', { class: 'rest-fire', html: `${motes(16, ['var(--y)', 'var(--p)'])}${icon('campfire')}` }),
     h(
       'div',
       { class: 'rest-options' },

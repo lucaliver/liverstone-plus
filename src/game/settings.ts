@@ -2,6 +2,7 @@ import { load, store } from '../core/save';
 
 export interface Settings {
   sound: boolean;
+  music: boolean;
   speed: number;
   reduceMotion: boolean;
   haptics: boolean;
@@ -11,6 +12,7 @@ export interface Settings {
 
 const defaults: Settings = {
   sound: true,
+  music: true,
   speed: 1,
   reduceMotion: typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches,
   haptics: true,

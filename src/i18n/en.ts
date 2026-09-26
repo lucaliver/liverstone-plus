@@ -28,6 +28,7 @@ const en: Record<string, string> = {
   // ------------------------------------------------------------ settings
   'settings.title': 'Settings',
   'settings.sound': 'Sound effects',
+  'settings.music': 'Music',
   'settings.speed': 'Game speed',
   'settings.motion': 'Reduce motion',
   'settings.haptics': 'Vibration',

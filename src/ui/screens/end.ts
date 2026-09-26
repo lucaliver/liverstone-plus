@@ -5,6 +5,7 @@ import type { Screen } from '../app';
 import { h } from '../dom';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
+import { motes } from '../components/decor';
 
 export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMenu: () => void): Screen {
   const node = currentNode(run);
@@ -13,7 +14,7 @@ export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMe
     'div',
     { class: `screen end ${won ? 'win' : 'lose'}` },
     h('h1', { class: 'h1' }, won ? t('end.victory') : t('end.defeat')),
-    h('div', { class: 'portrait-lg', html: `<div class="sun"></div>${creature(run.hero)}` }),
+    h('div', { class: 'portrait-lg', html: `${motes(10)}${creature(run.hero)}` }),
     h('p', { class: 'sub' }, won ? t('end.victoryDesc') : t('end.defeatDesc', { n: node.floor })),
     h(
       'div',

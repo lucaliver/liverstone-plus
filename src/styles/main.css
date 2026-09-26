@@ -23,6 +23,13 @@
   --green: #2a8a4a;
   --purple: #4a2aa0;
   --muted: #6d6680;
+  /* Night: the dark print the paper pieces sit on */
+  --bg: #241b3b;
+  --bg2: #1a1330;
+  --void: #0c0818;
+  --shadow: #0a0714;
+  --fg: #f6f0e4;
+  --muted-d: #a397c4;
 
   --line: 3px;
   --off: 4px;
@@ -47,8 +54,8 @@ body {
   height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
-  background: #d9cfbb;
-  color: var(--k);
+  background: var(--void);
+  color: var(--fg);
   font-family: var(--font);
   user-select: none;
   -webkit-user-select: none;
@@ -78,7 +85,10 @@ button:focus-visible,
   margin: 0 auto;
   width: var(--app-w);
   overflow: hidden;
-  background: var(--paper);
+  background-color: var(--bg);
+  /* faint violet halftone: the night is printed too */
+  background-image: radial-gradient(circle, #2f2450 30%, transparent 34%);
+  background-size: 6px 6px;
 }
 
 #app::after {
@@ -88,8 +98,8 @@ button:focus-visible,
   inset: 0;
   z-index: 100;
   pointer-events: none;
-  opacity: 0.35;
-  mix-blend-mode: multiply;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .5 0 0 0 0 .45 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -127,7 +137,6 @@ button:focus-visible,
   height: 100vh;
   pointer-events: none;
   z-index: 50;
-  mix-blend-mode: multiply;
   image-rendering: pixelated;
 }
 
@@ -195,7 +204,6 @@ button:focus-visible,
 .pico::before {
   background: var(--ink2, transparent);
   transform: translate(0.09em, 0.09em);
-  mix-blend-mode: multiply;
 }
 
 /* ------------------------------------------------------------------ type */
@@ -207,15 +215,15 @@ button:focus-visible,
   font-size: clamp(24px, 7.2vw, 32px);
   line-height: 1;
   text-transform: uppercase;
-  color: var(--k);
+  color: var(--fg);
   text-shadow: 3px 3px 0 var(--p);
 }
 .sub {
   margin: 6px 0 12px;
   text-align: center;
   font-family: var(--font-ui);
-  font-size: 17px;
-  color: var(--muted);
+  font-size: 18px;
+  color: var(--muted-d);
 }
 .kw {
   font-weight: 700;
@@ -234,7 +242,7 @@ button:focus-visible,
   color: var(--k);
   background: var(--y);
   border: var(--line) solid var(--k);
-  box-shadow: var(--off) var(--off) 0 var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
 }
 .btn:active:not(:disabled) {
   transform: translate(var(--off), var(--off));
@@ -260,6 +268,7 @@ button:focus-visible,
 .btn.block { width: 100%; }
 
 .icon-btn {
+  color: var(--k);
   width: 46px;
   height: 46px;
   display: grid;
@@ -267,7 +276,7 @@ button:focus-visible,
   font-size: 24px;
   background: var(--paper);
   border: var(--line) solid var(--k);
-  box-shadow: 3px 3px 0 var(--k);
+  box-shadow: 3px 3px 0 var(--shadow);
 }
 .icon-btn:active {
   transform: translate(3px, 3px);
@@ -287,7 +296,7 @@ button:focus-visible,
   font-size: clamp(34px, 11vw, 52px);
   line-height: 0.95;
   text-transform: uppercase;
-  color: var(--k);
+  color: var(--fg);
   text-shadow: 4px 4px 0 var(--p), -3px 2px 0 var(--b);
 }
 .logo .plus {
@@ -304,7 +313,7 @@ button:focus-visible,
   margin: 0;
   font-family: var(--font-ui);
   font-size: 18px;
-  color: var(--muted);
+  color: var(--muted-d);
 }
 .title-hero {
   position: relative;
@@ -313,14 +322,6 @@ button:focus-visible,
   min-height: 0;
   display: grid;
   place-items: center;
-}
-.title-hero .sun {
-  position: absolute;
-  width: min(70vw, 320px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--y);
-  box-shadow: 10px 8px 0 var(--p);
 }
 .title-hero .riso {
   width: min(60vw, 272px);
@@ -340,8 +341,8 @@ button:focus-visible,
 }
 .version {
   font-family: var(--font-ui);
-  font-size: 13px;
-  color: var(--muted);
+  font-size: 14px;
+  color: var(--muted-d);
 }
 @keyframes bob {
   50% { transform: translateY(-5px); }
@@ -365,6 +366,7 @@ button:focus-visible,
   padding: 16px 8px 18px 2px;
 }
 .hero-card {
+  color: var(--k);
   display: grid;
   grid-template-columns: 96px 1fr;
   gap: 10px 14px;
@@ -372,7 +374,7 @@ button:focus-visible,
   text-align: left;
   background: var(--paper);
   border: var(--line) solid var(--k);
-  box-shadow: var(--off) var(--off) 0 var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
 }
 .hero-card[aria-pressed='true'] {
   background: var(--y);
@@ -447,6 +449,7 @@ button:focus-visible,
   gap: 10px;
 }
 .chip {
+  color: var(--k);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -456,7 +459,7 @@ button:focus-visible,
   font-size: 20px;
   background: var(--paper);
   border: var(--line) solid var(--k);
-  box-shadow: 3px 3px 0 var(--k);
+  box-shadow: 3px 3px 0 var(--shadow);
 }
 .chip .pico { font-size: 24px; --ink2: var(--y); }
 .chip.hp .pico { color: var(--p); }
@@ -478,7 +481,7 @@ button:focus-visible,
   left: 50%;
   width: 6px;
   transform: translateX(-50%);
-  background: repeating-linear-gradient(180deg, var(--k) 0 6px, transparent 6px 12px);
+  background: repeating-linear-gradient(180deg, var(--muted-d) 0 6px, transparent 6px 12px);
 }
 .node {
   position: relative;
@@ -504,7 +507,8 @@ button:focus-visible,
 .node .label {
   grid-column: 3;
   font-family: var(--font-ui);
-  font-size: 17px;
+  font-size: 19px;
+  color: var(--fg);
   white-space: nowrap;
 }
 .node .num {
@@ -512,7 +516,7 @@ button:focus-visible,
   justify-self: end;
   font-family: var(--font-display);
   font-size: 18px;
-  color: var(--muted);
+  color: var(--muted-d);
 }
 .node.done { opacity: 0.35; }
 .node.current .dot {
@@ -525,7 +529,7 @@ button:focus-visible,
   --ink2: var(--p);
 }
 .node.current .label { font-size: 20px; font-weight: 700; }
-.node.current .num { color: var(--k); }
+.node.current .num { color: var(--fg); }
 .node.elite .dot { color: var(--purple); }
 .node.boss .dot { color: var(--p); }
 .node.rest .dot { color: var(--red); }
@@ -544,9 +548,10 @@ button:focus-visible,
   container-type: inline-size;
   display: flex;
   flex-direction: column;
+  color: var(--k);
   background: var(--paper);
   border: var(--bw) solid var(--k);
-  box-shadow: var(--sh) var(--sh) 0 var(--k);
+  box-shadow: var(--sh) var(--sh) 0 var(--shadow);
 }
 .card[data-cls='warrior'] { --band: var(--p); --band-text: var(--paper); }
 .card[data-cls='mage'] { --band: var(--b); --band-text: var(--paper); }
@@ -705,6 +710,7 @@ button:focus-visible,
 }
 .floor-chip {
   flex: 1;
+  color: var(--fg);
   text-align: center;
   font-family: var(--font-display);
   font-size: 17px;
@@ -714,8 +720,8 @@ button:focus-visible,
 .floor-chip small {
   display: block;
   font-family: var(--font-ui);
-  font-size: 15px;
-  color: var(--muted);
+  font-size: 17px;
+  color: var(--muted-d);
   text-transform: none;
 }
 .speed-btn {
@@ -734,28 +740,85 @@ button:focus-visible,
   justify-content: flex-end;
   padding: 0 12px 10px;
 }
-.stage-sun {
+.stage-floor {
+  /* a strip of dithered stone at the enemy's feet */
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 84px;
+  height: 22px;
+  pointer-events: none;
+  background: conic-gradient(#342859 25%, transparent 0 50%, #342859 0 75%, transparent 0) 0 0 / 6px 6px;
+  border-top: 3px solid #342859;
+}
+.shade {
+  /* pixel shadow under the enemy (stepped, not round) */
   position: absolute;
   left: 50%;
-  top: 44%;
-  width: min(60vw, 270px);
-  aspect-ratio: 1;
-  translate: -50% -50%;
-  border-radius: 50%;
+  bottom: 92px;
+  width: 150px;
+  height: 14px;
+  translate: -50% 0;
+  background: var(--void);
+  clip-path: polygon(10% 0, 90% 0, 90% 25%, 100% 25%, 100% 75%, 90% 75%, 90% 100%, 10% 100%, 10% 75%, 0 75%, 0 25%, 10% 25%);
+  opacity: 0.8;
+}
+.candle {
+  position: absolute;
+  z-index: 1;
+  bottom: 104px;
+  width: 12px;
+  height: 34px;
+  background: var(--paper2);
+  box-shadow: 3px 3px 0 var(--void);
+  pointer-events: none;
+}
+.candle.l { left: 10%; }
+.candle.r { right: 10%; height: 24px; }
+.candle .pico {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  font-size: 22px;
+  translate: -50% 2px;
+  color: var(--y);
+  --ink2: var(--p);
+  animation: flicker 0.36s steps(1) infinite;
+}
+@keyframes flicker {
+  50% { transform: scaleX(-1) translateY(-1px); }
+}
+.motes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.motes i {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  animation: mote var(--d, 8s) steps(24) infinite;
+  animation-delay: var(--dl, 0s);
+  opacity: 0;
+}
+@keyframes mote {
+  10% { opacity: 0.9; }
+  90% { opacity: 0.9; }
+  100% { transform: translate(var(--dx, 10px), -140px); opacity: 0; }
+}
+.dark-eyes {
+  position: absolute;
+  display: flex;
+  gap: 6px;
+  pointer-events: none;
+  animation: blink var(--d, 4s) steps(1) infinite;
+  animation-delay: var(--dl, 0s);
+}
+.dark-eyes i {
+  width: 4px;
+  height: 4px;
   background: var(--y);
-  box-shadow: 8px 6px 0 var(--p);
-}
-.stage-sun[data-sun='p'] {
-  background-color: var(--paper);
-  background-image: radial-gradient(circle, var(--p) 44%, transparent 48%);
-  background-size: 8px 8px;
-  box-shadow: 8px 6px 0 var(--b);
-}
-.stage-sun[data-sun='b'] {
-  background-color: var(--paper);
-  background-image: radial-gradient(circle, #6f9be6 46%, transparent 50%);
-  background-size: 8px 8px;
-  box-shadow: 8px 6px 0 var(--p);
 }
 .stage.drop-play::after {
   content: '';
@@ -845,6 +908,7 @@ button:focus-visible,
   font-family: var(--font-ui);
 }
 .intent .bubble {
+  color: var(--k);
   position: relative;
   width: 74px;
   height: 74px;
@@ -853,7 +917,7 @@ button:focus-visible,
   overflow: hidden;
   background: var(--paper);
   border: var(--line) solid var(--k);
-  box-shadow: 4px 4px 0 var(--k);
+  box-shadow: 4px 4px 0 var(--shadow);
 }
 .intent .timer {
   position: absolute;
@@ -878,11 +942,10 @@ button:focus-visible,
 }
 .intent .lbl {
   padding: 1px 6px 2px;
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 17px;
   white-space: nowrap;
   color: var(--paper);
-  background: var(--k);
+  background: var(--p);
 }
 .intent[data-intent='attack'] .pico,
 .intent[data-intent='charge'] .pico { color: var(--p); }
@@ -915,6 +978,7 @@ button:focus-visible,
   gap: 6px;
 }
 .enemy-name {
+  color: var(--k);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1011,6 +1075,7 @@ button:focus-visible,
   min-height: 26px;
 }
 .status {
+  color: var(--k);
   display: flex;
   align-items: center;
   gap: 3px;
@@ -1034,24 +1099,65 @@ button:focus-visible,
   z-index: 2;
 }
 .belt-track {
+  /* The spectral stream: a violet current of drifting ink dots between pixel-toothed banks. */
   position: absolute;
   inset: 0;
-  background-color: var(--b);
-  background-image: repeating-linear-gradient(90deg, transparent 0 22px, #0d3a8a 22px 26px);
-  background-position: var(--belt-x, 0) 0;
-  border-top: var(--line) solid var(--k);
-  border-bottom: var(--line) solid var(--k);
+  background-color: #2e1a52;
+  background-image:
+    radial-gradient(circle, #ff3d9a 14%, transparent 17%),
+    radial-gradient(circle, #3a3a9a 28%, transparent 32%);
+  background-size: 32px 28px, 10px 10px;
+  background-position: var(--belt-x, 0) 4px, calc(var(--belt-x, 0px) * 0.6) 0;
+  border-top: var(--line) solid var(--void);
+  border-bottom: var(--line) solid var(--void);
+}
+.belt-track::after {
+  /* pixel teeth on both banks */
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  background:
+    conic-gradient(from 135deg at 50% 0, var(--void) 90deg, transparent 0) 0 0 / 16px 8px repeat-x,
+    conic-gradient(from -45deg at 50% 100%, var(--void) 90deg, transparent 0) 0 100% / 16px 8px repeat-x;
 }
 .belt-track::before {
-  /* danger stripes on the exit side */
+  /* the maw: cards that reach the left edge are swallowed by the dark (solid, then dithered) */
   content: '';
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 16px;
-  background: repeating-linear-gradient(45deg, var(--y) 0 6px, var(--k) 6px 12px);
-  border-right: var(--line) solid var(--k);
+  width: 46px;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--void) 20px, transparent 20px),
+    conic-gradient(var(--void) 25%, transparent 0 50%, var(--void) 0 75%, transparent 0) 0 0 / 6px 6px;
+}
+.maw-eyes {
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  z-index: 4;
+  display: flex;
+  gap: 5px;
+  translate: 0 -50%;
+  pointer-events: none;
+  animation: blink 3.4s steps(1) infinite;
+}
+.maw-eyes i {
+  width: 5px;
+  height: 5px;
+  background: var(--p);
+  box-shadow: 0 -5px 0 var(--p);
+}
+@keyframes blink {
+  0%, 92%, 100% { opacity: 1; }
+  94%, 98% { opacity: 0; }
 }
 .belt-cards {
   position: absolute;
@@ -1079,7 +1185,7 @@ button:focus-visible,
 }
 .card.dragging {
   z-index: 200 !important;
-  box-shadow: calc(var(--sh) * 2) calc(var(--sh) * 2) 0 var(--k);
+  box-shadow: calc(var(--sh) * 2) calc(var(--sh) * 2) 0 var(--shadow);
 }
 .card.nope { animation: nope 0.24s steps(4); }
 @keyframes nope {
@@ -1107,7 +1213,7 @@ button:focus-visible,
 }
 .mana-row > .pico {
   font-size: 26px;
-  color: var(--b);
+  color: #5a8ef0;
   --ink2: var(--p);
 }
 .mana-pips {
@@ -1120,8 +1226,8 @@ button:focus-visible,
   flex: 1;
   max-width: 34px;
   height: 22px;
-  background: var(--paper);
-  border: var(--line) solid var(--k);
+  background: var(--bg2);
+  border: var(--line) solid var(--void);
   overflow: hidden;
 }
 .pip::before {
@@ -1130,7 +1236,7 @@ button:focus-visible,
   inset: 0;
   transform-origin: left;
   transform: scaleX(var(--f, 0));
-  background-image: radial-gradient(circle, var(--b) 36%, transparent 40%);
+  background-image: radial-gradient(circle, #5a8ef0 40%, transparent 44%);
   background-size: 4px 4px;
 }
 .pip.full::before {
@@ -1147,15 +1253,15 @@ button:focus-visible,
 }
 .mana-num {
   min-width: 56px;
+  color: #8fb6ff;
   text-align: right;
   font-family: var(--font-ui);
   font-size: 26px;
   line-height: 1;
-  color: var(--b);
 }
 .mana-num small {
-  font-size: 17px;
-  color: var(--muted);
+  font-size: 18px;
+  color: var(--muted-d);
 }
 
 /* action row: sleeve + piles + ability */
@@ -1182,8 +1288,8 @@ button:focus-visible,
   gap: 4px;
   font-family: var(--font-ui);
   font-size: 15px;
-  color: var(--muted);
-  border: var(--line) dashed var(--muted);
+  color: var(--muted-d);
+  border: var(--line) dashed var(--muted-d);
   touch-action: none;
 }
 .sleeve-slot > .pico { font-size: 28px; }
@@ -1194,6 +1300,7 @@ button:focus-visible,
   color: var(--k);
 }
 .sleeve-slot .card {
+  color: var(--k);
   position: absolute;
   left: calc(var(--line) * -1);
   top: calc(var(--line) * -1);
@@ -1213,11 +1320,12 @@ button:focus-visible,
   display: flex;
   align-items: center;
   gap: 5px;
+  color: var(--fg);
   font-family: var(--font-ui);
   font-size: 19px;
 }
-.pile .pico { font-size: 24px; --ink2: var(--y); }
-.pile.discard { color: var(--muted); }
+.pile .pico { font-size: 24px; --ink2: var(--p); }
+.pile.discard { color: var(--muted-d); }
 
 .ability-btn {
   position: relative;
@@ -1229,7 +1337,7 @@ button:focus-visible,
   overflow: hidden;
   background: var(--paper);
   border: var(--line) solid var(--k);
-  box-shadow: var(--off) var(--off) 0 var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
 }
 .ability-btn .charge {
   position: absolute;
@@ -1277,8 +1385,8 @@ button:focus-visible,
   align-items: center;
   gap: 10px;
   padding: 8px 12px calc(var(--safe-b) + 10px);
-  border-top: var(--line) solid var(--k);
-  background: var(--paper2);
+  border-top: var(--line) solid var(--void);
+  background: var(--bg2);
 }
 .hero-portrait {
   flex: none;
@@ -1304,6 +1412,7 @@ button:focus-visible,
   display: flex;
   align-items: center;
   gap: 8px;
+  color: var(--fg);
   font-family: var(--font-ui);
   font-size: 15px;
   text-transform: uppercase;
@@ -1311,8 +1420,8 @@ button:focus-visible,
 .resource .rbar {
   flex: 1;
   height: 12px;
-  background: var(--paper);
-  border: 2px solid var(--k);
+  background: var(--void);
+  border: 2px solid var(--void);
   overflow: hidden;
 }
 .resource .rfill {
@@ -1437,8 +1546,8 @@ button:focus-visible,
   align-items: center;
   justify-content: center;
   padding: calc(var(--safe-t) + 16px) 16px calc(var(--safe-b) + 16px);
-  background-color: #f6f0e4e0;
-  background-image: radial-gradient(circle, #1b183038 30%, transparent 34%);
+  background-color: #0c0818d8;
+  background-image: radial-gradient(circle, #ff3d9a22 30%, transparent 34%);
   background-size: 6px 6px;
   animation: fade 0.15s steps(2) both;
 }
@@ -1454,7 +1563,8 @@ button:focus-visible,
   padding: 18px 16px 16px;
   background: var(--paper);
   border: var(--line) solid var(--k);
-  box-shadow: 8px 8px 0 var(--b);
+  color: var(--k);
+  box-shadow: 8px 8px 0 var(--p);
   animation: modal-in 0.2s steps(3) both;
 }
 @keyframes modal-in {
@@ -1486,6 +1596,7 @@ button:focus-visible,
 }
 
 .setting {
+  color: var(--k);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1649,14 +1760,6 @@ button:focus-visible,
   display: grid;
   place-items: center;
 }
-.rest-fire .sun {
-  position: absolute;
-  width: min(60vw, 260px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--y);
-  box-shadow: 8px 6px 0 var(--p);
-}
 .rest-fire .pico {
   font-size: min(44vw, 190px);
   color: var(--red);
@@ -1669,6 +1772,7 @@ button:focus-visible,
   gap: 14px;
 }
 .option {
+  color: var(--k);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1678,7 +1782,7 @@ button:focus-visible,
   text-align: center;
   background: var(--paper);
   border: var(--line) solid var(--k);
-  box-shadow: var(--off) var(--off) 0 var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
 }
 .option:active:not(:disabled) { transform: translate(var(--off), var(--off)); box-shadow: none; }
 .option:disabled { opacity: 0.4; box-shadow: none; }
@@ -1708,14 +1812,6 @@ button:focus-visible,
   display: grid;
   place-items: center;
 }
-.end .portrait-lg .sun {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: var(--y);
-  box-shadow: 6px 5px 0 var(--p);
-}
-.end.lose .portrait-lg .sun { background: var(--paper2); box-shadow: 6px 5px 0 var(--k); }
 .end .portrait-lg .riso { width: 160px; height: 160px; }
 .end.lose .portrait-lg .riso { transform: rotate(90deg) translateX(20px); }
 .stats {
@@ -1730,6 +1826,8 @@ button:focus-visible,
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
+  color: var(--k);
+  background: var(--paper);
   font-family: var(--font-ui);
   font-size: 18px;
   border: 2px solid var(--k);
