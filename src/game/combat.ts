@@ -391,7 +391,18 @@ export class Combat {
 
   private tickBelt(dt: number): void {
     const move = (dt / CONFIG.beltTime) * this.beltRate();
-    for (const b of this.belt) b.pos += move;
+    // Front cards first, so each card knows where the one ahead of it is.
+    const byFront = [...this.belt].sort((a, b) => b.pos - a.pos);
+    byFront.forEach((b, i) => {
+      b.pos += move;
+      // Entry boost: a card still entering slides in fast while there's free room ahead,
+      // but never closer than the normal spacing and never past full visibility.
+      if (b.pos < CONFIG.cardWidth) {
+        const ahead = byFront[i - 1];
+        const limit = Math.min(CONFIG.cardWidth, ahead ? ahead.pos - CONFIG.spacing : Infinity);
+        if (b.pos < limit) b.pos = Math.min(limit, b.pos + move * (CONFIG.entryBoost - 1));
+      }
+    });
     // Expire cards that fell off the left edge.
     for (let i = this.belt.length - 1; i >= 0; i--) {
       const b = this.belt[i];
@@ -408,21 +419,11 @@ export class Combat {
       else this.pendingDraws = 0;
     } else if (gap >= CONFIG.spacing) {
       this.spawnCard(0);
-    } else if (this.belt.length < CONFIG.minBelt && this.refillT <= 0) {
-      // Sparse belt: deal the next card into the first free visible spot instead of making the player wait.
-      const spot = this.freeBeltSpot();
-      if (spot !== null) {
-        this.spawnCard(spot);
-        this.refillT = CONFIG.refillInterval;
-      }
+    } else if (this.belt.length < CONFIG.minBelt && this.refillT <= 0 && gap >= CONFIG.drawSpacing) {
+      // Sparse belt: feed the next card early; the entry boost slides it into view.
+      this.spawnCard(0);
+      this.refillT = CONFIG.refillInterval;
     }
-  }
-
-  private freeBeltSpot(): number | null {
-    for (let p = CONFIG.cardWidth; p <= 0.6; p += 0.025) {
-      if (this.belt.every((b) => Math.abs(b.pos - p) >= CONFIG.spacing)) return p;
-    }
-    return null;
   }
 
   private spawnCard(pos: number, card?: CombatCard): boolean {

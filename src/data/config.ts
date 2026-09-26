@@ -22,6 +22,8 @@ export const CONFIG = {
   /** Below this many cards the belt refills faster, so fast play isn't punished with an empty belt. */
   minBelt: 3,
   refillInterval: 0.55,
+  /** Speed multiplier for a card sliding in while there's room ahead of it. */
+  entryBoost: 5,
 } as const;
 
 /** Where cards enter (0) and expire, in belt-distance units. */

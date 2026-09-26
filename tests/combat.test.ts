@@ -136,6 +136,26 @@ describe('combat engine', () => {
     expect(hp - c.enemy.hp).toBe(5 + 6);
   });
 
+  it('played cards are never replaced in place: new cards always enter from the right', () => {
+    const c = setup({ deck: deckOf(['strike', 'strike', 'strike', 'strike', 'strike', 'strike']) });
+    c.hero.maxMana = 10;
+    run(c, CONFIG.introTime + 3);
+    const spawnPositions: number[] = [];
+    c.events.on((e) => {
+      if (e.type === 'cardSpawn') spawnPositions.push(c.belt.find((b) => b.card.uid === e.card.uid)!.pos);
+    });
+    for (let i = 0; i < 20; i++) {
+      c.hero.mana = 10;
+      if (c.belt[0]) c.playCard(c.belt[0].card.uid);
+      run(c, 0.3);
+    }
+    expect(spawnPositions.length).toBeGreaterThan(3);
+    expect(spawnPositions.every((p) => p === 0)).toBe(true);
+    // Cards keep their spacing (no overlap from the entry boost).
+    const sorted = c.belt.map((b) => b.pos).sort((a, b) => a - b);
+    for (let i = 1; i < sorted.length; i++) expect(sorted[i] - sorted[i - 1]).toBeGreaterThanOrEqual(CONFIG.drawSpacing - 1e-9);
+  });
+
   it('temp curses never collide with deck uids', () => {
     const c = setup({ enemy: ENEMIES.slime });
     c.addTempCard('slime', 'discard');
