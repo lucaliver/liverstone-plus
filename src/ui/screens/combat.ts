@@ -1,0 +1,795 @@
+import { t } from '../../core/i18n';
+import { sfx, type SoundId } from '../../audio/sfx';
+import { CARDS } from '../../data/cards';
+import { CONFIG, GAME_SPEEDS } from '../../data/config';
+import { STATUSES, STATUS_ORDER } from '../../data/statuses';
+import type { Combat, Fighter } from '../../game/combat';
+import { currentNode, totalFloors, type RunState } from '../../game/run';
+import { saveSettings, settings } from '../../game/settings';
+import type { CombatCard, CombatEvent, MoveDef, Side } from '../../game/types';
+import { openModal, type ModalHandle, type Screen } from '../app';
+import { creature } from '../art/creatures';
+import { icon, INTENT_ICON } from '../art/icons';
+import { cardText, cardView } from '../components/cardView';
+import { openCardDetail, openHowTo, openSettings, speedSelector } from '../components/modals';
+import { $, centerOf, h, setHtml, setText, toggle } from '../dom';
+import { burst, floatText, haptic, shake } from '../fx/fx';
+
+const RING_R = 38;
+const RING_C = 2 * Math.PI * RING_R;
+const LONG_PRESS_MS = 420;
+const DRAG_THRESHOLD = 10;
+
+type Removal = 'played' | 'expired' | 'stolen' | 'stashed';
+
+interface CardEl {
+  el: HTMLDivElement;
+  card: CombatCard;
+  desc: HTMLElement;
+}
+
+interface Drag {
+  uid: number;
+  el: HTMLElement;
+  from: 'belt' | 'sleeve';
+  pointerId: number;
+  startX: number;
+  startY: number;
+  offX: number;
+  offY: number;
+  moved: boolean;
+  timer: number;
+}
+
+export interface CombatCallbacks {
+  onEnd: (c: Combat) => void;
+  onQuit: () => void;
+}
+
+export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks): Screen {
+  const node = currentNode(run);
+  const enemyDef = combat.enemy.def;
+  const heroId = run.hero;
+
+  const el = h('div', { class: 'screen combat', 'data-hero': heroId, style: { '--hero-color': combat.heroDef.color } as never });
+  el.innerHTML = `
+    <div class="bg-dungeon"><div class="torch l"></div><div class="torch r"></div></div>
+    <header class="topbar">
+      <button class="icon-btn js-pause" aria-label="${t('combat.paused')}">${icon('pause')}</button>
+      <div class="floor-chip">${t('common.floorOf', { n: node.floor, total: totalFloors(run) })}<small>${t(`journey.node.${node.type}`)}</small></div>
+      <button class="icon-btn speed-btn js-speed" aria-label="${t('combat.speed')}"></button>
+    </header>
+    <section class="enemy-stage">
+      <div class="enemy-wrap">
+        <div class="enemy-art">${creature(enemyDef.art)}</div>
+        <div class="intent" role="status">
+          <svg class="ring" viewBox="0 0 84 84"><circle class="track" cx="42" cy="42" r="${RING_R}"/><circle class="prog" cx="42" cy="42" r="${RING_R}" stroke-dasharray="${RING_C}"/></svg>
+          <div class="js-intent-ico"></div><div class="val"></div><div class="lbl"></div>
+        </div>
+      </div>
+      <div class="enemy-name">${t(`enemy.${enemyDef.id}.name`)}${enemyDef.tier !== 'normal' ? `<span class="tier ${enemyDef.tier}">${t(`journey.node.${enemyDef.tier}`)}</span>` : ''}</div>
+      <div class="enemy-bars">
+        <div class="block-chip off js-eblock">${icon('shield')}<b></b></div>
+        <div class="bar js-ehp"><div class="ghost"></div><div class="fill"></div><div class="txt"></div></div>
+      </div>
+      <div class="statuses js-estatus"></div>
+    </section>
+    <section class="hero-panel">
+      <div class="hero-portrait">${creature(heroId)}</div>
+      <div class="hero-info">
+        <div class="row">
+          <div class="block-chip off js-hblock">${icon('shield')}<b></b></div>
+          <div class="bar js-hhp"><div class="ghost"></div><div class="fill"></div><div class="txt"></div></div>
+        </div>
+        <div class="resource"><span class="js-res-lbl"></span><div class="bar" style="flex:1"><div class="fill js-res"></div></div><span class="weave-badge off js-weave"></span></div>
+        <div class="statuses js-hstatus"></div>
+      </div>
+      <button class="ability-btn js-ability" aria-label="${t(`hero.${heroId}.ability`)}">
+        <div class="fillc"></div>${icon(heroId === 'warrior' ? 'rage' : 'hourglass')}<span class="albl">${t(`hero.${heroId}.ability`)}</span>
+      </button>
+    </section>
+    <section class="mana-row"><div class="mana-pips"></div><div class="mana-num"></div></section>
+    <section class="sleeve-row">
+      <div class="js-sleeve" style="display:flex;gap:10px"></div>
+      <div class="piles">
+        <div class="pile" title="${t('combat.drawPile')}">${icon('cards')}<span class="js-draw"></span></div>
+        <div class="pile" title="${t('combat.discardPile')}" style="opacity:.7">${icon('cards')}<span class="js-discard"></span></div>
+      </div>
+    </section>
+    <section class="belt">
+      <div class="belt-track"></div>
+      <div class="belt-cards"></div>
+    </section>`;
+
+  // ---------------------------------------------------------------- refs
+  const r = {
+    enemyStage: $('.enemy-stage', el),
+    enemyArt: $('.enemy-art', el),
+    intent: $('.intent', el),
+    intentIco: $('.js-intent-ico', el),
+    intentVal: $('.intent .val', el),
+    intentLbl: $('.intent .lbl', el),
+    ringProg: $<SVGCircleElement>('.ring .prog', el),
+    eHp: $('.js-ehp', el),
+    eBlock: $('.js-eblock', el),
+    eStatus: $('.js-estatus', el),
+    hHp: $('.js-hhp', el),
+    hBlock: $('.js-hblock', el),
+    hStatus: $('.js-hstatus', el),
+    portrait: $('.hero-portrait', el),
+    resLbl: $('.js-res-lbl', el),
+    res: $('.js-res', el),
+    weave: $('.js-weave', el),
+    ability: $<HTMLButtonElement>('.js-ability', el),
+    manaRow: $('.mana-row', el),
+    pips: $('.mana-pips', el),
+    manaNum: $('.mana-num', el),
+    sleeve: $('.js-sleeve', el),
+    draw: $('.js-draw', el),
+    discard: $('.js-discard', el),
+    belt: $('.belt', el),
+    track: $('.belt-track', el),
+    beltCards: $('.belt-cards', el),
+    speed: $<HTMLButtonElement>('.js-speed', el),
+  };
+
+  let paused = false;
+  let pauseModal: ModalHandle | null = null;
+  let ended = false;
+  let beltW = 0;
+  let beltOffset = 0;
+  let frameNo = 0;
+  let lastMove: MoveDef | null = null;
+  let lastMaxMana = -1;
+  let lastMana = combat.hero.mana;
+  const statusSig: Record<Side, string> = { hero: '', enemy: '' };
+  const beltEls = new Map<number, CardEl>();
+  const removals = new Map<number, Removal>();
+  const sleeveEls: (CardEl | null)[] = combat.sleeve.map(() => null);
+  const slotHint = `${icon('hand')}<span>${t('combat.sleeveHint')}</span>`;
+  const slotEls: HTMLElement[] = combat.sleeve.map((_, i) => h('div', { class: 'sleeve-slot', 'data-slot': i, html: slotHint }));
+  r.sleeve.append(...slotEls);
+  let drag: Drag | null = null;
+
+  // ---------------------------------------------------------------- layout
+  const layout = (): void => {
+    beltW = r.belt.clientWidth || el.clientWidth;
+    el.style.setProperty('--cw-belt', `${Math.round(beltW * CONFIG.cardWidth)}px`);
+  };
+
+  // ---------------------------------------------------------------- helpers
+  const retrigger = (target: Element, cls: string): void => {
+    target.classList.remove(cls);
+    void (target as HTMLElement).offsetWidth;
+    target.classList.add(cls);
+  };
+  const enemyPoint = (): { x: number; y: number } => {
+    const rc = r.enemyArt.getBoundingClientRect();
+    return { x: rc.left + rc.width / 2, y: rc.top + rc.height * 0.45 };
+  };
+  const heroPoint = (): { x: number; y: number } => centerOf(r.portrait);
+  const pointOf = (side: Side): { x: number; y: number } => (side === 'enemy' ? enemyPoint() : heroPoint());
+
+  const toast = (text: string): void => {
+    el.querySelector('.hint-toast')?.remove();
+    const tEl = h('div', { class: 'hint-toast' }, text);
+    tEl.addEventListener('animationend', () => tEl.remove());
+    el.append(tEl);
+  };
+  const banner = (text: string, bad = false): void => {
+    const b = h('div', { class: `banner ${bad ? 'bad' : ''}` }, text);
+    b.addEventListener('animationend', () => b.remove());
+    el.append(b);
+  };
+
+  const setPaused = (p: boolean): void => {
+    paused = p;
+  };
+
+  // ---------------------------------------------------------------- events
+  const SOUND_FOR_KIND: Record<string, SoundId> = { slash: 'slash', blunt: 'blunt', fire: 'fire', ice: 'ice', arcane: 'arcane', thorns: 'slash', claw: 'enemyHit' };
+
+  const onEvent = (e: CombatEvent): void => {
+    switch (e.type) {
+      case 'damage': {
+        const p = pointOf(e.target);
+        const delay = e.hitIndex * 90;
+        if (e.amount > 0) {
+          const big = e.amount >= 15;
+          floatText(p.x, p.y, `${e.amount}`, `${e.target === 'hero' ? 'hurt' : 'dmg'} ${big ? 'big' : ''}`, delay);
+          setTimeout(() => burst(e.kind, p.x, p.y, e.source === 'dot' ? 8 : big ? 30 : 18), delay);
+        }
+        if (e.blocked > 0) {
+          floatText(p.x + 30, p.y - 20, `🛡${e.blocked}`, 'blocked', delay);
+          sfx('blocked');
+        }
+        if (e.target === 'enemy') {
+          if (e.amount > 0) retrigger(r.enemyArt, 'hit');
+          if (e.source !== 'dot') sfx(SOUND_FOR_KIND[e.kind] ?? 'blunt');
+          if (e.amount >= 15) shake('small');
+        } else if (e.source !== 'dot' || e.amount > 0) {
+          if (e.amount > 0) {
+            retrigger(r.portrait, 'hurt');
+            shake(e.amount >= 12 ? 'big' : 'small');
+            haptic(e.amount >= 12 ? 60 : 25);
+          }
+          sfx('enemyHit');
+        }
+        break;
+      }
+      case 'heal': {
+        const p = pointOf(e.target);
+        floatText(p.x, p.y, `+${e.amount}`, 'heal');
+        burst('heal', p.x, p.y, 16);
+        sfx('heal');
+        break;
+      }
+      case 'block': {
+        const p = pointOf(e.target);
+        floatText(p.x, p.y - 10, `+${e.amount}`, 'block');
+        burst('block', p.x, p.y, 10);
+        sfx('block');
+        retrigger(e.target === 'hero' ? r.hBlock : r.eBlock, 'pop');
+        break;
+      }
+      case 'status': {
+        const def = STATUSES[e.id];
+        const p = pointOf(e.target);
+        floatText(p.x, p.y - 36, t(`status.${e.id}`), `status ${def.good ? 'good' : 'bad'}`);
+        sfx(def.good ? 'status' : 'debuff');
+        if (e.id === 'burn') burst('fire', p.x, p.y, 10);
+        if (e.id === 'chill' || e.id === 'frozen') burst('ice', p.x, p.y, 14);
+        break;
+      }
+      case 'text': {
+        const p = pointOf(e.target);
+        floatText(p.x, p.y - 50, t(e.key), 'text');
+        break;
+      }
+      case 'cantAfford': {
+        const ce = beltEls.get(e.card.uid) ?? sleeveEls.find((s) => s?.card.uid === e.card.uid);
+        if (ce) retrigger(ce.el, 'nope');
+        retrigger(r.manaRow, 'flash');
+        toast(t('combat.noMana'));
+        sfx('error');
+        haptic(15);
+        break;
+      }
+      case 'cardPlayed':
+        removals.set(e.card.uid, 'played');
+        sfx('cardPlay');
+        break;
+      case 'cardExpired':
+        removals.set(e.card.uid, 'expired');
+        sfx('cardExpire');
+        break;
+      case 'cardStolen': {
+        removals.set(e.card.uid, 'stolen');
+        const p = enemyPoint();
+        floatText(p.x, p.y - 60, t('combat.stolen'), 'text');
+        sfx('steal');
+        break;
+      }
+      case 'cardStashed':
+        removals.set(e.card.uid, 'stashed');
+        sfx('stash');
+        break;
+      case 'cardSpawn':
+        sfx('cardSpawn');
+        break;
+      case 'curseAdded': {
+        const p = enemyPoint();
+        burst('curse', p.x, p.y, 20);
+        sfx('curse');
+        break;
+      }
+      case 'reshuffle': {
+        const p = centerOf(r.draw);
+        floatText(p.x - 30, p.y, t('combat.reshuffle'), 'status good');
+        sfx('reshuffle');
+        break;
+      }
+      case 'enemyAct':
+        if (e.move.dmg) retrigger(r.enemyArt, 'lunge');
+        else if (e.move.intent !== 'flee') retrigger(r.enemyArt, 'cast');
+        break;
+      case 'mana': {
+        const p = centerOf(r.manaNum);
+        floatText(p.x, p.y - 10, `+${e.amount}`, 'mana');
+        burst('mana', p.x, p.y, 10);
+        sfx('mana');
+        break;
+      }
+      case 'manaDrain':
+        retrigger(r.manaRow, 'flash');
+        break;
+      case 'ability': {
+        const f = h('div', { class: 'ability-flash' });
+        f.addEventListener('animationend', () => f.remove());
+        el.append(f);
+        banner(t(`hero.${heroId}.ability`));
+        sfx('ability');
+        haptic([20, 40, 20]);
+        break;
+      }
+      case 'enrage': {
+        const p = enemyPoint();
+        floatText(p.x, p.y - 70, t('combat.enraged'), 'status bad');
+        burst('blood', p.x, p.y, 30, 1.4);
+        sfx('enrage');
+        shake('big');
+        break;
+      }
+      case 'end':
+        finish(e.result);
+        break;
+      default:
+        break;
+    }
+  };
+  const unsub = combat.events.on(onEvent);
+
+  // ---------------------------------------------------------------- end of combat
+  const finish = (result: 'win' | 'lose' | 'fled'): void => {
+    if (ended) return;
+    ended = true;
+    cancelDrag();
+    if (result === 'win') {
+      r.enemyArt.classList.add('dead');
+      const p = enemyPoint();
+      burst('gold', p.x, p.y, 40, 1.5);
+      banner(t('reward.victory'));
+      sfx('victory');
+    } else if (result === 'fled') {
+      r.enemyArt.classList.add('fleeing');
+      banner(t('reward.fled'), true);
+      sfx('steal');
+    } else {
+      banner(t('end.defeat'), true);
+      sfx('defeat');
+      haptic([60, 60, 120]);
+    }
+    setTimeout(() => cb.onEnd(combat), 1500);
+  };
+
+  // ---------------------------------------------------------------- input
+  const playUid = (uid: number): void => {
+    if (paused || ended) return;
+    combat.playCard(uid);
+  };
+
+  const slotAt = (x: number, y: number): number => {
+    for (let i = 0; i < slotEls.length; i++) {
+      const rc = slotEls[i].getBoundingClientRect();
+      if (x >= rc.left - 14 && x <= rc.right + 14 && y >= rc.top - 20 && y <= rc.bottom + 14) return i;
+    }
+    return -1;
+  };
+
+  const cancelDrag = (): void => {
+    if (!drag) return;
+    clearTimeout(drag.timer);
+    drag.el.classList.remove('dragging');
+    if (drag.from === 'sleeve') drag.el.style.transform = '';
+    slotEls.forEach((s) => s.classList.remove('target'));
+    drag = null;
+  };
+
+  const onDown = (ev: PointerEvent, from: 'belt' | 'sleeve'): void => {
+    if (paused || ended || drag) return;
+    const cardEl = (ev.target as Element).closest<HTMLElement>('.card');
+    if (!cardEl) return;
+    const uid = Number(cardEl.dataset.uid);
+    const rc = cardEl.getBoundingClientRect();
+    cardEl.setPointerCapture(ev.pointerId);
+    drag = {
+      uid,
+      el: cardEl,
+      from,
+      pointerId: ev.pointerId,
+      startX: ev.clientX,
+      startY: ev.clientY,
+      offX: ev.clientX - rc.left,
+      offY: ev.clientY - rc.top,
+      moved: false,
+      timer: window.setTimeout(() => {
+        if (!drag || drag.moved) return;
+        const card = findCard(uid);
+        cancelDrag();
+        if (!card) return;
+        sfx('tap');
+        setPaused(true);
+        openCardDetail(card, () => setPaused(!!pauseModal));
+      }, LONG_PRESS_MS),
+    };
+  };
+
+  const onMove = (ev: PointerEvent): void => {
+    if (!drag || ev.pointerId !== drag.pointerId) return;
+    const dx = ev.clientX - drag.startX;
+    const dy = ev.clientY - drag.startY;
+    if (!drag.moved && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
+      drag.moved = true;
+      clearTimeout(drag.timer);
+      drag.el.classList.add('dragging');
+    }
+    if (!drag.moved) return;
+    if (drag.from === 'belt') {
+      const base = r.beltCards.getBoundingClientRect();
+      const tilt = Math.max(-12, Math.min(12, ev.movementX * 1.5));
+      drag.el.style.transform = `translate3d(${ev.clientX - base.left - drag.offX}px, ${ev.clientY - base.top - drag.offY}px, 0) scale(1.08) rotate(${tilt}deg)`;
+      const slot = slotAt(ev.clientX, ev.clientY);
+      slotEls.forEach((s, i) => toggle(s, 'target', i === slot));
+    } else {
+      drag.el.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.08)`;
+    }
+  };
+
+  const onUp = (ev: PointerEvent): void => {
+    if (!drag || ev.pointerId !== drag.pointerId) return;
+    const d = drag;
+    clearTimeout(d.timer);
+    if (!d.moved) {
+      cancelDrag();
+      playUid(d.uid);
+      return;
+    }
+    const slot = d.from === 'belt' ? slotAt(ev.clientX, ev.clientY) : -1;
+    const stageBottom = r.enemyStage.getBoundingClientRect().bottom;
+    cancelDrag();
+    if (slot >= 0) combat.stash(d.uid, slot);
+    else if (ev.clientY < stageBottom) playUid(d.uid);
+  };
+
+  const findCard = (uid: number): CombatCard | null =>
+    combat.belt.find((b) => b.card.uid === uid)?.card ?? combat.sleeve.find((c) => c?.uid === uid) ?? null;
+
+  r.beltCards.addEventListener('pointerdown', (e) => onDown(e, 'belt'));
+  r.sleeve.addEventListener('pointerdown', (e) => onDown(e, 'sleeve'));
+  el.addEventListener('pointermove', onMove);
+  el.addEventListener('pointerup', onUp);
+  el.addEventListener('pointercancel', () => cancelDrag());
+  el.addEventListener('contextmenu', (e) => e.preventDefault());
+
+  r.ability.addEventListener('click', () => {
+    if (paused || ended) return;
+    if (!combat.useAbility()) {
+      sfx('error');
+      toast(t(`hero.${heroId}.resourceDesc`));
+    }
+  });
+
+  const renderSpeed = (): void => setText(r.speed, `${settings.speed}×`);
+  r.speed.addEventListener('click', () => {
+    const i = GAME_SPEEDS.indexOf(settings.speed as (typeof GAME_SPEEDS)[number]);
+    settings.speed = GAME_SPEEDS[(i + 1) % GAME_SPEEDS.length];
+    saveSettings();
+    renderSpeed();
+    sfx('tap');
+  });
+
+  const openPause = (): void => {
+    if (pauseModal || ended) return;
+    cancelDrag();
+    setPaused(true);
+    sfx('button');
+    const body = h(
+      'div',
+      { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
+      h('div', { class: 'setting' }, h('span', null, t('settings.speed')), speedSelector(renderSpeed)),
+    );
+    pauseModal = openModal({
+      title: t('combat.paused'),
+      body,
+      actions: [
+        { label: t('combat.resume') },
+        { label: t('menu.howTo'), cls: 'secondary', onClick: () => {
+          openHowTo();
+          return false;
+        } },
+        { label: t('menu.settings'), cls: 'secondary', onClick: () => {
+          openSettings(renderSpeed);
+          return false;
+        } },
+        {
+          label: t('combat.quit'),
+          cls: 'danger',
+          onClick: () => {
+            openModal({
+              body: t('journey.abandonConfirm'),
+              actions: [
+                { label: t('common.confirm'), cls: 'danger', onClick: () => cb.onQuit() },
+                { label: t('common.cancel'), cls: 'secondary' },
+              ],
+            });
+            return false;
+          },
+        },
+      ],
+      onClose: () => {
+        pauseModal = null;
+        setPaused(false);
+      },
+    });
+  };
+  $('.js-pause', el).addEventListener('click', openPause);
+
+  const onVisibility = (): void => {
+    if (document.hidden) openPause();
+  };
+
+  // ---------------------------------------------------------------- render
+  const renderBar = (bar: HTMLElement, chip: HTMLElement, f: Fighter): void => {
+    const k = Math.max(0, f.hp / f.maxHp);
+    const fill = bar.querySelector<HTMLElement>('.fill')!;
+    const ghost = bar.querySelector<HTMLElement>('.ghost')!;
+    const tr = `scaleX(${k})`;
+    if (fill.style.transform !== tr) {
+      fill.style.transform = tr;
+      ghost.style.transform = tr;
+    }
+    setText(bar.querySelector('.txt')!, `${f.hp} / ${f.maxHp}`);
+    toggle(chip, 'off', f.block <= 0);
+    toggle(bar, 'has-block', f.block > 0);
+    setText(chip.querySelector('b')!, f.block);
+  };
+
+  const renderStatuses = (side: Side, box: HTMLElement): void => {
+    const f = combat.fighter(side);
+    const list = STATUS_ORDER.filter((id) => f.statuses[id] && (STATUSES[id].kind === 'timed' ? f.statuses[id].t > 0 : f.statuses[id].v > 0));
+    const vals = list.map((id) => {
+      const s = f.statuses[id];
+      if (STATUSES[id].kind !== 'timed') return String(s.v);
+      return s.t > 999 ? '' : `${Math.ceil(s.t)}s`;
+    });
+    const sig = list.map((id, i) => id + vals[i]).join('|');
+    if (sig === statusSig[side]) return;
+    statusSig[side] = sig;
+    box.replaceChildren(
+      ...list.map((id, i) => {
+        const def = STATUSES[id];
+        const s = f.statuses[id];
+        const b = h('button', { class: `status ${def.good ? 'good' : 'bad'}`, html: `${icon(def.icon)}<span>${vals[i]}</span>`, 'aria-label': t(`status.${id}`) });
+        b.addEventListener('click', () => toast(`${t(`status.${id}`)}: ${t(`status.${id}.d`, { v: s.v })}`));
+        return b;
+      }),
+    );
+  };
+
+  const intentValue = (m: MoveDef): string => {
+    if (m.dmg) {
+      const d = combat.intentDamage(m);
+      return m.hits && m.hits > 1 ? `${d}×${m.hits}` : String(d);
+    }
+    if (m.block) return String(Math.round(m.block * combat.enemy.dmgScale));
+    return '';
+  };
+
+  const renderIntent = (): void => {
+    const e = combat.enemy;
+    const m = e.move;
+    if (m !== lastMove) {
+      lastMove = m;
+      r.intent.dataset.intent = m.intent;
+      setHtml(r.intentIco, icon(INTENT_ICON[m.intent] ?? 'star'));
+      setText(r.intentLbl, t(`move.${m.id}`));
+      retrigger(r.intent, 'pop');
+      if (m.intent === 'charge') {
+        sfx('windup');
+        toast(`${t(`enemy.${e.def.id}.name`)}: ${t('intent.charge')}`);
+      }
+    }
+    setText(r.intentVal, intentValue(m));
+    const p = Math.min(1, e.timer / m.windup);
+    r.ringProg.style.strokeDashoffset = String(RING_C * p);
+    const rate = combat.enemyTimeRate();
+    const left = rate > 0 ? (m.windup - e.timer) / rate : Infinity;
+    toggle(r.intent, 'urgent', !ended && (m.intent === 'attack' || m.intent === 'charge') && left < 1.1);
+  };
+
+  const renderEnemyState = (): void => {
+    toggle(r.enemyArt, 'stunned', combat.has('enemy', 'stun'));
+    toggle(r.enemyArt, 'frozen', combat.has('enemy', 'frozen'));
+    toggle(r.enemyArt, 'chilled', combat.has('enemy', 'chill'));
+    toggle(r.enemyArt, 'enraged', combat.has('enemy', 'haste') || combat.enemy.halfTriggered && !!enemyDef.onHalf);
+  };
+
+  const renderMana = (): void => {
+    const hs = combat.hero;
+    if (hs.maxMana !== lastMaxMana) {
+      lastMaxMana = hs.maxMana;
+      r.pips.replaceChildren(...Array.from({ length: hs.maxMana }, () => h('div', { class: 'pip' })));
+    }
+    const pips = r.pips.children;
+    for (let i = 0; i < pips.length; i++) {
+      const p = pips[i] as HTMLElement;
+      const full = i < hs.mana;
+      toggle(p, 'full', full);
+      const partial = i === hs.mana;
+      toggle(p, 'partial', partial);
+      p.style.setProperty('--f', partial ? String(hs.manaTimer / hs.regen) : '0');
+      if (full && i >= lastMana) retrigger(p, 'gain');
+    }
+    lastMana = hs.mana;
+    r.manaNum.innerHTML = `${hs.mana}<small>/${hs.maxMana}</small>`;
+  };
+
+  const renderHeroExtras = (): void => {
+    const hs = combat.hero;
+    const k = hs.resource / hs.resourceMax;
+    r.res.style.transform = `scaleX(${k})`;
+    setText(r.resLbl, `${t(`hero.${heroId}.resource`)} ${hs.resource}/${hs.resourceMax}`);
+    r.ability.style.setProperty('--p', String(k));
+    toggle(r.ability, 'ready', combat.abilityReady());
+    toggle(r.weave, 'off', hs.weave <= 0);
+    if (hs.weave > 0) setText(r.weave, t('combat.weave', { n: hs.weave }));
+    setText(r.draw, combat.draw.length);
+    setText(r.discard, combat.discard.length);
+  };
+
+  const flyOut = (ce: CardEl, reason: Removal): void => {
+    const def = CARDS[ce.card.id];
+    const el2 = ce.el;
+    const rc = el2.getBoundingClientRect();
+    const target = reason === 'stolen' || def.type === 'attack' || def.type === 'spell' || (def.type === 'potion' && def.dmg) ? enemyPoint() : reason === 'expired' ? null : heroPoint();
+    const base = (el2.style.transform || '').replace(/scale\([^)]*\)|rotate\([^)]*\)/g, '');
+    if (reason === 'expired' || !target) {
+      el2.classList.add('fall-out');
+      el2.style.transform = `${base} translate3d(-40px, 60px, 0) rotate(-25deg)`;
+    } else {
+      const dx = target.x - (rc.left + rc.width / 2);
+      const dy = target.y - (rc.top + rc.height / 2);
+      el2.classList.add('fly-out');
+      el2.style.transform = `${base} translate3d(${dx}px, ${dy}px, 0) scale(.35) rotate(${dx > 0 ? 20 : -20}deg)`;
+      if (reason === 'played') setTimeout(() => burst(def.type === 'skill' ? 'block' : 'hit', target.x, target.y, 8), 300);
+    }
+    setTimeout(() => el2.remove(), 520);
+  };
+
+  const makeCardEl = (card: CombatCard): CardEl => {
+    const cardEl = cardView(card, { combat });
+    return { el: cardEl, card, desc: cardEl.querySelector('.card-desc > div')! };
+  };
+
+  const renderBelt = (): void => {
+    const onBelt = new Set<number>();
+    const refreshText = frameNo % 8 === 0;
+    for (const b of combat.belt) {
+      onBelt.add(b.card.uid);
+      let ce = beltEls.get(b.card.uid);
+      if (!ce) {
+        ce = makeCardEl(b.card);
+        ce.el.classList.add(b.pos > 0.05 && frameNo > 1 ? 'dealt' : 'enter');
+        beltEls.set(b.card.uid, ce);
+        r.beltCards.append(ce.el);
+      }
+      toggle(ce.el, 'poor', !combat.canAfford(b.card) || !combat.isPlayable(b.card));
+      toggle(ce.el, 'leaving', b.pos > 0.86);
+      if (refreshText) setHtml(ce.desc, cardText(b.card, combat));
+      if (drag?.uid === b.card.uid && drag.moved) continue;
+      const x = beltW * (1 - b.pos);
+      const ry = b.pos < 0.1 ? (1 - b.pos / 0.1) * -55 : b.pos > 0.92 ? ((b.pos - 0.92) / 0.2) * 35 : 0;
+      ce.el.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0) rotateY(${ry.toFixed(1)}deg)`;
+      ce.el.style.zIndex = String(Math.round(b.pos * 100));
+    }
+    for (const [uid, ce] of beltEls) {
+      if (onBelt.has(uid)) continue;
+      beltEls.delete(uid);
+      if (drag?.uid === uid) cancelDrag();
+      const reason = removals.get(uid) ?? 'expired';
+      removals.delete(uid);
+      if (reason === 'stashed') ce.el.remove();
+      else flyOut(ce, reason);
+    }
+  };
+
+  const renderSleeve = (): void => {
+    combat.sleeve.forEach((card, i) => {
+      const cur = sleeveEls[i];
+      if (cur?.card.uid === card?.uid) {
+        if (cur && card) {
+          toggle(cur.el, 'poor', !combat.canAfford(card));
+          if (frameNo % 8 === 0) setHtml(cur.desc, cardText(card, combat));
+        }
+        return;
+      }
+      if (cur) {
+        const reason = removals.get(cur.card.uid);
+        removals.delete(cur.card.uid);
+        if (drag?.uid === cur.card.uid) cancelDrag();
+        if (reason === 'played') {
+          // Detach so it can animate out while the slot re-renders.
+          const rc = cur.el.getBoundingClientRect();
+          const base = el.getBoundingClientRect();
+          cur.el.style.position = 'absolute';
+          cur.el.style.left = `${rc.left - base.left}px`;
+          cur.el.style.top = `${rc.top - base.top}px`;
+          cur.el.style.transform = '';
+          el.append(cur.el);
+          flyOut(cur, 'played');
+        } else {
+          cur.el.remove();
+        }
+      }
+      if (card) {
+        const ce = makeCardEl(card);
+        slotEls[i].replaceChildren(ce.el);
+        sleeveEls[i] = ce;
+      } else {
+        slotEls[i].innerHTML = slotHint;
+        sleeveEls[i] = null;
+      }
+    });
+  };
+
+  const render = (dt: number): void => {
+    frameNo++;
+    renderBar(r.eHp, r.eBlock, combat.enemy);
+    renderBar(r.hHp, r.hBlock, combat.hero);
+    renderStatuses('enemy', r.eStatus);
+    renderStatuses('hero', r.hStatus);
+    renderIntent();
+    renderEnemyState();
+    renderMana();
+    renderHeroExtras();
+    renderBelt();
+    renderSleeve();
+    if (!paused && !ended && combat.intro <= 0) {
+      beltOffset -= (dt * settings.speed * combat.beltRate() * beltW) / CONFIG.beltTime;
+      r.track.style.setProperty('--belt-x', `${(beltOffset % 26).toFixed(1)}px`);
+    }
+  };
+
+  // ---------------------------------------------------------------- lifecycle
+  const STEP = 1 / 60;
+  let acc = 0;
+  const onResize = (): void => layout();
+
+  return {
+    el,
+    enter() {
+      layout();
+      renderSpeed();
+      addEventListener('resize', onResize);
+      document.addEventListener('visibilitychange', onVisibility);
+      render(0);
+      const start = (): void => {
+        banner(t('combat.fight'));
+        setPaused(false);
+      };
+      if (!settings.seenTutorial) {
+        setPaused(true);
+        setTimeout(
+          () =>
+            openHowTo(() => {
+              settings.seenTutorial = true;
+              saveSettings();
+              start();
+            }, true),
+          350,
+        );
+      } else {
+        start();
+      }
+    },
+    leave() {
+      unsub();
+      removeEventListener('resize', onResize);
+      document.removeEventListener('visibilitychange', onVisibility);
+    },
+    frame(dt) {
+      if (!paused && !ended) {
+        acc += dt * settings.speed;
+        // Fixed-step simulation keeps the engine deterministic regardless of frame rate.
+        let steps = 0;
+        while (acc >= STEP && steps < 12) {
+          combat.tick(STEP);
+          acc -= STEP;
+          steps++;
+        }
+        if (steps === 12) acc = 0;
+      }
+      render(dt);
+    },
+  };
+}

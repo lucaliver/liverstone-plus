@@ -19,6 +19,9 @@ export const CONFIG = {
   /** Seconds of "Fight!" intro before the clock starts. */
   introTime: 1.2,
   maxHandBelt: 7,
+  /** Below this many cards the belt refills faster, so fast play isn't punished with an empty belt. */
+  minBelt: 3,
+  refillInterval: 0.55,
 } as const;
 
 /** Where cards enter (0) and expire, in belt-distance units. */

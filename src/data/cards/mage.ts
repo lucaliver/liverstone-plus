@@ -3,7 +3,7 @@ import type { CardDef } from '../../game/types';
 export const mageCards: CardDef[] = [
   // Starters
   { id: 'arcaneBolt', cls: 'mage', type: 'spell', rarity: 'starter', cost: 1, vals: [5], upVals: [8], dmg: [0], art: 'bolt', play: (c, v) => void c.hit(v[0]) },
-  { id: 'ward', cls: 'mage', type: 'skill', rarity: 'starter', cost: 1, vals: [5], upVals: [8], art: 'ward', play: (c, v) => c.gainBlock('hero', v[0]) },
+  { id: 'ward', cls: 'mage', type: 'skill', rarity: 'starter', cost: 1, vals: [6], upVals: [9], art: 'ward', play: (c, v) => c.gainBlock('hero', v[0]) },
   {
     id: 'frostbolt', cls: 'mage', type: 'spell', rarity: 'starter', cost: 1, vals: [4, 3], upVals: [6, 4], dmg: [0], art: 'frost',
     play: (c, v) => {

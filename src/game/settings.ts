@@ -1,0 +1,25 @@
+import { load, store } from '../core/save';
+
+export interface Settings {
+  sound: boolean;
+  speed: number;
+  reduceMotion: boolean;
+  haptics: boolean;
+  locale: string;
+  seenTutorial: boolean;
+}
+
+const defaults: Settings = {
+  sound: true,
+  speed: 1,
+  reduceMotion: typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches,
+  haptics: true,
+  locale: 'en',
+  seenTutorial: false,
+};
+
+export const settings: Settings = load('settings', defaults);
+
+export function saveSettings(): void {
+  store('settings', settings);
+}

@@ -31,7 +31,7 @@ const mage: HeroDef = {
   hp: 66,
   maxMana: 7,
   regen: 1.2,
-  blockDecay: 0.6,
+  blockDecay: 0.8,
   resourceMax: 12,
   startDeck: [...rep('arcaneBolt', 4), ...rep('ward', 4), 'frostbolt', 'arcaneIntellect'],
   color: '#5b8cff',

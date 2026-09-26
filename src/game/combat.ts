@@ -99,6 +99,7 @@ export class Combat {
   sleeve: (CombatCard | null)[];
 
   pendingDraws = 0;
+  private refillT = 0;
   beltSpeed = 1;
   beltSlowT = 0;
   beltHasteT = 0;
@@ -400,13 +401,28 @@ export class Combat {
       if (this.result) return;
     }
     const gap = this.belt.length ? Math.min(...this.belt.map((b) => b.pos)) : Infinity;
+    this.refillT = Math.max(0, this.refillT - dt);
     if (this.belt.length >= CONFIG.maxHandBelt) return;
     if (this.pendingDraws > 0 && gap >= CONFIG.drawSpacing) {
       if (this.spawnCard(0)) this.pendingDraws--;
       else this.pendingDraws = 0;
     } else if (gap >= CONFIG.spacing) {
       this.spawnCard(0);
+    } else if (this.belt.length < CONFIG.minBelt && this.refillT <= 0) {
+      // Sparse belt: deal the next card into the first free visible spot instead of making the player wait.
+      const spot = this.freeBeltSpot();
+      if (spot !== null) {
+        this.spawnCard(spot);
+        this.refillT = CONFIG.refillInterval;
+      }
     }
+  }
+
+  private freeBeltSpot(): number | null {
+    for (let p = CONFIG.cardWidth; p <= 0.6; p += 0.025) {
+      if (this.belt.every((b) => Math.abs(b.pos - p) >= CONFIG.spacing)) return p;
+    }
+    return null;
   }
 
   private spawnCard(pos: number, card?: CombatCard): boolean {

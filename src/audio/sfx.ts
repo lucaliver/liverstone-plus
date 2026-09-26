@@ -1,0 +1,150 @@
+/**
+ * Procedural sound effects (WebAudio). No assets: every sound is synthesised on demand.
+ * The context is created lazily on the first user gesture (browser autoplay policy).
+ */
+let ctx: AudioContext | null = null;
+let master: GainNode | null = null;
+let noiseBuf: AudioBuffer | null = null;
+let enabled = true;
+
+export function setSfxEnabled(on: boolean): void {
+  enabled = on;
+}
+
+export function unlockAudio(): void {
+  if (!ctx) {
+    const AC = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (!AC) return;
+    ctx = new AC();
+    master = ctx.createGain();
+    master.gain.value = 0.55;
+    const comp = ctx.createDynamicsCompressor();
+    master.connect(comp).connect(ctx.destination);
+    noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+    const d = noiseBuf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  }
+  if (ctx.state === 'suspended') void ctx.resume();
+}
+
+type Wave = OscillatorType;
+
+function env(g: GainNode, t: number, a: number, peak: number, dur: number): void {
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(peak, t + a);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+}
+
+function tone(freq: number, dur: number, opts: { type?: Wave; vol?: number; to?: number; delay?: number; attack?: number } = {}): void {
+  if (!ctx || !master) return;
+  const t = ctx.currentTime + (opts.delay ?? 0);
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = opts.type ?? 'sine';
+  o.frequency.setValueAtTime(freq, t);
+  if (opts.to) o.frequency.exponentialRampToValueAtTime(opts.to, t + dur);
+  env(g, t, opts.attack ?? 0.005, opts.vol ?? 0.3, dur);
+  o.connect(g).connect(master);
+  o.start(t);
+  o.stop(t + dur + 0.05);
+}
+
+function noise(dur: number, opts: { freq?: number; to?: number; q?: number; vol?: number; type?: BiquadFilterType; delay?: number; attack?: number } = {}): void {
+  if (!ctx || !master || !noiseBuf) return;
+  const t = ctx.currentTime + (opts.delay ?? 0);
+  const src = ctx.createBufferSource();
+  src.buffer = noiseBuf;
+  src.loop = true;
+  const f = ctx.createBiquadFilter();
+  f.type = opts.type ?? 'bandpass';
+  f.frequency.setValueAtTime(opts.freq ?? 1200, t);
+  if (opts.to) f.frequency.exponentialRampToValueAtTime(opts.to, t + dur);
+  f.Q.value = opts.q ?? 1;
+  const g = ctx.createGain();
+  env(g, t, opts.attack ?? 0.004, opts.vol ?? 0.4, dur);
+  src.connect(f).connect(g).connect(master);
+  src.start(t, Math.random() * 0.5);
+  src.stop(t + dur + 0.05);
+}
+
+const SOUNDS = {
+  tap: () => tone(660, 0.06, { type: 'triangle', vol: 0.12 }),
+  button: () => {
+    tone(520, 0.07, { type: 'triangle', vol: 0.15 });
+    tone(780, 0.08, { type: 'triangle', vol: 0.1, delay: 0.04 });
+  },
+  cardPlay: () => noise(0.18, { freq: 900, to: 3200, vol: 0.18, q: 0.8 }),
+  cardSpawn: () => tone(300, 0.05, { type: 'triangle', vol: 0.04, to: 380 }),
+  cardExpire: () => noise(0.25, { freq: 1600, to: 300, vol: 0.1 }),
+  stash: () => {
+    tone(440, 0.08, { type: 'triangle', vol: 0.15 });
+    tone(330, 0.1, { type: 'triangle', vol: 0.12, delay: 0.05 });
+  },
+  error: () => tone(160, 0.14, { type: 'square', vol: 0.08, to: 120 }),
+  slash: () => {
+    noise(0.16, { freq: 2600, to: 700, vol: 0.4, q: 1.4 });
+    tone(140, 0.12, { type: 'sine', vol: 0.3, to: 60 });
+  },
+  blunt: () => {
+    tone(120, 0.2, { type: 'sine', vol: 0.55, to: 45 });
+    noise(0.1, { freq: 500, vol: 0.35, type: 'lowpass' });
+  },
+  fire: () => {
+    noise(0.4, { freq: 600, to: 2400, vol: 0.35, type: 'lowpass', attack: 0.03 });
+    tone(90, 0.3, { type: 'sawtooth', vol: 0.08, to: 50 });
+  },
+  ice: () => {
+    [1760, 2350, 2960].forEach((f, i) => tone(f, 0.25, { type: 'sine', vol: 0.09, delay: i * 0.04 }));
+    noise(0.2, { freq: 5000, vol: 0.12, type: 'highpass' });
+  },
+  arcane: () => {
+    tone(880, 0.22, { type: 'sine', vol: 0.18, to: 1320 });
+    tone(440, 0.25, { type: 'triangle', vol: 0.1, to: 660 });
+  },
+  enemyHit: () => {
+    tone(90, 0.25, { type: 'sine', vol: 0.6, to: 40 });
+    noise(0.14, { freq: 900, to: 200, vol: 0.45, type: 'lowpass' });
+  },
+  block: () => {
+    tone(1200, 0.18, { type: 'triangle', vol: 0.14, to: 900 });
+    noise(0.08, { freq: 3000, vol: 0.15 });
+  },
+  blocked: () => {
+    tone(900, 0.12, { type: 'square', vol: 0.06, to: 700 });
+    noise(0.1, { freq: 2500, vol: 0.2 });
+  },
+  heal: () => [523, 659, 784, 1046].forEach((f, i) => tone(f, 0.2, { type: 'sine', vol: 0.12, delay: i * 0.06 })),
+  mana: () => [1046, 1318].forEach((f, i) => tone(f, 0.12, { type: 'sine', vol: 0.08, delay: i * 0.05 })),
+  status: () => tone(300, 0.2, { type: 'triangle', vol: 0.12, to: 520 }),
+  debuff: () => tone(400, 0.25, { type: 'sawtooth', vol: 0.06, to: 200 }),
+  windup: () => tone(200, 0.4, { type: 'sawtooth', vol: 0.05, to: 400, attack: 0.1 }),
+  ability: () => {
+    noise(0.6, { freq: 300, to: 4000, vol: 0.3, attack: 0.05 });
+    [262, 392, 523].forEach((f, i) => tone(f, 0.5, { type: 'sawtooth', vol: 0.06, delay: i * 0.05 }));
+  },
+  curse: () => {
+    tone(180, 0.35, { type: 'sawtooth', vol: 0.08, to: 90 });
+    tone(190, 0.35, { type: 'sawtooth', vol: 0.06, to: 95 });
+  },
+  steal: () => noise(0.25, { freq: 3000, to: 800, vol: 0.2 }),
+  victory: () => [523, 659, 784, 1046].forEach((f, i) => tone(f, 0.4, { type: 'triangle', vol: 0.18, delay: i * 0.11 })),
+  defeat: () => [392, 330, 262, 196].forEach((f, i) => tone(f, 0.5, { type: 'triangle', vol: 0.16, delay: i * 0.16 })),
+  reshuffle: () => [0, 1, 2, 3].forEach((i) => noise(0.05, { freq: 2000 + i * 300, vol: 0.08, delay: i * 0.04 })),
+  enrage: () => {
+    tone(80, 0.6, { type: 'sawtooth', vol: 0.15, to: 160 });
+    noise(0.5, { freq: 400, vol: 0.2, type: 'lowpass' });
+  },
+};
+
+export type SoundId = keyof typeof SOUNDS;
+
+const lastPlayed: Partial<Record<SoundId, number>> = {};
+
+export function sfx(id: SoundId): void {
+  if (!enabled || !ctx) return;
+  // Avoid stacking the same sound many times in one frame (multi-hit attacks).
+  const now = performance.now();
+  if ((lastPlayed[id] ?? 0) > now - 40) return;
+  lastPlayed[id] = now;
+  SOUNDS[id]();
+}

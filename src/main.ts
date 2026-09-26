@@ -1,0 +1,126 @@
+import '@fontsource/cinzel/700.css';
+import '@fontsource/cinzel/800.css';
+import '@fontsource/nunito/600.css';
+import '@fontsource/nunito/700.css';
+import '@fontsource/nunito/800.css';
+import '@fontsource/nunito/900.css';
+import './styles/main.css';
+
+import { setLocale, t } from './core/i18n';
+import { randomSeed } from './core/rng';
+import { setSfxEnabled, unlockAudio } from './audio/sfx';
+import { Combat } from './game/combat';
+import { advance, applyCombat, clearRun, combatSetup, currentNode, loadRun, newRun, rollRewards, saveRun, type RunState } from './game/run';
+import { settings } from './game/settings';
+import type { HeroId } from './game/types';
+import { confirmModal, initApp, show } from './ui/app';
+import { initFx } from './ui/fx/fx';
+import { combatScreen } from './ui/screens/combat';
+import { endScreen } from './ui/screens/end';
+import { heroSelectScreen } from './ui/screens/heroSelect';
+import { journeyScreen } from './ui/screens/journey';
+import { restScreen } from './ui/screens/rest';
+import { rewardScreen } from './ui/screens/reward';
+import { titleScreen } from './ui/screens/title';
+
+let run: RunState | null = null;
+
+function goTitle(): void {
+  const saved = loadRun();
+  show(
+    titleScreen({
+      hasSave: !!saved,
+      onContinue: () => {
+        run = loadRun();
+        if (!run) return goTitle();
+        // A saved run whose node was already completed resumes at the next one.
+        if (run.cleared && !advance(run)) return goTitle();
+        goJourney();
+      },
+      onNewRun: () => {
+        if (loadRun()) confirmModal(t('menu.abandonConfirm'), t('common.confirm'), goHeroSelect, t('common.cancel'));
+        else goHeroSelect();
+      },
+    }),
+  );
+}
+
+function goHeroSelect(): void {
+  show(heroSelectScreen(startRun, goTitle));
+}
+
+function startRun(hero: HeroId): void {
+  run = newRun(hero, randomSeed());
+  goJourney();
+}
+
+function goJourney(): void {
+  if (!run) return goTitle();
+  saveRun(run);
+  show(journeyScreen(run, enterNode, abandon));
+}
+
+function enterNode(): void {
+  if (!run) return;
+  const node = currentNode(run);
+  if (node.type === 'rest') {
+    show(restScreen(run, nextNode));
+    return;
+  }
+  const combat = new Combat(combatSetup(run));
+  if (import.meta.env.DEV) Object.assign(window, { __combat: combat });
+  saveRun(run);
+  show(combatScreen(run, combat, { onEnd: afterCombat, onQuit: abandon }));
+}
+
+function afterCombat(combat: Combat): void {
+  if (!run) return;
+  const r = run;
+  applyCombat(r, combat);
+  const node = currentNode(r);
+  if (combat.result === 'lose') {
+    clearRun();
+    show(endScreen(r, false, () => goHeroSelect(), goTitle));
+    return;
+  }
+  if (combat.result === 'win' && node.next.length === 0) {
+    clearRun();
+    show(endScreen(r, true, () => goHeroSelect(), goTitle));
+    return;
+  }
+  const picks = combat.result === 'win' && node.type !== 'boss' ? rollRewards(r, node.type === 'elite' ? 'elite' : 'fight') : [];
+  saveRun(r);
+  show(rewardScreen(r, picks, combat.result === 'fled', nextNode));
+}
+
+function nextNode(): void {
+  if (!run) return;
+  if (!advance(run)) {
+    clearRun();
+    show(endScreen(run, true, () => goHeroSelect(), goTitle));
+    return;
+  }
+  goJourney();
+}
+
+function abandon(): void {
+  clearRun();
+  run = null;
+  goTitle();
+}
+
+function boot(): void {
+  setLocale(settings.locale);
+  setSfxEnabled(settings.sound);
+  document.documentElement.classList.toggle('reduce-motion', settings.reduceMotion);
+  const root = document.getElementById('app')!;
+  initApp(root);
+  initFx(root);
+  // Browsers only allow audio after a user gesture.
+  addEventListener('pointerdown', unlockAudio, { passive: true });
+  addEventListener('keydown', unlockAudio);
+  goTitle();
+  if (import.meta.env.DEV) Object.assign(window, { __game: { get run() { return run; }, nextNode, goJourney } });
+}
+
+boot();
