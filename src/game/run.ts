@@ -2,6 +2,7 @@ import { Rng } from '../core/rng';
 import { loadRaw, remove, store } from '../core/save';
 import { nextUid, peekUid, resetUid } from '../core/util';
 import { CARDS, rewardPool } from '../data/cards';
+import { CONFIG } from '../data/config';
 import { ENEMIES, enemiesFor } from '../data/enemies';
 import { HEROES } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
@@ -103,9 +104,8 @@ function rngOf(run: RunState): Rng {
 
 /** Enemy scaling: normal enemies get tougher as the act goes on. */
 export function enemyScale(node: RunNode): { hp: number; dmg: number } {
-  if (node.type !== 'fight') return { hp: 1, dmg: 1 };
-  const f = node.floor - 1;
-  return { hp: 1 + 0.06 * f, dmg: 1 + 0.04 * f };
+  const f = node.type === 'fight' ? node.floor - 1 : 0;
+  return { hp: (1 + 0.06 * f) * CONFIG.enemyHp, dmg: (1 + 0.04 * f) * CONFIG.enemyDmg };
 }
 
 export function combatSetup(run: RunState): CombatSetup {

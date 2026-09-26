@@ -28,10 +28,10 @@ const warrior: HeroDef = {
 
 const mage: HeroDef = {
   id: 'mage',
-  hp: 66,
+  hp: 70,
   maxMana: 7,
-  regen: 1.2,
-  blockDecay: 0.8,
+  regen: 1.1,
+  blockDecay: 1.0,
   resourceMax: 12,
   startDeck: [...rep('arcaneBolt', 4), ...rep('ward', 4), 'frostbolt', 'arcaneIntellect'],
   color: '#5b8cff',

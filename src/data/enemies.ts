@@ -48,7 +48,7 @@ const defs: EnemyDef[] = [
     onHalf: (c) => c.applyStatus('enemy', 'strength', 3),
   },
   {
-    id: 'lich', act: 1, tier: 'boss', hp: 155, art: 'lich',
+    id: 'lich', act: 1, tier: 'boss', hp: 145, art: 'lich',
     pattern: [
       atk('soulBolt', 8, 3.0),
       { id: 'hexes', intent: 'curse', windup: 2.4, curse: { id: 'hex', n: 2, to: 'draw' } },

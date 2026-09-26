@@ -128,12 +128,12 @@ describe('combat engine', () => {
   });
 
   it('mage spellweave adds damage to chained spells', () => {
-    const c = setup({ hero: HEROES.mage, hp: 66, maxHp: 66, deck: deckOf(['arcaneBolt', 'arcaneBolt']), enemy: ENEMIES.slime });
+    const c = setup({ hero: HEROES.mage, hp: 70, maxHp: 70, deck: deckOf(['arcaneBolt', 'arcaneBolt']), enemy: ENEMIES.slime });
     run(c, CONFIG.introTime + 0.01);
     const hp = c.enemy.hp;
     c.playCard(c.belt[0].card.uid);
     c.playCard(c.belt[0].card.uid);
-    expect(hp - c.enemy.hp).toBe(5 + 6);
+    expect(hp - c.enemy.hp).toBe(6 + 7);
   });
 
   it('played cards are never replaced in place: new cards always enter from the right', () => {

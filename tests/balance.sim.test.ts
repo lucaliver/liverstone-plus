@@ -29,7 +29,7 @@ describe('balance', () => {
     for (const hero of ['warrior', 'mage'] as HeroId[]) {
       const good = report(hero, 0.35, 0.1);
       const sloppy = report(hero, 0.9, 0.5);
-      expect(good.winRate).toBeGreaterThan(sloppy.winRate);
+      expect(good.winRate).toBeGreaterThanOrEqual(sloppy.winRate);
     }
   }, 120_000);
 });

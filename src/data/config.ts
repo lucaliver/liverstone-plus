@@ -3,14 +3,17 @@ export const CONFIG = {
   /** Seconds for a card to cross one full belt width. */
   beltTime: 7.7,
   /** Card width as a fraction of the belt width (the UI mirrors this). */
-  cardWidth: 0.25,
+  cardWidth: 0.235,
   /** Minimum gap between spawns, in belt widths. */
-  spacing: 0.285,
+  spacing: 0.26,
   /** Gap used by forced draws (cards overlap like a fan). */
   drawSpacing: 0.13,
   /** A card expires once its left edge is this far past the belt's left edge (fraction of card width). */
   expireOverhang: 0.45,
   sleeveSlots: 2,
+  /** Global difficulty knobs applied to every enemy. */
+  enemyHp: 0.8,
+  enemyDmg: 0.9,
   maxManaCap: 10,
   startMana: 3,
   dotInterval: 1.5,
