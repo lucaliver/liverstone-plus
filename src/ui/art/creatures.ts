@@ -1,3 +1,5 @@
+import { sprite } from './riso';
+
 /**
  * Hand-built vector creatures on a 200×200 grid. Parts carry classes (`.eye`, `.limb`)
  * that CSS animates. Gradient ids are prefixed per creature to avoid collisions.
@@ -15,26 +17,26 @@ const eyes = (x1: number, x2: number, y: number, r: number, color: string, id: s
 const shadow = `<ellipse cx="100" cy="188" rx="62" ry="9" fill="#000" opacity=".35"/>`;
 
 const rat = `
-<defs>${rg('rat-b', '#9a8a80', '#4a3c38')}${lg('rat-e', '#f3a0a8', '#a4505c')}${glow('rat-g', '#ff3b3b')}</defs>
+<defs>${rg('rat-b', '#b89cf0', '#5a3fb0')}${lg('rat-e', '#ff8ac8', '#ff3d9a')}${glow('rat-g', '#ff3b3b')}</defs>
 ${shadow}
-<path class="limb" d="M150 160c30 0 44-20 36-40-4-10-14-10-14-2 6 14-4 28-24 28" fill="none" stroke="#b07a7a" stroke-width="7" stroke-linecap="round"/>
+<path class="limb" d="M150 160c30 0 44-20 36-40-4-10-14-10-14-2 6 14-4 28-24 28" fill="none" stroke="#ff3d9a" stroke-width="7" stroke-linecap="round"/>
 <path d="M40 150c-6-40 20-80 60-82 40-2 66 34 60 76-3 22-30 34-60 34s-58-10-60-28z" fill="url(#rat-b)" ${OUT}/>
-<path d="M58 176l-6 10h18l2-10zM130 176l-2 10h18l-4-10z" fill="#c69a9a" ${OUT}/>
+<path d="M58 176l-6 10h18l2-10zM130 176l-2 10h18l-4-10z" fill="#ff8ac8" ${OUT}/>
 <circle cx="56" cy="76" r="24" fill="url(#rat-b)" ${OUT}/><circle cx="56" cy="76" r="14" fill="url(#rat-e)"/>
 <circle cx="144" cy="76" r="24" fill="url(#rat-b)" ${OUT}/><circle cx="144" cy="76" r="14" fill="url(#rat-e)"/>
-<path d="M62 110c0-22 16-36 38-36s38 14 38 36c0 18-18 40-38 44-20-4-38-26-38-44z" fill="#8b7a72" ${OUT}/>
+<path d="M62 110c0-22 16-36 38-36s38 14 38 36c0 18-18 40-38 44-20-4-38-26-38-44z" fill="#c8b4f4" ${OUT}/>
 <path d="M88 138c4 10 20 10 24 0l-12 20z" fill="#2a1e22" ${OUT}/>
 <path d="M94 146h5v9h-5zM101 146h5v9h-5z" fill="#f6ecd2"/>
-<ellipse cx="100" cy="134" rx="9" ry="6" fill="#e07c8a" ${OUT}/>
-<path d="M76 134l-30-6M76 140l-28 4M124 134l30-6M124 140l28 4" stroke="#d8cbc0" stroke-width="2" opacity=".7"/>
+<ellipse cx="100" cy="134" rx="9" ry="6" fill="#ff3d9a" ${OUT}/>
+<path d="M76 134l-30-6M76 140l-28 4M124 134l30-6M124 140l28 4" stroke="#f6f0e4" stroke-width="2" opacity=".7"/>
 ${eyes(82, 118, 108, 6, '#ff4a3a', 'rat-g')}
 <path d="M70 96l20 6M130 96l-20 6" stroke="#120e18" stroke-width="5" stroke-linecap="round"/>`;
 
 const skeleton = `
-<defs>${lg('sk-b', '#f1ead6', '#a79d86')}${lg('sk-s', '#9aa3ad', '#4b5460', 1, 1)}${glow('sk-g', '#7de3ff')}</defs>
+<defs>${lg('sk-b', '#fbf4df', '#f6e27a')}${lg('sk-s', '#6a9ae8', '#1c5fd0', 1, 1)}${glow('sk-g', '#7de3ff')}</defs>
 ${shadow}
 <g class="limb"><path d="M150 112l34-84 8 4-26 86z" fill="url(#sk-s)" ${OUT}/><path d="M142 110l24 8-4 8-24-8z" fill="#6b4a2a" ${OUT}/></g>
-<path d="M86 118h28v58H86z" fill="#2a2330"/>
+<path d="M86 118h28v58H86z" fill="#5a3fb0"/>
 <g fill="url(#sk-b)" ${OUT}>
 <rect x="95" y="100" width="10" height="70" rx="4"/>
 <path d="M70 112c10-6 50-6 60 0l-4 10c-10-4-42-4-52 0z"/><path d="M72 128c10-5 46-5 56 0l-4 9c-10-4-38-4-48 0z"/><path d="M76 144c8-4 40-4 48 0l-4 9c-8-3-32-3-40 0z"/>
@@ -51,7 +53,7 @@ ${eyes(88, 112, 60, 4, '#9ef0ff', 'sk-g')}
 <path d="M70 40c10-14 40-18 56-4" stroke="#fff" stroke-width="4" opacity=".35" fill="none" stroke-linecap="round"/>`;
 
 const slime = `
-<defs><radialGradient id="sl-b" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#b8ff7a"/><stop offset=".6" stop-color="#4fbf3a"/><stop offset="1" stop-color="#1f6a28"/></radialGradient>${glow('sl-g', '#fffb8a')}</defs>
+<defs><radialGradient id="sl-b" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#ffe45a"/><stop offset=".45" stop-color="#9ac85a"/><stop offset="1" stop-color="#1b6a3a"/></radialGradient>${glow('sl-g', '#fffb8a')}</defs>
 ${shadow}
 <path d="M24 176c-6-50 20-120 76-124 56 4 82 74 76 124-2 8-10 10-20 10H44c-10 0-18-2-20-10z" fill="url(#sl-b)" ${OUT} opacity=".95"/>
 <path d="M44 186c0-10 8-10 10-2M150 186c2-12 10-10 10 0M96 186c0-14 10-14 10 0" fill="#3a9a34" ${OUT}/>
@@ -62,7 +64,7 @@ ${shadow}
 <path d="M58 82c10-16 26-24 40-22-16 6-26 16-32 30z" fill="#fff" opacity=".5"/>`;
 
 const cultist = `
-<defs>${lg('cu-r', '#6a3d8f', '#24123a')}${lg('cu-h', '#7b4aa6', '#2c1648')}${glow('cu-g', '#ff4af0')}${glow('cu-c', '#ffb347')}</defs>
+<defs>${lg('cu-r', '#b070d8', '#4a2090')}${lg('cu-h', '#c080e0', '#5a2aa0')}${glow('cu-g', '#ff4af0')}${glow('cu-c', '#ffb347')}</defs>
 ${shadow}
 <path d="M40 186c4-50 20-90 60-96 40 6 56 46 60 96z" fill="url(#cu-r)" ${OUT}/>
 <path d="M100 96v90" stroke="#b58ae0" stroke-width="3" opacity=".6"/>
@@ -76,7 +78,7 @@ ${eyes(88, 112, 72, 4.5, '#ff6af5', 'cu-g')}
 <path d="M154 108l14-30 5 3-12 30z" fill="#bfc6d0" ${OUT}/>`;
 
 const goblin = `
-<defs>${rg('go-b', '#8fd06a', '#35702e')}${lg('go-c', '#8a5a36', '#4a2e1c')}${lg('go-s', '#c0a070', '#6e5230')}${glow('go-g', '#ffe14a')}</defs>
+<defs>${rg('go-b', '#a8c860', '#5a8a30')}${lg('go-c', '#ff7a4a', '#d03a2a')}${lg('go-s', '#ffe45a', '#e8b820')}${glow('go-g', '#ffe14a')}</defs>
 ${shadow}
 <path d="M140 120c20-4 40 10 40 34s-18 34-40 34-34-14-34-30 14-34 34-38z" fill="url(#go-s)" ${OUT}/>
 <path d="M136 118c4-8 14-8 18 0" stroke="#4a2e1c" stroke-width="5" fill="none"/>
@@ -93,7 +95,7 @@ ${eyes(86, 114, 70, 5, '#ffe14a', 'go-g')}
 <g class="limb"><path d="M60 130c-14 4-22 14-20 26l12 2c0-8 4-14 12-16z" fill="url(#go-b)" ${OUT}/><path d="M40 150l-14-30 6-3 14 30z" fill="#cfd6dd" ${OUT}/></g>`;
 
 const boneKnight = `
-<defs>${lg('bk-a', '#6f7a88', '#2a2f3a')}${lg('bk-b', '#e8e0c8', '#9c9278')}${lg('bk-s', '#4a5462', '#1c2029', 1, 1)}${glow('bk-g', '#4af0ff')}${lg('bk-bl', '#dfe8f0', '#7f8a96', 1, 0)}</defs>
+<defs>${lg('bk-a', '#7aa8f0', '#1c4fb0')}${lg('bk-b', '#fbf4df', '#f6e27a')}${lg('bk-s', '#ff6ab0', '#c02a80', 1, 1)}${glow('bk-g', '#4af0ff')}${lg('bk-bl', '#fbf4df', '#9ab8f0', 1, 0)}</defs>
 ${shadow}
 <g class="limb"><path d="M156 150L176 6l8 2-12 144z" fill="url(#bk-bl)" ${OUT}/><path d="M146 148h40v8h-40z" fill="#5a3a1a" ${OUT}/><circle cx="166" cy="166" r="7" fill="#c9a34a" ${OUT}/></g>
 <path d="M56 186l8-34h72l8 34z" fill="url(#bk-a)" ${OUT}/>
@@ -108,7 +110,7 @@ ${shadow}
 ${eyes(88, 112, 55, 3.5, '#8af8ff', 'bk-g')}`;
 
 const lich = `
-<defs>${lg('li-r', '#3a2a5a', '#0f0a1c')}${lg('li-b', '#efe6cf', '#9d9179')}${lg('li-c', '#ffe08a', '#b0802a')}${glow('li-g', '#9cff5a')}${glow('li-a', '#8a4aff')}${lg('li-st', '#6a4a2a', '#2a1a0a')}</defs>
+<defs>${lg('li-r', '#7a4ad0', '#2a1a70')}${lg('li-b', '#fbf4df', '#f6e27a')}${lg('li-c', '#ffe45a', '#ffc800')}${glow('li-g', '#9cff5a')}${glow('li-a', '#8a4aff')}${lg('li-st', '#ff7a4a', '#c03a2a')}</defs>
 <ellipse cx="100" cy="110" rx="96" ry="90" fill="url(#li-a)" opacity=".45"/>
 ${shadow}
 <g class="limb"><path d="M162 190l-4-160 7-1 6 161z" fill="url(#li-st)" ${OUT}/><path d="M150 32c0-14 26-14 26 0 0 10-6 14-13 18-7-4-13-8-13-18z" fill="#2a1a3a" ${OUT}/><circle cx="163" cy="30" r="8" fill="#9cff5a"/><circle cx="163" cy="30" r="20" fill="url(#li-g)"/></g>
@@ -126,7 +128,7 @@ ${eyes(84, 116, 68, 4.5, '#b6ff7a', 'li-g')}
 <circle cx="100" cy="24" r="5" fill="#9cff5a" ${OUT}/>`;
 
 const warrior = `
-<defs>${lg('wa-h', '#c8d0da', '#5a6472', 1, 1)}${lg('wa-p', '#ff6a4a', '#8a1e14')}${lg('wa-s', '#f0c890', '#a0724a')}${lg('wa-a', '#8a94a4', '#3a4250')}</defs>
+<defs>${lg('wa-h', '#9ac0f8', '#1c5fd0', 1, 1)}${lg('wa-p', '#ff6ab0', '#ff3d9a')}${lg('wa-s', '#f0c890', '#a0724a')}${lg('wa-a', '#ff8ac8', '#d03a8a')}</defs>
 <path d="M18 200c0-44 34-66 82-66s82 22 82 66z" fill="url(#wa-a)" ${OUT}/>
 <path d="M20 170c0-24 18-40 40-40l10 40zM180 170c0-24-18-40-40-40l-10 40z" fill="url(#wa-h)" ${OUT}/>
 <path d="M84 140h32v20H84z" fill="url(#wa-p)"/>
@@ -139,7 +141,7 @@ const warrior = `
 <g fill="#c9a34a" ${OUT}><circle cx="62" cy="126" r="5"/><circle cx="138" cy="126" r="5"/></g>`;
 
 const mage = `
-<defs>${lg('ma-h', '#5a7aff', '#1a2266')}${lg('ma-f', '#f2d2b0', '#b88a64')}${lg('ma-b', '#f4f4f8', '#a8acc0')}${glow('ma-g', '#7ad8ff')}</defs>
+<defs>${lg('ma-h', '#6a9af8', '#1c4fb0')}${lg('ma-f', '#ffd0e0', '#ff9ac8')}${lg('ma-b', '#fbf4df', '#f6e8a0')}${glow('ma-g', '#7ad8ff')}</defs>
 <path d="M18 200c0-44 34-66 82-66s82 22 82 66z" fill="url(#ma-h)" ${OUT}/>
 <path d="M100 134l-12 66h24z" fill="#c9a34a" opacity=".8"/>
 <path d="M100 2c-8 22-24 40-44 56-4 20 0 40 6 54h76c6-14 10-34 6-54C124 42 108 24 100 2z" fill="url(#ma-h)" ${OUT}/>
@@ -152,6 +154,7 @@ const mage = `
 
 export const CREATURES: Record<string, string> = { rat, skeleton, slime, cultist, goblin, boneKnight, lich, warrior, mage };
 
+/** Riso-pixel sprite of a creature (see riso.ts). */
 export function creature(id: string, cls = ''): string {
-  return `<svg class="creature ${cls}" viewBox="0 0 200 200" aria-hidden="true">${CREATURES[id] ?? ''}</svg>`;
+  return sprite(id, cls);
 }

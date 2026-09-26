@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{margin:0;background:#f6f0e4;font-family:sans-serif;padding:12px}
+.grid{display:flex;flex-wrap:wrap;gap:10px}
+.riso{position:relative;width:180px;height:180px}
+.riso .ink{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;mix-blend-mode:multiply;transform:translate(calc(var(--ox)*3),calc(var(--oy)*3))}
+.pico{display:inline-block;width:60px;height:60px;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat;image-rendering:pixelated;-webkit-mask-size:100% 100%;}
+.icons{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;color:#1b1830}
+</style></head><body><div class="grid" id="g"></div><div class="icons" id="i"></div>
+<script type="module">
+import { preloadArt, sprite, pixelIcon } from '/src/ui/art/riso.ts';
+import { CREATURES } from '/src/ui/art/creatures.ts';
+import { ICONS } from '/src/ui/art/icons.ts';
+await preloadArt();
+document.getElementById('g').innerHTML = Object.keys(CREATURES).map((id) => sprite(id)).join('');
+document.getElementById('i').innerHTML = Object.keys(ICONS).map((id) => pixelIcon(id)).join('');
+document.title='ready';
+</script></body></html>

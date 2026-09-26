@@ -28,14 +28,15 @@ export function journeyScreen(run: RunState, onEnter: () => void, onAbandon: () 
     { class: 'path' },
     ...nodes.map((n) => {
       const state = n.id < run.current || (n.id === run.current && run.cleared) ? 'done' : n.id === run.current ? 'current' : '';
-      const label = `${t('common.floor', { n: n.floor })} · ${t(`journey.node.${n.type}`)}`;
+      const label = t(`journey.node.${n.type}`);
       return h(
         'div',
         { class: `node ${n.type} ${state}` },
+        h('span', { class: 'num' }, n.floor),
         h('button', {
           class: 'dot',
-          html: icon(state === 'done' ? 'shield' : NODE_ICON[n.type]),
-          'aria-label': label,
+          html: icon(state === 'done' ? 'cross' : NODE_ICON[n.type]),
+          'aria-label': `${t('common.floor', { n: n.floor })} · ${label}`,
           disabled: state !== 'current',
           onclick: () => (sfx('button'), onEnter()),
         }),
@@ -46,7 +47,7 @@ export function journeyScreen(run: RunState, onEnter: () => void, onAbandon: () 
   const menuBtn = h('button', {
     class: 'icon-btn',
     'aria-label': t('menu.settings'),
-    html: '&#9881;',
+    html: icon('gear'),
     onclick: () => {
       sfx('tap');
       openSettings();
@@ -55,7 +56,6 @@ export function journeyScreen(run: RunState, onEnter: () => void, onAbandon: () 
   const el = h(
     'div',
     { class: 'screen journey' },
-    h('div', { class: 'bg-dungeon' }),
     runHud(run, menuBtn),
     h('div', { class: 'act-banner' }, h('div', { class: 'h1' }, t('journey.title', { n: cur.act })), h('p', { class: 'sub' }, t(`journey.actName.${cur.act}`))),
     h('div', { class: 'scroll', style: { flex: '1' } }, path),

@@ -7,7 +7,7 @@ import type { CardInst, CardType } from '../../game/types';
 import { openModal, type ModalHandle } from '../app';
 import { h } from '../dom';
 import { icon } from '../art/icons';
-import { cardKeywords, cardView } from './cardView';
+import { cardKeywords, cardText, cardView } from './cardView';
 
 function toggleRow(label: string, get: () => boolean, set: (v: boolean) => void): HTMLElement {
   const sw = h('button', { class: 'switch', role: 'switch', 'aria-checked': String(get()), 'aria-label': label });
@@ -104,7 +104,7 @@ export function openHowTo(onClose?: () => void, firstTime = false): ModalHandle 
     'div',
     { class: 'howto' },
     ...items.map(([ic, k]) =>
-      h('div', { class: 'howto-item' }, h('div', { html: icon(ic) }), h('div', null, h('h4', null, t(`howto.${k}.t`)), h('p', null, t(`howto.${k}.d`)))),
+      h('div', { class: 'howto-item' }, h('div', { class: 'tile', html: icon(ic) }), h('div', null, h('h4', null, t(`howto.${k}.t`)), h('p', null, t(`howto.${k}.d`)))),
     ),
   );
   return openModal({
@@ -123,7 +123,7 @@ export function openCardDetail(card: CardInst, onClose?: () => void): ModalHandl
   const render = (): void => {
     const shown = { ...card, up: showUp };
     const gloss = cardKeywords(shown).map((k) => h('div', { html: `<b class="kw">${t(`kw.${k}`)}</b> — ${t(`kw.${k}.d`)}` }));
-    wrap.replaceChildren(cardView(shown));
+    wrap.replaceChildren(cardView(shown), h('div', { class: 'rules', html: cardText(shown) }));
     if (gloss.length) wrap.append(h('div', { class: 'glossary' }, ...gloss));
     if (canToggle)
       wrap.append(

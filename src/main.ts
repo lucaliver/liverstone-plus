@@ -1,9 +1,7 @@
-import '@fontsource/cinzel/700.css';
-import '@fontsource/cinzel/800.css';
-import '@fontsource/nunito/600.css';
-import '@fontsource/nunito/700.css';
-import '@fontsource/nunito/800.css';
-import '@fontsource/nunito/900.css';
+import '@fontsource/silkscreen/400.css';
+import '@fontsource/silkscreen/700.css';
+import '@fontsource/space-grotesk/500.css';
+import '@fontsource/space-grotesk/700.css';
 import './styles/main.css';
 
 import { setLocale, t } from './core/i18n';
@@ -15,6 +13,7 @@ import { settings } from './game/settings';
 import type { HeroId } from './game/types';
 import { confirmModal, initApp, show } from './ui/app';
 import { initFx } from './ui/fx/fx';
+import { preloadArt } from './ui/art/riso';
 import { combatScreen } from './ui/screens/combat';
 import { endScreen } from './ui/screens/end';
 import { heroSelectScreen } from './ui/screens/heroSelect';
@@ -109,7 +108,7 @@ function abandon(): void {
   goTitle();
 }
 
-function boot(): void {
+async function boot(): Promise<void> {
   setLocale(settings.locale);
   setSfxEnabled(settings.sound);
   document.documentElement.classList.toggle('reduce-motion', settings.reduceMotion);
@@ -119,8 +118,10 @@ function boot(): void {
   // Browsers only allow audio after a user gesture.
   addEventListener('pointerdown', unlockAudio, { passive: true });
   addEventListener('keydown', unlockAudio);
+  // Pixel art is generated from the vector sources once, before the first screen.
+  await preloadArt();
   goTitle();
   if (import.meta.env.DEV) Object.assign(window, { __game: { get run() { return run; }, nextNode, goJourney } });
 }
 
-boot();
+void boot();

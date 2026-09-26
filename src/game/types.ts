@@ -44,6 +44,11 @@ export interface CardDef {
   upKeywords?: Keyword[];
   /** Icon id in ui/art/icons. */
   art: string;
+  /**
+   * Language-neutral card face: `{kind:i}` renders an icon plus value i, `{kind}` an icon alone,
+   * `|` starts a new line. The full rules text lives in i18n (`card.<id>.desc`).
+   */
+  face: string;
   /** Unlock pack id; cards without a pack are always available. */
   pack?: string;
   play?: (c: Combat, v: number[], card: CombatCard) => void;

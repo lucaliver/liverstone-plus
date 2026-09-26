@@ -16,11 +16,10 @@ export function restScreen(run: RunState, onDone: () => void): Screen {
   const el = h(
     'div',
     { class: 'screen' },
-    h('div', { class: 'bg-dungeon' }),
     runHud(run),
     h('h1', { class: 'h1', style: { marginTop: '12px' } }, t('rest.title')),
     h('p', { class: 'sub' }, t('rest.desc')),
-    h('div', { class: 'rest-fire', html: icon('campfire') }),
+    h('div', { class: 'rest-fire', html: `<div class="sun"></div>${icon('campfire')}` }),
     h(
       'div',
       { class: 'rest-options' },

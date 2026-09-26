@@ -1,3 +1,5 @@
+import { pixelIcon } from './riso';
+
 /**
  * Silhouette icons on a 64×64 grid. They use `currentColor` so the context tints them;
  * a few parts use fixed colours for readability (potion liquids, eyes).
@@ -99,6 +101,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   cards: { el: 'steel', svg: `<rect x="20" y="6" width="28" height="40" rx="4" transform="rotate(12 34 26)" opacity=".55"/><rect x="14" y="14" width="28" height="40" rx="4"/>` },
   pause: { el: 'steel', svg: `<rect x="16" y="10" width="11" height="44" rx="3"/><rect x="37" y="10" width="11" height="44" rx="3"/>` },
   campfire: { el: 'fire', svg: `<g transform="translate(8 0) scale(.75)">${flame}</g><path d="M6 52l52 8M58 52L6 60" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>` },
+  gear: { el: 'steel', svg: `<path d="M27 4h10l2 8 6 3 7-4 7 7-4 7 3 6 8 2v10l-8 2-3 6 4 7-7 7-7-4-6 3-2 8H27l-2-8-6-3-7 4-7-7 4-7-3-6-8-2V27l8-2 3-6-4-7 7-7 7 4 6-3z"/><circle cx="32" cy="32" r="10" fill="#16121f"/>` },
+  left: { el: 'steel', svg: `<path d="M4 32L30 8v14h30v20H30v14z"/>` },
+  cross: { el: 'shadow', svg: `<path d="M8 16l8-8 16 16 16-16 8 8-16 16 16 16-8 8-16-16-16 16-8-8 16-16z"/>` },
   crown: { el: 'holy', svg: `<path d="M6 20l14 12 12-22 12 22 14-12-6 32H12z"/><rect x="12" y="52" width="40" height="6" rx="2"/>` },
 };
 
@@ -115,9 +120,9 @@ export const INTENT_ICON: Record<string, string> = {
   flee: 'wing',
 };
 
+/** Pixel icon (see riso.ts). The vector source above is rasterised once at boot. */
 export function icon(id: string, cls = ''): string {
-  const i = ICONS[id] ?? ICONS.star;
-  return `<svg class="ico ${cls}" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">${i.svg}</svg>`;
+  return pixelIcon(id, cls);
 }
 
 export const iconElement = (id: string): Element => ICONS[id]?.el ?? 'steel';

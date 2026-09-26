@@ -10,14 +10,14 @@ import type { CombatCard, CombatEvent, MoveDef, Side } from '../../game/types';
 import { openModal, type ModalHandle, type Screen } from '../app';
 import { creature } from '../art/creatures';
 import { icon, INTENT_ICON } from '../art/icons';
-import { cardText, cardView } from '../components/cardView';
+import { cardFace, cardView } from '../components/cardView';
 import { openCardDetail, openHowTo, openSettings, speedSelector } from '../components/modals';
 import { $, centerOf, h, setHtml, setText, toggle } from '../dom';
 import { burst, floatText, haptic, shake } from '../fx/fx';
 
-const RING_R = 38;
-const RING_C = 2 * Math.PI * RING_R;
 const LONG_PRESS_MS = 420;
+/** Backdrop ink per enemy, picked so the sprite's own inks contrast with it. */
+const SUN: Record<string, 'y' | 'p' | 'b'> = { goblin: 'p', slime: 'p', skeleton: 'b', lich: 'p' };
 const DRAG_THRESHOLD = 10;
 
 type Removal = 'played' | 'expired' | 'stolen' | 'stashed';
@@ -53,63 +53,65 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
 
   const el = h('div', { class: 'screen combat', 'data-hero': heroId, style: { '--hero-color': combat.heroDef.color } as never });
   el.innerHTML = `
-    <div class="bg-dungeon"><div class="torch l"></div><div class="torch r"></div></div>
     <header class="topbar">
       <button class="icon-btn js-pause" aria-label="${t('combat.paused')}">${icon('pause')}</button>
       <div class="floor-chip">${t('common.floorOf', { n: node.floor, total: totalFloors(run) })}<small>${t(`journey.node.${node.type}`)}</small></div>
       <button class="icon-btn speed-btn js-speed" aria-label="${t('combat.speed')}"></button>
     </header>
-    <section class="enemy-stage">
+    <section class="stage">
+      <div class="stage-sun" data-sun="${SUN[enemyDef.id] ?? 'y'}"></div>
       <div class="enemy-wrap">
         <div class="enemy-art">${creature(enemyDef.art)}</div>
         <div class="intent" role="status">
-          <svg class="ring" viewBox="0 0 84 84"><circle class="track" cx="42" cy="42" r="${RING_R}"/><circle class="prog" cx="42" cy="42" r="${RING_R}" stroke-dasharray="${RING_C}"/></svg>
-          <div class="js-intent-ico"></div><div class="val"></div><div class="lbl"></div>
+          <div class="bubble"><div class="timer"></div><span class="js-intent-ico"></span><span class="val"></span></div>
+          <div class="lbl"></div>
         </div>
       </div>
-      <div class="enemy-name">${t(`enemy.${enemyDef.id}.name`)}${enemyDef.tier !== 'normal' ? `<span class="tier ${enemyDef.tier}">${t(`journey.node.${enemyDef.tier}`)}</span>` : ''}</div>
-      <div class="enemy-bars">
-        <div class="block-chip off js-eblock">${icon('shield')}<b></b></div>
-        <div class="bar js-ehp"><div class="ghost"></div><div class="fill"></div><div class="txt"></div></div>
-      </div>
-      <div class="statuses js-estatus"></div>
-    </section>
-    <section class="hero-panel">
-      <div class="hero-portrait">${creature(heroId)}</div>
-      <div class="hero-info">
-        <div class="row">
-          <div class="block-chip off js-hblock">${icon('shield')}<b></b></div>
-          <div class="bar js-hhp"><div class="ghost"></div><div class="fill"></div><div class="txt"></div></div>
+      <div class="enemy-info">
+        <div class="enemy-name">${t(`enemy.${enemyDef.id}.name`)}${enemyDef.tier !== 'normal' ? `<span class="tier ${enemyDef.tier}">${t(`journey.node.${enemyDef.tier}`)}</span>` : ''}</div>
+        <div class="hpline">
+          <div class="block-chip off js-eblock">${icon('shield')}<b></b></div>
+          <div class="bar js-ehp"><div class="ghost"></div><div class="fill"></div><div class="txt"></div></div>
         </div>
-        <div class="resource"><span class="js-res-lbl"></span><div class="bar" style="flex:1"><div class="fill js-res"></div></div><span class="weave-badge off js-weave"></span></div>
-        <div class="statuses js-hstatus"></div>
-      </div>
-      <button class="ability-btn js-ability" aria-label="${t(`hero.${heroId}.ability`)}">
-        <div class="fillc"></div>${icon(heroId === 'warrior' ? 'rage' : 'hourglass')}<span class="albl">${t(`hero.${heroId}.ability`)}</span>
-      </button>
-    </section>
-    <section class="mana-row"><div class="mana-pips"></div><div class="mana-num"></div></section>
-    <section class="sleeve-row">
-      <div class="js-sleeve" style="display:flex;gap:10px"></div>
-      <div class="piles">
-        <div class="pile" title="${t('combat.drawPile')}">${icon('cards')}<span class="js-draw"></span></div>
-        <div class="pile" title="${t('combat.discardPile')}" style="opacity:.7">${icon('cards')}<span class="js-discard"></span></div>
+        <div class="statuses js-estatus"></div>
       </div>
     </section>
     <section class="belt">
       <div class="belt-track"></div>
       <div class="belt-cards"></div>
+    </section>
+    <section class="mana-row">${icon('crystal')}<div class="mana-pips"></div><div class="mana-num"></div></section>
+    <section class="action-row">
+      <div class="sleeve js-sleeve"></div>
+      <div class="piles">
+        <div class="pile" aria-label="${t('combat.drawPile')}">${icon('cards')}<span class="js-draw"></span></div>
+        <div class="pile discard" aria-label="${t('combat.discardPile')}">${icon('cards')}<span class="js-discard"></span></div>
+      </div>
+      <button class="ability-btn js-ability" aria-label="${t(`hero.${heroId}.ability`)}">
+        <div class="charge"></div>${icon(heroId === 'warrior' ? 'rage' : 'hourglass')}<span class="albl">${t(`hero.${heroId}.ability`)}</span>
+      </button>
+    </section>
+    <section class="hero-row">
+      <div class="hero-portrait">${creature(heroId)}</div>
+      <div class="hero-info">
+        <div class="hpline">
+          <div class="block-chip off js-hblock">${icon('shield')}<b></b></div>
+          <div class="bar js-hhp"><div class="ghost"></div><div class="fill"></div><div class="txt"></div></div>
+        </div>
+        <div class="resource"><span class="js-res-lbl"></span><div class="rbar"><div class="rfill js-res"></div></div><span class="weave-badge off js-weave"></span></div>
+        <div class="statuses js-hstatus"></div>
+      </div>
     </section>`;
 
   // ---------------------------------------------------------------- refs
   const r = {
-    enemyStage: $('.enemy-stage', el),
+    stage: $('.stage', el),
     enemyArt: $('.enemy-art', el),
     intent: $('.intent', el),
     intentIco: $('.js-intent-ico', el),
     intentVal: $('.intent .val', el),
     intentLbl: $('.intent .lbl', el),
-    ringProg: $<SVGCircleElement>('.ring .prog', el),
+    timer: $('.intent .timer', el),
     eHp: $('.js-ehp', el),
     eBlock: $('.js-eblock', el),
     eStatus: $('.js-estatus', el),
@@ -372,6 +374,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     drag.el.classList.remove('dragging');
     if (drag.from === 'sleeve') drag.el.style.transform = '';
     slotEls.forEach((s) => s.classList.remove('target'));
+    r.stage.classList.remove('drop-play');
     drag = null;
   };
 
@@ -416,13 +419,14 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     if (!drag.moved) return;
     if (drag.from === 'belt') {
       const base = r.beltCards.getBoundingClientRect();
-      const tilt = Math.max(-12, Math.min(12, ev.movementX * 1.5));
-      drag.el.style.transform = `translate3d(${ev.clientX - base.left - drag.offX}px, ${ev.clientY - base.top - drag.offY}px, 0) scale(1.08) rotate(${tilt}deg)`;
+      const tilt = Math.max(-8, Math.min(8, Math.round(ev.movementX)));
+      drag.el.style.transform = `translate3d(${ev.clientX - base.left - drag.offX}px, ${ev.clientY - base.top - drag.offY}px, 0) rotate(${tilt}deg)`;
       const slot = slotAt(ev.clientX, ev.clientY);
       slotEls.forEach((s, i) => toggle(s, 'target', i === slot));
     } else {
       drag.el.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.08)`;
     }
+    toggle(r.stage, 'drop-play', ev.clientY < r.belt.getBoundingClientRect().top);
   };
 
   const onUp = (ev: PointerEvent): void => {
@@ -435,10 +439,10 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       return;
     }
     const slot = d.from === 'belt' ? slotAt(ev.clientX, ev.clientY) : -1;
-    const stageBottom = r.enemyStage.getBoundingClientRect().bottom;
+    const toStage = ev.clientY < r.belt.getBoundingClientRect().top;
     cancelDrag();
     if (slot >= 0) combat.stash(d.uid, slot);
-    else if (ev.clientY < stageBottom) playUid(d.uid);
+    else if (toStage) playUid(d.uid);
   };
 
   const findCard = (uid: number): CombatCard | null =>
@@ -581,7 +585,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     }
     setText(r.intentVal, intentValue(m));
     const p = Math.min(1, e.timer / m.windup);
-    r.ringProg.style.strokeDashoffset = String(RING_C * p);
+    r.timer.style.transform = `scaleY(${p.toFixed(3)})`;
     const rate = combat.enemyTimeRate();
     const left = rate > 0 ? (m.windup - e.timer) / rate : Infinity;
     toggle(r.intent, 'urgent', !ended && (m.intent === 'attack' || m.intent === 'charge') && left < 1.1);
@@ -648,7 +652,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
 
   const makeCardEl = (card: CombatCard): CardEl => {
     const cardEl = cardView(card, { combat });
-    return { el: cardEl, card, desc: cardEl.querySelector('.card-desc > div')! };
+    return { el: cardEl, card, desc: cardEl.querySelector('.c-face')! };
   };
 
   const renderBelt = (): void => {
@@ -665,11 +669,11 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       }
       toggle(ce.el, 'poor', !combat.canAfford(b.card) || !combat.isPlayable(b.card));
       toggle(ce.el, 'leaving', b.pos > 0.86);
-      if (refreshText) setHtml(ce.desc, cardText(b.card, combat));
+      if (refreshText) setHtml(ce.desc, cardFace(b.card, combat));
       if (drag?.uid === b.card.uid && drag.moved) continue;
-      const x = beltW * (1 - b.pos);
-      const ry = b.pos < 0.1 ? (1 - b.pos / 0.1) * -55 : b.pos > 0.92 ? ((b.pos - 0.92) / 0.2) * 35 : 0;
-      ce.el.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0) rotateY(${ry.toFixed(1)}deg)`;
+      // Snap to whole pixels: crisp pixel art and a slightly stepped, printed feel.
+      const x = Math.round(beltW * (1 - b.pos));
+      ce.el.style.transform = `translate3d(${x}px, 0, 0)`;
       ce.el.style.zIndex = String(Math.round(b.pos * 100));
     }
     for (const [uid, ce] of beltEls) {
@@ -689,7 +693,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       if (cur?.card.uid === card?.uid) {
         if (cur && card) {
           toggle(cur.el, 'poor', !combat.canAfford(card));
-          if (frameNo % 8 === 0) setHtml(cur.desc, cardText(card, combat));
+          if (frameNo % 8 === 0) setHtml(cur.desc, cardFace(card, combat));
         }
         return;
       }
@@ -736,7 +740,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     renderSleeve();
     if (!paused && !ended && combat.intro <= 0) {
       beltOffset -= (dt * settings.speed * combat.beltRate() * beltW) / CONFIG.beltTime;
-      r.track.style.setProperty('--belt-x', `${(beltOffset % 26).toFixed(1)}px`);
+      r.track.style.setProperty('--belt-x', `${Math.round(beltOffset % 26)}px`);
     }
   };
 

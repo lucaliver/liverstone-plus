@@ -39,46 +39,51 @@ export function initFx(root: HTMLElement): void {
   requestAnimationFrame(loop);
 }
 
+const Y = '#ffd900';
+const P = '#ff3d9a';
+const B = '#1c5fd0';
+const K = '#1b1830';
 const PALETTES: Record<string, string[]> = {
-  slash: ['#ffffff', '#ffe6b0', '#ffd27a'],
-  blunt: ['#ffffff', '#ffd8a0', '#c9a36a'],
-  claw: ['#ff6a5a', '#ffb0a0', '#ffffff'],
-  fire: ['#ffdf6a', '#ff8a2a', '#ff4a1a'],
-  burn: ['#ffb347', '#ff6a1a'],
-  ice: ['#e6fbff', '#8fe0ff', '#5ab0ff'],
-  arcane: ['#f0d8ff', '#b77bff', '#6ab8ff'],
-  heal: ['#b6ffb0', '#5ae07a', '#ffffff'],
-  block: ['#d6ecff', '#7ab8ff'],
-  mana: ['#b8d4ff', '#4f8dff'],
-  blood: ['#ff5a5a', '#a01a2a'],
-  poison: ['#b6ff5a', '#4fbf3a'],
-  thorns: ['#b6ff8a', '#ffffff'],
-  curse: ['#b35aff', '#4a1a6a', '#8aff6a'],
-  gold: ['#ffe08a', '#ffb73a'],
-  hit: ['#ffffff', '#ffd27a'],
+  slash: [K, P, Y],
+  blunt: [K, Y],
+  claw: [P, K],
+  fire: [Y, P, '#f63a1e'],
+  burn: [Y, P],
+  ice: [B, '#8fc0f0'],
+  arcane: [P, B],
+  heal: [Y, '#2a8a4a'],
+  block: [B, Y],
+  mana: [B, P],
+  blood: [P, K],
+  poison: ['#2a8a4a', Y],
+  thorns: ['#2a8a4a', K],
+  curse: [K, P, '#4a2aa0'],
+  gold: [Y, P, B],
+  hit: [K, Y],
 };
 
-export function burst(kind: string, x: number, y: number, n = 18, spread = 1): void {
+/** Chunky square "ink" pixels, snapped to a 4px grid. */
+export function burst(kind: string, x: number, y: number, n = 16, spread = 1): void {
   if (settings.reduceMotion) n = Math.ceil(n / 3);
   const pal = PALETTES[kind] ?? PALETTES.hit;
   const up = kind === 'heal' || kind === 'mana' || kind === 'fire' || kind === 'burn';
   for (let i = 0; i < n; i++) {
     const a = Math.random() * Math.PI * 2;
-    const sp = (60 + Math.random() * 260) * spread;
+    const sp = (80 + Math.random() * 240) * spread;
     ps.push({
       x,
       y,
       vx: Math.cos(a) * sp * (up ? 0.4 : 1),
-      vy: Math.sin(a) * sp * (up ? 0.3 : 1) - (up ? 120 + Math.random() * 120 : 0),
+      vy: Math.sin(a) * sp * (up ? 0.3 : 1) - (up ? 140 + Math.random() * 100 : 0),
       life: 0,
-      max: 0.35 + Math.random() * 0.45,
-      size: 1.5 + Math.random() * 3.5,
+      max: 0.3 + Math.random() * 0.4,
+      size: 4 * (1 + ((Math.random() * 3) | 0)),
       color: pal[(Math.random() * pal.length) | 0],
-      g: up ? -60 : 420,
-      shape: kind === 'slash' || kind === 'claw' || kind === 'ice' ? 'spark' : 'dot',
+      g: up ? -80 : 520,
+      shape: 'dot',
     });
   }
-  if (kind !== 'heal' && kind !== 'mana') ps.push({ x, y, vx: 0, vy: 0, life: 0, max: 0.3, size: 10, color: pal[0], g: 0, shape: 'ring' });
+  if (kind !== 'heal' && kind !== 'mana') ps.push({ x, y, vx: 0, vy: 0, life: 0, max: 0.24, size: 12, color: pal[0], g: 0, shape: 'ring' });
 }
 
 let last = performance.now();
@@ -87,7 +92,6 @@ function loop(now: number): void {
   last = now;
   g.setTransform(dpr, 0, 0, dpr, 0, 0);
   g.clearRect(0, 0, canvas.width, canvas.height);
-  g.globalCompositeOperation = 'lighter';
   for (let i = ps.length - 1; i >= 0; i--) {
     const p = ps[i];
     p.life += dt;
@@ -100,26 +104,19 @@ function loop(now: number): void {
     p.x += p.vx * dt;
     p.y += p.vy * dt;
     const k = 1 - p.life / p.max;
-    g.globalAlpha = k;
     g.fillStyle = g.strokeStyle = p.color;
+    const sx = Math.round(p.x / 4) * 4;
+    const sy = Math.round(p.y / 4) * 4;
     if (p.shape === 'ring') {
-      g.lineWidth = 3 * k;
-      g.beginPath();
-      g.arc(p.x, p.y, p.size + (1 - k) * 60, 0, Math.PI * 2);
-      g.stroke();
-    } else if (p.shape === 'spark') {
-      g.lineWidth = p.size * 0.7;
-      g.beginPath();
-      g.moveTo(p.x, p.y);
-      g.lineTo(p.x - p.vx * 0.05, p.y - p.vy * 0.05);
-      g.stroke();
+      // Expanding square outline, stepped.
+      const r = Math.round((p.size + (1 - k) * 70) / 4) * 4;
+      g.lineWidth = 4;
+      g.strokeRect(sx - r, sy - r, r * 2, r * 2);
     } else {
-      g.beginPath();
-      g.arc(p.x, p.y, p.size * k + 0.5, 0, Math.PI * 2);
-      g.fill();
+      const s = Math.max(4, Math.round((p.size * (0.4 + k * 0.6)) / 4) * 4);
+      g.fillRect(sx - s / 2, sy - s / 2, s, s);
     }
   }
-  g.globalAlpha = 1;
   requestAnimationFrame(loop);
 }
 

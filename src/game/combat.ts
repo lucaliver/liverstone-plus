@@ -179,7 +179,8 @@ export class Combat {
 
     for (const id of this.relics) RELICS[id]?.hooks?.onCombatStart?.(this);
     // Prewarm the belt so the fight starts with something to look at.
-    this.spawnCard(CONFIG.spacing * 1.15);
+    this.spawnCard(CONFIG.spacing * 2.1);
+    this.spawnCard(CONFIG.spacing * 1.05);
     this.spawnCard(0.02);
   }
 
@@ -393,15 +394,16 @@ export class Combat {
     const move = (dt / CONFIG.beltTime) * this.beltRate();
     // Front cards first, so each card knows where the one ahead of it is.
     const byFront = [...this.belt].sort((a, b) => b.pos - a.pos);
+    const sparse = this.belt.length < CONFIG.minBelt;
     byFront.forEach((b, i) => {
       b.pos += move;
-      // Entry boost: a card still entering slides in fast while there's free room ahead,
-      // but never closer than the normal spacing and never past full visibility.
-      if (b.pos < CONFIG.cardWidth) {
-        const ahead = byFront[i - 1];
-        const limit = Math.min(CONFIG.cardWidth, ahead ? ahead.pos - CONFIG.spacing : Infinity);
-        if (b.pos < limit) b.pos = Math.min(limit, b.pos + move * (CONFIG.entryBoost - 1));
-      }
+      // Accumulating conveyor: in the right half of the belt, a card with free room ahead
+      // slides forward fast until it is one spacing behind the card in front. The front card
+      // advances into view (further when the belt is nearly empty). Cards never overtake.
+      const ahead = byFront[i - 1];
+      const target = ahead ? ahead.pos - CONFIG.spacing : sparse ? CONFIG.catchUpZone : CONFIG.cardWidth;
+      const limit = Math.min(target, CONFIG.catchUpZone);
+      if (b.pos < limit) b.pos = Math.min(limit, b.pos + move * (CONFIG.entryBoost - 1));
     });
     // Expire cards that fell off the left edge.
     for (let i = this.belt.length - 1; i >= 0; i--) {

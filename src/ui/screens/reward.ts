@@ -59,7 +59,6 @@ export function rewardScreen(run: RunState, picks: CardDef[], fled: boolean, onD
   const el = h(
     'div',
     { class: 'screen reward' },
-    h('div', { class: 'bg-dungeon' }),
     runHud(run),
     h('h1', { class: 'h1', style: { fontSize: '36px', marginTop: '16px' } }, fled ? t('reward.fled') : t('reward.victory')),
     fled ? h('p', { class: 'sub' }, t('reward.fledDesc')) : h('p', { class: 'sub' }, t('reward.choose')),

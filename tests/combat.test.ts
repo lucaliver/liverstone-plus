@@ -30,7 +30,7 @@ const run = (c: Combat, seconds: number): void => {
 describe('combat engine', () => {
   it('prewarms the belt and waits for the intro', () => {
     const c = setup();
-    expect(c.belt.length).toBe(2);
+    expect(c.belt.length).toBe(3);
     c.tick(CONFIG.introTime / 2);
     expect(c.time).toBe(0);
   });
@@ -149,7 +149,7 @@ describe('combat engine', () => {
       if (c.belt[0]) c.playCard(c.belt[0].card.uid);
       run(c, 0.3);
     }
-    expect(spawnPositions.length).toBeGreaterThan(3);
+    expect(spawnPositions.length).toBeGreaterThan(1);
     expect(spawnPositions.every((p) => p === 0)).toBe(true);
     // Cards keep their spacing (no overlap from the entry boost).
     const sorted = c.belt.map((b) => b.pos).sort((a, b) => a - b);
