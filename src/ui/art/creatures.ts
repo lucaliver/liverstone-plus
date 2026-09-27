@@ -300,7 +300,7 @@ ${shadow}
 ${eyes(86, 114, 62, 6, '#ffd900', 'nh-g')}
 <path d="M82 80c10 9 26 9 36 0z" fill="#f6f0e4" stroke="#1b1830" stroke-width="3.5"/>`;
 
-// Title screen props (office and factory): the time clock, a filing cabinet, a traffic cone, a toxic barrel.
+// Title screen props (office and factory): the time clock, a filing cabinet, a sack of money, a toxic barrel.
 const timeClock = `
 <defs>${lg('tk-m', '#9ab8f0', '#1c4fb0')}${lg('tk-g', '#ffe45a', '#d09a20')}</defs>
 ${shadow}
@@ -325,11 +325,14 @@ ${shadow}
 <path d="M84 36c0-14 7-24 16-24s16 10 16 24c0 5-3 8-6 9v4H90v-4c-3-1-6-4-6-9z" fill="#f6f0e4" ${OUT}/>
 <g fill="#1b1830"><rect x="90" y="24" width="7" height="7"/><rect x="104" y="24" width="7" height="7"/></g>`;
 
-const trafficCone = `
+const moneyBag = `
 ${shadow}
-<path d="M88 24h24l32 146H56z" fill="#ff6a2a" ${OUT}/>
-<path d="M81 74h38l5 22H76zM72 116h56l5 22H67z" fill="#f6f0e4"/>
-<rect x="36" y="166" width="128" height="18" fill="#e04a1a" ${OUT}/>`;
+<g fill="#ffd900" ${OUT}><ellipse cx="40" cy="182" rx="16" ry="6"/><ellipse cx="160" cy="184" rx="14" ry="5"/><ellipse cx="152" cy="175" rx="14" ry="5"/></g>
+<path d="M98 50l30-18 8 16-30 18z" fill="#8ad06a" ${OUT}/>
+<path d="M62 186c-20 0-28-18-22-42 8-34 32-58 60-60 28 2 52 26 60 60 6 24-2 42-22 42z" fill="#c9a060" ${OUT}/>
+<path d="M78 86c-8-12-4-26 8-30l14 10 14-10c12 4 16 18 8 30z" fill="#c9a060" ${OUT}/>
+<path d="M76 88h48" stroke="#1b1830" stroke-width="8"/>
+<path d="M114 120c-6-8-28-8-28 4 0 14 30 8 30 24 0 12-24 14-32 4" stroke="#2a8a4a" stroke-width="10" fill="none"/><path d="M100 106v62" stroke="#2a8a4a" stroke-width="7"/>`;
 
 const toxicBarrel = `
 ${shadow}
@@ -442,7 +445,7 @@ export const CREATURES: Record<string, string> = {
   coffeeMachine,
   timeClock,
   filingCabinet,
-  trafficCone,
+  moneyBag,
   toxicBarrel,
   warrior,
   mage,

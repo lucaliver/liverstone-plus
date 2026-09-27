@@ -282,14 +282,17 @@ describe('combat engine', () => {
     expect(spawnsWith(true)).toBe(spawnsWith(false));
   });
 
-  it('necromancer poison ticks harder (Virulence)', () => {
+  it('necromancer poison ticks harder at 6+ Poison (Virulence), plain below', () => {
     const c = setup({ hero: HEROES.necromancer, hp: 62, maxHp: 62, deck: deckOf(['rot', 'rot']), enemy: ENEMIES.skeleton });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
     c.applyStatus('enemy', 'poison', 6);
-    const hp = c.enemy.hp;
+    let hp = c.enemy.hp;
     run(c, CONFIG.dotInterval + 0.02);
     expect(hp - c.enemy.hp).toBe(6 + 1);
+    hp = c.enemy.hp;
+    run(c, CONFIG.dotInterval);
+    expect(hp - c.enemy.hp).toBe(5);
   });
 
   it('a bomb that reaches the end of the belt explodes on the hero', () => {

@@ -101,10 +101,11 @@
   list-style: none;
 }
 .foe-moves li {
-  display: grid;
-  grid-template-columns: 26px auto minmax(0, 1fr) auto;
+  /* Name, effect and wind-up on one line when they fit; otherwise the effect wraps under the name (never on it). */
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
+  gap: 2px 6px;
   min-height: 34px;
   font-family: var(--font-ui);
   font-size: 17px;
@@ -117,8 +118,11 @@
 .foe-moves li[data-intent='defend'] .mi { color: var(--b); }
 .foe-moves li[data-intent='curse'] .mi,
 .foe-moves li[data-intent='buff'] .mi { color: var(--purple); }
+.foe-moves .mi { flex: none; width: 26px; }
+.foe-moves .mn { flex: 1 0 auto; }
+.foe-moves .fx { white-space: normal; }
 .foe-moves .me {
-  justify-self: end;
+  margin-left: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;

@@ -119,12 +119,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       tag: t(`enemy.${e.def.id}.name`),
       tagCls: 'bad',
       desc: moveEffect(e.move, true, live) || t(`intent.${e.move.intent}`),
-      extra: [
-        upcoming
-          ? `<b class="after">${t('combat.afterAttacks', { n: e.mainsLeft + 1 })}</b> <b class="next-move">${t(`move.${upcoming.id}`)}</b>`
-          : '',
-        movePattern(e.def, live, { now: e.move, next: upcoming }),
-      ].filter(Boolean),
+      extra: [movePattern(e.def, live, { now: e.move, next: upcoming })],
       ink: 'bad',
     });
   };

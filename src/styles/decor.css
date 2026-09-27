@@ -77,5 +77,5 @@
 .title-hero .prop.l { left: 1%; bottom: 14%; width: 86px; height: 86px; }
 .title-hero .prop.r { right: 1%; bottom: 30%; width: 78px; height: 78px; }
 /* the small ones stand in front of the boss, at his feet */
-.title-hero .prop.l2 { left: 16%; bottom: 0; z-index: 2; width: 52px; height: 52px; }
+.title-hero .prop.l2 { left: 14%; bottom: 0; z-index: 2; width: 64px; height: 64px; }
 .title-hero .prop.r2 { right: 6%; bottom: 0; z-index: 2; width: 62px; height: 62px; }

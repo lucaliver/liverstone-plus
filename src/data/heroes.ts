@@ -2,6 +2,8 @@ import { CONFIG } from './config';
 import type { HeroDef, HeroId } from '../game/types';
 
 const rep = (id: string, n: number): string[] => new Array(n).fill(id);
+/** Virulence (Necromancer passive) only kicks in once the enemy carries this much Poison. */
+const VIRULENCE_AT = 6;
 
 const warrior: HeroDef = {
   id: 'warrior',
@@ -71,8 +73,8 @@ const necromancer: HeroDef = {
     use: (c) => c.applyStatus('enemy', 'poison', Math.max(5, c.stacks('enemy', 'poison'))),
   },
   hooks: {
-    // Virulence: Poison deals +1 per tick (more with Virulent Form).
-    enemyDotBonus: (c, id) => (id === 'poison' ? 1 + c.stacks('hero', 'virulence') : 0),
+    // Virulence: heavy Poison (6+) deals +1 per tick; Virulent Form adds its bonus on top, always.
+    enemyDotBonus: (c, id) => (id === 'poison' ? (c.stacks('enemy', 'poison') >= VIRULENCE_AT ? 1 : 0) + c.stacks('hero', 'virulence') : 0),
     // Plague: Attacks also apply Poison.
     onCardPlayed: (c, _card, def) => {
       const plague = c.stacks('hero', 'plague');

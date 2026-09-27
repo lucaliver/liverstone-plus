@@ -18,7 +18,7 @@ export interface TitleCallbacks {
 /** Office and factory props around the boss (sprite id, position class). */
 const TITLE_PROPS: [string, string][] = [
   ['filingCabinet', 'l'],
-  ['trafficCone', 'l2'],
+  ['moneyBag', 'l2'],
   ['timeClock', 'r'],
   ['toxicBarrel', 'r2'],
 ];

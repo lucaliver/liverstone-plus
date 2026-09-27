@@ -250,5 +250,3 @@
 .fx-curse .pico { color: var(--purple); }
 .fx-steal { color: #a07000; }
 .fx-steal .pico { color: #a07000; }
-.info-extra .after { color: var(--k); }
-.info-extra .next-move { color: var(--k); text-transform: uppercase; }

@@ -90,7 +90,7 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 | | Guerriero (*Shield of the Loading Dock*) | Mago (*Keeper of the Furnace*) | Negromante (*Shop Steward of the Dead*) |
 | --- | --- | --- | --- |
 | Archetipo | Blocco e attacchi pesanti | Catene di incantesimi, gelo, fuoco | Veleno |
-| Passiva | **Thick Skin**: il Blocco svanisce più lentamente | **Multitasking**: gli incantesimi in catena diventano più forti | **Virulence**: il Veleno fa più danno |
+| Passiva | **Thick Skin**: il Blocco svanisce più lentamente | **Multitasking**: gli incantesimi in catena diventano più forti | **Virulence**: con 6+ Veleno sul nemico, il Veleno fa più danno |
 | Abilità | **Overtime**: attacchi potenziati per qualche secondo | **Time Theft**: congela il nemico e accelera il nastro | **General Strike**: raddoppia il Veleno sul nemico |
 | Sleeve | 1 slot (ha perso un braccio sul lavoro) | 2 slot | 3 slot |
 | Speciale | **Picket Line**: Blocco e Forza | **Boiler Burst**: danno enorme e Bruciatura | **Wildcat Strike**: cura e Veleno |
@@ -138,8 +138,8 @@ La difficoltà cresce scendendo di piano.
 
 ## 6. Schermate e interfaccia
 
-- **Home:** logo animato, boss tra oggetti d'ufficio e di fabbrica (timbracartellino, schedario, cono, barile tossico); *Clock in* (nuova run) / *Back to work* (continua), *Handbook*,
-  *Onboarding* (come si gioca), Impostazioni.
+- **Home:** logo animato, boss tra oggetti d'ufficio e di fabbrica (timbracartellino, schedario, sacco di soldi, barile tossico); *Clock in* (nuova run) / *Back to work* (continua), *Handbook*,
+  *How to play* (apre l'Onboarding'), Impostazioni.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
 - **Percorso:** in alto ritratto dell'eroe (toccalo o tienilo premuto per la sua scheda), vita e mazzo; sotto la mappa dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
   per entrare nel piano. La run si abbandona dalla pausa in combattimento o iniziandone una nuova.
