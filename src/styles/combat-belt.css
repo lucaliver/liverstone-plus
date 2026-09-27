@@ -162,6 +162,20 @@
   50% { margin-left: 7px; }
   75% { margin-left: -4px; }
 }
+/* played: punched like a time card, three rectangular holes one per step, before it leaves */
+.card.punched { pointer-events: none; }
+.card .punch { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.card .punch i {
+  position: absolute;
+  width: 12%;
+  height: 12%;
+  background: var(--void);
+  box-shadow: inset calc(var(--cw) * 0.02) calc(var(--cw) * 0.02) 0 var(--k);
+  animation: punch-in 0.04s steps(1) both;
+}
+@keyframes punch-in {
+  from { visibility: hidden; }
+}
 .card.fly-out {
   transition: transform 0.28s steps(5), opacity 0.28s steps(5);
   opacity: 0;
