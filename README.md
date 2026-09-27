@@ -208,5 +208,4 @@ La difficoltà cresce scendendo di piano.
   gemma a rombo solo per rare (blu), epiche (rosa) e leggendarie (gialla).
 - **Font:** Silkscreen per le parole dei titoli, Jersey 10 per interfaccia e numeri, Space Grotesk per i testi lunghi.
 - **Musica chiptune procedurale:** menu (carillon), combattimento, élite (marcia cupa), boss, sala pausa, pausa (calma),
-  vittoria. Effetti sonori sintetizzati e a tema (clic di perforatrice quando giochi una carta, campanella da macchina
-  da scrivere al rimescolo, fischio a vapore della fabbrica quando entra un boss), vibrazione sui colpi.
+  vittoria. Effetti sonori sintetizzati (con il fischio a vapore della fabbrica quando entra un boss), vibrazione sui colpi.

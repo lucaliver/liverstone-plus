@@ -104,12 +104,7 @@ const SOUNDS = {
     tone(520, 0.07, { type: 'triangle', vol: 0.15 });
     tone(780, 0.08, { type: 'triangle', vol: 0.1, delay: 0.04 });
   },
-  /** A whoosh with a card punch's clack on top: every card played gets punched. */
-  cardPlay: () => {
-    noise(0.18, { freq: 900, to: 3200, vol: 0.18, q: 0.8 });
-    tone(1900, 0.03, { type: 'square', vol: 0.06, to: 1200 });
-    noise(0.04, { freq: 4200, vol: 0.22, q: 3 });
-  },
+  cardPlay: () => noise(0.18, { freq: 900, to: 3200, vol: 0.18, q: 0.8 }),
   cardSpawn: () => tone(300, 0.05, { type: 'triangle', vol: 0.04, to: 380 }),
   cardExpire: () => noise(0.25, { freq: 1600, to: 300, vol: 0.1 }),
   stash: () => {
@@ -199,13 +194,10 @@ const SOUNDS = {
       tone(f, 0.5, { type: 'triangle', vol: 0.16, delay: i * 0.16 });
     });
   },
-  /** The riffle of the deck, then a typewriter's end-of-line bell. */
   reshuffle: () => {
     [0, 1, 2, 3].forEach((i) => {
       noise(0.05, { freq: 2000 + i * 300, vol: 0.08, delay: i * 0.04 });
     });
-    tone(2093, 0.5, { type: 'sine', vol: 0.09, delay: 0.2 });
-    tone(4186, 0.3, { type: 'sine', vol: 0.03, delay: 0.2 });
   },
   /** A time card punched in the clock: the card slides in, then a heavy ka-chunk. */
   punchClock: () => {
