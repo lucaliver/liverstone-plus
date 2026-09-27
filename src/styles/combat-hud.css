@@ -194,14 +194,14 @@
 [data-hero='mage'] { --res-ink: var(--b); --hero-ink: var(--b); }
 [data-hero='necromancer'] { --res-ink: var(--green); --hero-ink: var(--green); }
 
-/* hero row: right under the belt, so your HP and Block are read without looking away from the cards */
+/* hero row: right above the belt, so your HP and Block are read without looking away from the cards */
 .hero-row {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 6px 12px;
   background: var(--bg2);
-  border-bottom: var(--line) solid var(--void);
+  border-top: var(--line) solid var(--void);
 }
 .hero-portrait {
   flex: none;

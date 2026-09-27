@@ -113,8 +113,8 @@ La difficoltà cresce scendendo di piano.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
 - **Percorso:** colonna dei piani dell'atto con icone (battaglia, falò, élite, boss).
 - **Combattimento**, dall'alto: barra superiore (piano, velocità di gioco, pausa) · nemico con stati e vita ·
-  barra minaccia · **nastro** · eroe (ritratto, vita, Blocco, stati) · mana · sleeve, pile, abilità. Vita del nemico,
-  mossa in arrivo e vita dell'eroe stanno a ridosso del nastro, così non serve distogliere lo sguardo dalle carte.
+  barra minaccia · eroe (ritratto, vita, Blocco, stati) · **nastro** · mana · sleeve, pile, abilità. Vita del nemico,
+  mossa in arrivo e vita dell'eroe stanno tutte subito sopra il nastro, così non serve distogliere lo sguardo dalle carte.
 - **Ricompensa, falò** (con animazione di cura), **vittoria e fine run** (statistiche), **Compendio** (carte per
   classe con scoperte, nemici con mosse).
 - **Impostazioni:** musica, effetti, velocità, riduci animazioni, vibrazione, nastro a due righe (sperimentale: più carte in vista, nastro un po' più lento). Tutti i testi sono pronti per altre lingue.

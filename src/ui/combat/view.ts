@@ -68,12 +68,7 @@ function markup(run: RunState, combat: Combat): string {
         </div>
       </div>
     </section>
-    <section class="belt rows-${combat.beltRows}">
-      <div class="belt-track"></div>
-      <div class="maw-eyes" aria-hidden="true"><i></i><i></i></div>
-      <div class="belt-cards"></div>
-    </section>
-    <!-- right under the belt: your HP, Block and statuses stay in view while you play -->
+    <!-- right above the belt: your HP, Block and statuses stay in view while you play -->
     <section class="hero-row">
       <div class="hero-portrait">${creature(heroId)}</div>
       <div class="hero-info">
@@ -83,6 +78,11 @@ function markup(run: RunState, combat: Combat): string {
         </div>
         <div class="statuses js-hstatus"></div>
       </div>
+    </section>
+    <section class="belt rows-${combat.beltRows}">
+      <div class="belt-track"></div>
+      <div class="maw-eyes" aria-hidden="true"><i></i><i></i></div>
+      <div class="belt-cards"></div>
     </section>
     <section class="mana-row">${icon('crystal')}<div class="mana-pips"></div><div class="mana-num"></div></section>
     <section class="action-row">
