@@ -10,7 +10,8 @@
   background-color: #0c0818d8;
   background-image: radial-gradient(circle, #ff3d9a22 30%, transparent 34%);
   background-size: 6px 6px;
-  animation: fade 0.15s steps(2) both;
+  /* windows open fast and smoothly (the rest of the UI keeps its stepped motion) */
+  animation: fade 0.1s ease-out both;
 }
 @keyframes fade {
   from { opacity: 0; }
@@ -26,10 +27,10 @@
   border: var(--line) solid var(--k);
   color: var(--k);
   box-shadow: 8px 8px 0 var(--p);
-  animation: modal-in 0.2s steps(3) both;
+  animation: modal-in 0.12s cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
 }
 @keyframes modal-in {
-  from { transform: translateY(24px); opacity: 0; }
+  from { transform: translateY(10px) scale(0.94); opacity: 0; }
 }
 .modal h2 {
   margin: 0;

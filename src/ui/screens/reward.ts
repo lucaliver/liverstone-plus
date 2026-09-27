@@ -6,10 +6,8 @@ import type { Screen } from '../app';
 import { icon } from '../art/icons';
 import { cardView } from '../components/cardView';
 import { openCardDetail, sortDeck } from '../components/modals';
-import { h } from '../dom';
+import { LONG_PRESS_MS, h } from '../dom';
 import { runHud } from './journey';
-
-const LONG_PRESS_MS = 420;
 
 /** Tap selects; a long press opens the card detail instead (and doesn't select). */
 function selectable(el: HTMLElement, card: CardInst, onSelect: () => void): void {

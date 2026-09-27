@@ -6,7 +6,7 @@ import { GAME_SPEEDS } from '../../data/config';
 import { saveSettings, settings } from '../../game/settings';
 import type { CardInst, CardType } from '../../game/types';
 import { openModal, type ModalHandle } from '../app';
-import { h, onPress } from '../dom';
+import { LONG_PRESS_MS, h, onPress } from '../dom';
 import { icon } from '../art/icons';
 import { cardKeywords, cardText, cardView } from './cardView';
 
@@ -244,7 +244,7 @@ export function openDeck(
           t0 = window.setTimeout(() => {
             long = true;
             openCardDetail(opts.preview ? opts.preview(c) : c);
-          }, 420);
+          }, LONG_PRESS_MS);
         });
         ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => {
           el.addEventListener(ev, () => clearTimeout(t0));

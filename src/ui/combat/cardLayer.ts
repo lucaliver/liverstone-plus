@@ -5,11 +5,10 @@ import type { CombatCard } from '../../game/types';
 import { icon } from '../art/icons';
 import { cardFace, cardView } from '../components/cardView';
 import { openCardDetail } from '../components/modals';
-import { h, setHtml, toggle } from '../dom';
+import { LONG_PRESS_MS, h, setHtml, toggle } from '../dom';
 import { burst } from '../fx/fx';
 import type { CombatView } from './view';
 
-const LONG_PRESS_MS = 420;
 const DRAG_THRESHOLD = 10;
 
 export type Removal = 'played' | 'expired' | 'stolen' | 'stashed';
