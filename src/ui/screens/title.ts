@@ -67,7 +67,6 @@ export function titleScreen(cb: TitleCallbacks): Screen {
         btn('trash', t('menu.reset'), 'danger small', cb.onResetProgress),
       ),
     ),
-    h('div', { class: 'version' }, `v${__APP_VERSION__}`),
   );
   return { el };
 }
@@ -87,7 +86,8 @@ export function splashScreen(onStart: () => void): Screen {
       },
       html: `${icon('play')}<span>${t('menu.start')}</span>`,
     }),
-    h('div', { class: 'version' }, `v${__APP_VERSION__}`),
+    // Major.minor only (package.json 2.0.0 shows as v2.0).
+    h('div', { class: 'version' }, `v${__APP_VERSION__.split('.').slice(0, 2).join('.')}`),
   );
   return { el };
 }
