@@ -31,6 +31,10 @@
   --fg: #f6f0e4;
   --muted-d: #a397c4;
 
+  /* Pixel outlines for text over the fight (sprites, plates, night): light text gets the ink ring, dark text the paper ring. */
+  --ring-k: 3px 0 0 var(--k), -3px 0 0 var(--k), 0 3px 0 var(--k), 0 -3px 0 var(--k), 3px 3px 0 var(--k), -3px 3px 0 var(--k), 3px -3px 0 var(--k), -3px -3px 0 var(--k);
+  --ring-p: 2px 0 0 var(--paper), -2px 0 0 var(--paper), 0 2px 0 var(--paper), 0 -2px 0 var(--paper), 2px 2px 0 var(--paper), -2px 2px 0 var(--paper), 2px -2px 0 var(--paper), -2px -2px 0 var(--paper);
+
   --line: 3px;
   --off: 4px;
   /* Silkscreen for words in titles only; anything with numbers uses Jersey 10 (--font-ui): clearer digits. */

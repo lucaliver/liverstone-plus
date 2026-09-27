@@ -23,14 +23,15 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(38px, 12vw, 56px);
-  line-height: 1;
+  line-height: 1.1;
+  letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--fg);
-  text-shadow: 5px 5px 0 var(--y), -3px 3px 0 var(--p);
+  text-shadow: var(--ring-k), 7px 7px 0 var(--y), -5px 6px 0 var(--p);
   pointer-events: none;
   animation: banner 1.1s steps(8) forwards;
 }
-.banner.bad { text-shadow: 5px 5px 0 var(--p), -3px 3px 0 var(--b); }
+.banner.bad { text-shadow: var(--ring-k), 7px 7px 0 var(--p), -5px 6px 0 var(--b); }
 @keyframes banner {
   0% { transform: scale(1.8); opacity: 0; }
   15% { transform: scale(1); opacity: 1; }
@@ -67,7 +68,7 @@
   font-size: 36px;
   line-height: 1;
   color: var(--k);
-  text-shadow: 3px 3px 0 var(--y);
+  text-shadow: var(--ring-p), 4px 4px 0 var(--y);
   white-space: nowrap;
   animation: float 0.8s steps(8) forwards;
 }
@@ -129,9 +130,9 @@
   100% { transform: translateY(-40px); opacity: 0; }
 }
 .floater.big { font-size: 56px; }
-.floater.heal { color: var(--green); text-shadow: 3px 3px 0 var(--y); }
-.floater.block { color: var(--b); text-shadow: 3px 3px 0 var(--y); font-size: 28px; }
-.floater.blocked { display: flex; align-items: center; gap: 2px; color: var(--b); font-family: var(--font-ui); font-size: 26px; text-shadow: 2px 2px 0 var(--paper); }
+.floater.heal { color: var(--green); }
+.floater.block { color: var(--b); font-size: 28px; }
+.floater.blocked { display: flex; align-items: center; gap: 2px; color: var(--b); font-family: var(--font-ui); font-size: 26px; text-shadow: var(--ring-p); }
 .floater.blocked .pico { font-size: 22px; color: var(--b); --ink2: var(--paper); }
 .floater.status,
 .floater.text {

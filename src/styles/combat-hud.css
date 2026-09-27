@@ -58,7 +58,7 @@
   color: var(--muted-d);
 }
 
-/* action row: sleeve + piles + ability */
+/* action row: sleeve + ability */
 .action-row {
   --cw: calc(var(--cw-belt) * 0.8);
   display: flex;
@@ -107,27 +107,10 @@
 @keyframes stash-in {
   from { transform: translateY(-40px); }
 }
-.piles {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-.pile {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--fg);
-  font-family: var(--font-ui);
-  font-size: 19px;
-}
-.pile .pico { font-size: 24px; --ink2: var(--p); }
-.pile.discard { color: var(--muted-d); }
-
 .ability-btn {
   position: relative;
   flex: none;
+  margin-left: auto;
   width: 84px;
   height: 84px;
   display: grid;

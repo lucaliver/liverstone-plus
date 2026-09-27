@@ -134,8 +134,9 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         break;
       }
       case 'reshuffle': {
-        const p = centerOf(r.draw);
-        floatText(p.x - 30, p.y, t('combat.reshuffle'), 'status good');
+        // Near the belt entry, where the reshuffled cards come from.
+        const rc = r.belt.getBoundingClientRect();
+        floatText(rc.right - 60, rc.top + 16, t('combat.reshuffle'), 'status good');
         sfx('reshuffle');
         break;
       }

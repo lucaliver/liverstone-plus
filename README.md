@@ -134,7 +134,7 @@ La difficoltà cresce scendendo di piano.
 - **Percorso:** colonna dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
   per entrare nel piano. La run si abbandona dalla pausa in combattimento o iniziandone una nuova.
 - **Combattimento**, dall'alto: barra superiore (piano, velocità di gioco, pausa) · nemico con stati e vita ·
-  barra minaccia · eroe (ritratto, vita, Blocco, stati) · **nastro** · mana · sleeve, pile, abilità. Vita del nemico,
+  barra minaccia · eroe (ritratto, vita, Blocco, stati) · **nastro** · mana · sleeve e abilità (i contatori di mazzo e scarti sono nascosti). Vita del nemico,
   mossa in arrivo e vita dell'eroe stanno tutte subito sopra il nastro, così non serve distogliere lo sguardo dalle carte.
 - **Ricompensa, sala pausa** (macchinetta del caffè steampunk, con animazione di cura), **fine turno e licenziamento** (statistiche), **Handbook** (carte per
   classe con scoperte, nemici con mosse).

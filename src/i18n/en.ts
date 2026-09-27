@@ -116,8 +116,6 @@ const en = {
   'combat.stolen': 'Outsourced!',
   'combat.enraged': 'Enraged!',
   'combat.sleeveHint': 'Sleeve',
-  'combat.drawPile': 'Draw pile',
-  'combat.discardPile': 'Discard pile',
   'combat.speed': 'Speed',
   'combat.afterAttacks': 'After {n} {n|attack|attacks}:',
   'move.fx.damage': 'damage',
