@@ -4,13 +4,13 @@ import { combat, freshGame, startFight } from './helpers';
 test('title, hero select and journey render without errors', async ({ page }) => {
   const problems = await freshGame(page);
   await expect(page.locator('.logo')).toHaveText(/liverstone/i);
-  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /^clock in$/i }).click();
   await expect(page.locator('.hero-slide')).toHaveCount(3);
   // Carousel: the hero in view is the one that starts.
   await page.locator('.hero-arrow.next').click();
   await expect(page.locator('.hero-dot').nth(1)).toHaveAttribute('aria-current', 'true');
   await expect(page.locator('.hero-select')).toHaveAttribute('data-hero', 'mage');
-  await page.getByRole('button', { name: /enter the dungeon/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
   await expect(page.locator('.node.current')).toBeVisible();
   expect(problems).toEqual([]);
 });
@@ -72,10 +72,10 @@ test('the combat layout never moves when statuses appear', async ({ page }) => {
 
 test('compendium shows cards and enemies in separate sections', async ({ page }) => {
   const problems = await freshGame(page);
-  await page.getByRole('button', { name: /compendium/i }).click();
+  await page.getByRole('button', { name: /handbook/i }).click();
   await expect(page.locator('.comp-grid .card').first()).toBeVisible();
   await expect(page.locator('.foe').first()).toBeHidden();
-  await page.getByRole('tab', { name: /enemies/i }).click();
+  await page.getByRole('tab', { name: /personnel/i }).click();
   await expect(page.locator('.foe').first()).toBeVisible();
   await expect(page.locator('.comp-grid')).toBeHidden();
   expect(problems).toEqual([]);
@@ -94,8 +94,8 @@ for (const height of [844, 600]) {
 
 test('the fight waits for Start; meanwhile things can be held to read them', async ({ page }) => {
   await freshGame(page);
-  await page.getByRole('button', { name: /new run/i }).click();
-  await page.getByRole('button', { name: /enter the dungeon/i }).click();
+  await page.getByRole('button', { name: /^clock in$/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
   await page.getByRole('button', { name: /enter floor 1/i }).click();
   const clock = () => page.evaluate('window.__combat.time + window.__combat.intro');
   const before = await clock();
@@ -131,7 +131,7 @@ test('pause → main menu keeps the run: Continue restarts the same floor', asyn
   await page.getByRole('button', { name: 'Main menu' }).click();
   await page.getByRole('button', { name: 'Confirm' }).click();
   await expect(page.locator('.title-screen')).toBeVisible();
-  await page.getByRole('button', { name: /continue run/i }).click();
+  await page.getByRole('button', { name: /back to work/i }).click();
   await expect(page.locator('.node.current')).toBeVisible();
   const run = (await page.evaluate('({ floor: window.__game.run.current, hp: window.__game.run.hp, max: window.__game.run.maxHp })')) as {
     floor: number;
@@ -157,11 +157,11 @@ test('tapping the backdrop over the pause button closes the pause menu without r
 
 test('campfire upgrade: tapping selects, the Upgrade button confirms', async ({ page }) => {
   await freshGame(page);
-  await page.getByRole('button', { name: /new run/i }).click();
-  await page.getByRole('button', { name: /enter the dungeon/i }).click();
+  await page.getByRole('button', { name: /^clock in$/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
   await page.evaluate('(() => { const g = window.__game; g.run.current = 3; g.run.cleared = false; g.goJourney(); })()');
   await page.getByRole('button', { name: /enter floor 4/i }).click();
-  await page.getByRole('button', { name: /smith/i }).click();
+  await page.getByRole('button', { name: /training/i }).click();
   const upgrade = page.getByRole('button', { name: 'Upgrade', exact: true });
   await expect(upgrade).toBeDisabled();
   await expect(page.locator('.deck-grid .card.is-up')).toHaveCount(0);
