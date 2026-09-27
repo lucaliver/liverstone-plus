@@ -326,16 +326,17 @@ ${shadow}
 <g fill="#1b1830"><rect x="90" y="24" width="7" height="7"/><rect x="104" y="24" width="7" height="7"/></g>`;
 
 const moneyBag = `
-<defs>${lg('mb-s', '#ffe45a', '#d09a20')}</defs>
 ${shadow}
+<!-- crisp edges: no half-covered rim pixels, so no pale dither on the outline -->
+<g shape-rendering="crispEdges">
 <g fill="#ffd900" ${OUT}><ellipse cx="36" cy="182" rx="18" ry="7"/><ellipse cx="166" cy="184" rx="16" ry="6"/><ellipse cx="158" cy="174" rx="16" ry="6"/></g>
 <path d="M96 44l34-20 10 18-34 20z" fill="#8ad06a" ${OUT}/>
-<path d="M56 188c-24 0-32-20-26-46 8-38 36-64 70-66 34 2 62 28 70 66 6 26-2 46-26 46z" fill="url(#mb-s)" ${OUT}/>
-<path d="M74 80c-10-14-4-30 10-34l16 12 16-12c14 4 20 20 10 34z" fill="url(#mb-s)" ${OUT}/>
+<path d="M56 188c-24 0-32-20-26-46 8-38 36-64 70-66 34 2 62 28 70 66 6 26-2 46-26 46z" fill="#ffd900" stroke="#120e18" stroke-width="6" stroke-linejoin="round"/>
+<path d="M74 80c-10-14-4-30 10-34l16 12 16-12c14 4 20 20 10 34z" fill="#ffd900" stroke="#120e18" stroke-width="6" stroke-linejoin="round"/>
 <path d="M72 82h56" stroke="#1b1830" stroke-width="9"/>
-<path d="M118 118c-8-10-34-10-34 4 0 16 36 10 36 28 0 14-30 16-38 4" stroke="#1b1830" stroke-width="16" fill="none"/>
-<path d="M118 118c-8-10-34-10-34 4 0 16 36 10 36 28 0 14-30 16-38 4" stroke="#2a8a4a" stroke-width="9" fill="none"/>
-<path d="M100 100v70" stroke="#1b1830" stroke-width="12"/><path d="M100 100v70" stroke="#2a8a4a" stroke-width="6"/>`;
+<!-- the dollar, drawn on the pixel grid with stepped diagonals -->
+<g fill="#1f6a3a"><rect x="96.875" y="109.375" width="6.25" height="6.25"/><rect x="90.625" y="115.625" width="6.25" height="6.25"/><rect x="96.875" y="115.625" width="6.25" height="6.25"/><rect x="103.125" y="115.625" width="6.25" height="6.25"/><rect x="109.375" y="115.625" width="6.25" height="6.25"/><rect x="84.375" y="121.875" width="6.25" height="6.25"/><rect x="96.875" y="121.875" width="6.25" height="6.25"/><rect x="84.375" y="128.125" width="6.25" height="6.25"/><rect x="96.875" y="128.125" width="6.25" height="6.25"/><rect x="90.625" y="134.375" width="6.25" height="6.25"/><rect x="96.875" y="134.375" width="6.25" height="6.25"/><rect x="96.875" y="140.625" width="6.25" height="6.25"/><rect x="103.125" y="140.625" width="6.25" height="6.25"/><rect x="96.875" y="146.875" width="6.25" height="6.25"/><rect x="109.375" y="146.875" width="6.25" height="6.25"/><rect x="96.875" y="153.125" width="6.25" height="6.25"/><rect x="109.375" y="153.125" width="6.25" height="6.25"/><rect x="84.375" y="159.375" width="6.25" height="6.25"/><rect x="90.625" y="159.375" width="6.25" height="6.25"/><rect x="96.875" y="159.375" width="6.25" height="6.25"/><rect x="103.125" y="159.375" width="6.25" height="6.25"/><rect x="96.875" y="165.625" width="6.25" height="6.25"/></g>
+</g>`;
 
 const toxicBarrel = `
 ${shadow}

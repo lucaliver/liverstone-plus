@@ -12,7 +12,7 @@ const warrior: HeroDef = {
   regen: 1.3,
   blockDecay: 1.2,
   // Starter decks: only basic cards (plus mana crystals); everything else comes from rewards.
-  startDeck: [...rep('strike', 5), ...rep('defend', 4), 'manaGeode'],
+  startDeck: [...rep('strike', 4), ...rep('defend', 4), 'manaGeode'],
   special: 'lastStand',
   // One arm left: a single sleeve slot (the special takes it until played).
   sleeve: 1,
@@ -33,7 +33,7 @@ const mage: HeroDef = {
   maxMana: 3,
   regen: 0.8,
   blockDecay: 1.0,
-  startDeck: [...rep('arcaneBolt', 5), ...rep('ward', 3), 'manaShard', 'manaGeode'],
+  startDeck: [...rep('arcaneBolt', 4), ...rep('ward', 3), 'manaShard', 'manaGeode'],
   special: 'meteor',
   sleeve: 2,
   color: '#5b8cff',
@@ -62,7 +62,7 @@ const necromancer: HeroDef = {
   maxMana: 2,
   regen: 1.25,
   blockDecay: 0.9,
-  startDeck: [...rep('boneSpike', 3), ...rep('graveWard', 3), ...rep('toxicDart', 2), 'manaShard', 'manaGeode'],
+  startDeck: [...rep('boneSpike', 3), ...rep('graveWard', 3), 'toxicDart', 'manaShard', 'manaGeode'],
   special: 'deathsDoor',
   sleeve: 3,
   color: '#2a8a4a',

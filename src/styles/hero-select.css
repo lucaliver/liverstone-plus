@@ -116,6 +116,13 @@
   color: var(--fg);
   text-shadow: 4px 4px 0 var(--hero-ink), -3px 2px 0 var(--void);
 }
+.hero-job {
+  margin: -4px 0 2px;
+  font-family: var(--font-ui);
+  font-size: 20px;
+  color: var(--muted-d);
+  text-transform: uppercase;
+}
 .hero-stats {
   display: flex;
   gap: 8px;

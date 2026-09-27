@@ -20,6 +20,7 @@ function slide(hero: HeroDef, index: number): HTMLElement {
       html: `${motes(8)}<div class="pedestal"></div><div class="hero-sprite">${creature(id)}</div><div class="hero-num">${String(index + 1).padStart(2, '0')}</div>`,
     }),
     h('h2', { class: 'hero-name' }, t(`hero.${id}.name`)),
+    h('p', { class: 'hero-job' }, t(`hero.${id}.job`)),
     h(
       'div',
       { class: 'hero-stats' },
