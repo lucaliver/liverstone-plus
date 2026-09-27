@@ -35,20 +35,20 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
           { class: 'hero-stats' },
           h('span', { class: 'stat hp', html: `${icon('heart')}${hero.hp}` }),
           h('span', { class: 'stat mana', html: `${icon('crystal')}${hero.maxMana}` }),
-          h(
-            'span',
-            {
-              class: 'stat',
-              role: 'button',
-              'aria-label': t('hero.starterDeck'),
-              onclick: (e: Event) => {
-                e.stopPropagation();
-                sfx('tap');
-                openDeck(hero.startDeck.map((cid, i) => ({ uid: i + 1, id: cid, up: false })), { title: t('hero.starterDeck') });
-              },
-              html: `${icon('cards')}${hero.startDeck.length}`,
+          h('span', {
+            class: 'stat',
+            role: 'button',
+            'aria-label': t('hero.starterDeck'),
+            onclick: (e: Event) => {
+              e.stopPropagation();
+              sfx('tap');
+              openDeck(
+                hero.startDeck.map((cid, i) => ({ uid: i + 1, id: cid, up: false })),
+                { title: t('hero.starterDeck') },
+              );
             },
-          ),
+            html: `${icon('cards')}${hero.startDeck.length}`,
+          }),
         ),
       ),
       feature(PASSIVE_ICON[id], t(`hero.${id}.passiveName`), 'passive', t(`hero.${id}.passiveShort`)),
@@ -58,7 +58,9 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
     card.addEventListener('click', () => {
       selected = id;
       sfx('tap');
-      cards.forEach((c, i) => c.setAttribute('aria-pressed', String(HERO_LIST[i].id === selected)));
+      cards.forEach((c, i) => {
+        c.setAttribute('aria-pressed', String(HERO_LIST[i].id === selected));
+      });
     });
     return card;
   });
@@ -69,11 +71,29 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
     h(
       'div',
       { class: 'topline' },
-      h('button', { class: 'icon-btn', 'aria-label': t('common.back'), onclick: () => (sfx('tap'), onBack()), html: icon('left') }),
+      h('button', {
+        class: 'icon-btn',
+        'aria-label': t('common.back'),
+        onclick: () => {
+          sfx('tap');
+          onBack();
+        },
+        html: icon('left'),
+      }),
       h('h1', { class: 'h1' }, t('hero.select')),
     ),
     h('div', { class: 'hero-list scroll' }, ...cards),
-    h('button', { class: 'btn block', onclick: () => (sfx('button'), onStart(selected)) }, t('hero.start')),
+    h(
+      'button',
+      {
+        class: 'btn block',
+        onclick: () => {
+          sfx('button');
+          onStart(selected);
+        },
+      },
+      t('hero.start'),
+    ),
   );
   return { el };
 }

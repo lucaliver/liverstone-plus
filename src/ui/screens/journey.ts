@@ -14,7 +14,15 @@ export function runHud(run: RunState, extra?: HTMLElement): HTMLElement {
     'div',
     { class: 'run-hud' },
     h('div', { class: 'chip hp', html: `${icon('heart')}<span>${run.hp}/${run.maxHp}</span>` }),
-    h('button', { class: 'chip', onclick: () => (sfx('tap'), openDeck(run.deck)), html: `${icon('cards')}<span>${run.deck.length}</span>`, 'aria-label': t('common.deck') }),
+    h('button', {
+      class: 'chip',
+      onclick: () => {
+        sfx('tap');
+        openDeck(run.deck);
+      },
+      html: `${icon('cards')}<span>${run.deck.length}</span>`,
+      'aria-label': t('common.deck'),
+    }),
     h('div', { class: 'spacer' }),
     extra ?? null,
   );
@@ -38,7 +46,10 @@ export function journeyScreen(run: RunState, onEnter: () => void, onAbandon: () 
           html: icon(state === 'done' ? 'cross' : NODE_ICON[n.type]),
           'aria-label': `${t('common.floor', { n: n.floor })} · ${label}`,
           disabled: state !== 'current',
-          onclick: () => (sfx('button'), onEnter()),
+          onclick: () => {
+            sfx('button');
+            onEnter();
+          },
         }),
         h('span', { class: 'label' }, label),
       );
@@ -57,9 +68,24 @@ export function journeyScreen(run: RunState, onEnter: () => void, onAbandon: () 
     'div',
     { class: 'screen journey' },
     runHud(run, menuBtn),
-    h('div', { class: 'act-banner' }, h('div', { class: 'h1' }, t('journey.title', { n: cur.act })), h('p', { class: 'sub' }, t(`journey.actName.${cur.act}`))),
+    h(
+      'div',
+      { class: 'act-banner' },
+      h('div', { class: 'h1' }, t('journey.title', { n: cur.act })),
+      h('p', { class: 'sub' }, t(`journey.actName.${cur.act}`)),
+    ),
     h('div', { class: 'scroll', style: { flex: '1' } }, path),
-    h('button', { class: 'btn block', onclick: () => (sfx('button'), onEnter()) }, t('journey.enter', { n: cur.floor })),
+    h(
+      'button',
+      {
+        class: 'btn block',
+        onclick: () => {
+          sfx('button');
+          onEnter();
+        },
+      },
+      t('journey.enter', { n: cur.floor }),
+    ),
     h(
       'button',
       {

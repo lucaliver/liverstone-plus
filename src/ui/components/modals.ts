@@ -52,20 +52,38 @@ export function openSettings(onChange?: () => void): ModalHandle {
   const body = h(
     'div',
     null,
-    toggleRow(t('settings.music'), () => settings.music, (v) => {
-      settings.music = v;
-      setMusicEnabled(v);
-    }),
-    toggleRow(t('settings.sound'), () => settings.sound, (v) => {
-      settings.sound = v;
-      setSfxEnabled(v);
-    }),
+    toggleRow(
+      t('settings.music'),
+      () => settings.music,
+      (v) => {
+        settings.music = v;
+        setMusicEnabled(v);
+      },
+    ),
+    toggleRow(
+      t('settings.sound'),
+      () => settings.sound,
+      (v) => {
+        settings.sound = v;
+        setSfxEnabled(v);
+      },
+    ),
     h('div', { class: 'setting' }, h('span', null, t('settings.speed')), speedSelector(onChange)),
-    toggleRow(t('settings.motion'), () => settings.reduceMotion, (v) => {
-      settings.reduceMotion = v;
-      document.documentElement.classList.toggle('reduce-motion', v);
-    }),
-    'vibrate' in navigator ? toggleRow(t('settings.haptics'), () => settings.haptics, (v) => (settings.haptics = v)) : null,
+    toggleRow(
+      t('settings.motion'),
+      () => settings.reduceMotion,
+      (v) => {
+        settings.reduceMotion = v;
+        document.documentElement.classList.toggle('reduce-motion', v);
+      },
+    ),
+    'vibrate' in navigator
+      ? toggleRow(
+          t('settings.haptics'),
+          () => settings.haptics,
+          (v) => (settings.haptics = v),
+        )
+      : null,
     locales.length > 1
       ? h(
           'div',
@@ -109,7 +127,12 @@ export function openHowTo(onClose?: () => void, firstTime = false): ModalHandle 
     'div',
     { class: 'howto' },
     ...items.map(([ic, k]) =>
-      h('div', { class: 'howto-item' }, h('div', { class: 'tile', html: icon(ic) }), h('div', null, h('h4', null, t(`howto.${k}.t`)), h('p', null, t(`howto.${k}.d`)))),
+      h(
+        'div',
+        { class: 'howto-item' },
+        h('div', { class: 'tile', html: icon(ic) }),
+        h('div', null, h('h4', null, t(`howto.${k}.t`)), h('p', null, t(`howto.${k}.d`))),
+      ),
     ),
   );
   return openModal({
@@ -160,7 +183,10 @@ export function sortDeck(deck: CardInst[]): CardInst[] {
 }
 
 /** Deck grid. With `onPick`, tapping a card selects it; otherwise tapping opens its detail. */
-export function openDeck(deck: CardInst[], opts: { title?: string; onPick?: (c: CardInst) => void; filter?: (c: CardInst) => boolean; preview?: (c: CardInst) => CardInst } = {}): ModalHandle {
+export function openDeck(
+  deck: CardInst[],
+  opts: { title?: string; onPick?: (c: CardInst) => void; filter?: (c: CardInst) => boolean; preview?: (c: CardInst) => CardInst } = {},
+): ModalHandle {
   const cards = sortDeck(deck).filter(opts.filter ?? (() => true));
   let handle: ModalHandle;
   const grid = h(
@@ -185,7 +211,9 @@ export function openDeck(deck: CardInst[], opts: { title?: string; onPick?: (c: 
             openCardDetail(opts.preview ? opts.preview(c) : c);
           }, 420);
         });
-        ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => el.addEventListener(ev, () => clearTimeout(t0)));
+        ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => {
+          el.addEventListener(ev, () => clearTimeout(t0));
+        });
         el.addEventListener('contextmenu', (e) => e.preventDefault());
       } else {
         onPress(el, () => {

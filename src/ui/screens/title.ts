@@ -16,7 +16,17 @@ export interface TitleCallbacks {
 
 export function titleScreen(cb: TitleCallbacks): Screen {
   const btn = (label: string, cls: string, fn: () => void): HTMLButtonElement =>
-    h('button', { class: `btn block ${cls}`, onclick: () => (sfx('button'), fn()) }, label);
+    h(
+      'button',
+      {
+        class: `btn block ${cls}`,
+        onclick: () => {
+          sfx('button');
+          fn();
+        },
+      },
+      label,
+    );
 
   const el = h(
     'div',
@@ -24,7 +34,11 @@ export function titleScreen(cb: TitleCallbacks): Screen {
     h('h1', { class: 'logo' }, t('app.title')),
     h('div', {
       class: 'title-hero',
-      html: `${motes(18)}${darkEyes([{ x: '8%', y: '20%' }, { x: '82%', y: '12%' }, { x: '76%', y: '70%' }])}<div class="candle l">${candleFlame()}</div><div class="candle r" style="--fd:-.2s">${candleFlame()}</div><div class="candle l2" style="--fd:-.35s">${candleFlame()}</div><div class="candle r2" style="--fd:-.1s">${candleFlame()}</div>${creature('lich')}`,
+      html: `${motes(18)}${darkEyes([
+        { x: '8%', y: '20%' },
+        { x: '82%', y: '12%' },
+        { x: '76%', y: '70%' },
+      ])}<div class="candle l">${candleFlame()}</div><div class="candle r" style="--fd:-.2s">${candleFlame()}</div><div class="candle l2" style="--fd:-.35s">${candleFlame()}</div><div class="candle r2" style="--fd:-.1s">${candleFlame()}</div>${creature('lich')}`,
     }),
     h(
       'div',
@@ -32,7 +46,12 @@ export function titleScreen(cb: TitleCallbacks): Screen {
       cb.hasSave ? btn(t('menu.continue'), '', cb.onContinue) : null,
       btn(t('menu.newRun'), cb.hasSave ? 'secondary' : '', cb.onNewRun),
       btn(t('menu.compendium'), 'secondary small', cb.onCompendium),
-      h('div', { class: 'row' }, btn(t('menu.howTo'), 'secondary small', () => openHowTo()), btn(t('menu.settings'), 'secondary small', () => openSettings())),
+      h(
+        'div',
+        { class: 'row' },
+        btn(t('menu.howTo'), 'secondary small', () => openHowTo()),
+        btn(t('menu.settings'), 'secondary small', () => openSettings()),
+      ),
     ),
     h('div', { class: 'version' }, `v${__APP_VERSION__}`),
   );

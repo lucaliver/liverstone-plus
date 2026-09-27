@@ -5,15 +5,27 @@ const atk = (id: string, dmg: number, windup: number, extra: Partial<MoveDef> = 
 const defs: EnemyDef[] = [
   // ------------------------------------------------------------- Act 1
   {
-    id: 'rat', act: 1, tier: 'normal', hp: 26, art: 'rat',
+    id: 'rat',
+    act: 1,
+    tier: 'normal',
+    hp: 26,
+    art: 'rat',
     pattern: [atk('bite', 4, 2.0), atk('bite', 4, 2.0), atk('frenzy', 3, 2.6, { hits: 2 })],
   },
   {
-    id: 'skeleton', act: 1, tier: 'normal', hp: 36, art: 'skeleton',
+    id: 'skeleton',
+    act: 1,
+    tier: 'normal',
+    hp: 36,
+    art: 'skeleton',
     pattern: [atk('slash', 7, 3.2), { id: 'guard', intent: 'defend', block: 9, windup: 1.8 }, atk('slash', 7, 3.2)],
   },
   {
-    id: 'slime', act: 1, tier: 'normal', hp: 44, art: 'slime',
+    id: 'slime',
+    act: 1,
+    tier: 'normal',
+    hp: 44,
+    art: 'slime',
     pattern: [
       { id: 'spit', intent: 'curse', windup: 2.4, curse: { id: 'slime', n: 1, to: 'belt' } },
       atk('slam', 8, 3.6),
@@ -22,7 +34,11 @@ const defs: EnemyDef[] = [
     ],
   },
   {
-    id: 'cultist', act: 1, tier: 'normal', hp: 40, art: 'cultist',
+    id: 'cultist',
+    act: 1,
+    tier: 'normal',
+    hp: 40,
+    art: 'cultist',
     pattern: [
       { id: 'ritual', intent: 'buff', windup: 2.2, status: [{ id: 'strength', v: 2, target: 'enemy' }] },
       atk('darkBolt', 5, 2.8),
@@ -31,7 +47,11 @@ const defs: EnemyDef[] = [
     ],
   },
   {
-    id: 'goblin', act: 1, tier: 'normal', hp: 30, art: 'goblin',
+    id: 'goblin',
+    act: 1,
+    tier: 'normal',
+    hp: 30,
+    art: 'goblin',
     pattern: [
       atk('stab', 5, 2.2),
       { id: 'snatch', intent: 'steal', windup: 2.4, dmg: 3, steal: 1 },
@@ -40,7 +60,11 @@ const defs: EnemyDef[] = [
     ],
   },
   {
-    id: 'boneKnight', act: 1, tier: 'elite', hp: 88, art: 'boneKnight',
+    id: 'boneKnight',
+    act: 1,
+    tier: 'elite',
+    hp: 88,
+    art: 'boneKnight',
     pattern: [
       atk('rend', 6, 3.0, { status: [{ id: 'vulnerable', t: 4, target: 'hero' }] }),
       atk('cleave', 14, 4.6),
@@ -49,7 +73,11 @@ const defs: EnemyDef[] = [
     onHalf: (c) => c.applyStatus('enemy', 'strength', 3),
   },
   {
-    id: 'lich', act: 1, tier: 'boss', hp: 145, art: 'lich',
+    id: 'lich',
+    act: 1,
+    tier: 'boss',
+    hp: 145,
+    art: 'lich',
     pattern: [
       atk('soulBolt', 8, 3.0),
       { id: 'hexes', intent: 'curse', windup: 2.4, curse: { id: 'hex', n: 2, to: 'draw' } },

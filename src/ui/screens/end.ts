@@ -31,8 +31,28 @@ export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMe
     h(
       'div',
       { class: 'end-actions' },
-      h('button', { class: 'btn block', onclick: () => (sfx('button'), onAgain()) }, t('end.again')),
-      h('button', { class: 'btn secondary block', onclick: () => (sfx('tap'), onMenu()) }, t('end.title')),
+      h(
+        'button',
+        {
+          class: 'btn block',
+          onclick: () => {
+            sfx('button');
+            onAgain();
+          },
+        },
+        t('end.again'),
+      ),
+      h(
+        'button',
+        {
+          class: 'btn secondary block',
+          onclick: () => {
+            sfx('tap');
+            onMenu();
+          },
+        },
+        t('end.title'),
+      ),
     ),
   );
   return { el };

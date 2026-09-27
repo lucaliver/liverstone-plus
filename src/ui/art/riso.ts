@@ -32,7 +32,10 @@ interface Swatch {
 }
 
 function mix(inks: Ink[]): [number, number, number] {
-  return inks.reduce<[number, number, number]>((c, k) => [(c[0] * INK_RGB[k][0]) / 255, (c[1] * INK_RGB[k][1]) / 255, (c[2] * INK_RGB[k][2]) / 255], [...PAPER]);
+  return inks.reduce<[number, number, number]>(
+    (c, k) => [(c[0] * INK_RGB[k][0]) / 255, (c[1] * INK_RGB[k][1]) / 255, (c[2] * INK_RGB[k][2]) / 255],
+    [...PAPER],
+  );
 }
 
 const sw = (full: Ink[], half: Ink[] = []): Swatch => {
@@ -43,11 +46,31 @@ const sw = (full: Ink[], half: Ink[] = []): Swatch => {
 
 const SWATCHES: Swatch[] = [
   // Solid inks and overprints.
-  sw([]), sw(['Y']), sw(['P']), sw(['B']), sw(['K']),
-  sw(['Y', 'P']), sw(['Y', 'B']), sw(['P', 'B']), sw(['Y', 'P', 'B']), sw(['P', 'K']), sw(['B', 'K']),
+  sw([]),
+  sw(['Y']),
+  sw(['P']),
+  sw(['B']),
+  sw(['K']),
+  sw(['Y', 'P']),
+  sw(['Y', 'B']),
+  sw(['P', 'B']),
+  sw(['Y', 'P', 'B']),
+  sw(['P', 'K']),
+  sw(['B', 'K']),
   // Halftones: a light tint of one ink, or a solid ink with a second ink screened over it.
-  sw([], ['Y']), sw([], ['P']), sw([], ['B']), sw([], ['K']), sw([], ['Y', 'P']), sw([], ['P', 'B']),
-  sw(['Y'], ['B']), sw(['Y'], ['P']), sw(['P'], ['B']), sw(['B'], ['P']), sw(['P'], ['Y']), sw(['B'], ['K']), sw(['P'], ['K']),
+  sw([], ['Y']),
+  sw([], ['P']),
+  sw([], ['B']),
+  sw([], ['K']),
+  sw([], ['Y', 'P']),
+  sw([], ['P', 'B']),
+  sw(['Y'], ['B']),
+  sw(['Y'], ['P']),
+  sw(['P'], ['B']),
+  sw(['B'], ['P']),
+  sw(['P'], ['Y']),
+  sw(['B'], ['K']),
+  sw(['P'], ['K']),
 ];
 
 function nearest(r: number, g: number, b: number): Swatch {
@@ -176,7 +199,9 @@ async function buildSprite(svgBody: string, size: number): Promise<Sprite> {
 
 /** Rasterises a 64×64 icon to a 1-bit alpha mask (light pixels on, dark details off). */
 async function buildMask(svgBody: string, size: number): Promise<string> {
-  const img = await loadSvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="${size}" height="${size}" fill="#fff" color="#fff">${svgBody}</svg>`);
+  const img = await loadSvg(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="${size}" height="${size}" fill="#fff" color="#fff">${svgBody}</svg>`,
+  );
   const [c, g] = canvas(size, size);
   g.drawImage(img, 0, 0, size, size);
   const im = g.getImageData(0, 0, size, size);

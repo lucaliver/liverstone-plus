@@ -4,19 +4,7 @@ import { CONFIG, EXPIRE_POS } from '../data/config';
 import { STATUSES } from '../data/statuses';
 import { CARDS } from '../data/cards';
 import { RELICS } from '../data/relics';
-import type {
-  BeltCard,
-  CardDef,
-  CardInst,
-  CombatCard,
-  CombatEvent,
-  CombatResult,
-  EnemyDef,
-  HeroDef,
-  MoveDef,
-  Side,
-  Statuses,
-} from './types';
+import type { BeltCard, CardDef, CardInst, CombatCard, CombatEvent, CombatResult, EnemyDef, HeroDef, MoveDef, Side, Statuses } from './types';
 
 export interface Fighter {
   hp: number;
@@ -497,7 +485,7 @@ export class Combat {
     if (this.result || this.intro > 0) return false;
     const beltIdx = this.belt.findIndex((b) => b.card.uid === uid);
     if (beltIdx < 0) return false;
-    const target = slot ?? this.sleeve.findIndex((c) => c === null);
+    const target = slot ?? this.sleeve.indexOf(null);
     if (target < 0 || target >= this.sleeve.length) return false;
     const b = this.belt[beltIdx];
     const old = this.sleeve[target];
@@ -694,7 +682,8 @@ export class Combat {
     if (this.result) return;
     const def = STATUSES[id];
     const f = this.fighter(side);
-    const s = f.statuses[id] ?? (f.statuses[id] = { v: 0, t: 0 });
+    f.statuses[id] ??= { v: 0, t: 0 };
+    const s = f.statuses[id];
     if (def.kind === 'timed') {
       s.t += t || v;
       s.v = Math.max(s.v, t ? v : 1);

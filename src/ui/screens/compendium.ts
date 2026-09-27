@@ -35,7 +35,8 @@ function moveEffect(m: MoveDef): string {
 function foeView(e: EnemyDef): HTMLElement {
   const moves = e.pattern
     .map(
-      (m) => `<li data-intent="${m.intent}"><span class="mi">${icon(INTENT_ICON[m.intent] ?? 'star')}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`,
+      (m) =>
+        `<li data-intent="${m.intent}"><span class="mi">${icon(INTENT_ICON[m.intent] ?? 'star')}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`,
     )
     .join('');
   const half = e.onHalf ? `<p class="foe-half">${icon('rage')}${t(`enemy.${e.id}.half`)}</p>` : '';
@@ -126,7 +127,15 @@ export function compendiumScreen(onBack: () => void): Screen {
     h(
       'div',
       { class: 'topline' },
-      h('button', { class: 'icon-btn', 'aria-label': t('common.back'), onclick: () => (sfx('tap'), onBack()), html: icon('left') }),
+      h('button', {
+        class: 'icon-btn',
+        'aria-label': t('common.back'),
+        onclick: () => {
+          sfx('tap');
+          onBack();
+        },
+        html: icon('left'),
+      }),
       h('h1', { class: 'h1' }, t('compendium.title')),
     ),
     sub,

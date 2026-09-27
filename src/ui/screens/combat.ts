@@ -63,7 +63,10 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     <section class="stage">
       <div class="stage-floor"></div>
       ${motes(14)}
-      ${darkEyes([{ x: '6%', y: '14%' }, { x: '84%', y: '44%' }])}
+      ${darkEyes([
+        { x: '6%', y: '14%' },
+        { x: '84%', y: '44%' },
+      ])}
       <div class="candle l">${candleFlame()}</div><div class="candle r">${candleFlame()}</div>
       <div class="shade"></div>
       <div class="enemy-wrap">
@@ -209,7 +212,15 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   };
 
   // ---------------------------------------------------------------- events
-  const SOUND_FOR_KIND: Record<string, SoundId> = { slash: 'slash', blunt: 'blunt', fire: 'fire', ice: 'ice', arcane: 'arcane', thorns: 'slash', claw: 'enemyHit' };
+  const SOUND_FOR_KIND: Record<string, SoundId> = {
+    slash: 'slash',
+    blunt: 'blunt',
+    fire: 'fire',
+    ice: 'ice',
+    arcane: 'arcane',
+    thorns: 'slash',
+    claw: 'enemyHit',
+  };
 
   const onEvent = (e: CombatEvent): void => {
     switch (e.type) {
@@ -397,7 +408,9 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     clearTimeout(drag.timer);
     drag.el.classList.remove('dragging');
     if (drag.from === 'sleeve') drag.el.style.transform = '';
-    slotEls.forEach((s) => s.classList.remove('target'));
+    slotEls.forEach((s) => {
+      s.classList.remove('target');
+    });
     r.stage.classList.remove('drop-play');
     drag = null;
   };
@@ -446,7 +459,9 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       const tilt = Math.max(-8, Math.min(8, Math.round(ev.movementX)));
       drag.el.style.transform = `translate3d(${ev.clientX - base.left - drag.offX}px, ${ev.clientY - base.top - drag.offY}px, 0) rotate(${tilt}deg)`;
       const slot = slotAt(ev.clientX, ev.clientY);
-      slotEls.forEach((s, i) => toggle(s, 'target', i === slot));
+      slotEls.forEach((s, i) => {
+        toggle(s, 'target', i === slot);
+      });
     } else {
       drag.el.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.08)`;
     }
@@ -511,14 +526,22 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       body,
       actions: [
         { label: t('combat.resume') },
-        { label: t('menu.howTo'), cls: 'secondary', onClick: () => {
-          openHowTo();
-          return false;
-        } },
-        { label: t('menu.settings'), cls: 'secondary', onClick: () => {
-          openSettings(renderSpeed);
-          return false;
-        } },
+        {
+          label: t('menu.howTo'),
+          cls: 'secondary',
+          onClick: () => {
+            openHowTo();
+            return false;
+          },
+        },
+        {
+          label: t('menu.settings'),
+          cls: 'secondary',
+          onClick: () => {
+            openSettings(renderSpeed);
+            return false;
+          },
+        },
         {
           label: t('combat.quit'),
           cls: 'danger',
@@ -577,7 +600,11 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       ...list.map((id, i) => {
         const def = STATUSES[id];
         const s = f.statuses[id];
-        const b = h('button', { class: `status ${def.good ? 'good' : 'bad'}`, html: `${icon(def.icon)}<span>${vals[i]}</span>`, 'aria-label': t(`status.${id}`) });
+        const b = h('button', {
+          class: `status ${def.good ? 'good' : 'bad'}`,
+          html: `${icon(def.icon)}<span>${vals[i]}</span>`,
+          'aria-label': t(`status.${id}`),
+        });
         b.addEventListener('click', () => toast(`${t(`status.${id}`)}: ${t(`status.${id}.d`, { v: s.v })}`));
         return b;
       }),
@@ -630,7 +657,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     toggle(r.enemyArt, 'stunned', combat.has('enemy', 'stun'));
     toggle(r.enemyArt, 'frozen', combat.has('enemy', 'frozen'));
     toggle(r.enemyArt, 'chilled', combat.has('enemy', 'chill'));
-    toggle(r.enemyArt, 'enraged', combat.has('enemy', 'haste') || combat.enemy.halfTriggered && !!enemyDef.onHalf);
+    toggle(r.enemyArt, 'enraged', combat.has('enemy', 'haste') || (combat.enemy.halfTriggered && !!enemyDef.onHalf));
   };
 
   const renderMana = (): void => {
@@ -671,7 +698,12 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     const def = CARDS[ce.card.id];
     const el2 = ce.el;
     const rc = el2.getBoundingClientRect();
-    const target = reason === 'stolen' || def.type === 'attack' || def.type === 'spell' || (def.type === 'potion' && def.dmg) ? enemyPoint() : reason === 'expired' ? null : heroPoint();
+    const target =
+      reason === 'stolen' || def.type === 'attack' || def.type === 'spell' || (def.type === 'potion' && def.dmg)
+        ? enemyPoint()
+        : reason === 'expired'
+          ? null
+          : heroPoint();
     const base = (el2.style.transform || '').replace(/scale\([^)]*\)|rotate\([^)]*\)/g, '');
     if (reason === 'expired' || !target) {
       el2.classList.add('fall-out');

@@ -1,6 +1,18 @@
 import { Combat } from '../src/game/combat';
 import { CARDS } from '../src/data/cards';
-import { addCard, advance, applyCombat, canUpgrade, combatSetup, currentNode, newRun, rest, rollRewards, upgradeCard, type RunState } from '../src/game/run';
+import {
+  addCard,
+  advance,
+  applyCombat,
+  canUpgrade,
+  combatSetup,
+  currentNode,
+  newRun,
+  rest,
+  rollRewards,
+  upgradeCard,
+  type RunState,
+} from '../src/game/run';
 import type { CombatCard, HeroId } from '../src/game/types';
 
 export interface BotOpts {
@@ -58,7 +70,10 @@ export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
     }
   };
 
-  const best = affordable.map((x) => ({ x, s: score(x) })).filter((o) => o.s > 0).sort((a, b) => b.s - a.s)[0];
+  const best = affordable
+    .map((x) => ({ x, s: score(x) }))
+    .filter((o) => o.s > 0)
+    .sort((a, b) => b.s - a.s)[0];
   if (best) {
     c.playCard(best.x.card.uid);
     return;

@@ -36,7 +36,9 @@ export function unlockAudio(): void {
     noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
     const d = noiseBuf.getChannelData(0);
     for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-    unlockListeners.splice(0).forEach((fn) => fn());
+    unlockListeners.splice(0).forEach((fn) => {
+      fn();
+    });
   }
   if (ctx.state === 'suspended') void ctx.resume();
 }
@@ -63,7 +65,10 @@ function tone(freq: number, dur: number, opts: { type?: Wave; vol?: number; to?:
   o.stop(t + dur + 0.05);
 }
 
-function noise(dur: number, opts: { freq?: number; to?: number; q?: number; vol?: number; type?: BiquadFilterType; delay?: number; attack?: number } = {}): void {
+function noise(
+  dur: number,
+  opts: { freq?: number; to?: number; q?: number; vol?: number; type?: BiquadFilterType; delay?: number; attack?: number } = {},
+): void {
   if (!ctx || !master || !noiseBuf) return;
   const t = ctx.currentTime + (opts.delay ?? 0);
   const src = ctx.createBufferSource();
@@ -108,7 +113,9 @@ const SOUNDS = {
     tone(90, 0.3, { type: 'sawtooth', vol: 0.08, to: 50 });
   },
   ice: () => {
-    [1760, 2350, 2960].forEach((f, i) => tone(f, 0.25, { type: 'sine', vol: 0.09, delay: i * 0.04 }));
+    [1760, 2350, 2960].forEach((f, i) => {
+      tone(f, 0.25, { type: 'sine', vol: 0.09, delay: i * 0.04 });
+    });
     noise(0.2, { freq: 5000, vol: 0.12, type: 'highpass' });
   },
   arcane: () => {
@@ -127,23 +134,45 @@ const SOUNDS = {
     tone(900, 0.12, { type: 'square', vol: 0.06, to: 700 });
     noise(0.1, { freq: 2500, vol: 0.2 });
   },
-  heal: () => [523, 659, 784, 1046].forEach((f, i) => tone(f, 0.2, { type: 'sine', vol: 0.12, delay: i * 0.06 })),
-  mana: () => [1046, 1318].forEach((f, i) => tone(f, 0.12, { type: 'sine', vol: 0.08, delay: i * 0.05 })),
+  heal: () => {
+    [523, 659, 784, 1046].forEach((f, i) => {
+      tone(f, 0.2, { type: 'sine', vol: 0.12, delay: i * 0.06 });
+    });
+  },
+  mana: () => {
+    [1046, 1318].forEach((f, i) => {
+      tone(f, 0.12, { type: 'sine', vol: 0.08, delay: i * 0.05 });
+    });
+  },
   status: () => tone(300, 0.2, { type: 'triangle', vol: 0.12, to: 520 }),
   debuff: () => tone(400, 0.25, { type: 'sawtooth', vol: 0.06, to: 200 }),
   windup: () => tone(200, 0.4, { type: 'sawtooth', vol: 0.05, to: 400, attack: 0.1 }),
   ability: () => {
     noise(0.6, { freq: 300, to: 4000, vol: 0.3, attack: 0.05 });
-    [262, 392, 523].forEach((f, i) => tone(f, 0.5, { type: 'sawtooth', vol: 0.06, delay: i * 0.05 }));
+    [262, 392, 523].forEach((f, i) => {
+      tone(f, 0.5, { type: 'sawtooth', vol: 0.06, delay: i * 0.05 });
+    });
   },
   curse: () => {
     tone(180, 0.35, { type: 'sawtooth', vol: 0.08, to: 90 });
     tone(190, 0.35, { type: 'sawtooth', vol: 0.06, to: 95 });
   },
   steal: () => noise(0.25, { freq: 3000, to: 800, vol: 0.2 }),
-  victory: () => [523, 659, 784, 1046].forEach((f, i) => tone(f, 0.4, { type: 'triangle', vol: 0.18, delay: i * 0.11 })),
-  defeat: () => [392, 330, 262, 196].forEach((f, i) => tone(f, 0.5, { type: 'triangle', vol: 0.16, delay: i * 0.16 })),
-  reshuffle: () => [0, 1, 2, 3].forEach((i) => noise(0.05, { freq: 2000 + i * 300, vol: 0.08, delay: i * 0.04 })),
+  victory: () => {
+    [523, 659, 784, 1046].forEach((f, i) => {
+      tone(f, 0.4, { type: 'triangle', vol: 0.18, delay: i * 0.11 });
+    });
+  },
+  defeat: () => {
+    [392, 330, 262, 196].forEach((f, i) => {
+      tone(f, 0.5, { type: 'triangle', vol: 0.16, delay: i * 0.16 });
+    });
+  },
+  reshuffle: () => {
+    [0, 1, 2, 3].forEach((i) => {
+      noise(0.05, { freq: 2000 + i * 300, vol: 0.08, delay: i * 0.04 });
+    });
+  },
   enrage: () => {
     tone(80, 0.6, { type: 'sawtooth', vol: 0.15, to: 160 });
     noise(0.5, { freq: 400, vol: 0.2, type: 'lowpass' });

@@ -47,7 +47,7 @@ const en: Record<string, string> = {
   'howto.mana.t': 'Mana',
   'howto.mana.d': 'Cards cost mana; it refills over time. Crystal cards raise your max.',
   'howto.intent.t': 'Enemy intent',
-  'howto.intent.d': 'The enemy\'s next move. When the box fills up, it hits.',
+  'howto.intent.d': "The enemy's next move. When the box fills up, it hits.",
   'howto.block.t': 'Block',
   'howto.block.d': 'Block soaks damage but fades. Play it right before a hit.',
   'howto.sleeve.t': 'The sleeve',
@@ -224,7 +224,6 @@ const en: Record<string, string> = {
   'kw.power': 'Power',
   'kw.power.d': 'Lasts for the rest of the fight.',
 
-
   // ------------------------------------------------------------ statuses
   'status.strength': 'Strength',
   'status.strength.d': 'Attacks deal +{v} damage.',
@@ -355,7 +354,7 @@ const en: Record<string, string> = {
   'card.boneWall.name': 'Bone Wall',
   'card.boneWall.desc': 'Gain {0} [block].',
   'card.blightBurst.name': 'Blight Burst',
-  'card.blightBurst.desc': 'Deal damage equal to {0}× the enemy\'s [poison].',
+  'card.blightBurst.desc': "Deal damage equal to {0}× the enemy's [poison].",
   'card.deathCoil.name': 'Death Coil',
   'card.deathCoil.desc': 'Deal {0} damage. {1} if the enemy is [poison]ed.',
   'card.festeringStrike.name': 'Festering Strike',
@@ -365,7 +364,7 @@ const en: Record<string, string> = {
   'card.wither.name': 'Wither',
   'card.wither.desc': 'The enemy is [weak] for {0}s.',
   'card.epidemic.name': 'Epidemic',
-  'card.epidemic.desc': 'Double the enemy\'s [poison].',
+  'card.epidemic.desc': "Double the enemy's [poison].",
   'card.virulentForm.name': 'Virulent Form',
   'card.virulentForm.desc': 'Your [poison] deals +{0} more per tick.',
   'card.blackDeath.name': 'Black Death',

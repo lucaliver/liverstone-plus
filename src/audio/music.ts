@@ -46,7 +46,20 @@ const DOM7 = [0, 4, 7, 10];
 const _ = null;
 
 // Note names (octave 4/5) for readability.
-const A4 = 69, Bb4 = 70, B4 = 71, C5 = 72, Cs5 = 73, D5 = 74, Ds5 = 75, E5 = 76, F5 = 77, G5 = 79, A5 = 81, Bb5 = 82, B5 = 83, G4 = 67;
+const A4 = 69,
+  Bb4 = 70,
+  B4 = 71,
+  C5 = 72,
+  Cs5 = 73,
+  D5 = 74,
+  Ds5 = 75,
+  E5 = 76,
+  F5 = 77,
+  G5 = 79,
+  A5 = 81,
+  Bb5 = 82,
+  B5 = 83,
+  G4 = 67;
 
 const TRACKS: Record<TrackId, Track> = {
   // Slow, eerie: a music box in an empty crypt, with a heartbeat underneath.
@@ -63,10 +76,24 @@ const TRACKS: Record<TrackId, Track> = {
     arp: [0, _, 1, _, 2, _, 1, _, 3, _, 2, _, 1, _, 2, _],
     arpOctave: 4,
     lead: [
-      [[0, A5, 8], [8, F5, 8]],
-      [[0, D5, 8], [8, E5, 8]],
-      [[0, G5, 4], [4, F5, 4], [8, D5, 8]],
-      [[0, Cs5, 8], [8, E5, 4], [12, A4, 4]],
+      [
+        [0, A5, 8],
+        [8, F5, 8],
+      ],
+      [
+        [0, D5, 8],
+        [8, E5, 8],
+      ],
+      [
+        [0, G5, 4],
+        [4, F5, 4],
+        [8, D5, 8],
+      ],
+      [
+        [0, Cs5, 8],
+        [8, E5, 4],
+        [12, A4, 4],
+      ],
     ],
     leadOn: (p) => p % 2 === 1,
     leadVoice: 'bell',
@@ -92,14 +119,60 @@ const TRACKS: Record<TrackId, Track> = {
     arp: [0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 1],
     arpOctave: 5,
     lead: [
-      [[0, D5, 3], [3, F5, 3], [6, A5, 2], [8, G5, 2], [10, F5, 2], [12, E5, 4]],
-      [[0, D5, 6], [6, A4, 2], [8, C5, 4], [12, D5, 4]],
-      [[0, F5, 3], [3, D5, 3], [6, Bb4, 2], [8, C5, 2], [10, D5, 2], [12, F5, 4]],
-      [[0, E5, 6], [6, G5, 2], [8, E5, 4], [12, C5, 4]],
-      [[0, A5, 3], [3, G5, 3], [6, F5, 2], [8, E5, 2], [10, D5, 2], [12, A4, 4]],
-      [[0, D5, 8], [8, F5, 4], [12, E5, 4]],
-      [[0, D5, 3], [3, Bb4, 3], [6, G4, 2], [8, A4, 2], [10, Bb4, 2], [12, D5, 4]],
-      [[0, Cs5, 6], [6, E5, 2], [8, A5, 8]],
+      [
+        [0, D5, 3],
+        [3, F5, 3],
+        [6, A5, 2],
+        [8, G5, 2],
+        [10, F5, 2],
+        [12, E5, 4],
+      ],
+      [
+        [0, D5, 6],
+        [6, A4, 2],
+        [8, C5, 4],
+        [12, D5, 4],
+      ],
+      [
+        [0, F5, 3],
+        [3, D5, 3],
+        [6, Bb4, 2],
+        [8, C5, 2],
+        [10, D5, 2],
+        [12, F5, 4],
+      ],
+      [
+        [0, E5, 6],
+        [6, G5, 2],
+        [8, E5, 4],
+        [12, C5, 4],
+      ],
+      [
+        [0, A5, 3],
+        [3, G5, 3],
+        [6, F5, 2],
+        [8, E5, 2],
+        [10, D5, 2],
+        [12, A4, 4],
+      ],
+      [
+        [0, D5, 8],
+        [8, F5, 4],
+        [12, E5, 4],
+      ],
+      [
+        [0, D5, 3],
+        [3, Bb4, 3],
+        [6, G4, 2],
+        [8, A4, 2],
+        [10, Bb4, 2],
+        [12, D5, 4],
+      ],
+      [
+        [0, Cs5, 6],
+        [6, E5, 2],
+        [8, A5, 8],
+      ],
     ],
     leadOn: (p) => p % 3 !== 0,
     leadVoice: 'pulse',
@@ -121,10 +194,35 @@ const TRACKS: Record<TrackId, Track> = {
     arp: [2, _, 1, _, 0, _, 1, _, 2, _, 1, _, 0, _, 1, _],
     arpOctave: 5,
     lead: [
-      [[0, E5, 2], [2, G5, 2], [4, F5, 2], [6, E5, 2], [8, B4, 4], [12, Bb4, 4]],
-      [[0, F5, 2], [2, A5, 2], [4, G5, 2], [6, F5, 2], [8, C5, 4], [12, B4, 4]],
-      [[0, E5, 2], [2, G5, 2], [4, B5, 4], [8, Bb5, 4], [12, G5, 4]],
-      [[0, F5, 4], [4, E5, 4], [8, Ds5, 4], [12, E5, 4]],
+      [
+        [0, E5, 2],
+        [2, G5, 2],
+        [4, F5, 2],
+        [6, E5, 2],
+        [8, B4, 4],
+        [12, Bb4, 4],
+      ],
+      [
+        [0, F5, 2],
+        [2, A5, 2],
+        [4, G5, 2],
+        [6, F5, 2],
+        [8, C5, 4],
+        [12, B4, 4],
+      ],
+      [
+        [0, E5, 2],
+        [2, G5, 2],
+        [4, B5, 4],
+        [8, Bb5, 4],
+        [12, G5, 4],
+      ],
+      [
+        [0, F5, 4],
+        [4, E5, 4],
+        [8, Ds5, 4],
+        [12, E5, 4],
+      ],
     ],
     leadOn: (p) => p % 2 === 1,
     leadVoice: 'pulse',
@@ -146,10 +244,26 @@ const TRACKS: Record<TrackId, Track> = {
     arp: [0, _, 1, _, 2, _, 3, _, 2, _, 1, _, 2, _, 1, _],
     arpOctave: 4,
     lead: [
-      [[0, E5, 6], [6, C5, 2], [8, A4, 8]],
-      [[0, A4, 4], [4, C5, 4], [8, E5, 8]],
-      [[0, G5, 6], [6, E5, 2], [8, C5, 8]],
-      [[0, B4, 8], [8, Ds5 - 2, 4], [12, E5, 4]],
+      [
+        [0, E5, 6],
+        [6, C5, 2],
+        [8, A4, 8],
+      ],
+      [
+        [0, A4, 4],
+        [4, C5, 4],
+        [8, E5, 8],
+      ],
+      [
+        [0, G5, 6],
+        [6, E5, 2],
+        [8, C5, 8],
+      ],
+      [
+        [0, B4, 8],
+        [8, Ds5 - 2, 4],
+        [12, E5, 4],
+      ],
     ],
     leadOn: (p) => p % 2 === 0,
     leadVoice: 'bell',
@@ -191,9 +305,13 @@ function note(out: AudioNode, freq: number, t: number, dur: number, v: Voice): v
   if (!g) return;
   const { ctx } = g;
   const o = ctx.createOscillator();
-  if (v.wave === 'pulse') o.setPeriodicWave((pulseWave ??= pulse(ctx, 0.25)));
-  else if (v.wave === 'thin') o.setPeriodicWave((thinWave ??= pulse(ctx, 0.125)));
-  else o.type = v.wave;
+  if (v.wave === 'pulse') {
+    pulseWave ??= pulse(ctx, 0.25);
+    o.setPeriodicWave(pulseWave);
+  } else if (v.wave === 'thin') {
+    thinWave ??= pulse(ctx, 0.125);
+    o.setPeriodicWave(thinWave);
+  } else o.type = v.wave;
   o.frequency.setValueAtTime(freq, t);
   if (v.detune) o.detune.setValueAtTime(v.detune, t);
   if (v.vibrato && dur > 0.25) {
@@ -294,7 +412,7 @@ function start(id: TrackId): void {
     const a = tr.arp[i];
     if (a !== null) {
       const tone = ch.tones[a % ch.tones.length] + 12 * Math.floor(a / ch.tones.length);
-      const f = m(ch.root % 12 + 12 * (tr.arpOctave + 1) + tone);
+      const f = m((ch.root % 12) + 12 * (tr.arpOctave + 1) + tone);
       if (tr.leadVoice === 'bell') note(out, f, t, sixteenth * 1.6, { wave: 'triangle', vol: 0.07, release: 0.12 });
       else note(out, f, t, sixteenth * 0.8, { wave: 'thin', vol: 0.045, release: 0.02 });
     }
@@ -310,7 +428,8 @@ function start(id: TrackId): void {
 
     if (tr.pad && i === 0) {
       for (const tone of ch.tones.slice(0, 3)) {
-        for (const det of [-7, 7]) note(out, m(ch.root + 12 + tone), t, sixteenth * 15, { wave: 'triangle', vol: 0.035, attack: 0.5, release: 0.5, detune: det });
+        for (const det of [-7, 7])
+          note(out, m(ch.root + 12 + tone), t, sixteenth * 15, { wave: 'triangle', vol: 0.035, attack: 0.5, release: 0.5, detune: det });
       }
     }
 
@@ -340,10 +459,13 @@ function stop(fade = 0.6): void {
   out.gain.cancelScheduledValues(t);
   out.gain.setValueAtTime(out.gain.value, t);
   out.gain.linearRampToValueAtTime(0.0001, t + fade);
-  setTimeout(() => {
-    clearInterval(timer);
-    out.disconnect();
-  }, fade * 1000 + 200);
+  setTimeout(
+    () => {
+      clearInterval(timer);
+      out.disconnect();
+    },
+    fade * 1000 + 200,
+  );
   current = null;
 }
 

@@ -34,9 +34,15 @@ function goTitle(): void {
       hasSave: !!saved,
       onContinue: () => {
         run = loadRun();
-        if (!run) return goTitle();
+        if (!run) {
+          goTitle();
+          return;
+        }
         // A saved run whose node was already completed resumes at the next one.
-        if (run.cleared && !advance(run)) return goTitle();
+        if (run.cleared && !advance(run)) {
+          goTitle();
+          return;
+        }
         goJourney();
       },
       onNewRun: () => {
@@ -58,7 +64,10 @@ function startRun(hero: HeroId): void {
 }
 
 function goJourney(): void {
-  if (!run) return goTitle();
+  if (!run) {
+    goTitle();
+    return;
+  }
   playMusic('menu');
   saveRun(run);
   show(journeyScreen(run, enterNode, abandon));
@@ -131,7 +140,16 @@ async function boot(): Promise<void> {
   // Pixel art is generated from the vector sources once, before the first screen.
   await preloadArt();
   goTitle();
-  if (import.meta.env.DEV) Object.assign(window, { __game: { get run() { return run; }, nextNode, goJourney } });
+  if (import.meta.env.DEV)
+    Object.assign(window, {
+      __game: {
+        get run() {
+          return run;
+        },
+        nextNode,
+        goJourney,
+      },
+    });
 }
 
 void boot();

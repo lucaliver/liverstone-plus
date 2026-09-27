@@ -11,8 +11,7 @@ const locales: Record<string, { name: string; dict: Dict }> = {
 let current = 'en';
 const fallback = 'en';
 
-export const availableLocales = (): { code: string; name: string }[] =>
-  Object.entries(locales).map(([code, l]) => ({ code, name: l.name }));
+export const availableLocales = (): { code: string; name: string }[] => Object.entries(locales).map(([code, l]) => ({ code, name: l.name }));
 
 export function setLocale(code: string): void {
   if (locales[code]) {

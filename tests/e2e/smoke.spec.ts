@@ -31,15 +31,26 @@ test('the combat layout never moves when statuses appear', async ({ page }) => {
   await freshGame(page);
   await startFight(page);
   const snap = () =>
-    page.evaluate(() => ['.belt', '.hero-row', '.threat', '.enemy-art .riso'].map((s) => {
-      const r = document.querySelector(s)!.getBoundingClientRect();
-      return `${Math.round(r.top)}/${Math.round(r.height)}`;
-    }).join(' '));
+    page.evaluate(() =>
+      ['.belt', '.hero-row', '.threat', '.enemy-art .riso']
+        .map((s) => {
+          const r = document.querySelector(s)!.getBoundingClientRect();
+          return `${Math.round(r.top)}/${Math.round(r.height)}`;
+        })
+        .join(' '),
+    );
   const a = await snap();
-  await combat(page, "for (const id of ['poison', 'burn', 'strength']) c.applyStatus('enemy', id, 3); c.applyStatus('enemy', 'weak', 1, 5); c.applyStatus('hero', 'strength', 2); c.applyStatus('hero', 'dodge', 1); c.gainBlock('hero', 9);");
+  await combat(
+    page,
+    "for (const id of ['poison', 'burn', 'strength']) c.applyStatus('enemy', id, 3); c.applyStatus('enemy', 'weak', 1, 5); c.applyStatus('hero', 'strength', 2); c.applyStatus('hero', 'dodge', 1); c.gainBlock('hero', 9);",
+  );
   await page.waitForTimeout(300);
   // The sprite bobs a few pixels while idle: compare size only for it.
-  const norm = (s: string) => s.split(' ').map((x, i) => (i === 3 ? x.split('/')[1] : x)).join(' ');
+  const norm = (s: string) =>
+    s
+      .split(' ')
+      .map((x, i) => (i === 3 ? x.split('/')[1] : x))
+      .join(' ');
   expect(norm(await snap())).toBe(norm(a));
 });
 

@@ -29,7 +29,9 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: (msg?: str
       clearTimeout(pressTimer);
       sel = sel === def ? null : def;
       sfx('tap');
-      cardEls.forEach((x, j) => x.classList.toggle('sel', picks[j] === sel));
+      cardEls.forEach((x, j) => {
+        x.classList.toggle('sel', picks[j] === sel);
+      });
       row.classList.toggle('has-sel', !!sel);
       addBtn.disabled = !sel;
       swapBtn.disabled = !sel;
@@ -66,12 +68,22 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: (msg?: str
     h('p', { class: 'sub' }, t('reward.choose')),
     row,
     h(
-          'div',
-          { class: `reward-actions ${allowSwap ? '' : 'single'}` },
-          addBtn,
-          allowSwap ? swapBtn : null,
-          h('button', { class: 'btn small secondary full', onclick: () => (sfx('tap'), onDone()) }, t('reward.skip')),
-        ),
+      'div',
+      { class: `reward-actions ${allowSwap ? '' : 'single'}` },
+      addBtn,
+      allowSwap ? swapBtn : null,
+      h(
+        'button',
+        {
+          class: 'btn small secondary full',
+          onclick: () => {
+            sfx('tap');
+            onDone();
+          },
+        },
+        t('reward.skip'),
+      ),
+    ),
   );
   return { el };
 }

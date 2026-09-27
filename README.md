@@ -9,6 +9,9 @@ npm install
 npm run dev        # http://localhost:5173 (also on your LAN, for testing on a phone)
 npm run build      # typecheck + production build in dist/
 npm test           # engine, content and balance tests
+npm run e2e        # browser smoke tests (Playwright, starts the dev server)
+npm run check      # typecheck + lint/format check (Biome) + unit tests
+npm run format     # format the code (Biome)
 ```
 
 The build is static (`dist/`) and can be hosted anywhere.

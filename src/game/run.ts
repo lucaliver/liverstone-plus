@@ -146,8 +146,18 @@ export function applyCombat(run: RunState, combat: Combat): void {
 }
 
 const REWARD_ODDS: Record<'fight' | 'elite', [Rarity, number][]> = {
-  fight: [['common', 64], ['rare', 29], ['epic', 6], ['legendary', 1]],
-  elite: [['common', 30], ['rare', 45], ['epic', 20], ['legendary', 5]],
+  fight: [
+    ['common', 64],
+    ['rare', 29],
+    ['epic', 6],
+    ['legendary', 1],
+  ],
+  elite: [
+    ['common', 30],
+    ['rare', 45],
+    ['epic', 20],
+    ['legendary', 5],
+  ],
 };
 
 /** Three distinct reward cards for the current node. */
@@ -212,7 +222,7 @@ export function saveRun(run: RunState): void {
 
 export function loadRun(): RunState | null {
   const run = loadRaw<RunState>(SAVE_KEY);
-  if (!run || run.version !== 1 || !HEROES[run.hero]) return null;
+  if (run?.version !== 1 || !HEROES[run.hero]) return null;
   // Drop the save if content changed and it references cards/enemies that no longer exist.
   if (run.deck.some((c) => !CARDS[c.id]) || run.nodes.some((n) => n.enemy && !ENEMIES[n.enemy])) return null;
   return run;

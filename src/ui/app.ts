@@ -31,7 +31,9 @@ export function show(screen: Screen): void {
     setTimeout(() => prev.el.remove(), 250);
   }
   // Close any modal left open by the previous screen.
-  root.querySelectorAll('.modal-back').forEach((m) => m.remove());
+  root.querySelectorAll('.modal-back').forEach((m) => {
+    m.remove();
+  });
   current = screen;
   root.append(screen.el);
   screen.enter?.();
@@ -41,7 +43,7 @@ export interface ModalAction {
   label: string;
   cls?: string;
   /** Return false to keep the modal open. */
-  onClick?: () => void | boolean;
+  onClick?: () => unknown;
 }
 
 export interface ModalOpts {

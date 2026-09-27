@@ -18,6 +18,9 @@ export function motes(n: number, inks: string[] = INKS): string {
 /** Pairs of eyes blinking in the dark corners. */
 export function darkEyes(spots: { x: string; y: string }[]): string {
   return spots
-    .map(({ x, y }, i) => `<div class="dark-eyes" aria-hidden="true" style="left:${x};top:${y};--d:${3 + i * 1.3}s;--dl:${-i * 0.9}s"><i></i><i></i></div>`)
+    .map(
+      ({ x, y }, i) =>
+        `<div class="dark-eyes" aria-hidden="true" style="left:${x};top:${y};--d:${3 + i * 1.3}s;--dl:${-i * 0.9}s"><i></i><i></i></div>`,
+    )
     .join('');
 }
