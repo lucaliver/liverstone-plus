@@ -20,7 +20,6 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   slow: { icon: 'hourglass', unit: 's' },
   burn: { icon: 'flame' },
   str: { icon: 'fist', sign: '+' },
-  rage: { icon: 'rage', sign: '+' },
   dodge: { icon: 'mirror' },
   parry: { icon: 'crossed' },
   hp: { icon: 'blood', sign: '-' },

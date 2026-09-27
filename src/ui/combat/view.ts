@@ -81,7 +81,7 @@ function markup(run: RunState, combat: Combat): string {
         <div class="pile discard" aria-label="${t('combat.discardPile')}">${icon('cards')}<span class="js-discard"></span></div>
       </div>
       <button class="ability-btn js-ability" aria-label="${t(`hero.${heroId}.ability`)}">
-        <div class="charge"></div>${icon(ABILITY_ICON[heroId])}<span class="albl">${t(`hero.${heroId}.ability`)}</span>
+        <div class="charge"></div>${icon(ABILITY_ICON[heroId])}<span class="acost">${icon('crystal')}${combat.abilityCost()}</span><span class="albl">${t(`hero.${heroId}.ability`)}</span>
       </button>
     </section>
     <section class="hero-row">
@@ -91,7 +91,6 @@ function markup(run: RunState, combat: Combat): string {
           <div class="block-chip off js-hblock">${icon('shield')}<b></b></div>
           <div class="bar js-hhp"><div class="ghost"></div><div class="fill"></div><div class="incoming"></div><div class="txt"></div></div>
         </div>
-        <div class="resource"><span class="js-res-lbl"></span><div class="rbar"><div class="rfill js-res"></div></div><span class="weave-badge off js-weave"></span></div>
         <div class="statuses js-hstatus"></div>
       </div>
     </section>`;
@@ -117,9 +116,6 @@ function queryRefs(el: HTMLElement) {
     hBlock: $('.js-hblock', el),
     hStatus: $('.js-hstatus', el),
     portrait: $('.hero-portrait', el),
-    resLbl: $('.js-res-lbl', el),
-    res: $('.js-res', el),
-    weave: $('.js-weave', el),
     ability: $<HTMLButtonElement>('.js-ability', el),
     pause: $<HTMLButtonElement>('.js-pause', el),
     manaRow: $('.mana-row', el),

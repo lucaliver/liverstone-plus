@@ -87,7 +87,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       tag: t('hero.tag.active'),
       tagCls: 'active',
       desc: t(`hero.${v.heroId}.abilityShort`),
-      extra: [t(`hero.${v.heroId}.resourceDesc`)],
+      extra: [t('hero.abilityCost', { n: combat.abilityCost() })],
     });
   const passiveInfo = (): void =>
     info({
@@ -121,7 +121,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       if (state.paused || state.ended) return;
       if (!combat.useAbility()) {
         sfx('error');
-        v.toast(t(`hero.${v.heroId}.resourceDesc`));
+        v.toast(t('hero.abilityCost', { n: combat.abilityCost() }));
       }
     },
     abilityInfo,

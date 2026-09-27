@@ -174,6 +174,21 @@
 @keyframes ready {
   50% { box-shadow: 7px 7px 0 var(--res-ink); transform: translate(-2px, -2px); }
 }
+.ability-btn .acost {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 0 3px;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 18px;
+  color: var(--paper);
+  background: var(--b);
+}
+.ability-btn .acost .pico { font-size: 13px; color: var(--paper); --ink2: transparent; }
 .ability-btn:active { transform: translate(var(--off), var(--off)); box-shadow: none; }
 [data-hero='warrior'] { --res-ink: var(--p); --hero-ink: var(--p); }
 [data-hero='mage'] { --res-ink: var(--b); --hero-ink: var(--b); }
@@ -208,34 +223,6 @@
   flex-direction: column;
   gap: 6px;
 }
-.resource {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--fg);
-  font-family: var(--font-ui);
-  font-size: 15px;
-  text-transform: uppercase;
-}
-.resource .rbar {
-  flex: 1;
-  height: 12px;
-  background: var(--void);
-  border: 2px solid var(--void);
-  overflow: hidden;
-}
-.resource .rfill {
-  height: 100%;
-  transform-origin: left;
-  background: var(--res-ink);
-}
-.weave-badge {
-  padding: 1px 6px;
-  color: var(--paper);
-  background: var(--b);
-  box-shadow: 2px 2px 0 var(--p);
-}
-.weave-badge.off { display: none; }
 .hero-info .statuses {
   justify-content: flex-start;
   min-height: 0;

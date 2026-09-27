@@ -23,11 +23,6 @@ export interface HeroState extends Fighter {
   /** Seconds per mana point. */
   regen: number;
   manaTimer: number;
-  resource: number;
-  resourceMax: number;
-  weave: number;
-  weaveMax: number;
-  weaveTimer: number;
 }
 
 export interface EnemyState extends Fighter {
@@ -143,11 +138,6 @@ export class Combat {
       maxMana: Math.min(maxMana, CONFIG.maxManaCap),
       regen: h.regen,
       manaTimer: 0,
-      resource: 0,
-      resourceMax: h.resourceMax,
-      weave: 0,
-      weaveMax: CONFIG.weaveMax,
-      weaveTimer: 0,
     };
     this.sleeve = new Array(sleeve).fill(null);
     if (setup.special) this.sleeve[0] = { uid: SPECIAL_UID, id: setup.special, up: false, bonus: 0, temp: true };
@@ -293,13 +283,6 @@ export class Combat {
       if (h.mana >= h.maxMana) h.manaTimer = 0;
     } else {
       h.manaTimer = 0;
-    }
-    if (h.weave > 0) {
-      h.weaveTimer -= dt;
-      if (h.weaveTimer <= 0) {
-        h.weave = 0;
-        this.events.emit({ type: 'weave', n: 0 });
-      }
     }
   }
 
@@ -514,13 +497,17 @@ export class Combat {
     return true;
   }
 
+  abilityCost(): number {
+    return this.heroDef.ability.cost;
+  }
+
   abilityReady(): boolean {
-    return !this.result && this.intro <= 0 && this.hero.resource >= this.hero.resourceMax;
+    return !this.result && this.intro <= 0 && this.hero.mana >= this.abilityCost();
   }
 
   useAbility(): boolean {
     if (!this.abilityReady()) return false;
-    this.hero.resource = 0;
+    this.hero.mana -= this.abilityCost();
     this.events.emit({ type: 'ability', id: this.heroDef.ability.id });
     this.heroDef.ability.use(this);
     return true;
@@ -687,11 +674,6 @@ export class Combat {
     const before = h.maxMana;
     h.maxMana = Math.min(CONFIG.maxManaCap, h.maxMana + n);
     if (h.maxMana > before) this.events.emit({ type: 'manaCrystal', amount: h.maxMana - before });
-  }
-
-  addResource(n: number): void {
-    const h = this.hero;
-    h.resource = Math.min(h.resourceMax, h.resource + n);
   }
 
   applyStatus(side: Side, id: string, v: number, t = 0, silent = false): void {

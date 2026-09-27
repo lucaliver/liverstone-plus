@@ -114,8 +114,10 @@ describe('combat engine', () => {
   it('warrior berserk doubles attack damage', () => {
     const c = setup({ deck: deckOf(['strike', 'strike']) });
     run(c, CONFIG.introTime + 0.01);
-    c.hero.resource = c.hero.resourceMax;
+    c.hero.maxMana = 10;
+    c.hero.mana = 10;
     expect(c.useAbility()).toBe(true);
+    expect(c.hero.mana).toBe(10 - HEROES.warrior.ability.cost);
     const hp = c.enemy.hp;
     c.playCard(c.belt[0].card.uid);
     expect(hp - c.enemy.hp).toBe(12);
@@ -189,12 +191,11 @@ describe('combat engine', () => {
     expect(spawnsWith(true)).toBe(spawnsWith(false));
   });
 
-  it('necromancer poison ticks harder and fills Decay', () => {
+  it('necromancer poison ticks harder (Virulence)', () => {
     const c = setup({ hero: HEROES.necromancer, hp: 62, maxHp: 62, deck: deckOf(['rot', 'rot']), enemy: ENEMIES.skeleton });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
     c.applyStatus('enemy', 'poison', 6);
-    expect(c.hero.resource).toBe(6);
     const hp = c.enemy.hp;
     run(c, CONFIG.dotInterval + 0.02);
     expect(hp - c.enemy.hp).toBe(6 + 1);
@@ -227,6 +228,13 @@ describe('combat engine', () => {
     });
     run(c, CONFIG.introTime + 45);
     expect(seen.slice(0, 6)).toEqual(['slash', 'slash', 'boneCrush', 'slash', 'slash', 'boneCrush']);
+  });
+
+  it('abilities cost mana and cannot be used without it', () => {
+    const c = setup();
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.mana = HEROES.warrior.ability.cost - 1;
+    expect(c.useAbility()).toBe(false);
   });
 
   it('temp curses never collide with deck uids', () => {

@@ -78,7 +78,8 @@ export function createHud(v: CombatView): { render(): void } {
       const id = (b as HTMLElement).dataset.status!;
       const s = f.statuses[id];
       if (!s) continue;
-      const val = STATUSES[id].kind !== 'timed' ? String(s.v) : s.t > 999 ? '' : `${Math.ceil(s.t)}s`;
+      const sd = STATUSES[id];
+      const val = sd.kind !== 'timed' || sd.showStacks ? String(s.v) : s.t > 999 ? '' : `${Math.ceil(s.t)}s`;
       setText(b.querySelector('span')!, val);
     }
   };
@@ -168,13 +169,9 @@ export function createHud(v: CombatView): { render(): void } {
 
   const renderHeroExtras = (): void => {
     const hs = combat.hero;
-    const k = hs.resource / hs.resourceMax;
-    r.res.style.transform = `scaleX(${k})`;
-    setText(r.resLbl, `${t(`hero.${v.heroId}.resource`)} ${hs.resource}/${hs.resourceMax}`);
-    r.ability.style.setProperty('--p', String(k));
+    // The ability charges with mana: it lights up once the hero can afford it.
+    r.ability.style.setProperty('--p', String(Math.min(1, hs.mana / combat.abilityCost())));
     toggle(r.ability, 'ready', combat.abilityReady());
-    toggle(r.weave, 'off', hs.weave <= 0);
-    if (hs.weave > 0) setText(r.weave, t('combat.weave', { n: hs.weave }));
     setText(r.draw, combat.draw.length);
     setText(r.discard, combat.discard.length);
   };

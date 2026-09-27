@@ -66,6 +66,8 @@ export interface StatusDef {
   kind: StatusKind;
   good: boolean;
   icon: string;
+  /** Timed statuses that also stack show their stacks instead of the seconds left. */
+  showStacks?: boolean;
 }
 
 /** `v` = stacks/amount; `t` = seconds left for timed statuses. */
@@ -137,7 +139,6 @@ export interface HeroDef {
   regen: number;
   /** Seconds per point of Block lost. */
   blockDecay: number;
-  resourceMax: number;
   startDeck: string[];
   /** Once-per-run card that starts each fight in the sleeve (not part of the deck). */
   special: string;
@@ -145,6 +146,8 @@ export interface HeroDef {
   color: string;
   ability: {
     id: string;
+    /** Mana cost: abilities are expensive, a mid-fight power move once the crystals have grown. */
+    cost: number;
     use: (c: Combat) => void;
   };
   hooks: HeroHooks;
@@ -192,7 +195,6 @@ export type CombatEvent =
   | { type: 'manaCrystal'; amount: number }
   | { type: 'manaDrain'; amount: number }
   | { type: 'ability'; id: string }
-  | { type: 'weave'; n: number }
   | { type: 'relic'; id: string }
   | { type: 'enrage' }
   | { type: 'end'; result: CombatResult };

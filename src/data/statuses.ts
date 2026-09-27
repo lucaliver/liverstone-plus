@@ -10,6 +10,7 @@ const defs: StatusDef[] = [
   { id: 'berserk', kind: 'timed', good: true, icon: 'rage' },
   { id: 'parry', kind: 'timed', good: true, icon: 'crossed' },
   { id: 'haste', kind: 'timed', good: true, icon: 'wing' },
+  { id: 'weave', kind: 'timed', good: true, icon: 'bolt2', showStacks: true },
   { id: 'plague', kind: 'stacks', good: true, icon: 'drop' },
   { id: 'virulence', kind: 'stacks', good: true, icon: 'skull' },
   { id: 'burn', kind: 'dot', good: false, icon: 'flame' },

@@ -85,17 +85,17 @@ export const warriorCards: CardDef[] = [
   },
   {
     id: 'battleCry',
-    face: '{mana:0}|{rage:1}',
+    face: '{mana:0}|{block:1}',
     cls: 'warrior',
     type: 'skill',
     rarity: 'common',
     cost: 0,
-    vals: [1, 3],
-    upVals: [2, 3],
+    vals: [2, 3],
+    upVals: [3, 5],
     art: 'horn',
     play: (c, v) => {
       c.gainMana(v[0]);
-      c.addResource(v[1]);
+      c.gainBlock('hero', v[1]);
     },
   },
   {

@@ -49,7 +49,12 @@ function slide(hero: HeroDef, index: number): HTMLElement {
       'div',
       { class: 'hero-features' },
       feature(PASSIVE_ICON[id], t(`hero.${id}.passiveName`), 'passive', t(`hero.${id}.passiveShort`)),
-      feature(ABILITY_ICON[id], t(`hero.${id}.ability`), 'active', t(`hero.${id}.abilityShort`)),
+      feature(
+        ABILITY_ICON[id],
+        t(`hero.${id}.ability`),
+        'active',
+        `${t(`hero.${id}.abilityShort`)} <span class="fcost">${icon('crystal')}${hero.ability.cost}</span>`,
+      ),
       feature('star', t(`card.${hero.special}.name`), 'special', cardText({ uid: -1, id: hero.special, up: false })),
     ),
   );
