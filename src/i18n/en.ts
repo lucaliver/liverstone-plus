@@ -135,7 +135,7 @@ const en = {
   'reward.swap': 'Swap',
   'reward.skip': 'Skip',
   'reward.yourDeck': 'Your deck',
-  'reward.offer': 'Swap it for',
+  'reward.offer': 'Rewards',
   'reward.pickBoth': 'Pick a card from your deck and one to take',
   'reward.pickDeck': 'Now pick the deck card to give up',
   'reward.pickOffer': 'Now pick the card to take',

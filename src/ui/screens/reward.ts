@@ -84,7 +84,12 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
     'div',
     { class: 'screen reward' },
     runHud(run),
-    h('h1', { class: 'h1 reward-title' }, t('reward.victory')),
+    h('h1', {
+      class: 'h1 reward-title',
+      'aria-label': t('reward.victory'),
+      // Letters drop in one by one, then the print keeps slipping out of register.
+      html: [...t('reward.victory')].map((ch, i) => `<span style="--i:${i}">${ch === ' ' ? '&nbsp;' : ch}</span>`).join(''),
+    }),
     h(
       'div',
       { class: 'swap-area' },
