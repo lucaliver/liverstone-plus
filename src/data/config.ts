@@ -14,8 +14,8 @@ export const CONFIG = {
   /** Belt speed multiplier while rushed (Time Slip, Time Warp). */
   beltRush: 1.8,
   /** Global difficulty knobs applied to every enemy. */
-  enemyHp: 0.85,
-  enemyDmg: 1.05,
+  enemyHp: 1.15,
+  enemyDmg: 0.6,
   maxManaCap: 10,
   startMana: 3,
   dotInterval: 1.5,

@@ -48,7 +48,7 @@ describe('combat engine', () => {
     const hp = c.enemy.hp;
     expect(c.playCard(card.uid)).toBe(true);
     expect(c.enemy.hp).toBe(hp - 6);
-    expect(c.hero.mana).toBe(CONFIG.startMana - 1);
+    expect(c.hero.mana).toBe(CONFIG.startMana - c.cardCost(card));
     expect(c.discard.map((x) => x.uid)).toContain(card.uid);
   });
 
@@ -144,6 +144,7 @@ describe('combat engine', () => {
   it('mage spellweave adds damage to chained spells', () => {
     const c = setup({ hero: HEROES.mage, hp: 70, maxHp: 70, deck: deckOf(['arcaneBolt', 'arcaneBolt']), enemy: ENEMIES.slime });
     run(c, CONFIG.introTime + 0.01);
+    c.hero.maxMana = c.hero.mana = 10;
     const hp = c.enemy.hp;
     c.playCard(c.belt[0].card.uid);
     c.playCard(c.belt[0].card.uid);

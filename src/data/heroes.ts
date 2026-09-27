@@ -7,7 +7,7 @@ const warrior: HeroDef = {
   id: 'warrior',
   hp: 72,
   maxMana: 3,
-  regen: 1.5,
+  regen: 1.3,
   blockDecay: 1.2,
   // Starter decks: only basic cards (plus mana crystals); everything else comes from rewards.
   startDeck: [...rep('strike', 5), ...rep('defend', 4), 'manaGeode'],
@@ -27,7 +27,7 @@ const mage: HeroDef = {
   id: 'mage',
   hp: 74,
   maxMana: 3,
-  regen: 1.0,
+  regen: 0.8,
   blockDecay: 1.0,
   startDeck: [...rep('arcaneBolt', 5), ...rep('ward', 3), 'manaShard', 'manaGeode'],
   special: 'meteor',
