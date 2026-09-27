@@ -1,7 +1,8 @@
-# Liverstone
+# Punchcard
 
 Deckbuilder roguelike **in tempo reale a nastro trasportatore**, per browser mobile in verticale.
 Ispirato a *Cardstone* (Running Pillow, 2015). Stile ufficiale: **colori riso pop + pixel art, un po' dark/scary**.
+Ambientazione: **un'avventura fantasy trattata come un lavoro in fabbrica**, con satira sociale (vedi sezione 1).
 
 > Questo file è una panoramica del gioco. I valori precisi (vita, danni, costi, probabilità) vivono nei dati del
 > codice. La parte tecnica (stack, architettura, convenzioni, come aggiungere contenuti) è in [CLAUDE.md](CLAUDE.md).
@@ -12,9 +13,22 @@ Ispirato a *Cardstone* (Running Pillow, 2015). Stile ufficiale: **colori riso po
 
 ## 1. Il gioco in breve
 
-Scegli un eroe, scendi nella cripta piano per piano. Ogni combattimento è **in tempo reale**: le carte del
+Scegli un eroe, timbra il cartellino e scendi piano per piano. Ogni combattimento è **in tempo reale**: le carte del
 mazzo scorrono su un nastro da destra a sinistra e devi giocarle prima che cadano nel buio. Il mana si ricarica
 col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazzo scambiando carte.
+
+### Ambientazione e tono
+
+- **L'avventura è un lavoro.** Il nastro è una catena di montaggio: le carte arrivano e tu le "lavori" prima che
+  finiscano negli scarti. Una run è una **giornata lavorativa**, e ogni atto è un **turno**: mattino, pomeriggio,
+  notte. Il tono passa dal comico (il nuovo assunto nel turno del mattino) al dark (il turno di notte).
+- **Satira sociale, un po' socialista**, che colpisce il sistema (dirigenti, burocrazia, il padrone) ma anche i
+  colleghi: il collega tossico, la spia, il boomer anziano, il coach motivazionale.
+- **Alto fantasy mischiato:** golem, automi, robot e steampunk convivono con goblin, scheletri e rospi.
+- **Gli eroi restano eroi fantasy**, con appena un tocco di mansione nel titolo (es. *Shield of the Loading Dock*).
+- **Nomi:** carte, nemici, mosse e maledizioni hanno nomi da posto di lavoro (*Punch*, *Hard Hat*, *Reply All*,
+  *Deadline*); stati e parole chiave restano nomi di gioco (Poison, Burn, Block…) perché devono essere chiari.
+  I testi del gioco sono in inglese.
 
 ### Cosa viene da Cardstone e cosa abbiamo cambiato
 
@@ -26,13 +40,13 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 | Scambio di una carta dopo ogni battaglia | **Ricompensa = sempre uno scambio** (il mazzo ha dimensione fissa) |
 | "Manica" per tenere carte da parte | **Sleeve** con pochi slot, con dentro la carta speciale dell'eroe |
 | Eroi con abilità | Eroi con passiva, abilità a mana e carta speciale una volta per run |
-| Oro per sbloccare carte, timer "cibo" | Compendio con scoperta delle carte; nessun timer di energia |
+| Oro per sbloccare carte, timer "cibo" | Handbook (compendio) con scoperta delle carte; nessun timer di energia |
 
 ---
 
 ## 2. Regole del combattimento
 
-- **Start:** lo scontro parte solo quando premi START. Prima (e durante) puoi **tenere premuto** qualunque cosa per
+- **Start:** lo scontro parte solo quando premi CLOCK IN. Prima (e durante) puoi **tenere premuto** qualunque cosa per
   leggerla: carte, stati, abilità, ritratto (passiva), barra minaccia, mana.
 - **Nastro:** tocca una carta per giocarla, trascinala in su verso il nemico per giocarla, trascinala in giù
   nella sleeve per tenerla. Una carta che esce a sinistra finisce negli scarti (le maledizioni *volatili*
@@ -55,23 +69,26 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 
 ### La run
 
-- **Atto 1 – La Cripta Dimenticata:** una colonna di piani con battaglie, falò, un'**élite** e il **boss** finale.
+- **Atto 1 – The Morning Shift (turno del mattino):** una colonna di piani con lavori (battaglie), sale pausa,
+  un'**ispezione** (élite) e il **boss** finale.
   La run è già modellata come grafo, pronta per una mappa a rami.
 - **Ricompensa:** sopra tutto il mazzo, sotto alcune carte premio: scegli una carta per parte e **Scambia**, oppure
   **Salta**. Le élite danno carte più rare.
-- **Falò:** cura una parte della vita, oppure **potenzia** una carta (selezioni, vedi l'anteprima, confermi).
-- **Salvataggio** a ogni piano. Dalla pausa: *Main menu* (la run resta, lo scontro riparte) o *Abandon run*.
+- **Sala pausa (Break Room):** *Nap* cura una parte della vita, *Training* **potenzia** una carta (selezioni, vedi
+  l'anteprima, confermi).
+- **Salvataggio** a ogni piano. Dalla pausa: *Main menu* (la run resta, lo scontro riparte) o *Call in sick*
+  (abbandona la run).
 
 ---
 
 ## 3. Eroi
 
-| | Guerriero | Mago | Negromante |
+| | Guerriero (*Shield of the Loading Dock*) | Mago (*Keeper of the Furnace*) | Negromante (*Shop Steward of the Dead*) |
 | --- | --- | --- | --- |
 | Archetipo | Blocco e attacchi pesanti | Catene di incantesimi, gelo, fuoco | Veleno |
-| Passiva | **Iron Hide**: il Blocco svanisce più lentamente | **Spellweave**: gli incantesimi in catena diventano più forti | **Virulence**: il Veleno fa più danno |
-| Abilità | **Berserk**: attacchi potenziati per qualche secondo | **Time Warp**: congela il nemico e accelera il nastro | **Pandemic**: raddoppia il Veleno sul nemico |
-| Speciale | **Last Stand**: Blocco e Forza | **Meteor**: danno enorme e Bruciatura | **Death's Door**: cura e Veleno |
+| Passiva | **Thick Skin**: il Blocco svanisce più lentamente | **Multitasking**: gli incantesimi in catena diventano più forti | **Virulence**: il Veleno fa più danno |
+| Abilità | **Overtime**: attacchi potenziati per qualche secondo | **Time Theft**: congela il nemico e accelera il nastro | **General Strike**: raddoppia il Veleno sul nemico |
+| Speciale | **Picket Line**: Blocco e Forza | **Boiler Burst**: danno enorme e Bruciatura | **Wildcat Strike**: cura e Veleno |
 
 I mazzi iniziali hanno solo carte base e cristalli; tutte le altre arrivano come ricompensa.
 
@@ -80,13 +97,13 @@ I mazzi iniziali hanno solo carte base e cristalli; tutte le altre arrivano come
 ## 4. Carte
 
 - **Rarità:** iniziale, comune, rara, epica, leggendaria, più la speciale dell'eroe e le maledizioni.
-- **Set:** uno per ogni eroe (attorno al suo archetipo), più carte **neutrali** (pozioni, cristalli, utilità)
-  giocabili da tutti.
+- **Set:** uno per ogni eroe (attorno al suo archetipo), più carte **neutrali** (kit di pronto soccorso, energy
+  drink, cristalli *Coffee* e *Double Espresso*, utilità) giocabili da tutti.
 - **Faccia:** le carte mostrano **icone e numeri grandi**; il testo completo e il glossario si leggono tenendo
   premuto. Una condizione è tra parentesi (es. un attacco che fa più danni se hai Blocco).
-- **Potenziamento:** ogni carta ha una versione migliorata, ottenibile al falò.
-- **Maledizioni:** date dai nemici, durano solo lo scontro: intasano il nastro, ti feriscono, esplodono,
-  rubano mana o avvelenano se le lasci uscire.
+- **Potenziamento:** ogni carta ha una versione migliorata, ottenibile in sala pausa (*Training*).
+- **Maledizioni:** date dai nemici, durano solo lo scontro: *Drama* intasa il nastro, *Write-Up* ti ferisce,
+  *Deadline* esplode, *Mandatory Fun* ruba mana e *Gossip* avvelena se le lasci uscire.
 - **Parole chiave:** Innate (arriva per prima), Esaurisci (una volta per scontro), Consuma (sparisce dal mazzo),
   Fugace (sparisce se esce dal nastro), Volatile (effetto all'uscita), Rush (accelera il nastro), Potere (dura
   tutto lo scontro), X (spende tutto il mana).
@@ -97,13 +114,15 @@ I mazzi iniziali hanno solo carte base e cristalli; tutte le altre arrivano come
 
 | Nemico | Stile |
 | --- | --- |
-| Crypt Rat | Morsi rapidi e raffiche di colpi |
-| Skeleton | Colpi lenti, poi un colpo pesantissimo |
-| Bile Toad | Rospo di cripta gonfio di avventurieri: riempie il nastro di Slime e il mazzo di Tossine |
-| Cultist | Rituale che lo rende più forte e ti ruba mana |
-| Goblin Thief | Ruba carte e accende bombe sul nastro |
-| **Bone Knight** (élite) | Colpi che rendono Vulnerabile, muro di scudi, si infuria a metà vita |
-| **The Lich** (boss) | Maledizioni, bombe e il colpo DOOM; a metà vita accelera |
+| The Snitch | La spia: colpi rapidi e raffiche (*Rat Out*) |
+| Senior Boomer | Colpi lenti, poi un colpo pesantissimo (*Seniority*) |
+| Toxic Coworker | Il collega tossico: riempie il nastro di *Drama* e il mazzo di *Gossip* |
+| Synergy Coach | *Team Building* lo rende più forte e ti rifila *Mandatory Fun* |
+| Goblin Consultant | Ruba carte (*Outsource*) e ti mette *Deadline* sul nastro |
+| **Security Automaton** (élite) | Colpi che rendono Vulnerabile, *Lockdown* (blocco), si infuria a metà vita |
+| **Slaves CEO** (boss) | *Write-Ups*, *Deadlines* e il colpo *YOU'RE FIRED*; a metà vita accelera |
+
+Gli sprite sono ancora quelli della cripta (ratto, scheletro, rospo, cultista, goblin, cavaliere, lich) e verranno ridisegnati.
 
 La difficoltà cresce scendendo di piano.
 
@@ -111,14 +130,15 @@ La difficoltà cresce scendendo di piano.
 
 ## 6. Schermate e interfaccia
 
-- **Home:** logo animato, Lich, candele pixel animate; Nuova run / Continua, Compendio, Come si gioca, Impostazioni.
+- **Home:** logo animato, boss, candele pixel animate; *Clock in* (nuova run) / *Back to work* (continua), *Handbook*,
+  *Onboarding* (come si gioca), Impostazioni.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
-- **Percorso:** colonna dei piani dell'atto con icone (battaglia, falò, élite e boss un po' più grandi) e il tasto
+- **Percorso:** colonna dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
   per entrare nel piano. La run si abbandona dalla pausa in combattimento o iniziandone una nuova.
 - **Combattimento**, dall'alto: barra superiore (piano, velocità di gioco, pausa) · nemico con stati e vita ·
   barra minaccia · eroe (ritratto, vita, Blocco, stati) · **nastro** · mana · sleeve, pile, abilità. Vita del nemico,
   mossa in arrivo e vita dell'eroe stanno tutte subito sopra il nastro, così non serve distogliere lo sguardo dalle carte.
-- **Ricompensa, falò** (con animazione di cura), **vittoria e fine run** (statistiche), **Compendio** (carte per
+- **Ricompensa, sala pausa** (con animazione di cura), **fine turno e licenziamento** (statistiche), **Handbook** (carte per
   classe con scoperte, nemici con mosse).
 - **Impostazioni:** musica, effetti, velocità, riduci animazioni, vibrazione, nastro a due righe (sperimentale: più carte in vista, nastro un po' più lento). Tutti i testi sono pronti per altre lingue.
 
@@ -126,7 +146,9 @@ La difficoltà cresce scendendo di piano.
 
 - **Riso pop + pixel, un po' dark:** notte viola retinata; carte, bottoni ed etichette come stampe su carta
   con ombre nette sfalsate. Quattro inchiostri: rosa fluo, blu, giallo, inchiostro scuro (+ sovrastampe).
-- **Mai:** sfumature per l'ombreggiatura, glow, finto 3D, cerchi decorativi di sfondo, motivi industriali.
+- **Mai:** sfumature per l'ombreggiatura, glow, finto 3D, cerchi decorativi di sfondo.
+- **Fabbrica con misura:** l'atto 1 è una fabbrica dentro la cripta (ossa, candele, pietra, qualche dettaglio di
+  ottone, cartellini e pergamene timbrate); ingranaggi, caldaie e automi crescono nei turni successivi.
 - **Pixel art** generata dai disegni vettoriali all'avvio: livelli d'inchiostro, retino a puntini, contorno.
 - **Animazioni a scatti** (tranne le finestre, fluide); colpi con flash invertito; danni come "-N" su macchia di sangue,
   al centro del nemico e abbastanza lenti da leggerli.

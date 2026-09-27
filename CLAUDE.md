@@ -1,6 +1,7 @@
-# Liverstone — technical guide
+# Punchcard — technical guide
 
-Real-time conveyor-belt deckbuilder for mobile browsers (portrait). A feature overview lives in
+Real-time conveyor-belt deckbuilder for mobile browsers (portrait): a fantasy adventure run as a factory job,
+with a bit of social satire. A feature overview lives in
 [README.md](README.md) (Italian, the owner's doc; no exact numbers or task lists there, so balancing never touches it).
 This file is the technical guide: read it before changing code.
 
@@ -9,7 +10,12 @@ This file is the technical guide: read it before changing code.
 - Reply to the owner in **Italian**. Game text is **English** (i18n-ready).
 - Work task by task; **commit after each task** with a clear message (git history is the task log).
 - Official style: **riso pop inks + pixel art, a bit dark/scary**. Never add gradients for shading, glows, fake 3D,
-  decorative background circles, industrial motifs, emoji or Unicode symbols as icons (use pixel icons).
+  decorative background circles, emoji or Unicode symbols as icons (use pixel icons). Industrial, robotic and
+  steampunk touches grow act by act: act 1 is a factory inside the crypt (bones, candles, a little brass).
+- Tone: a run is a **workday**, each act a **shift** (morning, afternoon, night). Cards, enemies, moves, curses and
+  UI words use workplace names (*Punch*, *Toxic Coworker*, *Deadline*, *Clock in*); satire hits management and
+  coworkers alike. Heroes stay fantasy with a light job touch. Statuses and keywords keep plain game names
+  (Poison, Block, Rush…) so rules stay readable.
 - Before handing over: `npm run check` and `npm run e2e` must pass, then look at the screens you touched
   (Playwright screenshot at 390×844 and at a short height such as 375×620).
 - Balance: don't spend long on simulations while design is moving; one quick sim pass is enough.
@@ -121,7 +127,7 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
   value · `|` new line · other text as is. Kinds live in `GLYPHS` (`ui/components/cardView.ts`).
 - `desc`: `{i}` values, `[kw]` keywords (need `kw.<kw>` and `kw.<kw>.d`).
 - Art colour comes from the face (attack / defense / utility / curse) unless `cat` is set. Set `dmg: []` only for
-  raw damage that ignores modifiers (e.g. Juggernaut).
+  raw damage that ignores modifiers (e.g. `juggernaut`).
 - Keyword flags (`Keyword` type, change engine behaviour): exhaust, consume, fleeting, volatile, innate, unique,
   unplayable. Glossary-only keywords (`[rush]`, `[power]`, `[x]`, statuses…) just need their `kw.*` strings.
   Rarity `unique` = hero special.
@@ -192,7 +198,7 @@ Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unloc
 - **Content** (`tests/content.test.ts`): data integrity.
 - **Balance** (`tests/balance.sim.test.ts` + `bot.ts`): heuristic bot win rates; treat them as relative.
 - **E2E** (`tests/e2e/smoke.spec.ts`): title, hero carousel, fight → reward swap, layout stability, Start gate,
-  pause (music, backdrop tap, main menu), campfire upgrade, compendium, title candles. Use real touch
+  pause (music, backdrop tap, main menu), break room upgrade, compendium, title candles. Use real touch
   (`page.touchscreen.tap`) when the behaviour differs on phones.
 - Ad-hoc screenshot scripts live in the git-ignored `screenshots/` folder. `dev/art.html` (open it on the dev
   server) previews every creature sprite and icon after pixelisation.
