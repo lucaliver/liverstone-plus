@@ -184,3 +184,78 @@
   text-transform: none;
   letter-spacing: 0;
 }
+
+/* the time card on the belt: it drops in, gets stamped IN (then leaves) or OUT (and stays) */
+.timecard {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 240;
+  width: min(64%, 230px);
+  padding: 8px 10px 10px;
+  translate: -50% -50%;
+  color: var(--k);
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
+  font-family: var(--font-ui);
+  pointer-events: none;
+  animation: tc-in 1.2s steps(3) both;
+}
+.timecard.out { animation-name: tc-out; animation-duration: 0.3s; }
+@keyframes tc-in {
+  0% { transform: translateY(-90px); opacity: 0; }
+  20%, 80% { transform: none; opacity: 1; }
+  100% { transform: translateY(-90px); opacity: 0; }
+}
+@keyframes tc-out {
+  from { transform: translateY(-90px); opacity: 0; }
+}
+.tc-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.tc-head b { font-family: var(--font-display); font-size: 15px; text-transform: uppercase; }
+.tc-head span { font-size: 15px; color: var(--muted); }
+/* ruled lines of the card */
+.tc-lines { height: 34px; margin-top: 4px; background: repeating-linear-gradient(transparent 0 9px, #b8ab92 9px 11px); }
+.tc-stamp {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  rotate: -8deg;
+  padding: 0 8px;
+  font-size: 26px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--p);
+  border: 3px solid var(--p);
+  background: var(--paper);
+  animation: tc-stamp 0.12s steps(2) 0.3s both;
+}
+.timecard.out .tc-stamp { color: var(--b); border-color: var(--b); animation-delay: 0.35s; }
+@keyframes tc-stamp {
+  from { scale: 2.2; opacity: 0; }
+}
+/* defeat: a pink slip flutters down over the fight */
+.pink-slip {
+  position: absolute;
+  left: 50%;
+  top: 22%;
+  z-index: 45;
+  width: min(72%, 270px);
+  padding: 12px 14px;
+  translate: -50% 0;
+  text-align: center;
+  color: var(--k);
+  background: var(--p);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
+  pointer-events: none;
+  animation: slip-fall 1.1s steps(9) both;
+}
+.pink-slip b { display: block; font-family: var(--font-display); font-size: 20px; text-transform: uppercase; }
+.pink-slip p { margin: 6px 0 0; font-size: 15px; }
+@keyframes slip-fall {
+  0% { transform: translate(-30px, -260px) rotate(-14deg); opacity: 0; }
+  30% { transform: translate(24px, -150px) rotate(10deg); opacity: 1; }
+  60% { transform: translate(-16px, -50px) rotate(-6deg); }
+  100% { transform: rotate(-3deg); }
+}

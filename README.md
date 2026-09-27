@@ -46,7 +46,8 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 
 ## 2. Regole del combattimento
 
-- **Start:** lo scontro parte solo quando premi CLOCK IN. Prima (e durante) puoi **tenere premuto** qualunque cosa per
+- **Start:** lo scontro parte solo quando premi CLOCK IN (il cartellino scende sul nastro e viene timbrato con l'ora; se
+  vinci torna timbrato OUT, se perdi cade una lettera di licenziamento rosa). Prima (e durante) puoi **tenere premuto** qualunque cosa per
   leggerla: carte, stati, abilità, ritratto (passiva), barra minaccia, mana. Prima di iniziare, sopra al nemico compaiono le sue abilità passive.
 - **Nastro a due righe** (lo standard dalla 2.0): le carte entrano alternandosi sulle due righe, così se ne vedono il
   doppio e restano in vista più a lungo; il nastro scorre un po' più lento. Tocca una carta per giocarla, trascinala in su verso il nemico per giocarla, trascinala in giù

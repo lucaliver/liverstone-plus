@@ -207,6 +207,13 @@ const SOUNDS = {
     tone(2093, 0.5, { type: 'sine', vol: 0.09, delay: 0.2 });
     tone(4186, 0.3, { type: 'sine', vol: 0.03, delay: 0.2 });
   },
+  /** A time card punched in the clock: the card slides in, then a heavy ka-chunk. */
+  punchClock: () => {
+    noise(0.12, { freq: 1800, to: 900, vol: 0.12 });
+    tone(110, 0.12, { type: 'square', vol: 0.12, to: 60, delay: 0.3 });
+    noise(0.08, { freq: 600, vol: 0.4, type: 'lowpass', delay: 0.3 });
+    noise(0.05, { freq: 3000, vol: 0.2, q: 3, delay: 0.42 });
+  },
   /** The boss is in: a factory steam whistle (a sour chord that slides up, plus the hiss). */
   siren: () => {
     [370, 440, 523].forEach((f) => {

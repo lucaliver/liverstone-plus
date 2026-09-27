@@ -4,7 +4,7 @@ import { sfx } from '../../audio/sfx';
 import { CONFIG, GAME_SPEEDS } from '../../data/config';
 import type { Combat } from '../../game/combat';
 import type { MoveDef } from '../../game/types';
-import type { RunState } from '../../game/run';
+import { clockAt, currentNode, type RunState } from '../../game/run';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
 import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedSelector } from '../components/modals';
@@ -12,6 +12,7 @@ import { icon, INTENT_ICON } from '../art/icons';
 import { bindMoveDetails, enemyTraits, moveEffect, movePattern } from '../components/moveText';
 import { h, onPress, onTapOrHold, setText } from '../dom';
 import { burst, haptic, shake } from '../fx/fx';
+import { clockText } from '../screens/journey';
 import { createCardLayer } from './cardLayer';
 import { bindCombatFx } from './combatFx';
 import { createHud } from './hud';
@@ -48,6 +49,22 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   const cards = createCardLayer(v);
   const hud = createHud(v, () => passiveInfo());
 
+  /** The time card on the belt: stamped IN as the fight starts (then it leaves), OUT when it's won (it stays). */
+  const timeCard = (kind: 'in' | 'out', time: string): void => {
+    const card = h(
+      'div',
+      { class: `timecard ${kind}` },
+      h('div', { class: 'tc-head' }, h('b', null, t('combat.timeCard')), h('span', null, t(`hero.${v.heroId}.name`))),
+      h('div', { class: 'tc-lines' }),
+      h('div', { class: 'tc-stamp' }, t(kind === 'in' ? 'combat.clockIn' : 'combat.clockOut', { time })),
+    );
+    card.addEventListener('animationend', (e) => {
+      if (e.target === card && kind === 'in') card.remove();
+    });
+    r.belt.append(card);
+    sfx('punchClock');
+  };
+
   const finish = (result: 'win' | 'lose'): void => {
     if (state.ended) return;
     state.ended = true;
@@ -64,9 +81,12 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         shake('big');
         sfx('blunt');
       } else v.banner(t('reward.cleared'));
+      // Clocking out when the next floor starts (the end of the shift after a boss).
+      timeCard('out', clockText(clockAt(run, { ...currentNode(run), floor: currentNode(run).floor + 1 })));
       sfx('victory');
     } else {
-      v.banner(t('end.defeat'), true);
+      // Fired: a pink slip flutters down.
+      v.el.append(h('div', { class: 'pink-slip' }, h('b', null, t('combat.pinkSlip')), h('p', null, t('combat.pinkSlipBody'))));
       sfx('defeat');
       haptic([60, 60, 120]);
     }
@@ -288,6 +308,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         syncPause();
         sfx('button');
         v.banner(t('combat.fight'));
+        timeCard('in', clockText(clockAt(run, currentNode(run))));
       });
       // Centred on the belt: the enemy, the threat bar and the hero stay readable.
       r.belt.append(startWrap);

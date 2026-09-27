@@ -136,6 +136,11 @@ const en = {
 
   // -------------------------------------------------------------- combat
   'combat.fight': 'Get to work!',
+  'combat.timeCard': 'Time card',
+  'combat.clockIn': 'In {time}',
+  'combat.clockOut': 'Out {time}',
+  'combat.pinkSlip': 'Termination notice',
+  'combat.pinkSlipBody': 'Effective immediately. Clear your desk.',
   'combat.start': 'Clock in',
   'combat.startHint': 'Hold anything to learn what it does',
   'combat.paused': 'Paused',
