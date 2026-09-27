@@ -441,7 +441,7 @@ const en = {
   // ------------------------------------------------------------- enemies
   'enemy.rat.name': 'Crypt Rat',
   'enemy.skeleton.name': 'Skeleton',
-  'enemy.slime.name': 'Ooze',
+  'enemy.slime.name': 'Bile Toad',
   'enemy.cultist.name': 'Cultist',
   'enemy.goblin.name': 'Goblin Thief',
   'enemy.boneKnight.name': 'Bone Knight',

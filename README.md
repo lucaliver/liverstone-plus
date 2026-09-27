@@ -99,7 +99,7 @@ I mazzi iniziali hanno solo carte base e cristalli; tutte le altre arrivano come
 | --- | --- |
 | Crypt Rat | Morsi rapidi e raffiche di colpi |
 | Skeleton | Colpi lenti, poi un colpo pesantissimo |
-| Ooze | Riempie il nastro di Slime e il mazzo di Tossine |
+| Bile Toad | Rospo di cripta gonfio di avventurieri: riempie il nastro di Slime e il mazzo di Tossine |
 | Cultist | Rituale che lo rende più forte e ti ruba mana |
 | Goblin Thief | Ruba carte e accende bombe sul nastro |
 | **Bone Knight** (élite) | Colpi che rendono Vulnerabile, muro di scudi, si infuria a metà vita |

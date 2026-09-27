@@ -52,16 +52,40 @@ ${eyes(88, 112, 60, 4, '#9ef0ff', 'sk-g')}
 <path d="M80 88h40M86 86v6M93 86v6M100 86v6M107 86v6M114 86v6" stroke="#1a1422" stroke-width="2.5"/>
 <path d="M70 40c10-14 40-18 56-4" stroke="#fff" stroke-width="4" opacity=".35" fill="none" stroke-linecap="round"/>`;
 
+/** The Bile Toad (enemy id `slime`, kept so saved runs stay valid): a bloated crypt toad, fat on adventurers, that spits bile. */
 const slime = `
-<defs><radialGradient id="sl-b" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#ffe45a"/><stop offset=".45" stop-color="#9ac85a"/><stop offset="1" stop-color="#1b6a3a"/></radialGradient>${glow('sl-g', '#fffb8a')}</defs>
+<defs>${lg('bt-b', '#5a9a3a', '#16402a')}${lg('bt-bn', '#fbf4df', '#e8d8a8')}</defs>
 ${shadow}
-<path d="M24 176c-6-50 20-120 76-124 56 4 82 74 76 124-2 8-10 10-20 10H44c-10 0-18-2-20-10z" fill="url(#sl-b)" ${OUT} opacity=".95"/>
-<path d="M44 186c0-10 8-10 10-2M150 186c2-12 10-10 10 0M96 186c0-14 10-14 10 0" fill="#3a9a34" ${OUT}/>
-<circle cx="140" cy="140" r="10" fill="#caff9a" opacity=".45"/><circle cx="60" cy="150" r="7" fill="#caff9a" opacity=".45"/><circle cx="120" cy="164" r="5" fill="#caff9a" opacity=".45"/>
-<ellipse cx="80" cy="114" rx="16" ry="19" fill="#fff" ${OUT}/><ellipse cx="124" cy="114" rx="16" ry="19" fill="#fff" ${OUT}/>
-<g class="eye"><circle cx="84" cy="118" r="8" fill="#1a1422"/><circle cx="120" cy="118" r="8" fill="#1a1422"/><circle cx="81" cy="115" r="3" fill="#fff"/><circle cx="117" cy="115" r="3" fill="#fff"/></g>
-<path d="M82 146c10 10 30 10 40 0" stroke="#1a3a1a" stroke-width="5" fill="none" stroke-linecap="round"/>
-<path d="M58 82c10-16 26-24 40-22-16 6-26 16-32 30z" fill="#fff" opacity=".5"/>`;
+<!-- a half-swallowed adventurer: femur and skull sunk in its back -->
+<path d="M150 70l20-26 6 2 2-8 8 4-4 6 4 4-8 4-2-4-18 24z" fill="url(#bt-bn)" ${OUT}/>
+<!-- hind legs, folded -->
+<path d="M12 186c-4-28 8-46 30-48 10 14 12 32 8 48zM188 186c4-28-8-46-30-48-10 14-12 32-8 48z" fill="url(#bt-b)" ${OUT}/>
+<!-- bloated body -->
+<path d="M22 168c-6-44 22-84 78-86 56 2 84 42 78 86-4 16-30 20-78 20s-74-4-78-20z" fill="url(#bt-b)" ${OUT}/>
+<path d="M56 174c10-12 78-12 88 0-10 10-78 10-88 0z" fill="#e8d070"/>
+<path d="M120 92c0-12 10-20 22-20s22 8 22 20c0 8-4 12-8 14v6h-28v-6c-4-2-8-6-8-14z" fill="url(#bt-bn)" ${OUT}/>
+<path d="M128 90l8-2 2 8-8 2zM148 88l8 2-2 8-8-2z" fill="#1a1422"/><path d="M140 100l2 4h-4z" fill="#1a1422"/>
+<path d="M112 106c10 4 50 4 60 0" stroke="#16402a" stroke-width="6" fill="none"/>
+<!-- warts and pustules -->
+<g fill="#ff8ac8" ${OUT}><circle cx="40" cy="126" r="8"/><circle cx="166" cy="128" r="7"/><circle cx="60" cy="104" r="5"/><circle cx="176" cy="154" r="5"/><circle cx="28" cy="152" r="4"/></g>
+<g fill="#16402a"><circle cx="84" cy="98" r="3"/><circle cx="50" cy="144" r="3"/><circle cx="150" cy="146" r="3"/><circle cx="106" cy="92" r="2.5"/></g>
+<g fill="#fff" opacity=".8"><rect x="37" y="122" width="3" height="3"/><rect x="163" y="124" width="3" height="3"/></g>
+<!-- eye mounds: slit pupils under heavy lids, a third eye above -->
+<circle cx="62" cy="92" r="23" fill="url(#bt-b)" ${OUT}/><circle cx="102" cy="78" r="13" fill="url(#bt-b)" ${OUT}/>
+<g class="eye">
+<circle cx="62" cy="93" r="15" fill="#ffd900" ${OUT}/><rect x="48" y="93" width="28" height="5" fill="#1a1422"/>
+<ellipse cx="102" cy="78" rx="8" ry="7" fill="#ff3d9a" ${OUT}/><rect x="100" y="72" width="4" height="12" fill="#1a1422"/>
+</g>
+<path d="M44 84c8-10 28-12 38-2l-4 3c-10-4-24-3-32 4z" fill="#16402a" ${OUT}/>
+<!-- wide mouth, crooked teeth, tongue dripping bile -->
+<path d="M30 124c32 24 108 24 140 0-6 22-36 36-70 36s-64-14-70-36z" fill="#1a1422" ${OUT}/>
+<path d="M44 132l5 9 5-7zM60 138l4 10 5-8zM78 142l3 8 5-7zM116 142l5 7 3-8zM132 139l5 8 4-10zM150 133l5 7 5-9z" fill="#fbf4df"/>
+<path d="M88 150c0 18 4 30 12 34 8-2 10-14 8-34z" fill="#ff3d9a" ${OUT}/>
+<path d="M102 180c0 4 1 7 3 8 2-1 3-4 2-8z" fill="#c8e86a" ${OUT}/>
+<path d="M34 130c-2 8-2 14 2 20 3-6 3-12 0-20zM166 130c2 8 2 14-2 20-3-6-3-12 0-20z" fill="#c8e86a" ${OUT}/>
+<!-- front feet, webbed toes -->
+<path d="M34 188c0-10 6-16 14-16s12 6 14 16zM138 188c2-10 6-16 14-16s14 6 14 16z" fill="url(#bt-b)" ${OUT}/>
+<path d="M42 186v-6M50 186v-8M58 186v-6M144 186v-6M152 186v-8M160 186v-6" stroke="#1a1422" stroke-width="2"/>`;
 
 const cultist = `
 <defs>${lg('cu-r', '#b070d8', '#4a2090')}${lg('cu-h', '#c080e0', '#5a2aa0')}${glow('cu-g', '#ff4af0')}${glow('cu-c', '#ffb347')}</defs>
