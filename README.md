@@ -68,7 +68,7 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 | Vita / mana iniziale / ricarica | 72 / 3 / 1.5 s | 74 / 3 / 1.0 s | 62 / 2 / 1.25 s |
 | Archetipo | Blocco e attacchi pesanti | Catene di incantesimi, gelo, fuoco | Veleno |
 | Passiva | **Iron Hide**: il Blocco svanisce 2× più lento | **Spellweave**: ogni incantesimo in catena dà +1 danno agli incantesimi (max 5) | **Virulence**: il Veleno fa +1 danno a tick |
-| Abilità (mana) | **Berserk** (5): attacchi ×2 per 6 s | **Time Warp** (5): nemico congelato 4 s, nastro rallentato | **Pandemic** (4): raddoppia il Veleno sul nemico |
+| Abilità (mana) | **Berserk** (5): attacchi ×2 per 6 s | **Time Warp** (5): nemico congelato 4 s, nastro accelerato | **Pandemic** (4): raddoppia il Veleno sul nemico |
 | Speciale (1 per run) | **Last Stand**: 20 Blocco, 3 Forza | **Meteor**: 25 danni, 5 Bruciatura | **Death's Door**: cura 15, 12 Veleno |
 | Mazzo iniziale | 5 Strike, 4 Defend, Mana Geode | 5 Arcane Bolt, 3 Ward, Mana Shard, Mana Geode | 3 Bone Spike, 3 Grave Ward, 2 Toxic Dart, Mana Shard, Mana Geode |
 
@@ -180,7 +180,7 @@ Legenda: `[ ]` da fare · `[x]` fatto (dettagli nei commit).
 - [x] Ricompensa: titolo "Enemy cleared" invece di "Victory"
 - [x] Fine atto: "VICTORY" grande, animato e con musica dedicata (invece di "Act cleared")
 - [x] Potenziamento: carte normali, solo quella selezionata si vede potenziata; solo il tasto "Upgrade"; titolo "Choose a card to upgrade"
-- [ ] Carte che rallentano il nastro → lo velocizzano (come pescare di più)
+- [x] Carte che rallentano il nastro → lo velocizzano (come pescare di più)
 - [ ] Combattimento: barra vita e barra d'attacco del nemico con colori diversi
 - [ ] Falò: animazione di cuori fluttuanti dopo la cura, prima di tornare alla mappa
 - [ ] Controllo finale del codice: sostenibilità, pulizia, ordine, migliorie

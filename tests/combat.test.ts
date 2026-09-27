@@ -260,6 +260,22 @@ describe('combat engine', () => {
     expect(n.stacks('enemy', 'poison')).toBe(3 + 7);
   });
 
+  it('rushing the belt makes cards arrive faster', () => {
+    const count = (rush: boolean): number => {
+      const c = setup({ deck: deckOf(new Array(20).fill('strike')) });
+      c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+      let n = 0;
+      c.events.on((e) => {
+        if (e.type === 'cardSpawn') n++;
+      });
+      run(c, CONFIG.introTime + 0.01);
+      if (rush) c.rushBelt(6);
+      run(c, 6);
+      return n;
+    };
+    expect(count(true)).toBeGreaterThan(count(false));
+  });
+
   it('temp curses never collide with deck uids', () => {
     const c = setup({ enemy: ENEMIES.slime });
     c.addTempCard('slime', 'discard');

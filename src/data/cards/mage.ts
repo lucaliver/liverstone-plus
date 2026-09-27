@@ -137,7 +137,7 @@ export const mageCards: CardDef[] = [
   },
   {
     id: 'timeSlip',
-    face: '{slow:0}',
+    face: '{rush:0}',
     cls: 'mage',
     type: 'skill',
     rarity: 'rare',
@@ -146,7 +146,7 @@ export const mageCards: CardDef[] = [
     vals: [6],
     upVals: [8],
     art: 'hourglass',
-    play: (c, v) => c.slowBelt(v[0]),
+    play: (c, v) => c.rushBelt(v[0]),
   },
   {
     id: 'mirrorImage',

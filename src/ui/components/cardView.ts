@@ -17,7 +17,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   maxmana: { icon: 'up', sign: '+' },
   stun: { icon: 'stars', unit: 's' },
   chill: { icon: 'snow', unit: 's' },
-  slow: { icon: 'hourglass', unit: 's' },
+  rush: { icon: 'cards', unit: 's' },
   burn: { icon: 'flame' },
   str: { icon: 'fist', sign: '+' },
   dodge: { icon: 'mirror' },

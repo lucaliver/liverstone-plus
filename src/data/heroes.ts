@@ -37,7 +37,7 @@ const mage: HeroDef = {
     cost: 5,
     use: (c) => {
       c.applyStatus('enemy', 'frozen', 1, 4);
-      c.slowBelt(4);
+      c.rushBelt(4);
     },
   },
   hooks: {

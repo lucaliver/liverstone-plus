@@ -130,7 +130,7 @@
 .gk-maxmana .pico,
 .gk-chill .pico,
 .gk-snow .pico,
-.gk-slow .pico,
+.gk-rush .pico,
 .gk-dodge .pico { color: var(--b); --ink2: var(--p); }
 .gk-heal .pico,
 .gk-hp .pico,
