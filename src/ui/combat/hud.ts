@@ -9,6 +9,9 @@ import { h, onPress, setHtml, setText, toggle } from '../dom';
 import { type CombatView, PASSIVE_ICON } from './view';
 
 /** Everything around the cards: HP bars, statuses, the threat bar, mana and hero extras. `onPassive` explains the hero passive. */
+/** Share of max HP under which the hero's portrait sweats. */
+const LOW_HP = 0.3;
+
 export function createHud(v: CombatView, onPassive: () => void): { render(): void } {
   const { combat, r } = v;
   /** Last rendered status set per side (null = never rendered, so the hero passive shows from the first frame). */
@@ -202,6 +205,8 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
 
   const renderHeroExtras = (): void => {
     const hs = combat.hero;
+    // Low on HP: the portrait sweats and shivers.
+    toggle(r.portrait, 'low', hs.hp > 0 && hs.hp <= hs.maxHp * LOW_HP);
     // The ability charges with mana: it lights up once the hero can afford it.
     r.ability.style.setProperty('--p', String(Math.min(1, hs.mana / combat.abilityCost())));
     toggle(r.ability, 'ready', combat.abilityReady());

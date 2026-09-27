@@ -208,6 +208,35 @@
 @keyframes hurt {
   50% { background: var(--p); transform: translate(3px, -2px); }
 }
+/* low HP: the hero shivers and sweats (two drops running down, out of step) */
+.hero-portrait { position: relative; }
+.hero-portrait.low .riso { animation: shiver 0.3s steps(2) infinite; }
+@keyframes shiver {
+  50% { transform: translateX(2px); }
+}
+.hero-portrait.low::before,
+.hero-portrait.low::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 16%;
+  width: 4px;
+  height: 6px;
+  background: var(--b);
+  box-shadow: 0 0 0 2px var(--paper);
+  animation: sweat 1.1s steps(5) infinite;
+}
+.hero-portrait.low::before { left: 20%; }
+.hero-portrait.low::after { right: 18%; animation-delay: -0.55s; }
+@keyframes sweat {
+  80% { opacity: 1; }
+  to { top: 62%; opacity: 0; }
+}
+/* taking a hit: the hero winces (squashed down for a beat; after the shiver so it wins) */
+.hero-portrait.hurt .riso { animation: wince 0.3s steps(2); }
+@keyframes wince {
+  0% { transform: translateY(8%) scale(1.08, 0.9); }
+}
 .hero-info {
   flex: 1;
   min-width: 0;
