@@ -1,6 +1,7 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { CARDS } from '../../data/cards';
+import { STATUSES } from '../../data/statuses';
 import type { CombatCard } from '../../game/types';
 import { icon } from '../art/icons';
 import { cardFace, cardView } from '../components/cardView';
@@ -20,7 +21,13 @@ interface CardEl {
   span: number;
   /** Stone cover with the taps left, while the card is petrified. */
   hexEl?: HTMLElement;
+  /** Icon of the rule (enemy passive, stun…) that blocks the card, while one does. */
+  ruleEl?: HTMLElement;
+  rule?: string;
 }
+
+/** Steps of the refill shown on a card waiting for mana (stepped, like the rest of the motion). */
+const CHARGE_STEPS = 10;
 
 interface Drag {
   uid: number;
@@ -185,6 +192,13 @@ export function createCardLayer(v: CombatView): CardLayer {
     const def = CARDS[ce.card.id];
     const el2 = ce.el;
     const rc = el2.getBoundingClientRect();
+    // Exhausted (or consumed): it doesn't fly anywhere, it burns away where it was played.
+    if (reason === 'played' && combat.exhaust.includes(ce.card)) {
+      el2.classList.add('exhaust-out');
+      burst('ash', rc.left + rc.width / 2, rc.top + rc.height / 2, 18);
+      setTimeout(() => el2.remove(), 600);
+      return;
+    }
     const target =
       reason === 'stolen' || def.type === 'attack' || def.type === 'spell' || (def.type === 'potion' && def.dmg)
         ? v.enemyPoint()
@@ -207,6 +221,31 @@ export function createCardLayer(v: CombatView): CardLayer {
     setTimeout(() => el2.remove(), 520);
   };
 
+  /**
+   * Whether a card can be played right now: dimmed when it can't; a card only waiting for mana refills from the
+   * bottom as mana comes back; a card blocked by a rule shows that rule's icon.
+   */
+  const renderPlayState = (ce: CardEl, card: CombatCard): void => {
+    const rule = card.hex ? null : combat.ruleBlock(card);
+    const playable = combat.isPlayable(card);
+    const afford = combat.canAfford(card);
+    toggle(ce.el, 'poor', !card.hex && (!afford || !playable || !!rule));
+    const charging = !card.hex && playable && !rule && !afford;
+    toggle(ce.el, 'charging', charging);
+    if (charging) {
+      const hs = combat.hero;
+      const cost = Math.max(1, combat.cardCost(card));
+      const k = Math.min(1, (hs.mana + hs.manaTimer / hs.regen) / cost);
+      ce.el.style.setProperty('--charge', String(Math.floor(k * CHARGE_STEPS) / CHARGE_STEPS));
+    }
+    const ruleId = rule?.status;
+    if (ruleId !== ce.rule) {
+      ce.rule = ruleId;
+      ce.ruleEl?.remove();
+      ce.ruleEl = ruleId ? ce.el.appendChild(h('div', { class: 'rule-badge', html: icon(STATUSES[ruleId].icon) })) : undefined;
+    }
+  };
+
   const renderBelt = (): void => {
     const onBelt = new Set<number>();
     const refreshFaces = state.frameNo % 8 === 0;
@@ -220,8 +259,7 @@ export function createCardLayer(v: CombatView): CardLayer {
         r.beltCards.append(ce.el);
       }
       const hex = b.card.hex;
-      const def = CARDS[b.card.id];
-      toggle(ce.el, 'poor', !hex && (!combat.canAfford(b.card) || !combat.isPlayable(b.card) || !!combat.ruleBlock(def)));
+      renderPlayState(ce, b.card);
       toggle(ce.el, 'hexed', !!hex && hex.left > 0);
       toggle(ce.el, 'thawing', !!hex && hex.left <= 0);
       if (hex && hex.left > 0) {
@@ -259,7 +297,7 @@ export function createCardLayer(v: CombatView): CardLayer {
       const cur = sleeveEls[i];
       if (cur?.card.uid === card?.uid) {
         if (cur && card) {
-          toggle(cur.el, 'poor', !combat.canAfford(card));
+          renderPlayState(cur, card);
           if (state.frameNo % 8 === 0) setHtml(cur.face, cardFace(card, combat));
         }
         return;

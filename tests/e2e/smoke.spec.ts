@@ -3,7 +3,7 @@ import { combat, freshGame, startFight } from './helpers';
 
 test('title, hero select and journey render without errors', async ({ page }) => {
   const problems = await freshGame(page);
-  await expect(page.locator('.logo')).toHaveText(/punchcard/i);
+  await expect(page.locator('.title-screen .logo')).toHaveText(/punchcard/i);
   await page.getByRole('button', { name: /new run/i }).click();
   await expect(page.locator('.hero-slide')).toHaveCount(3);
   // Carousel: the hero in view is the one that starts.
@@ -209,4 +209,25 @@ test('map: after a node, the player picks one of the two lanes and enters it', a
   };
   expect(at).toEqual({ floor: 2, path: 2 });
   expect(problems).toEqual([]);
+});
+
+test('closing the pause menu keeps the fight paused while another window is still open', async ({ page }) => {
+  await freshGame(page);
+  await startFight(page);
+  // Hold the ability: its info sheet pauses the fight.
+  const ability = page.locator('.js-ability');
+  await ability.dispatchEvent('pointerdown');
+  await page.waitForTimeout(500);
+  await ability.dispatchEvent('pointerup');
+  await expect(page.locator('.modal .info')).toBeVisible();
+  // The app goes to the background: the pause menu opens on top.
+  await page.evaluate(() => {
+    Object.defineProperty(document, 'hidden', { value: true, configurable: true });
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  await page.getByRole('button', { name: /resume/i }).click();
+  const clock = () => page.evaluate('window.__combat.time');
+  const before = await clock();
+  await page.waitForTimeout(400);
+  expect(await clock()).toBe(before);
 });

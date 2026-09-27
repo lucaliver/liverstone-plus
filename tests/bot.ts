@@ -46,7 +46,7 @@ export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
     return;
   }
   const affordable = cards.filter(
-    ({ card, pos }) => !card.hex && c.isPlayable(card) && c.canAfford(card) && !c.ruleBlock(CARDS[card.id]) && (pos < 0 || !c.isCovered(card.uid)),
+    ({ card, pos }) => !card.hex && c.isPlayable(card) && c.canAfford(card) && !c.ruleBlock(card) && (pos < 0 || !c.isCovered(card.uid)),
   );
 
   const score = ({ card, pos }: { card: CombatCard; pos: number }): number => {

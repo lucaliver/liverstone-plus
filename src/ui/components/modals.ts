@@ -1,6 +1,6 @@
 import { availableLocales, getLocale, setLocale, t } from '../../core/i18n';
-import { setSfxEnabled, sfx } from '../../audio/sfx';
-import { setMusicEnabled } from '../../audio/music';
+import { setSfxVolume, sfx } from '../../audio/sfx';
+import { setMusicVolume } from '../../audio/music';
 import { CARDS } from '../../data/cards';
 import { GAME_SPEEDS } from '../../data/config';
 import { saveSettings, settings } from '../../game/settings';
@@ -19,6 +19,21 @@ function toggleRow(label: string, get: () => boolean, set: (v: boolean) => void)
     sfx('tap');
   });
   return h('div', { class: 'setting' }, h('span', null, label), sw);
+}
+
+/** Volume slider in ten steps (0 = off). */
+function volumeRow(label: string, get: () => number, set: (v: number) => void): HTMLElement {
+  const input = h('input', { class: 'slider', type: 'range', min: 0, max: 10, step: 1, value: Math.round(get() * 10), 'aria-label': label });
+  const num = h('b', { class: 'slider-val' }, Math.round(get() * 10));
+  input.addEventListener('input', () => {
+    set(Number(input.value) / 10);
+    num.textContent = input.value;
+  });
+  input.addEventListener('change', () => {
+    saveSettings();
+    sfx('tap');
+  });
+  return h('div', { class: 'setting' }, h('span', null, label), h('div', { class: 'slider-wrap' }, input, num));
 }
 
 export function speedSelector(onChange?: (s: number) => void): HTMLElement {
@@ -52,20 +67,20 @@ export function openSettings(onChange?: () => void): ModalHandle {
   const body = h(
     'div',
     null,
-    toggleRow(
+    volumeRow(
       t('settings.music'),
-      () => settings.music,
+      () => settings.musicVolume,
       (v) => {
-        settings.music = v;
-        setMusicEnabled(v);
+        settings.musicVolume = v;
+        setMusicVolume(v);
       },
     ),
-    toggleRow(
+    volumeRow(
       t('settings.sound'),
-      () => settings.sound,
+      () => settings.sfxVolume,
       (v) => {
-        settings.sound = v;
-        setSfxEnabled(v);
+        settings.sfxVolume = v;
+        setSfxVolume(v);
       },
     ),
     h('div', { class: 'setting' }, h('span', null, t('settings.speed')), speedSelector(onChange)),

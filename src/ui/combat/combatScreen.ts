@@ -40,12 +40,13 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   let beltOffset = 0;
   let acc = 0;
 
-  const hud = createHud(v);
-  // Inspecting a card, status or ability pauses the fight; closing it resumes unless the pause menu is open.
-  v.inspect = (open) => {
-    state.paused = open || !!pauseModal || state.waiting;
+  // The fight runs only while no window at all is open (card detail, status info, pause menu…) and Start was pressed.
+  const syncPause = (opening = false): void => {
+    state.paused = opening || state.waiting || !!document.querySelector('.modal-back');
   };
+  v.inspect = syncPause;
   const cards = createCardLayer(v);
+  const hud = createHud(v, () => passiveInfo());
 
   const finish = (result: 'win' | 'lose'): void => {
     if (state.ended) return;
@@ -165,9 +166,10 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       title: t('combat.paused'),
       body,
       actions: [
-        { label: t('combat.resume') },
+        { label: t('combat.resume'), icon: 'play' },
         {
           label: t('menu.howTo'),
+          icon: 'question',
           cls: 'secondary',
           onClick: () => {
             openHowTo();
@@ -176,6 +178,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         },
         {
           label: t('menu.settings'),
+          icon: 'gear',
           cls: 'secondary',
           onClick: () => {
             openSettings(renderSpeed);
@@ -184,6 +187,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         },
         {
           label: t('combat.toMenu'),
+          icon: 'home',
           cls: 'secondary',
           onClick: () => {
             openModal({
@@ -198,6 +202,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         },
         {
           label: t('combat.quit'),
+          icon: 'door',
           cls: 'danger',
           onClick: () => {
             openModal({
@@ -213,7 +218,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       ],
       onClose: () => {
         pauseModal = null;
-        state.paused = state.waiting;
+        syncPause();
         endTemporaryMusic();
       },
     });
@@ -264,7 +269,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         startWrap.remove();
         traitsEl?.remove();
         state.waiting = false;
-        state.paused = !!pauseModal;
+        syncPause();
         sfx('button');
         v.banner(t('combat.fight'));
       });

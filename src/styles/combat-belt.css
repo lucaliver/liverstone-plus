@@ -87,6 +87,49 @@
 .card.poor .c-art,
 .card.poor .c-face { opacity: 0.38; }
 .card.poor .c-cost { background: var(--paper2); }
+/* waiting for mana: the card refills from the bottom as mana comes back (the dimmed part is what's still missing) */
+.card.charging .c-top,
+.card.charging .c-art,
+.card.charging .c-face { opacity: 1; }
+.card.charging::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc((1 - var(--charge, 0)) * 100%);
+  pointer-events: none;
+  background-color: #f6f0e4b8;
+  border-bottom: max(2px, calc(var(--cw) * 0.03)) solid var(--b);
+}
+/* blocked by a rule (No Repeats Policy, a stun…): the rule's icon, in pink, over the art */
+.rule-badge {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 46cqw;
+  height: 46cqw;
+  font-size: 34cqw;
+  color: var(--p);
+  --ink2: var(--k);
+  background: var(--paper);
+  border: var(--bw) solid var(--p);
+  box-shadow: var(--sh) var(--sh) 0 var(--k);
+  pointer-events: none;
+}
+/* exhausted: it rises, then burns away row by row and is gone */
+.card.exhaust-out {
+  pointer-events: none;
+  animation: exhaust-out 0.55s steps(7) forwards;
+}
+@keyframes exhaust-out {
+  0% { clip-path: inset(0); }
+  25% { translate: 0 -10px; clip-path: inset(0); filter: none; }
+  100% { translate: 0 -24px; clip-path: inset(100% 0 0 0); filter: brightness(0.3); }
+}
 .card.leaving { animation: leaving 0.3s steps(2) infinite; }
 @keyframes leaving {
   50% { border-color: var(--p); box-shadow: var(--sh) var(--sh) 0 var(--p); }

@@ -313,6 +313,8 @@ describe('combat engine', () => {
     expect(c.playCard(c.sleeve[0]!.uid)).toBe(true);
     expect(c.specialUsed).toBe(true);
     expect(c.hero.block).toBe(15);
+    // Once per run: it never comes back on the belt.
+    expect(c.exhaust.map((x) => x.id)).toContain('lastStand');
   });
 
   it('enemies use their main attack, then a special every N attacks', () => {

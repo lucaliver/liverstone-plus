@@ -20,6 +20,7 @@
 .chip .pico { font-size: 24px; --ink2: var(--y); }
 .chip.hp .pico { color: var(--p); }
 .run-hud .spacer { flex: 1; }
+.hud-btns { display: flex; gap: 8px; }
 .hero-chip { width: 50px; padding: 2px; justify-content: center; }
 .hero-chip .riso { width: 40px; height: 40px; }
 /* hero sheet (hold the portrait on the map) */

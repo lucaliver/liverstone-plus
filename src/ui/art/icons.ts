@@ -44,10 +44,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M6 12h24v10H6zM34 12h24v10H34zM6 26h12v10H6zM22 26h20v10H22zM46 26h12v10H46zM6 40h24v10H6zM34 40h24v10H34z"/><path ${HI} d="M6 12h52v3H6z"/>`,
   },
-  horn: {
-    el: 'steel',
-    svg: `<path d="M8 42c14-1 30-10 40-30l8 4c-6 24-24 38-46 38-3 0-5-5-2-12z"/><ellipse cx="8" cy="48" rx="4" ry="7"/><g ${S} stroke-width="3.5"><path d="M44 44l10 6M40 52l7 9M50 34l11 1"/></g>`,
-  },
   maul: {
     el: 'steel',
     svg: `<g transform="rotate(-35 32 32)"><rect x="28.5" y="22" width="7" height="40" rx="2"/><rect x="10" y="3" width="44" height="22" rx="4"/><rect ${HI} x="12" y="5" width="40" height="5" rx="2"/><path fill="#16121f" opacity=".35" d="M10 18h44v7H10z"/></g>`,
@@ -219,7 +215,8 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   },
   gear: {
     el: 'steel',
-    svg: `<path d="M27 4h10l2 8 6 3 7-4 7 7-4 7 3 6 8 2v10l-8 2-3 6 4 7-7 7-7-4-6 3-2 8H27l-2-8-6-3-7 4-7-7 4-7-3-6-8-2V27l8-2 3-6-4-7 7-7 7 4 6-3z"/><circle cx="32" cy="32" r="10" fill="#16121f"/>`,
+    // Eight square teeth and a wide hole: it has to read at 20 px.
+    svg: `<circle cx="32" cy="32" r="21"/>${[0, 45, 90, 135, 180, 225, 270, 315].map((a) => `<rect x="26.5" y="4" width="11" height="12" transform="rotate(${a} 32 32)"/>`).join('')}<circle cx="32" cy="32" r="10" fill="#16121f"/>`,
   },
   left: { el: 'steel', svg: `<path d="M4 32L30 8v14h30v20H30v14z"/>` },
   cross: { el: 'shadow', svg: `<path d="M8 16l8-8 16 16 16-16 8 8-16 16 16 16-8 8-16-16-16 16-8-8 16-16z"/>` },
@@ -567,6 +564,26 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<rect x="4" y="40" width="14" height="20"/><rect x="25" y="26" width="14" height="34"/><rect x="46" y="8" width="14" height="52"/>`,
   },
   ladder: { el: 'holy', svg: `<path d="M10 2h9v60h-9zM45 2h9v60h-9z"/><path d="M19 10h26v7H19zM19 25h26v7H19zM19 40h26v7H19zM19 55h26v7H19z"/>` },
+  // ---- menu buttons
+  play: { el: 'holy', svg: `<path d="M14 6l42 26-42 26z"/>` },
+  plus: { el: 'holy', svg: `<path d="M25 6h14v19h19v14H39v19H25V39H6V25h19z"/>` },
+  book: {
+    el: 'holy',
+    svg: `<path d="M4 12c9-5 18-5 26 1v44c-8-5-17-5-26-1z"/><path d="M60 12c-9-5-18-5-26 1v44c8-5 17-5 26-1z"/>`,
+  },
+  question: {
+    el: 'holy',
+    svg: `<path d="M14 22C14 11 22 4 32 4s18 7 18 16c0 9-6 12-10 15-3 2-3 4-3 9H26c0-8 2-12 7-16 4-3 6-4 6-8 0-3-3-5-7-5s-7 3-7 7z"/><rect x="25" y="49" width="13" height="12"/>`,
+  },
+  home: { el: 'holy', svg: `<path d="M32 4l28 26h-7v28H39V42H25v16H11V30H4z"/>` },
+  door: {
+    el: 'shadow',
+    svg: `<path d="M10 4h34v56H10z"/><path fill="#16121f" d="M16 10h22v44H16z"/><path d="M16 10l20 6v44l-20-6z"/><path d="M40 28h10v-8l12 12-12 12v-8H40z"/>`,
+  },
+  bug: {
+    el: 'shadow',
+    svg: `<ellipse cx="32" cy="38" rx="14" ry="18"/><circle cx="32" cy="16" r="8"/><path d="M4 26h14v6H4zM46 26h14v6H46zM4 42h14v6H4zM46 42h14v6H46zM20 4l6 8-5 3-6-8zM44 4l-6 8 5 3 6-8z"/><path d="M31 22h2v34h-2z" fill="#16121f"/>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {

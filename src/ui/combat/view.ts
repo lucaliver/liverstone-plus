@@ -150,6 +150,13 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
       target.classList.remove(cls);
       void (target as HTMLElement).offsetWidth;
       target.classList.add(cls);
+      // Drop the class once its own animation ends, so the element's idle animation (the enemy's bob) comes back.
+      const done = (e: Event): void => {
+        if (e.target !== target) return;
+        target.classList.remove(cls);
+        target.removeEventListener('animationend', done);
+      };
+      target.addEventListener('animationend', done);
     },
     enemyPoint,
     heroPoint,

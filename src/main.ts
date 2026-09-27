@@ -6,8 +6,8 @@ import './styles/index.css';
 
 import { setLocale, t } from './core/i18n';
 import { randomSeed } from './core/rng';
-import { setSfxEnabled, unlockAudio } from './audio/sfx';
-import { musicTrack, playMusic, setMusicEnabled, suspendMusic } from './audio/music';
+import { setSfxVolume, unlockAudio } from './audio/sfx';
+import { musicTrack, playMusic, setMusicVolume, suspendMusic } from './audio/music';
 import { Combat } from './game/combat';
 import { advance, applyCombat, clearRun, combatSetup, currentNode, loadRun, newRun, rollRewards, saveRun, type RunState } from './game/run';
 import { settings } from './game/settings';
@@ -24,7 +24,7 @@ import { journeyScreen } from './ui/screens/journey';
 import { restScreen } from './ui/screens/rest';
 import { promotionScreen } from './ui/screens/promotion';
 import { rewardScreen } from './ui/screens/reward';
-import { titleScreen } from './ui/screens/title';
+import { splashScreen, titleScreen } from './ui/screens/title';
 import { compendiumScreen } from './ui/screens/compendium';
 
 let run: RunState | null = null;
@@ -69,7 +69,7 @@ function goJourney(): void {
   }
   playMusic('menu');
   saveRun(run);
-  show(journeyScreen(run, enterNode));
+  show(journeyScreen(run, enterNode, goTitle));
 }
 
 /** Enters the current node, or first moves to `to` when the current one is already cleared. */
@@ -130,8 +130,8 @@ function abandon(): void {
 
 async function boot(): Promise<void> {
   setLocale(settings.locale);
-  setSfxEnabled(settings.sound);
-  setMusicEnabled(settings.music);
+  setSfxVolume(settings.sfxVolume);
+  setMusicVolume(settings.musicVolume);
   document.addEventListener('visibilitychange', () => suspendMusic(document.hidden));
   document.documentElement.classList.toggle('reduce-motion', settings.reduceMotion);
   const root = document.getElementById('app')!;
@@ -142,7 +142,7 @@ async function boot(): Promise<void> {
   addEventListener('keydown', unlockAudio);
   // Pixel art is generated from the vector sources once, before the first screen.
   await preloadArt({ creatures: CREATURES, icons: ICONS });
-  goTitle();
+  show(splashScreen(goTitle));
   if (import.meta.env.DEV)
     Object.assign(window, {
       __game: {

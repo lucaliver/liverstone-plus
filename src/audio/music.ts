@@ -419,7 +419,8 @@ const TRACKS: Record<TrackId, Track> = {
 
 // ------------------------------------------------------------------ playback
 
-let enabled = true;
+/** 0 (off) to 1. */
+let volume = 1;
 let wanted: TrackId | null = null;
 let current: { id: TrackId; out: GainNode; timer: number } | null = null;
 let pulseWave: PeriodicWave | null = null;
@@ -524,7 +525,7 @@ function start(id: TrackId): void {
   const out = ctx.createGain();
   out.gain.setValueAtTime(0.0001, ctx.currentTime);
   // Short fade-in: the track is audible right away.
-  out.gain.linearRampToValueAtTime(VOLUME * tr.gain, ctx.currentTime + 0.35);
+  out.gain.linearRampToValueAtTime(VOLUME * tr.gain * volume, ctx.currentTime + 0.35);
   // A gentle low-pass keeps the square waves from getting harsh.
   const lp = ctx.createBiquadFilter();
   lp.type = 'lowpass';
@@ -618,7 +619,7 @@ let resumeTo: TrackId | null = null;
 
 function setTrack(id: TrackId): void {
   wanted = id;
-  if (!enabled || current?.id === id) return;
+  if (volume <= 0 || current?.id === id) return;
   stop();
   start(id);
 }
@@ -645,10 +646,17 @@ export function endTemporaryMusic(): void {
   setTrack(back);
 }
 
-export function setMusicEnabled(on: boolean): void {
-  enabled = on;
-  if (!on) stop(0.3);
-  else if (wanted) playMusic(wanted);
+export function setMusicVolume(v: number): void {
+  const was = volume;
+  volume = v;
+  const g = audioGraph();
+  if (v <= 0) stop(0.3);
+  else if (!current && wanted) setTrack(wanted);
+  else if (current && g && was > 0) {
+    const t = g.ctx.currentTime;
+    current.out.gain.cancelScheduledValues(t);
+    current.out.gain.setValueAtTime(VOLUME * TRACKS[current.id].gain * v, t);
+  }
 }
 
 /** Pauses the music without forgetting the track (e.g. app in background). */
@@ -660,9 +668,9 @@ export function suspendMusic(on: boolean): void {
   }
   // Mobile browsers may suspend the audio context in the background: wake it without waiting for a tap.
   resumeAudio();
-  if (enabled && wanted) setTrack(wanted);
+  if (volume > 0 && wanted) setTrack(wanted);
 }
 
 onAudioUnlock(() => {
-  if (enabled && wanted && !current) start(wanted);
+  if (volume > 0 && wanted && !current) start(wanted);
 });

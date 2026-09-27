@@ -13,6 +13,8 @@ export async function freshGame(page: Page, opts: { tutorial?: boolean } = {}): 
     if (seen) localStorage.setItem('cardstone+:settings', JSON.stringify({ seenTutorial: true }));
   }, !opts.tutorial);
   await page.reload();
+  // The splash screen comes first: one tap to start (it also unlocks audio).
+  await page.getByRole('button', { name: /start game/i }).click();
   await expect(page.locator('.title-screen')).toBeVisible();
   return problems;
 }

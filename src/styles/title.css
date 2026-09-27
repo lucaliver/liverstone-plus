@@ -56,17 +56,32 @@
 @keyframes bob {
   50% { transform: translateY(-5px); }
 }
-.sound-hint {
+
+/* ------------------------------------------------------------------ splash (the first tap also unlocks audio) */
+.splash {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 18px;
+}
+.splash .logo { margin: 0; font-size: clamp(40px, 13vw, 64px); }
+.splash-art {
+  width: min(56vw, 240px);
+  aspect-ratio: 1;
+  animation: bob 1.2s steps(2) infinite;
+}
+.splash-art .riso { width: 100%; height: 100%; }
+.splash .btn { width: min(100%, 300px); }
+/* menu buttons carry a pixel icon before the label */
+.menu .btn,
+.splash .btn,
+.modal .actions .btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 2px 8px;
-  font-family: var(--font-ui);
-  font-size: 16px;
-  color: var(--y);
-  animation: blink-soft 1.2s steps(2) infinite;
+  justify-content: center;
+  gap: 10px;
 }
-.sound-hint .pico { font-size: 18px; color: var(--y); --ink2: var(--p); }
-@keyframes blink-soft {
-  50% { opacity: 0.5; }
-}
+.menu .btn .pico,
+.splash .btn .pico,
+.modal .actions .btn .pico { font-size: 1.2em; --ink2: var(--p); }
+.btn.danger .pico { --ink2: var(--k); }

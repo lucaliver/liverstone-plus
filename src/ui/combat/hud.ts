@@ -6,12 +6,13 @@ import type { MoveDef, Side } from '../../game/types';
 import { icon, INTENT_ICON } from '../art/icons';
 import { openInfo } from '../components/modals';
 import { h, onPress, setHtml, setText, toggle } from '../dom';
-import type { CombatView } from './view';
+import { type CombatView, PASSIVE_ICON } from './view';
 
-/** Everything around the cards: HP bars, statuses, the threat bar, mana and hero extras. */
-export function createHud(v: CombatView): { render(): void } {
+/** Everything around the cards: HP bars, statuses, the threat bar, mana and hero extras. `onPassive` explains the hero passive. */
+export function createHud(v: CombatView, onPassive: () => void): { render(): void } {
   const { combat, r } = v;
-  const statusSig: Record<Side, string> = { hero: '', enemy: '' };
+  /** Last rendered status set per side (null = never rendered, so the hero passive shows from the first frame). */
+  const statusSig: Record<Side, string | null> = { hero: null, enemy: null };
   let lastMove: MoveDef | null = null;
   /** `moveCount` of the last hit we warned about (one sound cue per hit). */
   let warned = -1;
@@ -66,7 +67,14 @@ export function createHud(v: CombatView): { render(): void } {
     const ids = list.join('|');
     if (ids !== statusSig[side]) {
       statusSig[side] = ids;
+      // The hero's passive always leads the hero's row, like a permanent status.
+      const passive =
+        side === 'hero'
+          ? h('button', { class: 'status passive', html: icon(PASSIVE_ICON[v.heroId]), 'aria-label': t(`hero.${v.heroId}.passiveName`) })
+          : null;
+      if (passive) onPress(passive, onPassive);
       box.replaceChildren(
+        ...(passive ? [passive] : []),
         ...list.map((id) => {
           const def = STATUSES[id];
           const b = h('button', {
@@ -81,9 +89,9 @@ export function createHud(v: CombatView): { render(): void } {
       );
     }
     for (const b of box.children) {
-      const id = (b as HTMLElement).dataset.status!;
-      const s = f.statuses[id];
-      if (!s) continue;
+      const id = (b as HTMLElement).dataset.status;
+      const s = id ? f.statuses[id] : undefined;
+      if (!id || !s) continue;
       const sd = STATUSES[id];
       const val = sd.passive ? '' : sd.kind !== 'timed' || sd.showStacks ? String(s.v) : s.t > 999 ? '' : `${Math.ceil(s.t)}s`;
       setText(b.querySelector('span')!, val);
@@ -182,6 +190,8 @@ export function createHud(v: CombatView): { render(): void } {
       if (full && i >= lastMana) v.retrigger(p, 'gain');
     }
     lastMana = hs.mana;
+    // Full: nothing more to gain by waiting, so the bar blinks to invite a play.
+    toggle(r.manaRow, 'full', hs.mana >= hs.maxMana);
     r.manaNum.innerHTML = `${hs.mana}<small>/${hs.maxMana}</small>`;
   };
 

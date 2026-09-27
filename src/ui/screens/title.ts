@@ -1,6 +1,5 @@
 import { t } from '../../core/i18n';
-import { audioUnlocked, onAudioUnlock, sfx } from '../../audio/sfx';
-import { settings } from '../../game/settings';
+import { sfx } from '../../audio/sfx';
 import type { Screen } from '../app';
 import { h } from '../dom';
 import { creature } from '../art/creatures';
@@ -24,29 +23,15 @@ const TITLE_PROPS: [string, string][] = [
 ];
 
 export function titleScreen(cb: TitleCallbacks): Screen {
-  const btn = (label: string, cls: string, fn: () => void): HTMLButtonElement =>
-    h(
-      'button',
-      {
-        class: `btn block ${cls}`,
-        onclick: () => {
-          sfx('button');
-          fn();
-        },
+  const btn = (ic: string, label: string, cls: string, fn: () => void): HTMLButtonElement =>
+    h('button', {
+      class: `btn block ${cls}`,
+      onclick: () => {
+        sfx('button');
+        fn();
       },
-      label,
-    );
-
-  // Browsers only allow audio after a first tap: say so, and hide the hint as soon as sound is on.
-  const soundHint = settings.music || settings.sound ? h('div', { class: 'sound-hint', html: `${icon('horn')}${t('menu.tapForSound')}` }) : null;
-  if (soundHint) {
-    // Hide it in place: removing it would shift the menu under the finger mid-tap.
-    const hide = (): void => {
-      soundHint.style.visibility = 'hidden';
-    };
-    if (audioUnlocked()) hide();
-    else onAudioUnlock(hide);
-  }
+      html: `${icon(ic)}<span>${label}</span>`,
+    });
 
   const el = h(
     'div',
@@ -63,17 +48,36 @@ export function titleScreen(cb: TitleCallbacks): Screen {
     h(
       'div',
       { class: 'menu' },
-      cb.hasSave ? btn(t('menu.continue'), 'cta', cb.onContinue) : null,
-      btn(t('menu.newRun'), cb.hasSave ? 'secondary' : 'cta', cb.onNewRun),
-      btn(t('menu.compendium'), 'secondary small', cb.onCompendium),
+      cb.hasSave ? btn('play', t('menu.continue'), 'cta', cb.onContinue) : null,
+      btn('plus', t('menu.newRun'), cb.hasSave ? 'secondary' : 'cta', cb.onNewRun),
+      btn('book', t('menu.compendium'), 'secondary small', cb.onCompendium),
       h(
         'div',
         { class: 'row' },
-        btn(t('menu.howTo'), 'secondary small', () => openHowTo()),
-        btn(t('menu.settings'), 'secondary small', () => openSettings()),
+        btn('question', t('menu.howTo'), 'secondary small', () => openHowTo()),
+        btn('gear', t('menu.settings'), 'secondary small', () => openSettings()),
       ),
     ),
-    soundHint,
+    h('div', { class: 'version' }, `v${__APP_VERSION__}`),
+  );
+  return { el };
+}
+
+/** The very first screen: one tap to start, which also lets the browser play sound. */
+export function splashScreen(onStart: () => void): Screen {
+  const el = h(
+    'div',
+    { class: 'screen splash' },
+    h('h1', { class: 'logo' }, t('app.title')),
+    h('div', { class: 'splash-art', html: creature('timeClock') }),
+    h('button', {
+      class: 'btn cta',
+      onclick: () => {
+        sfx('button');
+        onStart();
+      },
+      html: `${icon('play')}<span>${t('menu.start')}</span>`,
+    }),
     h('div', { class: 'version' }, `v${__APP_VERSION__}`),
   );
   return { el };

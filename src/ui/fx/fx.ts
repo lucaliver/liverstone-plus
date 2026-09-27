@@ -58,6 +58,7 @@ const PALETTES: Record<string, string[]> = {
   poison: ['#2a8a4a', Y],
   thorns: ['#2a8a4a', K],
   curse: [K, P, '#4a2aa0'],
+  ash: [K, '#6d6680', P],
   gold: [Y, P, B],
   hit: [K, Y],
 };
@@ -66,7 +67,7 @@ const PALETTES: Record<string, string[]> = {
 export function burst(kind: string, x: number, y: number, n = 16, spread = 1): void {
   if (settings.reduceMotion) n = Math.ceil(n / 3);
   const pal = PALETTES[kind] ?? PALETTES.hit;
-  const up = kind === 'heal' || kind === 'mana' || kind === 'fire' || kind === 'burn';
+  const up = kind === 'heal' || kind === 'mana' || kind === 'fire' || kind === 'burn' || kind === 'ash';
   for (let i = 0; i < n; i++) {
     const a = Math.random() * Math.PI * 2;
     const sp = (80 + Math.random() * 240) * spread;

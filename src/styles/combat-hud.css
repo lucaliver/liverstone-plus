@@ -42,6 +42,15 @@
   50% { background: var(--y); }
 }
 .mana-row.flash .pip { animation: flashpip 0.3s steps(2); }
+/* full mana: the bar blinks, spend it! */
+.mana-row.full .pip { animation: pipfull 0.8s steps(1) infinite; }
+.mana-row.full .mana-num { animation: pipfull-num 0.8s steps(1) infinite; }
+@keyframes pipfull {
+  50% { border-color: var(--y); }
+}
+@keyframes pipfull-num {
+  50% { color: var(--y); }
+}
 @keyframes flashpip {
   50% { border-color: var(--p); background: var(--p); }
 }
@@ -60,7 +69,7 @@
 
 /* action row: sleeve + ability */
 .action-row {
-  --cw: calc(var(--cw-belt) * 0.8);
+  --cw: calc(var(--cw-belt) * 0.95);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -96,7 +105,7 @@
   color: var(--k);
 }
 .sleeve-slot .card {
-  --cw: calc(var(--cw-belt) * 0.8 - 12px);
+  --cw: calc(var(--cw-belt) * 0.95 - 8px);
   color: var(--k);
   position: absolute;
   left: 50%;
@@ -188,8 +197,8 @@
 }
 .hero-portrait {
   flex: none;
-  width: 60px;
-  height: 60px;
+  width: var(--portrait);
+  height: var(--portrait);
   background: var(--paper);
   border: var(--line) solid var(--k);
   overflow: hidden;

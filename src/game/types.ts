@@ -100,8 +100,8 @@ export interface StatusDef {
   showStacks?: boolean;
   /** A permanent trait (enemy passives): shown without a number. */
   passive?: boolean;
-  /** A rule while active: returns why the hero can't play this card now (an i18n key), or null. */
-  canPlay?: (c: Combat, side: Side, def: CardDef) => TKey | null;
+  /** A rule while active: returns why the hero can't play this card (`uid`: belt or sleeve copy) now (an i18n key), or null. */
+  canPlay?: (c: Combat, side: Side, def: CardDef, uid: number) => TKey | null;
   /** Reacts to every card the hero plays. */
   onCardPlayed?: (c: Combat, side: Side, def: CardDef) => void;
 }

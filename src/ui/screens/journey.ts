@@ -46,7 +46,7 @@ export function runHud(run: RunState, extra?: HTMLElement): HTMLElement {
  * The act map, bottom to top: nodes on two lanes linked by dotted lines. After a node is cleared its reachable
  * nodes light up; tap one to pick it (tap it again, or the button, to go in).
  */
-export function journeyScreen(run: RunState, onEnter: (to?: number) => void): Screen {
+export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onHome: () => void): Screen {
   const cur = currentNode(run);
   const nodes = run.nodes.filter((n) => n.act === cur.act);
   const floors = Math.max(...nodes.map((n) => n.floor));
@@ -119,19 +119,32 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void): Sc
   }
   refresh();
 
-  const menuBtn = h('button', {
-    class: 'icon-btn',
-    'aria-label': t('menu.settings'),
-    html: icon('gear'),
-    onclick: () => {
-      sfx('tap');
-      openSettings();
-    },
-  });
+  const menuBtns = h(
+    'div',
+    { class: 'hud-btns' },
+    h('button', {
+      class: 'icon-btn',
+      'aria-label': t('menu.home'),
+      html: icon('home'),
+      onclick: () => {
+        sfx('tap');
+        onHome();
+      },
+    }),
+    h('button', {
+      class: 'icon-btn',
+      'aria-label': t('menu.settings'),
+      html: icon('gear'),
+      onclick: () => {
+        sfx('tap');
+        openSettings();
+      },
+    }),
+  );
   const el = h(
     'div',
     { class: 'screen journey' },
-    runHud(run, menuBtn),
+    runHud(run, menuBtns),
     h(
       'div',
       { class: 'act-banner' },

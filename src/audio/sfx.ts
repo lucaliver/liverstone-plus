@@ -6,7 +6,10 @@ let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
 let bus: AudioNode | null = null;
 let noiseBuf: AudioBuffer | null = null;
-let enabled = true;
+/** 0 (off) to 1. */
+let volume = 1;
+/** Master gain at full volume. */
+const MASTER = 0.55;
 const unlockListeners: (() => void)[] = [];
 
 /** Shared audio graph for other modules (music). Null until the first user gesture. */
@@ -19,8 +22,9 @@ export function onAudioUnlock(fn: () => void): void {
   else unlockListeners.push(fn);
 }
 
-export function setSfxEnabled(on: boolean): void {
-  enabled = on;
+export function setSfxVolume(v: number): void {
+  volume = v;
+  if (master) master.gain.value = MASTER * volume;
 }
 
 /** True once the browser has let us create the audio context (after the first user gesture). */
@@ -37,7 +41,7 @@ export function unlockAudio(): void {
     if (!AC) return;
     ctx = new AC();
     master = ctx.createGain();
-    master.gain.value = 0.55;
+    master.gain.value = MASTER * volume;
     const comp = ctx.createDynamicsCompressor();
     master.connect(comp).connect(ctx.destination);
     bus = comp;
@@ -206,7 +210,7 @@ export type SoundId = keyof typeof SOUNDS;
 const lastPlayed: Partial<Record<SoundId, number>> = {};
 
 export function sfx(id: SoundId): void {
-  if (!enabled || !ctx) return;
+  if (volume <= 0 || !ctx) return;
   // Avoid stacking the same sound many times in one frame (multi-hit attacks).
   const now = performance.now();
   if ((lastPlayed[id] ?? 0) > now - 40) return;

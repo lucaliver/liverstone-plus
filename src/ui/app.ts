@@ -1,3 +1,4 @@
+import { icon } from './art/icons';
 import { h } from './dom';
 
 export interface Screen {
@@ -41,6 +42,8 @@ export function show(screen: Screen): void {
 
 export interface ModalAction {
   label: string;
+  /** Pixel icon before the label. */
+  icon?: string;
   cls?: string;
   /** Return false to keep the modal open. */
   onClick?: () => unknown;
@@ -84,7 +87,15 @@ export function openModal(opts: ModalOpts): ModalHandle {
           'div',
           { class: 'actions' },
           ...opts.actions.map((a) =>
-            h('button', { class: `btn ${a.cls ?? ''}`, onclick: () => (a.onClick?.() === false ? undefined : close()) }, a.label),
+            h(
+              'button',
+              {
+                class: `btn ${a.cls ?? ''}`,
+                onclick: () => (a.onClick?.() === false ? undefined : close()),
+                html: a.icon ? icon(a.icon) : undefined,
+              },
+              a.icon ? h('span', null, a.label) : a.label,
+            ),
           ),
         )
       : null,

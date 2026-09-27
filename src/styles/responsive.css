@@ -12,7 +12,7 @@
   .ability-btn { width: 70px; height: 70px; }
   .ability-btn .pico { font-size: 32px; margin-top: -20px; }
   .hero-row { padding-top: 4px; padding-bottom: 4px; }
-  .hero-portrait { width: 52px; height: 52px; }
+  .combat { --portrait: 52px; }
 }
 @media (max-height: 700px) {
   .enemy-info { gap: 4px; }
@@ -21,7 +21,10 @@
   .status { height: 22px; font-size: 14px; }
   .status .pico { font-size: 16px; }
   .hero-info { gap: 3px; }
-  .hero-portrait { width: 46px; height: 46px; }
+  .combat { --portrait: 46px; }
+  /* the sleeve grows less here: the enemy needs the room */
+  .action-row { --cw: calc(var(--cw-belt) * 0.85); }
+  .sleeve-slot .card { --cw: calc(var(--cw-belt) * 0.85 - 8px); }
   .bar { height: 24px; }
   /* no room for combat candles on very short screens (the title keeps its own) */
   .stage .candle { display: none; }

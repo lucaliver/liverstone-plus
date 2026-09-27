@@ -243,12 +243,13 @@ export class Combat {
     });
   }
 
-  /** Why the enemy's rules (passive statuses) forbid playing this card now, or null. */
-  ruleBlock(def: CardDef): TKey | null {
+  /** The status whose rule forbids playing this card now (an enemy passive, a stun…) and why, or null. */
+  ruleBlock(card: CardInst): { status: string; key: TKey } | null {
+    const def = CARDS[card.id];
     for (const side of ['hero', 'enemy'] as const) {
       for (const id of Object.keys(this.fighter(side).statuses)) {
-        const reason = this.has(side, id) ? STATUSES[id].canPlay?.(this, side, def) : null;
-        if (reason) return reason;
+        const key = this.has(side, id) ? STATUSES[id].canPlay?.(this, side, def, card.uid) : null;
+        if (key) return { status: id, key };
       }
     }
     return null;
@@ -513,9 +514,9 @@ export class Combat {
       this.events.emit({ type: 'text', target: 'hero', key: 'combat.unplayable', tone: 'neutral' });
       return false;
     }
-    const rule = this.ruleBlock(def);
+    const rule = this.ruleBlock(card);
     if (rule) {
-      this.events.emit({ type: 'text', target: 'hero', key: rule, tone: 'bad' });
+      this.events.emit({ type: 'text', target: 'hero', key: rule.key, tone: 'bad' });
       return false;
     }
     if (!this.canAfford(card)) {
@@ -548,7 +549,7 @@ export class Combat {
     if (kw.includes('consume')) {
       if (!card.temp) this.consumed.push(card.uid);
       this.exhaust.push(card);
-    } else if (kw.includes('exhaust') || def.type === 'power') {
+    } else if (kw.includes('exhaust') || kw.includes('unique') || def.type === 'power') {
       this.exhaust.push(card);
     } else {
       this.discard.push(card);
