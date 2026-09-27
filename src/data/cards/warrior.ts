@@ -250,7 +250,7 @@ export const warriorCards: CardDef[] = [
     type: 'skill',
     rarity: 'unique',
     cost: 0,
-    vals: [20, 3],
+    vals: [15, 3],
     keywords: ['unique'],
     art: 'picketSign',
     play: (c, v) => {

@@ -238,7 +238,7 @@ describe('combat engine', () => {
     const hp = c.enemy.hp;
     c.playCard(c.belt[0].card.uid);
     c.playCard(c.belt[0].card.uid);
-    expect(hp - c.enemy.hp).toBe(7 + 8);
+    expect(hp - c.enemy.hp).toBe(3 + 4);
   });
 
   it('played cards are never replaced in place: new cards always enter from the right', () => {
@@ -283,17 +283,17 @@ describe('combat engine', () => {
     expect(spawnsWith(true)).toBe(spawnsWith(false));
   });
 
-  it('necromancer poison ticks harder at 6+ Poison (Virulence), plain below', () => {
-    const c = setup({ hero: HEROES.necromancer, hp: 62, maxHp: 62, deck: deckOf(['rot', 'rot']), enemy: ENEMIES.skeleton });
+  it('necromancer poison ticks harder at 7+ Poison (Virulence), plain below', () => {
+    const c = setup({ hero: HEROES.necromancer, hp: 50, maxHp: 50, deck: deckOf(['rot', 'rot']), enemy: ENEMIES.skeleton });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
-    c.applyStatus('enemy', 'poison', 6);
+    c.applyStatus('enemy', 'poison', 7);
     let hp = c.enemy.hp;
     run(c, CONFIG.dotInterval + 0.02);
-    expect(hp - c.enemy.hp).toBe(6 + 1);
+    expect(hp - c.enemy.hp).toBe(7 + 1);
     hp = c.enemy.hp;
     run(c, CONFIG.dotInterval);
-    expect(hp - c.enemy.hp).toBe(5);
+    expect(hp - c.enemy.hp).toBe(6);
   });
 
   it('a bomb that reaches the end of the belt explodes on the hero', () => {
@@ -312,7 +312,7 @@ describe('combat engine', () => {
     expect(c.stash(c.belt[0].card.uid, 0)).toBe(false);
     expect(c.playCard(c.sleeve[0]!.uid)).toBe(true);
     expect(c.specialUsed).toBe(true);
-    expect(c.hero.block).toBe(20);
+    expect(c.hero.block).toBe(15);
   });
 
   it('enemies use their main attack, then a special every N attacks', () => {

@@ -8,9 +8,9 @@ export const mageCards: CardDef[] = [
     cls: 'mage',
     type: 'spell',
     rarity: 'starter',
-    cost: 2,
-    vals: [7],
-    upVals: [10],
+    cost: 1,
+    vals: [3],
+    upVals: [5],
     art: 'bolt',
     play: (c, v) => void c.hit(v[0]),
   },
@@ -89,8 +89,8 @@ export const mageCards: CardDef[] = [
     type: 'spell',
     rarity: 'common',
     cost: 0,
-    vals: [3],
-    upVals: [5],
+    vals: [2],
+    upVals: [4],
     art: 'plug',
     play: (c, v) => void c.hit(v[0], { kind: 'arcane' }),
   },
@@ -230,18 +230,15 @@ export const mageCards: CardDef[] = [
   // Unique (hero special, once per run)
   {
     id: 'meteor',
-    face: '{dmg:0}|{burn:1}',
+    face: '{burn:0}',
     cls: 'mage',
     type: 'spell',
     rarity: 'unique',
     cost: 0,
-    vals: [25, 5],
+    vals: [10],
     keywords: ['unique'],
     art: 'boiler',
-    play: (c, v) => {
-      c.hit(v[0], { kind: 'fire' });
-      c.applyStatus('enemy', 'burn', v[1]);
-    },
+    play: (c, v) => c.applyStatus('enemy', 'burn', v[0]),
   },
 
   // Archetype synergy: Spellweave and Chill

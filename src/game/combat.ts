@@ -152,7 +152,8 @@ export class Combat {
     if (setup.special) this.sleeve[0] = { uid: SPECIAL_UID, id: setup.special, up: false, bonus: 0, temp: true };
 
     const e = setup.enemy;
-    const maxHp = Math.round(e.hp * setup.scale.hp);
+    // Round HP to 5s: scaled numbers stay easy to read.
+    const maxHp = Math.max(5, Math.round((e.hp * setup.scale.hp) / 5) * 5);
     this.enemy = {
       def: e,
       hp: maxHp,

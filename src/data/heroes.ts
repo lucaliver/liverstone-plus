@@ -3,11 +3,11 @@ import type { HeroDef, HeroId } from '../game/types';
 
 const rep = (id: string, n: number): string[] => new Array(n).fill(id);
 /** Virulence (Necromancer passive) only kicks in once the enemy carries this much Poison. */
-const VIRULENCE_AT = 6;
+const VIRULENCE_AT = 7;
 
 const warrior: HeroDef = {
   id: 'warrior',
-  hp: 72,
+  hp: 60,
   maxMana: 3,
   regen: 1.3,
   blockDecay: 1.2,
@@ -20,7 +20,7 @@ const warrior: HeroDef = {
   ability: {
     id: 'berserk',
     cost: 6,
-    use: (c) => c.applyStatus('hero', 'berserk', 1, 6),
+    use: (c) => c.applyStatus('hero', 'berserk', 1, 10),
   },
   hooks: {
     damageMult: (c, def) => (def?.type === 'attack' && c.has('hero', 'berserk') ? 2 : 1),
@@ -29,7 +29,7 @@ const warrior: HeroDef = {
 
 const mage: HeroDef = {
   id: 'mage',
-  hp: 74,
+  hp: 70,
   maxMana: 3,
   regen: 0.8,
   blockDecay: 1.0,
@@ -41,8 +41,8 @@ const mage: HeroDef = {
     id: 'timeWarp',
     cost: 6,
     use: (c) => {
-      c.applyStatus('enemy', 'frozen', 1, 4);
-      c.rushBelt(4);
+      c.applyStatus('enemy', 'frozen', 1, 5);
+      c.rushBelt(5);
     },
   },
   hooks: {
@@ -58,7 +58,7 @@ const mage: HeroDef = {
 
 const necromancer: HeroDef = {
   id: 'necromancer',
-  hp: 62,
+  hp: 50,
   maxMana: 2,
   regen: 1.25,
   blockDecay: 0.9,
@@ -69,11 +69,11 @@ const necromancer: HeroDef = {
   ability: {
     id: 'pandemic',
     cost: 6,
-    // Double the enemy's Poison (at least +5).
-    use: (c) => c.applyStatus('enemy', 'poison', Math.max(5, c.stacks('enemy', 'poison'))),
+    // Double the enemy's Poison.
+    use: (c) => c.applyStatus('enemy', 'poison', c.stacks('enemy', 'poison')),
   },
   hooks: {
-    // Virulence: heavy Poison (6+) deals +1 per tick; Virulent Form adds its bonus on top, always.
+    // Virulence: heavy Poison (7+) deals +1 per tick; Virulent Form adds its bonus on top, always.
     enemyDotBonus: (c, id) => (id === 'poison' ? (c.stacks('enemy', 'poison') >= VIRULENCE_AT ? 1 : 0) + c.stacks('hero', 'virulence') : 0),
     // Plague: Attacks also apply Poison.
     onCardPlayed: (c, _card, def) => {
