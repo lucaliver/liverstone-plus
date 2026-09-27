@@ -4,7 +4,8 @@ import { STATUS_ORDER, STATUSES } from '../../data/statuses';
 import type { Fighter } from '../../game/combat';
 import type { MoveDef, Side } from '../../game/types';
 import { icon, INTENT_ICON } from '../art/icons';
-import { h, setHtml, setText, toggle } from '../dom';
+import { openInfo } from '../components/modals';
+import { h, onPress, setHtml, setText, toggle } from '../dom';
 import type { CombatView } from './view';
 
 /** Everything around the cards: HP bars, statuses, the threat bar, mana and hero extras. */
@@ -30,30 +31,56 @@ export function createHud(v: CombatView): { render(): void } {
     setText(chip.querySelector('b')!, f.block);
   };
 
+  const showStatus = (side: Side, id: string): void => {
+    const def = STATUSES[id];
+    const s = combat.fighter(side).statuses[id] ?? { v: 0, t: 0 };
+    sfx('tap');
+    v.inspect(true);
+    const timed = def.kind === 'timed' && s.t < 999;
+    // Colour by who benefits: a debuff on the enemy is good news for the player.
+    const goodForPlayer = def.good === (side === 'hero');
+    openInfo(
+      {
+        icon: def.icon,
+        title: t(`status.${id}`),
+        tag: t(side === 'hero' ? 'status.onYou' : 'status.onEnemy'),
+        tagCls: goodForPlayer ? 'good' : 'bad',
+        desc: t(`status.${id}.d`, { v: s.v }),
+        extra: [timed ? t('status.timeLeft', { s: Math.ceil(s.t) }) : def.kind !== 'timed' ? t('status.stacks', { v: s.v }) : ''].filter(Boolean),
+        ink: goodForPlayer ? 'good' : 'bad',
+      },
+      () => v.inspect(false),
+    );
+  };
+
+  /** Status chips: rebuilt only when the set of statuses changes; values update in place (so presses aren't lost). */
   const renderStatuses = (side: Side, box: HTMLElement): void => {
     const f = combat.fighter(side);
     const list = STATUS_ORDER.filter((id) => f.statuses[id] && (STATUSES[id].kind === 'timed' ? f.statuses[id].t > 0 : f.statuses[id].v > 0));
-    const vals = list.map((id) => {
+    const ids = list.join('|');
+    if (ids !== statusSig[side]) {
+      statusSig[side] = ids;
+      box.replaceChildren(
+        ...list.map((id) => {
+          const def = STATUSES[id];
+          const b = h('button', {
+            class: `status ${def.good ? 'good' : 'bad'}`,
+            'data-status': id,
+            html: `${icon(def.icon)}<span></span>`,
+            'aria-label': t(`status.${id}`),
+          });
+          onPress(b, () => showStatus(side, id));
+          return b;
+        }),
+      );
+    }
+    for (const b of box.children) {
+      const id = (b as HTMLElement).dataset.status!;
       const s = f.statuses[id];
-      if (STATUSES[id].kind !== 'timed') return String(s.v);
-      return s.t > 999 ? '' : `${Math.ceil(s.t)}s`;
-    });
-    const sig = list.map((id, i) => id + vals[i]).join('|');
-    if (sig === statusSig[side]) return;
-    statusSig[side] = sig;
-    box.replaceChildren(
-      ...list.map((id, i) => {
-        const def = STATUSES[id];
-        const s = f.statuses[id];
-        const b = h('button', {
-          class: `status ${def.good ? 'good' : 'bad'}`,
-          html: `${icon(def.icon)}<span>${vals[i]}</span>`,
-          'aria-label': t(`status.${id}`),
-        });
-        b.addEventListener('click', () => v.toast(`${t(`status.${id}`)}: ${t(`status.${id}.d`, { v: s.v })}`));
-        return b;
-      }),
-    );
+      if (!s) continue;
+      const val = STATUSES[id].kind !== 'timed' ? String(s.v) : s.t > 999 ? '' : `${Math.ceil(s.t)}s`;
+      setText(b.querySelector('span')!, val);
+    }
   };
 
   const intentValue = (m: MoveDef): string => {

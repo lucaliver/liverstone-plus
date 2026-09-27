@@ -46,7 +46,7 @@ export interface CardLayer {
  * The belt and the sleeve: card elements, their motion and exit animations, and card input
  * (tap to play, drag up to play, drag down to stash, long press to inspect).
  */
-export function createCardLayer(v: CombatView, opts: { onInspect: (paused: boolean) => void }): CardLayer {
+export function createCardLayer(v: CombatView): CardLayer {
   const { combat, r, el, state } = v;
   const beltEls = new Map<number, CardEl>();
   const removals = new Map<number, Removal>();
@@ -116,8 +116,8 @@ export function createCardLayer(v: CombatView, opts: { onInspect: (paused: boole
         cancelDrag();
         if (!card) return;
         sfx('tap');
-        opts.onInspect(true);
-        openCardDetail(card, () => opts.onInspect(false));
+        v.inspect(true);
+        openCardDetail(card, () => v.inspect(false));
       }, LONG_PRESS_MS),
     };
   };

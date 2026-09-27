@@ -32,12 +32,11 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   let acc = 0;
 
   const hud = createHud(v);
-  const cards = createCardLayer(v, {
-    // Inspecting a card pauses the fight; closing it resumes unless the pause menu is open.
-    onInspect: (open) => {
-      state.paused = open || !!pauseModal;
-    },
-  });
+  // Inspecting a card, status or ability pauses the fight; closing it resumes unless the pause menu is open.
+  v.inspect = (open) => {
+    state.paused = open || !!pauseModal;
+  };
+  const cards = createCardLayer(v);
 
   const finish = (result: 'win' | 'lose'): void => {
     if (state.ended) return;

@@ -24,6 +24,8 @@ export interface CombatView {
   pointOf(side: Side): Point;
   toast(text: string): void;
   banner(text: string, bad?: boolean): void;
+  /** Pauses the fight while something is being inspected (set by the combat screen). */
+  inspect(open: boolean): void;
 }
 
 function markup(run: RunState, combat: Combat): string {
@@ -161,6 +163,9 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
       const tEl = h('div', { class: 'hint-toast' }, text);
       tEl.addEventListener('animationend', () => tEl.remove());
       el.append(tEl);
+    },
+    inspect() {
+      /* replaced by the combat screen */
     },
     banner(text, bad = false) {
       const b = h('div', { class: `banner ${bad ? 'bad' : ''}` }, text);

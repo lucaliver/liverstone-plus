@@ -143,6 +143,34 @@ export function openHowTo(onClose?: () => void, firstTime = false): ModalHandle 
   });
 }
 
+export interface InfoOpts {
+  icon: string;
+  title: string;
+  /** Small label next to the title (e.g. Passive / Active / On you). */
+  tag?: string;
+  tagCls?: string;
+  /** HTML body. */
+  desc: string;
+  /** Extra lines (HTML) under the description. */
+  extra?: string[];
+  ink?: 'good' | 'bad' | 'neutral';
+}
+
+/** Small explainer for anything that isn't a card: statuses, abilities, passives, enemy moves. */
+export function openInfo(opts: InfoOpts, onClose?: () => void): ModalHandle {
+  const body = h(
+    'div',
+    { class: `info ${opts.ink ?? 'neutral'}` },
+    h('div', {
+      class: 'info-head',
+      html: `<span class="info-ico">${icon(opts.icon)}</span><div><h3>${opts.title}</h3>${opts.tag ? `<span class="ftag ${opts.tagCls ?? ''}">${opts.tag}</span>` : ''}</div>`,
+    }),
+    h('p', { class: 'info-desc', html: opts.desc }),
+    ...(opts.extra ?? []).map((x) => h('p', { class: 'info-extra', html: x })),
+  );
+  return openModal({ body, actions: [{ label: t('common.close'), cls: 'secondary' }], onClose });
+}
+
 export function openCardDetail(card: CardInst, onClose?: () => void): ModalHandle {
   const wrap = h('div', { class: 'detail' });
   let showUp = card.up;

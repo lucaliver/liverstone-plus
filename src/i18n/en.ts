@@ -230,6 +230,10 @@ const en = {
   'kw.power.d': 'Lasts for the rest of the fight.',
 
   // ------------------------------------------------------------ statuses
+  'status.onYou': 'On you',
+  'status.onEnemy': 'On the enemy',
+  'status.timeLeft': '{s}s left',
+  'status.stacks': 'Stacks: {v}',
   'status.strength': 'Strength',
   'status.strength.d': 'Attacks deal +{v} damage.',
   'status.spellpower': 'Spell Power',

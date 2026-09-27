@@ -177,3 +177,40 @@
 }
 .deck-grid.pick .card { cursor: pointer; }
 .deck-grid.pick .card:active { transform: translate(3px, 3px); box-shadow: none; }
+
+/* info sheet: statuses, abilities, passives, enemy moves */
+.info { display: flex; flex-direction: column; gap: 10px; }
+.info-head { display: flex; align-items: center; gap: 12px; }
+.info-ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  font-size: 38px;
+  background: var(--y);
+  border: var(--line) solid var(--k);
+  --ink2: var(--p);
+}
+.info.good .info-ico { color: var(--b); }
+.info.bad .info-ico { color: var(--p); --ink2: var(--k); }
+.info-head h3 {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.info-head .ftag {
+  padding: 1px 6px 2px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--paper);
+  background: var(--k);
+}
+.info-head .ftag.good { background: var(--b); }
+.info-head .ftag.bad { background: var(--p); }
+.info-head .ftag.active { background: var(--p); }
+.info-head .ftag.special { color: var(--k); background: var(--y); border: 2px solid var(--k); }
+.info-desc { font-size: 18px; font-weight: 700; line-height: 1.35; }
+.info-extra { font-family: var(--font-ui); font-size: 18px; color: var(--muted); }
