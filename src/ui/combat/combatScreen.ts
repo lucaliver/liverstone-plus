@@ -243,7 +243,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     state.frameNo++;
     hud.render();
     cards.render();
-    if (!state.paused && !state.ended && combat.intro <= 0) {
+    if (!state.paused && !state.ended && state.stop <= 0 && combat.intro <= 0) {
       beltOffset -= (dt * settings.speed * combat.beltRate() * state.beltW) / CONFIG.beltTime;
       r.track.style.setProperty('--belt-x', `${Math.round(beltOffset % 26)}px`);
     }
@@ -301,7 +301,8 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       document.removeEventListener('visibilitychange', onVisibility);
     },
     frame(dt) {
-      if (!state.paused && !state.ended) {
+      if (state.stop > 0) state.stop -= dt;
+      else if (!state.paused && !state.ended) {
         acc += dt * settings.speed;
         let steps = 0;
         while (acc >= STEP && steps < 12) {

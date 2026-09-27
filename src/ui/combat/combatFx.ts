@@ -4,6 +4,7 @@ import { CARDS } from '../../data/cards';
 import { HEXES } from '../../data/hexes';
 import { STATUSES } from '../../data/statuses';
 import { discover } from '../../game/meta';
+import { settings } from '../../game/settings';
 import type { CombatEvent } from '../../game/types';
 import { icon } from '../art/icons';
 import { centerOf, h } from '../dom';
@@ -30,6 +31,12 @@ const HIT_OFFSETS: [number, number][] = [
   [40, -34],
 ];
 
+/** Hit-stop (s) by damage dealt: the fight freezes for a beat on heavy hits, longer on huge ones. */
+function hitStopFor(amount: number, target: 'hero' | 'enemy'): number {
+  if (amount >= 30) return 0.14;
+  return amount >= (target === 'hero' ? 12 : 15) ? 0.08 : 0;
+}
+
 /** Turns combat engine events into feedback: floating text, particles, sounds, haptics and small animations. */
 export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'win' | 'lose') => void): () => void {
   const { r } = v;
@@ -54,6 +61,11 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
           const splat = e.kind === 'poison' || e.kind === 'burn' ? `k-${e.kind}` : '';
           floatText(fx, fy, `-${e.amount}`, `${e.target === 'hero' ? 'hurt' : 'dmg'} ${big ? 'big' : ''} ${splat}`, delay);
           setTimeout(() => burst(e.kind, p.x, p.y, e.source === 'dot' ? 8 : big ? 30 : 18), delay);
+        }
+        const stop = e.source === 'dot' || e.hitIndex > 0 ? 0 : hitStopFor(e.amount, e.target);
+        if (stop) {
+          v.state.stop = Math.max(v.state.stop, stop);
+          if (!settings.reduceMotion) v.retrigger(r.stage, 'impact');
         }
         if (e.blocked > 0) {
           floatText(p.x + 30, p.y - 20, `${icon('shield')}${e.blocked}`, 'blocked', delay, true);

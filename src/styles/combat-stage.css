@@ -138,6 +138,11 @@
   33% { transform: translateX(10px); }
   66% { transform: translateX(-6px); }
 }
+/* heavy hit: the stage prints in negative for a beat (with the hit-stop) */
+.stage.impact { animation: impact 0.1s steps(1); }
+@keyframes impact {
+  0% { filter: invert(1); }
+}
 .enemy-art.lunge { animation: lunge 0.36s steps(3); }
 @keyframes lunge {
   50% { transform: translateY(26px) scale(1.18); }

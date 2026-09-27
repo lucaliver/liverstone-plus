@@ -22,8 +22,19 @@ export interface CombatView {
   /**
    * `waiting`: before the player presses Start; things can be inspected but not played.
    * `ltr`: the belt runs left to right (the default; read once when the fight is built).
+   * `stop`: seconds of hit-stop left (the fight freezes for a beat on heavy hits).
    */
-  state: { paused: boolean; waiting: boolean; ended: boolean; frameNo: number; beltW: number; cardW: number; rowH: number; ltr: boolean };
+  state: {
+    paused: boolean;
+    waiting: boolean;
+    ended: boolean;
+    frameNo: number;
+    beltW: number;
+    cardW: number;
+    rowH: number;
+    ltr: boolean;
+    stop: number;
+  };
   retrigger(target: Element, cls: string): void;
   enemyPoint(): Point;
   heroPoint(): Point;
@@ -145,7 +156,7 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
     combat,
     heroId: run.hero,
     r,
-    state: { paused: true, waiting: true, ended: false, frameNo: 0, beltW: 0, cardW: 0, rowH: 0, ltr: !settings.rightToLeft },
+    state: { paused: true, waiting: true, ended: false, frameNo: 0, beltW: 0, cardW: 0, rowH: 0, ltr: !settings.rightToLeft, stop: 0 },
     retrigger(target, cls) {
       target.classList.remove(cls);
       void (target as HTMLElement).offsetWidth;
