@@ -680,12 +680,6 @@ export class Combat {
     if (h.mana > before) this.events.emit({ type: 'mana', amount: h.mana - before });
   }
 
-  gainMaxMana(n: number): void {
-    const h = this.hero;
-    h.maxMana = Math.min(CONFIG.maxManaCap, h.maxMana + n);
-    this.gainMana(n);
-  }
-
   drainMana(n: number): void {
     const lost = Math.min(this.hero.mana, n);
     this.hero.mana -= lost;

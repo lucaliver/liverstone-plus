@@ -39,7 +39,9 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
   lampeggiano poco prima, poi esplodono o ti puniscono). Quando il mazzo finisce, gli scarti si rimescolano. Alcune carte danno **Rush**:
   il nastro accelera e le carte arrivano prima.
 - **Mana:** si ricarica col tempo, a un ritmo che dipende dall'eroe. Il massimo parte basso e cresce con le
-  carte **cristallo**, che arrivano per prime e valgono una volta per scontro.
+  carte **cristallo**, che arrivano per prime e valgono una volta per scontro. Icone coerenti ovunque:
+  **gemma piena = mana** da spendere (es. da 1/3 a 3/3), **gemma vuota = cristallo** che alza il massimo e si
+  riempie col tempo (es. da 3/3 a 3/5).
 - **Nemici:** un **attacco base** lento e pesante e, a intervalli, una **mossa speciale** (colpo ancora più forte,
   maledizioni, furto, blocco); gli speciali si alternano. Ogni colpo è un momento da preparare, con respiro in mezzo. La **barra minaccia** sopra il nastro mostra la mossa,
   il valore, il caricamento e quanto manca al prossimo speciale.

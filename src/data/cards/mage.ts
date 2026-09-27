@@ -211,17 +211,17 @@ export const mageCards: CardDef[] = [
   },
   {
     id: 'evocation',
-    face: '{maxmana:0}|{mana:1}',
+    face: '{crystal:0}|{mana:1}',
     cls: 'mage',
     type: 'skill',
     rarity: 'epic',
     cost: 1,
-    vals: [1, 2],
-    upVals: [1, 4],
+    vals: [1, 3],
+    upVals: [1, 5],
     keywords: ['exhaust'],
     art: 'evocation',
     play: (c, v) => {
-      c.gainMaxMana(v[0]);
+      c.addManaCrystals(v[0]);
       c.gainMana(v[1]);
     },
   },

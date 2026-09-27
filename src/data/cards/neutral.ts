@@ -12,7 +12,7 @@ export const neutralCards: CardDef[] = [
     vals: [1],
     upVals: [2],
     keywords: ['exhaust', 'innate'],
-    art: 'crystal',
+    art: 'crystalSlot',
     play: (c, v) => c.addManaCrystals(v[0]),
   },
   {
@@ -25,7 +25,7 @@ export const neutralCards: CardDef[] = [
     vals: [2],
     upVals: [3],
     keywords: ['exhaust', 'innate'],
-    art: 'evocation',
+    art: 'geode',
     play: (c, v) => c.addManaCrystals(v[0]),
   },
   {

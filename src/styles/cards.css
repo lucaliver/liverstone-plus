@@ -127,7 +127,6 @@
 .gk-dmg .pico { color: var(--p); --ink2: var(--y); }
 .gk-block .pico,
 .gk-mana .pico,
-.gk-maxmana .pico,
 .gk-chill .pico,
 .gk-snow .pico,
 .gk-rush .pico,

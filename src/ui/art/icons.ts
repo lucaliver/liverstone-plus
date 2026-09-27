@@ -24,7 +24,10 @@ const star4 = (cx: number, cy: number, r: number): string =>
 const hourglass = `<path d="M14 5h36v6h-3c0 10-8 15-11 21 3 6 11 11 11 21h3v6H14v-6h3c0-10 8-15 11-21-3-6-11-11-11-21h-3z"/><path fill="#16121f" opacity=".55" d="M23 11h18c0 7-6 11-9 16-3-5-9-9-9-16zM25 53c1-6 5-9 7-12 2 3 6 6 7 12z"/>`;
 const mirror = `<ellipse cx="32" cy="24" rx="16" ry="20"/><ellipse cx="32" cy="24" rx="11" ry="15" fill="#16121f" opacity=".45"/><path ${HI} d="M25 14c3-3 7-4 10-3-5 2-8 6-9 12-2-3-2-6-1-9z"/><rect x="29" y="43" width="6" height="16" rx="3"/>`;
 const bolt = `<path d="M37 4L14 36h14l-5 24 25-34H33z"/>`;
+/** Filled gem = mana (points to spend). */
 const crystal = `<path d="M32 4l16 18-16 38-16-38z"/><path ${HI} d="M32 4l16 18H32z"/><path fill="#16121f" opacity=".3" d="M32 60L16 22h16z"/>`;
+/** Hollow gem = an empty mana crystal (raises the max; fills over time), like an empty pip in the mana bar. */
+const crystalSlot = `<path d="M32 4l16 18-16 38-16-38z"/><path fill="#16121f" d="M32 14l9 10-9 23-9-23z"/>`;
 const cloud = `<path d="M18 40a10 10 0 0 1 2-20 13 13 0 0 1 25-2 11 11 0 0 1 3 22z"/>`;
 const fist = `<path d="M18 28c0-5 3-7 6-7h20c4 0 6 3 6 6v3c3 0 5 2 5 5v8c0 9-7 16-16 16h-6c-9 0-15-7-15-16z"/><path fill="#16121f" opacity=".45" d="M24 22v11M32 21v12M40 21v12" stroke="#16121f" stroke-width="2"/><path d="M14 30c0-3 2-5 5-5h5v14h-5c-3 0-5-2-5-5z"/>`;
 const wing = `<path d="M6 44C14 20 34 8 58 8c-6 6-8 10-9 14 3-1 6-1 9 0-5 5-10 8-15 9 3 1 6 2 8 4-9 4-19 6-28 5-6 0-12 2-17 4z"/>`;
@@ -98,6 +101,11 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   },
   iceLance: { el: 'ice', svg: `<path d="M58 6L48 26 18 56l-8-2-2-8L38 16z"/><path ${HI} d="M58 6L40 18l-2-2z"/><path d="M8 46l10 10-8 4-6-6z"/>` },
   crystal: { el: 'arcane', svg: crystal },
+  crystalSlot: { el: 'arcane', svg: crystalSlot },
+  geode: {
+    el: 'arcane',
+    svg: `<g transform="translate(-2 18) scale(.62)">${crystalSlot}</g><g transform="translate(14 0) scale(.8)">${crystalSlot}</g><g transform="translate(34 22) scale(.55)">${crystalSlot}</g>`,
+  },
   spark: { el: 'arcane', svg: star4(28, 30, 22) + star4(50, 14, 9) + star4(50, 50, 7) },
   frostArmor: { el: 'ice', svg: `${shield}<g transform="translate(17 13) scale(.47)" color="#16121f" opacity=".6">${snowflake}</g>` },
   flame: { el: 'fire', svg: flame },
