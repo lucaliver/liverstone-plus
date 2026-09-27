@@ -19,6 +19,15 @@ const SOUND_FOR_KIND: Record<string, SoundId> = {
   claw: 'enemyHit',
 };
 
+/** Where the "-N" of each hit of a multi-hit lands around the enemy's centre (px). */
+const HIT_OFFSETS: [number, number][] = [
+  [0, 0],
+  [-44, -30],
+  [44, 26],
+  [-40, 34],
+  [40, -34],
+];
+
 /** Turns combat engine events into feedback: floating text, particles, sounds, haptics and small animations. */
 export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'win' | 'lose') => void): () => void {
   const { r } = v;
@@ -30,9 +39,12 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         const delay = e.hitIndex * 90;
         if (e.amount > 0) {
           const big = e.amount >= 15;
-          // Enemy damage pops above the sprite's head, off to the side, so it never blends into the art.
-          const fx = e.target === 'enemy' ? p.x + 48 + e.hitIndex * 14 : p.x;
-          const fy = e.target === 'enemy' ? p.y - 64 - e.hitIndex * 10 : p.y - 10;
+          // Enemy damage is printed on the middle of the sprite (the blood splat keeps it readable);
+          // the hits of a multi-hit spread around it so they don't cover each other.
+          const [ox, oy] = HIT_OFFSETS[e.hitIndex % HIT_OFFSETS.length];
+          const mid = centerOf(r.enemyArt);
+          const fx = e.target === 'enemy' ? mid.x + ox : p.x;
+          const fy = e.target === 'enemy' ? mid.y + oy : p.y - 10;
           floatText(fx, fy, `-${e.amount}`, `${e.target === 'hero' ? 'hurt' : 'dmg'} ${big ? 'big' : ''}`, delay);
           setTimeout(() => burst(e.kind, p.x, p.y, e.source === 'dot' ? 8 : big ? 30 : 18), delay);
         }

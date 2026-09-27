@@ -71,7 +71,7 @@
 }
 .floater.dmg,
 .floater.hurt {
-  /* a quick "-N" printed on a pixel blood splat, well clear of the sprite */
+  /* "-N" printed on a pixel blood splat */
   isolation: isolate;
   z-index: 2;
   padding: 4px 12px 6px;
@@ -110,6 +110,15 @@
 }
 .floater.hurt::before,
 .floater.hurt::after { background: #8a0a24; box-shadow: 16px -2px 0 #8a0a24, 16px 4px 0 #8a0a24, 30px -4px 0 0 #8a0a24; }
+/* damage on the enemy lingers on the sprite long enough to be read, then drifts up and fades */
+.floater.dmg { z-index: 3; animation: floatslow 1.5s steps(15) forwards; }
+@keyframes floatslow {
+  0% { transform: scale(0.4) rotate(-8deg); opacity: 0; }
+  7% { transform: translateY(-4px) scale(1.3) rotate(4deg); opacity: 1; }
+  14% { transform: translateY(-8px) scale(1) rotate(0); }
+  70% { transform: translateY(-16px); opacity: 1; }
+  100% { transform: translateY(-44px); opacity: 0; }
+}
 @keyframes floatfast {
   0% { transform: scale(0.4) rotate(-8deg); opacity: 0; }
   14% { transform: translateY(-6px) scale(1.3) rotate(4deg); opacity: 1; }

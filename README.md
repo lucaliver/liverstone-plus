@@ -127,7 +127,8 @@ La difficoltà cresce scendendo di piano.
   con ombre nette sfalsate. Quattro inchiostri: rosa fluo, blu, giallo, inchiostro scuro (+ sovrastampe).
 - **Mai:** sfumature per l'ombreggiatura, glow, finto 3D, cerchi decorativi di sfondo, motivi industriali.
 - **Pixel art** generata dai disegni vettoriali all'avvio: livelli d'inchiostro, retino a puntini, contorno.
-- **Animazioni a scatti** (tranne le finestre, fluide); colpi con flash invertito; danni come "-N" su macchia di sangue.
+- **Animazioni a scatti** (tranne le finestre, fluide); colpi con flash invertito; danni come "-N" su macchia di sangue,
+  al centro del nemico e abbastanza lenti da leggerli.
 - **Colori delle carte:** banda del nome = classe (rosa Guerriero, blu Mago, verde Negromante, giallo neutre,
   nero maledizioni); illustrazione = categoria (rosa attacco, blu difesa, giallo utilità, verde maledizione);
   gemma a rombo solo per rare (blu), epiche (rosa) e leggendarie (gialla).
