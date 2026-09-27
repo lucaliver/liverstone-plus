@@ -5,7 +5,7 @@
  * look-ahead WebAudio scheduler with pulse/triangle "chip" voices. Dark minor keys,
  * harmonic-minor dominants and tritones give the dungeon its uneasy mood.
  */
-import { audioGraph, onAudioUnlock } from './sfx';
+import { audioGraph, onAudioUnlock, resumeAudio } from './sfx';
 
 export type TrackId = 'menu' | 'combat' | 'elite' | 'boss' | 'rest' | 'pause';
 
@@ -96,7 +96,7 @@ const TRACKS: Record<TrackId, Track> = {
         [12, A4, 4],
       ],
     ],
-    leadOn: (p) => p % 2 === 1,
+    leadOn: () => true, // the melody starts with the track (no silent-ish intro)
     leadVoice: 'bell',
     drums: ['k.k.............'],
     pad: true,
@@ -478,7 +478,8 @@ function start(id: TrackId): void {
   const tr = TRACKS[id];
   const out = ctx.createGain();
   out.gain.setValueAtTime(0.0001, ctx.currentTime);
-  out.gain.linearRampToValueAtTime(VOLUME * tr.gain, ctx.currentTime + 1.2);
+  // Short fade-in: the track is audible right away.
+  out.gain.linearRampToValueAtTime(VOLUME * tr.gain, ctx.currentTime + 0.35);
   // A gentle low-pass keeps the square waves from getting harsh.
   const lp = ctx.createBiquadFilter();
   lp.type = 'lowpass';
@@ -606,9 +607,15 @@ export function setMusicEnabled(on: boolean): void {
 }
 
 /** Pauses the music without forgetting the track (e.g. app in background). */
+/** App hidden / visible again. Keeps the temporary-track state (e.g. the pause theme) intact. */
 export function suspendMusic(on: boolean): void {
-  if (on) stop(0.2);
-  else if (enabled && wanted) playMusic(wanted);
+  if (on) {
+    stop(0.2);
+    return;
+  }
+  // Mobile browsers may suspend the audio context in the background: wake it without waiting for a tap.
+  resumeAudio();
+  if (enabled && wanted) setTrack(wanted);
 }
 
 onAudioUnlock(() => {

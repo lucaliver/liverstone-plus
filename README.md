@@ -175,7 +175,7 @@ base+speciale, abilità a mana, carte sinergiche, musica per élite e pausa. Il 
 Legenda: `[ ]` da fare · `[x]` fatto (dettagli nei commit).
 
 - [x] Home: animare anche il tasto New run / Continue run
-- [ ] Home: la musica a volte non parte o parte in ritardo quando ricarichi o torni al menu
+- [x] Home: la musica a volte non parte o parte in ritardo quando ricarichi o torni al menu
 - [ ] Combattimento: tasto pausa in alto a destra, a destra della velocità
 - [ ] Ricompensa: titolo "Enemy cleared" invece di "Victory"
 - [ ] Fine atto: "VICTORY" grande, animato e con musica dedicata (invece di "Act cleared")

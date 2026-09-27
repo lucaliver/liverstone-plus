@@ -172,3 +172,17 @@ test('campfire upgrade: tapping selects, the Upgrade button confirms', async ({ 
   const upgraded = (await page.evaluate('window.__game.run.deck.filter((c) => c.up).length')) as number;
   expect(upgraded).toBe(1);
 });
+
+test('coming back from the background while paused keeps the pause → fight music hand-off', async ({ page }) => {
+  await freshGame(page);
+  await startFight(page);
+  await page.locator('.js-pause').click();
+  await page.evaluate(async () => {
+    const m = await import('/src/audio/music.ts');
+    m.suspendMusic(true);
+    m.suspendMusic(false);
+  });
+  expect(await page.evaluate('window.__game.musicTrack()')).toBe('pause');
+  await page.getByRole('button', { name: /resume/i }).click();
+  expect(await page.evaluate('window.__game.musicTrack()')).toBe('combat');
+});

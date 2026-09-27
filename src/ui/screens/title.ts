@@ -1,9 +1,10 @@
 import { t } from '../../core/i18n';
-import { sfx } from '../../audio/sfx';
+import { audioUnlocked, onAudioUnlock, sfx } from '../../audio/sfx';
+import { settings } from '../../game/settings';
 import type { Screen } from '../app';
 import { h } from '../dom';
 import { creature } from '../art/creatures';
-import { candleFlame } from '../art/icons';
+import { candleFlame, icon } from '../art/icons';
 import { darkEyes, motes } from '../components/decor';
 import { openHowTo, openSettings } from '../components/modals';
 
@@ -27,6 +28,13 @@ export function titleScreen(cb: TitleCallbacks): Screen {
       },
       label,
     );
+
+  // Browsers only allow audio after a first tap: say so, and hide the hint as soon as sound is on.
+  const soundHint = settings.music || settings.sound ? h('div', { class: 'sound-hint', html: `${icon('horn')}${t('menu.tapForSound')}` }) : null;
+  if (soundHint) {
+    if (audioUnlocked()) soundHint.remove();
+    else onAudioUnlock(() => soundHint.remove());
+  }
 
   const el = h(
     'div',
@@ -53,6 +61,7 @@ export function titleScreen(cb: TitleCallbacks): Screen {
         btn(t('menu.settings'), 'secondary small', () => openSettings()),
       ),
     ),
+    soundHint,
     h('div', { class: 'version' }, `v${__APP_VERSION__}`),
   );
   return { el };

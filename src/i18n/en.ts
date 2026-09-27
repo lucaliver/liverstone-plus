@@ -11,6 +11,7 @@ const en = {
   'menu.howTo': 'How to play',
   'menu.settings': 'Settings',
   'menu.compendium': 'Compendium',
+  'menu.tapForSound': 'Tap anywhere for sound',
   'compendium.title': 'Compendium',
   'compendium.progress': '{n}/{total} discovered',
   'compendium.cards': 'Cards',

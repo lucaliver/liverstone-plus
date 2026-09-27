@@ -23,6 +23,14 @@ export function setSfxEnabled(on: boolean): void {
   enabled = on;
 }
 
+/** True once the browser has let us create the audio context (after the first user gesture). */
+export const audioUnlocked = (): boolean => ctx !== null && ctx.state === 'running';
+
+/** Tries to resume a suspended context (works after a first unlock; harmless otherwise). */
+export function resumeAudio(): void {
+  if (ctx && ctx.state !== 'running') void ctx.resume().catch(() => {});
+}
+
 export function unlockAudio(): void {
   if (!ctx) {
     const AC = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;

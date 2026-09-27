@@ -54,3 +54,17 @@
 @keyframes bob {
   50% { transform: translateY(-5px); }
 }
+.sound-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  color: var(--y);
+  animation: blink-soft 1.2s steps(2) infinite;
+}
+.sound-hint .pico { font-size: 18px; color: var(--y); --ink2: var(--p); }
+@keyframes blink-soft {
+  50% { opacity: 0.5; }
+}
