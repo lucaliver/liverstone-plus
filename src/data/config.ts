@@ -6,8 +6,9 @@ export const CONFIG = {
   cardWidth: 0.25,
   /** Minimum gap between spawns, in belt widths. */
   spacing: 0.27,
-  /** Never spawn a card closer than this to the previous one (e.g. after a belt slow-down). */
-  minGap: 0.13,
+  /** Never spawn a card closer than this to the previous one of its row (more than a card width, so cards never overlap,
+   * e.g. when curses queued on one row send every draw to the other). */
+  minGap: 0.26,
   /** A card expires once its left edge is this far past the belt's left edge (fraction of card width). */
   expireOverhang: 0.45,
   /** Belt speed multiplier while rushed (Time Slip, Time Warp). */

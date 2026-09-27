@@ -70,6 +70,21 @@ describe('combat engine', () => {
     expect(c.beltRate()).toBeCloseTo(CONFIG.twoRowSpeed);
   });
 
+  it('cards never overlap on a row, even while queued curses hold the other one back', () => {
+    const c = setup({ deck: deckOf(Array(14).fill('strike')) });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 0.01);
+    c.addTempCard('slime', 'belt', false, -0.3);
+    run(c, 6);
+    for (const row of [0, 1]) {
+      const pos = c.belt
+        .filter((b) => b.row === row)
+        .map((b) => b.pos)
+        .sort((a, b) => a - b);
+      for (let i = 1; i < pos.length; i++) expect(pos[i] - pos[i - 1]).toBeGreaterThan(CONFIG.cardWidth);
+    }
+  });
+
   it('refuses unaffordable cards', () => {
     const c = setup({ deck: deckOf(['earthshaker', 'earthshaker']) });
     run(c, CONFIG.introTime + 0.01);

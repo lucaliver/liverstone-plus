@@ -145,7 +145,6 @@ const en = {
   'combat.meticulous': 'Other lane first!',
   'combat.chillOut': 'Chill out…',
   'combat.micromanaged': 'Any updates?',
-  'combat.copied': 'Copied!',
   'combat.inflation': 'Inflation: some cards cost 1 more',
   'combat.blackout': "Lights out: you can't read your cards",
   'combat.policy': 'Not the same type twice!',
