@@ -319,4 +319,37 @@ export const warriorCards: CardDef[] = [
       c.applyStatus('enemy', 'stun', 1, v[1]);
     },
   },
+
+  // Workplace additions
+  {
+    id: 'heavyLifting',
+    face: '{dmg:0}|{block:1}',
+    cls: 'warrior',
+    type: 'attack',
+    rarity: 'common',
+    cost: 3,
+    vals: [8, 6],
+    upVals: [11, 8],
+    art: 'hammer',
+    play: (c, v) => {
+      c.hit(v[0], { kind: 'blunt' });
+      c.gainBlock('hero', v[1]);
+    },
+  },
+  {
+    id: 'hazardPay',
+    face: '{hp:0}|{str:1}',
+    cls: 'warrior',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 1,
+    vals: [5, 2],
+    upVals: [5, 3],
+    keywords: ['exhaust'],
+    art: 'rage',
+    play: (c, v) => {
+      c.loseHp(v[0]);
+      c.applyStatus('hero', 'strength', v[1]);
+    },
+  },
 ];

@@ -280,4 +280,66 @@ export const necromancerCards: CardDef[] = [
     art: 'skull',
     play: (c, v) => c.applyStatus('enemy', 'poison', v[0]),
   },
+
+  // Workplace additions
+  {
+    id: 'toxicPositivity',
+    face: '{weak:0}|{heal:1}',
+    cls: 'necromancer',
+    type: 'spell',
+    rarity: 'common',
+    cost: 2,
+    vals: [3, 4],
+    upVals: [4, 6],
+    art: 'leaf',
+    play: (c, v) => {
+      c.applyStatus('enemy', 'weak', 1, v[0]);
+      c.heal('hero', v[1]);
+    },
+  },
+  {
+    id: 'unionDues',
+    face: '{hp:0}|{mana:1}',
+    cls: 'necromancer',
+    type: 'skill',
+    rarity: 'common',
+    cost: 0,
+    vals: [2, 2],
+    upVals: [2, 3],
+    art: 'blood',
+    play: (c, v) => {
+      c.loseHp(v[0]);
+      c.gainMana(v[1]);
+    },
+  },
+  {
+    id: 'deadWeight',
+    face: '{dmg:0}|{vuln:1}',
+    cls: 'necromancer',
+    type: 'attack',
+    rarity: 'rare',
+    cost: 3,
+    vals: [10, 3],
+    upVals: [14, 4],
+    art: 'tomb',
+    play: (c, v) => {
+      c.hit(v[0]);
+      c.applyStatus('enemy', 'vulnerable', 1, v[1]);
+    },
+  },
+  {
+    id: 'nightShift',
+    face: '{poison:0}|{block:1}',
+    cls: 'necromancer',
+    type: 'spell',
+    rarity: 'epic',
+    cost: 4,
+    vals: [8, 8],
+    upVals: [11, 11],
+    art: 'bone',
+    play: (c, v) => {
+      c.applyStatus('enemy', 'poison', v[0]);
+      c.gainBlock('hero', v[1]);
+    },
+  },
 ];

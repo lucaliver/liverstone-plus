@@ -23,12 +23,20 @@ const tabLabel = (c: CardClass): string => t(`compendium.tab.${c}`);
 const TIERS: EnemyDef['tier'][] = ['normal', 'elite', 'boss'];
 
 function foeView(e: EnemyDef): HTMLElement {
-  return h('article', {
+  const el = h('article', {
     class: 'foe',
     html: `<div class="foe-head"><div class="foe-art">${creature(e.art)}</div><div class="foe-id"><h3>${t(`enemy.${e.id}.name`)}</h3>${
       e.tier !== 'normal' ? `<span class="tier ${e.tier}">${t(`journey.node.${e.tier}`)}</span>` : ''
     }<span class="foe-hp">${icon('heart')}${Math.round(e.hp * CONFIG.enemyHp)}</span></div></div>${movePattern(e)}`,
   });
+  // Moves that add a curse: press to see the card.
+  for (const li of el.querySelectorAll<HTMLElement>('li[data-card]')) {
+    onPress(li, () => {
+      sfx('tap');
+      openCardDetail({ uid: -1, id: li.dataset.card!, up: false });
+    });
+  }
+  return el;
 }
 
 /** Every card in the game by class, plus every enemy and its moves. */

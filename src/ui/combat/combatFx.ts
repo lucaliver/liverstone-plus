@@ -162,13 +162,9 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
       case 'hexBroken':
         sfx('stash');
         break;
-      case 'reshuffle': {
-        // Near the belt entry, where the reshuffled cards come from.
-        const rc = r.belt.getBoundingClientRect();
-        floatText(rc.right - 60, rc.top + 16, t('combat.reshuffle'), 'status good');
+      case 'reshuffle':
         sfx('reshuffle');
         break;
-      }
       case 'enemyAct':
         if (e.move.dmg) v.retrigger(r.enemyArt, 'lunge');
         else v.retrigger(r.enemyArt, 'cast');

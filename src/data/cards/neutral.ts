@@ -107,6 +107,23 @@ export const neutralCards: CardDef[] = [
     art: 'potionBlue',
     play: (c, v) => c.gainMana(v[0]),
   },
+
+  {
+    id: 'coffeeBreak',
+    face: '{heal:0}|{mana:1}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'common',
+    cost: 1,
+    vals: [5, 1],
+    upVals: [8, 2],
+    keywords: ['exhaust'],
+    art: 'coffee',
+    play: (c, v) => {
+      c.heal('hero', v[0]);
+      c.gainMana(v[1]);
+    },
+  },
 ];
 
 /** Cards enemies shuffle into your piles. They exist only for the current fight. */
@@ -189,5 +206,44 @@ export const curseCards: CardDef[] = [
     art: 'drop',
     play: () => {},
     onExpire: (c, v) => c.applyStatus('hero', 'poison', v[0]),
+  },
+
+  {
+    // A meeting: it takes a spot on the belt and can't be cleared, only sat through.
+    id: 'quickSync',
+    face: '{clog}',
+    cls: 'curse',
+    type: 'curse',
+    rarity: 'special',
+    cost: 0,
+    vals: [],
+    keywords: ['unplayable', 'fleeting'],
+    art: 'cards',
+  },
+  {
+    id: 'pip',
+    face: '{?exit}{weak:0}',
+    cls: 'curse',
+    type: 'curse',
+    rarity: 'special',
+    cost: 1,
+    vals: [5],
+    keywords: ['exhaust', 'volatile'],
+    art: 'broken',
+    play: () => {},
+    onExpire: (c, v) => c.applyStatus('hero', 'weak', 1, v[0]),
+  },
+  {
+    id: 'redTape',
+    face: '{?exit}{vuln:0}',
+    cls: 'curse',
+    type: 'curse',
+    rarity: 'special',
+    cost: 1,
+    vals: [4],
+    keywords: ['exhaust', 'volatile'],
+    art: 'crack',
+    play: () => {},
+    onExpire: (c, v) => c.applyStatus('hero', 'vulnerable', 1, v[0]),
   },
 ];

@@ -60,7 +60,8 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
 export function movePattern(e: EnemyDef, values: MoveValues = baseValues, mark?: { now: MoveDef; next: MoveDef | null }): string {
   const row = (m: MoveDef): string => {
     const cls = m === mark?.now ? 'now' : m === mark?.next ? 'next' : '';
-    return `<li class="${cls}" data-intent="${m.intent}"><span class="mi">${icon(INTENT_ICON[m.intent] ?? 'star')}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m, false, values)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`;
+    // A curse row names its card, so the handbook can open it on a press.
+    return `<li class="${cls}" data-intent="${m.intent}"${m.curse ? ` data-card="${m.curse.id}"` : ''}><span class="mi">${icon(INTENT_ICON[m.intent] ?? 'star')}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m, false, values)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`;
   };
   const every = e.specials.length ? `<li class="foe-every">${t('compendium.every', { n: e.every })}</li>` : '';
   const passives = (e.start ?? [])

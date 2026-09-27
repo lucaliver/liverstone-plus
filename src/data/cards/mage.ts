@@ -157,6 +157,7 @@ export const mageCards: CardDef[] = [
     cost: 2,
     upCost: 1,
     vals: [1],
+    keywords: ['exhaust'],
     art: 'mirror',
     play: (c, v) => c.applyStatus('hero', 'dodge', v[0]),
   },
@@ -298,5 +299,52 @@ export const mageCards: CardDef[] = [
     vals: [40],
     art: 'pyro',
     play: (c, v) => void c.hit(v[0], { kind: 'fire' }),
+  },
+
+  // Workplace additions
+  {
+    id: 'thermostatWar',
+    face: '{burn:0}|{chill:1}',
+    cls: 'mage',
+    type: 'spell',
+    rarity: 'common',
+    cost: 2,
+    vals: [4, 2],
+    upVals: [6, 3],
+    art: 'snow',
+    play: (c, v) => {
+      c.applyStatus('enemy', 'burn', v[0]);
+      c.applyStatus('enemy', 'chill', 1, v[1]);
+    },
+  },
+  {
+    id: 'sprintPlanning',
+    face: '{rush:0}|{mana:1}',
+    cls: 'mage',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 1,
+    vals: [4, 2],
+    upVals: [5, 3],
+    art: 'hourglass',
+    play: (c, v) => {
+      c.rushBelt(v[0]);
+      c.gainMana(v[1]);
+    },
+  },
+  {
+    id: 'firewall',
+    face: '{block:0}|{burn:1}',
+    cls: 'mage',
+    type: 'skill',
+    rarity: 'epic',
+    cost: 3,
+    vals: [12, 4],
+    upVals: [16, 6],
+    art: 'fortress',
+    play: (c, v) => {
+      c.gainBlock('hero', v[0]);
+      c.applyStatus('enemy', 'burn', v[1]);
+    },
   },
 ];

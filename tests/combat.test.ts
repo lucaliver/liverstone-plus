@@ -378,9 +378,9 @@ describe('combat engine', () => {
     expect(c.discard[0].uid).toBeLessThan(0);
   });
 
-  it('every card has a play or expire effect and valid numbers', () => {
+  it('every card has a play or expire effect (or is plain unplayable) and valid numbers', () => {
     for (const d of CARD_LIST) {
-      expect(d.play || d.onExpire, d.id).toBeTruthy();
+      expect(d.play || d.onExpire || d.keywords?.includes('unplayable'), d.id).toBeTruthy();
       if (d.upVals) expect(d.upVals.length, d.id).toBe(d.vals.length);
     }
   });

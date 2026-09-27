@@ -102,13 +102,14 @@ I mazzi iniziali hanno solo carte base e cristalli; tutte le altre arrivano come
 ## 4. Carte
 
 - **Rarità:** iniziale, comune, rara, epica, leggendaria, più la speciale dell'eroe e le maledizioni.
-- **Set:** uno per ogni eroe (attorno al suo archetipo), più carte **neutrali** (kit di pronto soccorso, energy
-  drink, cristalli *Coffee* e *Double Espresso*, utilità) giocabili da tutti.
+- **Set:** 24 carte per ogni eroe (attorno al suo archetipo, speciale inclusa), 9 **neutrali** giocabili da tutti
+  (kit di pronto soccorso, energy drink, *Coffee Break*, cristalli *Coffee* e *Double Espresso*, utilità) e 9 **maledizioni**.
 - **Faccia:** le carte mostrano **icone e numeri grandi**; il testo completo e il glossario si leggono tenendo
   premuto. Una condizione è tra parentesi (es. un attacco che fa più danni se hai Blocco).
 - **Potenziamento:** ogni carta ha una versione migliorata, ottenibile in sala pausa (*Training*).
 - **Maledizioni:** date dai nemici, durano solo lo scontro: *Drama* intasa il nastro, *Write-Up* ti ferisce,
-  *Deadline* esplode, *Mandatory Fun* ruba mana e *Gossip* avvelena se le lasci uscire. *Gatekeeping* è larga
+  *Deadline* esplode, *Mandatory Fun* ruba mana, *Gossip* avvelena, *Improvement Plan* ti indebolisce e
+  *Red Tape* ti rende Vulnerabile se le lasci uscire; *Quick Sync* (una riunione) occupa il nastro e non si può togliere. *Gatekeeping* è larga
   tre carte e copre quelle davanti. Alcuni nemici maledicono invece le tue carte (*pietrificate*: toccale finché si rompono).
 - **Parole chiave:** Innate (arriva per prima), Esaurisci (una volta per scontro), Consuma (sparisce dal mazzo),
   Fugace (sparisce se esce dal nastro), Volatile (effetto all'uscita), Rush (accelera il nastro), Potere (dura
@@ -123,12 +124,12 @@ I mazzi iniziali hanno solo carte base e cristalli; tutte le altre arrivano come
 | The Snitch | La spia: colpi rapidi e raffiche (*Rat Out*) |
 | Senior Boomer | Colpi lenti, un colpo pesantissimo (*Seniority*) e *Gatekeep*: due maledizioni larghe tre carte che coprono le carte davanti a sé sul nastro finché non le paghi (2 mana l'una) |
 | Toxic Coworker | Il collega tossico: riempie il nastro di *Drama* e il mazzo di *Gossip* |
-| Team Leader | *Team Building* lo rende più forte e ti rifila *Mandatory Fun* |
+| Team Leader | *Team Building* lo rende più forte e ti rifila *Mandatory Fun*; *Let's Sync* ti mette due riunioni sul nastro |
 | Goblin Consultant | Ruba carte (*Outsource*) e ti mette *Deadline* sul nastro |
-| HR Bitch | Passiva *No Repeats Policy*: non puoi giocare due carte dello stesso tipo a meno di 3 s l'una dall'altra; *Performance Review* ti indebolisce |
+| HR Bitch | Passiva *No Repeats Policy*: non puoi giocare due carte dello stesso tipo a meno di 3 s l'una dall'altra; *Performance Review* ti mette due *Improvement Plan* nel mazzo |
 | Guy Asleep | Un solo colpo enorme con una miccia lunghissima (*Rude Awakening*), ma ogni carta che giochi lo sveglia 1 s prima |
 | New Hire | *Blank Stare* pietrifica tutte le carte sul nastro e le prossime 3 del mazzo: su ognuna c'è scritto *Tap it! ×5*; restano di pietra (anche rimescolate nel mazzo) finché non le rompi |
-| **Security Automaton** (élite) | Colpi che rendono Vulnerabile, *Lockdown* (blocco), si infuria a metà vita |
+| **Security Automaton** (élite) | Colpi che rendono Vulnerabile, *Lockdown* (blocco), *Clearance Check* (due *Red Tape* nel mazzo), si infuria a metà vita |
 | **Slaves CEO** (boss) | *Write-Ups*, *Deadlines* e il colpo *YOU'RE FIRED*; a metà vita accelera |
 
 La difficoltà cresce scendendo di piano.

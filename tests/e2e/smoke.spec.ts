@@ -4,7 +4,7 @@ import { combat, freshGame, startFight } from './helpers';
 test('title, hero select and journey render without errors', async ({ page }) => {
   const problems = await freshGame(page);
   await expect(page.locator('.logo')).toHaveText(/punchcard/i);
-  await page.getByRole('button', { name: /^clock in$/i }).click();
+  await page.getByRole('button', { name: /new run/i }).click();
   await expect(page.locator('.hero-slide')).toHaveCount(3);
   // Carousel: the hero in view is the one that starts.
   await page.locator('.hero-arrow.next').click();
@@ -95,7 +95,7 @@ for (const height of [844, 600]) {
 
 test('the fight waits for Start; meanwhile things can be held to read them', async ({ page }) => {
   await freshGame(page);
-  await page.getByRole('button', { name: /^clock in$/i }).click();
+  await page.getByRole('button', { name: /new run/i }).click();
   await page.getByRole('button', { name: /start shift/i }).click();
   await page.getByRole('button', { name: /enter floor 1/i }).click();
   const clock = () => page.evaluate('window.__combat.time + window.__combat.intro');
@@ -158,7 +158,7 @@ test('tapping the backdrop over the pause button closes the pause menu without r
 
 test('campfire upgrade: tapping selects, the Upgrade button confirms', async ({ page }) => {
   await freshGame(page);
-  await page.getByRole('button', { name: /^clock in$/i }).click();
+  await page.getByRole('button', { name: /new run/i }).click();
   await page.getByRole('button', { name: /start shift/i }).click();
   const floor = await page.evaluate(
     '(() => { const g = window.__game; const n = g.run.nodes.find((x) => x.type === "rest"); g.run.current = n.id; g.run.cleared = false; g.goJourney(); return n.floor; })()',
@@ -197,7 +197,7 @@ test('coming back from the background while paused keeps the pause → fight mus
 
 test('map: after a node, the player picks one of the two lanes and enters it', async ({ page }) => {
   const problems = await freshGame(page);
-  await page.getByRole('button', { name: /^clock in$/i }).click();
+  await page.getByRole('button', { name: /new run/i }).click();
   await page.getByRole('button', { name: /start shift/i }).click();
   await page.evaluate('(() => { const g = window.__game; g.run.cleared = true; g.goJourney(); })()');
   const enter = page.getByRole('button', { name: /choose your path/i });

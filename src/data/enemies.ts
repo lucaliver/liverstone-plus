@@ -57,6 +57,7 @@ const defs: EnemyDef[] = [
     every: 2,
     specials: [
       { id: 'ritual', intent: 'buff', windup: 8, status: [{ id: 'strength', v: 3, target: 'enemy' }], curse: { id: 'leech', n: 1, to: 'draw' } },
+      { id: 'syncUp', intent: 'curse', windup: 7, curse: { id: 'quickSync', n: 2, to: 'belt' } },
     ],
   },
   {
@@ -81,7 +82,7 @@ const defs: EnemyDef[] = [
     main: atk('memo', 7, 7),
     every: 2,
     specials: [
-      { id: 'review', intent: 'debuff', windup: 7, status: [{ id: 'weak', t: 5, target: 'hero' }] },
+      { id: 'review', intent: 'curse', windup: 7, curse: { id: 'pip', n: 2, to: 'draw' } },
       { id: 'writeYouUp', intent: 'curse', windup: 7, curse: { id: 'hex', n: 1, to: 'draw' } },
     ],
     start: [{ id: 'policy' }],
@@ -119,6 +120,7 @@ const defs: EnemyDef[] = [
     specials: [
       atk('rend', 18, 11, { intent: 'charge', status: [{ id: 'vulnerable', t: 5, target: 'hero' }] }),
       { id: 'shieldWall', intent: 'defend', block: 24, windup: 6 },
+      { id: 'clearance', intent: 'curse', windup: 6, curse: { id: 'redTape', n: 2, to: 'draw' } },
     ],
     onHalf: (c) => c.applyStatus('enemy', 'strength', 3),
   },
