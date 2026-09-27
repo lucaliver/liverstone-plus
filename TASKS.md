@@ -5,7 +5,7 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done · `[-]` deferred (with re
 ## TECH — technical debt (safest order first, no regressions)
 
 - [x] T1. Remove the leftover `mem.echo` branch in `Combat.playCard`
-- [ ] T2. Move the Playwright checks into the repo (`tests/e2e`, `npm run e2e`) as a safety net for the refactors
+- [x] T2. Move the Playwright checks into the repo (`tests/e2e`, `npm run e2e`) as a safety net for the refactors
 - [ ] T3. Add ESLint (typescript-eslint) + Prettier, fix the findings
 - [ ] T4. Split `ui/screens/combat.ts` into belt/drag, HUD and FX modules
 - [ ] T5. Split `styles/main.css` into ordered partials (same cascade order)

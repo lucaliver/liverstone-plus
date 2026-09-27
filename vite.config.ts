@@ -7,5 +7,5 @@ export default defineConfig({
   base: './',
   build: { target: 'es2022', assetsInlineLimit: 0 },
   define: { __APP_VERSION__: JSON.stringify(version) },
-  test: { environment: 'node' },
+  test: { environment: 'node', include: ['tests/**/*.test.ts'] },
 } as never);
