@@ -63,6 +63,8 @@ function markup(run: RunState, combat: Combat): string {
         { x: '84%', y: '44%' },
       ])}
       <div class="candle l">${candleFlame()}</div><div class="candle r">${candleFlame()}</div>
+      <!-- act decor (CSS shows the one for the current act): the afternoon's flickering tube light and water cooler -->
+      <div class="neon"></div><div class="cooler">${creature('waterCooler')}</div><div class="neon-dim"></div>
       <div class="shade"></div>
       <div class="enemy-wrap">
         <div class="enemy-art">${creature(enemyDef.art)}</div>
@@ -141,7 +143,12 @@ function queryRefs(el: HTMLElement) {
 }
 
 export function createCombatView(run: RunState, combat: Combat): CombatView {
-  const el = h('div', { class: 'screen combat', 'data-hero': run.hero, style: { '--hero-color': combat.heroDef.color } as never });
+  const el = h('div', {
+    class: 'screen combat',
+    'data-hero': run.hero,
+    'data-act': String(currentNode(run).act),
+    style: { '--hero-color': combat.heroDef.color } as never,
+  });
   el.innerHTML = markup(run, combat);
   const r = queryRefs(el);
 

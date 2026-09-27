@@ -71,6 +71,87 @@
   background: var(--paper2);
   box-shadow: 5px 3px 0 var(--paper2);
 }
+/* act 2, the afternoon shift: a tube light that flickers (the stage dims with it) and a water cooler that glugs */
+.neon,
+.neon-dim,
+.cooler { display: none; }
+[data-act='2'] .neon,
+[data-act='2'] .neon-dim,
+[data-act='2'] .cooler { display: block; }
+[data-act='2'] .candle.l { display: none; }
+.neon {
+  position: absolute;
+  z-index: 0;
+  top: 6px;
+  left: 50%;
+  width: 44%;
+  height: 8px;
+  translate: -50% 0;
+  background: var(--paper);
+  border: 2px solid var(--k);
+  box-shadow: 3px 3px 0 var(--void);
+  pointer-events: none;
+  animation: neon 6s steps(1) infinite;
+}
+/* the two wires it hangs from */
+.neon::before,
+.neon::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  width: 2px;
+  height: 6px;
+  background: var(--k);
+}
+.neon::before { left: 14%; }
+.neon::after { right: 14%; }
+@keyframes neon {
+  70%, 73%, 76%, 81% { background: var(--paper); }
+  71%, 74%, 77% { background: #4a4260; }
+}
+/* the scene dims, not the HP and threat bars (same layer as .enemy-info, which comes later) */
+.neon-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--void);
+  opacity: 0;
+  pointer-events: none;
+  animation: neon-dim 6s steps(1) infinite;
+}
+@keyframes neon-dim {
+  70%, 73%, 76%, 81% { opacity: 0; }
+  71%, 74%, 77% { opacity: 0.3; }
+}
+.cooler {
+  position: absolute;
+  z-index: 1;
+  left: 4%;
+  bottom: 100px;
+  width: 64px;
+  height: 64px;
+  pointer-events: none;
+}
+.cooler .riso { width: 100%; height: 100%; }
+/* a bubble rises through the jug now and then */
+.cooler::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: 46%;
+  top: 38%;
+  width: 4px;
+  height: 4px;
+  background: var(--paper);
+  opacity: 0;
+  animation: glug 3.2s steps(6) infinite;
+}
+@keyframes glug {
+  0%, 60% { opacity: 0; top: 38%; }
+  64% { opacity: 1; top: 38%; }
+  to { opacity: 1; top: 12%; }
+}
+
 /* title screen: office and factory props around the boss */
 .title-hero .prop { position: absolute; z-index: 0; }
 .title-hero .prop .riso { width: 100%; height: 100%; animation: none; }

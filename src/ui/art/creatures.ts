@@ -346,6 +346,18 @@ ${shadow}
 <g fill="#ffd900"><rect x="92" y="100" width="6" height="6"/><rect x="102" y="100" width="6" height="6"/></g>
 <path d="M50 58c10-10 30-14 50-14s40 4 50 14v8c-6 0-6 16-12 16s-4-12-10-12-6 22-12 22-6-22-12-22-8 10-14 10-6-14-14-14-8 8-14 8z" fill="#8ad06a" ${OUT}/>`;
 
+/** Act 2 stage prop: an office water cooler, upside-down jug on top (CSS adds the rising bubble). */
+const waterCooler = `
+${shadow}
+<path d="M70 16h60c6 0 10 4 10 10v52c0 6-4 10-10 10h-18v10H88V88H70c-6 0-10-4-10-10V26c0-6 4-10 10-10z" fill="#9ab8f0" ${OUT}/>
+<path d="M62 48h76v30c0 5-3 8-8 8H70c-5 0-8-3-8-8z" fill="#1c5fd0"/>
+<path d="M60 34h80M60 62h80" stroke="#1b1830" stroke-width="3"/>
+<rect x="56" y="98" width="88" height="88" fill="#f6f0e4" ${OUT}/>
+<rect x="66" y="134" width="68" height="42" fill="#c8c0d8" ${OUT}/>
+<rect x="72" y="108" width="14" height="12" fill="#ff3d9a" ${OUT}/><rect x="114" y="108" width="14" height="12" fill="#1c5fd0" ${OUT}/>
+<rect x="68" y="124" width="64" height="6" fill="#1b1830"/>
+<rect x="144" y="104" width="14" height="44" fill="#f6f0e4" ${OUT}/><path d="M144 116h14M144 128h14" stroke="#1b1830" stroke-width="3"/>`;
+
 /** The Break Room coffee machine: a brass-domed steampunk espresso machine with a pressure gauge and a cup under the spout. */
 const coffeeMachine = `
 <defs>${lg('cm-b', '#9ab8f0', '#1c4fb0')}${lg('cm-g', '#ffe45a', '#d09a20')}</defs>
@@ -630,6 +642,7 @@ export const CREATURES: Record<string, string> = {
   filingCabinet,
   moneyBag,
   toxicBarrel,
+  waterCooler,
   warrior,
   mage,
   necromancer,

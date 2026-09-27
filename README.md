@@ -193,7 +193,8 @@ La difficoltà cresce scendendo di piano.
   con ombre nette sfalsate. Quattro inchiostri: rosa fluo, blu, giallo, inchiostro scuro (+ sovrastampe).
 - **Mai:** sfumature per l'ombreggiatura, glow, finto 3D, cerchi decorativi di sfondo.
 - **Fabbrica con misura:** l'atto 1 è una fabbrica dentro la cripta (ossa, candele in combattimento, pietra, qualche dettaglio di
-  ottone, cartellini e pergamene timbrate); ingranaggi, caldaie e automi crescono nei turni successivi.
+  ottone, cartellini e pergamene timbrate); ingranaggi, caldaie e automi crescono nei turni successivi. Nell'atto 2 lo
+  scontro ha un neon che sfarfalla (la scena si scurisce con lui) e un distributore d'acqua che fa le bolle.
 - **Pixel art** generata dai disegni vettoriali all'avvio: livelli d'inchiostro, retino a puntini, contorno.
 - **Animazioni a scatti** (tranne le finestre, fluide); colpi con flash invertito; danni come "-N" su macchia di sangue,
   al centro del nemico e abbastanza lenti da leggerli. Il nemico sconfitto si scompone nei suoi inchiostri, che scivolano

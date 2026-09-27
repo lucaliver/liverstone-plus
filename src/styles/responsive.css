@@ -30,5 +30,6 @@
   .sleeve-slot .card { --cw: calc(var(--cw-belt) * 0.85 - 8px); }
   .bar { height: 24px; }
   /* no room for combat candles on very short screens (the title keeps its own) */
-  .stage .candle { display: none; }
+  .stage .candle,
+  .stage .cooler { display: none; }
 }
