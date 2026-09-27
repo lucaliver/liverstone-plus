@@ -112,6 +112,7 @@ const en = {
   'combat.toMenu': 'Main menu',
   'combat.toMenuConfirm': 'Leave to the main menu? Your workday is saved, but this job will start over.',
   'combat.unplayable': "Can't be played",
+  'combat.policy': 'Not the same type twice!',
   'combat.noMana': 'Not enough mana',
   'combat.dodged': 'Dodged!',
   'combat.parried': 'Parried!',
@@ -291,6 +292,12 @@ const en = {
   'status.stun.d': 'Cannot act.',
   'status.frozen': 'Frozen',
   'status.frozen.d': 'Frozen in time.',
+  'status.policy': 'No Repeats Policy',
+  'status.policy.d': "You can't play two cards of the same type (Attack, Spell, Skill…) within 3s of each other. Curses don't count.",
+  'status.lightSleeper': 'Light Sleeper',
+  'status.lightSleeper.d': 'Every card you play wakes him 1s sooner.',
+  'hex.petrify': 'Petrify',
+  'hex.petrify.d': 'Tap a petrified card {n} times to crack it; it thaws, then plays normally.',
 
   // --------------------------------------------------------------- cards
   'card.strike.name': 'Punch',
@@ -447,6 +454,8 @@ const en = {
   'card.leech.name': 'Mandatory Fun',
   'card.leech.desc': 'If it leaves the belt, lose {0} [mana].',
   'card.toxin.name': 'Gossip',
+  'card.gatekeeping.name': 'Gatekeeping',
+  'card.gatekeeping.desc': 'Three cards wide: it covers the cards ahead of it on the belt. Pay to clear it.',
   'card.toxin.desc': 'If it leaves the belt, gain {0} [poison].',
 
   // ------------------------------------------------------------- enemies
@@ -457,6 +466,9 @@ const en = {
   'enemy.goblin.name': 'Goblin Consultant',
   'enemy.boneKnight.name': 'Security Automaton',
   'enemy.lich.name': 'Slaves CEO',
+  'enemy.hr.name': 'HR Bitch',
+  'enemy.sleeper.name': 'Guy Asleep',
+  'enemy.newHire.name': 'New Hire',
   'enemy.boneKnight.half': 'Below half HP: gains 3 Strength.',
   'enemy.lich.half': 'Below half HP: acts 50% faster.',
 
@@ -479,6 +491,13 @@ const en = {
   'move.lightFuse': 'Set Deadline',
   'move.bombs': 'Deadlines',
   'move.boneCrush': 'Seniority',
+  'move.gatekeep': 'Gatekeep',
+  'move.memo': 'Memo',
+  'move.review': 'Performance Review',
+  'move.writeYouUp': 'Write You Up',
+  'move.rudeAwakening': 'Rude Awakening',
+  'move.coffeeSpill': 'Coffee Spill',
+  'move.blankStare': 'Blank Stare',
 } satisfies Record<string, string>;
 
 export default en;

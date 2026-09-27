@@ -3,6 +3,7 @@ import { sfx } from '../../audio/sfx';
 import { CARD_LIST } from '../../data/cards';
 import { CONFIG } from '../../data/config';
 import { ENEMY_LIST } from '../../data/enemies';
+import { STATUSES } from '../../data/statuses';
 import type { EnemyDef, MoveDef } from '../../game/types';
 import { HERO_LIST } from '../../data/heroes';
 import { isDiscovered } from '../../game/meta';
@@ -25,8 +26,13 @@ const TIERS: EnemyDef['tier'][] = ['normal', 'elite', 'boss'];
 function foeView(e: EnemyDef): HTMLElement {
   const row = (m: MoveDef): string =>
     `<li data-intent="${m.intent}"><span class="mi">${icon(INTENT_ICON[m.intent] ?? 'star')}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`;
-  const moves = `${row(e.main)}<li class="foe-every">${t('compendium.every', { n: e.every })}</li>${e.specials.map(row).join('')}`;
-  const half = e.onHalf ? `<p class="foe-half">${icon('rage')}${t(`enemy.${e.id}.half`)}</p>` : '';
+  const every = e.specials.length ? `<li class="foe-every">${t('compendium.every', { n: e.every })}</li>` : '';
+  const moves = `${row(e.main)}${every}${e.specials.map(row).join('')}`;
+  const passives = (e.start ?? [])
+    .filter((s) => STATUSES[s.id].passive)
+    .map((s) => `<p class="foe-half">${icon(STATUSES[s.id].icon)}<b>${t(`status.${s.id}`)}</b>: ${t(`status.${s.id}.d`, { v: s.v ?? 1 })}</p>`)
+    .join('');
+  const half = passives + (e.onHalf ? `<p class="foe-half">${icon('rage')}${t(`enemy.${e.id}.half`)}</p>` : '');
   return h('article', {
     class: 'foe',
     html: `<div class="foe-head"><div class="foe-art">${creature(e.art)}</div><div class="foe-id"><h3>${t(`enemy.${e.id}.name`)}</h3>${

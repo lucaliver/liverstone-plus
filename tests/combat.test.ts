@@ -164,6 +164,43 @@ describe('combat engine', () => {
     expect(c.playCard(card.uid)).toBe(true);
   });
 
+  it('Gatekeeping covers the cards ahead of it until paid off', () => {
+    const c = setup({ deck: deckOf(new Array(8).fill('strike')) });
+    run(c, CONFIG.introTime + 1);
+    c.hero.mana = 10;
+    c.addTempCard('gatekeeping', 'belt');
+    run(c, 1);
+    const gate = c.belt.find((b) => b.card.id === 'gatekeeping')!;
+    const under = c.belt.find((b) => b.card.id === 'strike' && b.pos > gate.pos && c.isCovered(b.card.uid));
+    expect(under).toBeDefined();
+    expect(c.playCard(under!.card.uid)).toBe(false);
+    expect(c.playCard(gate.card.uid)).toBe(true);
+    expect(c.playCard(under!.card.uid)).toBe(true);
+  });
+
+  it('HR policy: no two cards of the same type in a row', () => {
+    const c = setup({ enemy: ENEMIES.hr, deck: deckOf(['strike', 'strike', 'strike', 'defend', 'defend', 'defend']) });
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.mana = 10;
+    const strikes = c.belt.filter((b) => b.card.id === 'strike');
+    expect(c.playCard(strikes[0].card.uid)).toBe(true);
+    if (strikes[1]) expect(c.playCard(strikes[1].card.uid)).toBe(false);
+    const defend = c.belt.find((b) => b.card.id === 'defend');
+    if (defend) expect(c.playCard(defend.card.uid)).toBe(true);
+    // The policy only covers quick repeats: after a pause the same type is fine again.
+    run(c, 3.1);
+    const again = c.belt.find((b) => b.card.id === 'defend');
+    if (again) expect(c.playCard(again.card.uid)).toBe(true);
+  });
+
+  it('Light Sleeper: every card played brings his hit 1s closer', () => {
+    const c = setup({ enemy: ENEMIES.sleeper, deck: deckOf(new Array(8).fill('strike')) });
+    run(c, CONFIG.introTime + 0.01);
+    const before = c.enemy.timer;
+    c.playCard(c.belt[0].card.uid);
+    expect(c.enemy.timer).toBeCloseTo(before + 1, 5);
+  });
+
   it('sleeve slots come from the hero', () => {
     expect(setup({ hero: HEROES.warrior }).sleeve.length).toBe(1);
     expect(setup({ hero: HEROES.necromancer }).sleeve.length).toBe(3);
@@ -267,8 +304,9 @@ describe('combat engine', () => {
       if (e.type === 'enemyAct') seen.push(e.move.id);
     });
     const { main, specials } = ENEMIES.skeleton;
-    run(c, CONFIG.introTime + 4 * main.windup + 2 * specials[0].windup + 1);
-    expect(seen.slice(0, 6)).toEqual(['slash', 'slash', 'boneCrush', 'slash', 'slash', 'boneCrush']);
+    run(c, CONFIG.introTime + 4 * main.windup + specials[0].windup + specials[1].windup + 1);
+    // Specials rotate: Seniority, then Gatekeep.
+    expect(seen.slice(0, 6)).toEqual(['slash', 'slash', 'boneCrush', 'slash', 'slash', 'gatekeep']);
   });
 
   it('abilities cost mana and cannot be used without it', () => {

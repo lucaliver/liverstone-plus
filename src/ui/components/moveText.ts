@@ -1,5 +1,6 @@
 import { t } from '../../core/i18n';
 import { CONFIG } from '../../data/config';
+import { HEXES } from '../../data/hexes';
 import { STATUSES } from '../../data/statuses';
 import type { MoveDef } from '../../game/types';
 import { icon } from '../art/icons';
@@ -42,6 +43,10 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
     const card = t(`card.${m.curse.id}.name`);
     const n = m.curse.n > 1 ? ` ×${m.curse.n}` : '';
     parts.push(`<span class="fx fx-curse">${icon('skull')}${verbose ? t('move.fx.adds', { card }) : card}<b>${n}</b></span>`);
+  }
+  if (m.hex) {
+    const n = m.hex.n > 1 ? ` ×${m.hex.n}` : '';
+    parts.push(`<span class="fx fx-curse">${icon(HEXES[m.hex.id].icon)}${t(`hex.${m.hex.id}`)}<b>${n}</b></span>`);
   }
   if (m.steal) parts.push(`<span class="fx fx-steal">${icon('hand')}${t('compendium.steal')}</span>`);
   return parts.join(' ');

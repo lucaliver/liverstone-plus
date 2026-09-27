@@ -39,7 +39,15 @@ export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
   const rate = c.enemyTimeRate();
   const timeToHit = rate > 0 ? (e.move.windup - e.timer) / rate : Infinity;
   const incoming = c.intentDamage(e.move) * (e.move.hits ?? 1);
-  const affordable = cards.filter(({ card }) => c.isPlayable(card) && c.canAfford(card));
+  // A human taps a petrified card a few times in a row: break one hex per decision.
+  const hexed = c.belt.find((b) => b.card.hex && b.card.hex.left > 0 && !c.isCovered(b.card.uid));
+  if (hexed) {
+    for (let i = 0; i < 5; i++) c.playCard(hexed.card.uid);
+    return;
+  }
+  const affordable = cards.filter(
+    ({ card, pos }) => !card.hex && c.isPlayable(card) && c.canAfford(card) && !c.ruleBlock(CARDS[card.id]) && (pos < 0 || !c.isCovered(card.uid)),
+  );
 
   const score = ({ card, pos }: { card: CombatCard; pos: number }): number => {
     const def = CARDS[card.id];
@@ -48,6 +56,7 @@ export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
     const urgency = pos > 0.75 ? 1.5 : 1;
     switch (def.type) {
       case 'curse':
+        if (card.id === 'gatekeeping') return 30;
         return card.id === 'hex' && pos > 0.6 ? 50 : c.hero.mana >= c.hero.maxMana - 1 ? 2 : -1;
       case 'potion':
         if (card.id === 'healingPotion') return c.hero.hp < c.hero.maxHp * 0.5 ? 40 : -1;

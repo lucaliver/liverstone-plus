@@ -107,6 +107,7 @@ export class Combat {
   specialUsed = false;
   /** The last card the hero played this fight (rules such as "not the same type twice"). */
   lastPlayed: CardDef | null = null;
+  lastPlayedAt = -Infinity;
   /** Card currently resolving, so effect helpers know its type. */
   private current: { card: CombatCard; def: CardDef } | null = null;
   /** Free-form per-combat state for relics and powers. */
@@ -225,6 +226,20 @@ export class Combat {
 
   keywords(card: CardInst): string[] {
     return cardKeywordsOf(card);
+  }
+
+  /**
+   * True when a wide card (Gatekeeping) hides most of this belt card: the gate stretches left of the wide card's
+   * face over the cards ahead of it, so they can't be played or grabbed until it's paid off.
+   */
+  isCovered(uid: number): boolean {
+    const b = this.belt.find((x) => x.card.uid === uid);
+    if (!b) return false;
+    return this.belt.some((w) => {
+      const span = CARDS[w.card.id].span ?? 1;
+      const d = b.pos - w.pos;
+      return w !== b && span > 1 && w.row === b.row && d > 0 && d < (span - 0.5) * CONFIG.cardWidth;
+    });
   }
 
   /** Why the enemy's rules (passive statuses) forbid playing this card now, or null. */
@@ -484,6 +499,7 @@ export class Combat {
     const card = beltIdx >= 0 ? this.belt[beltIdx].card : sleeveIdx >= 0 ? this.sleeve[sleeveIdx] : null;
     if (!card) return false;
     const def = CARDS[card.id];
+    if (beltIdx >= 0 && this.isCovered(uid)) return false;
     if (card.hex) {
       this.tapHex(card);
       return false;
@@ -516,6 +532,7 @@ export class Combat {
     if (this.result === 'lose') return true;
 
     this.lastPlayed = def;
+    this.lastPlayedAt = this.time;
     this.heroDef.hooks.onCardPlayed?.(this, card, def, spent);
     for (const id of this.relics) RELICS[id]?.hooks?.onCardPlayed?.(this, card, def);
     for (const side of ['hero', 'enemy'] as const) {
@@ -542,8 +559,8 @@ export class Combat {
     const target = slot ?? this.sleeve.indexOf(null);
     if (target < 0 || target >= this.sleeve.length) return false;
     const b = this.belt[beltIdx];
-    // A hexed card is stuck to the belt until freed.
-    if (b.card.hex) return false;
+    // A hexed card is stuck to the belt until freed; a covered one can't be reached.
+    if (b.card.hex || this.isCovered(uid)) return false;
     const old = this.sleeve[target];
     // The hero special never leaves its hand.
     if (old?.uid === SPECIAL_UID) return false;

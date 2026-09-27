@@ -225,6 +225,81 @@ ${shadow}
 <path d="M74 34V2h52v32z" fill="#4a2a90" ${OUT}/><rect x="74" y="22" width="52" height="8" fill="#ff3d9a"/>
 <path d="M56 32h88c0 6-4 10-10 10H66c-6 0-10-4-10-10z" fill="#4a2a90" ${OUT}/>`;
 
+/** HR Bitch: a harpy in a pink blazer, hair in a bun (pencil stuck in it), cat-eye glasses, clipboard in one talon, red pen in the other. */
+const hr = `
+<defs>${lg('hr-w', '#c080e0', '#4a2090')}${lg('hr-j', '#ff8ac8', '#c02a80')}</defs>
+${shadow}
+<g class="limb"><path d="M70 96C40 72 12 82 4 112c14-6 22-4 28 2-10 4-16 12-18 22 12-8 24-8 32-2-6 6-8 14-8 22 14-12 28-20 40-20z" fill="url(#hr-w)" ${OUT}/>
+<path d="M130 96c30-24 58-14 66 16-14-6-22-4-28 2 10 4 16 12 18 22-12-8-24-8-32-2 6 6 8 14 8 22-14-12-28-20-40-20z" fill="url(#hr-w)" ${OUT}/></g>
+<path d="M82 170l-8 18M82 170l0 18M82 170l8 18M118 170l-8 18M118 170l0 18M118 170l8 18" stroke="#1b1830" stroke-width="7" stroke-linecap="round"/>
+<path d="M82 170l-8 18M82 170l0 18M82 170l8 18M118 170l-8 18M118 170l0 18M118 170l8 18" stroke="#ffd900" stroke-width="3" stroke-linecap="round"/>
+<path d="M70 146h60l4 26H66z" fill="#1b1830" ${OUT}/>
+<path d="M60 102c12-8 26-10 40-10s28 2 40 10l-6 50H66z" fill="url(#hr-j)" ${OUT}/>
+<path d="M88 96l12 26 12-26z" fill="#f6f0e4" ${OUT}/>
+<path d="M88 96l-8 22 18 8zM112 96l8 22-18 8z" fill="#c02a80" ${OUT}/>
+<g fill="#f6f0e4" ${OUT}><circle cx="90" cy="102" r="3"/><circle cx="100" cy="106" r="3"/><circle cx="110" cy="102" r="3"/></g>
+<!-- clipboard (left) and red pen (right) -->
+<rect x="24" y="110" width="38" height="46" fill="#c9a060" ${OUT}/><rect x="29" y="120" width="28" height="32" fill="#f6f0e4"/>
+<path d="M33 128h20M33 136h20M33 144h12" stroke="#1b1830" stroke-width="3"/><rect x="36" y="106" width="14" height="8" fill="#1b1830"/>
+<path d="M56 128l10-4 4 6-8 6zM56 142l10-2 2 6-10 4z" fill="#ffd900" ${OUT}/>
+<path d="M140 110c14 2 22 10 22 22l-10 4c-2-8-6-12-12-14z" fill="url(#hr-j)" ${OUT}/>
+<g class="limb"><path d="M150 134l20-38 8 4-20 38z" fill="#ff3d9a" ${OUT}/><path d="M150 134l8 4-8 6z" fill="#1b1830"/></g>
+<path d="M148 130l10-2 2 8-10 2z" fill="#ffd900" ${OUT}/>
+<!-- head: bun with a pencil, cat-eye glasses, stern mouth -->
+<rect x="92" y="78" width="16" height="16" fill="#f4ecd6" ${OUT}/>
+<path d="M72 54c0-22 12-36 28-36s28 14 28 36c0 18-12 32-28 32S72 72 72 54z" fill="#f4ecd6" ${OUT}/>
+<path d="M108 2l12 22" stroke="#1b1830" stroke-width="7"/><path d="M108 2l12 22" stroke="#ffd900" stroke-width="3"/>
+<circle cx="100" cy="14" r="13" fill="#4a2090" ${OUT}/>
+<path d="M70 52c-2-22 12-36 30-36s32 14 30 36c-6-12-18-20-30-20s-24 8-30 20z" fill="#4a2090" ${OUT}/>
+<path d="M70 46l26 4v12H78zM130 46l-26 4v12h18z" fill="#1b1830"/>
+<g class="eye"><rect x="82" y="53" width="7" height="4" fill="#ff3d9a"/><rect x="111" y="53" width="7" height="4" fill="#ff3d9a"/></g>
+<path d="M90 74h20" stroke="#ff3d9a" stroke-width="5"/>`;
+
+/** Guy Asleep: an ogre in overalls asleep on his desk, nightcap on, drooling, mug gone cold, Zs rising. */
+const sleeper = `
+<defs>${rg('gs-b', '#a8c860', '#4a7a30')}${lg('gs-o', '#6a9af8', '#1c4fb0')}</defs>
+${shadow}
+<path d="M40 150c0-40 24-64 60-64s60 24 60 64z" fill="url(#gs-o)" ${OUT}/>
+<path d="M66 96l8 54M134 96l-8 54" stroke="#ffd900" stroke-width="6"/>
+<path d="M8 150h184v14H8z" fill="#8a5a2a" ${OUT}/><path d="M18 164h14v24H18zM168 164h14v24h-14z" fill="#6a4a2a" ${OUT}/>
+<path d="M148 126h20v24h-20z" fill="#f6f0e4" ${OUT}/><path d="M168 132c8 0 8 12 0 12" stroke="#1b1830" stroke-width="4" fill="none"/><path d="M148 136h20" stroke="#ff3d9a" stroke-width="5"/>
+<path d="M26 150c0-16 22-24 54-22l26 6v16zM146 150c0-10-12-18-30-20l-20 4v16z" fill="url(#gs-b)" ${OUT}/>
+<!-- head resting on the arms -->
+<ellipse cx="96" cy="122" rx="42" ry="30" fill="url(#gs-b)" ${OUT}/>
+<path d="M72 118c5 5 12 5 17 0M104 118c5 5 12 5 17 0" stroke="#1b1830" stroke-width="4" fill="none"/>
+<ellipse cx="96" cy="126" rx="7" ry="5" fill="#5a8a30" ${OUT}/>
+<ellipse cx="96" cy="140" rx="12" ry="6" fill="#1b1830"/>
+<path d="M84 140l3 8 3-8zM102 140l3 8 3-8z" fill="#f6f0e4"/>
+<path d="M108 142c3 8 3 14 0 18-3-4-4-10 0-18z" fill="#9ab8f0" ${OUT}/>
+<!-- nightcap -->
+<path d="M56 108c4-26 20-40 42-40s34 12 38 26l32 12-36 6z" fill="#ff3d9a" ${OUT}/><circle cx="170" cy="106" r="9" fill="#f6f0e4" ${OUT}/>
+<path d="M56 104c22-8 58-8 80 0v8c-22-6-58-6-80 0z" fill="#f6f0e4" ${OUT}/>
+<!-- Zs -->
+<g class="eye" fill="#f6f0e4" ${OUT}><path d="M126 42h16v5l-10 11h10v5h-16v-5l10-11h-10z"/><path d="M150 14h22v6l-14 15h14v6h-22v-6l14-15h-14z"/></g>`;
+
+/** New Hire: an eager young gorgon on day one, snakes for hair, a coffee tray for everyone, a huge trainee badge, and a stare that turns your cards to stone. */
+const newHire = `
+<defs>${lg('nh-s', '#8ad06a', '#2a7a3a')}${lg('nh-sh', '#f8f2e2', '#d8d0c0')}${glow('nh-g', '#ffd900')}</defs>
+${shadow}
+<path d="M50 188c2-46 20-74 50-74s48 28 50 74z" fill="url(#nh-sh)" ${OUT}/>
+<path d="M98 118h8l2 6-8 30-6-4z" fill="#1c5fd0" ${OUT}/>
+<path d="M84 116l14 36 16-36" stroke="#ff3d9a" stroke-width="4" fill="none"/>
+<rect x="84" y="150" width="30" height="34" fill="#ffd900" ${OUT}/><rect x="89" y="155" width="20" height="12" fill="#1b1830"/><path d="M89 174h20" stroke="#1b1830" stroke-width="3"/>
+<!-- coffee tray for the whole office -->
+<rect x="116" y="140" width="66" height="9" fill="#6a4a2a" ${OUT}/>
+<path d="M121 120h13v20h-13zM139 120h13v20h-13zM157 120h13v20h-13z" fill="#f6f0e4" ${OUT}/><path d="M120 118h15v5h-15zM138 118h15v5h-15zM156 118h15v5h-15z" fill="#ff3d9a"/>
+<path d="M144 150c-8 8-22 10-34 4l2-10c8 2 18 0 24-4z" fill="url(#nh-sh)" ${OUT}/><circle cx="150" cy="148" r="7" fill="url(#nh-s)" ${OUT}/>
+<!-- left hand waving hello -->
+<g class="limb"><path d="M54 146c-12-10-16-28-10-42l12 2c-4 12-2 24 6 32z" fill="url(#nh-sh)" ${OUT}/><circle cx="48" cy="98" r="10" fill="url(#nh-s)" ${OUT}/></g>
+<!-- snakes for hair -->
+<g fill="none" stroke-linecap="round"><path d="M74 44c-14-6-24 2-24 12M86 30c-6-14-20-16-28-8M100 26c0-16 10-24 22-18M114 30c8-12 22-12 28-2M126 46c14-4 22 6 20 16" stroke="#1b1830" stroke-width="12"/>
+<path d="M74 44c-14-6-24 2-24 12M86 30c-6-14-20-16-28-8M100 26c0-16 10-24 22-18M114 30c8-12 22-12 28-2M126 46c14-4 22 6 20 16" stroke="#3aa05a" stroke-width="7"/></g>
+<g fill="#3aa05a" ${OUT}><circle cx="50" cy="58" r="6"/><circle cx="58" cy="22" r="6"/><circle cx="122" cy="8" r="6"/><circle cx="142" cy="28" r="6"/><circle cx="146" cy="62" r="6"/></g>
+<path d="M44 62l-4 4M54 18l-4-4M128 4l4-4M148 26l4-2M152 64l4 2" stroke="#ff3d9a" stroke-width="2.5"/>
+<path d="M68 64c0-24 14-40 32-40s32 16 32 40c0 20-14 36-32 36S68 84 68 64z" fill="url(#nh-s)" ${OUT}/>
+${eyes(86, 114, 62, 6, '#ffd900', 'nh-g')}
+<path d="M82 80c10 9 26 9 36 0z" fill="#f6f0e4" stroke="#1b1830" stroke-width="3.5"/>`;
+
 /** The Break Room coffee machine: a brass-domed steampunk espresso machine with a pressure gauge and a cup under the spout. */
 const coffeeMachine = `
 <defs>${lg('cm-b', '#9ab8f0', '#1c4fb0')}${lg('cm-g', '#ffe45a', '#d09a20')}</defs>
@@ -322,6 +397,9 @@ export const CREATURES: Record<string, string> = {
   consultant,
   automaton,
   ceo,
+  hr,
+  sleeper,
+  newHire,
   coffeeMachine,
   warrior,
   mage,

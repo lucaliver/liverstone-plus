@@ -112,6 +112,20 @@ export const neutralCards: CardDef[] = [
 /** Cards enemies shuffle into your piles. They exist only for the current fight. */
 export const curseCards: CardDef[] = [
   {
+    id: 'gatekeeping',
+    face: '{gate}',
+    cls: 'curse',
+    type: 'curse',
+    rarity: 'special',
+    cost: 1,
+    vals: [],
+    keywords: ['exhaust', 'fleeting'],
+    // Three cards wide: it rides over the cards ahead of it until paid off.
+    span: 3,
+    art: 'gate',
+    play: () => {},
+  },
+  {
     id: 'slime',
     face: '{clog}',
     cls: 'curse',

@@ -28,6 +28,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   snow: { icon: 'snow' },
   exit: { icon: 'left' },
   clog: { icon: 'slime' },
+  gate: { icon: 'gate' },
   boom: { icon: 'bomb' },
   drain: { icon: 'crystal', sign: '-' },
   crystal: { icon: 'crystalSlot', sign: '+' },

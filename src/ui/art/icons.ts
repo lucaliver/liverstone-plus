@@ -198,6 +198,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<rect x="20" y="6" width="28" height="40" rx="4" transform="rotate(12 34 26)" opacity=".55"/><rect x="14" y="14" width="28" height="40" rx="4"/>`,
   },
   pause: { el: 'steel', svg: `<rect x="16" y="10" width="11" height="44" rx="3"/><rect x="37" y="10" width="11" height="44" rx="3"/>` },
+  gate: {
+    el: 'curse',
+    svg: `<rect x="4" y="8" width="56" height="9"/><rect x="4" y="47" width="56" height="9"/><path d="M8 17h7v30H8zM22 17h7v30h-7zM36 17h7v30h-7zM50 17h7v30h-7z"/><rect x="26" y="26" width="12" height="12" fill="#16121f"/>`,
+  },
   coffee: {
     el: 'fire',
     svg: `<path d="M8 28h38v16c0 9-7 16-16 16h-6C15 60 8 53 8 44z"/><path d="M46 32h5c6 0 10 4 10 9s-4 9-10 9h-6v-7h6c2 0 3-1 3-2s-1-2-3-2h-5z"/><g ${S} stroke-width="4.5"><path d="M18 22c-4-5 4-8 0-14M28 22c-4-5 4-8 0-14M38 22c-4-5 4-8 0-14"/></g>`,

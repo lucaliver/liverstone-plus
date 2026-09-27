@@ -1,5 +1,6 @@
 import { t } from '../../core/i18n';
 import { type SoundId, sfx } from '../../audio/sfx';
+import { HEXES } from '../../data/hexes';
 import { STATUSES } from '../../data/statuses';
 import { discover } from '../../game/meta';
 import type { CombatEvent } from '../../game/types';
@@ -31,6 +32,9 @@ const HIT_OFFSETS: [number, number][] = [
 /** Turns combat engine events into feedback: floating text, particles, sounds, haptics and small animations. */
 export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'win' | 'lose') => void): () => void {
   const { r } = v;
+
+  /** Hexes already explained this fight (one hint each). */
+  const hexHinted = new Set<string>();
 
   const onEvent = (e: CombatEvent): void => {
     switch (e.type) {
@@ -137,6 +141,11 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         const el = cards.elementOf(e.card.uid);
         if (el) v.retrigger(el, 'hex-in');
         sfx('curse');
+        const id = e.card.hex?.id;
+        if (id && !hexHinted.has(id)) {
+          hexHinted.add(id);
+          v.toast(t(`hex.${id}.d`, { n: HEXES[id].taps }));
+        }
         break;
       }
       case 'hexTap': {

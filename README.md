@@ -107,7 +107,8 @@ I mazzi iniziali hanno solo carte base e cristalli; tutte le altre arrivano come
   premuto. Una condizione è tra parentesi (es. un attacco che fa più danni se hai Blocco).
 - **Potenziamento:** ogni carta ha una versione migliorata, ottenibile in sala pausa (*Training*).
 - **Maledizioni:** date dai nemici, durano solo lo scontro: *Drama* intasa il nastro, *Write-Up* ti ferisce,
-  *Deadline* esplode, *Mandatory Fun* ruba mana e *Gossip* avvelena se le lasci uscire.
+  *Deadline* esplode, *Mandatory Fun* ruba mana e *Gossip* avvelena se le lasci uscire. *Gatekeeping* è larga
+  tre carte e copre quelle davanti. Alcuni nemici maledicono invece le tue carte (*pietrificate*: toccale finché si rompono).
 - **Parole chiave:** Innate (arriva per prima), Esaurisci (una volta per scontro), Consuma (sparisce dal mazzo),
   Fugace (sparisce se esce dal nastro), Volatile (effetto all'uscita), Rush (accelera il nastro), Potere (dura
   tutto lo scontro), X (spende tutto il mana).
@@ -119,10 +120,13 @@ I mazzi iniziali hanno solo carte base e cristalli; tutte le altre arrivano come
 | Nemico | Stile |
 | --- | --- |
 | The Snitch | La spia: colpi rapidi e raffiche (*Rat Out*) |
-| Senior Boomer | Colpi lenti, poi un colpo pesantissimo (*Seniority*) |
+| Senior Boomer | Colpi lenti, un colpo pesantissimo (*Seniority*) e *Gatekeep*: una maledizione larga tre carte che copre le carte davanti a sé sul nastro finché non la paghi (1 mana) |
 | Toxic Coworker | Il collega tossico: riempie il nastro di *Drama* e il mazzo di *Gossip* |
 | Team Leader | *Team Building* lo rende più forte e ti rifila *Mandatory Fun* |
 | Goblin Consultant | Ruba carte (*Outsource*) e ti mette *Deadline* sul nastro |
+| HR Bitch | Passiva *No Repeats Policy*: non puoi giocare due carte dello stesso tipo a meno di 3 s l'una dall'altra; *Performance Review* ti indebolisce |
+| Guy Asleep | Un solo colpo enorme con una miccia lunghissima (*Rude Awakening*), ma ogni carta che giochi lo sveglia 1 s prima |
+| New Hire | *Blank Stare* pietrifica due carte del nastro: vanno toccate 5 volte per romperle, poi tornano giocabili |
 | **Security Automaton** (élite) | Colpi che rendono Vulnerabile, *Lockdown* (blocco), si infuria a metà vita |
 | **Slaves CEO** (boss) | *Write-Ups*, *Deadlines* e il colpo *YOU'RE FIRED*; a metà vita accelera |
 

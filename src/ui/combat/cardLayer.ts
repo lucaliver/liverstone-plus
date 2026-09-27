@@ -216,7 +216,8 @@ export function createCardLayer(v: CombatView): CardLayer {
         r.beltCards.append(ce.el);
       }
       const hex = b.card.hex;
-      toggle(ce.el, 'poor', !hex && (!combat.canAfford(b.card) || !combat.isPlayable(b.card)));
+      const def = CARDS[b.card.id];
+      toggle(ce.el, 'poor', !hex && (!combat.canAfford(b.card) || !combat.isPlayable(b.card) || !!combat.ruleBlock(def)));
       toggle(ce.el, 'hexed', !!hex && hex.left > 0);
       toggle(ce.el, 'thawing', !!hex && hex.left <= 0);
       if (hex) ce.el.dataset.hexLeft = String(hex.left);
