@@ -1,12 +1,13 @@
 # Liverstone — technical guide
 
-Real-time conveyor-belt deckbuilder for mobile browsers (portrait). Game design, features and roadmap live in
-[README.md](README.md) (Italian, the owner's doc). This file is the technical guide: read it before changing code.
+Real-time conveyor-belt deckbuilder for mobile browsers (portrait). A feature overview lives in
+[README.md](README.md) (Italian, the owner's doc; no exact numbers or task lists there, so balancing never touches it).
+This file is the technical guide: read it before changing code.
 
 ## Working agreement
 
 - Reply to the owner in **Italian**. Game text is **English** (i18n-ready).
-- Work task by task; track tasks in the README "Task in corso" section; **commit after each task** with a clear message.
+- Work task by task; **commit after each task** with a clear message (git history is the task log).
 - Official style: **riso pop inks + pixel art, a bit dark/scary**. Never add gradients for shading, glows, fake 3D,
   decorative background circles, industrial motifs, emoji or Unicode symbols as icons (use pixel icons).
 - Before handing over: `npm run check` and `npm run e2e` must pass, then look at the screens you touched
