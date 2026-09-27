@@ -3,7 +3,7 @@ import { combat, freshGame, startFight } from './helpers';
 
 test('title, hero select and journey render without errors', async ({ page }) => {
   const problems = await freshGame(page);
-  await expect(page.locator('.logo')).toHaveText(/liverstone/i);
+  await expect(page.locator('.logo')).toHaveText(/punchcard/i);
   await page.getByRole('button', { name: /^clock in$/i }).click();
   await expect(page.locator('.hero-slide')).toHaveCount(3);
   // Carousel: the hero in view is the one that starts.

@@ -1,4 +1,4 @@
-/* Liverstone styles. Order matters: later files override earlier ones (responsive rules stay last). */
+/* Punchcard styles. Order matters: later files override earlier ones (responsive rules stay last). */
 @import './tokens.css';
 @import './shell.css';
 @import './pixel.css';
