@@ -35,7 +35,7 @@ export function restScreen(run: RunState, onDone: () => void): Screen {
           title: t('rest.smithHint'),
           confirmLabel: t('rest.upgrade'),
           filter: canUpgrade,
-          preview: (c) => ({ ...c, up: true }),
+          previewSelected: (c) => ({ ...c, up: true }),
           onPick: (c) => {
             sfx('block');
             upgradeCard(run, c.uid);

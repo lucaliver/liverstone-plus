@@ -220,7 +220,8 @@ export function sortDeck(deck: CardInst[]): CardInst[] {
 /** Deck grid. With `onPick`, tapping a card selects it; otherwise tapping opens its detail. */
 /**
  * Deck grid. Without `onPick`, tapping (or holding) a card opens its detail.
- * With `onPick`: tap selects a card, hold shows its detail, and the confirm button calls `onPick`.
+ * With `onPick`: tap selects a card (shown as `previewSelected` if given, e.g. its upgraded version),
+ * hold shows its detail, and the single confirm button calls `onPick`. Tapping outside cancels.
  */
 export function openDeck(
   deck: CardInst[],
@@ -229,38 +230,52 @@ export function openDeck(
     onPick?: (c: CardInst) => void;
     confirmLabel?: string;
     filter?: (c: CardInst) => boolean;
-    preview?: (c: CardInst) => CardInst;
+    previewSelected?: (c: CardInst) => CardInst;
   } = {},
 ): ModalHandle {
   const cards = sortDeck(deck).filter(opts.filter ?? (() => true));
-  const shown = (c: CardInst): CardInst => (opts.preview ? opts.preview(c) : c);
   let selected: CardInst | null = null;
   let confirm: HTMLButtonElement | null = null;
-  const els = cards.map((c) => {
-    const el = cardView(shown(c));
-    if (opts.onPick) {
-      onTapOrHold(
-        el,
-        () => {
-          sfx('tap');
-          selected = selected?.uid === c.uid ? null : c;
-          for (const [i, x] of els.entries()) x.classList.toggle('sel', cards[i].uid === selected?.uid);
-          grid.classList.toggle('has-sel', !!selected);
-          if (confirm) confirm.disabled = !selected;
-        },
-        () => openCardDetail(shown(c)),
-      );
-    } else {
+
+  const makeEl = (c: CardInst, isSelected: boolean): HTMLElement => {
+    const el = cardView(isSelected && opts.previewSelected ? opts.previewSelected(c) : c);
+    el.classList.toggle('sel', isSelected);
+    if (!opts.onPick) {
       onPress(el, () => {
         sfx('tap');
         openCardDetail(c);
       });
+      return el;
     }
+    onTapOrHold(
+      el,
+      () => {
+        sfx('tap');
+        select(selected?.uid === c.uid ? null : c);
+      },
+      () => openCardDetail(isSelected && opts.previewSelected ? opts.previewSelected(c) : c),
+    );
     return el;
-  });
+  };
+  const els = cards.map((c) => makeEl(c, false));
   const grid = h('div', { class: `deck-grid ${opts.onPick ? 'pick' : ''}` }, ...els);
+
+  // Re-render the old and new selection (they may change look, e.g. base ↔ upgraded).
+  function select(c: CardInst | null): void {
+    const prev = selected;
+    selected = c;
+    for (const [i, card] of cards.entries()) {
+      if (card.uid !== prev?.uid && card.uid !== c?.uid) continue;
+      const fresh = makeEl(card, card.uid === c?.uid);
+      els[i].replaceWith(fresh);
+      els[i] = fresh;
+    }
+    grid.classList.toggle('has-sel', !!selected);
+    if (confirm) confirm.disabled = !selected;
+  }
+
   const handle = openModal({
-    title: `${opts.title ?? t('deck.title')} (${cards.length})`,
+    title: opts.onPick ? (opts.title ?? t('deck.title')) : `${opts.title ?? t('deck.title')} (${cards.length})`,
     body: cards.length ? grid : h('p', null, t('deck.empty')),
     actions: opts.onPick
       ? [
@@ -271,7 +286,6 @@ export function openDeck(
               opts.onPick?.(selected);
             },
           },
-          { label: t('common.cancel'), cls: 'secondary' },
         ]
       : [{ label: t('common.close'), cls: 'secondary' }],
   });

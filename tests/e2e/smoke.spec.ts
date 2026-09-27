@@ -164,8 +164,12 @@ test('campfire upgrade: tapping selects, the Upgrade button confirms', async ({ 
   await page.getByRole('button', { name: /smith/i }).click();
   const upgrade = page.getByRole('button', { name: 'Upgrade', exact: true });
   await expect(upgrade).toBeDisabled();
+  await expect(page.locator('.deck-grid .card.is-up')).toHaveCount(0);
   await page.locator('.deck-grid .card').first().click();
   await expect(page.locator('.deck-grid .card.sel')).toHaveCount(1);
+  // Only the selected card is shown upgraded, and there is no Cancel button.
+  await expect(page.locator('.deck-grid .card.is-up')).toHaveCount(1);
+  await expect(page.getByRole('button', { name: 'Cancel' })).toHaveCount(0);
   await expect(page.locator('.modal')).toBeVisible();
   await upgrade.click();
   await expect(page.locator('.node.current')).toBeVisible();

@@ -179,7 +179,7 @@ Legenda: `[ ]` da fare · `[x]` fatto (dettagli nei commit).
 - [x] Combattimento: tasto pausa in alto a destra, a destra della velocità
 - [x] Ricompensa: titolo "Enemy cleared" invece di "Victory"
 - [x] Fine atto: "VICTORY" grande, animato e con musica dedicata (invece di "Act cleared")
-- [ ] Potenziamento: carte normali, solo quella selezionata si vede potenziata; solo il tasto "Upgrade"; titolo "Choose a card to upgrade"
+- [x] Potenziamento: carte normali, solo quella selezionata si vede potenziata; solo il tasto "Upgrade"; titolo "Choose a card to upgrade"
 - [ ] Carte che rallentano il nastro → lo velocizzano (come pescare di più)
 - [ ] Combattimento: barra vita e barra d'attacco del nemico con colori diversi
 - [ ] Falò: animazione di cuori fluttuanti dopo la cura, prima di tornare alla mappa
