@@ -1,6 +1,6 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
-import { currentNode, type RunNode, type RunState } from '../../game/run';
+import { clockAt, currentNode, type RunNode, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h, onPress } from '../dom';
 import { icon } from '../art/icons';
@@ -18,6 +18,15 @@ export const NODE_ICON: Record<RunNode['type'], string> = {
 /** Height of one floor on the map (px). */
 const ROW_H = 92;
 const laneX = (lane: number): number => 22 + lane * 56;
+/** Footsteps per pixel of a walked link, and the delay between the steps of the newest one (ms). */
+const STEP_PX = 14;
+const STEP_MS = 70;
+
+/** A workday clock time (minutes after midnight) as text, e.g. 08:27. */
+export function clockText(min: number): string {
+  const pad = (n: number): string => String(n).padStart(2, '0');
+  return t('journey.clock', { h: pad(Math.floor(min / 60) % 24), m: pad(min % 60) });
+}
 
 export function runHud(run: RunState, extra?: HTMLElement): HTMLElement {
   const portrait = h('button', { class: 'chip hero-chip', 'aria-label': t(`hero.${run.hero}.name`), html: creature(run.hero) });
@@ -72,8 +81,10 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
         // A flat link goes both ways: draw it once.
         .filter((m) => m.act === n.act && !(m.floor === n.floor && m.id < n.id))
         .map((m) => {
-          const walked = run.path.includes(n.id) && (run.path.includes(m.id) || (n.id === cur.id && m.id === picked));
-          return `<line class="${walked ? 'walked' : ''}" x1="${laneX(n.lane)}" y1="${y(n)}" x2="${laneX(m.lane)}" y2="${y(m)}" vector-effect="non-scaling-stroke"/>`;
+          // Walked links are drawn as footsteps instead; the link to the node picked next is lit.
+          const trod = run.path.includes(n.id) && run.path.includes(m.id);
+          const next = (n.id === cur.id && m.id === picked) || (m.id === cur.id && n.id === picked);
+          return `<line class="${trod ? 'trod' : next ? 'walked' : ''}" x1="${laneX(n.lane)}" y1="${y(n)}" x2="${laneX(m.lane)}" y2="${y(m)}" vector-effect="non-scaling-stroke"/>`;
         }),
     )
     .join('');
@@ -96,6 +107,25 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   const path = h('div', { class: 'path', style: { height: `${(floors - minFloor + 1) * ROW_H}px` } });
   path.innerHTML = `<svg class="links" viewBox="0 0 100 ${(floors - minFloor + 1) * ROW_H}" preserveAspectRatio="none" aria-hidden="true">${lines}</svg>`;
   for (let f = minFloor; f <= floors; f++) path.append(h('span', { class: 'num', style: { top: `${(floors - f + 0.5) * ROW_H}px` } }, f));
+  // The way walked so far, as footsteps; back from a job, its last stretch is walked again step by step.
+  run.path.forEach((id, i) => {
+    const a = run.nodes[run.path[i - 1]];
+    const b = run.nodes[id];
+    if (!a || a.act !== act || b.act !== act) return;
+    const fresh = run.cleared && i === run.path.length - 1;
+    const flat = a.floor === b.floor;
+    const n = flat ? 6 : Math.max(4, Math.round((Math.abs(y(b) - y(a)) * 1.2) / STEP_PX));
+    for (let k = 0; k < n; k++) {
+      const f = (k + 0.5) / n;
+      const x = laneX(a.lane) + (laneX(b.lane) - laneX(a.lane)) * f;
+      path.append(
+        h('i', {
+          class: `step ${k % 2 ? 'odd' : ''} ${flat ? 'flat' : ''} ${fresh ? 'fresh' : ''}`,
+          style: { left: `${x}%`, top: `${y(a) + (y(b) - y(a)) * f}px`, animationDelay: `${k * STEP_MS}ms` },
+        }),
+      );
+    }
+  });
   for (const n of nodes) {
     const past = run.path.includes(n.id) && (n.id !== cur.id || run.cleared);
     const open = n.id === cur.id ? !run.cleared : options.includes(n.id);
@@ -151,6 +181,17 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       },
     }),
   );
+  // The workday clock: the time of the floor ahead. Back from a job, its hands run forward from the floor just done.
+  const to = clockAt(run, options.length ? run.nodes[options[0]] : cur);
+  const from = run.cleared ? clockAt(run, cur) : to;
+  const clock = h('div', { class: 'shift-clock', 'aria-hidden': 'true', html: '<i class="hh"></i><i class="mh"></i>' });
+  for (const [k, deg] of [
+    ['--h0', from / 2],
+    ['--h1', to / 2],
+    ['--m0', from * 6],
+    ['--m1', to * 6],
+  ] as const)
+    clock.style.setProperty(k, `${deg}deg`);
   const el = h(
     'div',
     { class: 'screen journey' },
@@ -158,8 +199,13 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     h(
       'div',
       { class: 'act-banner' },
-      h('div', { class: 'h1' }, t('journey.title', { n: act })),
-      h('p', { class: 'sub' }, t(`journey.actName.${act}`)),
+      clock,
+      h(
+        'div',
+        null,
+        h('div', { class: 'h1' }, t('journey.title', { n: act })),
+        h('p', { class: 'sub', html: t('journey.shiftAt', { shift: t(`journey.actName.${act}`), time: `<b>${clockText(to)}</b>` }) }),
+      ),
     ),
     h('div', { class: 'scroll', style: { flex: '1' } }, path),
     enterBtn,

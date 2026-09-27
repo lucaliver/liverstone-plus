@@ -31,7 +31,57 @@
 .sheet-head p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
 .hero-sheet .hero-stats { justify-content: flex-start; margin-bottom: 10px; }
 .hero-feature.used { opacity: 0.4; }
-.act-banner { text-align: center; margin-top: 10px; }
+.act-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 10px;
+  text-align: left;
+}
+.act-banner .h1,
+.act-banner .sub { text-align: left; }
+.act-banner .sub { margin-bottom: 8px; }
+.act-banner .sub b { color: var(--y); font-weight: 400; }
+/* the workday clock: a paper face, four ticks and a pink pin; the hands run forward in steps */
+.shift-clock {
+  position: relative;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: 3px 3px 0 var(--shadow);
+}
+.shift-clock::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  translate: -50% -50%;
+  background: var(--p);
+  box-shadow: 0 -17px 0 -1px var(--k), 17px 0 0 -1px var(--k), 0 17px 0 -1px var(--k), -17px 0 0 -1px var(--k);
+}
+.shift-clock i {
+  position: absolute;
+  left: calc(50% - 2px);
+  bottom: 50%;
+  width: 4px;
+  transform-origin: 50% 100%;
+  background: var(--k);
+  animation: 0.9s steps(6) 0.3s backwards;
+}
+.shift-clock .hh { height: 11px; rotate: var(--h1); animation-name: hand-h; }
+.shift-clock .mh { height: 17px; rotate: var(--m1); animation-name: hand-m; }
+@keyframes hand-h {
+  from { rotate: var(--h0); }
+}
+@keyframes hand-m {
+  from { rotate: var(--m0); }
+}
 .path {
   position: relative;
   margin: 8px 0 12px;
@@ -49,6 +99,23 @@
   opacity: 0.45;
 }
 .links line.walked { stroke: var(--y); opacity: 1; }
+.links line.trod { display: none; }
+/* footsteps along the way walked (left, right…); the newest stretch is walked again, one step at a time */
+.path .step {
+  position: absolute;
+  width: 6px;
+  height: 8px;
+  translate: calc(-50% - 3px) -50%;
+  background: var(--y);
+  pointer-events: none;
+}
+.path .step.odd { translate: calc(-50% + 3px) -50%; }
+.path .step.flat { width: 8px; height: 6px; translate: -50% calc(-50% - 3px); }
+.path .step.flat.odd { translate: -50% calc(-50% + 3px); }
+.path .step.fresh { animation: step-in 0.05s steps(1) backwards; }
+@keyframes step-in {
+  from { visibility: hidden; }
+}
 .path .num {
   position: absolute;
   left: 2px;

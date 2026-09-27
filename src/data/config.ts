@@ -34,6 +34,11 @@ export const CONFIG = {
   beltRows: 2,
   /** With two rows each row runs at this fraction of the one-row speed. */
   twoRowSpeed: 0.8,
+  /** Workday clock of each act (hours), shown on the map: its first floor starts at the first, its boss floor ends at the second. */
+  shiftHours: [
+    [8, 12],
+    [13, 17],
+  ],
 } as const;
 
 /** Where cards enter (0) and expire, in belt-distance units. */

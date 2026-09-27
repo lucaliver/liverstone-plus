@@ -143,6 +143,16 @@ function buildNodes(rng: Rng): RunNode[] {
 }
 
 export const currentNode = (run: RunState): RunNode => run.nodes[run.current];
+
+/** Workday clock (minutes after midnight) when a node's floor starts: the floors share the act's shift evenly, so the
+ * shift ends as its boss floor does. */
+export function clockAt(run: RunState, node: RunNode): number {
+  const floors = run.nodes.filter((n) => n.act === node.act).map((n) => n.floor);
+  const first = Math.min(...floors);
+  const count = Math.max(...floors) - first + 1;
+  const [from, to] = CONFIG.shiftHours[Math.min(node.act, CONFIG.shiftHours.length) - 1];
+  return Math.round((from + ((to - from) * (node.floor - first)) / count) * 60);
+}
 export const totalFloors = (run: RunState): number => Math.max(...run.nodes.map((n) => n.floor));
 
 function rngOf(run: RunState): Rng {
