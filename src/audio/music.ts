@@ -7,7 +7,7 @@
  */
 import { audioGraph, onAudioUnlock, resumeAudio } from './sfx';
 
-export type TrackId = 'menu' | 'combat' | 'elite' | 'boss' | 'rest' | 'pause';
+export type TrackId = 'menu' | 'combat' | 'elite' | 'boss' | 'rest' | 'pause' | 'victory';
 
 /** [step (0-15), midi note, length in 16th steps] */
 type NoteEv = [number, number, number];
@@ -60,6 +60,7 @@ const A4 = 69,
   Bb5 = 82,
   B5 = 83,
   Ab5 = 80,
+  Fs5 = 78,
   G4 = 67;
 
 const TRACKS: Record<TrackId, Track> = {
@@ -295,6 +296,50 @@ const TRACKS: Record<TrackId, Track> = {
     leadVoice: 'pulse',
     drums: ['k.......k.......', '........s.......', 'h...h...h...h...', '............t.tt'],
     pad: true,
+    gain: 0.8,
+  },
+  // Victory: the one major-key track. A chiptune fanfare in D over marching drums and a bouncing bass.
+  victory: {
+    bpm: 126,
+    chords: [
+      { root: 38, tones: MAJ }, // D
+      { root: 43, tones: MAJ }, // G
+      { root: 47, tones: MIN }, // Bm
+      { root: 45, tones: MAJ }, // A
+    ],
+    bass: [0, _, 12, _, 0, _, 12, _, 0, _, 12, _, 7, _, 12, _],
+    bassWave: 'triangle',
+    arp: [0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 3],
+    arpOctave: 5,
+    lead: [
+      [
+        [0, D5, 2],
+        [2, D5, 2],
+        [4, D5, 2],
+        [6, A5, 6],
+        [12, Fs5, 4],
+      ],
+      [
+        [0, G5, 4],
+        [4, B5, 4],
+        [8, A5, 8],
+      ],
+      [
+        [0, Fs5, 4],
+        [4, D5, 4],
+        [8, B4, 8],
+      ],
+      [
+        [0, E5, 4],
+        [4, Fs5, 2],
+        [6, G5, 2],
+        [8, A5, 8],
+      ],
+    ],
+    leadOn: () => true,
+    leadVoice: 'pulse',
+    drums: ['k...k...k...k...', '....s.......s.ss', 'h.h.h.h.h.h.h.h.'],
+    pad: false,
     gain: 0.8,
   },
   // Pause: a slow, hushed music box. Sparse bells over soft pads, no drums.

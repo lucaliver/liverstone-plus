@@ -5,10 +5,14 @@ import type { Screen } from '../app';
 import { h } from '../dom';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
-import { motes } from '../components/decor';
+import { dropLetters, motes } from '../components/decor';
+import { burst } from '../fx/fx';
+import { playMusic } from '../../audio/music';
 
 export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMenu: () => void): Screen {
   const node = currentNode(run);
+  const title = won ? t('end.victory') : t('end.defeat');
+  let confetti = 0;
   const stat = (ic: string, k: TKey, v: number | string): HTMLElement => h('div', { html: `${icon(ic)}<span>${t(k)}</span><b>${v}</b>` });
   const el = h(
     'div',
@@ -16,7 +20,7 @@ export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMe
     h(
       'div',
       { class: 'end-body' },
-      h('h1', { class: 'h1' }, won ? t('end.victory') : t('end.defeat')),
+      h('h1', { class: 'h1 end-title', 'aria-label': title, html: dropLetters(title) }),
       h('div', { class: 'portrait-lg', html: `${motes(10)}${creature(run.hero)}` }),
       h('p', { class: 'sub' }, won ? t('end.victoryDesc') : t('end.defeatDesc', { n: node.floor })),
       h(
@@ -34,7 +38,7 @@ export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMe
       h(
         'button',
         {
-          class: 'btn block',
+          class: 'btn cta block',
           onclick: () => {
             sfx('button');
             onAgain();
@@ -55,5 +59,22 @@ export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMe
       ),
     ),
   );
-  return { el };
+  return {
+    el,
+    enter() {
+      playMusic(won ? 'victory' : 'menu');
+      if (!won) return;
+      // A few bursts of ink "confetti" around the title.
+      let n = 0;
+      const pop = (): void => {
+        const r = el.querySelector('.end-title')?.getBoundingClientRect();
+        if (r) burst('gold', r.left + Math.random() * r.width, r.top + Math.random() * r.height, 26, 1.3);
+        if (++n < 6) confetti = window.setTimeout(pop, 450);
+      };
+      confetti = window.setTimeout(pop, 500);
+    },
+    leave() {
+      clearTimeout(confetti);
+    },
+  };
 }

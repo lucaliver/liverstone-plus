@@ -24,3 +24,12 @@ export function darkEyes(spots: { x: string; y: string }[]): string {
     )
     .join('');
 }
+
+/** Title text as per-letter spans (grouped by word so lines break between words) for the drop-in animation. */
+export function dropLetters(text: string): string {
+  let i = 0;
+  return text
+    .split(' ')
+    .map((word) => `<span class="word">${[...word].map((ch) => `<span style="--i:${i++}">${ch}</span>`).join('')}</span>`)
+    .join(' ');
+}

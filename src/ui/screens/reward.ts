@@ -7,16 +7,8 @@ import { icon } from '../art/icons';
 import { cardView } from '../components/cardView';
 import { openCardDetail, sortDeck } from '../components/modals';
 import { h, onTapOrHold } from '../dom';
+import { dropLetters } from '../components/decor';
 import { runHud } from './journey';
-
-/** Title text as per-letter spans (grouped by word so lines break between words) for the drop-in animation. */
-export function dropLetters(text: string): string {
-  let i = 0;
-  return text
-    .split(' ')
-    .map((word) => `<span class="word">${[...word].map((ch) => `<span style="--i:${i++}">${ch}</span>`).join('')}</span>`)
-    .join(' ');
-}
 
 /** Tap selects; a long press opens the card detail instead (and doesn't select). */
 function selectable(el: HTMLElement, card: CardInst, onSelect: () => void): void {
