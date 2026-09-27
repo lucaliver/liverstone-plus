@@ -427,7 +427,7 @@ export class Combat {
     }
     if (m.steal) for (let i = 0; i < m.steal; i++) this.stealCard();
     if (m.drainMana) this.drainMana(m.drainMana);
-    if (m.hex) this.hexCards(m.hex.id, m.hex.belt, m.hex.draw);
+    if (m.hex) this.hexCards(m.hex.id, m.hex.share);
     m.fx?.(this);
   }
 
@@ -877,14 +877,15 @@ export class Combat {
     }
   }
 
-  /** Hexes `belt` random belt cards ('all' = every one) and the next `draw` cards of the draw pile (never curses). */
-  hexCards(id: string, belt: number | 'all', draw = 0): void {
+  /** Hexes a random `share` (0–1, rounded up) of the belt cards and of the rest of the deck (draw and discard piles), never curses. */
+  hexCards(id: string, share: number): void {
     const hex = HEXES[id];
     const fits = (c: CombatCard): boolean => !c.hex && CARDS[c.id].type !== 'curse';
-    const onBelt = this.rng.shuffle(this.belt.map((b) => b.card).filter(fits));
-    // The top of the draw pile is the end of the array.
-    const next = draw > 0 ? this.draw.filter(fits).slice(-draw) : [];
-    for (const card of [...(belt === 'all' ? onBelt : onBelt.slice(0, belt)), ...next]) {
+    const some = (cards: CombatCard[]): CombatCard[] => {
+      const ok = cards.filter(fits);
+      return this.rng.shuffle(ok).slice(0, Math.ceil(ok.length * share));
+    };
+    for (const card of [...some(this.belt.map((b) => b.card)), ...some([...this.draw, ...this.discard])]) {
       card.hex = { id, left: hex.taps, t: hex.thaw };
       this.events.emit({ type: 'hexed', card });
     }

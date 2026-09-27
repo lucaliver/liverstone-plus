@@ -94,10 +94,11 @@ src/
   ui/          app.ts (screens + modals), dom.ts (h, onPress, onTapOrHold, LONG_PRESS_MS)
     art/       icons.ts (64×64 vector icons), creatures.ts (200×200 vector sprites), riso.ts (pixel renderer)
     combat/    view (DOM + refs + shared state), hud, cardLayer (belt/sleeve/input), combatFx (events → FX), combatScreen
-    components/cardView (card DOM, face glyphs), modals (settings, deck, card detail, info), moveText (moves, enemy
+    components/cardView (card DOM, face glyphs), modals (settings, deck, card detail, info, card anatomy, debug fight),
+               moveText (moves, enemy
                pattern and traits), heroSheet (hero features and in-run sheet), decor
     fx/        particles, floating text, shake, haptics
-    screens/   title, heroSelect, journey, reward, rest, promotion, end, compendium
+    screens/   title (+ splash), heroSelect, journey, reward, rest, promotion, end, compendium
   audio/       sfx.ts (synth), music.ts (sequencer + tracks)
   styles/      index.css imports ordered partials; responsive.css must stay last
 tests/         combat, content, balance.sim (+ bot.ts), e2e/
@@ -131,9 +132,10 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
 - Art colour comes from the face (attack / defense / utility / curse) unless `cat` is set. Set `dmg: []` only for
   raw damage that ignores modifiers (e.g. `juggernaut`).
 - Keyword flags (`Keyword` type, change engine behaviour): exhaust, consume, fleeting, volatile, innate, unique,
-  unplayable. Glossary-only keywords (`[rush]`, `[power]`, `[x]`, statuses…) just need their `kw.*` strings.
+  unplayable, pending (not playable until its first full ride along the belt each fight). Glossary-only keywords (`[rush]`, `[power]`, `[x]`, statuses…) just need their `kw.*` strings.
   Rarity `unique` = hero special.
-- `span` (belt widths) makes a card wide: it rides over the cards ahead of it (Gatekeeping).
+- `span` (belt widths) makes a card wide: it rides over the cards ahead of it (Gatekeeping); `tall` makes it cover both
+  rows (Lockout). `lockRow` holds every other card of its row (Priority Task). Covered cards can't be played or stashed.
 - Cost, keywords and values of a copy come from `cardCostOf` / `cardKeywordsOf` / `cardValsOf` (`data/cards/index.ts`),
   shared by engine and UI: they include upgrades and **perks** (`data/perks.ts`, permanent per copy, `CardInst.perks`).
 - **Hexes** (`data/hexes.ts`) are curses on one combat card (`CombatCard.hex`, cast by a move's `hex`): taps chip them
@@ -150,15 +152,18 @@ Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.t
 ### Heroes
 
 `HeroDef` in `data/heroes.ts` (hp, maxMana, regen, blockDecay, `sleeve` slots, starter deck with basic cards only + crystals,
-`special`, `ability { id, cost, use }`, hooks), a card file, a sprite, `hero.<id>.*` strings, and entries in
+`special`, `ability { id, cost, use }`, hooks, optional `unlock`: finish a run with a hero, or reach an act's boss; checked
+through `progress()` in `game/meta.ts`), a card file, a sprite, `hero.<id>.*` strings, and entries in
 `ABILITY_ICON` / `PASSIVE_ICON` (`ui/combat/view.ts`).
 
 ### Statuses
 
 `StatusDef` in `data/statuses.ts` (`kind`: timed / stacks / dot, `good`, `icon`) plus `status.<id>` and
 `status.<id>.d` (`{v}` = amount). Their effect is applied where it matters in `combat.ts` (damage, ticks, decay).
-Rule statuses carry their own hooks instead: `canPlay` (returns the i18n key of why a card can't be played) and
-`onCardPlayed`; `passive: true` marks a permanent enemy trait (no number on the chip).
+Rule statuses carry their own hooks instead: `canPlay` (returns the i18n key of why a card can't be played; the belt
+shows that status's icon on the card), `onCardPlayed` (cards played after the status was applied) and `tick` (every step;
+`everySecond` in `statuses.ts` for per-second effects); `passive: true` marks a permanent enemy trait (no number on the chip).
+A stunned hero can't play cards or use the ability.
 
 ### i18n
 
@@ -178,6 +183,7 @@ Plurals: `{n|one|other}`. New language: copy `en.ts`, register it in `core/i18n.
 - Dev hooks (dev server only): `window.__combat` (current `Combat`) and `window.__game` (`run`, `nextNode`,
   `goJourney`, `musicTrack`). E2E tests and screenshot scripts rely on them.
 - The belt has two rows by default (`CONFIG.beltRows`); tests that need one row pass `beltRows: 1`.
+- The title has a temporary "Debug: pick a fight" button (any hero against any enemy, on a fresh run).
 
 ### CSS
 
@@ -209,8 +215,9 @@ Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unloc
 - **Unit** (`tests/combat.test.ts`): engine rules. Add a test for every new mechanic.
 - **Content** (`tests/content.test.ts`): data integrity.
 - **Balance** (`tests/balance.sim.test.ts` + `bot.ts`): heuristic bot win rates; treat them as relative.
-- **E2E** (`tests/e2e/smoke.spec.ts`): title, hero carousel, fight → reward swap, layout stability, Start gate,
-  pause (music, backdrop tap, main menu), break room upgrade, map lane choice, compendium, title props. Use real touch
+- **E2E** (`tests/e2e/smoke.spec.ts`): splash → title, hero carousel and locks, fight → reward swap or skip, layout
+  stability, Start gate, pause (music, backdrop tap, main menu, open windows), break room upgrade, map lane choice,
+  compendium and card anatomy, debug fight, title props. `freshGame` unlocks every hero unless `locked`. Use real touch
   (`page.touchscreen.tap`) when the behaviour differs on phones.
 - Ad-hoc screenshot scripts live in the git-ignored `screenshots/` folder. `dev/art.html` (open it on the dev
   server) previews every creature sprite and icon after pixelisation.

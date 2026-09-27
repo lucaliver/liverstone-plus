@@ -153,7 +153,7 @@ describe('combat engine', () => {
   it('a hexed card needs its taps, then thaws, then plays normally', () => {
     const c = setup({ deck: deckOf(new Array(8).fill('strike')) });
     run(c, CONFIG.introTime + 0.01);
-    c.hexCards('petrify', 1);
+    c.hexCards('petrify', 0.01);
     const card = c.belt.find((b) => b.card.hex)!.card;
     for (let i = 0; i < 5; i++) expect(c.playCard(card.uid)).toBe(false);
     expect(c.stash(card.uid)).toBe(false);
@@ -201,18 +201,18 @@ describe('combat engine', () => {
     expect(c.enemy.timer).toBeCloseTo(before + 1, 5);
   });
 
-  it("New Hire's stare petrifies the whole belt and the next 3 draws; a hex survives the piles until broken", () => {
+  it("New Hire's stare petrifies half the belt and half the rest of the deck; a hex survives the piles until broken", () => {
     const c = setup({ enemy: ENEMIES.newHire, deck: deckOf(new Array(12).fill('strike')) });
     run(c, CONFIG.introTime + 0.01);
     const onBelt = c.belt.length;
-    c.hexCards('petrify', 'all', 3);
-    expect(c.belt.every((b) => b.card.hex)).toBe(true);
-    expect(c.draw.slice(-3).every((x) => x.hex)).toBe(true);
-    expect(c.draw.filter((x) => x.hex).length).toBe(3);
+    const rest = c.draw.length + c.discard.length;
+    c.hexCards('petrify', 0.5);
+    expect(c.belt.filter((b) => b.card.hex).length).toBe(Math.ceil(onBelt / 2));
+    expect([...c.draw, ...c.discard].filter((x) => x.hex).length).toBe(Math.ceil(rest / 2));
     // Left alone, hexed cards fall off the belt still hexed.
     run(c, CONFIG.beltTime * 1.5);
-    const fallen = [...c.discard, ...c.draw, ...c.belt.map((b) => b.card)].filter((x) => x.hex);
-    expect(fallen.length).toBeGreaterThanOrEqual(onBelt);
+    const hexed = [...c.discard, ...c.draw, ...c.belt.map((b) => b.card)].filter((x) => x.hex);
+    expect(hexed.length).toBe(Math.ceil(onBelt / 2) + Math.ceil(rest / 2));
   });
 
   it('sleeve slots come from the hero', () => {

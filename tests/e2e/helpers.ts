@@ -1,17 +1,24 @@
 import { expect, type Page } from '@playwright/test';
 
-/** Fresh game: no saves, tutorial already seen. Collects console errors and warnings (e.g. missing i18n keys). */
-export async function freshGame(page: Page, opts: { tutorial?: boolean } = {}): Promise<string[]> {
+/**
+ * Fresh game: no saves, tutorial already seen, every hero unlocked (unless `locked`).
+ * Collects console errors and warnings (e.g. missing i18n keys).
+ */
+export async function freshGame(page: Page, opts: { tutorial?: boolean; locked?: boolean } = {}): Promise<string[]> {
   const problems: string[] = [];
   page.on('console', (m) => {
     if (m.type() === 'error' || m.type() === 'warning') problems.push(m.text());
   });
   page.on('pageerror', (e) => problems.push(`pageerror: ${e.message}`));
   await page.goto('/');
-  await page.evaluate((seen) => {
-    localStorage.clear();
-    if (seen) localStorage.setItem('cardstone+:settings', JSON.stringify({ seenTutorial: true }));
-  }, !opts.tutorial);
+  await page.evaluate(
+    ([seen, unlocked]) => {
+      localStorage.clear();
+      if (seen) localStorage.setItem('cardstone+:settings', JSON.stringify({ seenTutorial: true }));
+      if (unlocked) localStorage.setItem('cardstone+:meta', JSON.stringify({ discovered: [], heroes: ['mage', 'necromancer'], fresh: [] }));
+    },
+    [!opts.tutorial, !opts.locked],
+  );
   await page.reload();
   // The splash screen comes first: one tap to start (it also unlocks audio).
   await page.getByRole('button', { name: /start game/i }).click();

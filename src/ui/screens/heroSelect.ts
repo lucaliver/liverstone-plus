@@ -1,7 +1,8 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { HERO_LIST } from '../../data/heroes';
-import type { HeroDef, HeroId } from '../../game/types';
+import { heroFresh, heroUnlocked, markHeroSeen } from '../../game/meta';
+import type { HeroDef, HeroId, HeroUnlock } from '../../game/types';
 import type { Screen } from '../app';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
@@ -10,17 +11,23 @@ import { motes } from '../components/decor';
 import { openDeck } from '../components/modals';
 import { h } from '../dom';
 
+const unlockText = (u: HeroUnlock): string =>
+  'finishRun' in u ? t('hero.unlock.finishRun', { hero: t(`hero.${u.finishRun}.name`) }) : t('hero.unlock.reachBoss', { n: u.reachBoss });
+
 function slide(hero: HeroDef, index: number): HTMLElement {
   const id = hero.id;
+  const locked = !heroUnlocked(id);
+  // A locked hero shows as a dark silhouette with a padlock and how to unlock it; the sheet stays readable.
+  const badge = locked ? `<div class="hero-lock">${icon('lock')}</div>` : heroFresh(id) ? `<div class="hero-new">${t('hero.new')}</div>` : '';
   return h(
     'section',
-    { class: 'hero-slide', 'data-hero': id, 'aria-roledescription': 'slide', 'aria-label': t(`hero.${id}.name`) },
+    { class: `hero-slide ${locked ? 'locked' : ''}`, 'data-hero': id, 'aria-roledescription': 'slide', 'aria-label': t(`hero.${id}.name`) },
     h('div', {
       class: 'hero-stage',
-      html: `${motes(8)}<div class="pedestal"></div><div class="hero-sprite">${creature(id)}</div><div class="hero-num">${String(index + 1).padStart(2, '0')}</div>`,
+      html: `${motes(8)}<div class="pedestal"></div><div class="hero-sprite">${creature(id)}</div><div class="hero-num">${String(index + 1).padStart(2, '0')}</div>${badge}`,
     }),
     h('h2', { class: 'hero-name' }, t(`hero.${id}.name`)),
-    h('p', { class: 'hero-job' }, t(`hero.${id}.job`)),
+    locked && hero.unlock ? h('p', { class: 'hero-job hero-unlock' }, unlockText(hero.unlock)) : h('p', { class: 'hero-job' }, t(`hero.${id}.job`)),
     h(
       'div',
       { class: 'hero-stats' },
@@ -51,7 +58,7 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
   const track = h('div', { class: 'hero-track', role: 'region', 'aria-label': t('hero.select') }, ...slides);
   const dots = HERO_LIST.map((hd, i) =>
     h('button', {
-      class: 'hero-dot',
+      class: `hero-dot ${heroUnlocked(hd.id) ? '' : 'locked'}`,
       'data-hero': hd.id,
       'aria-label': t(`hero.${hd.id}.name`),
       onclick: () => goTo(i),
@@ -60,9 +67,26 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
   const prev = h('button', { class: 'hero-arrow prev', 'aria-label': t('common.back'), html: icon('left'), onclick: () => goTo(index - 1) });
   const next = h('button', { class: 'hero-arrow next', 'aria-label': t('common.next'), html: icon('left'), onclick: () => goTo(index + 1) });
 
+  const startBtn = h(
+    'button',
+    {
+      class: 'btn block',
+      onclick: () => {
+        if (!heroUnlocked(HERO_LIST[index].id)) return;
+        sfx('button');
+        onStart(HERO_LIST[index].id);
+      },
+    },
+    t('hero.start'),
+  );
+
   const sync = (): void => {
     const hero = HERO_LIST[index];
     el.dataset.hero = hero.id;
+    const locked = !heroUnlocked(hero.id);
+    startBtn.disabled = locked;
+    startBtn.textContent = locked ? t('hero.locked') : t('hero.start');
+    if (!locked) markHeroSeen(hero.id);
     slides.forEach((s, i) => {
       s.classList.toggle('current', i === index);
     });
@@ -110,17 +134,7 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
     ),
     h('div', { class: 'hero-carousel' }, track, prev, next),
     h('div', { class: 'hero-dots' }, ...dots),
-    h(
-      'button',
-      {
-        class: 'btn block',
-        onclick: () => {
-          sfx('button');
-          onStart(HERO_LIST[index].id);
-        },
-      },
-      t('hero.start'),
-    ),
+    startBtn,
   );
   sync();
   return { el };

@@ -9,10 +9,23 @@ import { randomSeed } from './core/rng';
 import { setSfxVolume, unlockAudio } from './audio/sfx';
 import { musicTrack, playMusic, setMusicVolume, suspendMusic } from './audio/music';
 import { Combat } from './game/combat';
-import { advance, applyCombat, clearRun, combatSetup, currentNode, loadRun, newRun, rollRewards, saveRun, type RunState } from './game/run';
+import {
+  advance,
+  applyCombat,
+  clearRun,
+  combatSetup,
+  currentNode,
+  finishRun,
+  loadRun,
+  newRun,
+  rollRewards,
+  saveRun,
+  type RunState,
+} from './game/run';
 import { settings } from './game/settings';
 import type { HeroId } from './game/types';
 import { confirmModal, initApp, show } from './ui/app';
+import { openDebugFight } from './ui/components/modals';
 import { initFx } from './ui/fx/fx';
 import { preloadArt } from './ui/art/riso';
 import { CREATURES } from './ui/art/creatures';
@@ -49,6 +62,11 @@ function goTitle(): void {
         else goHeroSelect();
       },
       onCompendium: () => show(compendiumScreen(goTitle)),
+      onDebugFight: () => {
+        const pick = (): void => void openDebugFight(debugFight);
+        if (loadRun()) confirmModal(t('menu.abandonConfirm'), t('common.confirm'), pick, t('common.cancel'));
+        else pick();
+      },
     }),
   );
 }
@@ -60,6 +78,13 @@ function goHeroSelect(): void {
 function startRun(hero: HeroId): void {
   run = newRun(hero, randomSeed());
   goJourney();
+}
+
+/** Debug: a fresh run whose first fight is against the chosen enemy. */
+function debugFight(hero: HeroId, enemy: string): void {
+  run = newRun(hero, randomSeed());
+  run.nodes[run.current].enemy = enemy;
+  enterNode();
 }
 
 function goJourney(): void {
@@ -96,12 +121,12 @@ function afterCombat(combat: Combat): void {
   playMusic('menu');
   const node = currentNode(r);
   if (combat.result === 'lose') {
-    clearRun();
+    finishRun(r);
     show(endScreen(r, false, () => goHeroSelect(), goTitle));
     return;
   }
   if (combat.result === 'win' && node.next.length === 0) {
-    clearRun();
+    finishRun(r);
     show(endScreen(r, true, () => goHeroSelect(), goTitle));
     return;
   }
@@ -115,7 +140,7 @@ function nextNode(): void {
   if (!run) return;
   run.cleared = true;
   if (!currentNode(run).next.length) {
-    clearRun();
+    finishRun(run);
     show(endScreen(run, true, () => goHeroSelect(), goTitle));
     return;
   }

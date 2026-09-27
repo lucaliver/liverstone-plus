@@ -140,8 +140,8 @@ export interface MoveDef {
   curse?: { id: string; n: number; to: 'belt' | 'draw' | 'discard' };
   steal?: number;
   drainMana?: number;
-  /** Hexes cards (see `HEXES`): `belt` of them on the belt ('all' = every one), plus the next `draw` cards of the draw pile. */
-  hex?: { id: string; belt: number | 'all'; draw: number };
+  /** Hexes cards (see `HEXES`): a `share` (0–1) of the belt, and the same share of the rest of the deck. */
+  hex?: { id: string; share: number };
   fx?: (c: Combat) => void;
 }
 
@@ -176,8 +176,13 @@ export interface HeroHooks {
   tick?: (c: Combat, dt: number) => void;
 }
 
+/** How a hero is unlocked: finish a run (win or lose) with another hero, or reach the boss of an act. */
+export type HeroUnlock = { finishRun: HeroId } | { reachBoss: number };
+
 export interface HeroDef {
   id: HeroId;
+  /** Locked until this is done once (always available when omitted). */
+  unlock?: HeroUnlock;
   hp: number;
   maxMana: number;
   /** Seconds per mana point. */

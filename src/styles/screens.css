@@ -92,6 +92,24 @@
   grid-template-columns: 2fr 1fr;
   gap: 12px;
 }
+/* Skip pays a little max HP: said under the label */
+.skip-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  line-height: 1;
+}
+.skip-btn small {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 14px;
+  text-transform: none;
+  color: var(--green);
+}
+.skip-btn small .pico { color: var(--p); --ink2: var(--y); }
 
 .rest-fire {
   position: relative;

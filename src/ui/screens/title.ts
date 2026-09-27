@@ -12,6 +12,8 @@ export interface TitleCallbacks {
   onContinue: () => void;
   onNewRun: () => void;
   onCompendium: () => void;
+  /** Temporary: fight any enemy with any hero. */
+  onDebugFight: () => void;
 }
 
 /** Office and factory props around the boss (sprite id, position class). */
@@ -57,6 +59,7 @@ export function titleScreen(cb: TitleCallbacks): Screen {
         btn('question', t('menu.howTo'), 'secondary small', () => openHowTo()),
         btn('gear', t('menu.settings'), 'secondary small', () => openSettings()),
       ),
+      btn('bug', t('debug.button'), 'secondary small debug-btn', cb.onDebugFight),
     ),
     h('div', { class: 'version' }, `v${__APP_VERSION__}`),
   );

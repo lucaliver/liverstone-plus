@@ -1,12 +1,15 @@
-import { availableLocales, getLocale, setLocale, t } from '../../core/i18n';
+import { availableLocales, getLocale, setLocale, type TKey, t } from '../../core/i18n';
 import { setSfxVolume, sfx } from '../../audio/sfx';
 import { setMusicVolume } from '../../audio/music';
 import { CARDS } from '../../data/cards';
 import { GAME_SPEEDS } from '../../data/config';
+import { ENEMY_LIST } from '../../data/enemies';
+import { HERO_LIST } from '../../data/heroes';
 import { saveSettings, settings } from '../../game/settings';
-import type { CardInst, CardType } from '../../game/types';
+import type { CardInst, CardType, HeroId } from '../../game/types';
 import { openModal, type ModalHandle } from '../app';
 import { h, onPress, onTapOrHold } from '../dom';
+import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { cardKeywords, cardText, cardView } from './cardView';
 
@@ -313,5 +316,114 @@ export function openDeck(
     confirm = handle.el.querySelector<HTMLButtonElement>('.actions .btn');
     if (confirm) confirm.disabled = true;
   }
+  return handle;
+}
+
+/** What each part of a card means: a sample card with numbered spots, and the legend (handbook "?" button). */
+export function openCardAnatomy(): ModalHandle {
+  const sample = cardView({ uid: -1, id: 'secondWind', up: false });
+  // Numbered spots just outside the card, level with the part they name (in % of the card box).
+  const spots: [number, number][] = [
+    [-12, 9],
+    [112, 9],
+    [-12, 32],
+    [112, 68],
+    [-12, 93],
+    [112, 93],
+  ];
+  const card = h(
+    'div',
+    { class: 'anatomy-card' },
+    sample,
+    ...spots.map(([x, y], i) => h('b', { class: 'spot', style: { left: `${x}%`, top: `${y}%` } }, i + 1)),
+  );
+  const inks = (list: [string, TKey][]): string =>
+    list.map(([ink, k]) => `<span class="ink-chip"><i style="background:${ink}"></i>${t(k)}</span>`).join('');
+  const rows: [string, string][] = [
+    [t('anatomy.cost'), t('anatomy.cost.d')],
+    [
+      t('anatomy.band'),
+      `${t('anatomy.band.d')}<br>${inks([
+        ['var(--p)', 'compendium.tab.warrior'],
+        ['var(--b)', 'compendium.tab.mage'],
+        ['var(--green)', 'compendium.tab.necromancer'],
+        ['var(--y)', 'compendium.tab.neutral'],
+        ['var(--k)', 'compendium.tab.curse'],
+      ])}`,
+    ],
+    [
+      t('anatomy.art'),
+      `${t('anatomy.art.d')}<br>${inks([
+        ['#ffc2de', 'anatomy.art.attack'],
+        ['#c6d9f8', 'anatomy.art.defense'],
+        ['#fff0a0', 'anatomy.art.utility'],
+        ['#bfe38a', 'anatomy.art.curse'],
+      ])}`,
+    ],
+    [t('anatomy.face'), t('anatomy.face.d')],
+    [t('anatomy.tags'), t('anatomy.tags.d')],
+    [
+      t('anatomy.gem'),
+      `${t('anatomy.gem.d')}<br>${inks([
+        ['var(--b)', 'rarity.rare'],
+        ['var(--p)', 'rarity.epic'],
+        ['var(--y)', 'rarity.legendary'],
+        ['var(--k)', 'rarity.special'],
+      ])}`,
+    ],
+  ];
+  const legend = h('ol', { class: 'anatomy-legend' }, ...rows.map(([title, desc]) => h('li', { html: `<b>${title}</b> ${desc}` })));
+  return openModal({
+    title: t('anatomy.title'),
+    body: h('div', { class: 'anatomy' }, card, legend),
+    actions: [{ label: t('common.close'), cls: 'secondary' }],
+  });
+}
+
+/** Temporary debug tool: fight any enemy with any hero (a fresh run on floor 1). */
+export function openDebugFight(onPick: (hero: HeroId, enemy: string) => void): ModalHandle {
+  let hero: HeroId = HERO_LIST[0].id;
+  const heroSeg = h('div', { class: 'seg' });
+  const renderHeroes = (): void => {
+    heroSeg.replaceChildren(
+      ...HERO_LIST.map((hd) =>
+        h(
+          'button',
+          {
+            'aria-pressed': String(hd.id === hero),
+            onclick: () => {
+              hero = hd.id;
+              sfx('tap');
+              renderHeroes();
+            },
+          },
+          t(`compendium.tab.${hd.id}`),
+        ),
+      ),
+    );
+  };
+  renderHeroes();
+  let handle: ModalHandle | null = null;
+  const list = h(
+    'div',
+    { class: 'debug-foes' },
+    ...ENEMY_LIST.map((e) =>
+      h('button', {
+        class: 'debug-foe',
+        'data-enemy': e.id,
+        onclick: () => {
+          sfx('button');
+          handle?.close();
+          onPick(hero, e.id);
+        },
+        html: `${creature(e.art)}<span>${t(`enemy.${e.id}.name`)}</span><small>${t('journey.title', { n: e.act })}${e.tier !== 'normal' ? ` · ${t(`journey.node.${e.tier}`)}` : ''}</small>`,
+      }),
+    ),
+  );
+  handle = openModal({
+    title: t('debug.title'),
+    body: h('div', { class: 'debug-fight' }, h('div', { class: 'setting' }, h('span', null, t('debug.hero')), heroSeg), list),
+    actions: [{ label: t('common.close'), cls: 'secondary' }],
+  });
   return handle;
 }

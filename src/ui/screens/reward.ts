@@ -1,6 +1,6 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
-import { type RunState, swapCard } from '../../game/run';
+import { type RunState, SKIP_MAX_HP, skipReward, swapCard } from '../../game/run';
 import type { CardDef, CardInst } from '../../game/types';
 import type { Screen } from '../app';
 import { icon } from '../art/icons';
@@ -100,13 +100,15 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
       h(
         'button',
         {
-          class: 'btn small secondary',
+          class: 'btn small secondary skip-btn',
           onclick: () => {
             sfx('tap');
+            skipReward(run);
             onDone();
           },
         },
-        t('reward.skip'),
+        h('span', null, t('reward.skip')),
+        h('small', { html: `${icon('heart')}${t('reward.skipHp', { n: SKIP_MAX_HP })}` }),
       ),
     ),
   );

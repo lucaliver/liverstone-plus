@@ -8,6 +8,7 @@
   flex: 1;
   margin: 0 58px 0 0;
 }
+.topline .h1:not(:last-child) { margin: 0; }
 
 /* game-style carousel: one hero per screen, horizontal swipe with snapping */
 .hero-select { gap: 8px; }
@@ -249,3 +250,41 @@
   vertical-align: 1px;
 }
 .fcost .pico { font-size: 12px; color: var(--paper); --ink2: transparent; }
+
+/* locked hero: an ink silhouette behind a padlock, and how to unlock it instead of the job line */
+.hero-slide.locked .hero-sprite .ink { filter: brightness(0); }
+.hero-slide.locked .hero-sprite .ink-W { opacity: 0.5; }
+.hero-slide.locked .hero-features { opacity: 0.55; }
+.hero-lock {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  z-index: 2;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  font-size: 44px;
+  color: var(--k);
+  --ink2: var(--hero-ink);
+  background: var(--y);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--hero-ink);
+}
+.hero-unlock { color: var(--y); }
+.hero-new {
+  position: absolute;
+  top: 8px;
+  left: 6%;
+  z-index: 2;
+  padding: 2px 8px 4px;
+  font-family: var(--font-ui);
+  font-size: 20px;
+  color: var(--k);
+  background: var(--y);
+  border: 2px solid var(--k);
+  box-shadow: 3px 3px 0 var(--hero-ink);
+  animation: blink 1.2s steps(1) infinite;
+}
+.hero-dot.locked { opacity: 0.45; }

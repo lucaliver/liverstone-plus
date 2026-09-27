@@ -29,6 +29,7 @@ const warrior: HeroDef = {
 
 const mage: HeroDef = {
   id: 'mage',
+  unlock: { finishRun: 'warrior' },
   hp: 70,
   maxMana: 3,
   regen: 0.8,
@@ -58,6 +59,7 @@ const mage: HeroDef = {
 
 const necromancer: HeroDef = {
   id: 'necromancer',
+  unlock: { reachBoss: 1 },
   hp: 50,
   maxMana: 2,
   regen: 1.25,

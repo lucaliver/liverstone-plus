@@ -706,6 +706,11 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'fire',
     svg: `<path d="M6 10c16-8 36-8 52 0L32 62z"/><path fill="#16121f" d="M8 14c16-6 32-6 48 0l-2 4c-14-6-30-6-44 0z"/><circle cx="24" cy="24" r="5" fill="#16121f"/><circle cx="40" cy="26" r="5" fill="#16121f"/><circle cx="32" cy="40" r="4" fill="#16121f"/>`,
   },
+  // ---- locked content
+  lock: {
+    el: 'steel',
+    svg: `<path d="M18 30V20a14 14 0 0 1 28 0v10h-7V20a7 7 0 0 0-14 0v10z"/><rect x="10" y="30" width="44" height="30"/><circle cx="32" cy="42" r="5" fill="#16121f"/><path d="M29 44h6l2 10H27z" fill="#16121f"/>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {

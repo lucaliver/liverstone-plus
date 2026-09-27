@@ -13,7 +13,7 @@ import { icon } from '../art/icons';
 import { creature } from '../art/creatures';
 import { cardView } from '../components/cardView';
 import { movePattern } from '../components/moveText';
-import { openCardDetail } from '../components/modals';
+import { openCardAnatomy, openCardDetail } from '../components/modals';
 
 const RARITY_ORDER: Rarity[] = ['starter', 'common', 'rare', 'epic', 'legendary', 'special'];
 const TABS: CardClass[] = [...HERO_LIST.map((hd) => hd.id), 'neutral', 'curse'];
@@ -131,6 +131,15 @@ export function compendiumScreen(onBack: () => void): Screen {
         html: icon('left'),
       }),
       h('h1', { class: 'h1' }, t('compendium.title')),
+      h('button', {
+        class: 'icon-btn',
+        'aria-label': t('compendium.anatomy'),
+        onclick: () => {
+          sfx('tap');
+          openCardAnatomy();
+        },
+        html: icon('question'),
+      }),
     ),
     sectionSwitch,
     h('div', { class: 'scroll', style: { flex: '1' } }, sub, cardsWrap, foes),

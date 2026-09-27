@@ -109,7 +109,7 @@ const defs: EnemyDef[] = [
     art: 'newHire',
     main: atk('coffeeSpill', 4, 6),
     every: 2,
-    specials: [{ id: 'blankStare', intent: 'debuff', windup: 7, hex: { id: 'petrify', belt: 'all', draw: 3 } }],
+    specials: [{ id: 'blankStare', intent: 'debuff', windup: 7, hex: { id: 'petrify', share: 0.5 } }],
   },
   {
     id: 'boneKnight',

@@ -231,3 +231,45 @@ test('closing the pause menu keeps the fight paused while another window is stil
   await page.waitForTimeout(400);
   expect(await clock()).toBe(before);
 });
+
+test('heroes 2 and 3 start locked: padlock, how to unlock, no start', async ({ page }) => {
+  const problems = await freshGame(page, { locked: true });
+  await page.getByRole('button', { name: /new run/i }).click();
+  await expect(page.locator('.hero-slide.locked')).toHaveCount(2);
+  await page.locator('.hero-arrow.next').click();
+  await expect(page.locator('.hero-select')).toHaveAttribute('data-hero', 'mage');
+  await expect(page.locator('.hero-slide.current .hero-unlock')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Locked' })).toBeDisabled();
+  expect(problems).toEqual([]);
+});
+
+test('skipping a reward adds max HP', async ({ page }) => {
+  await freshGame(page);
+  await startFight(page);
+  await combat(page, "c.damage('hero', 'enemy', 999, { raw: true }, 'hero');");
+  await expect(page.locator('.reward')).toBeVisible({ timeout: 5000 });
+  const max = (await page.evaluate('window.__game.run.maxHp')) as number;
+  await page.locator('.skip-btn').click();
+  await expect(page.locator('.journey')).toBeVisible();
+  expect(await page.evaluate('window.__game.run.maxHp')).toBe(max + 3);
+});
+
+test('debug button: pick a hero and an enemy, the fight starts against it', async ({ page }) => {
+  const problems = await freshGame(page);
+  await page.getByRole('button', { name: /debug/i }).click();
+  await page.locator('.debug-fight .seg button').nth(1).click();
+  const foe = page.locator('.debug-foe').last();
+  const enemy = await foe.getAttribute('data-enemy');
+  await foe.click();
+  await expect(page.locator('.combat')).toBeVisible();
+  const picked = await page.evaluate('({ hero: window.__game.run.hero, enemy: window.__combat.enemy.def.id })');
+  expect(picked).toEqual({ hero: 'mage', enemy });
+  expect(problems).toEqual([]);
+});
+
+test('handbook: the ? button explains how to read a card', async ({ page }) => {
+  await freshGame(page);
+  await page.getByRole('button', { name: /handbook/i }).click();
+  await page.getByRole('button', { name: /how to read a card/i }).click();
+  await expect(page.locator('.anatomy .spot')).toHaveCount(6);
+});

@@ -45,8 +45,7 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
     parts.push(`<span class="fx fx-curse">${icon('skull')}${verbose ? t('move.fx.adds', { card }) : card}<b>${n}</b></span>`);
   }
   if (m.hex) {
-    const { belt, draw } = m.hex;
-    const n = belt === 'all' ? t('move.fx.hexAll', { n: draw }) : `×${belt + draw}`;
+    const n = t('move.fx.hexShare', { n: Math.round(m.hex.share * 100) });
     parts.push(`<span class="fx fx-curse">${icon(HEXES[m.hex.id].icon)}${t(`hex.${m.hex.id}`)} <b>${n}</b></span>`);
   }
   if (m.steal) parts.push(`<span class="fx fx-steal">${icon('snatch')}${t('compendium.steal')}</span>`);

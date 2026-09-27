@@ -7,7 +7,7 @@ import { CONFIG } from '../data/config';
 import { ENEMIES, enemiesFor } from '../data/enemies';
 import { HEROES } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
-import { discover } from './meta';
+import { discover, progress } from './meta';
 import type { CardDef, CardInst, EnemyDef, HeroId, Rarity } from './types';
 
 export type NodeType = 'fight' | 'elite' | 'rest' | 'promotion' | 'boss';
@@ -226,6 +226,14 @@ function newCard(run: RunState, id: string): CardInst {
   return card;
 }
 
+/** Max HP gained by skipping a card reward (so passing on a weak offer still pays). */
+export const SKIP_MAX_HP = 3;
+
+export function skipReward(run: RunState): void {
+  run.maxHp += SKIP_MAX_HP;
+  run.hp += SKIP_MAX_HP;
+}
+
 /** Cardstone's classic "swap": the new card replaces one already in the deck. */
 export function swapCard(run: RunState, removeUid: number, id: string): void {
   const idx = run.deck.findIndex((c) => c.uid === removeUid);
@@ -271,7 +279,15 @@ export function advance(run: RunState, to?: number): boolean {
   run.current = target;
   run.path.push(target);
   run.cleared = false;
+  const node = currentNode(run);
+  if (node.type === 'boss') progress((u) => 'reachBoss' in u && u.reachBoss <= node.act);
   return true;
+}
+
+/** The run is over (won or lost): heroes unlocked by finishing a run with this hero. */
+export function finishRun(run: RunState): void {
+  clearRun();
+  progress((u) => 'finishRun' in u && u.finishRun === run.hero);
 }
 
 export function saveRun(run: RunState): void {
