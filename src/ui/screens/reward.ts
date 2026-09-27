@@ -79,9 +79,9 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
     runHud(run),
     h('h1', {
       class: 'h1 reward-title',
-      'aria-label': t('reward.cleared'),
+      'aria-label': t('reward.title'),
       // Letters drop in one by one (words kept together), then the print keeps slipping out of register.
-      html: dropLetters(t('reward.cleared')),
+      html: dropLetters(t('reward.title')),
     }),
     h(
       'div',

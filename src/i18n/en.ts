@@ -71,7 +71,7 @@ const en = {
   'hero.tag.active': 'Active',
   'hero.tag.special': 'Once per run',
   'hero.warrior.name': 'Warrior',
-  'hero.warrior.job': 'Welder, lost one arm during rush hour',
+  'hero.warrior.job': 'He lost one arm during rush hour',
   'hero.warrior.title': 'Shield of the Loading Dock',
   'hero.warrior.passiveName': 'Thick Skin',
   'hero.warrior.passiveShort': 'Block fades 2× slower.',
@@ -139,8 +139,8 @@ const en = {
   'intent.drain': 'Drain',
 
   // ------------------------------------------------------------ results
-  'reward.victory': 'Job done!',
   'reward.cleared': 'Problem solved',
+  'reward.title': 'Pick your paycheck',
   'reward.swap': 'Swap',
   'reward.skip': 'Skip',
   'reward.yourDeck': 'Your deck',

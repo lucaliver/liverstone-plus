@@ -98,8 +98,11 @@ export function compendiumScreen(onBack: () => void): Screen {
     );
     grid.replaceChildren(
       ...cards.map((def) => {
-        // Every card can be inspected; undiscovered ones just carry a "?" badge.
-        const el = cardView({ uid: -1, id: def.id, up: false }, { cls: isDiscovered(def.id) ? '' : 'undiscovered' });
+        // Every card can be inspected; undiscovered ones hide their name behind question marks.
+        const known = isDiscovered(def.id);
+        const el = cardView({ uid: -1, id: def.id, up: false }, { cls: known ? '' : 'undiscovered' });
+        const name = el.querySelector<HTMLElement>('.c-name');
+        if (!known && name) name.textContent = name.textContent!.replace(/\S/g, '?');
         onPress(el, () => {
           sfx('tap');
           openCardDetail({ uid: -1, id: def.id, up: false });
