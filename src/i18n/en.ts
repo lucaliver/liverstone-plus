@@ -30,6 +30,7 @@ const en = {
   'common.confirm': 'Confirm',
   'common.cancel': 'Cancel',
   'common.deck': 'Deck',
+  'common.mana': 'Mana',
   'common.floor': 'Floor {n}',
   'common.floorOf': 'Floor {n}/{total}',
 
@@ -104,6 +105,8 @@ const en = {
 
   // -------------------------------------------------------------- combat
   'combat.fight': 'Fight!',
+  'combat.start': 'Start',
+  'combat.startHint': 'Hold anything to learn what it does',
   'combat.paused': 'Paused',
   'combat.resume': 'Resume',
   'combat.quit': 'Abandon run',

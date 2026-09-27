@@ -8,6 +8,7 @@ import { darkEyes, motes } from '../components/decor';
 import { $, centerOf, h } from '../dom';
 
 export const ABILITY_ICON: Record<string, string> = { warrior: 'rage', mage: 'hourglass', necromancer: 'thorns' };
+export const PASSIVE_ICON: Record<string, string> = { warrior: 'shield', mage: 'bolt2', necromancer: 'drop' };
 
 export type Point = { x: number; y: number };
 
@@ -17,7 +18,8 @@ export interface CombatView {
   combat: Combat;
   heroId: HeroId;
   r: ReturnType<typeof queryRefs>;
-  state: { paused: boolean; ended: boolean; frameNo: number; beltW: number };
+  /** `waiting`: before the player presses Start; things can be inspected but not played. */
+  state: { paused: boolean; waiting: boolean; ended: boolean; frameNo: number; beltW: number };
   retrigger(target: Element, cls: string): void;
   enemyPoint(): Point;
   heroPoint(): Point;
@@ -149,7 +151,7 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
     combat,
     heroId: run.hero,
     r,
-    state: { paused: false, ended: false, frameNo: 0, beltW: 0 },
+    state: { paused: true, waiting: true, ended: false, frameNo: 0, beltW: 0 },
     retrigger(target, cls) {
       target.classList.remove(cls);
       void (target as HTMLElement).offsetWidth;

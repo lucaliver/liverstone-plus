@@ -90,7 +90,8 @@ export function createCardLayer(v: CombatView): CardLayer {
   };
 
   const onDown = (ev: PointerEvent, from: 'belt' | 'sleeve'): void => {
-    if (state.paused || state.ended || drag) return;
+    // While waiting for Start, cards can still be held to read them (playing is blocked by the engine intro).
+    if ((state.paused && !state.waiting) || state.ended || drag) return;
     const cardEl = (ev.target as Element).closest<HTMLElement>('.card');
     if (!cardEl) return;
     const uid = Number(cardEl.dataset.uid);

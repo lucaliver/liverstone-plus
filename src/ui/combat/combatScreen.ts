@@ -5,13 +5,15 @@ import type { Combat } from '../../game/combat';
 import type { RunState } from '../../game/run';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
-import { openHowTo, openSettings, speedSelector } from '../components/modals';
-import { h, setText } from '../dom';
+import { type InfoOpts, openHowTo, openInfo, openSettings, speedSelector } from '../components/modals';
+import { INTENT_ICON } from '../art/icons';
+import { moveEffect } from '../components/moveText';
+import { h, onPress, onTapOrHold, setText } from '../dom';
 import { burst, haptic } from '../fx/fx';
 import { createCardLayer } from './cardLayer';
 import { bindCombatFx } from './combatFx';
 import { createHud } from './hud';
-import { createCombatView } from './view';
+import { ABILITY_ICON, createCombatView, PASSIVE_ICON } from './view';
 
 export { ABILITY_ICON } from './view';
 
@@ -34,7 +36,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   const hud = createHud(v);
   // Inspecting a card, status or ability pauses the fight; closing it resumes unless the pause menu is open.
   v.inspect = (open) => {
-    state.paused = open || !!pauseModal;
+    state.paused = open || !!pauseModal || state.waiting;
   };
   const cards = createCardLayer(v);
 
@@ -72,13 +74,61 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   };
 
   // ------------------------------------------------------------------ controls
-  r.ability.addEventListener('click', () => {
-    if (state.paused || state.ended) return;
-    if (!combat.useAbility()) {
-      sfx('error');
-      v.toast(t(`hero.${v.heroId}.resourceDesc`));
-    }
-  });
+  // ------------------------------------------------------------------ inspectables (hold to learn)
+  const info = (opts: InfoOpts): void => {
+    sfx('tap');
+    v.inspect(true);
+    openInfo(opts, () => v.inspect(false));
+  };
+  const abilityInfo = (): void =>
+    info({
+      icon: ABILITY_ICON[v.heroId],
+      title: t(`hero.${v.heroId}.ability`),
+      tag: t('hero.tag.active'),
+      tagCls: 'active',
+      desc: t(`hero.${v.heroId}.abilityShort`),
+      extra: [t(`hero.${v.heroId}.resourceDesc`)],
+    });
+  const passiveInfo = (): void =>
+    info({
+      icon: PASSIVE_ICON[v.heroId],
+      title: t(`hero.${v.heroId}.passiveName`),
+      tag: t('hero.tag.passive'),
+      desc: t(`hero.${v.heroId}.passiveShort`),
+    });
+  const moveInfo = (): void => {
+    const e = combat.enemy;
+    const special = combat.nextSpecial();
+    info({
+      icon: INTENT_ICON[e.move.intent] ?? 'star',
+      title: t(`move.${e.move.id}`),
+      tag: t(`enemy.${e.def.id}.name`),
+      tagCls: 'bad',
+      desc: moveEffect(e.move) || t(`intent.${e.move.intent}`),
+      extra:
+        special && e.move === e.def.main
+          ? [t('combat.specialIn', { move: t(`move.${special.id}`), n: e.mainsLeft + 1 }) + ` — ${moveEffect(special)}`]
+          : [],
+      ink: 'bad',
+    });
+  };
+  const manaInfo = (): void => info({ icon: 'crystal', title: t('common.mana'), desc: t('howto.mana.d') });
+
+  onTapOrHold(
+    r.ability,
+    () => {
+      if (state.waiting) return abilityInfo();
+      if (state.paused || state.ended) return;
+      if (!combat.useAbility()) {
+        sfx('error');
+        v.toast(t(`hero.${v.heroId}.resourceDesc`));
+      }
+    },
+    abilityInfo,
+  );
+  onPress(r.portrait, passiveInfo);
+  onPress(r.intent, moveInfo);
+  onPress(r.manaRow, manaInfo);
 
   const renderSpeed = (): void => setText(r.speed, `${settings.speed}×`);
   r.speed.addEventListener('click', () => {
@@ -137,7 +187,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       ],
       onClose: () => {
         pauseModal = null;
-        state.paused = false;
+        state.paused = state.waiting;
       },
     });
   };
@@ -167,23 +217,30 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       addEventListener('resize', onResize);
       document.addEventListener('visibilitychange', onVisibility);
       render(0);
-      const start = (): void => {
+      // The fight waits for Start: meanwhile the player can hold anything to read what it does.
+      const startWrap = h(
+        'div',
+        { class: 'start-wrap' },
+        h('button', { class: 'btn start-btn js-start', html: `${t('combat.start')}<small>${t('combat.startHint')}</small>` }),
+      );
+      startWrap.querySelector('button')!.addEventListener('click', () => {
+        startWrap.remove();
+        state.waiting = false;
+        state.paused = !!pauseModal;
+        sfx('button');
         v.banner(t('combat.fight'));
-        state.paused = false;
-      };
+      });
+      // Centred on the belt: the enemy, the threat bar and the hero stay readable.
+      r.belt.append(startWrap);
       if (!settings.seenTutorial) {
-        state.paused = true;
         setTimeout(
           () =>
             openHowTo(() => {
               settings.seenTutorial = true;
               saveSettings();
-              start();
             }, true),
           350,
         );
-      } else {
-        start();
       }
     },
     leave() {

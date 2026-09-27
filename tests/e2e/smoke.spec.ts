@@ -91,3 +91,23 @@ for (const height of [844, 600]) {
     await expect(page.locator('.title-screen .candle .ff').first()).toHaveCSS('animation-name', 'flameframe');
   });
 }
+
+test('the fight waits for Start; meanwhile things can be held to read them', async ({ page }) => {
+  await freshGame(page);
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /enter the dungeon/i }).click();
+  await page.getByRole('button', { name: /enter floor 1/i }).click();
+  const clock = () => page.evaluate('window.__combat.time + window.__combat.intro');
+  const before = await clock();
+  await page.waitForTimeout(600);
+  expect(await clock()).toBe(before);
+  // Hold the ability button: an info sheet opens, nothing is played.
+  const ability = page.locator('.js-ability');
+  await ability.dispatchEvent('pointerdown');
+  await page.waitForTimeout(500);
+  await ability.dispatchEvent('pointerup');
+  await expect(page.locator('.modal .info')).toBeVisible();
+  await page.getByRole('button', { name: 'Close' }).click();
+  await page.locator('.js-start').click();
+  await expect.poll(clock).not.toBe(before);
+});

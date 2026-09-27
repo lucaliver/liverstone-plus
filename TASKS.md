@@ -24,7 +24,7 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done · `[-]` deferred (with re
 - [x] FE3. Enemy patterns: a frequent main attack plus a special move every X attacks
 - [x] FE4. Quick hero balance: starter decks with only basic cards (duplicates ok); advanced cards only from rewards
 - [x] FE5. Long press on statuses (enemy and own) shows their details
-- [ ] FE6. "Start" button at the beginning of each fight; the game waits so the player can inspect things
+- [x] FE6. "Start" button at the beginning of each fight; the game waits so the player can inspect things
 - [ ] FE7. Elite soundtrack (darker, more epic, same style)
 - [ ] FE8. Remove the secondary stat and bar (Rage, Arcana, Decay); active abilities cost a lot of mana instead
 - [ ] FE9. Calmer soundtrack while paused

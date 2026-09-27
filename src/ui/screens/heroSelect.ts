@@ -5,13 +5,11 @@ import type { HeroDef, HeroId } from '../../game/types';
 import type { Screen } from '../app';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
-import { ABILITY_ICON } from '../combat/view';
+import { ABILITY_ICON, PASSIVE_ICON } from '../combat/view';
 import { cardText } from '../components/cardView';
 import { motes } from '../components/decor';
 import { openDeck } from '../components/modals';
 import { h } from '../dom';
-
-const PASSIVE_ICON: Record<string, string> = { warrior: 'shield', mage: 'bolt2', necromancer: 'drop' };
 
 const feature = (ic: string, name: string, kind: 'passive' | 'active' | 'special', desc: string): HTMLElement =>
   h('div', {

@@ -67,3 +67,22 @@ export function onPress(el: HTMLElement, fn: () => void, longMs = 420): void {
   });
   el.addEventListener('contextmenu', (e) => e.preventDefault());
 }
+
+/** Different actions for a tap and a long press (the long press never triggers the tap). */
+export function onTapOrHold(el: HTMLElement, onTap: () => void, onHold: () => void, longMs = 420): void {
+  let timer = 0;
+  let held = false;
+  el.addEventListener('pointerdown', () => {
+    held = false;
+    clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      held = true;
+      onHold();
+    }, longMs);
+  });
+  for (const ev of ['pointerup', 'pointerleave', 'pointercancel']) el.addEventListener(ev, () => clearTimeout(timer));
+  el.addEventListener('click', () => {
+    if (!held) onTap();
+  });
+  el.addEventListener('contextmenu', (e) => e.preventDefault());
+}

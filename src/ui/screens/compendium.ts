@@ -12,6 +12,7 @@ import { h, onPress } from '../dom';
 import { icon, INTENT_ICON } from '../art/icons';
 import { creature } from '../art/creatures';
 import { cardView } from '../components/cardView';
+import { moveEffect } from '../components/moveText';
 import { openCardDetail } from '../components/modals';
 
 const RARITY_ORDER: Rarity[] = ['starter', 'common', 'rare', 'epic', 'legendary', 'special'];
@@ -20,17 +21,6 @@ const TABS: CardClass[] = [...HERO_LIST.map((hd) => hd.id), 'neutral', 'curse'];
 const tabLabel = (c: CardClass): string => t(`compendium.tab.${c}`);
 
 const TIERS: EnemyDef['tier'][] = ['normal', 'elite', 'boss'];
-
-/** Short, icon-led description of an enemy move. */
-function moveEffect(m: MoveDef): string {
-  const parts: string[] = [];
-  if (m.dmg) parts.push(`${icon('sword')}<b>${Math.round(m.dmg * CONFIG.enemyDmg)}${m.hits && m.hits > 1 ? `×${m.hits}` : ''}</b>`);
-  if (m.block) parts.push(`${icon('shield')}<b>${Math.round(m.block * CONFIG.enemyDmg)}</b>`);
-  for (const st of m.status ?? []) parts.push(`${t(`status.${st.id}`)} ${st.t ? `${st.t}s` : `+${st.v ?? 1}`}`);
-  if (m.curse) parts.push(`${icon('skull')}${t(`card.${m.curse.id}.name`)}${m.curse.n > 1 ? ` ×${m.curse.n}` : ''}`);
-  if (m.steal) parts.push(t('compendium.steal'));
-  return parts.join(' ');
-}
 
 function foeView(e: EnemyDef): HTMLElement {
   const row = (m: MoveDef): string =>

@@ -139,3 +139,34 @@
   30% { transform: translateY(-12px) scale(1); }
   100% { transform: translateY(-56px); opacity: 0; }
 }
+
+/* Start gate: the fight waits until the player is ready (centred on the belt) */
+.start-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 250;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.start-btn {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 220px;
+  padding: 8px 18px 10px;
+  font-size: 30px;
+  line-height: 1;
+  box-shadow: 6px 6px 0 var(--p);
+  animation: startpulse 0.9s steps(2) infinite;
+}
+.start-btn small {
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+@keyframes startpulse {
+  50% { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--p); }
+}
