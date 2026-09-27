@@ -15,7 +15,7 @@ import type { HeroId } from './game/types';
 import { confirmModal, initApp, show } from './ui/app';
 import { initFx } from './ui/fx/fx';
 import { preloadArt } from './ui/art/riso';
-import { combatScreen } from './ui/screens/combat';
+import { combatScreen } from './ui/combat/combatScreen';
 import { endScreen } from './ui/screens/end';
 import { heroSelectScreen } from './ui/screens/heroSelect';
 import { journeyScreen } from './ui/screens/journey';

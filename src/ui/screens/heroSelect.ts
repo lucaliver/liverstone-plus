@@ -8,7 +8,7 @@ import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { openDeck } from '../components/modals';
 import { cardText } from '../components/cardView';
-import { ABILITY_ICON } from './combat';
+import { ABILITY_ICON } from '../combat/view';
 
 const PASSIVE_ICON: Record<string, string> = { warrior: 'shield', mage: 'bolt2', necromancer: 'drop' };
 
