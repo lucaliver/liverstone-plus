@@ -209,7 +209,7 @@ export const warriorCards: CardDef[] = [
     upCost: 4,
     vals: [30],
     upVals: [40],
-    keywords: ['exhaust'],
+    keywords: ['exhaust', 'pending'],
     art: 'contract',
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
@@ -313,6 +313,7 @@ export const warriorCards: CardDef[] = [
     upCost: 5,
     vals: [24, 3],
     upVals: [30, 4],
+    keywords: ['pending'],
     art: 'quake',
     play: (c, v) => {
       c.hit(v[0], { kind: 'blunt' });

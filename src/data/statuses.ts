@@ -27,6 +27,8 @@ const defs: StatusDef[] = [
   { id: 'chill', kind: 'timed', good: false, icon: 'snow' },
   { id: 'stun', kind: 'timed', good: false, icon: 'stars' },
   { id: 'frozen', kind: 'timed', good: false, icon: 'hourglass' },
+  { id: 'hurry', kind: 'timed', good: false, icon: 'stopwatch' },
+  { id: 'slowdown', kind: 'timed', good: false, icon: 'cone' },
   // Enemy passives (permanent traits).
   {
     id: 'policy',

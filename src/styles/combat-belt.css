@@ -102,6 +102,17 @@
   background-color: #f6f0e4b8;
   border-bottom: max(2px, calc(var(--cw) * 0.03)) solid var(--b);
 }
+/* Pending: its first ride along the belt, stamped and out of reach until it comes round again */
+.card.pending::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(-45deg, #1b183099 0 6px, transparent 6px 14px);
+}
+.card.pending .c-tags { z-index: 2; background: var(--y); outline: max(2px, calc(var(--cw) * 0.02)) solid var(--k); }
+
 /* blocked by a rule (No Repeats Policy, a stun…): the rule's icon, in pink, over the art */
 .rule-badge {
   position: absolute;

@@ -97,8 +97,6 @@ export class Combat {
   /** Time accumulated towards the next regular draw onto the belt. */
   private spawnClock = 0;
   beltSpeed = 1;
-  /** Seconds left of an enemy-imposed belt haste (the Spider's webs…). */
-  beltHasteT = 0;
   regenMul = 1;
   /** Deck uids permanently removed (potions). */
   consumed: number[] = [];
@@ -229,6 +227,11 @@ export class Combat {
     return cardKeywordsOf(card);
   }
 
+  /** A Pending card can't be played (or stashed) until it has ridden the whole belt once this fight. */
+  isPending(card: CombatCard): boolean {
+    return !card.passed && this.keywords(card).includes('pending');
+  }
+
   /**
    * True when a wide card (Gatekeeping) hides most of this belt card: the gate stretches left of the wide card's
    * face over the cards ahead of it, so they can't be played or grabbed until it's paid off.
@@ -277,7 +280,8 @@ export class Combat {
   beltRate(): number {
     let r = this.beltSpeed * (this.beltRows > 1 ? CONFIG.twoRowSpeed : 1);
     if (this.has('hero', 'rush')) r *= CONFIG.beltRush;
-    if (this.beltHasteT > 0) r *= 1.6;
+    if (this.has('hero', 'hurry')) r *= CONFIG.beltHurry;
+    if (this.has('hero', 'slowdown')) r *= CONFIG.beltSlow;
     return r;
   }
 
@@ -299,7 +303,6 @@ export class Combat {
     this.tickBelt(dt);
     for (const id of this.relics) RELICS[id]?.hooks?.tick?.(this, dt);
     this.heroDef.hooks.tick?.(this, dt);
-    this.beltHasteT = Math.max(0, this.beltHasteT - dt);
   }
 
   private tickHero(dt: number): void {
@@ -413,7 +416,6 @@ export class Combat {
     }
     if (m.steal) for (let i = 0; i < m.steal; i++) this.stealCard();
     if (m.drainMana) this.drainMana(m.drainMana);
-    if (m.beltHaste) this.beltHasteT = Math.max(this.beltHasteT, m.beltHaste);
     if (m.hex) this.hexCards(m.hex.id, m.hex.belt, m.hex.draw);
     m.fx?.(this);
   }
@@ -488,6 +490,7 @@ export class Combat {
     const def = CARDS[card.id];
     // A hex stays on the card through the piles until it's broken; one already cracked is gone.
     if (card.hex && card.hex.left <= 0) delete card.hex;
+    card.passed = true;
     this.events.emit({ type: 'cardExpired', card });
     this.withCard(card, def, () => def.onExpire?.(this, this.cardVals(card), card));
     this.heroDef.hooks.onCardExpired?.(this, card);
@@ -512,6 +515,10 @@ export class Combat {
     }
     if (!this.isPlayable(card)) {
       this.events.emit({ type: 'text', target: 'hero', key: 'combat.unplayable', tone: 'neutral' });
+      return false;
+    }
+    if (this.isPending(card)) {
+      this.events.emit({ type: 'text', target: 'hero', key: 'combat.pending', tone: 'neutral' });
       return false;
     }
     const rule = this.ruleBlock(card);
@@ -565,8 +572,8 @@ export class Combat {
     const target = slot ?? this.sleeve.indexOf(null);
     if (target < 0 || target >= this.sleeve.length) return false;
     const b = this.belt[beltIdx];
-    // A hexed card is stuck to the belt until freed; a covered one can't be reached.
-    if (b.card.hex || this.isCovered(uid)) return false;
+    // A hexed card is stuck to the belt until freed; a covered one can't be reached; a pending one waits its turn.
+    if (b.card.hex || this.isCovered(uid) || this.isPending(b.card)) return false;
     const old = this.sleeve[target];
     // The hero special never leaves its hand.
     if (old?.uid === SPECIAL_UID) return false;

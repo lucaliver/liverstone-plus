@@ -12,6 +12,9 @@ export const CONFIG = {
   expireOverhang: 0.45,
   /** Belt speed multiplier while rushed (Time Slip, Time Warp). */
   beltRush: 1.8,
+  /** Belt speed multipliers imposed by enemies: Hurry (faster) and Slowdown. */
+  beltHurry: 1.5,
+  beltSlow: 0.6,
   /** Global difficulty knobs applied to every enemy (the records hold the real numbers, so keep them at 1 unless testing). */
   enemyHp: 1,
   enemyDmg: 1,

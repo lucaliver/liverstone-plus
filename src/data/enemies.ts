@@ -20,6 +20,8 @@ const defs: EnemyDef[] = [
     main: atk('bite', 4, 6),
     every: 2,
     specials: [atk('frenzy', 2, 8, { hits: 3, intent: 'charge' })],
+    // Tells the boss: from half HP on, your belt is rushed for the rest of the fight.
+    onHalf: (c) => c.applyStatus('hero', 'hurry', 1, 9999),
   },
   {
     id: 'skeleton',

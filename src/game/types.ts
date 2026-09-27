@@ -5,7 +5,7 @@ export type HeroId = 'warrior' | 'mage' | 'necromancer';
 export type CardClass = HeroId | 'neutral' | 'curse';
 export type CardType = 'attack' | 'spell' | 'skill' | 'power' | 'potion' | 'curse';
 export type Rarity = 'starter' | 'common' | 'rare' | 'epic' | 'legendary' | 'special' | 'unique';
-export type Keyword = 'exhaust' | 'consume' | 'fleeting' | 'unplayable' | 'volatile' | 'innate' | 'unique';
+export type Keyword = 'exhaust' | 'consume' | 'fleeting' | 'unplayable' | 'volatile' | 'innate' | 'unique' | 'pending';
 export type Side = 'hero' | 'enemy';
 
 /** A card in the run deck. */
@@ -47,6 +47,8 @@ export interface CombatCard extends CardInst {
   /** Temporary cards don't belong to the run deck. */
   temp: boolean;
   hex?: CardHex;
+  /** True once the card has ridden the whole belt this fight (a Pending card becomes playable). */
+  passed?: boolean;
 }
 
 export interface BeltCard {
@@ -131,8 +133,6 @@ export interface MoveDef {
   curse?: { id: string; n: number; to: 'belt' | 'draw' | 'discard' };
   steal?: number;
   drainMana?: number;
-  /** Speeds the player's belt up for `t` seconds. */
-  beltHaste?: number;
   /** Hexes cards (see `HEXES`): `belt` of them on the belt ('all' = every one), plus the next `draw` cards of the draw pile. */
   hex?: { id: string; belt: number | 'all'; draw: number };
   fx?: (c: Combat) => void;

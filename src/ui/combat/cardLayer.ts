@@ -227,9 +227,11 @@ export function createCardLayer(v: CombatView): CardLayer {
    */
   const renderPlayState = (ce: CardEl, card: CombatCard): void => {
     const rule = card.hex ? null : combat.ruleBlock(card);
-    const playable = combat.isPlayable(card);
+    const pending = combat.isPending(card);
+    const playable = combat.isPlayable(card) && !pending;
     const afford = combat.canAfford(card);
     toggle(ce.el, 'poor', !card.hex && (!afford || !playable || !!rule));
+    toggle(ce.el, 'pending', pending);
     const charging = !card.hex && playable && !rule && !afford;
     toggle(ce.el, 'charging', charging);
     if (charging) {

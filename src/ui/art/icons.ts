@@ -584,6 +584,19 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'shadow',
     svg: `<ellipse cx="32" cy="38" rx="14" ry="18"/><circle cx="32" cy="16" r="8"/><path d="M4 26h14v6H4zM46 26h14v6H46zM4 42h14v6H4zM46 42h14v6H46zM20 4l6 8-5 3-6-8zM44 4l-6 8 5 3 6-8z"/><path d="M31 22h2v34h-2z" fill="#16121f"/>`,
   },
+  // ---- belt speed statuses, Pending tag
+  stopwatch: {
+    el: 'steel',
+    svg: `<circle cx="34" cy="36" r="22"/><rect x="28" y="4" width="12" height="8"/><path d="M34 36V22" stroke="#16121f" stroke-width="6"/><path d="M34 36l9 7" stroke="#16121f" stroke-width="6"/><path d="M2 26h8v5H2zM0 38h8v5H0zM4 50h8v5H4z"/>`,
+  },
+  cone: {
+    el: 'steel',
+    svg: `<path d="M26 6h12l16 46H10z"/><path fill="#16121f" d="M22 20h20l3 9H19zM17 36h30l3 9H14z"/><rect x="4" y="52" width="56" height="8"/>`,
+  },
+  pending: {
+    el: 'holy',
+    svg: `<path d="M6 10h52v34H26L12 58V44H6z"/><circle cx="18" cy="27" r="4.5" fill="#16121f"/><circle cx="32" cy="27" r="4.5" fill="#16121f"/><circle cx="46" cy="27" r="4.5" fill="#16121f"/>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {

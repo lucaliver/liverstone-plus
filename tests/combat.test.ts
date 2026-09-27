@@ -390,4 +390,30 @@ describe('combat engine', () => {
       if (d.upVals) expect(d.upVals.length, d.id).toBe(d.vals.length);
     }
   });
+
+  it('a Pending card can only be played after its first full ride along the belt', () => {
+    const c = setup({ beltRows: 1, deck: deckOf(['pyroblast']) });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.maxMana = c.hero.mana = 10;
+    const card = c.belt[0].card;
+    expect(c.playCard(card.uid)).toBe(false);
+    expect(c.stash(card.uid, 1)).toBe(false);
+    // Off the edge, reshuffled, back on the belt: now it's approved.
+    run(c, (CONFIG.beltTime * EXPIRE_POS) / c.beltRate() + 3);
+    const back = c.belt.find((b) => b.card.uid === card.uid);
+    expect(back).toBeTruthy();
+    c.hero.mana = 10;
+    expect(c.playCard(card.uid)).toBe(true);
+  });
+
+  it('the Snitch hurries the belt for the rest of the fight once under half HP', () => {
+    const c = setup({ enemy: ENEMIES.rat });
+    run(c, CONFIG.introTime + 0.01);
+    const base = c.beltRate();
+    c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 2), { raw: true }, 'hero');
+    expect(c.beltRate()).toBeCloseTo(base * CONFIG.beltHurry);
+    run(c, 30);
+    expect(c.has('hero', 'hurry')).toBe(true);
+  });
 });

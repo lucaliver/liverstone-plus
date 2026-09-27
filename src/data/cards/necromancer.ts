@@ -276,7 +276,7 @@ export const necromancerCards: CardDef[] = [
     cost: 5,
     vals: [20],
     upVals: [28],
-    keywords: ['exhaust'],
+    keywords: ['exhaust', 'pending'],
     art: 'cart',
     play: (c, v) => c.applyStatus('enemy', 'poison', v[0]),
   },
