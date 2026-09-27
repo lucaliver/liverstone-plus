@@ -29,11 +29,6 @@ interface CardEl {
   rule?: string;
 }
 
-/** A played card holds still while it gets punched (ms), then leaves. */
-const PUNCH_MS = 130;
-/** Rows of the punched holes (% of the card height): three holes, one per row, at a random column each. */
-const PUNCH_ROWS = [22, 44, 66];
-
 /** Steps of the refill shown on a card waiting for mana (stepped, like the rest of the motion). */
 const CHARGE_STEPS = 10;
 
@@ -215,25 +210,7 @@ export function createCardLayer(v: CombatView): CardLayer {
 
   // ------------------------------------------------------------------ render
 
-  /** Every card played gets punched like a time card: three holes, one per step, before it leaves. */
-  const punch = (el2: HTMLElement): void => {
-    const holes = PUNCH_ROWS.map((y, i) =>
-      h('i', { style: { top: `${y}%`, left: `${14 + Math.floor(Math.random() * 5) * 16}%`, animationDelay: `${i * 40}ms` } }),
-    );
-    el2.append(h('div', { class: 'punch' }, ...holes));
-  };
-
   const flyOut = (ce: CardEl, reason: Removal): void => {
-    if (reason !== 'played') {
-      leave(ce, reason);
-      return;
-    }
-    punch(ce.el);
-    ce.el.classList.add('punched');
-    setTimeout(() => leave(ce, reason), PUNCH_MS);
-  };
-
-  const leave = (ce: CardEl, reason: Removal): void => {
     const def = CARDS[ce.card.id];
     const el2 = ce.el;
     const rc = el2.getBoundingClientRect();
