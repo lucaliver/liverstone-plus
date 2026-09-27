@@ -36,9 +36,9 @@ function markup(run: RunState, combat: Combat): string {
   const heroId = run.hero;
   return `
     <header class="topbar">
-      <button class="icon-btn js-pause" aria-label="${t('combat.paused')}">${icon('pause')}</button>
       <div class="floor-chip">${t('common.floorOf', { n: node.floor, total: totalFloors(run) })}<small>${t(`journey.node.${node.type}`)}</small></div>
       <button class="icon-btn speed-btn js-speed" aria-label="${t('combat.speed')}"></button>
+      <button class="icon-btn js-pause" aria-label="${t('combat.paused')}">${icon('pause')}</button>
     </header>
     <section class="stage">
       <div class="stage-floor"></div>
