@@ -30,7 +30,7 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done · `[-]` deferred (with re
 - [x] FE9. Calmer soundtrack while paused
 - [x] FE10. Pause menu: "Main menu" button (keeps the run; only the current fight is lost)
 - [x] FE11. A couple of new cards per hero with strong archetype synergy
-- [ ] FE12. Card corner marks: explain or remove the bottom-right square; better Innate symbol
+- [x] FE12. Card corner marks: explain or remove the bottom-right square; better Innate symbol
 
 ## MISC
 

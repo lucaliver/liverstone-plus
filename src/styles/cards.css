@@ -148,18 +148,25 @@
   bottom: 2.5cqw;
   display: flex;
   gap: 1.5cqw;
-  font-size: 12cqw;
-  color: var(--muted);
+  font-size: 13cqw;
+  color: var(--k);
+  --ink2: var(--y);
 }
+/* rarity gem: only rare and above carry one (a pixel diamond in the rarity ink) */
 .c-gem {
+  display: none;
   position: absolute;
-  right: 3.5cqw;
-  bottom: 3.5cqw;
-  width: 7cqw;
-  height: 7cqw;
-  background: var(--paper);
+  right: 4cqw;
+  bottom: 4cqw;
+  width: 9cqw;
+  height: 9cqw;
+  rotate: 45deg;
   border: max(1.5px, 1.6cqw) solid var(--k);
 }
+.card[data-rarity='rare'] .c-gem,
+.card[data-rarity='epic'] .c-gem,
+.card[data-rarity='legendary'] .c-gem,
+.card[data-rarity='unique'] .c-gem { display: block; }
 .card[data-rarity='rare'] .c-gem { background: var(--b); }
 .card[data-rarity='epic'] .c-gem { background: var(--p); }
 .card[data-rarity='legendary'] .c-gem { background: var(--y); }

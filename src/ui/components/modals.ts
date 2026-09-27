@@ -179,7 +179,14 @@ export function openCardDetail(card: CardInst, onClose?: () => void): ModalHandl
   const render = (): void => {
     const shown = { ...card, up: showUp };
     const gloss = cardKeywords(shown).map((k) => h('div', { html: `<b class="kw">${t(`kw.${k}`)}</b> — ${t(`kw.${k}.d`)}` }));
-    wrap.replaceChildren(cardView(shown), h('div', { class: 'rules', html: cardText(shown) }));
+    wrap.replaceChildren(
+      cardView(shown),
+      h('div', {
+        class: 'detail-meta',
+        html: `<span class="rar ${def.rarity}">${t(`rarity.${def.rarity}`)}</span><span>${t(`type.${def.type}`)}</span>`,
+      }),
+      h('div', { class: 'rules', html: cardText(shown) }),
+    );
     if (gloss.length) wrap.append(h('div', { class: 'glossary' }, ...gloss));
     if (canToggle)
       wrap.append(

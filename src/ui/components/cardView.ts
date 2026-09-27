@@ -6,7 +6,7 @@ import { h } from '../dom';
 import { icon } from '../art/icons';
 
 const KEYWORD_LINE = ['unique', 'innate', 'exhaust', 'consume', 'fleeting', 'volatile', 'unplayable'];
-const TAG_ICON: Record<string, string> = { unique: 'star', innate: 'up', exhaust: 'cross', consume: 'drop', fleeting: 'wing', volatile: 'combust' };
+const TAG_ICON: Record<string, string> = { unique: 'star', innate: 'flag', exhaust: 'cross', consume: 'drop', fleeting: 'wing', volatile: 'combust' };
 
 /** Glyph kind → icon and the unit shown after its value. */
 export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string }> = {
