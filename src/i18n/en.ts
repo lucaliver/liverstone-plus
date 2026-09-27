@@ -147,6 +147,7 @@ const en = {
   'rest.smith': 'Smith',
   'rest.smithDesc': 'Upgrade a card',
   'rest.smithHint': 'Choose a card to upgrade',
+  'rest.upgrade': 'Upgrade',
   'rest.full': 'Already at full health',
   'end.defeat': 'Defeated',
   'end.defeatDesc': 'You fell on floor {n}.',

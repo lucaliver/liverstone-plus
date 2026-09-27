@@ -6,7 +6,7 @@ import { GAME_SPEEDS } from '../../data/config';
 import { saveSettings, settings } from '../../game/settings';
 import type { CardInst, CardType } from '../../game/types';
 import { openModal, type ModalHandle } from '../app';
-import { LONG_PRESS_MS, h, onPress } from '../dom';
+import { h, onPress, onTapOrHold } from '../dom';
 import { icon } from '../art/icons';
 import { cardKeywords, cardText, cardView } from './cardView';
 
@@ -218,51 +218,66 @@ export function sortDeck(deck: CardInst[]): CardInst[] {
 }
 
 /** Deck grid. With `onPick`, tapping a card selects it; otherwise tapping opens its detail. */
+/**
+ * Deck grid. Without `onPick`, tapping (or holding) a card opens its detail.
+ * With `onPick`: tap selects a card, hold shows its detail, and the confirm button calls `onPick`.
+ */
 export function openDeck(
   deck: CardInst[],
-  opts: { title?: string; onPick?: (c: CardInst) => void; filter?: (c: CardInst) => boolean; preview?: (c: CardInst) => CardInst } = {},
+  opts: {
+    title?: string;
+    onPick?: (c: CardInst) => void;
+    confirmLabel?: string;
+    filter?: (c: CardInst) => boolean;
+    preview?: (c: CardInst) => CardInst;
+  } = {},
 ): ModalHandle {
   const cards = sortDeck(deck).filter(opts.filter ?? (() => true));
-  let handle: ModalHandle;
-  const grid = h(
-    'div',
-    { class: `deck-grid ${opts.onPick ? 'pick' : ''}` },
-    ...cards.map((c) => {
-      const el = cardView(opts.preview ? opts.preview(c) : c);
-      if (opts.onPick) {
-        // Picking: tap selects, long press shows the card instead.
-        let t0 = 0;
-        let long = false;
-        el.addEventListener('click', () => {
-          if (long) return;
+  const shown = (c: CardInst): CardInst => (opts.preview ? opts.preview(c) : c);
+  let selected: CardInst | null = null;
+  let confirm: HTMLButtonElement | null = null;
+  const els = cards.map((c) => {
+    const el = cardView(shown(c));
+    if (opts.onPick) {
+      onTapOrHold(
+        el,
+        () => {
           sfx('tap');
-          handle.close();
-          opts.onPick!(c);
-        });
-        el.addEventListener('pointerdown', () => {
-          long = false;
-          t0 = window.setTimeout(() => {
-            long = true;
-            openCardDetail(opts.preview ? opts.preview(c) : c);
-          }, LONG_PRESS_MS);
-        });
-        ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => {
-          el.addEventListener(ev, () => clearTimeout(t0));
-        });
-        el.addEventListener('contextmenu', (e) => e.preventDefault());
-      } else {
-        onPress(el, () => {
-          sfx('tap');
-          openCardDetail(c);
-        });
-      }
-      return el;
-    }),
-  );
-  handle = openModal({
+          selected = selected?.uid === c.uid ? null : c;
+          for (const [i, x] of els.entries()) x.classList.toggle('sel', cards[i].uid === selected?.uid);
+          grid.classList.toggle('has-sel', !!selected);
+          if (confirm) confirm.disabled = !selected;
+        },
+        () => openCardDetail(shown(c)),
+      );
+    } else {
+      onPress(el, () => {
+        sfx('tap');
+        openCardDetail(c);
+      });
+    }
+    return el;
+  });
+  const grid = h('div', { class: `deck-grid ${opts.onPick ? 'pick' : ''}` }, ...els);
+  const handle = openModal({
     title: `${opts.title ?? t('deck.title')} (${cards.length})`,
     body: cards.length ? grid : h('p', null, t('deck.empty')),
-    actions: [{ label: opts.onPick ? t('common.cancel') : t('common.close'), cls: 'secondary' }],
+    actions: opts.onPick
+      ? [
+          {
+            label: opts.confirmLabel ?? t('common.confirm'),
+            onClick: () => {
+              if (!selected) return false;
+              opts.onPick?.(selected);
+            },
+          },
+          { label: t('common.cancel'), cls: 'secondary' },
+        ]
+      : [{ label: t('common.close'), cls: 'secondary' }],
   });
+  if (opts.onPick) {
+    confirm = handle.el.querySelector<HTMLButtonElement>('.actions .btn');
+    if (confirm) confirm.disabled = true;
+  }
   return handle;
 }

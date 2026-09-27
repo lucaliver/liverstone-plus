@@ -154,3 +154,21 @@ test('tapping the backdrop over the pause button closes the pause menu without r
   await page.waitForTimeout(300);
   await expect(page.locator('.modal')).toHaveCount(0);
 });
+
+test('campfire upgrade: tapping selects, the Upgrade button confirms', async ({ page }) => {
+  await freshGame(page);
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /enter the dungeon/i }).click();
+  await page.evaluate('(() => { const g = window.__game; g.run.current = 3; g.run.cleared = false; g.goJourney(); })()');
+  await page.getByRole('button', { name: /enter floor 4/i }).click();
+  await page.getByRole('button', { name: /smith/i }).click();
+  const upgrade = page.getByRole('button', { name: 'Upgrade', exact: true });
+  await expect(upgrade).toBeDisabled();
+  await page.locator('.deck-grid .card').first().click();
+  await expect(page.locator('.deck-grid .card.sel')).toHaveCount(1);
+  await expect(page.locator('.modal')).toBeVisible();
+  await upgrade.click();
+  await expect(page.locator('.node.current')).toBeVisible();
+  const upgraded = (await page.evaluate('window.__game.run.deck.filter((c) => c.up).length')) as number;
+  expect(upgraded).toBe(1);
+});

@@ -33,6 +33,7 @@ export function restScreen(run: RunState, onDone: () => void): Screen {
         sfx('tap');
         openDeck(run.deck, {
           title: t('rest.smithHint'),
+          confirmLabel: t('rest.upgrade'),
           filter: canUpgrade,
           preview: (c) => ({ ...c, up: true }),
           onPick: (c) => {

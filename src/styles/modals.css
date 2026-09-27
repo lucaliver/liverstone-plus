@@ -178,6 +178,8 @@
 }
 .deck-grid.pick .card { cursor: pointer; }
 .deck-grid.pick .card:active { transform: translate(3px, 3px); box-shadow: none; }
+.deck-grid.pick.has-sel .card:not(.sel) { opacity: 0.45; }
+.deck-grid.pick .card.sel { outline: 4px solid var(--y); outline-offset: 3px; transform: translateY(-4px); }
 
 /* info sheet: statuses, abilities, passives, enemy moves */
 .info { display: flex; flex-direction: column; gap: 10px; }
