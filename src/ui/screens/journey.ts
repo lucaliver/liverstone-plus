@@ -39,7 +39,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void): Sc
   const nodes = run.nodes.filter((n) => n.act === cur.act);
   const floors = Math.max(...nodes.map((n) => n.floor));
   const minFloor = Math.min(...nodes.map((n) => n.floor));
-  const options = run.cleared ? cur.next : [];
+  const options = run.cleared ? cur.next.filter((id) => !run.path.includes(id)) : [];
   let picked: number | null = !run.cleared ? cur.id : options.length === 1 ? options[0] : null;
   const y = (n: RunNode): number => (floors - n.floor + 0.5) * ROW_H;
 
@@ -47,7 +47,8 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void): Sc
     .flatMap((n) =>
       n.next
         .map((id) => run.nodes[id])
-        .filter((m) => m.act === n.act)
+        // A flat link goes both ways: draw it once.
+        .filter((m) => m.act === n.act && !(m.floor === n.floor && m.id < n.id))
         .map((m) => {
           const walked = run.path.includes(n.id) && (run.path.includes(m.id) || (n.id === cur.id && m.id === picked));
           return `<line class="${walked ? 'walked' : ''}" x1="${laneX(n.lane)}" y1="${y(n)}" x2="${laneX(m.lane)}" y2="${y(m)}" vector-effect="non-scaling-stroke"/>`;
@@ -75,8 +76,8 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void): Sc
   for (let f = minFloor; f <= floors; f++) path.append(h('span', { class: 'num', style: { top: `${(floors - f + 0.5) * ROW_H}px` } }, f));
   for (const n of nodes) {
     const past = run.path.includes(n.id) && (n.id !== cur.id || run.cleared);
-    const missed = !past && n.floor <= cur.floor && n.id !== cur.id;
     const open = n.id === cur.id ? !run.cleared : options.includes(n.id);
+    const missed = !past && !open && n.floor <= cur.floor && n.id !== cur.id;
     const label = t(`journey.node.${n.type}`);
     const el = h(
       'div',

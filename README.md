@@ -58,7 +58,7 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
   riempie col tempo (es. da 3/3 a 3/5).
 - **Nemici:** un **attacco base** lento e pesante e, a intervalli, una **mossa speciale** (colpo ancora più forte,
   maledizioni, furto, blocco); gli speciali si alternano. Ogni colpo è un momento da preparare, con respiro in mezzo. La **barra minaccia** sopra il nastro mostra la mossa,
-  il valore, il caricamento e quanto manca al prossimo speciale.
+  il valore, il caricamento e quanto manca al prossimo speciale; tenendola premuta si vede tutto lo schema d'attacco del nemico.
 - **Difesa:** il **Blocco** assorbe i danni ma svanisce col tempo, quindi va giocato poco prima del colpo. La
   barra vita mostra a strisce quanto perderai.
   Poco prima di ogni colpo c'è un segnale sonoro (diverso se il Blocco lo copre) e, se non è bloccato, i bordi lampeggiano.
@@ -70,7 +70,8 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 ### La run
 
 - **Atto 1 – The Morning Shift (turno del mattino):** una mappa a **due percorsi** che partono da un primo lavoro
-  comune, ogni tanto si incrociano e si ricongiungono al **boss**. Lungo la strada: lavori (battaglie), sale pausa,
+  comune, un paio di volte sono collegati (in diagonale o in orizzontale, senza mai incrociarsi) e si ricongiungono
+  al **boss**. Lungo la strada: lavori (battaglie), sale pausa,
   **promozioni** e un'**ispezione** (élite). Dopo ogni tappa scegli dove andare.
   La run è già modellata come grafo, pronta per una mappa a rami.
 - **Ricompensa:** sopra tutto il mazzo, sotto alcune carte premio: scegli una carta per parte e **Scambia**, oppure
@@ -120,13 +121,13 @@ I mazzi iniziali hanno solo carte base e cristalli; tutte le altre arrivano come
 | Nemico | Stile |
 | --- | --- |
 | The Snitch | La spia: colpi rapidi e raffiche (*Rat Out*) |
-| Senior Boomer | Colpi lenti, un colpo pesantissimo (*Seniority*) e *Gatekeep*: una maledizione larga tre carte che copre le carte davanti a sé sul nastro finché non la paghi (1 mana) |
+| Senior Boomer | Colpi lenti, un colpo pesantissimo (*Seniority*) e *Gatekeep*: due maledizioni larghe tre carte che coprono le carte davanti a sé sul nastro finché non le paghi (2 mana l'una) |
 | Toxic Coworker | Il collega tossico: riempie il nastro di *Drama* e il mazzo di *Gossip* |
 | Team Leader | *Team Building* lo rende più forte e ti rifila *Mandatory Fun* |
 | Goblin Consultant | Ruba carte (*Outsource*) e ti mette *Deadline* sul nastro |
 | HR Bitch | Passiva *No Repeats Policy*: non puoi giocare due carte dello stesso tipo a meno di 3 s l'una dall'altra; *Performance Review* ti indebolisce |
 | Guy Asleep | Un solo colpo enorme con una miccia lunghissima (*Rude Awakening*), ma ogni carta che giochi lo sveglia 1 s prima |
-| New Hire | *Blank Stare* pietrifica due carte del nastro: vanno toccate 5 volte per romperle, poi tornano giocabili |
+| New Hire | *Blank Stare* pietrifica tutte le carte sul nastro e le prossime 3 del mazzo: su ognuna c'è scritto *Tap it! ×5*; restano di pietra (anche rimescolate nel mazzo) finché non le rompi |
 | **Security Automaton** (élite) | Colpi che rendono Vulnerabile, *Lockdown* (blocco), si infuria a metà vita |
 | **Slaves CEO** (boss) | *Write-Ups*, *Deadlines* e il colpo *YOU'RE FIRED*; a metà vita accelera |
 
@@ -141,12 +142,12 @@ La difficoltà cresce scendendo di piano.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
 - **Percorso:** colonna dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
   per entrare nel piano. La run si abbandona dalla pausa in combattimento o iniziandone una nuova.
-- **Combattimento**, dall'alto: barra superiore (piano, velocità di gioco, pausa) · nemico con stati e vita ·
+- **Combattimento**, dall'alto: barra superiore (piano e nome del nemico, velocità di gioco, pausa) · nemico con stati e vita ·
   barra minaccia · eroe (ritratto, vita, Blocco, stati) · **nastro** · mana · sleeve e abilità (i contatori di mazzo e scarti sono nascosti). Vita del nemico,
   mossa in arrivo e vita dell'eroe stanno tutte subito sopra il nastro, così non serve distogliere lo sguardo dalle carte.
 - **Ricompensa, sala pausa** (macchinetta del caffè steampunk, con animazione di cura), **fine turno e licenziamento** (statistiche), **Handbook** (carte per
   classe con scoperte, nemici con mosse).
-- **Impostazioni:** musica, effetti, velocità, riduci animazioni, vibrazione, nastro a due righe (sperimentale: più carte in vista, nastro un po' più lento). Tutti i testi sono pronti per altre lingue.
+- **Impostazioni:** musica, effetti, velocità, riduci animazioni, vibrazione, nastro a due righe (sperimentale: più carte in vista, nastro un po' più lento), nastro da sinistra a destra (test; vale dal combattimento successivo). Tutti i testi sono pronti per altre lingue.
 
 ## 7. Direzione artistica e audio
 

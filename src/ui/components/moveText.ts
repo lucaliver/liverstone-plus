@@ -2,8 +2,8 @@ import { t } from '../../core/i18n';
 import { CONFIG } from '../../data/config';
 import { HEXES } from '../../data/hexes';
 import { STATUSES } from '../../data/statuses';
-import type { MoveDef } from '../../game/types';
-import { icon } from '../art/icons';
+import type { EnemyDef, MoveDef } from '../../game/types';
+import { icon, INTENT_ICON } from '../art/icons';
 
 /**
  * Colour-coded description of an enemy move (base values unless live `values` are given): damage in red,
@@ -45,9 +45,28 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
     parts.push(`<span class="fx fx-curse">${icon('skull')}${verbose ? t('move.fx.adds', { card }) : card}<b>${n}</b></span>`);
   }
   if (m.hex) {
-    const n = m.hex.n > 1 ? ` ×${m.hex.n}` : '';
-    parts.push(`<span class="fx fx-curse">${icon(HEXES[m.hex.id].icon)}${t(`hex.${m.hex.id}`)}<b>${n}</b></span>`);
+    const { belt, draw } = m.hex;
+    const n = belt === 'all' ? t('move.fx.hexAll', { n: draw }) : `×${belt + draw}`;
+    parts.push(`<span class="fx fx-curse">${icon(HEXES[m.hex.id].icon)}${t(`hex.${m.hex.id}`)} <b>${n}</b></span>`);
   }
   if (m.steal) parts.push(`<span class="fx fx-steal">${icon('hand')}${t('compendium.steal')}</span>`);
   return parts.join(' ');
+}
+
+/**
+ * An enemy's whole attack pattern: the main attack, the specials it uses in turn, then its passives and enrage.
+ * In a fight, `mark` highlights the move being charged and the next special.
+ */
+export function movePattern(e: EnemyDef, values: MoveValues = baseValues, mark?: { now: MoveDef; next: MoveDef | null }): string {
+  const row = (m: MoveDef): string => {
+    const cls = m === mark?.now ? 'now' : m === mark?.next ? 'next' : '';
+    return `<li class="${cls}" data-intent="${m.intent}"><span class="mi">${icon(INTENT_ICON[m.intent] ?? 'star')}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m, false, values)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`;
+  };
+  const every = e.specials.length ? `<li class="foe-every">${t('compendium.every', { n: e.every })}</li>` : '';
+  const passives = (e.start ?? [])
+    .filter((s) => STATUSES[s.id].passive)
+    .map((s) => `<p class="foe-half">${icon(STATUSES[s.id].icon)}<b>${t(`status.${s.id}`)}</b>: ${t(`status.${s.id}.d`, { v: s.v ?? 1 })}</p>`)
+    .join('');
+  const half = e.onHalf ? `<p class="foe-half">${icon('rage')}${t(`enemy.${e.id}.half`)}</p>` : '';
+  return `<ul class="foe-moves">${row(e.main)}${every}${e.specials.map(row).join('')}</ul>${passives}${half}`;
 }

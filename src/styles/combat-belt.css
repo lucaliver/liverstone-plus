@@ -113,23 +113,29 @@
 }
 
 /* Hexed card (petrified): stone over the card, a tap counter, a knock on each tap; then it thaws half-transparent. */
-.card.hexed::after {
-  content: attr(data-hex-left);
+.hex-cover {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2cqw;
+  padding: 4px;
+  text-align: center;
   font-family: var(--font-ui);
-  font-size: 40cqw;
+  font-size: 22cqw;
+  line-height: 1;
   color: var(--paper);
   text-shadow: var(--ring-k);
   background-color: var(--muted);
   background-image: radial-gradient(circle, var(--k) 22%, transparent 26%);
   background-size: 6px 6px;
-  opacity: 0.9;
+  opacity: 0.92;
 }
-.card.hexed[data-hex-left='1']::after,
-.card.hexed[data-hex-left='2']::after { opacity: 0.72; }
+.hex-cover span { font-size: 42cqw; }
+.card.hexed[data-hex-left='1'] .hex-cover,
+.card.hexed[data-hex-left='2'] .hex-cover { opacity: 0.75; }
 .card.hex-in { animation: hex-in 0.3s steps(3); }
 .card.hex-hit { animation: hex-hit 0.16s steps(2); }
 .card.thawing { opacity: 0.5; }
@@ -154,3 +160,8 @@
   border-bottom-width: calc(var(--bw) * 4);
   box-shadow: var(--sh) var(--sh) 0 var(--shadow);
 }
+
+/* Reversed belt (test setting): the stream and the maw are mirrored, gates stretch to the right. */
+.belt.reversed .belt-track { transform: scaleX(-1); }
+.belt.reversed .maw-eyes { left: auto; right: 4px; }
+.belt.reversed .card.wide .c-gate { right: auto; left: 100%; }

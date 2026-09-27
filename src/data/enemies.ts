@@ -31,7 +31,7 @@ const defs: EnemyDef[] = [
     every: 2,
     specials: [
       atk('boneCrush', 22, 11, { intent: 'charge' }),
-      { id: 'gatekeep', intent: 'curse', windup: 7, curse: { id: 'gatekeeping', n: 1, to: 'belt' } },
+      { id: 'gatekeep', intent: 'curse', windup: 7, curse: { id: 'gatekeeping', n: 2, to: 'belt' } },
     ],
   },
   {
@@ -106,7 +106,7 @@ const defs: EnemyDef[] = [
     art: 'newHire',
     main: atk('coffeeSpill', 6, 6),
     every: 2,
-    specials: [{ id: 'blankStare', intent: 'debuff', windup: 7, hex: { id: 'petrify', n: 2 } }],
+    specials: [{ id: 'blankStare', intent: 'debuff', windup: 7, hex: { id: 'petrify', belt: 'all', draw: 3 } }],
   },
   {
     id: 'boneKnight',

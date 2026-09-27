@@ -9,7 +9,7 @@ import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
 import { type InfoOpts, openHowTo, openInfo, openSettings, speedSelector } from '../components/modals';
 import { INTENT_ICON } from '../art/icons';
-import { moveEffect } from '../components/moveText';
+import { moveEffect, movePattern } from '../components/moveText';
 import { h, onPress, onTapOrHold, setText } from '../dom';
 import { burst, haptic } from '../fx/fx';
 import { createCardLayer } from './cardLayer';
@@ -71,6 +71,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     state.beltW = r.belt.clientWidth || el.clientWidth;
     // Cards follow the belt width, but shrink on short screens so the layout always fits (more with two rows).
     const cw = Math.round(Math.min(state.beltW * CONFIG.cardWidth, el.clientHeight * (combat.beltRows > 1 ? 0.092 : 0.118)));
+    state.cardW = cw;
     state.rowH = Math.round(cw * 1.4) + BELT_ROW_GAP;
     el.style.setProperty('--cw-belt', `${cw}px`);
     el.style.setProperty('--belt-row-h', `${state.rowH}px`);
@@ -107,21 +108,23 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     });
   // Live values: floor scaling, enemy Strength, Weak and Vulnerable, exactly as the threat bar shows them.
   const live = { dmg: (m: MoveDef) => combat.intentDamage(m), block: (m: MoveDef) => Math.round((m.block ?? 0) * combat.enemy.dmgScale) };
+  /** The move being charged, then the enemy's whole pattern (the next special marked). */
   const moveInfo = (): void => {
     const e = combat.enemy;
     const special = combat.nextSpecial();
+    const upcoming = special && e.move === e.def.main ? special : null;
     info({
       icon: INTENT_ICON[e.move.intent] ?? 'star',
       title: t(`move.${e.move.id}`),
       tag: t(`enemy.${e.def.id}.name`),
       tagCls: 'bad',
       desc: moveEffect(e.move, true, live) || t(`intent.${e.move.intent}`),
-      extra:
-        special && e.move === e.def.main
-          ? [
-              `<b class="after">${t('combat.afterAttacks', { n: e.mainsLeft + 1 })}</b> <b class="next-move">${t(`move.${special.id}`)}</b> — ${moveEffect(special, true, live)}`,
-            ]
-          : [],
+      extra: [
+        upcoming
+          ? `<b class="after">${t('combat.afterAttacks', { n: e.mainsLeft + 1 })}</b> <b class="next-move">${t(`move.${upcoming.id}`)}</b>`
+          : '',
+        movePattern(e.def, live, { now: e.move, next: upcoming }),
+      ].filter(Boolean),
       ink: 'bad',
     });
   };

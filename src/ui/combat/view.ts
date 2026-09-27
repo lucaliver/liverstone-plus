@@ -6,6 +6,7 @@ import { creature } from '../art/creatures';
 import { candleFlame, icon } from '../art/icons';
 import { darkEyes, motes } from '../components/decor';
 import { $, centerOf, h } from '../dom';
+import { settings } from '../../game/settings';
 
 export const ABILITY_ICON: Record<string, string> = { warrior: 'rage', mage: 'hourglass', necromancer: 'thorns' };
 export const PASSIVE_ICON: Record<string, string> = { warrior: 'shield', mage: 'bolt2', necromancer: 'drop' };
@@ -18,8 +19,11 @@ export interface CombatView {
   combat: Combat;
   heroId: HeroId;
   r: ReturnType<typeof queryRefs>;
-  /** `waiting`: before the player presses Start; things can be inspected but not played. */
-  state: { paused: boolean; waiting: boolean; ended: boolean; frameNo: number; beltW: number; rowH: number };
+  /**
+   * `waiting`: before the player presses Start; things can be inspected but not played.
+   * `reversed`: the belt runs left to right (test setting, read once when the fight is built).
+   */
+  state: { paused: boolean; waiting: boolean; ended: boolean; frameNo: number; beltW: number; cardW: number; rowH: number; reversed: boolean };
   retrigger(target: Element, cls: string): void;
   enemyPoint(): Point;
   heroPoint(): Point;
@@ -36,7 +40,7 @@ function markup(run: RunState, combat: Combat): string {
   const heroId = run.hero;
   return `
     <header class="topbar">
-      <div class="floor-chip">${t('common.floorOf', { n: node.floor, total: totalFloors(run) })}<small>${t(`journey.node.${node.type}`)}</small></div>
+      <div class="floor-chip">${t('common.floorOf', { n: node.floor, total: totalFloors(run) })}<small class="enemy-name">${t(`enemy.${enemyDef.id}.name`)}${enemyDef.tier !== 'normal' ? `<span class="tier ${enemyDef.tier}">${t(`journey.node.${enemyDef.tier}`)}</span>` : ''}</small></div>
       <button class="icon-btn speed-btn js-speed" aria-label="${t('combat.speed')}"></button>
       <button class="icon-btn js-pause" aria-label="${t('combat.paused')}">${icon('pause')}</button>
     </header>
@@ -53,7 +57,6 @@ function markup(run: RunState, combat: Combat): string {
         <div class="enemy-art">${creature(enemyDef.art)}</div>
       </div>
       <div class="enemy-info">
-        <div class="enemy-name">${t(`enemy.${enemyDef.id}.name`)}${enemyDef.tier !== 'normal' ? `<span class="tier ${enemyDef.tier}">${t(`journey.node.${enemyDef.tier}`)}</span>` : ''}</div>
         <div class="statuses js-estatus"></div>
         <div class="hpline">
           <div class="block-chip off js-eblock">${icon('shield')}<b></b></div>
@@ -79,7 +82,7 @@ function markup(run: RunState, combat: Combat): string {
         <div class="statuses js-hstatus"></div>
       </div>
     </section>
-    <section class="belt rows-${combat.beltRows}">
+    <section class="belt rows-${combat.beltRows} ${settings.reverseBelt ? 'reversed' : ''}">
       <div class="belt-track"></div>
       <div class="maw-eyes" aria-hidden="true"><i></i><i></i></div>
       <div class="belt-cards"></div>
@@ -142,7 +145,7 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
     combat,
     heroId: run.hero,
     r,
-    state: { paused: true, waiting: true, ended: false, frameNo: 0, beltW: 0, rowH: 0 },
+    state: { paused: true, waiting: true, ended: false, frameNo: 0, beltW: 0, cardW: 0, rowH: 0, reversed: settings.reverseBelt },
     retrigger(target, cls) {
       target.classList.remove(cls);
       void (target as HTMLElement).offsetWidth;

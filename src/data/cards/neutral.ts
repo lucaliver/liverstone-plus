@@ -117,7 +117,7 @@ export const curseCards: CardDef[] = [
     cls: 'curse',
     type: 'curse',
     rarity: 'special',
-    cost: 1,
+    cost: 2,
     vals: [],
     keywords: ['exhaust', 'fleeting'],
     // Three cards wide: it rides over the cards ahead of it until paid off.

@@ -15,7 +15,6 @@
   .hero-portrait { width: 52px; height: 52px; }
 }
 @media (max-height: 700px) {
-  .enemy-name { display: none; }
   .enemy-info { gap: 4px; }
   .enemy-info .statuses,
   .hero-info .statuses { height: 22px; }

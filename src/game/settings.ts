@@ -10,6 +10,8 @@ export interface Settings {
   seenTutorial: boolean;
   /** Experimental: two belt rows, a bit slower. Applies from the next fight. */
   twoRowBelt: boolean;
+  /** Experimental: cards enter on the left and travel right. Applies from the next fight. */
+  reverseBelt: boolean;
 }
 
 const defaults: Settings = {
@@ -21,6 +23,7 @@ const defaults: Settings = {
   locale: 'en',
   seenTutorial: false,
   twoRowBelt: false,
+  reverseBelt: false,
 };
 
 export const settings: Settings = load('settings', defaults);

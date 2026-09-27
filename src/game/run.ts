@@ -64,8 +64,8 @@ const LANES: NodeType[][] = [
   ['fight', 'fight', 'rest', 'fight', 'elite', 'fight', 'fight', 'rest'],
   ['fight', 'promotion', 'fight', 'rest', 'fight', 'promotion', 'fight', 'rest'],
 ];
-/** Floors where the two lanes cross (each node also leads to the other lane). */
-const CROSSINGS = 3;
+/** Links between the lanes per act: diagonal (to the other lane one floor up) or flat (across the same floor, both ways). */
+const LINKS = 2;
 export const ACTS = 1;
 
 export function newRun(hero: HeroId, seed: number): RunState {
@@ -93,7 +93,7 @@ export function newRun(hero: HeroId, seed: number): RunState {
   };
 }
 
-/** A shared first fight, two lanes that cross now and then, and the boss where they meet again. */
+/** A shared first fight, two lanes linked a couple of times, and the boss where they meet again. */
 function buildNodes(rng: Rng): RunNode[] {
   const nodes: RunNode[] = [];
   let last: RunNode[] = [];
@@ -114,23 +114,29 @@ function buildNodes(rng: Rng): RunNode[] {
     };
     const lanes = rng.shuffle(LANES.map((l) => [...l]));
     for (let i = 0; i < lanes[0].length - 1; i++) if (rng.next() < 0.3) [lanes[0][i], lanes[1][i]] = [lanes[1][i], lanes[0][i]];
-    const crossings = new Set(rng.shuffle([...Array(lanes[0].length - 1).keys()]).slice(0, CROSSINGS));
 
     const first = add(1, 0.5, 'fight');
     for (const n of last) n.next.push(first.id);
-    let prev = [first];
-    lanes[0].forEach((_, i) => {
-      const row = [add(i + 2, 0, lanes[0][i]), add(i + 2, 1, lanes[1][i])];
-      if (prev.length === 1) prev[0].next.push(row[0].id, row[1].id);
-      else
-        prev.forEach((n, side) => {
-          n.next.push(row[side].id);
-          if (crossings.has(i - 1)) n.next.push(row[1 - side].id);
-        });
-      prev = row;
-    });
+    const rows = lanes[0].map((_, i) => [add(i + 2, 0, lanes[0][i]), add(i + 2, 1, lanes[1][i])]);
+    first.next.push(rows[0][0].id, rows[0][1].id);
+    for (let i = 1; i < rows.length; i++) {
+      for (const side of [0, 1]) rows[i - 1][side].next.push(rows[i][side].id);
+    }
+    // A few one-way links between the lanes, never on neighbouring floors, so no two lines ever cross or touch.
+    const floors: number[] = [];
+    for (const i of rng.shuffle([...Array(rows.length - 1).keys()]))
+      if (floors.length < LINKS && floors.every((f) => Math.abs(f - i) > 1)) floors.push(i);
+    for (const i of floors) {
+      const side = rng.next() < 0.5 ? 0 : 1;
+      if (rng.next() < 0.5) rows[i][side].next.push(rows[i + 1][1 - side].id);
+      else {
+        // Flat: across the floor either way (a node already visited can't be entered again).
+        rows[i][side].next.push(rows[i][1 - side].id);
+        rows[i][1 - side].next.push(rows[i][side].id);
+      }
+    }
     const boss = add(lanes[0].length + 2, 0.5, 'boss');
-    for (const n of prev) n.next.push(boss.id);
+    for (const n of rows[rows.length - 1]) n.next.push(boss.id);
     last = [boss];
   }
   return nodes;
@@ -260,8 +266,8 @@ export function rest(run: RunState): number {
 /** Moves to a node reachable from the current one (the first by default). Returns false when the run is complete. */
 export function advance(run: RunState, to?: number): boolean {
   const next = currentNode(run).next;
-  const target = to ?? next[0];
-  if (target === undefined || !next.includes(target)) return false;
+  const target = to ?? next.find((id) => !run.path.includes(id));
+  if (target === undefined || !next.includes(target) || run.path.includes(target)) return false;
   run.current = target;
   run.path.push(target);
   run.cleared = false;

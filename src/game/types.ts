@@ -133,8 +133,8 @@ export interface MoveDef {
   drainMana?: number;
   /** Speeds the player's belt up for `t` seconds. */
   beltHaste?: number;
-  /** Hexes `n` cards on the belt (see `HEXES`). */
-  hex?: { id: string; n: number };
+  /** Hexes cards (see `HEXES`): `belt` of them on the belt ('all' = every one), plus the next `draw` cards of the draw pile. */
+  hex?: { id: string; belt: number | 'all'; draw: number };
   fx?: (c: Combat) => void;
 }
 

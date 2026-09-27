@@ -405,11 +405,14 @@ export class Combat {
     if (m.block) this.gainBlock('enemy', Math.round(m.block * scale));
     if (m.heal) this.heal('enemy', Math.round(m.heal * scale));
     for (const s of m.status ?? []) this.applyStatus(s.target, s.id, s.v ?? 1, s.t ?? 0);
-    if (m.curse) for (let i = 0; i < m.curse.n; i++) this.addTempCard(m.curse.id, m.curse.to);
+    if (m.curse) {
+      const gap = CONFIG.spacing * (CARDS[m.curse.id].span ?? 1);
+      for (let i = 0; i < m.curse.n; i++) this.addTempCard(m.curse.id, m.curse.to, false, -i * gap);
+    }
     if (m.steal) for (let i = 0; i < m.steal; i++) this.stealCard();
     if (m.drainMana) this.drainMana(m.drainMana);
     if (m.beltHaste) this.beltHasteT = Math.max(this.beltHasteT, m.beltHaste);
-    if (m.hex) this.hexBelt(m.hex.id, m.hex.n);
+    if (m.hex) this.hexCards(m.hex.id, m.hex.belt, m.hex.draw);
     m.fx?.(this);
   }
 
@@ -481,7 +484,8 @@ export class Combat {
 
   private expire(card: CombatCard): void {
     const def = CARDS[card.id];
-    delete card.hex;
+    // A hex stays on the card through the piles until it's broken; one already cracked is gone.
+    if (card.hex && card.hex.left <= 0) delete card.hex;
     this.events.emit({ type: 'cardExpired', card });
     this.withCard(card, def, () => def.onExpire?.(this, this.cardVals(card), card));
     this.heroDef.hooks.onCardExpired?.(this, card);
@@ -778,12 +782,15 @@ export class Combat {
     this.applyStatus('hero', 'rush', 1, t);
   }
 
-  /** Adds a temporary card (curses, generated cards) to a pile or straight onto the belt. */
-  addTempCard(id: string, to: 'belt' | 'draw' | 'discard', up = false): void {
+  /**
+   * Adds a temporary card (curses, generated cards) to a pile or straight onto the belt. `at` < 0 queues a belt card
+   * just before the entry, so several arriving together come in one after the other.
+   */
+  addTempCard(id: string, to: 'belt' | 'draw' | 'discard', up = false, at = 0): void {
     // Temporary cards get negative uids so they never collide with deck cards.
     const card: CombatCard = { uid: -++this.tempUid, id, up, bonus: 0, temp: true };
     if (to === 'belt') {
-      if (!this.spawnCard(0, card)) this.discard.push(card);
+      if (!this.spawnCard(at, card)) this.discard.push(card);
     } else if (to === 'draw') {
       this.draw.splice(this.rng.int(0, this.draw.length), 0, card);
     } else {
@@ -792,13 +799,16 @@ export class Combat {
     this.events.emit({ type: 'curseAdded', card, to });
   }
 
-  /** Hexes up to `n` random belt cards (not curses, not already hexed). */
-  hexBelt(id: string, n: number): void {
+  /** Hexes `belt` random belt cards ('all' = every one) and the next `draw` cards of the draw pile (never curses). */
+  hexCards(id: string, belt: number | 'all', draw = 0): void {
     const hex = HEXES[id];
-    const pool = this.belt.filter((b) => !b.card.hex && CARDS[b.card.id].type !== 'curse');
-    for (const b of this.rng.shuffle(pool).slice(0, n)) {
-      b.card.hex = { id, left: hex.taps, t: hex.thaw };
-      this.events.emit({ type: 'hexed', card: b.card });
+    const fits = (c: CombatCard): boolean => !c.hex && CARDS[c.id].type !== 'curse';
+    const onBelt = this.rng.shuffle(this.belt.map((b) => b.card).filter(fits));
+    // The top of the draw pile is the end of the array.
+    const next = draw > 0 ? this.draw.filter(fits).slice(-draw) : [];
+    for (const card of [...(belt === 'all' ? onBelt : onBelt.slice(0, belt)), ...next]) {
+      card.hex = { id, left: hex.taps, t: hex.thaw };
+      this.events.emit({ type: 'hexed', card });
     }
   }
 

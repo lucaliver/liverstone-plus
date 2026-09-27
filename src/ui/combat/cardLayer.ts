@@ -18,6 +18,8 @@ interface CardEl {
   card: CombatCard;
   face: HTMLElement;
   span: number;
+  /** Stone cover with the taps left, while the card is petrified. */
+  hexEl?: HTMLElement;
 }
 
 interface Drag {
@@ -192,7 +194,9 @@ export function createCardLayer(v: CombatView): CardLayer {
     const base = (el2.style.transform || '').replace(/scale\([^)]*\)|rotate\([^)]*\)/g, '');
     if (reason === 'expired' || !target) {
       el2.classList.add('fall-out');
-      el2.style.transform = `${base} translate3d(-40px, 60px, 0) rotate(-25deg)`;
+      el2.style.transform = state.reversed
+        ? `${base} translate3d(40px, 60px, 0) rotate(25deg)`
+        : `${base} translate3d(-40px, 60px, 0) rotate(-25deg)`;
     } else {
       const dx = target.x - (rc.left + rc.width / 2);
       const dy = target.y - (rc.top + rc.height / 2);
@@ -220,13 +224,21 @@ export function createCardLayer(v: CombatView): CardLayer {
       toggle(ce.el, 'poor', !hex && (!combat.canAfford(b.card) || !combat.isPlayable(b.card) || !!combat.ruleBlock(def)));
       toggle(ce.el, 'hexed', !!hex && hex.left > 0);
       toggle(ce.el, 'thawing', !!hex && hex.left <= 0);
-      if (hex) ce.el.dataset.hexLeft = String(hex.left);
+      if (hex && hex.left > 0) {
+        ce.el.dataset.hexLeft = String(hex.left);
+        ce.hexEl ??= ce.el.appendChild(h('div', { class: 'hex-cover' }));
+        setHtml(ce.hexEl, `<b>${t('hex.tapIt')}</b><span>×${hex.left}</span>`);
+      } else if (ce.hexEl) {
+        ce.hexEl.remove();
+        ce.hexEl = undefined;
+      }
       // Blink on the way out only when leaving the belt does something (curses that explode, drain…).
       toggle(ce.el, 'leaving', b.pos > 0.86 && !!CARDS[b.card.id].onExpire);
       if (refreshFaces) setHtml(ce.face, cardFace(b.card, combat));
       if (drag?.uid === b.card.uid && drag.moved) continue;
       // Snap to whole pixels: crisp pixel art and a slightly stepped, printed feel.
-      const x = Math.round(state.beltW * (1 - b.pos));
+      // Reversed belt (test setting): the same run mirrored, entering on the left.
+      const x = Math.round(state.reversed ? state.beltW * b.pos - state.cardW : state.beltW * (1 - b.pos));
       ce.el.style.transform = `translate3d(${x}px, ${b.row * state.rowH}px, 0)`;
       // Wide cards (Gatekeeping) ride over everything else on the belt.
       ce.el.style.zIndex = String(Math.round(b.pos * 100) + (ce.span > 1 ? 1000 : 0));

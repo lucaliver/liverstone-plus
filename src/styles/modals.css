@@ -216,7 +216,7 @@
 .info-head .ftag.active { background: var(--p); }
 .info-head .ftag.special { color: var(--k); background: var(--y); border: 2px solid var(--k); }
 .info-desc { font-size: 18px; font-weight: 700; line-height: 1.35; }
-.info-extra { font-family: var(--font-ui); font-size: 18px; color: var(--muted); }
+.info-extra { margin-top: 10px; font-family: var(--font-ui); font-size: 18px; color: var(--muted); }
 
 .detail-meta {
   display: flex;

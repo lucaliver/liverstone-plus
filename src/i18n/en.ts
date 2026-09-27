@@ -43,6 +43,7 @@ const en = {
   'settings.motion': 'Reduce motion',
   'settings.haptics': 'Vibration',
   'settings.twoRows': 'Two-row belt (test)',
+  'settings.reverseBelt': 'Belt runs left to right (test)',
   'settings.language': 'Language',
 
   // ------------------------------------------------------------- how to
@@ -124,6 +125,7 @@ const en = {
   'combat.afterAttacks': 'After {n} {n|attack|attacks}:',
   'move.fx.damage': 'damage',
   'move.fx.adds': 'adds {card}',
+  'move.fx.hexAll': 'belt + {n}',
 
   'intent.attack': 'Attack',
   'intent.defend': 'Defend',
@@ -297,6 +299,7 @@ const en = {
   'status.lightSleeper': 'Light Sleeper',
   'status.lightSleeper.d': 'Every card you play wakes him 1s sooner.',
   'hex.petrify': 'Petrify',
+  'hex.tapIt': 'Tap it!',
   'hex.petrify.d': 'Tap a petrified card {n} times to crack it; it thaws, then plays normally.',
 
   // --------------------------------------------------------------- cards

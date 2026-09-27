@@ -111,8 +111,8 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
   Hooks (`HeroHooks`, `RelicHooks`) extend behaviour without touching the engine loop.
 - **One source of truth.** Card numbers live in `vals`/`upVals`. The face, the rules text, damage previews and
   the logic all read them. Damage indices are derived from the `{dmg:i}` glyphs of the face.
-- **Run as a graph.** `RunNode.next[]` + `lane`: each act is a shared first fight, two lanes (`LANES` in `run.ts`) that
-  cross now and then, and the boss. `advance(run, to)` moves along a link; `run.path` records the nodes entered.
+- **Run as a graph.** `RunNode.next[]` + `lane`: each act is a shared first fight, two lanes (`LANES` in `run.ts`) with
+  `LINKS` links between them (diagonal upward, or flat both ways; never on neighbouring floors), and the boss. `advance(run, to)` moves along a link; `run.path` records the nodes entered.
 - **Per-frame rendering is diff-based** (`setText`, `setHtml`, `toggle` only write on change). Status chips are
   rebuilt only when the set changes, so presses aren't lost.
 

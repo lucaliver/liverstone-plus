@@ -89,6 +89,11 @@ export function openSettings(onChange?: () => void): ModalHandle {
       () => settings.twoRowBelt,
       (v) => (settings.twoRowBelt = v),
     ),
+    toggleRow(
+      t('settings.reverseBelt'),
+      () => settings.reverseBelt,
+      (v) => (settings.reverseBelt = v),
+    ),
     locales.length > 1
       ? h(
           'div',
@@ -171,7 +176,7 @@ export function openInfo(opts: InfoOpts, onClose?: () => void): ModalHandle {
       html: `<span class="info-ico">${icon(opts.icon)}</span><div><h3>${opts.title}</h3>${opts.tag ? `<span class="ftag ${opts.tagCls ?? ''}">${opts.tag}</span>` : ''}</div>`,
     }),
     h('p', { class: 'info-desc', html: opts.desc }),
-    ...(opts.extra ?? []).map((x) => h('p', { class: 'info-extra', html: x })),
+    ...(opts.extra ?? []).map((x) => h('div', { class: 'info-extra', html: x })),
   );
   return openModal({ body, actions: [{ label: t('common.close'), cls: 'secondary' }], onClose });
 }
