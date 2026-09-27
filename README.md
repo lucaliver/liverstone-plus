@@ -14,7 +14,7 @@ Ambientazione: **un'avventura fantasy trattata come un lavoro in fabbrica**, con
 ## 1. Il gioco in breve
 
 Scegli un eroe, timbra il cartellino e scendi piano per piano. Ogni combattimento è **in tempo reale**: le carte del
-mazzo scorrono su un nastro da destra a sinistra e devi giocarle prima che cadano nel buio. Il mana si ricarica
+mazzo scorrono su un nastro da sinistra a destra (invertibile nelle impostazioni) e devi giocarle prima che cadano nel buio. Il mana si ricarica
 col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazzo scambiando carte.
 
 ### Ambientazione e tono
@@ -50,7 +50,7 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
   leggerla: carte, stati, abilità, ritratto (passiva), barra minaccia, mana. Prima di iniziare, sopra al nemico compaiono le sue abilità passive.
 - **Nastro a due righe** (lo standard dalla 2.0): le carte entrano alternandosi sulle due righe, così se ne vedono il
   doppio e restano in vista più a lungo; il nastro scorre un po' più lento. Tocca una carta per giocarla, trascinala in su verso il nemico per giocarla, trascinala in giù
-  nella sleeve per tenerla. Una carta che esce a sinistra finisce negli scarti (le maledizioni *volatili*
+  nella sleeve per tenerla. Una carta che esce dal fondo del nastro finisce negli scarti (le maledizioni *volatili*
   lampeggiano poco prima, poi esplodono o ti puniscono). Quando il mazzo finisce, gli scarti si rimescolano. Alcune carte danno **Rush**:
   il nastro accelera e le carte arrivano prima (compare tra i tuoi stati, con il tempo rimasto).
 - **Mana:** si ricarica col tempo, a un ritmo che dipende dall'eroe. Il massimo parte basso e cresce con le
@@ -145,7 +145,7 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
 | Toxic Coworker | Il collega tossico: riempie il nastro di *Drama* e il mazzo di *Gossip* |
 | Team Leader | *Team Building* lo rende più forte e ti rifila *Mandatory Fun*; *Let's Sync* ti mette due riunioni sul nastro |
 | Goblin Consultant | Ruba carte (*Outsource*) e ti mette *Deadline* sul nastro |
-| HR Bitch | Passiva *No Repeats Policy*: non puoi giocare due carte dello stesso tipo a meno di 3 s l'una dall'altra; *Performance Review* ti mette due *Improvement Plan* nel mazzo |
+| HR Bitch | Passiva *No Repeats Policy*: non puoi giocare due carte dello stesso colore (attacco, difesa, utilità) a meno di 3 s l'una dall'altra; *Performance Review* ti mette due *Improvement Plan* nel mazzo |
 | Guy Asleep | Un solo colpo enorme con una miccia lunghissima (*Rude Awakening*), ma ogni carta che giochi lo sveglia 1 s prima |
 | New Hire | *Blank Stare* pietrifica metà delle carte sul nastro e metà del resto del mazzo: su ognuna c'è scritto *Tap it! ×5*; restano di pietra (anche rimescolate nel mazzo) finché non le rompi |
 | **Security Monitor** (élite) | Colpi che rendono Vulnerabile, *Lockdown* (blocco), *Clearance Check* (due *Red Tape* nel mazzo), si infuria a metà vita |
@@ -184,7 +184,7 @@ La difficoltà cresce scendendo di piano.
   mossa in arrivo e vita dell'eroe stanno tutte subito sopra il nastro, così non serve distogliere lo sguardo dalle carte.
 - **Ricompensa, sala pausa** (macchinetta del caffè steampunk, con animazione di cura), **fine turno e licenziamento** (statistiche), **Handbook** (carte per
   classe con scoperte, nemici con mosse).
-- **Impostazioni:** volume di musica ed effetti (slider), velocità, riduci animazioni, vibrazione, nastro da sinistra a destra (test; vale dal combattimento successivo). Tutti i testi sono pronti per altre lingue.
+- **Impostazioni:** volume di musica ed effetti (slider), velocità, riduci animazioni, vibrazione, nastro da destra a sinistra (vale dal combattimento successivo). Tutti i testi sono pronti per altre lingue.
   Estensioni come Dark Reader non ricolorano il gioco.
 
 ## 7. Direzione artistica e audio

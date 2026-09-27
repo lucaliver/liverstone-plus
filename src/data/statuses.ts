@@ -1,5 +1,6 @@
 import type { Combat } from '../game/combat';
 import type { Side, StatusDef, StatusVal } from '../game/types';
+import { cardCategory } from './cards';
 
 /** How long every card played brings the Light Sleeper's hit closer (seconds). */
 const WAKE_PER_CARD = 1;
@@ -88,9 +89,15 @@ const defs: StatusDef[] = [
     good: true,
     passive: true,
     icon: 'rulebook',
-    // Curses are exempt: paying one off is never "the same type" as the card before.
+    // Same colour as the card before (attack, defense, utility): the card's art tells. Curses are exempt.
     canPlay: (c, side, def) =>
-      side === 'enemy' && def.type !== 'curse' && c.lastPlayed?.type === def.type && c.time - c.lastPlayedAt < POLICY_WINDOW ? 'combat.policy' : null,
+      side === 'enemy' &&
+      def.type !== 'curse' &&
+      !!c.lastPlayed &&
+      cardCategory(c.lastPlayed.id) === cardCategory(def.id) &&
+      c.time - c.lastPlayedAt < POLICY_WINDOW
+        ? 'combat.policy'
+        : null,
   },
   {
     id: 'meticulous',

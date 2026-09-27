@@ -67,7 +67,7 @@ const en = {
   'settings.speed': 'Game speed',
   'settings.motion': 'Reduce motion',
   'settings.haptics': 'Vibration',
-  'settings.reverseBelt': 'Belt runs left to right (test)',
+  'settings.rightToLeft': 'Belt runs right to left',
   'settings.language': 'Language',
 
   // ------------------------------------------------------------- how to
@@ -150,7 +150,7 @@ const en = {
   'combat.micromanaged': 'Any updates?',
   'combat.inflation': 'Inflation: some cards cost 1 more until you play them',
   'combat.blackout': "Lights out: you can't read your cards",
-  'combat.policy': 'Not the same type twice!',
+  'combat.policy': 'Not the same colour twice!',
   'combat.noMana': 'Not enough mana',
   'combat.dodged': 'Dodged!',
   'combat.parried': 'Parried!',
@@ -352,7 +352,7 @@ const en = {
   'status.slowdown': 'Slowdown',
   'status.slowdown.d': 'Your belt crawls: new cards arrive later.',
   'status.policy': 'No Repeats Policy',
-  'status.policy.d': "You can't play two cards of the same type (Attack, Spell, Skill) within 3s of each other.",
+  'status.policy.d': "You can't play two cards of the same colour (pink attack, blue defense, yellow utility) within 3s of each other.",
   'status.blackout': 'Blackout',
   'status.blackout.d': 'The lights are out: your cards show only their art and cost.',
   'status.meticulous': 'Meticulous',

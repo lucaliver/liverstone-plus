@@ -21,9 +21,9 @@ export interface CombatView {
   r: ReturnType<typeof queryRefs>;
   /**
    * `waiting`: before the player presses Start; things can be inspected but not played.
-   * `reversed`: the belt runs left to right (test setting, read once when the fight is built).
+   * `ltr`: the belt runs left to right (the default; read once when the fight is built).
    */
-  state: { paused: boolean; waiting: boolean; ended: boolean; frameNo: number; beltW: number; cardW: number; rowH: number; reversed: boolean };
+  state: { paused: boolean; waiting: boolean; ended: boolean; frameNo: number; beltW: number; cardW: number; rowH: number; ltr: boolean };
   retrigger(target: Element, cls: string): void;
   enemyPoint(): Point;
   heroPoint(): Point;
@@ -82,7 +82,7 @@ function markup(run: RunState, combat: Combat): string {
         <div class="statuses js-hstatus"></div>
       </div>
     </section>
-    <section class="belt rows-${combat.beltRows} ${settings.reverseBelt ? 'reversed' : ''}">
+    <section class="belt rows-${combat.beltRows} ${settings.rightToLeft ? '' : 'ltr'}">
       <div class="belt-track"></div>
       <div class="maw-eyes" aria-hidden="true"><i></i><i></i></div>
       <div class="belt-cards"></div>
@@ -145,7 +145,7 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
     combat,
     heroId: run.hero,
     r,
-    state: { paused: true, waiting: true, ended: false, frameNo: 0, beltW: 0, cardW: 0, rowH: 0, reversed: settings.reverseBelt },
+    state: { paused: true, waiting: true, ended: false, frameNo: 0, beltW: 0, cardW: 0, rowH: 0, ltr: !settings.rightToLeft },
     retrigger(target, cls) {
       target.classList.remove(cls);
       void (target as HTMLElement).offsetWidth;

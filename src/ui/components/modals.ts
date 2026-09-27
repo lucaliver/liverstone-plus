@@ -103,9 +103,9 @@ export function openSettings(onChange?: () => void): ModalHandle {
         )
       : null,
     toggleRow(
-      t('settings.reverseBelt'),
-      () => settings.reverseBelt,
-      (v) => (settings.reverseBelt = v),
+      t('settings.rightToLeft'),
+      () => settings.rightToLeft,
+      (v) => (settings.rightToLeft = v),
     ),
     locales.length > 1
       ? h(

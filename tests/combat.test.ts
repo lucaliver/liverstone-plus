@@ -193,6 +193,16 @@ describe('combat engine', () => {
     expect(c.playCard(under!.card.uid)).toBe(true);
   });
 
+  it('HR policy goes by the card colour: two defense cards clash, defense then utility is fine', () => {
+    const c = setup({ enemy: ENEMIES.hr, deck: deckOf(['defend', 'defend', 'manaGeode', 'defend', 'manaGeode', 'defend']) });
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.mana = c.hero.maxMana = 10;
+    c.lastPlayed = CARDS.defend;
+    c.lastPlayedAt = c.time;
+    expect(c.ruleBlock({ uid: 0, id: 'defend', up: false })?.key).toBe('combat.policy');
+    expect(c.ruleBlock({ uid: 0, id: 'manaGeode', up: false })).toBeNull();
+  });
+
   it('HR policy: no two cards of the same type in a row', () => {
     const c = setup({ enemy: ENEMIES.hr, deck: deckOf(['strike', 'strike', 'strike', 'defend', 'defend', 'defend']) });
     run(c, CONFIG.introTime + 0.01);

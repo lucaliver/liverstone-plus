@@ -1,5 +1,5 @@
 import { t } from '../../core/i18n';
-import { CARDS, cardCostOf, cardKeywordsOf, cardValsOf } from '../../data/cards';
+import { CARDS, cardCategory, cardCostOf, cardKeywordsOf, cardValsOf } from '../../data/cards';
 import { PERKS } from '../../data/perks';
 import type { Combat } from '../../game/combat';
 import type { CardInst } from '../../game/types';
@@ -52,19 +52,6 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   addCard: { icon: 'addCard', sign: '+' },
   lane: { icon: 'lane' },
 };
-
-export type CardCategory = 'attack' | 'defense' | 'utility' | 'curse';
-
-/** Colour family of the card art: attack (incl. burn/poison), defense (block/heal/dodge), utility, curse. */
-export function cardCategory(id: string): CardCategory {
-  const def = CARDS[id];
-  if (def.cat) return def.cat;
-  if (def.type === 'curse') return 'curse';
-  const f = def.face;
-  if (/\{(dmg|burn|poison)/.test(f) && !/^\{(block|heal|dodge)/.test(f)) return 'attack';
-  if (/\{(block|heal|dodge|parry)/.test(f)) return 'defense';
-  return 'utility';
-}
 
 /** Long names get a smaller font so they fit the title band instead of being cut. */
 const nameFit = (name: string): string => (name.length > 14 ? 'xlong' : name.length > 10 ? 'long' : '');

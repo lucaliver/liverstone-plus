@@ -243,10 +243,10 @@
 .card.covered .c-art,
 .card.covered .c-face { opacity: 0.38; }
 
-/* Reversed belt (test setting): the stream and the maw are mirrored, gates stretch to the right. */
-.belt.reversed .belt-track { transform: scaleX(-1); }
-.belt.reversed .maw-eyes { left: auto; right: 4px; }
-.belt.reversed .card.wide .c-gate { right: auto; left: 100%; }
+/* Left-to-right belt (the default): the stream and the maw are mirrored, gates stretch to the right. */
+.belt.ltr .belt-track { transform: scaleX(-1); }
+.belt.ltr .maw-eyes { left: auto; right: 4px; }
+.belt.ltr .card.wide .c-gate { right: auto; left: 100%; }
 
 /* Inflation: the cost went up for this fight */
 .card .c-cost.taxed { color: var(--paper); background: var(--red); }

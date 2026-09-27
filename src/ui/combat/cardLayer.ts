@@ -230,9 +230,7 @@ export function createCardLayer(v: CombatView): CardLayer {
     const base = (el2.style.transform || '').replace(/scale\([^)]*\)|rotate\([^)]*\)/g, '');
     if (reason === 'expired' || !target) {
       el2.classList.add('fall-out');
-      el2.style.transform = state.reversed
-        ? `${base} translate3d(40px, 60px, 0) rotate(25deg)`
-        : `${base} translate3d(-40px, 60px, 0) rotate(-25deg)`;
+      el2.style.transform = state.ltr ? `${base} translate3d(40px, 60px, 0) rotate(25deg)` : `${base} translate3d(-40px, 60px, 0) rotate(-25deg)`;
     } else {
       const dx = target.x - (rc.left + rc.width / 2);
       const dy = target.y - (rc.top + rc.height / 2);
@@ -304,8 +302,8 @@ export function createCardLayer(v: CombatView): CardLayer {
       if (refreshFaces) setHtml(ce.face, cardFace(b.card, combat));
       if (drag?.uid === b.card.uid && drag.moved) continue;
       // Snap to whole pixels: crisp pixel art and a slightly stepped, printed feel.
-      // Reversed belt (test setting): the same run mirrored, entering on the left.
-      const x = Math.round(state.reversed ? state.beltW * b.pos - state.cardW : state.beltW * (1 - b.pos));
+      // Left-to-right belt (the default): the same run mirrored, entering on the left.
+      const x = Math.round(state.ltr ? state.beltW * b.pos - state.cardW : state.beltW * (1 - b.pos));
       ce.el.style.transform = `translate3d(${x}px, ${b.row * state.rowH}px, 0)`;
       // Wide cards (Gatekeeping) and lane locks ride over everything else on the belt.
       ce.el.style.zIndex = String(Math.round(b.pos * 100) + (ce.over ? 1000 : 0));

@@ -9,8 +9,8 @@ export interface Settings {
   haptics: boolean;
   locale: string;
   seenTutorial: boolean;
-  /** Experimental: cards enter on the left and travel right. Applies from the next fight. */
-  reverseBelt: boolean;
+  /** Cards enter on the right and travel left (the default is left to right). Applies from the next fight. */
+  rightToLeft: boolean;
 }
 
 const defaults: Settings = {
@@ -21,7 +21,7 @@ const defaults: Settings = {
   haptics: true,
   locale: 'en',
   seenTutorial: false,
-  reverseBelt: false,
+  rightToLeft: false,
 };
 
 export const settings: Settings = load('settings', defaults);

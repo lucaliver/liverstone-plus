@@ -123,12 +123,12 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
       { class: 'topline' },
       h('button', {
         class: 'icon-btn',
-        'aria-label': t('common.back'),
+        'aria-label': t('menu.home'),
         onclick: () => {
           sfx('tap');
           onBack();
         },
-        html: icon('left'),
+        html: icon('home'),
       }),
       h('h1', { class: 'h1' }, t('hero.select')),
     ),
