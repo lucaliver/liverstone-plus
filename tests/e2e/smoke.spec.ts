@@ -111,3 +111,14 @@ test('the fight waits for Start; meanwhile things can be held to read them', asy
   await page.locator('.js-start').click();
   await expect.poll(clock).not.toBe(before);
 });
+
+test('pausing switches to the pause theme and resuming restores the fight music', async ({ page }) => {
+  await freshGame(page);
+  await startFight(page);
+  const track = () => page.evaluate('window.__game.musicTrack()');
+  expect(await track()).toBe('combat');
+  await page.locator('.js-pause').click();
+  expect(await track()).toBe('pause');
+  await page.getByRole('button', { name: /resume/i }).click();
+  expect(await track()).toBe('combat');
+});

@@ -7,7 +7,7 @@
  */
 import { audioGraph, onAudioUnlock } from './sfx';
 
-export type TrackId = 'menu' | 'combat' | 'elite' | 'boss' | 'rest';
+export type TrackId = 'menu' | 'combat' | 'elite' | 'boss' | 'rest' | 'pause';
 
 /** [step (0-15), midi note, length in 16th steps] */
 type NoteEv = [number, number, number];
@@ -297,6 +297,37 @@ const TRACKS: Record<TrackId, Track> = {
     pad: true,
     gain: 0.8,
   },
+  // Pause: a slow, hushed music box. Sparse bells over soft pads, no drums.
+  pause: {
+    bpm: 58,
+    chords: [
+      { root: 45, tones: MIN }, // Am
+      { root: 41, tones: MAJ7 }, // Fmaj7
+      { root: 38, tones: MIN }, // Dm
+      { root: 40, tones: MAJ }, // E
+    ],
+    bass: [0, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _],
+    bassWave: 'triangle',
+    arp: [0, _, _, _, 2, _, _, _, 1, _, _, _, 3, _, _, _],
+    arpOctave: 4,
+    lead: [
+      [
+        [0, E5, 8],
+        [8, C5, 8],
+      ],
+      [[0, A4, 16]],
+      [
+        [0, F5, 8],
+        [8, D5, 8],
+      ],
+      [[0, B4, 16]],
+    ],
+    leadOn: (p) => p % 2 === 1,
+    leadVoice: 'bell',
+    drums: [],
+    pad: true,
+    gain: 0.6,
+  },
   // A moment of warmth by the fire; still minor, still a little sad.
   rest: {
     bpm: 66,
@@ -536,12 +567,36 @@ function stop(fade = 0.6): void {
   current = null;
 }
 
-/** Switches the soundtrack (cross-fades). Safe to call before audio is unlocked. */
-export function playMusic(id: TrackId): void {
+/** Track to go back to when a temporary track (e.g. the pause theme) ends. */
+let resumeTo: TrackId | null = null;
+
+function setTrack(id: TrackId): void {
   wanted = id;
   if (!enabled || current?.id === id) return;
   stop();
   start(id);
+}
+
+/** Switches the soundtrack (cross-fades). Safe to call before audio is unlocked. */
+export function playMusic(id: TrackId): void {
+  resumeTo = null;
+  setTrack(id);
+}
+
+/** Plays a track for a while (e.g. while paused), then `endTemporaryMusic` restores the previous one. */
+export function playTemporaryMusic(id: TrackId): void {
+  if (resumeTo === null) resumeTo = wanted;
+  setTrack(id);
+}
+
+/** The track that is (or will be, once audio unlocks) playing. */
+export const musicTrack = (): TrackId | null => wanted;
+
+export function endTemporaryMusic(): void {
+  if (resumeTo === null) return;
+  const back = resumeTo;
+  resumeTo = null;
+  setTrack(back);
 }
 
 export function setMusicEnabled(on: boolean): void {

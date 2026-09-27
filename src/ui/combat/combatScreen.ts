@@ -1,4 +1,5 @@
 import { t } from '../../core/i18n';
+import { endTemporaryMusic, playTemporaryMusic } from '../../audio/music';
 import { sfx } from '../../audio/sfx';
 import { CONFIG, GAME_SPEEDS } from '../../data/config';
 import type { Combat } from '../../game/combat';
@@ -144,6 +145,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     cards.cancelDrag();
     state.paused = true;
     sfx('button');
+    playTemporaryMusic('pause');
     const body = h(
       'div',
       { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
@@ -188,6 +190,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       onClose: () => {
         pauseModal = null;
         state.paused = state.waiting;
+        endTemporaryMusic();
       },
     });
   };

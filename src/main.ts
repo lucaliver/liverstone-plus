@@ -7,7 +7,7 @@ import './styles/index.css';
 import { setLocale, t } from './core/i18n';
 import { randomSeed } from './core/rng';
 import { setSfxEnabled, unlockAudio } from './audio/sfx';
-import { playMusic, setMusicEnabled, suspendMusic } from './audio/music';
+import { musicTrack, playMusic, setMusicEnabled, suspendMusic } from './audio/music';
 import { Combat } from './game/combat';
 import { advance, applyCombat, clearRun, combatSetup, currentNode, loadRun, newRun, rollRewards, saveRun, type RunState } from './game/run';
 import { settings } from './game/settings';
@@ -148,6 +148,7 @@ async function boot(): Promise<void> {
         },
         nextNode,
         goJourney,
+        musicTrack,
       },
     });
 }
