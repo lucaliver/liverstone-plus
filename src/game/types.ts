@@ -1,3 +1,4 @@
+import type { TKey } from '../core/i18n';
 import type { Combat } from './combat';
 
 export type HeroId = 'warrior' | 'mage' | 'necromancer';
@@ -175,7 +176,7 @@ export type CombatEvent =
   | { type: 'heal'; target: Side; amount: number }
   | { type: 'block'; target: Side; amount: number }
   | { type: 'status'; target: Side; id: string; amount: number }
-  | { type: 'text'; target: Side; key: string; tone: 'good' | 'bad' | 'neutral' }
+  | { type: 'text'; target: Side; key: TKey; tone: 'good' | 'bad' | 'neutral' }
   | { type: 'cardSpawn'; card: CombatCard }
   | { type: 'cardPlayed'; card: CombatCard; from: 'belt' | 'sleeve' }
   | { type: 'cardExpired'; card: CombatCard }

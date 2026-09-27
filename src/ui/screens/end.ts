@@ -1,4 +1,4 @@
-import { t } from '../../core/i18n';
+import { type TKey, t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { currentNode, type RunState } from '../../game/run';
 import type { Screen } from '../app';
@@ -9,7 +9,7 @@ import { motes } from '../components/decor';
 
 export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMenu: () => void): Screen {
   const node = currentNode(run);
-  const stat = (ic: string, k: string, v: number | string): HTMLElement => h('div', { html: `${icon(ic)}<span>${t(k)}</span><b>${v}</b>` });
+  const stat = (ic: string, k: TKey, v: number | string): HTMLElement => h('div', { html: `${icon(ic)}<span>${t(k)}</span><b>${v}</b>` });
   const el = h(
     'div',
     { class: `screen end ${won ? 'win' : 'lose'}` },

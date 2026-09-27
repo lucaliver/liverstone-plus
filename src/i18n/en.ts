@@ -3,7 +3,7 @@
  *  - `{0}`, `{1}`… for the card's values (damage values get live previews in combat);
  *  - `[kw]` for keywords, rendered highlighted and explained in the card detail view.
  */
-const en: Record<string, string> = {
+const en = {
   // ---------------------------------------------------------------- app
   'app.title': 'Liverstone',
   'menu.continue': 'Continue run',
@@ -435,6 +435,9 @@ const en: Record<string, string> = {
   'move.darkPact': 'Dark Pact',
   'move.lightFuse': 'Light Fuse',
   'move.bombs': 'Bone Bomb',
-};
+} satisfies Record<string, string>;
 
 export default en;
+
+/** Every English string id; other locales must provide the same keys. */
+export type EnKey = keyof typeof en;

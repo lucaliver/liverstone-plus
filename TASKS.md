@@ -9,7 +9,7 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done · `[-]` deferred (with re
 - [x] T3. Lint + format: Biome (typescript-eslint doesn't support TypeScript 7 yet); all findings fixed; `npm run check`
 - [x] T4. Split the combat screen into `ui/combat/` (view, hud, cardLayer, combatFx, combatScreen)
 - [x] T5. Split `styles/main.css` into 17 ordered partials + `index.css` (identical cascade)
-- [ ] T6. Type the static i18n keys so typos fail the build
+- [x] T6. Typed i18n keys: literal ids from en.ts, dynamic families by prefix (a typo now fails the typecheck)
 - [ ] T7. Pixel-art caching
 
 ## FIX

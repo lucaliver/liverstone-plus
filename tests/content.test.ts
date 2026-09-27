@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import en from '../src/i18n/en';
+import enStrings from '../src/i18n/en';
+
+/** Indexed as a plain dictionary: these tests check keys that are built at runtime. */
+const en: Record<string, string> = enStrings;
 import { CARD_LIST } from '../src/data/cards';
 import { ENEMY_LIST } from '../src/data/enemies';
 import { HERO_LIST } from '../src/data/heroes';

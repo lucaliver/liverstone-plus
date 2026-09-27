@@ -1,11 +1,18 @@
-import en from '../i18n/en';
+import en, { type EnKey } from '../i18n/en';
 
 export type Dict = Record<string, string>;
+
+/**
+ * Prefixes of ids built at runtime (e.g. `card.${id}.name`); they are checked by tests/content.test.ts.
+ * Any other key must be a literal id from en.ts, so a typo fails the typecheck.
+ */
+type DynamicPrefix = 'card' | 'enemy' | 'move' | 'status' | 'kw' | 'hero' | 'type' | 'rarity' | 'journey.node' | 'journey.actName' | 'howto' | 'compendium' | 'intent';
+export type TKey = EnKey | `${DynamicPrefix}.${string}`;
 export type Params = Record<string, string | number>;
 
 /** Registered locales. Add a new language by creating `src/i18n/<code>.ts` and registering it here. */
 const locales: Record<string, { name: string; dict: Dict }> = {
-  en: { name: 'English', dict: en },
+  en: { name: 'English', dict: en as Dict },
 };
 
 let current = 'en';
@@ -26,7 +33,7 @@ export const getLocale = (): string => current;
  * Translates `key`, interpolating `{name}` params.
  * Plurals: `{n|card|cards}` picks a form through Intl.PluralRules for the param `n`.
  */
-export function t(key: string, params?: Params): string {
+export function t(key: TKey, params?: Params): string {
   let s = locales[current].dict[key] ?? locales[fallback].dict[key];
   if (s === undefined) {
     if (import.meta.env?.DEV) console.warn(`[i18n] missing key: ${key}`);
