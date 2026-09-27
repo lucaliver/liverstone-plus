@@ -4,7 +4,6 @@ import { currentNode, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h } from '../dom';
 import { creature } from '../art/creatures';
-import { icon } from '../art/icons';
 import { dropLetters, motes } from '../components/decor';
 import { burst } from '../fx/fx';
 import { playMusic } from '../../audio/music';
@@ -13,7 +12,14 @@ export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMe
   const node = currentNode(run);
   const title = won ? t('end.victory') : t('end.defeat');
   let confetti = 0;
-  const stat = (ic: string, k: TKey, v: number | string): HTMLElement => h('div', { html: `${icon(ic)}<span>${t(k)}</span><b>${v}</b>` });
+  /** `--i` staggers the payslip's lines (and its stamp) as the slip prints. */
+  let line = 0;
+  const staggered = (e: HTMLElement): HTMLElement => {
+    e.style.setProperty('--i', String(line++));
+    return e;
+  };
+  const row = (k: TKey, v: number | string, cls = ''): HTMLElement =>
+    staggered(h('div', { class: `slip-row ${cls}` }, h('span', null, t(k)), h('b', null, String(v))));
   const el = h(
     'div',
     { class: `screen end ${won ? 'win' : 'lose'}` },
@@ -23,13 +29,21 @@ export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMe
       h('h1', { class: 'h1 end-title', 'aria-label': title, html: dropLetters(title) }),
       h('div', { class: 'portrait-lg', html: `${motes(10)}${creature(run.hero)}` }),
       h('p', { class: 'sub' }, won ? t('end.victoryDesc') : t('end.defeatDesc', { n: node.floor })),
+      // The run's stats as a dot-matrix payslip: all that work, and the net pay is still zero.
       h(
         'div',
-        { class: 'stats' },
-        stat('up', 'end.stats.floor', node.floor),
-        stat('skull', 'end.stats.kills', run.stats.kills),
-        stat('cards', 'end.stats.cards', run.stats.cardsPlayed),
-        stat('blood', 'end.stats.damage', run.stats.damageTaken),
+        { class: 'payslip' },
+        h('div', { class: 'slip-head' }, h('b', null, t('end.slip.title')), h('span', null, t('end.slip.company'))),
+        h('div', { class: 'slip-sub' }, t('end.slip.employee', { hero: t(`hero.${run.hero}.name`), a: node.act, n: node.floor })),
+        row('end.slip.earnings', '', 'slip-section'),
+        row('end.slip.floors', node.floor),
+        row('end.slip.kills', run.stats.kills),
+        row('end.slip.overtime', run.stats.elites),
+        row('end.slip.cards', run.stats.cardsPlayed),
+        row('end.slip.deductions', '', 'slip-section'),
+        row('end.slip.injuries', `-${run.stats.damageTaken}`),
+        row('end.slip.net', t('end.slip.netValue'), 'slip-net'),
+        staggered(h('div', { class: 'slip-stamp' }, won ? t('end.slip.paid') : t('end.slip.void'))),
       ),
     ),
     h(

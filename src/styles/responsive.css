@@ -16,6 +16,14 @@
   .ability-btn .pico { font-size: 32px; margin-top: -20px; }
   .hero-row { padding-top: 4px; padding-bottom: 4px; }
   .combat { --portrait: 52px; }
+  /* end of the run: a smaller portrait and title so the payslip fits */
+  .end.win .end-title { font-size: clamp(30px, 9vw, 44px); }
+  .end .h1 { margin-top: 0; }
+  .end .portrait-lg { width: 72px; height: 72px; margin: 0 auto; }
+  .end .portrait-lg .riso { width: 68px; height: 68px; }
+  .end.lose .portrait-lg .riso { transform: rotate(90deg); }
+  .end .sub { margin: 0; font-size: 15px; }
+  .payslip { padding-top: 6px; padding-bottom: 8px; font-size: 16px; line-height: 1.1; }
 }
 @media (max-height: 700px) {
   .enemy-info { gap: 4px; }

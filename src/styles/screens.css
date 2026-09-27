@@ -204,27 +204,86 @@
 }
 .end .portrait-lg .riso { width: 124px; height: 124px; }
 .end.lose .portrait-lg .riso { transform: rotate(90deg) translateX(20px); }
-.stats {
+/* end of the run: the stats print out as a dot-matrix payslip on tractor-feed paper, then get stamped */
+.payslip {
+  position: relative;
   width: min(100%, 340px);
   margin: 4px 0 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.stats div {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
+  padding: 10px 26px 12px;
   color: var(--k);
-  background: var(--paper);
+  background:
+    repeating-linear-gradient(var(--paper) 0 8px, var(--void) 8px 14px, var(--paper) 14px 20px) left 8px top 0 / 6px 100% no-repeat,
+    repeating-linear-gradient(var(--paper) 0 8px, var(--void) 8px 14px, var(--paper) 14px 20px) right 8px top 0 / 6px 100% no-repeat,
+    var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
   font-family: var(--font-ui);
   font-size: 18px;
-  border: 2px solid var(--k);
+  line-height: 1.15;
+  text-align: left;
+  animation: slip-print 0.7s steps(7) both;
 }
-.stats div span { flex: 1; text-align: left; }
-.stats .pico { font-size: 22px; --ink2: var(--y); }
-.stats b { font-weight: 700; }
+@keyframes slip-print {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 -20px 0); }
+}
+.slip-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.slip-head b { font-family: var(--font-display); font-size: 20px; text-transform: uppercase; }
+.slip-head span,
+.slip-sub { color: var(--muted); font-size: 16px; }
+.slip-sub { padding-bottom: 6px; border-bottom: 2px dashed var(--k); }
+.slip-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  animation: slip-line 0.1s steps(1) both;
+  animation-delay: calc(var(--i) * 0.09s);
+}
+@keyframes slip-line {
+  from { visibility: hidden; }
+}
+/* dot leaders between the label and the amount */
+.slip-row span { flex: 1; display: flex; gap: 6px; }
+.slip-row span::after { content: ''; flex: 1; border-bottom: 2px dotted #b8ab92; translate: 0 -4px; }
+.slip-row b { font-weight: 400; }
+.slip-row.slip-section { margin-top: 6px; color: var(--p); text-transform: uppercase; }
+.slip-row.slip-section span::after { content: none; }
+.slip-row.slip-net {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 2px dashed var(--k);
+  font-size: 22px;
+}
+.slip-row.slip-net b { font-weight: 700; }
+.slip-stamp {
+  /* over the dot leaders, clear of the labels and the amounts */
+  position: absolute;
+  left: 56%;
+  top: 56%;
+  translate: -50% -50%;
+  rotate: -10deg;
+  padding: 0 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 30px;
+  text-transform: uppercase;
+  color: var(--p);
+  border: 4px solid var(--p);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  animation: slip-stamp 0.2s steps(2) both;
+  animation-delay: calc(var(--i) * 0.09s + 0.2s);
+}
+@keyframes slip-stamp {
+  from { scale: 2.4; opacity: 0; }
+}
+.end.win .slip-stamp { color: var(--b); border-color: var(--b); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

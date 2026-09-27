@@ -182,7 +182,8 @@ La difficoltà cresce scendendo di piano.
 - **Combattimento**, dall'alto: barra superiore (nome del nemico in grande e piano, velocità di gioco, pausa) · nemico con stati e vita ·
   barra minaccia · eroe (ritratto, vita, Blocco, stati) · **nastro a due righe** · mana · sleeve e abilità (i contatori di mazzo e scarti sono nascosti). Vita del nemico,
   mossa in arrivo e vita dell'eroe stanno tutte subito sopra il nastro, così non serve distogliere lo sguardo dalle carte.
-- **Ricompensa, sala pausa** (macchinetta del caffè steampunk, con animazione di cura), **fine turno e licenziamento** (statistiche), **Handbook** (carte per
+- **Ricompensa, sala pausa** (macchinetta del caffè steampunk, con animazione di cura), **fine turno e licenziamento** (le
+  statistiche come una busta paga stampata ad aghi, timbrata *Paid* o *Void*: netto 0,00), **Handbook** (carte per
   classe con scoperte, nemici con mosse).
 - **Impostazioni:** volume di musica ed effetti (slider), velocità, riduci animazioni, vibrazione, nastro da destra a sinistra (vale dal combattimento successivo). Tutti i testi sono pronti per altre lingue.
   Estensioni come Dark Reader non ricolorano il gioco.
