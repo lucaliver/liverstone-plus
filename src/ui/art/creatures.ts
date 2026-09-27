@@ -33,24 +33,42 @@ ${eyes(82, 118, 108, 6, '#ff4a3a', 'rat-g')}
 <path d="M70 96l20 6M130 96l-20 6" stroke="#120e18" stroke-width="5" stroke-linecap="round"/>`;
 
 const skeleton = `
-<defs>${lg('sk-b', '#fbf4df', '#f6e27a')}${lg('sk-s', '#6a9ae8', '#1c5fd0', 1, 1)}${glow('sk-g', '#7de3ff')}</defs>
+<defs>${lg('sk-b', '#f8f2e2', '#e6dcbc')}${lg('sk-s', '#9ab8f0', '#1c5fd0', 1, 1)}${lg('sk-c', '#5a3aa0', '#1b1438')}</defs>
 ${shadow}
-<g class="limb"><path d="M150 112l34-84 8 4-26 86z" fill="url(#sk-s)" ${OUT}/><path d="M142 110l24 8-4 8-24-8z" fill="#6b4a2a" ${OUT}/></g>
-<path d="M86 118h28v58H86z" fill="#5a3fb0"/>
-<g fill="url(#sk-b)" ${OUT}>
-<rect x="95" y="100" width="10" height="70" rx="4"/>
-<path d="M70 112c10-6 50-6 60 0l-4 10c-10-4-42-4-52 0z"/><path d="M72 128c10-5 46-5 56 0l-4 9c-10-4-38-4-48 0z"/><path d="M76 144c8-4 40-4 48 0l-4 9c-8-3-32-3-40 0z"/>
-<path d="M80 168c10-8 30-8 40 0l-6 10H86z"/>
-<path d="M68 110L46 146l8 4 22-32z"/><path d="M132 110l18 14-4 8-20-12z"/>
-<path d="M86 176l-6 12h12l2-12zM114 176l6 12h-12l-2-12z"/>
-<path d="M62 60c0-26 16-42 38-42s38 16 38 42c0 14-6 22-12 26v14H74V86c-6-4-12-12-12-26z"/>
-</g>
-<path d="M44 148l-4 8 10 2 4-8z" fill="url(#sk-b)" ${OUT}/>
-<path d="M78 58c0-6 6-10 12-8l4 12-12 6c-4-2-4-6-4-10zM122 58c0-6-6-10-12-8l-4 12 12 6c4-2 4-6 4-10z" fill="#1a1422"/>
-${eyes(88, 112, 60, 4, '#9ef0ff', 'sk-g')}
-<path d="M96 70l4 8 4-8z" fill="#1a1422"/>
-<path d="M80 88h40M86 86v6M93 86v6M100 86v6M107 86v6M114 86v6" stroke="#1a1422" stroke-width="2.5"/>
-<path d="M70 40c10-14 40-18 56-4" stroke="#fff" stroke-width="4" opacity=".35" fill="none" stroke-linecap="round"/>`;
+<!-- torn cape behind the bones -->
+<path d="M60 90c-8 30-10 60-16 88l10-8 6 12 8-14 8 10 4-28h40l4 28 8-10 8 14 6-12 10 8c-6-28-8-58-16-88z" fill="url(#sk-c)" ${OUT}/>
+<!-- legs -->
+<path d="M88 150 L80 168 L82 184" stroke="#120e18" stroke-width="13" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M88 150 L80 168 L82 184" stroke="#efe6cc" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M112 150 L120 168 L118 184" stroke="#120e18" stroke-width="13" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M112 150 L120 168 L118 184" stroke="#efe6cc" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M72 188l4-8h12l2 8zM112 188l-2-8h12l6 8z" fill="#efe6cc" ${OUT}/>
+<!-- spine, ribs, pelvis, rags -->
+<path d="M97 94h6v48h-6z" fill="#efe6cc" ${OUT}/>
+<g fill="url(#sk-b)" ${OUT}><path d="M97 102C80 99 70 103 70 109l4 2c1-4 16 -5 27 -3z"/><path d="M103 102C120 99 130 103 130 109l-4 2c-1-4 -16 -5 -27 -3z"/><path d="M97 111C81 108 71 112 71 118l4 2c1-4 15 -5 26 -3z"/><path d="M103 111C119 108 129 112 129 118l-4 2c-1-4 -15 -5 -26 -3z"/><path d="M97 120C84 117 74 121 74 127l4 2c1-4 12 -5 23 -3z"/><path d="M103 120C116 117 126 121 126 127l-4 2c-1-4 -12 -5 -23 -3z"/><path d="M97 129C89 126 79 130 79 136l4 2c1-4 7 -5 18 -3z"/><path d="M103 129C111 126 121 130 121 136l-4 2c-1-4 -7 -5 -18 -3z"/></g>
+<path d="M80 138c8-4 32-4 40 0l4 12-12-2-12 6-12-6-12 2z" fill="url(#sk-b)" ${OUT}/>
+<path d="M84 148h32l2 22-8-8-6 12-6-12-6 10-6-12-4 8z" fill="url(#sk-c)" ${OUT}/>
+<!-- left arm, clawed hand -->
+<path d="M66 92 L52 118 L60 140" stroke="#120e18" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M66 92 L52 118 L60 140" stroke="#efe6cc" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M54 138l-4 12 4 1 3-8 1 10 4 0-1-10 5 8 3-2-5-11z" fill="#efe6cc" ${OUT}/>
+<!-- right arm raising a notched sword -->
+<path d="M134 92 L156 112 L160 96" stroke="#120e18" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M134 92 L156 112 L160 96" stroke="#efe6cc" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M158 84l22-66 10 4-20 66z" fill="url(#sk-s)" ${OUT}/>
+<path d="M183 30l-5 3 3 3zM176 52l-5 2 3 4z" fill="#1a1422"/>
+<path d="M146 84l30 10-2 7-30-10z" fill="#3a3450" ${OUT}/>
+<path d="M156 96l-4 12 6 2 4-12z" fill="#3a3450" ${OUT}/>
+<path d="M152 92c4-4 12-2 14 2l-2 8c-4 2-10 0-12-4z" fill="#efe6cc" ${OUT}/>
+<!-- collarbones and a rusted pauldron -->
+<path d="M64 90c18-6 54-6 72 0l-2 6c-18-5-50-5-68 0z" fill="url(#sk-b)" ${OUT}/>
+<path d="M48 90c4-12 22-14 30-4l-4 12H52z" fill="#5a5470" ${OUT}/>
+<g fill="#1a1422"><rect x="56" y="88" width="3" height="3"/><rect x="66" y="86" width="3" height="3"/></g>
+<!-- skull: cracked, hollow slanted sockets with pinpoint eyes, jaw hanging open -->
+<path d="M96 80h8v10h-8z" fill="#efe6cc" ${OUT}/>
+<path d="M84 64h32v10H84z" fill="#1a1422"/>
+<path d="M85 72h30l-3 10c-6 3-18 3-24 0z" fill="url(#sk-b)" ${OUT}/>
+<path d="M72 38c0-17 12-27 28-27s28 10 28 27c0 9-3 14-8 18l-2 8H82l-2-8c-5-4-8-9-8-18z" fill="url(#sk-b)" ${OUT}/>
+<path d="M79 36l18 5-2 12H82zM121 36l-18 5 2 12h13z" fill="#1a1422"/>
+<g class="eye"><rect x="87" y="43" width="4" height="4" fill="#ffd900"/><rect x="109" y="43" width="4" height="4" fill="#ffd900"/></g>
+<path d="M100 52l-3 6h6z" fill="#1a1422"/>
+<path d="M84 60h32v6H84z" fill="#efe6cc" ${OUT}/><path d="M89 60v6M94 60v6M100 60v6M106 60v6M111 60v6M91 72v5M96 72v6M101 72v6M106 72v6M110 72v5" stroke="#1a1422" stroke-width="1.5"/>
+<path d="M112 13l-4 9 6 6-4 8" stroke="#1a1422" stroke-width="2.5" fill="none"/>`;
 
 /** The Bile Toad (enemy id `slime`, kept so saved runs stay valid): a bloated crypt toad, fat on adventurers, that spits bile. */
 const slime = `
