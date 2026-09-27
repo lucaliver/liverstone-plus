@@ -104,10 +104,11 @@ export interface EnemyDef {
   tier: 'normal' | 'elite' | 'boss';
   hp: number;
   art: string;
-  /** Moves cycle in order unless `ai` is set. */
-  pattern: MoveDef[];
-  /** Custom move selection; receives the combat and returns the next move. */
-  ai?: (c: Combat) => MoveDef;
+  /** The frequent basic attack. */
+  main: MoveDef;
+  /** Special moves, used in turn: one after every `every` main attacks. */
+  specials: MoveDef[];
+  every: number;
   /** Statuses the enemy starts with. */
   start?: { id: string; v?: number; t?: number }[];
   /** Called once when HP drops under 50%. */

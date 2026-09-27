@@ -17,6 +17,7 @@ const en = {
   'compendium.enemies': 'Enemies',
   'compendium.foes': '{n} creatures lurk in the dungeon',
   'compendium.steal': 'Steals a card',
+  'compendium.every': 'Every {n} attacks, in turn:',
   'compendium.tab.warrior': 'Warrior',
   'compendium.tab.mage': 'Mage',
   'compendium.tab.necromancer': 'Necro',
@@ -118,6 +119,7 @@ const en = {
   'combat.discardPile': 'Discard pile',
   'combat.speed': 'Speed',
   'combat.weave': 'Weave ×{n}',
+  'combat.specialIn': '{move} in {n} {n|attack|attacks}',
 
   'intent.attack': 'Attack',
   'intent.defend': 'Defend',
@@ -420,7 +422,6 @@ const en = {
   'move.bite': 'Bite',
   'move.frenzy': 'Frenzy',
   'move.slash': 'Slash',
-  'move.guard': 'Guard',
   'move.spit': 'Spit Ooze',
   'move.slam': 'Slam',
   'move.ritual': 'Dark Ritual',
@@ -432,12 +433,11 @@ const en = {
   'move.shieldWall': 'Shield Wall',
   'move.soulBolt': 'Soul Bolt',
   'move.hexes': 'Curse',
-  'move.boneArmor': 'Bone Armor',
   'move.doom': 'DOOM',
   'move.toxicSpit': 'Toxic Spit',
-  'move.darkPact': 'Dark Pact',
   'move.lightFuse': 'Light Fuse',
-  'move.bombs': 'Bone Bomb',
+  'move.bombs': 'Bone Bombs',
+  'move.boneCrush': 'Bone Crush',
 } satisfies Record<string, string>;
 
 export default en;

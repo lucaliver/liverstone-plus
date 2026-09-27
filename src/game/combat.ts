@@ -36,7 +36,10 @@ export interface EnemyState extends Fighter {
   /** Seconds accumulated towards the current move's wind-up. */
   timer: number;
   moveCount: number;
-  patternIdx: number;
+  /** Main attacks left before the next special move. */
+  mainsLeft: number;
+  /** Index of the next special move. */
+  specialIdx: number;
   halfTriggered: boolean;
   dmgScale: number;
   /** Free-form state for custom AIs. */
@@ -160,10 +163,11 @@ export class Combat {
       blockTimer: 0,
       dotTimer: 0,
       blockDecay: 0.6,
-      move: e.pattern[0],
+      move: e.main,
       timer: 0,
       moveCount: 0,
-      patternIdx: 0,
+      mainsLeft: e.every,
+      specialIdx: 0,
       halfTriggered: false,
       dmgScale: setup.scale.dmg,
       mem: {},
@@ -356,12 +360,24 @@ export class Combat {
     this.events.emit({ type: 'enemyIntent', move: e.move });
   }
 
+  /** Main attack, main attack… then a special move every `every` mains (specials rotate). */
   private nextEnemyMove(): MoveDef {
     const e = this.enemy;
-    if (e.def.ai) return e.def.ai(this);
-    const m = e.def.pattern[e.patternIdx % e.def.pattern.length];
-    e.patternIdx++;
+    const d = e.def;
+    if (e.mainsLeft > 0 || !d.specials.length) {
+      e.mainsLeft--;
+      return d.main;
+    }
+    const m = d.specials[e.specialIdx % d.specials.length];
+    e.specialIdx++;
+    e.mainsLeft = d.every;
     return m;
+  }
+
+  /** The special move the enemy will use next (for the UI countdown). */
+  nextSpecial(): MoveDef | null {
+    const d = this.enemy.def;
+    return d.specials.length ? d.specials[this.enemy.specialIdx % d.specials.length] : null;
   }
 
   private resolveMove(m: MoveDef): void {

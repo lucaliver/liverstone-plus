@@ -107,8 +107,8 @@ describe('combat engine', () => {
 
   it('enemy resolves its telegraphed move after the wind-up', () => {
     const c = setup({ enemy: ENEMIES.rat });
-    run(c, CONFIG.introTime + ENEMIES.rat.pattern[0].windup + 0.05);
-    expect(c.hero.hp).toBe(80 - 4);
+    run(c, CONFIG.introTime + ENEMIES.rat.main.windup + 0.05);
+    expect(c.hero.hp).toBe(80 - ENEMIES.rat.main.dmg!);
   });
 
   it('warrior berserk doubles attack damage', () => {
@@ -217,6 +217,16 @@ describe('combat engine', () => {
     expect(c.playCard(c.sleeve[0]!.uid)).toBe(true);
     expect(c.specialUsed).toBe(true);
     expect(c.hero.block).toBe(20);
+  });
+
+  it('enemies use their main attack, then a special every N attacks', () => {
+    const c = setup({ enemy: ENEMIES.skeleton, hp: 999, maxHp: 999 });
+    const seen: string[] = [];
+    c.events.on((e) => {
+      if (e.type === 'enemyAct') seen.push(e.move.id);
+    });
+    run(c, CONFIG.introTime + 45);
+    expect(seen.slice(0, 6)).toEqual(['slash', 'slash', 'boneCrush', 'slash', 'slash', 'boneCrush']);
   });
 
   it('temp curses never collide with deck uids', () => {

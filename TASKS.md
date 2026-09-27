@@ -21,7 +21,7 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done · `[-]` deferred (with re
 
 - [x] FE1. Hero select: horizontal, game-like carousel
 - [x] FE2. Card reward: always a swap. The whole deck on top, 4 reward cards at the bottom; pick one of each, then Swap (or Skip)
-- [ ] FE3. Enemy patterns: a frequent main attack plus a special move every X attacks
+- [x] FE3. Enemy patterns: a frequent main attack plus a special move every X attacks
 - [ ] FE4. Quick hero balance: starter decks with only basic cards (duplicates ok); advanced cards only from rewards
 - [ ] FE5. Long press on statuses (enemy and own) shows their details
 - [ ] FE6. "Start" button at the beginning of each fight; the game waits so the player can inspect things

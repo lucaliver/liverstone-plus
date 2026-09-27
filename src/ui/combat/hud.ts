@@ -80,6 +80,19 @@ export function createHud(v: CombatView): { render(): void } {
       }
     }
     setText(r.intentVal, intentValue(m));
+    // Countdown to the special move: its icon and how many main attacks until it comes.
+    const special = combat.nextSpecial();
+    const isMain = m === e.def.main && !!special;
+    const nextSig = isMain && special ? `${special.id}|${e.mainsLeft + 1}` : '';
+    if (r.intentNext.dataset.sig !== nextSig) {
+      r.intentNext.dataset.sig = nextSig;
+      r.intentNext.hidden = !isMain;
+      if (isMain && special) {
+        r.intentNext.dataset.intent = special.intent;
+        r.intentNext.innerHTML = `${icon(INTENT_ICON[special.intent] ?? 'star')}<b>${e.mainsLeft + 1}</b>`;
+        r.intentNext.title = t('combat.specialIn', { move: t(`move.${special.id}`), n: e.mainsLeft + 1 });
+      }
+    }
     const p = Math.min(1, e.timer / m.windup);
     r.timer.style.transform = `scaleX(${p.toFixed(3)})`;
     const rate = combat.enemyTimeRate();

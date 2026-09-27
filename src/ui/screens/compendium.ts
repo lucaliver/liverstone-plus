@@ -33,12 +33,9 @@ function moveEffect(m: MoveDef): string {
 }
 
 function foeView(e: EnemyDef): HTMLElement {
-  const moves = e.pattern
-    .map(
-      (m) =>
-        `<li data-intent="${m.intent}"><span class="mi">${icon(INTENT_ICON[m.intent] ?? 'star')}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`,
-    )
-    .join('');
+  const row = (m: MoveDef): string =>
+    `<li data-intent="${m.intent}"><span class="mi">${icon(INTENT_ICON[m.intent] ?? 'star')}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`;
+  const moves = `${row(e.main)}<li class="foe-every">${t('compendium.every', { n: e.every })}</li>${e.specials.map(row).join('')}`;
   const half = e.onHalf ? `<p class="foe-half">${icon('rage')}${t(`enemy.${e.id}.half`)}</p>` : '';
   return h('article', {
     class: 'foe',

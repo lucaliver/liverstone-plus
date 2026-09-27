@@ -59,6 +59,7 @@ function markup(run: RunState, combat: Combat): string {
           <div class="t-ico js-intent-ico"></div>
           <div class="t-val"></div>
           <div class="t-track"><div class="t-fill"></div><span class="t-lbl"></span></div>
+          <div class="t-next" aria-hidden="true"></div>
           <div class="t-time"></div>
         </div>
       </div>
@@ -103,6 +104,7 @@ function queryRefs(el: HTMLElement) {
     intentLbl: $('.threat .t-lbl', el),
     timer: $('.threat .t-fill', el),
     intentTime: $('.threat .t-time', el),
+    intentNext: $('.threat .t-next', el),
     incoming: $('.js-hhp .incoming', el),
     eHp: $('.js-ehp', el),
     eBlock: $('.js-eblock', el),

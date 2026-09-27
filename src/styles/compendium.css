@@ -140,3 +140,12 @@
   color: var(--paper);
   background: var(--p);
 }
+.foe-moves li.foe-every {
+  display: block;
+  min-height: 0;
+  padding: 4px 0 2px;
+  font-size: 14px;
+  color: var(--muted);
+  text-transform: uppercase;
+  border-bottom: 0;
+}
