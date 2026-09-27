@@ -184,3 +184,6 @@
 .card[data-rarity='special'] .c-gem { background: var(--k); }
 .card[data-rarity='unique'] { border-color: var(--k); box-shadow: 0 0 0 max(2px, calc(var(--cw) * 0.025)) var(--y), var(--sh) var(--sh) 0 var(--p); }
 .card[data-rarity='unique'] .c-gem { background: var(--y); border-color: var(--p); }
+
+/* cost lowered by a perk (Budget Cut) */
+.card .c-cost.cheap { color: var(--green); }

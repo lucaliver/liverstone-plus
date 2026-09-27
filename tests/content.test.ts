@@ -6,6 +6,8 @@ const en: Record<string, string> = enStrings;
 import { CARD_LIST } from '../src/data/cards';
 import { ENEMY_LIST, enemyMoves } from '../src/data/enemies';
 import { HERO_LIST } from '../src/data/heroes';
+import { PERK_LIST } from '../src/data/perks';
+import { STATUS_ORDER } from '../src/data/statuses';
 import { GLYPHS } from '../src/ui/components/cardView';
 
 describe('content integrity', () => {
@@ -28,5 +30,10 @@ describe('content integrity', () => {
     }
     const ids = new Set(CARD_LIST.map((c) => c.id));
     for (const h of HERO_LIST) for (const id of h.startDeck) expect(ids.has(id), id).toBe(true);
+  });
+
+  it('every perk and status has a name and a description', () => {
+    for (const p of PERK_LIST) expect(en[`perk.${p.id}`] && en[`perk.${p.id}.d`], p.id).toBeTruthy();
+    for (const id of STATUS_ORDER) expect(en[`status.${id}`] && en[`status.${id}.d`], id).toBeTruthy();
   });
 });

@@ -141,13 +141,6 @@ describe('combat engine', () => {
     expect(hp - c.enemy.hp).toBe(12);
   });
 
-  it('innate cards are on the belt from the start', () => {
-    const c = setup({ deck: deckOf([...new Array(8).fill('strike'), 'manaShard', 'manaGeode']) });
-    const ids = c.belt.map((b) => b.card.id);
-    expect(ids).toContain('manaShard');
-    expect(ids).toContain('manaGeode');
-  });
-
   it('perks: innate puts a copy first on the belt, discount lowers its cost', () => {
     const deck = deckOf(new Array(10).fill('strike'));
     deck[9] = { ...deck[9], id: 'heavyBlow', perks: ['innate', 'discount'] };

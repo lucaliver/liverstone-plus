@@ -22,6 +22,7 @@ import { endScreen } from './ui/screens/end';
 import { heroSelectScreen } from './ui/screens/heroSelect';
 import { journeyScreen } from './ui/screens/journey';
 import { restScreen } from './ui/screens/rest';
+import { promotionScreen } from './ui/screens/promotion';
 import { rewardScreen } from './ui/screens/reward';
 import { titleScreen } from './ui/screens/title';
 import { compendiumScreen } from './ui/screens/compendium';
@@ -40,11 +41,7 @@ function goTitle(): void {
           goTitle();
           return;
         }
-        // A saved run whose node was already completed resumes at the next one.
-        if (run.cleared && !advance(run)) {
-          goTitle();
-          return;
-        }
+        // A saved run whose node was already completed resumes on the map, choosing the next one.
         goJourney();
       },
       onNewRun: () => {
@@ -75,12 +72,14 @@ function goJourney(): void {
   show(journeyScreen(run, enterNode));
 }
 
-function enterNode(): void {
+/** Enters the current node, or first moves to `to` when the current one is already cleared. */
+function enterNode(to?: number): void {
   if (!run) return;
+  if (run.cleared && !advance(run, to)) return;
   const node = currentNode(run);
-  if (node.type === 'rest') {
+  if (node.type === 'rest' || node.type === 'promotion') {
     playMusic('rest');
-    show(restScreen(run, nextNode));
+    show(node.type === 'rest' ? restScreen(run, nextNode) : promotionScreen(run, nextNode));
     return;
   }
   playMusic(node.type === 'boss' ? 'boss' : node.type === 'elite' ? 'elite' : 'combat');
@@ -111,9 +110,11 @@ function afterCombat(combat: Combat): void {
   show(rewardScreen(r, picks, nextNode));
 }
 
+/** After a node: back to the map to choose the next one, or the victory screen at the end of the run. */
 function nextNode(): void {
   if (!run) return;
-  if (!advance(run)) {
+  run.cleared = true;
+  if (!currentNode(run).next.length) {
     clearRun();
     show(endScreen(run, true, () => goHeroSelect(), goTitle));
     return;

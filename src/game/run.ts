@@ -1,7 +1,8 @@
 import { Rng } from '../core/rng';
 import { loadRaw, remove, store } from '../core/save';
 import { nextUid, peekUid, resetUid } from '../core/util';
-import { CARDS, rewardPool } from '../data/cards';
+import { CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../data/cards';
+import { PERKS } from '../data/perks';
 import { CONFIG } from '../data/config';
 import { ENEMIES, enemiesFor } from '../data/enemies';
 import { HEROES } from '../data/heroes';
@@ -9,13 +10,15 @@ import type { Combat, CombatSetup } from './combat';
 import { discover } from './meta';
 import type { CardDef, CardInst, EnemyDef, HeroId, Rarity } from './types';
 
-export type NodeType = 'fight' | 'elite' | 'rest' | 'boss';
+export type NodeType = 'fight' | 'elite' | 'rest' | 'promotion' | 'boss';
 
-/** One step of the run. `next` holds the reachable node ids, so a branching map can replace the line later. */
+/** One step of the run. `next` holds the reachable node ids (the player picks one when there are two). */
 export interface RunNode {
   id: number;
   act: number;
   floor: number;
+  /** Column on the map: 0 left, 1 right, 0.5 for a floor with a single node. */
+  lane: number;
   type: NodeType;
   next: number[];
   /** Enemy picked when the run is generated, so reloading can't reroll it. */
@@ -30,7 +33,7 @@ export interface RunStats {
 }
 
 export interface RunState {
-  version: 1;
+  version: 2;
   seed: number;
   rng: number;
   hero: HeroId;
@@ -42,6 +45,8 @@ export interface RunState {
   nodes: RunNode[];
   /** Node the player is on (or about to enter). */
   current: number;
+  /** Nodes entered so far, in order (the path drawn on the map). */
+  path: number[];
   /** True once the current node has been completed. */
   cleared: boolean;
   stats: RunStats;
@@ -51,7 +56,16 @@ export interface RunState {
 }
 
 const SAVE_KEY = 'run';
-const ACT_PATTERN: NodeType[] = ['fight', 'fight', 'fight', 'rest', 'fight', 'elite', 'fight', 'fight', 'rest', 'boss'];
+/**
+ * Floors between the first fight and the boss, one list per lane. Lanes are dealt to a random side, and a few
+ * floors swap their two nodes, so each run's map differs while both lanes keep a fair mix.
+ */
+const LANES: NodeType[][] = [
+  ['fight', 'fight', 'rest', 'fight', 'elite', 'fight', 'fight', 'rest'],
+  ['fight', 'promotion', 'fight', 'rest', 'fight', 'promotion', 'fight', 'rest'],
+];
+/** Floors where the two lanes cross (each node also leads to the other lane). */
+const CROSSINGS = 3;
 export const ACTS = 1;
 
 export function newRun(hero: HeroId, seed: number): RunState {
@@ -61,7 +75,7 @@ export function newRun(hero: HeroId, seed: number): RunState {
   const nodes = buildNodes(rng);
   discover([...def.startDeck, def.special]);
   return {
-    version: 1,
+    version: 2,
     seed,
     rng: rng.state,
     hero,
@@ -72,19 +86,21 @@ export function newRun(hero: HeroId, seed: number): RunState {
     relicFlags: {},
     nodes,
     current: 0,
+    path: [0],
     cleared: false,
     stats: { kills: 0, elites: 0, cardsPlayed: 0, damageTaken: 0 },
     uid: peekUid(),
   };
 }
 
+/** A shared first fight, two lanes that cross now and then, and the boss where they meet again. */
 function buildNodes(rng: Rng): RunNode[] {
   const nodes: RunNode[] = [];
+  let last: RunNode[] = [];
   for (let act = 1; act <= ACTS; act++) {
     // Deal normal enemies from a shuffled bag so the same one doesn't repeat back to back.
     let bag: EnemyDef[] = [];
-    ACT_PATTERN.forEach((type, i) => {
-      const id = nodes.length;
+    const add = (floor: number, lane: number, type: NodeType): RunNode => {
       let enemy: string | undefined;
       if (type === 'fight') {
         if (!bag.length) bag = rng.shuffle(enemiesFor(act, 'normal'));
@@ -92,15 +108,36 @@ function buildNodes(rng: Rng): RunNode[] {
       } else if (type === 'elite' || type === 'boss') {
         enemy = rng.pick(enemiesFor(act, type)).id;
       }
-      nodes.push({ id, act, floor: i + 1, type, next: [], enemy });
-      if (id > 0) nodes[id - 1].next.push(id);
+      const node: RunNode = { id: nodes.length, act, floor, lane, type, next: [], enemy };
+      nodes.push(node);
+      return node;
+    };
+    const lanes = rng.shuffle(LANES.map((l) => [...l]));
+    for (let i = 0; i < lanes[0].length - 1; i++) if (rng.next() < 0.3) [lanes[0][i], lanes[1][i]] = [lanes[1][i], lanes[0][i]];
+    const crossings = new Set(rng.shuffle([...Array(lanes[0].length - 1).keys()]).slice(0, CROSSINGS));
+
+    const first = add(1, 0.5, 'fight');
+    for (const n of last) n.next.push(first.id);
+    let prev = [first];
+    lanes[0].forEach((_, i) => {
+      const row = [add(i + 2, 0, lanes[0][i]), add(i + 2, 1, lanes[1][i])];
+      if (prev.length === 1) prev[0].next.push(row[0].id, row[1].id);
+      else
+        prev.forEach((n, side) => {
+          n.next.push(row[side].id);
+          if (crossings.has(i - 1)) n.next.push(row[1 - side].id);
+        });
+      prev = row;
     });
+    const boss = add(lanes[0].length + 2, 0.5, 'boss');
+    for (const n of prev) n.next.push(boss.id);
+    last = [boss];
   }
   return nodes;
 }
 
 export const currentNode = (run: RunState): RunNode => run.nodes[run.current];
-export const totalFloors = (run: RunState): number => run.nodes.length;
+export const totalFloors = (run: RunState): number => Math.max(...run.nodes.map((n) => n.floor));
 
 function rngOf(run: RunState): Rng {
   return new Rng(run.rng);
@@ -196,6 +233,21 @@ export function upgradeCard(run: RunState, uid: number): void {
 
 export const canUpgrade = (card: CardInst): boolean => !card.up && CARDS[card.id].rarity !== 'special';
 
+/** A perk fits a card when it would change something: a keyword it lacks, or a cost it can still lose. */
+export function canPerk(card: CardInst, perk: string): boolean {
+  const p = PERKS[perk];
+  if (card.perks?.includes(perk) || CARDS[card.id].rarity === 'special') return false;
+  if (p.keywords?.every((k) => cardKeywordsOf(card).includes(k))) return false;
+  if (p.costDelta && cardCostOf(card) <= 0) return false;
+  return true;
+}
+
+export function addPerk(run: RunState, uid: number, perk: string): void {
+  const card = run.deck.find((c) => c.uid === uid);
+  if (card) card.perks = [...(card.perks ?? []), perk];
+  run.cleared = true;
+}
+
 export const REST_HEAL = 0.35;
 
 export function rest(run: RunState): number {
@@ -205,11 +257,13 @@ export function rest(run: RunState): number {
   return amount;
 }
 
-/** Moves to the next node. Returns false when the run is complete. */
-export function advance(run: RunState): boolean {
-  const next = currentNode(run).next[0];
-  if (next === undefined) return false;
-  run.current = next;
+/** Moves to a node reachable from the current one (the first by default). Returns false when the run is complete. */
+export function advance(run: RunState, to?: number): boolean {
+  const next = currentNode(run).next;
+  const target = to ?? next[0];
+  if (target === undefined || !next.includes(target)) return false;
+  run.current = target;
+  run.path.push(target);
   run.cleared = false;
   return true;
 }
@@ -220,9 +274,9 @@ export function saveRun(run: RunState): void {
 
 export function loadRun(): RunState | null {
   const run = loadRaw<RunState>(SAVE_KEY);
-  if (run?.version !== 1 || !HEROES[run.hero]) return null;
+  if (run?.version !== 2 || !HEROES[run.hero]) return null;
   // Drop the save if content changed and it references cards/enemies that no longer exist.
-  if (run.deck.some((c) => !CARDS[c.id]) || run.nodes.some((n) => n.enemy && !ENEMIES[n.enemy])) return null;
+  if (run.deck.some((c) => !CARDS[c.id] || c.perks?.some((p) => !PERKS[p])) || run.nodes.some((n) => n.enemy && !ENEMIES[n.enemy])) return null;
   return run;
 }
 

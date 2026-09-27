@@ -19,7 +19,8 @@ type DynamicPrefix =
   | 'journey.actName'
   | 'howto'
   | 'compendium'
-  | 'intent';
+  | 'intent'
+  | 'perk';
 export type TKey = EnKey | `${DynamicPrefix}.${string}`;
 export type Params = Record<string, string | number>;
 

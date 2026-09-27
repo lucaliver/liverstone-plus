@@ -1,8 +1,10 @@
 import { Combat } from '../src/game/combat';
 import { CARDS } from '../src/data/cards';
 import {
+  addPerk,
   advance,
   applyCombat,
+  canPerk,
   canUpgrade,
   combatSetup,
   currentNode,
@@ -112,7 +114,12 @@ export function simulateRun(hero: HeroId, seed: number, opts: BotOpts): RunOutco
   const combatTimes: number[] = [];
   for (;;) {
     const node = currentNode(run);
-    if (node.type === 'rest') {
+    if (node.type === 'promotion') {
+      // Crystals first: they grow the mana the rest of the deck needs.
+      const card = run.deck.find((c) => c.id === 'manaGeode' || c.id === 'manaShard');
+      if (card && canPerk(card, 'innate')) addPerk(run, card.uid, 'innate');
+      run.cleared = true;
+    } else if (node.type === 'rest') {
       if (run.hp < run.maxHp * 0.65) rest(run);
       else {
         const up = run.deck.find((c) => canUpgrade(c) && CARDS[c.id].type !== 'skill') ?? run.deck.find(canUpgrade);

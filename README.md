@@ -53,7 +53,7 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
   lampeggiano poco prima, poi esplodono o ti puniscono). Quando il mazzo finisce, gli scarti si rimescolano. Alcune carte danno **Rush**:
   il nastro accelera e le carte arrivano prima (compare tra i tuoi stati, con il tempo rimasto).
 - **Mana:** si ricarica col tempo, a un ritmo che dipende dall'eroe. Il massimo parte basso e cresce con le
-  carte **cristallo**, che arrivano per prime e valgono una volta per scontro. Icone coerenti ovunque:
+  carte **cristallo**, che valgono una volta per scontro (con *Fast Track* arrivano per prime). Icone coerenti ovunque:
   **gemma piena = mana** da spendere (es. da 1/3 a 3/3), **gemma vuota = cristallo** che alza il massimo e si
   riempie col tempo (es. da 3/3 a 3/5).
 - **Nemici:** un **attacco base** lento e pesante e, a intervalli, una **mossa speciale** (colpo ancora più forte,
@@ -69,13 +69,16 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 
 ### La run
 
-- **Atto 1 – The Morning Shift (turno del mattino):** una colonna di piani con lavori (battaglie), sale pausa,
-  un'**ispezione** (élite) e il **boss** finale.
+- **Atto 1 – The Morning Shift (turno del mattino):** una mappa a **due percorsi** che partono da un primo lavoro
+  comune, ogni tanto si incrociano e si ricongiungono al **boss**. Lungo la strada: lavori (battaglie), sale pausa,
+  **promozioni** e un'**ispezione** (élite). Dopo ogni tappa scegli dove andare.
   La run è già modellata come grafo, pronta per una mappa a rami.
 - **Ricompensa:** sopra tutto il mazzo, sotto alcune carte premio: scegli una carta per parte e **Scambia**, oppure
   **Salta**. Le élite danno carte più rare.
 - **Sala pausa (Break Room):** *Nap* cura una parte della vita, *Training* **potenzia** una carta (selezioni, vedi
   l'anteprima, confermi).
+- **Promotion:** scegli un vantaggio permanente per una carta del mazzo: *Fast Track* (Innate: arriva tra le prime
+  sul nastro) o *Budget Cut* (costa 1 mana in meno).
 - **Salvataggio** a ogni piano. Dalla pausa: *Main menu* (la run resta, lo scontro riparte) o *Call in sick*
   (abbandona la run).
 

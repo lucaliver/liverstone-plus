@@ -89,14 +89,14 @@ npm run build    # typecheck + production build to dist/
 src/
   core/        rng (seeded), emitter, i18n (typed keys), save (safe localStorage), util
   i18n/en.ts   every player-facing string (key → text)
-  data/        config, statuses, heroes, enemies, relics (empty, hooks ready), cards/<class>.ts
+  data/        config, statuses, heroes, enemies, perks, hexes, relics (empty, hooks ready), cards/<class>.ts
   game/        combat.ts (engine), run.ts (node graph, rewards, saves), meta.ts (discovery), settings, types
   ui/          app.ts (screens + modals), dom.ts (h, onPress, onTapOrHold, LONG_PRESS_MS)
     art/       icons.ts (64×64 vector icons), creatures.ts (200×200 vector sprites), riso.ts (pixel renderer)
     combat/    view (DOM + refs + shared state), hud, cardLayer (belt/sleeve/input), combatFx (events → FX), combatScreen
     components/cardView (card DOM, face glyphs), modals (settings, deck, card detail, info), moveText, decor
     fx/        particles, floating text, shake, haptics
-    screens/   title, heroSelect, journey, reward, rest, end, compendium
+    screens/   title, heroSelect, journey, reward, rest, promotion, end, compendium
   audio/       sfx.ts (synth), music.ts (sequencer + tracks)
   styles/      index.css imports ordered partials; responsive.css must stay last
 tests/         combat, content, balance.sim (+ bot.ts), e2e/
@@ -111,7 +111,8 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
   Hooks (`HeroHooks`, `RelicHooks`) extend behaviour without touching the engine loop.
 - **One source of truth.** Card numbers live in `vals`/`upVals`. The face, the rules text, damage previews and
   the logic all read them. Damage indices are derived from the `{dmg:i}` glyphs of the face.
-- **Run as a graph.** `RunNode.next[]`: v1 is a straight line; a branching map needs no model change.
+- **Run as a graph.** `RunNode.next[]` + `lane`: each act is a shared first fight, two lanes (`LANES` in `run.ts`) that
+  cross now and then, and the boss. `advance(run, to)` moves along a link; `run.path` records the nodes entered.
 - **Per-frame rendering is diff-based** (`setText`, `setHtml`, `toggle` only write on change). Status chips are
   rebuilt only when the set changes, so presses aren't lost.
 
@@ -205,7 +206,7 @@ Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unloc
 - **Content** (`tests/content.test.ts`): data integrity.
 - **Balance** (`tests/balance.sim.test.ts` + `bot.ts`): heuristic bot win rates; treat them as relative.
 - **E2E** (`tests/e2e/smoke.spec.ts`): title, hero carousel, fight → reward swap, layout stability, Start gate,
-  pause (music, backdrop tap, main menu), break room upgrade, compendium, title candles. Use real touch
+  pause (music, backdrop tap, main menu), break room upgrade, map lane choice, compendium, title candles. Use real touch
   (`page.touchscreen.tap`) when the behaviour differs on phones.
 - Ad-hoc screenshot scripts live in the git-ignored `screenshots/` folder. `dev/art.html` (open it on the dev
   server) previews every creature sprite and icon after pixelisation.
