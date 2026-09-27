@@ -29,7 +29,10 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         const delay = e.hitIndex * 90;
         if (e.amount > 0) {
           const big = e.amount >= 15;
-          floatText(p.x, p.y, `-${e.amount}`, `${e.target === 'hero' ? 'hurt' : 'dmg'} ${big ? 'big' : ''}`, delay);
+          // Enemy damage pops above the sprite's head, off to the side, so it never blends into the art.
+          const fx = e.target === 'enemy' ? p.x + 48 + e.hitIndex * 14 : p.x;
+          const fy = e.target === 'enemy' ? p.y - 64 - e.hitIndex * 10 : p.y - 10;
+          floatText(fx, fy, `-${e.amount}`, `${e.target === 'hero' ? 'hurt' : 'dmg'} ${big ? 'big' : ''}`, delay);
           setTimeout(() => burst(e.kind, p.x, p.y, e.source === 'dot' ? 8 : big ? 30 : 18), delay);
         }
         if (e.blocked > 0) {
