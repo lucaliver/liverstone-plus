@@ -179,7 +179,7 @@ La difficoltà cresce scendendo di piano.
   per affrontare qualunque nemico con qualunque eroe.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
 - **Percorso:** in alto ritratto dell'eroe (toccalo o tienilo premuto per la sua scheda), vita e mazzo, Home e Impostazioni; sotto la mappa dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
-  per entrare nel piano. Accanto al titolo dell'atto un orologio segna l'ora della giornata lavorativa (il turno del
+  per entrare nel piano. Il boss dell'atto 1 è un orologio che segna l'ora della giornata lavorativa (il turno del
   mattino dalle 8 a mezzogiorno, il pomeriggio dalle 13 alle 17; il boss chiude il turno) e avanza a scatti quando torni da un lavoro; la strada fatta
   è una fila di passi, e l'ultimo tratto si ripercorre passo dopo passo. La run si abbandona dalla pausa in combattimento o iniziandone una nuova.
 - **Combattimento**, dall'alto: barra superiore (nome del nemico in grande e piano, velocità di gioco, pausa) · nemico con stati e vita ·

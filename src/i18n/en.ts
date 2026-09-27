@@ -123,7 +123,6 @@ const en = {
   'journey.title': 'Act {n}',
   'journey.actName.1': 'The Morning Shift',
   'journey.actName.2': 'The Afternoon Shift',
-  'journey.shiftAt': '{shift} · {time}',
   'journey.clock': '{h}:{m}',
   'journey.enter': 'Enter floor {n}',
   'journey.choose': 'Choose your path',

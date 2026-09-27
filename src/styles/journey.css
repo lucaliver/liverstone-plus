@@ -31,27 +31,12 @@
 .sheet-head p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
 .hero-sheet .hero-stats { justify-content: flex-start; margin-bottom: 10px; }
 .hero-feature.used { opacity: 0.4; }
-.act-banner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
-  margin-top: 10px;
-  text-align: left;
-}
-.act-banner .h1,
-.act-banner .sub { text-align: left; }
-.act-banner .sub { margin-bottom: 8px; }
-.act-banner .sub b { color: var(--y); font-weight: 400; }
-/* the workday clock: a paper face, four ticks and a pink pin; the hands run forward in steps */
+.act-banner { text-align: center; margin-top: 10px; }
+/* the workday clock, drawn on the dot of an act's boss: four ticks and a pink pin; the hands run forward in steps */
 .shift-clock {
   position: relative;
-  flex: none;
-  width: 48px;
-  height: 48px;
-  background: var(--paper);
-  border: var(--line) solid var(--k);
-  box-shadow: 3px 3px 0 var(--shadow);
+  width: 100%;
+  height: 100%;
 }
 .shift-clock::before {
   content: '';
@@ -74,8 +59,8 @@
   background: var(--k);
   animation: 0.9s steps(6) 0.3s backwards;
 }
-.shift-clock .hh { height: 11px; rotate: var(--h1); animation-name: hand-h; }
-.shift-clock .mh { height: 17px; rotate: var(--m1); animation-name: hand-m; }
+.shift-clock .hh { height: 30%; rotate: var(--h1); animation-name: hand-h; }
+.shift-clock .mh { height: 40%; rotate: var(--m1); animation-name: hand-m; }
 @keyframes hand-h {
   from { rotate: var(--h0); }
 }

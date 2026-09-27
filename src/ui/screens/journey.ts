@@ -18,6 +18,8 @@ export const NODE_ICON: Record<RunNode['type'], string> = {
 /** Height of one floor on the map (px). */
 const ROW_H = 92;
 const laneX = (lane: number): number => 22 + lane * 56;
+/** Acts whose boss is shown on the map as the workday clock (the morning shift ends at noon), not by its icon. */
+const BOSS_CLOCK = new Set([1]);
 /** Footsteps per pixel of a walked link, and the delay between the steps of the newest one (ms). */
 const STEP_PX = 14;
 const STEP_MS = 70;
@@ -104,6 +106,22 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   };
   enterBtn.onclick = go;
 
+  // The workday clock (on the boss of the acts in BOSS_CLOCK): the time of the floor ahead. Back from a job, its hands
+  // run forward from the floor just done.
+  const to = clockAt(run, options.length ? run.nodes[options[0]] : cur);
+  const from = run.cleared ? clockAt(run, cur) : to;
+  const clockFace = (): HTMLElement => {
+    const face = h('span', { class: 'shift-clock', html: '<i class="hh"></i><i class="mh"></i>' });
+    for (const [k, deg] of [
+      ['--h0', from / 2],
+      ['--h1', to / 2],
+      ['--m0', from * 6],
+      ['--m1', to * 6],
+    ] as const)
+      face.style.setProperty(k, `${deg}deg`);
+    return face;
+  };
+
   const path = h('div', { class: 'path', style: { height: `${(floors - minFloor + 1) * ROW_H}px` } });
   path.innerHTML = `<svg class="links" viewBox="0 0 100 ${(floors - minFloor + 1) * ROW_H}" preserveAspectRatio="none" aria-hidden="true">${lines}</svg>`;
   for (let f = minFloor; f <= floors; f++) path.append(h('span', { class: 'num', style: { top: `${(floors - f + 0.5) * ROW_H}px` } }, f));
@@ -139,7 +157,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       },
       h('button', {
         class: 'dot',
-        html: icon(past ? 'check' : NODE_ICON[n.type]),
+        html: past || !(n.type === 'boss' && BOSS_CLOCK.has(n.act)) ? icon(past ? 'check' : NODE_ICON[n.type]) : undefined,
         'aria-label': `${t('common.floor', { n: n.floor })} · ${label}`,
         disabled: !open,
         onclick: () => {
@@ -154,6 +172,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       }),
       h('span', { class: 'label' }, label),
     );
+    if (!past && n.type === 'boss' && BOSS_CLOCK.has(n.act)) el.querySelector('.dot')!.append(clockFace());
     nodeEls.set(n.id, el);
     path.append(el);
   }
@@ -181,17 +200,6 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       },
     }),
   );
-  // The workday clock: the time of the floor ahead. Back from a job, its hands run forward from the floor just done.
-  const to = clockAt(run, options.length ? run.nodes[options[0]] : cur);
-  const from = run.cleared ? clockAt(run, cur) : to;
-  const clock = h('div', { class: 'shift-clock', 'aria-hidden': 'true', html: '<i class="hh"></i><i class="mh"></i>' });
-  for (const [k, deg] of [
-    ['--h0', from / 2],
-    ['--h1', to / 2],
-    ['--m0', from * 6],
-    ['--m1', to * 6],
-  ] as const)
-    clock.style.setProperty(k, `${deg}deg`);
   const el = h(
     'div',
     { class: 'screen journey' },
@@ -199,13 +207,8 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     h(
       'div',
       { class: 'act-banner' },
-      clock,
-      h(
-        'div',
-        null,
-        h('div', { class: 'h1' }, t('journey.title', { n: act })),
-        h('p', { class: 'sub', html: t('journey.shiftAt', { shift: t(`journey.actName.${act}`), time: `<b>${clockText(to)}</b>` }) }),
-      ),
+      h('div', { class: 'h1' }, t('journey.title', { n: act })),
+      h('p', { class: 'sub' }, t(`journey.actName.${act}`)),
     ),
     h('div', { class: 'scroll', style: { flex: '1' } }, path),
     enterBtn,
