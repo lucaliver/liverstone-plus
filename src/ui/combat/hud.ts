@@ -15,6 +15,8 @@ export function createHud(v: CombatView): { render(): void } {
   let lastMove: MoveDef | null = null;
   /** `moveCount` of the last hit we warned about (one sound cue per hit). */
   let warned = -1;
+  /** `moveCount` of the lethal hit the alarm sounded for (-1 while not in danger). */
+  let alarmed = -1;
   let lastMaxMana = -1;
   let lastMana = combat.hero.mana;
 
@@ -148,6 +150,11 @@ export function createHud(v: CombatView): { render(): void } {
     r.incoming.style.left = `${((hs.hp - lost) / hs.maxHp) * 100}%`;
     r.incoming.style.width = shown ? `${(lost / hs.maxHp) * 100}%` : '0';
     toggle(v.el, 'danger', shown && left < 0.8);
+    // The hit being charged would knock the hero out (Dodge would save them): alarm on the edges, and a siren once.
+    const lethal = hostile && !!m.dmg && incoming >= hs.hp && combat.stacks('hero', 'dodge') === 0;
+    toggle(v.el, 'lethal', lethal);
+    if (lethal && alarmed !== e.moveCount) sfx('lethal');
+    alarmed = lethal ? e.moveCount : -1;
   };
 
   const renderEnemyState = (): void => {

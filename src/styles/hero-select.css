@@ -118,6 +118,8 @@
 }
 .hero-job {
   margin: -4px 0 2px;
+  text-align: center;
+  text-wrap: balance;
   font-family: var(--font-ui);
   font-size: 20px;
   color: var(--muted-d);

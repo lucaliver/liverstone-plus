@@ -160,6 +160,13 @@ const SOUNDS = {
     tone(150, 0.07, { type: 'square', vol: 0.09, to: 120 });
     tone(150, 0.09, { type: 'square', vol: 0.11, to: 110, delay: 0.14 });
   },
+  /** The hit being charged would knock you out: a two-tone factory alarm. */
+  lethal: () => {
+    for (let i = 0; i < 2; i++) {
+      tone(880, 0.16, { type: 'square', vol: 0.07, to: 660, delay: i * 0.36 });
+      tone(660, 0.16, { type: 'square', vol: 0.07, to: 880, delay: i * 0.36 + 0.18 });
+    }
+  },
   /** An enemy hit is about to land and Block covers it: one soft high tick. */
   incomingSafe: () => tone(1100, 0.06, { type: 'triangle', vol: 0.07, to: 1000 }),
   ability: () => {

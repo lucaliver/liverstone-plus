@@ -432,7 +432,7 @@ const en = {
   'card.manaGeode.desc': '+{0} max mana (empty [crystal]).',
   'card.lastStand.name': 'Picket Line',
   'card.lastStand.desc': 'Gain {0} [block] and {1} [strength].',
-  'card.meteor.name': 'Boiler Burst',
+  'card.meteor.name': 'Burnout',
   'card.meteor.desc': 'Deal {0} damage. Apply {1} [burn].',
   'card.deathsDoor.name': 'Wildcat Strike',
   'card.deathsDoor.desc': 'Heal {0} HP. Apply {1} [poison].',

@@ -61,7 +61,7 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
   il valore, il caricamento e quanto manca al prossimo speciale; tenendola premuta si vede tutto lo schema d'attacco del nemico.
 - **Difesa:** il **Blocco** assorbe i danni ma svanisce col tempo, quindi va giocato poco prima del colpo. La
   barra vita mostra a strisce quanto perderai.
-  Poco prima di ogni colpo c'è un segnale sonoro (diverso se il Blocco lo copre) e, se non è bloccato, i bordi lampeggiano.
+  Poco prima di ogni colpo c'è un segnale sonoro (diverso se il Blocco lo copre) e, se non è bloccato, i bordi lampeggiano. Se il colpo in carica ti manderebbe KO, i bordi lampeggiano di rosso e suona un allarme.
 - **Abilità dell'eroe:** mossa potente che costa 6 mana, quindi va usata dopo aver fatto crescere i cristalli.
 - **Carta speciale:** una per eroe, parte nella sleeve a ogni scontro, si usa **una volta per run**.
 - **Stati:** Forza, Blocco, Veleno, Bruciatura, Congelamento, Stordimento, Debole, Vulnerabile, Schivata, Parata,
