@@ -139,7 +139,7 @@ La difficoltà cresce scendendo di piano.
 ## 6. Schermate e interfaccia
 
 - **Home:** logo animato, boss tra oggetti d'ufficio e di fabbrica (timbracartellino, schedario, sacco di soldi, barile tossico); *Clock in* (nuova run) / *Back to work* (continua), *Handbook*,
-  *How to play* (apre l'Onboarding'), Impostazioni.
+  *How to play* (apre l'Onboarding), Impostazioni.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
 - **Percorso:** in alto ritratto dell'eroe (toccalo o tienilo premuto per la sua scheda), vita e mazzo; sotto la mappa dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
   per entrare nel piano. La run si abbandona dalla pausa in combattimento o iniziandone una nuova.

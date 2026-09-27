@@ -492,7 +492,7 @@ const en = {
   'enemy.slime.name': 'Toxic Coworker',
   'enemy.cultist.name': 'Team Leader',
   'enemy.goblin.name': 'Goblin Consultant',
-  'enemy.boneKnight.name': 'Security Automaton',
+  'enemy.boneKnight.name': 'Security Monitor',
   'enemy.lich.name': 'Slaves CEO',
   'enemy.hr.name': 'HR Bitch',
   'enemy.sleeper.name': 'Guy Asleep',
