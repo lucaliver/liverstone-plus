@@ -5,12 +5,13 @@ const rep = (id: string, n: number): string[] => new Array(n).fill(id);
 
 const warrior: HeroDef = {
   id: 'warrior',
-  hp: 80,
+  hp: 72,
   maxMana: 3,
-  regen: 1.4,
+  regen: 1.5,
   blockDecay: 1.2,
   resourceMax: 10,
-  startDeck: [...rep('strike', 4), ...rep('defend', 4), 'bash', 'manaGeode'],
+  // Starter decks: only basic cards (plus mana crystals); everything else comes from rewards.
+  startDeck: [...rep('strike', 5), ...rep('defend', 4), 'manaGeode'],
   special: 'lastStand',
   color: '#d0563f',
   ability: {
@@ -29,12 +30,12 @@ const warrior: HeroDef = {
 
 const mage: HeroDef = {
   id: 'mage',
-  hp: 70,
+  hp: 74,
   maxMana: 3,
   regen: 1.0,
   blockDecay: 1.0,
   resourceMax: 12,
-  startDeck: [...rep('arcaneBolt', 4), ...rep('ward', 3), 'frostbolt', 'manaShard', 'manaGeode'],
+  startDeck: [...rep('arcaneBolt', 5), ...rep('ward', 3), 'manaShard', 'manaGeode'],
   special: 'meteor',
   color: '#5b8cff',
   ability: {
@@ -65,7 +66,7 @@ const necromancer: HeroDef = {
   regen: 1.25,
   blockDecay: 0.9,
   resourceMax: 15,
-  startDeck: [...rep('boneSpike', 3), ...rep('graveWard', 2), ...rep('toxicDart', 2), 'drainLife', 'manaShard', 'manaGeode'],
+  startDeck: [...rep('boneSpike', 3), ...rep('graveWard', 3), ...rep('toxicDart', 2), 'manaShard', 'manaGeode'],
   special: 'deathsDoor',
   color: '#2a8a4a',
   ability: {

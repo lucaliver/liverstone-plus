@@ -49,7 +49,7 @@ export const necromancerCards: CardDef[] = [
     face: '{dmg:0}|{heal:1}',
     cls: 'necromancer',
     type: 'spell',
-    rarity: 'starter',
+    rarity: 'common',
     cost: 1,
     vals: [4, 3],
     upVals: [6, 4],

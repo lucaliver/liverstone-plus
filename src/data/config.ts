@@ -12,8 +12,8 @@ export const CONFIG = {
   expireOverhang: 0.45,
   sleeveSlots: 2,
   /** Global difficulty knobs applied to every enemy. */
-  enemyHp: 0.72,
-  enemyDmg: 0.9,
+  enemyHp: 0.85,
+  enemyDmg: 1.05,
   maxManaCap: 10,
   startMana: 3,
   dotInterval: 1.5,

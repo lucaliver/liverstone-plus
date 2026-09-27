@@ -32,7 +32,7 @@ export const mageCards: CardDef[] = [
     face: '{dmg:0}|{chill:1}',
     cls: 'mage',
     type: 'spell',
-    rarity: 'starter',
+    rarity: 'common',
     cost: 1,
     vals: [4, 3],
     upVals: [6, 4],
