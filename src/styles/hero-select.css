@@ -27,7 +27,8 @@
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  overscroll-behavior-x: contain;
+  /* no elastic overscroll past the first or last hero (iOS Safari would show empty space) */
+  overscroll-behavior-x: none;
 }
 .hero-track::-webkit-scrollbar { display: none; }
 .hero-slide {
