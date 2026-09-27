@@ -19,7 +19,7 @@ const warrior: HeroDef = {
   color: '#d0563f',
   ability: {
     id: 'berserk',
-    cost: 5,
+    cost: 6,
     use: (c) => c.applyStatus('hero', 'berserk', 1, 6),
   },
   hooks: {
@@ -39,7 +39,7 @@ const mage: HeroDef = {
   color: '#5b8cff',
   ability: {
     id: 'timeWarp',
-    cost: 5,
+    cost: 6,
     use: (c) => {
       c.applyStatus('enemy', 'frozen', 1, 4);
       c.rushBelt(4);
@@ -68,7 +68,7 @@ const necromancer: HeroDef = {
   color: '#2a8a4a',
   ability: {
     id: 'pandemic',
-    cost: 4,
+    cost: 6,
     // Double the enemy's Poison (at least +5).
     use: (c) => c.applyStatus('enemy', 'poison', Math.max(5, c.stacks('enemy', 'poison'))),
   },

@@ -133,11 +133,15 @@ export function floatText(x: number, y: number, text: string, cls: string, delay
   el.className = `floater ${cls}`;
   if (html) el.innerHTML = text;
   else el.textContent = text;
-  el.style.left = `${x + (Math.random() * 30 - 15)}px`;
   el.style.top = `${y}px`;
   if (delay) el.style.animationDelay = `${delay}ms`;
   el.addEventListener('animationend', () => el.remove());
   layer.append(el);
+  // Keep long texts on screen: the floater is centred on x, so clamp it by half its (untransformed) width.
+  const bounds = layer.getBoundingClientRect();
+  const half = el.offsetWidth / 2 + 8;
+  const jitter = x + (Math.random() * 30 - 15);
+  el.style.left = `${Math.min(Math.max(jitter, bounds.left + half), bounds.right - half)}px`;
 }
 
 /** Jolts the combat stage (never the whole screen, which would make the layout jump). */

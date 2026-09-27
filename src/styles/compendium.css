@@ -39,10 +39,12 @@
 .comp-grid .card.undiscovered .c-face { filter: grayscale(0.7); }
 
 .section-switch {
-  margin: 0 auto 12px;
+  margin: 12px auto 0;
   background: var(--paper);
   box-shadow: 3px 3px 0 var(--shadow);
 }
+/* the counter scrolls with the content, right under the switch */
+.compendium .scroll > .sub { margin: 12px 0; }
 .section-switch button {
   min-width: 120px;
   color: var(--k);

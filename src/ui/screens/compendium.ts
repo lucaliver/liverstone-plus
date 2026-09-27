@@ -129,9 +129,8 @@ export function compendiumScreen(onBack: () => void): Screen {
       }),
       h('h1', { class: 'h1' }, t('compendium.title')),
     ),
-    sub,
     sectionSwitch,
-    h('div', { class: 'scroll', style: { flex: '1', marginTop: '12px' } }, cardsWrap, foes),
+    h('div', { class: 'scroll', style: { flex: '1' } }, sub, cardsWrap, foes),
   );
   return { el };
 }
