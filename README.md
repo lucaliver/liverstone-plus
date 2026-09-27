@@ -139,7 +139,7 @@ La difficoltà cresce scendendo di piano.
 
 ## 6. Schermate e interfaccia
 
-- **Home:** logo animato, boss tra oggetti d'ufficio e di fabbrica (timbracartellino, schedario, sacco di soldi, barile tossico); *Clock in* (nuova run) / *Back to work* (continua), *Handbook*,
+- **Home:** logo animato, boss tra oggetti d'ufficio e di fabbrica (timbracartellino, schedario, sacco di soldi, barile tossico); *New run* / *Back to work* (continua), *Handbook*,
   *How to play* (apre l'Onboarding), Impostazioni.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
 - **Percorso:** in alto ritratto dell'eroe (toccalo o tienilo premuto per la sua scheda), vita e mazzo; sotto la mappa dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
@@ -156,7 +156,7 @@ La difficoltà cresce scendendo di piano.
 - **Riso pop + pixel, un po' dark:** notte viola retinata; carte, bottoni ed etichette come stampe su carta
   con ombre nette sfalsate. Quattro inchiostri: rosa fluo, blu, giallo, inchiostro scuro (+ sovrastampe).
 - **Mai:** sfumature per l'ombreggiatura, glow, finto 3D, cerchi decorativi di sfondo.
-- **Fabbrica con misura:** l'atto 1 è una fabbrica dentro la cripta (ossa, candele, pietra, qualche dettaglio di
+- **Fabbrica con misura:** l'atto 1 è una fabbrica dentro la cripta (ossa, candele in combattimento, pietra, qualche dettaglio di
   ottone, cartellini e pergamene timbrate); ingranaggi, caldaie e automi crescono nei turni successivi.
 - **Pixel art** generata dai disegni vettoriali all'avvio: livelli d'inchiostro, retino a puntini, contorno.
 - **Animazioni a scatti** (tranne le finestre, fluide); colpi con flash invertito; danni come "-N" su macchia di sangue,
@@ -165,5 +165,5 @@ La difficoltà cresce scendendo di piano.
   nero maledizioni); illustrazione = categoria (rosa attacco, blu difesa, giallo utilità, verde maledizione);
   gemma a rombo solo per rare (blu), epiche (rosa) e leggendarie (gialla).
 - **Font:** Silkscreen per le parole dei titoli, Jersey 10 per interfaccia e numeri, Space Grotesk per i testi lunghi.
-- **Musica chiptune procedurale:** menu (carillon), combattimento, élite (marcia cupa), boss, falò, pausa (calma),
+- **Musica chiptune procedurale:** menu (carillon), combattimento, élite (marcia cupa), boss, sala pausa, pausa (calma),
   vittoria. Effetti sonori sintetizzati, vibrazione sui colpi.

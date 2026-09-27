@@ -44,10 +44,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M6 12h24v10H6zM34 12h24v10H34zM6 26h12v10H6zM22 26h20v10H22zM46 26h12v10H46zM6 40h24v10H6zM34 40h24v10H34z"/><path ${HI} d="M6 12h52v3H6z"/>`,
   },
-  shieldBash: {
-    el: 'steel',
-    svg: `<g transform="translate(6 2) scale(.85)">${shield}</g><g ${S} stroke-width="4"><path d="M4 22h8M2 32h9M4 42h8"/></g>`,
-  },
   horn: {
     el: 'steel',
     svg: `<path d="M8 42c14-1 30-10 40-30l8 4c-6 24-24 38-46 38-3 0-5-5-2-12z"/><ellipse cx="8" cy="48" rx="4" ry="7"/><g ${S} stroke-width="3.5"><path d="M44 44l10 6M40 52l7 9M50 34l11 1"/></g>`,
@@ -70,7 +66,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<g ${S} stroke-width="5.5"><path d="M32 32m-4 0a4 4 0 1 1 8 0 10 10 0 1 1-20 0 16 16 0 1 1 32 0 22 22 0 1 1-44 0"/></g><path d="M8 33l-4-9 11 2z"/>`,
   },
   heart: { el: 'nature', svg: heart },
-  rampage: { el: 'blood', svg: `${fist}<g ${S} stroke-width="3.5"><path d="M6 12l7 6M20 4l2 9M58 12l-7 6M44 4l-2 9"/></g>` },
   fortress: {
     el: 'steel',
     svg: `<path d="M10 12h8v6h6v-6h6v6h4v-6h6v6h6v-6h8v46H10z"/><path fill="#16121f" opacity=".55" d="M26 58V44a6 6 0 0 1 12 0v14z"/><path ${HI} d="M10 22h44v3H10z"/>`,
@@ -97,8 +92,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   iceLance: { el: 'ice', svg: `<path d="M58 6L48 26 18 56l-8-2-2-8L38 16z"/><path ${HI} d="M58 6L40 18l-2-2z"/><path d="M8 46l10 10-8 4-6-6z"/>` },
   crystal: { el: 'arcane', svg: crystal },
   crystalSlot: { el: 'arcane', svg: crystalSlot },
-  spark: { el: 'arcane', svg: star4(28, 30, 22) + star4(50, 14, 9) + star4(50, 50, 7) },
-  frostArmor: { el: 'ice', svg: `${shield}<g transform="translate(17 13) scale(.47)" color="#16121f" opacity=".6">${snowflake}</g>` },
   flame: { el: 'fire', svg: flame },
   missiles: {
     el: 'arcane',
@@ -123,10 +116,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'ice',
     svg: `${cloud}<g transform="translate(6 40) scale(.3)">${snowflake}</g><g transform="translate(24 44) scale(.3)">${snowflake}</g><g transform="translate(42 40) scale(.3)">${snowflake}</g>`,
   },
-  evocation: {
-    el: 'arcane',
-    svg: `<g transform="translate(12 10) scale(.62)">${crystal}</g><g ${S} stroke-width="3.5"><path d="M8 32H2M62 32h-6M14 12l-4-4M50 12l4-4M14 52l-4 4M50 52l4 4"/></g>`,
-  },
   // ---- neutral
   potionRed: { el: 'nature', svg: potion('#e0404a') },
   potionOrange: { el: 'fire', svg: potion('#ff8a1f') },
@@ -144,7 +133,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'curse',
     svg: `<path d="M10 52c0-18 10-34 22-34s22 16 22 34c0 4-3 6-6 6H16c-3 0-6-2-6-6z"/><circle cx="25" cy="38" r="5" fill="#16121f"/><circle cx="40" cy="38" r="5" fill="#16121f"/><circle cx="26" cy="36.5" r="1.6" fill="#fff"/><circle cx="41" cy="36.5" r="1.6" fill="#fff"/><path ${HI} d="M20 28c3-5 7-8 11-8-4 3-6 6-7 10z"/>`,
   },
-  hex: { el: 'curse', svg: skull },
 
   // ---- statuses & intents
   fist: { el: 'blood', svg: fist },

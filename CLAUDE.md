@@ -13,7 +13,7 @@ This file is the technical guide: read it before changing code.
   decorative background circles, emoji or Unicode symbols as icons (use pixel icons). Industrial, robotic and
   steampunk touches grow act by act: act 1 is a factory inside the crypt (bones, candles, a little brass).
 - Tone: a run is a **workday**, each act a **shift** (morning, afternoon, night). Cards, enemies, moves, curses and
-  UI words use workplace names (*Punch*, *Toxic Coworker*, *Deadline*, *Clock in*); satire hits management and
+  UI words use workplace names (*Punch*, *Toxic Coworker*, *Deadline*, *Clock in* to start a fight); satire hits management and
   coworkers alike. Heroes stay fantasy with a light job touch. Statuses and keywords keep plain game names
   (Poison, Block, Rush…) so rules stay readable.
 - Before handing over: `npm run check` and `npm run e2e` must pass, then look at the screens you touched
@@ -94,7 +94,8 @@ src/
   ui/          app.ts (screens + modals), dom.ts (h, onPress, onTapOrHold, LONG_PRESS_MS)
     art/       icons.ts (64×64 vector icons), creatures.ts (200×200 vector sprites), riso.ts (pixel renderer)
     combat/    view (DOM + refs + shared state), hud, cardLayer (belt/sleeve/input), combatFx (events → FX), combatScreen
-    components/cardView (card DOM, face glyphs), modals (settings, deck, card detail, info), moveText, decor
+    components/cardView (card DOM, face glyphs), modals (settings, deck, card detail, info), moveText (moves, enemy
+               pattern and traits), heroSheet (hero features and in-run sheet), decor
     fx/        particles, floating text, shake, haptics
     screens/   title, heroSelect, journey, reward, rest, promotion, end, compendium
   audio/       sfx.ts (synth), music.ts (sequencer + tracks)
@@ -172,6 +173,8 @@ Plurals: `{n|one|other}`. New language: copy `en.ts`, register it in `core/i18n.
 - Input: tap = act, **hold = inspect** (`onPress`, `onTapOrHold`, shared `LONG_PRESS_MS`). Inspecting pauses the fight
   through `view.inspect(open)`. Tap targets ≥ 44 px.
 - Modals close on a full tap on the backdrop (press + release), never on pointerdown.
+- Icons: every card has its own art; rule icons (glyphs, statuses, intents, tags, map nodes) are shared only within
+  one concept. `content.test.ts` enforces the card side.
 - Dev hooks (dev server only): `window.__combat` (current `Combat`) and `window.__game` (`run`, `nextNode`,
   `goJourney`, `musicTrack`). E2E tests and screenshot scripts rely on them.
 
