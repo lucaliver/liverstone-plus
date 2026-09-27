@@ -6,7 +6,7 @@ import { h } from '../dom';
 import { icon } from '../art/icons';
 import { openDeck, openSettings } from '../components/modals';
 
-const NODE_ICON: Record<RunNode['type'], string> = { fight: 'sword', elite: 'skull', rest: 'campfire', boss: 'crown' };
+const NODE_ICON: Record<RunNode['type'], string> = { fight: 'sword', elite: 'clipboard', rest: 'coffee', boss: 'tophat' };
 
 export function runHud(run: RunState, extra?: HTMLElement): HTMLElement {
   return h(

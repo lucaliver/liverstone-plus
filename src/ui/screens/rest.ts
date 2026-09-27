@@ -3,14 +3,15 @@ import { sfx } from '../../audio/sfx';
 import { canUpgrade, REST_HEAL, rest, upgradeCard, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h } from '../dom';
-import { candleFlame, icon } from '../art/icons';
+import { icon } from '../art/icons';
+import { creature } from '../art/creatures';
 import { openDeck } from '../components/modals';
 import { motes } from '../components/decor';
 import { runHud } from './journey';
 
 const HEAL_ANIM_MS = 1900;
 
-/** Pixel hearts float up from the bottom of the screen, then "+N HP" pops over the fire. */
+/** Pixel hearts float up from the bottom of the screen, then "+N HP" pops over the coffee machine. */
 function playHealing(screen: HTMLElement, amount: number): void {
   sfx('heal');
   const layer = h('div', { class: 'heal-rise', 'aria-hidden': 'true' });
@@ -41,8 +42,8 @@ export function restScreen(run: RunState, onDone: () => void): Screen {
     h('p', { class: 'sub' }, t('rest.desc')),
     h('div', {
       class: 'rest-fire',
-      // Big bonfire: the animated candle flame (3 frames) over two crossed logs.
-      html: `${motes(16, ['var(--y)', 'var(--p)'])}<div class="bonfire">${candleFlame()}<span class="log l"></span><span class="log r"></span></div>`,
+      // The break room's coffee machine, with steam drifting up.
+      html: `${motes(14, ['var(--paper)', 'var(--paper)', 'var(--y)'])}<div class="coffee-machine">${creature('coffeeMachine')}</div>`,
     }),
     h(
       'div',

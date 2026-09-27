@@ -198,9 +198,17 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<rect x="20" y="6" width="28" height="40" rx="4" transform="rotate(12 34 26)" opacity=".55"/><rect x="14" y="14" width="28" height="40" rx="4"/>`,
   },
   pause: { el: 'steel', svg: `<rect x="16" y="10" width="11" height="44" rx="3"/><rect x="37" y="10" width="11" height="44" rx="3"/>` },
-  campfire: {
+  coffee: {
     el: 'fire',
-    svg: `<g transform="translate(8 0) scale(.75)">${flame}</g><path d="M6 52l52 8M58 52L6 60" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>`,
+    svg: `<path d="M8 28h38v16c0 9-7 16-16 16h-6C15 60 8 53 8 44z"/><path d="M46 32h5c6 0 10 4 10 9s-4 9-10 9h-6v-7h6c2 0 3-1 3-2s-1-2-3-2h-5z"/><g ${S} stroke-width="4.5"><path d="M18 22c-4-5 4-8 0-14M28 22c-4-5 4-8 0-14M38 22c-4-5 4-8 0-14"/></g>`,
+  },
+  clipboard: {
+    el: 'steel',
+    svg: `<rect x="10" y="8" width="44" height="54" rx="4"/><rect x="21" y="3" width="22" height="12" rx="3" fill="#16121f"/><path d="M17 28l5 5 9-9M17 45l5 5 9-9M37 30h10M37 47h10" fill="none" stroke="#16121f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  },
+  tophat: {
+    el: 'shadow',
+    svg: `<path d="M17 6h30v38H17z"/><rect x="17" y="32" width="30" height="6" fill="#16121f"/><path d="M3 44h58c0 8-6 13-13 13H16C9 57 3 52 3 44z"/>`,
   },
   // Candle flame animation: three frames (outer flame + bright core each).
   flameA: { el: 'fire', svg: `<path d="M32 4C40 18 50 28 50 42a18 18 0 0 1-36 0c0-12 10-24 18-38z"/>` },

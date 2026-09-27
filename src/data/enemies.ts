@@ -6,6 +6,8 @@ const atk = (id: string, dmg: number, windup: number, extra: Partial<MoveDef> = 
  * Every enemy has one steady main attack and, every `every` main attacks, a special move
  * (slow heavy hits, curses, theft…). Specials rotate when there are several.
  * Moves are slow and heavy on purpose: each hit is an event to prepare for, with room to breathe in between.
+ * Ids predate the workplace theme (`rat` is The Snitch, `lich` the Slaves CEO…): they stay so saved runs remain valid;
+ * names come from `enemy.<id>.name` and sprites from `art`.
  */
 const defs: EnemyDef[] = [
   // ------------------------------------------------------------- Act 1
@@ -14,7 +16,7 @@ const defs: EnemyDef[] = [
     act: 1,
     tier: 'normal',
     hp: 26,
-    art: 'rat',
+    art: 'snitch',
     main: atk('bite', 6, 6),
     every: 2,
     specials: [atk('frenzy', 4, 8, { hits: 3, intent: 'charge' })],
@@ -24,7 +26,7 @@ const defs: EnemyDef[] = [
     act: 1,
     tier: 'normal',
     hp: 36,
-    art: 'skeleton',
+    art: 'boomer',
     main: atk('slash', 9, 8),
     every: 2,
     specials: [atk('boneCrush', 22, 11, { intent: 'charge' })],
@@ -34,7 +36,7 @@ const defs: EnemyDef[] = [
     act: 1,
     tier: 'normal',
     hp: 44,
-    art: 'slime',
+    art: 'coworker',
     main: atk('slam', 9, 8),
     every: 2,
     specials: [
@@ -47,7 +49,7 @@ const defs: EnemyDef[] = [
     act: 1,
     tier: 'normal',
     hp: 40,
-    art: 'cultist',
+    art: 'coach',
     main: atk('darkBolt', 7, 7),
     every: 2,
     specials: [
@@ -59,7 +61,7 @@ const defs: EnemyDef[] = [
     act: 1,
     tier: 'normal',
     hp: 30,
-    art: 'goblin',
+    art: 'consultant',
     main: atk('stab', 7, 6),
     every: 2,
     specials: [
@@ -72,7 +74,7 @@ const defs: EnemyDef[] = [
     act: 1,
     tier: 'elite',
     hp: 88,
-    art: 'boneKnight',
+    art: 'automaton',
     main: atk('cleave', 13, 8),
     every: 2,
     specials: [
@@ -86,7 +88,7 @@ const defs: EnemyDef[] = [
     act: 1,
     tier: 'boss',
     hp: 145,
-    art: 'lich',
+    art: 'ceo',
     main: atk('soulBolt', 11, 7),
     every: 2,
     specials: [

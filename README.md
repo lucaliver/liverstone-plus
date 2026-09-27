@@ -122,8 +122,6 @@ I mazzi iniziali hanno solo carte base e cristalli; tutte le altre arrivano come
 | **Security Automaton** (élite) | Colpi che rendono Vulnerabile, *Lockdown* (blocco), si infuria a metà vita |
 | **Slaves CEO** (boss) | *Write-Ups*, *Deadlines* e il colpo *YOU'RE FIRED*; a metà vita accelera |
 
-Gli sprite sono ancora quelli della cripta (ratto, scheletro, rospo, cultista, goblin, cavaliere, lich) e verranno ridisegnati.
-
 La difficoltà cresce scendendo di piano.
 
 ---
@@ -138,7 +136,7 @@ La difficoltà cresce scendendo di piano.
 - **Combattimento**, dall'alto: barra superiore (piano, velocità di gioco, pausa) · nemico con stati e vita ·
   barra minaccia · eroe (ritratto, vita, Blocco, stati) · **nastro** · mana · sleeve, pile, abilità. Vita del nemico,
   mossa in arrivo e vita dell'eroe stanno tutte subito sopra il nastro, così non serve distogliere lo sguardo dalle carte.
-- **Ricompensa, sala pausa** (con animazione di cura), **fine turno e licenziamento** (statistiche), **Handbook** (carte per
+- **Ricompensa, sala pausa** (macchinetta del caffè steampunk, con animazione di cura), **fine turno e licenziamento** (statistiche), **Handbook** (carte per
   classe con scoperte, nemici con mosse).
 - **Impostazioni:** musica, effetti, velocità, riduci animazioni, vibrazione, nastro a due righe (sperimentale: più carte in vista, nastro un po' più lento). Tutti i testi sono pronti per altre lingue.
 
