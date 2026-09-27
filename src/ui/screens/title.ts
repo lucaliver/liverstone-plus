@@ -86,8 +86,7 @@ export function splashScreen(onStart: () => void): Screen {
       },
       html: `${icon('play')}<span>${t('menu.start')}</span>`,
     }),
-    // Major.minor only (package.json 2.0.0 shows as v2.0).
-    h('div', { class: 'version' }, `v${__APP_VERSION__.split('.').slice(0, 2).join('.')}`),
+    h('div', { class: 'version' }, `v${__APP_VERSION__}`),
   );
   return { el };
 }
