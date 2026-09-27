@@ -99,12 +99,36 @@
   display: grid;
   place-items: center;
 }
-.rest-fire .pico {
-  font-size: min(44vw, 190px);
-  color: var(--red);
-  --ink2: var(--k);
-  animation: bob 0.5s steps(2) infinite;
+.bonfire {
+  position: relative;
+  width: min(46vw, 190px);
+  aspect-ratio: 1;
 }
+.bonfire .flame {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  width: 78%;
+  height: 78%;
+  translate: -50% 0;
+}
+.bonfire .ff { animation-duration: 0.9s; }
+.bonfire .ff:nth-child(2) { animation-delay: -0.6s; }
+.bonfire .ff:nth-child(3) { animation-delay: -0.3s; }
+.bonfire .ff .fo { color: var(--y); --ink2: var(--red); }
+.bonfire .ff .fc { color: var(--paper); }
+.bonfire .log {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  width: 78%;
+  height: 12%;
+  background: #7a3a1a;
+  border: 3px solid var(--void);
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+.bonfire .log.l { transform: translateX(-50%) rotate(14deg); }
+.bonfire .log.r { transform: translateX(-50%) rotate(-14deg); }
 .rest-options {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -217,4 +241,46 @@
 .reduce-motion *, .reduce-motion *::before, .reduce-motion *::after {
   animation-duration: 0.01ms !important;
   animation-iteration-count: 1 !important;
+}
+
+/* campfire rest: hearts rise from the bottom, then the healed amount pops */
+.heal-rise {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  overflow: hidden;
+  pointer-events: none;
+}
+.heal-rise i {
+  position: absolute;
+  bottom: -40px;
+  font-size: var(--s, 28px);
+  color: var(--p);
+  --ink2: var(--y);
+  animation: heart-rise var(--d, 1.4s) steps(12) var(--dl, 0s) both;
+}
+@keyframes heart-rise {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  15% { opacity: 1; }
+  50% { transform: translate(-10px, -45vh) scale(1); }
+  100% { transform: translate(8px, -95vh) scale(0.9); opacity: 0; }
+}
+.heal-total {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  translate: -50% -50%;
+  font-family: var(--font-ui);
+  font-size: 72px;
+  line-height: 1;
+  color: var(--green);
+  text-shadow: 4px 4px 0 var(--y), -3px 2px 0 var(--k);
+  animation: heal-pop 1.6s steps(8) 0.35s both;
+}
+@keyframes heal-pop {
+  0% { transform: scale(0.3); opacity: 0; }
+  20% { transform: scale(1.25); opacity: 1; }
+  35% { transform: scale(1); }
+  85% { opacity: 1; }
+  100% { transform: translateY(-30px); opacity: 0; }
 }

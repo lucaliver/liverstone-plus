@@ -3,10 +3,29 @@ import { sfx } from '../../audio/sfx';
 import { canUpgrade, REST_HEAL, rest, upgradeCard, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h } from '../dom';
-import { icon } from '../art/icons';
+import { candleFlame, icon } from '../art/icons';
 import { openDeck } from '../components/modals';
 import { motes } from '../components/decor';
 import { runHud } from './journey';
+
+const HEAL_ANIM_MS = 1900;
+
+/** Pixel hearts float up from the bottom of the screen, then "+N HP" pops over the fire. */
+function playHealing(screen: HTMLElement, amount: number): void {
+  sfx('heal');
+  const layer = h('div', { class: 'heal-rise', 'aria-hidden': 'true' });
+  for (let i = 0; i < 18; i++) {
+    const heart = h('i', { html: icon('heart') });
+    heart.style.left = `${5 + Math.random() * 90}%`;
+    heart.style.setProperty('--d', `${(1 + Math.random() * 0.7).toFixed(2)}s`);
+    heart.style.setProperty('--dl', `${(Math.random() * 0.6).toFixed(2)}s`);
+    heart.style.setProperty('--s', `${Math.round(18 + Math.random() * 22)}px`);
+    layer.append(heart);
+  }
+  layer.append(h('div', { class: 'heal-total' }, `+${amount}`));
+  screen.append(layer);
+  setTimeout(() => sfx('heal'), 700);
+}
 
 export function restScreen(run: RunState, onDone: () => void): Screen {
   const heal = Math.min(run.maxHp - run.hp, Math.round(run.maxHp * REST_HEAL));
@@ -20,14 +39,21 @@ export function restScreen(run: RunState, onDone: () => void): Screen {
     runHud(run),
     h('h1', { class: 'h1', style: { marginTop: '12px' } }, t('rest.title')),
     h('p', { class: 'sub' }, t('rest.desc')),
-    h('div', { class: 'rest-fire', html: `${motes(16, ['var(--y)', 'var(--p)'])}${icon('campfire')}` }),
+    h('div', {
+      class: 'rest-fire',
+      // Big bonfire: the animated candle flame (3 frames) over two crossed logs.
+      html: `${motes(16, ['var(--y)', 'var(--p)'])}<div class="bonfire">${candleFlame()}<span class="log l"></span><span class="log r"></span></div>`,
+    }),
     h(
       'div',
       { class: 'rest-options' },
       opt('heart', t('rest.heal'), heal > 0 ? t('rest.healDesc', { n: heal }) : t('rest.full'), heal <= 0, () => {
-        sfx('heal');
-        rest(run);
-        onDone();
+        const healed = rest(run);
+        el.querySelectorAll('button').forEach((b) => {
+          b.disabled = true;
+        });
+        playHealing(el, healed);
+        setTimeout(onDone, HEAL_ANIM_MS);
       }),
       opt('hammer', t('rest.smith'), t('rest.smithDesc'), upgradable.length === 0, () => {
         sfx('tap');

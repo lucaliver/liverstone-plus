@@ -19,7 +19,8 @@
   height: 28px;
   translate: -50% 0;
 }
-.candle .ff {
+.candle .ff,
+.bonfire .ff {
   position: absolute;
   inset: 0;
   opacity: 0;
@@ -33,7 +34,8 @@
   0% { opacity: 1; }
   33.33% { opacity: 0; }
 }
-.candle .ff .pico {
+.candle .ff .pico,
+.bonfire .ff .pico {
   position: absolute;
   inset: 0;
   width: 100%;
