@@ -113,7 +113,14 @@
 }
 .card.pending .c-tags { z-index: 2; background: var(--y); outline: max(2px, calc(var(--cw) * 0.02)) solid var(--k); }
 
-/* blocked by a rule (No Repeats Policy, a stun…): the rule's icon, in pink, over the art */
+/* blocked by a rule (No Repeats Policy, a stun…): the rule's icon, in the card type's ink, over the art; a lighter veil */
+.card.ruled .c-top,
+.card.ruled .c-art,
+.card.ruled .c-face { opacity: 0.7; }
+.card[data-cat='attack'] { --rule-ink: var(--p); }
+.card[data-cat='defense'] { --rule-ink: var(--b); }
+.card[data-cat='utility'] { --rule-ink: #c08a00; }
+.card[data-cat='curse'] { --rule-ink: var(--green); }
 .rule-badge {
   position: absolute;
   left: 50%;
@@ -124,10 +131,10 @@
   width: 46cqw;
   height: 46cqw;
   font-size: 34cqw;
-  color: var(--p);
+  color: var(--rule-ink, var(--p));
   --ink2: var(--k);
   background: var(--paper);
-  border: var(--bw) solid var(--p);
+  border: var(--bw) solid var(--rule-ink, var(--p));
   box-shadow: var(--sh) var(--sh) 0 var(--k);
   pointer-events: none;
 }

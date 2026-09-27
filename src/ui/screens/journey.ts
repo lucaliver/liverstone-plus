@@ -56,6 +56,14 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   const minFloor = Math.min(...nodes.map((n) => n.floor));
   let picked: number | null = !run.cleared ? cur.id : options.length === 1 ? options[0] : null;
   const y = (n: RunNode): number => (floors - n.floor + 0.5) * ROW_H;
+  // Nodes still ahead on some path from here; everything else is out of reach and dimmed.
+  const reachable = new Set<number>();
+  const walk = (id: number): void => {
+    if (reachable.has(id) || run.path.includes(id)) return;
+    reachable.add(id);
+    for (const nx of run.nodes[id].next) walk(nx);
+  };
+  for (const id of run.cleared ? options : cur.next) walk(id);
 
   const lines = nodes
     .flatMap((n) =>
@@ -91,7 +99,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   for (const n of nodes) {
     const past = run.path.includes(n.id) && (n.id !== cur.id || run.cleared);
     const open = n.id === cur.id ? !run.cleared : options.includes(n.id);
-    const missed = !past && !open && n.act === cur.act && n.floor <= cur.floor && n.id !== cur.id;
+    const missed = !past && !open && n.id !== cur.id && !reachable.has(n.id);
     const label = t(`journey.node.${n.type}`);
     const el = h(
       'div',

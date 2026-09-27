@@ -216,9 +216,10 @@ export const mageCards: CardDef[] = [
     cls: 'mage',
     type: 'skill',
     rarity: 'epic',
-    cost: 1,
+    cost: 2,
+    minCost: 1,
     vals: [1, 3],
-    upVals: [1, 5],
+    upVals: [1, 4],
     keywords: ['exhaust'],
     art: 'powerNap',
     play: (c, v) => {

@@ -9,6 +9,7 @@ import { openCardDetail, sortDeck } from '../components/modals';
 import { h, onTapOrHold } from '../dom';
 import { dropLetters } from '../components/decor';
 import { runHud } from './journey';
+import { HEAL_ANIM_MS, playHealing } from './rest';
 
 /** Tap selects; a long press opens the card detail instead (and doesn't select). */
 function selectable(el: HTMLElement, card: CardInst, onSelect: () => void): void {
@@ -101,10 +102,16 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
         'button',
         {
           class: 'btn small secondary skip-btn',
-          onclick: () => {
+          onclick: (e: Event) => {
             sfx('tap');
             skipReward(run);
-            onDone();
+            // Max HP goes up: hearts rise, the HUD shows the new total, then on to the map.
+            for (const b of el.querySelectorAll<HTMLButtonElement>('.reward-actions button')) b.disabled = true;
+            (e.currentTarget as HTMLElement).blur();
+            const hp = el.querySelector('.run-hud .chip.hp span');
+            if (hp) hp.textContent = `${run.hp}/${run.maxHp}`;
+            playHealing(el, SKIP_MAX_HP, t('reward.maxHp'));
+            setTimeout(onDone, HEAL_ANIM_MS);
           },
         },
         h('span', null, t('reward.skip')),

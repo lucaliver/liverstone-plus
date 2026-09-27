@@ -243,7 +243,7 @@ describe('combat engine', () => {
     const mana = c.hero.mana;
     c.playCard(card.uid);
     expect(c.hero.maxMana).toBe(max + 2);
-    expect(c.hero.mana).toBe(mana - 1);
+    expect(c.hero.mana).toBe(mana - 2);
   });
 
   it('mage spellweave adds damage to chained spells', () => {
@@ -619,10 +619,15 @@ describe('combat engine', () => {
       expect(c.enemy.stored).toBe(0);
     });
 
-    it('The Veteran inflates card costs for the fight', () => {
+    it('The Veteran inflates card costs until each card is played', () => {
       const c = vs('veteran');
       c.inflateCards(40);
       expect(c.belt.every((b) => c.cardCost(b.card) === 3)).toBe(true);
+      c.hero.mana = c.hero.maxMana = 10;
+      const card = c.belt[0].card;
+      expect(c.playCard(card.uid)).toBe(true);
+      expect(c.hero.mana).toBe(7);
+      expect(c.cardCost(card)).toBe(2);
     });
 
     it('Dave idles four times, then hits hard and adds four different curses', () => {
@@ -638,7 +643,8 @@ describe('combat engine', () => {
       run(c, 2);
       expect(acts[4]).toBe('lastMinute');
       expect(c.hero.hp).toBeLessThan(hp);
-      expect(new Set(c.draw.filter((x) => CARDS[x.id].type === 'curse').map((x) => x.id)).size).toBe(4);
+      const everywhere = [...c.draw, ...c.discard, ...c.belt.map((b) => b.card)];
+      expect(new Set(everywhere.filter((x) => CARDS[x.id].type === 'curse').map((x) => x.id)).size).toBe(4);
     });
   });
 });

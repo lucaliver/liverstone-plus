@@ -254,6 +254,7 @@ export function openDeck(
     confirmLabel?: string;
     filter?: (c: CardInst) => boolean;
     previewSelected?: (c: CardInst) => CardInst;
+    onClose?: () => void;
   } = {},
 ): ModalHandle {
   const cards = sortDeck(deck).filter(opts.filter ?? (() => true));
@@ -311,6 +312,7 @@ export function openDeck(
           },
         ]
       : [{ label: t('common.close'), cls: 'secondary' }],
+    onClose: opts.onClose,
   });
   if (opts.onPick) {
     confirm = handle.el.querySelector<HTMLButtonElement>('.actions .btn');
@@ -321,7 +323,10 @@ export function openDeck(
 
 /** What each part of a card means: a sample card with numbered spots, and the legend (handbook "?" button). */
 export function openCardAnatomy(): ModalHandle {
+  // A placeholder card: the layout of a real one (rare, two effects, a modifier), with dummy name and art.
   const sample = cardView({ uid: -1, id: 'secondWind', up: false });
+  sample.querySelector('.c-name')!.textContent = t('anatomy.sample');
+  sample.querySelector('.c-art')!.innerHTML = icon('question');
   // Numbered spots just outside the card, level with the part they name (in % of the card box).
   const spots: [number, number][] = [
     [-12, 9],

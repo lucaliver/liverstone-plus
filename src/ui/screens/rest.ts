@@ -9,10 +9,10 @@ import { openDeck } from '../components/modals';
 import { motes } from '../components/decor';
 import { runHud } from './journey';
 
-const HEAL_ANIM_MS = 1900;
+export const HEAL_ANIM_MS = 1900;
 
-/** Pixel hearts float up from the bottom of the screen, then "+N HP" pops over the coffee machine. */
-function playHealing(screen: HTMLElement, amount: number): void {
+/** Pixel hearts float up from the bottom of the screen, then "+N" pops in the middle (with a `note` under it, e.g. "max HP"). */
+export function playHealing(screen: HTMLElement, amount: number, note?: string): void {
   sfx('heal');
   const layer = h('div', { class: 'heal-rise', 'aria-hidden': 'true' });
   for (let i = 0; i < 18; i++) {
@@ -23,7 +23,7 @@ function playHealing(screen: HTMLElement, amount: number): void {
     heart.style.setProperty('--s', `${Math.round(18 + Math.random() * 22)}px`);
     layer.append(heart);
   }
-  layer.append(h('div', { class: 'heal-total' }, `+${amount}`));
+  layer.append(h('div', { class: 'heal-total' }, `+${amount}`, note ? h('small', null, note) : null));
   screen.append(layer);
   setTimeout(() => sfx('heal'), 700);
 }

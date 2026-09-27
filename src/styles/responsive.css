@@ -2,6 +2,9 @@
 /* short phones: compact the fixed rows so the stage keeps its room and nothing overflows */
 @media (max-height: 740px) {
   .reward-title { font-size: 28px; }
+  .title-screen { gap: 10px; }
+  .menu { gap: 10px; }
+  .menu .row { gap: 10px; }
   .combat .topbar { padding-top: calc(var(--safe-t) + 4px); }
   .combat .icon-btn { width: 40px; height: 40px; }
   .threat { height: 34px; }

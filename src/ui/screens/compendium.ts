@@ -12,7 +12,7 @@ import { h, onPress } from '../dom';
 import { icon } from '../art/icons';
 import { creature } from '../art/creatures';
 import { cardView } from '../components/cardView';
-import { movePattern } from '../components/moveText';
+import { bindMoveDetails, movePattern } from '../components/moveText';
 import { openCardAnatomy, openCardDetail } from '../components/modals';
 
 const RARITY_ORDER: Rarity[] = ['starter', 'common', 'rare', 'epic', 'legendary', 'special'];
@@ -29,13 +29,7 @@ function foeView(e: EnemyDef): HTMLElement {
       e.tier !== 'normal' ? `<span class="tier ${e.tier}">${t(`journey.node.${e.tier}`)}</span>` : ''
     }<span class="foe-hp">${icon('heart')}${Math.round(e.hp * CONFIG.enemyHp)}</span></div></div>${movePattern(e)}`,
   });
-  // Curses a move adds: press to see the card.
-  for (const fx of el.querySelectorAll<HTMLElement>('[data-card]')) {
-    onPress(fx, () => {
-      sfx('tap');
-      openCardDetail({ uid: -1, id: fx.dataset.card!, up: false });
-    });
-  }
+  bindMoveDetails(el);
   return el;
 }
 

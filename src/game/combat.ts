@@ -613,6 +613,8 @@ export class Combat {
     for (const id of this.relics) RELICS[id]?.hooks?.onCardPlayed?.(this, card, def);
     for (const [side, id] of watching) if (this.has(side, id)) STATUSES[id].onCardPlayed?.(this, side, def);
 
+    // Inflation lasts until the card is paid for once.
+    delete card.tax;
     const kw = this.keywords(card);
     if (kw.includes('consume')) {
       if (!card.temp) this.consumed.push(card.uid);
@@ -936,7 +938,7 @@ export class Combat {
     }
   }
 
-  /** Inflation: `n` random cards (belt first, then the rest of the deck) cost 1 more mana for the rest of the fight. */
+  /** Inflation: `n` random cards (belt first, then the rest of the deck) cost 1 more mana until they're next played. */
   inflateCards(n: number): void {
     const fits = (c: CombatCard): boolean => CARDS[c.id].type !== 'curse' && this.cardCost(c) >= 0;
     const onBelt = this.rng.shuffle(this.belt.map((b) => b.card).filter(fits));

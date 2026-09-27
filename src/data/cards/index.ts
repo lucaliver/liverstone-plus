@@ -34,7 +34,7 @@ export function cardCostOf(card: CardInst & { tax?: number }): number {
   const def = CARDS[card.id];
   const cost = card.up && def.upCost !== undefined ? def.upCost : def.cost;
   if (cost < 0) return cost;
-  return Math.max(0, cost + (card.perks ?? []).reduce((d, p) => d + (PERKS[p]?.costDelta ?? 0), 0)) + (card.tax ?? 0);
+  return Math.max(def.minCost ?? 0, cost + (card.perks ?? []).reduce((d, p) => d + (PERKS[p]?.costDelta ?? 0), 0)) + (card.tax ?? 0);
 }
 
 /** Values of a card copy (upgrade and per-fight bonus included). */

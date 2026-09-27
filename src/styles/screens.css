@@ -264,6 +264,10 @@
   left: 50%;
   top: 40%;
   translate: -50% -50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  white-space: nowrap;
   font-family: var(--font-ui);
   font-size: 72px;
   line-height: 1;
@@ -271,6 +275,7 @@
   text-shadow: 4px 4px 0 var(--y), -3px 2px 0 var(--k);
   animation: heal-pop 1.6s steps(8) 0.35s both;
 }
+.heal-total small { font-size: 30px; text-transform: uppercase; }
 @keyframes heal-pop {
   0% { transform: scale(0.3); opacity: 0; }
   20% { transform: scale(1.25); opacity: 1; }

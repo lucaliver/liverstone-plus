@@ -254,7 +254,7 @@ export function canPerk(card: CardInst, perk: string): boolean {
   const p = PERKS[perk];
   if (card.perks?.includes(perk) || CARDS[card.id].rarity === 'special') return false;
   if (p.keywords?.every((k) => cardKeywordsOf(card).includes(k))) return false;
-  if (p.costDelta && cardCostOf(card) <= 0) return false;
+  if (p.costDelta && cardCostOf(card) <= (CARDS[card.id].minCost ?? 0)) return false;
   return true;
 }
 

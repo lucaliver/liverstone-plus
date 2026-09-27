@@ -254,6 +254,7 @@ export function createCardLayer(v: CombatView): CardLayer {
     const afford = combat.canAfford(card);
     toggle(ce.el, 'poor', !card.hex && (!afford || !playable || !!rule));
     toggle(ce.el, 'pending', pending);
+    toggle(ce.el, 'ruled', !!rule);
     const charging = !card.hex && playable && !rule && !afford;
     toggle(ce.el, 'charging', charging);
     if (charging) {

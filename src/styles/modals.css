@@ -293,6 +293,10 @@
 .fx-dmg .pico { color: var(--red); }
 .fx-block { color: var(--b); }
 .fx-block .pico { color: var(--b); }
+.fx[data-card],
+.fx[data-status],
+.fx[data-hex],
+.fx[data-rule] { cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
 .fx-bad { color: var(--p); }
 .fx-bad .pico { color: var(--p); }
 .fx-good { color: var(--green); }

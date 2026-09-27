@@ -24,8 +24,8 @@ export const CONFIG = {
   dotInterval: 1.5,
   weaveWindow: 2.5,
   weaveMax: 5,
-  /** At the start of a fight the belt has already run until the first card is this far in (belt widths). */
-  prewarm: 0.5,
+  /** At the start of a fight the belt has already run until the first card is this far in (belt widths): a couple of cards. */
+  prewarm: 0.25,
   /** Seconds of "Fight!" intro before the clock starts. */
   introTime: 1.2,
   /** Cap on cards per belt row. */

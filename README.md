@@ -163,7 +163,7 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
 | Compliance Officer | *Red Tape*, multe pesanti; sotto metà vita rallenta il tuo nastro per 20 s |
 | Night Janitor | *Lights Out*: **Blackout**, le carte diventano nere e mostrano solo illustrazione e costo; *Machine Down* |
 | **The Printer** (élite) | Fotocopiatrice maledetta: per 5 s **copia** il danno che riceve, poi te lo restituisce stampato |
-| **The Veteran** (élite) | *In My Day…*: **Inflation**, alcune carte costano 1 in più per tutto lo scontro; racconti lunghi che rallentano il nastro |
+| **The Veteran** (élite) | *In My Day…*: **Inflation**, alcune carte costano 1 in più finché non le giochi; racconti lunghi che rallentano il nastro |
 | **Micromanager** (boss) | Passiva: se stai 2 s senza giocare carte ti attacca subito; *Priority Task*, *Lockout*, *Quick Favour* |
 
 La difficoltà cresce scendendo di piano.

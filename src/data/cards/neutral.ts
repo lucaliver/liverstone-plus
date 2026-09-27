@@ -1,14 +1,15 @@
 import type { CardDef } from '../../game/types';
 
 export const neutralCards: CardDef[] = [
-  // Mana growth: add empty crystals (they fill up over time). Once per fight.
+  // Mana growth: add empty crystals (they fill up over time). Once per fight, never free.
   {
     id: 'manaShard',
     face: '{crystal:0}',
     cls: 'neutral',
     type: 'skill',
     rarity: 'common',
-    cost: 0,
+    cost: 1,
+    minCost: 1,
     vals: [1],
     upVals: [2],
     keywords: ['exhaust'],
@@ -21,7 +22,8 @@ export const neutralCards: CardDef[] = [
     cls: 'neutral',
     type: 'skill',
     rarity: 'common',
-    cost: 1,
+    cost: 2,
+    minCost: 1,
     vals: [2],
     upVals: [3],
     keywords: ['exhaust'],
@@ -471,7 +473,7 @@ export const curseCards: CardDef[] = [
     rarity: 'special',
     cost: 5,
     vals: [4],
-    keywords: ['exhaust', 'volatile'],
+    keywords: ['exhaust', 'volatile', 'fleeting'],
     art: 'brokenPrinter',
     play: () => {},
     onExpire: (c, v) => c.applyStatus('hero', 'stun', 1, v[0]),

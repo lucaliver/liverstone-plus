@@ -6,6 +6,7 @@ import './styles/index.css';
 
 import { setLocale, t } from './core/i18n';
 import { randomSeed } from './core/rng';
+import { clearAll } from './core/save';
 import { setSfxVolume, unlockAudio } from './audio/sfx';
 import { musicTrack, playMusic, setMusicVolume, suspendMusic } from './audio/music';
 import { Combat } from './game/combat';
@@ -62,6 +63,16 @@ function goTitle(): void {
         else goHeroSelect();
       },
       onCompendium: () => show(compendiumScreen(goTitle)),
+      onResetProgress: () =>
+        confirmModal(
+          t('menu.resetConfirm'),
+          t('common.confirm'),
+          () => {
+            clearAll();
+            location.reload();
+          },
+          t('common.cancel'),
+        ),
       onDebugFight: () => {
         const pick = (): void => void openDebugFight(debugFight);
         if (loadRun()) confirmModal(t('menu.abandonConfirm'), t('common.confirm'), pick, t('common.cancel'));

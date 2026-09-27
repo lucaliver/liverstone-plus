@@ -7,9 +7,9 @@ import type { MoveDef } from '../../game/types';
 import type { RunState } from '../../game/run';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
-import { type InfoOpts, openHowTo, openInfo, openSettings, speedSelector } from '../components/modals';
+import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedSelector } from '../components/modals';
 import { icon, INTENT_ICON } from '../art/icons';
-import { enemyTraits, moveEffect, movePattern } from '../components/moveText';
+import { bindMoveDetails, enemyTraits, moveEffect, movePattern } from '../components/moveText';
 import { h, onPress, onTapOrHold, setText } from '../dom';
 import { burst, haptic } from '../fx/fx';
 import { createCardLayer } from './cardLayer';
@@ -86,13 +86,13 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
 
   // ------------------------------------------------------------------ controls
   // ------------------------------------------------------------------ inspectables (hold to learn)
-  const info = (opts: InfoOpts): void => {
+  const info = (opts: InfoOpts): ModalHandle => {
     sfx('tap');
     v.inspect(true);
-    openInfo(opts, () => v.inspect(false));
+    return openInfo(opts, () => v.inspect(false));
   };
   const abilityInfo = (): void =>
-    info({
+    void info({
       icon: ABILITY_ICON[v.heroId],
       title: t(`hero.${v.heroId}.ability`),
       tag: t('hero.tag.active'),
@@ -101,7 +101,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       extra: [t('hero.abilityCost', { n: combat.abilityCost() })],
     });
   const passiveInfo = (): void =>
-    info({
+    void info({
       icon: PASSIVE_ICON[v.heroId],
       title: t(`hero.${v.heroId}.passiveName`),
       tag: t('hero.tag.passive'),
@@ -114,7 +114,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     const e = combat.enemy;
     const special = combat.nextSpecial();
     const upcoming = special && e.move === e.def.main ? special : null;
-    info({
+    const sheet = info({
       icon: INTENT_ICON[e.move.intent] ?? 'star',
       title: t(`move.${e.move.id}`),
       tag: t(`enemy.${e.def.id}.name`),
@@ -123,8 +123,16 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       extra: [movePattern(e.def, live, { now: e.move, next: upcoming })],
       ink: 'bad',
     });
+    bindMoveDetails(sheet.el);
   };
-  const manaInfo = (): void => info({ icon: 'crystal', title: t('common.mana'), desc: t('howto.mana.d') });
+  const manaInfo = (): void => void info({ icon: 'crystal', title: t('common.mana'), desc: t('howto.mana.d') });
+  /** Every card in this fight that isn't gone for good: draw pile, belt, sleeve and discard pile (curses included). */
+  const deckInfo = (): void => {
+    sfx('tap');
+    v.inspect(true);
+    const inPlay = [...combat.draw, ...combat.belt.map((b) => b.card), ...combat.sleeve.filter((c) => c !== null), ...combat.discard];
+    openDeck(inPlay, { title: t('combat.deck'), onClose: () => v.inspect(false) });
+  };
 
   onTapOrHold(
     r.ability,
@@ -138,7 +146,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     },
     abilityInfo,
   );
-  onPress(r.portrait, passiveInfo);
+  onPress(r.portrait, deckInfo);
   onPress(r.intent, moveInfo);
   onPress(r.manaRow, manaInfo);
 

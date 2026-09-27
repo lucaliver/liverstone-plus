@@ -1,9 +1,12 @@
-import { t } from '../../core/i18n';
+import { type TKey, t } from '../../core/i18n';
 import { CONFIG } from '../../data/config';
 import { HEXES } from '../../data/hexes';
 import { STATUSES } from '../../data/statuses';
+import { sfx } from '../../audio/sfx';
 import type { EnemyDef, MoveDef } from '../../game/types';
 import { icon, INTENT_ICON } from '../art/icons';
+import { onPress } from '../dom';
+import { openCardDetail, openInfo } from './modals';
 
 /**
  * Colour-coded description of an enemy move (base values unless live `values` are given): damage in red,
@@ -36,7 +39,7 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
     // Tone from the player's point of view: an enemy buff or a debuff on the hero is bad news.
     const bad = st.target === 'hero' ? !STATUSES[st.id].good : STATUSES[st.id].good;
     parts.push(
-      `<span class="fx ${bad ? 'fx-bad' : 'fx-good'}">${icon(STATUSES[st.id].icon)}${t(`status.${st.id}`)} <b>${st.t ? `${st.t}s` : `+${st.v ?? 1}`}</b></span>`,
+      `<span class="fx ${bad ? 'fx-bad' : 'fx-good'}" data-status="${st.id}" data-v="${st.v ?? 1}">${icon(STATUSES[st.id].icon)}${t(`status.${st.id}`)} <b>${st.t ? `${st.t}s` : `+${st.v ?? 1}`}</b></span>`,
     );
   }
   // Each curse names its card, so the handbook can open it on a press.
@@ -45,13 +48,13 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
     const n = cu.n > 1 ? ` ×${cu.n}` : '';
     parts.push(`<span class="fx fx-curse" data-card="${cu.id}">${icon('skull')}${verbose ? t('move.fx.adds', { card }) : card}<b>${n}</b></span>`);
   }
-  if (m.inflate) parts.push(`<span class="fx fx-bad">${icon('inflation')}${t('move.fx.inflate', { n: m.inflate })}</span>`);
-  if (m.absorb) parts.push(`<span class="fx fx-block">${icon('scanner')}${t('move.fx.absorb')}</span>`);
-  if (m.release) parts.push(`<span class="fx fx-dmg">${icon('copy')}${t('move.fx.release')}</span>`);
+  if (m.inflate) parts.push(`<span class="fx fx-bad" data-rule="inflation">${icon('inflation')}${t('move.fx.inflate', { n: m.inflate })}</span>`);
+  if (m.absorb) parts.push(`<span class="fx fx-block" data-rule="copy">${icon('scanner')}${t('move.fx.absorb')}</span>`);
+  if (m.release) parts.push(`<span class="fx fx-dmg" data-rule="copy">${icon('copy')}${t('move.fx.release')}</span>`);
   if (m.intent === 'idle') parts.push(`<span class="fx">${t('move.fx.idle')}</span>`);
   if (m.hex) {
     const n = t('move.fx.hexShare', { n: Math.round(m.hex.share * 100) });
-    parts.push(`<span class="fx fx-curse">${icon(HEXES[m.hex.id].icon)}${t(`hex.${m.hex.id}`)} <b>${n}</b></span>`);
+    parts.push(`<span class="fx fx-curse" data-hex="${m.hex.id}">${icon(HEXES[m.hex.id].icon)}${t(`hex.${m.hex.id}`)} <b>${n}</b></span>`);
   }
   if (m.steal) parts.push(`<span class="fx fx-steal">${icon('snatch')}${t('compendium.steal')}</span>`);
   return parts.join(' ');
@@ -80,4 +83,31 @@ export function enemyTraits(e: EnemyDef): { icon: string; name: string; desc: st
     .map((s) => ({ icon: STATUSES[s.id].icon, name: t(`status.${s.id}`), desc: t(`status.${s.id}.d`, { v: s.v ?? 1 }) }));
   if (e.onHalf) traits.push({ icon: 'rage', name: '', desc: t(`enemy.${e.id}.half`) });
   return traits;
+}
+
+/** Rules a move can bring that aren't statuses or cards, explained on a press. */
+const RULES: Record<string, { icon: string; title: TKey; desc: TKey }> = {
+  inflation: { icon: 'inflation', title: 'rule.inflation', desc: 'rule.inflation.d' },
+  copy: { icon: 'scanner', title: 'rule.copy', desc: 'rule.copy.d' },
+};
+
+/** Inside a move description (threat info, handbook): press a curse, status, hex or rule to learn what it does. */
+export function bindMoveDetails(root: HTMLElement): void {
+  for (const el of root.querySelectorAll<HTMLElement>('[data-card], [data-status], [data-hex], [data-rule]')) {
+    onPress(el, () => {
+      sfx('tap');
+      const { card, status, v, hex, rule } = el.dataset;
+      if (card) openCardDetail({ uid: -1, id: card, up: false });
+      else if (status) {
+        const def = STATUSES[status];
+        openInfo({
+          icon: def.icon,
+          title: t(`status.${status}`),
+          desc: t(`status.${status}.d`, { v: Number(v ?? 1) }),
+          ink: def.good ? 'good' : 'bad',
+        });
+      } else if (hex) openInfo({ icon: HEXES[hex].icon, title: t(`hex.${hex}`), desc: t(`hex.${hex}.d`, { n: HEXES[hex].taps }), ink: 'bad' });
+      else if (rule && RULES[rule]) openInfo({ icon: RULES[rule].icon, title: t(RULES[rule].title), desc: t(RULES[rule].desc), ink: 'bad' });
+    });
+  }
 }

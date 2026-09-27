@@ -49,7 +49,7 @@ export interface CombatCard extends CardInst {
   hex?: CardHex;
   /** True once the card has ridden the whole belt this fight (a Pending card becomes playable). */
   passed?: boolean;
-  /** Extra mana cost for this fight (Inflation). */
+  /** Extra mana cost until the card is next played (Inflation). */
   tax?: number;
 }
 
@@ -69,6 +69,8 @@ export interface CardDef {
   /** -1 = X cost (spends all mana). */
   cost: number;
   upCost?: number;
+  /** Discounts (perks) never take the cost below this (mana crystals must always cost something). */
+  minCost?: number;
   vals: number[];
   upVals?: number[];
   /** Indexes of `vals` that are damage (live previews). Derived from the `{dmg:N}` glyphs of `face` unless set. */
@@ -146,7 +148,7 @@ export interface MoveDef {
   drainMana?: number;
   /** Hexes cards (see `HEXES`): a `share` (0–1) of the belt, and the same share of the rest of the deck. */
   hex?: { id: string; share: number };
-  /** Inflation: this many random cards (belt first, then the rest of the deck) cost 1 more mana for the fight. */
+  /** Inflation: this many random cards (belt first, then the rest of the deck) cost 1 more mana until next played. */
   inflate?: number;
   /** While this move charges, the damage the enemy takes from cards is stored instead of lost… */
   absorb?: boolean;

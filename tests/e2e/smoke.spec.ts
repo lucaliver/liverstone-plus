@@ -291,3 +291,32 @@ test('after the Act 1 boss the map turns to Act 2', async ({ page }) => {
   expect(await page.evaluate('window.__combat.enemy.def.act')).toBe(2);
   expect(problems).toEqual([]);
 });
+
+test('tapping the hero portrait in a fight shows the deck in play and pauses', async ({ page }) => {
+  await freshGame(page);
+  await startFight(page);
+  await page.locator('.hero-portrait').click();
+  // The 9-card deck plus the hero special waiting in the sleeve.
+  await expect(page.locator('.modal .deck-grid .card')).toHaveCount(10);
+  const clock = () => page.evaluate('window.__combat.time');
+  const before = await clock();
+  await page.waitForTimeout(300);
+  expect(await clock()).toBe(before);
+});
+
+test('reset progress wipes saves after a confirmation', async ({ page }) => {
+  await freshGame(page);
+  page.on('dialog', (d) => d.accept());
+  await page.getByRole('button', { name: /reset progress/i }).click();
+  await page.getByRole('button', { name: 'Confirm' }).click();
+  await expect(page.locator('.splash')).toBeVisible();
+  expect(await page.evaluate("Object.keys(localStorage).filter((k) => k.startsWith('cardstone+:')).length")).toBe(0);
+});
+
+test('handbook: pressing a status in a move pattern explains it', async ({ page }) => {
+  await freshGame(page);
+  await page.getByRole('button', { name: /handbook/i }).click();
+  await page.getByRole('tab', { name: /personnel/i }).click();
+  await page.locator('.foe [data-status]').first().click();
+  await expect(page.locator('.modal .info')).toBeVisible();
+});

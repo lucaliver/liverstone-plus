@@ -28,12 +28,14 @@
   width: 100%;
   min-height: 0;
   display: grid;
+  grid-template-rows: minmax(0, 1fr);
   place-items: center;
 }
+/* the boss shrinks with the room left above the menu, so he never covers it */
 .title-hero > .riso {
   position: relative;
   z-index: 1;
-  width: min(60vw, 272px);
+  height: min(60vw, 272px, 100%);
   aspect-ratio: 1;
   animation: bob 1.2s steps(2) infinite;
 }
