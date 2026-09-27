@@ -38,17 +38,15 @@
   pointer-events: none;
 }
 
-/* a screen is printed in: the pink and blue passes land out of register, then step into place */
+/* a screen is printed in: the pink and blue passes land slightly out of register, then step into place */
 @keyframes screen-in {
   0% { opacity: 0; transform: translateY(16px); }
-  25% { opacity: 0.6; filter: drop-shadow(12px 0 0 var(--p)) drop-shadow(-10px 6px 0 var(--b)); }
-  50% { filter: drop-shadow(6px 2px 0 var(--p)) drop-shadow(-5px 3px 0 var(--b)); }
-  75% { filter: drop-shadow(2px 0 0 var(--p)) drop-shadow(-2px 1px 0 var(--b)); }
+  33% { filter: drop-shadow(5px 0 0 var(--p)) drop-shadow(-4px 2px 0 var(--b)); }
+  66% { filter: drop-shadow(2px 0 0 var(--p)) drop-shadow(-2px 1px 0 var(--b)); }
 }
-/* and it leaves the same way: the inks slip apart as it fades */
+/* and it leaves with the pink pass slipping as it fades */
 @keyframes screen-out {
-  50% { filter: drop-shadow(6px 0 0 var(--p)) drop-shadow(-5px 3px 0 var(--b)); }
-  100% { opacity: 0; transform: translateY(-12px); filter: drop-shadow(12px 0 0 var(--p)) drop-shadow(-10px 6px 0 var(--b)); }
+  to { opacity: 0; transform: translateY(-12px); filter: drop-shadow(4px 0 0 var(--p)); }
 }
 
 .scroll {
