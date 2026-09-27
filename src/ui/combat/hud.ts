@@ -118,7 +118,7 @@ export function createHud(v: CombatView): { render(): void } {
       if (isMain && special) {
         r.intentNext.dataset.intent = special.intent;
         r.intentNext.innerHTML = `${icon(INTENT_ICON[special.intent] ?? 'star')}<b>${e.mainsLeft + 1}</b>`;
-        r.intentNext.title = t('combat.specialIn', { move: t(`move.${special.id}`), n: e.mainsLeft + 1 });
+        r.intentNext.title = `${t('combat.afterAttacks', { n: e.mainsLeft + 1 })} ${t(`move.${special.id}`)}`;
       }
     }
     const p = Math.min(1, e.timer / m.windup);

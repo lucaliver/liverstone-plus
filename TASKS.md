@@ -51,5 +51,5 @@ stepped animations and one icon set.
 - [x] R4. Review: are card texts and symbols mapped smartly (centralized, minimal, no duplication, few touch points to add a card)?
 - [x] R5. Conditional effects show their condition in brackets (e.g. (block) → damage)
 - [x] R6. Card upgrade (campfire): select, then confirm
-- [ ] R7. Enemy move detail: "After Y attacks: X — …" and coloured values (damage in red, …)
+- [x] R7. Enemy move detail: "After Y attacks: X — …" and coloured values (damage in red, …)
 - [ ] R8. Card cost digits (e.g. "4") are hard to read: fix the font

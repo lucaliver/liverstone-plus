@@ -118,7 +118,9 @@ const en = {
   'combat.drawPile': 'Draw pile',
   'combat.discardPile': 'Discard pile',
   'combat.speed': 'Speed',
-  'combat.specialIn': '{move} in {n} {n|attack|attacks}',
+  'combat.afterAttacks': 'After {n} {n|attack|attacks}:',
+  'move.fx.damage': 'damage',
+  'move.fx.adds': 'adds {card}',
 
   'intent.attack': 'Attack',
   'intent.defend': 'Defend',

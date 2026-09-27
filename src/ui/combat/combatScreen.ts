@@ -3,6 +3,7 @@ import { endTemporaryMusic, playTemporaryMusic } from '../../audio/music';
 import { sfx } from '../../audio/sfx';
 import { CONFIG, GAME_SPEEDS } from '../../data/config';
 import type { Combat } from '../../game/combat';
+import type { MoveDef } from '../../game/types';
 import type { RunState } from '../../game/run';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
@@ -100,6 +101,8 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       tag: t('hero.tag.passive'),
       desc: t(`hero.${v.heroId}.passiveShort`),
     });
+  // Live values: floor scaling, enemy Strength, Weak and Vulnerable, exactly as the threat bar shows them.
+  const live = { dmg: (m: MoveDef) => combat.intentDamage(m), block: (m: MoveDef) => Math.round((m.block ?? 0) * combat.enemy.dmgScale) };
   const moveInfo = (): void => {
     const e = combat.enemy;
     const special = combat.nextSpecial();
@@ -108,10 +111,12 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       title: t(`move.${e.move.id}`),
       tag: t(`enemy.${e.def.id}.name`),
       tagCls: 'bad',
-      desc: moveEffect(e.move) || t(`intent.${e.move.intent}`),
+      desc: moveEffect(e.move, true, live) || t(`intent.${e.move.intent}`),
       extra:
         special && e.move === e.def.main
-          ? [t('combat.specialIn', { move: t(`move.${special.id}`), n: e.mainsLeft + 1 }) + ` — ${moveEffect(special)}`]
+          ? [
+              `<b class="after">${t('combat.afterAttacks', { n: e.mainsLeft + 1 })}</b> <b class="next-move">${t(`move.${special.id}`)}</b> — ${moveEffect(special, true, live)}`,
+            ]
           : [],
       ink: 'bad',
     });

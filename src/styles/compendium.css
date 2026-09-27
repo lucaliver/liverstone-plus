@@ -120,11 +120,13 @@
 .foe-moves .me {
   justify-self: end;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
   gap: 4px;
   text-align: right;
 }
-.foe-moves .me .pico { font-size: 18px; color: var(--k); --ink2: var(--y); }
+.foe-moves .me .pico { font-size: 18px; }
 .foe-moves .mt {
   min-width: 42px;
   text-align: right;

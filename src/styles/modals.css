@@ -234,3 +234,21 @@
 .detail-meta .rar.legendary,
 .detail-meta .rar.unique { background: var(--y); }
 .detail-meta .rar.special { color: var(--y); background: var(--k); }
+
+/* colour-coded move effects (info sheet and compendium) */
+.fx { display: inline-flex; align-items: center; gap: 3px; font-weight: 700; white-space: nowrap; }
+.fx .pico { font-size: 1.05em; --ink2: var(--y); }
+.fx-dmg { color: var(--red); }
+.fx-dmg .pico { color: var(--red); }
+.fx-block { color: var(--b); }
+.fx-block .pico { color: var(--b); }
+.fx-bad { color: var(--p); }
+.fx-bad .pico { color: var(--p); }
+.fx-good { color: var(--green); }
+.fx-good .pico { color: var(--green); }
+.fx-curse { color: var(--purple); }
+.fx-curse .pico { color: var(--purple); }
+.fx-steal { color: #a07000; }
+.fx-steal .pico { color: #a07000; }
+.info-extra .after { color: var(--k); }
+.info-extra .next-move { color: var(--k); text-transform: uppercase; }
