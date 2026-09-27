@@ -1,4 +1,4 @@
-# Liverstone — Design Document (v1.0)
+# Liverstone — Design Document (v1.1)
 
 A real-time, conveyor-belt deckbuilding roguelike for mobile browsers (portrait), inspired by
 *Cardstone* (Running Pillow, 2015). Official look: **risograph pop inks + pixel art, a bit dark/scary**.
@@ -7,35 +7,46 @@ A real-time, conveyor-belt deckbuilding roguelike for mobile browsers (portrait)
 
 A run is a sequence of floors (v1: one act of 10 linear floors). Each fight is real time:
 
+- **Start gate**: a fight waits for the Start button. Meanwhile the player can hold anything (cards, statuses,
+  the ability, the portrait for the passive, the threat bar, mana) to read what it does.
 - **The belt** carries cards right → left. Tap a card to play it, drag it up onto the enemy to play it,
-  drag it down into a **sleeve** slot (a "hand") to keep it. A card that reaches the left edge is lost
-  (it goes to the discard pile) and may trigger its *volatile* effect.
+  drag it down into a **sleeve** slot to keep it. A card that reaches the left edge is lost
+  (it goes to the discard pile) and may trigger its *volatile* effect (Hex, Bomb, Leech, Toxin).
 - **Draw cadence is fixed**: one card every `spacing × beltTime` seconds, whatever the player does.
 - **Mana** refills over time up to the cap. Heroes start with a low cap (2–3) and grow it during
   the fight with **Innate crystal cards** (Mana Shard +1, Mana Geode +2, empty crystals, once per fight).
-- **The enemy** telegraphs its next move in the **threat bar** above the belt: icon, value, name,
-  fill and seconds left. The hero HP bar previews unblocked damage; the screen edges flash just before it.
+- **Enemies** have a frequent **main attack** and, every N main attacks, a **special move** (slow heavy hits,
+  curses, theft); specials rotate. The **threat bar** above the belt shows the move, value, fill, seconds left
+  and a countdown chip for the next special. The hero HP bar previews unblocked damage; the screen edges
+  flash just before it.
 - **Block** absorbs damage and decays over time, so it is played right before the hit.
-- **Hero special**: a once-per-run card waiting in the left hand at the start of every fight.
+- **Hero ability**: an expensive active move paid with mana (4–5), so it comes once the crystals have grown.
+- **Hero special**: a once-per-run card waiting in the sleeve at the start of every fight.
 
-After a fight: pick 1 of 3 cards (Add / Skip; **Swap** only after elites). Campfires: heal 35% or upgrade a card.
+After a fight the **reward is always a swap**: the whole deck on top, 4 offered cards below; pick one of each
+and Swap, or Skip. The deck stays at 10 cards (Cardstone style). Campfires: heal 35% or upgrade a card.
+Pause offers Resume, How to play, Settings, **Main menu** (keeps the run; the fight restarts) and Abandon run.
 
 ## 2. Heroes
 
 | | Warrior | Mage | Necromancer |
 | --- | --- | --- | --- |
-| HP / base mana / regen | 80 / 3 / 1.4 s | 70 / 3 / 1.0 s | 62 / 2 / 1.25 s |
-| Passive | Iron Hide: Block decays 2× slower | Spellweave: chained spells +1 dmg each (max 5) | Virulence: Poison +1 per tick |
-| Resource → Ability | Rage (hits taken, attacks) → Berserk: attacks ×2 for 6 s | Arcana (mana spent) → Time Warp: freeze enemy 4 s, slow belt | Decay (Poison applied) → Pandemic: double enemy Poison |
+| HP / base mana / regen | 72 / 3 / 1.5 s | 74 / 3 / 1.0 s | 62 / 2 / 1.25 s |
+| Passive | Iron Hide: Block decays 2× slower | Spellweave: chained spells stack +1 dmg (max 5) | Virulence: Poison +1 per tick |
+| Ability (mana) | Berserk (5): attacks ×2 for 6 s | Time Warp (5): freeze enemy 4 s, slow belt | Pandemic (4): double enemy Poison |
 | Special (once per run) | Last Stand: 20 Block, 3 Strength | Meteor: 25 dmg, 5 Burn | Death's Door: heal 15, 12 Poison |
+| Starter deck | 5 Strike, 4 Defend, Mana Geode | 5 Arcane Bolt, 3 Ward, Shard, Geode | 3 Bone Spike, 3 Grave Ward, 2 Toxic Dart, Shard, Geode |
 
-Card pool: 18–19 cards per hero + 10 neutral + 5 curses (Slime, Hex, Bomb, Leech, Toxin).
+Starter decks hold only basic cards; everything else comes from rewards. Each hero has archetype synergy cards
+(Warrior: Counterstrike, Bulwark, Juggernaut; Mage: Flurry, Arcane Echo, Shatter; Necromancer: Contagion,
+Siphon Rot). Card pool: ~21 per hero + 10 neutral + 5 curses.
 
 ## 3. Enemies (Act 1 — The Forgotten Crypt)
 
-Crypt Rat, Skeleton, Ooze (slime/toxin curses), Cultist (strength, leech), Goblin Thief (steals cards,
-lights bombs), Bone Knight (elite, enrages at half HP), The Lich (boss: hexes, bombs, a 7 s DOOM charge,
-50% faster below half HP). Global knobs: `CONFIG.enemyHp` / `CONFIG.enemyDmg`.
+Crypt Rat, Skeleton (Bone Crush), Ooze (slime/toxin curses), Cultist (Dark Ritual), Goblin Thief (steals cards,
+lights bombs), Bone Knight (elite: Rend, Shield Wall, enrages at half HP), The Lich (boss: hexes, bombs, a 10 s
+DOOM charge, 50% faster below half HP). Each enemy is `main + specials + every` in `data/enemies.ts`.
+Global knobs: `CONFIG.enemyHp` / `CONFIG.enemyDmg`.
 
 ## 4. Meta
 
@@ -52,7 +63,7 @@ motion, vibration. Runs are saved at every floor and can be resumed.
   swatches with checkerboard halftones, outlined, split into ink layers printed on a paper base.
 - Motion is stepped (`steps()`), hits flash inverted, particles are square ink pixels.
 - Type: Silkscreen (display), Jersey 10 (UI and numbers), Space Grotesk (long text).
-- Procedural chiptune soundtrack (menu, combat, boss, rest) and synthesised SFX (WebAudio).
+- Procedural chiptune soundtrack (menu, combat, elite, boss, rest, pause) and synthesised SFX (WebAudio).
 
 ## 6. Architecture
 

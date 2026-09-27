@@ -51,6 +51,9 @@ export function cardCategory(id: string): CardCategory {
   return 'utility';
 }
 
+/** Long names get a smaller font so they fit the title band instead of being cut. */
+const nameFit = (name: string): string => (name.length > 14 ? 'xlong' : name.length > 10 ? 'long' : '');
+
 export function cardName(card: CardInst): string {
   return t(`card.${card.id}.name`);
 }
@@ -155,7 +158,7 @@ export function cardView(card: CardInst & { bonus?: number }, opts: CardViewOpts
     .join('');
   const lines = def.face.split('|').length;
   el.innerHTML = `
-    <div class="c-top"><div class="c-cost">${cardCostLabel(card)}</div><div class="c-name">${cardName(card)}</div></div>
+    <div class="c-top"><div class="c-cost">${cardCostLabel(card)}</div><div class="c-name ${nameFit(cardName(card))}">${cardName(card)}</div></div>
     <div class="c-art">${icon(def.art)}</div>
     <div class="c-face ${lines > 1 ? 'two' : ''}">${cardFace(card, opts.combat)}</div>
     ${tags ? `<div class="c-tags">${tags}</div>` : ''}

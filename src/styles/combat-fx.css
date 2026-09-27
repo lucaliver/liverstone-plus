@@ -120,7 +120,8 @@
 .floater.big { font-size: 56px; }
 .floater.heal { color: var(--green); text-shadow: 3px 3px 0 var(--y); }
 .floater.block { color: var(--b); text-shadow: 3px 3px 0 var(--y); font-size: 28px; }
-.floater.blocked { color: var(--b); font-size: 22px; text-shadow: 2px 2px 0 var(--paper); }
+.floater.blocked { display: flex; align-items: center; gap: 2px; color: var(--b); font-family: var(--font-ui); font-size: 26px; text-shadow: 2px 2px 0 var(--paper); }
+.floater.blocked .pico { font-size: 22px; color: var(--b); --ink2: var(--paper); }
 .floater.status,
 .floater.text {
   padding: 3px 8px;

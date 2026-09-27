@@ -34,4 +34,11 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done · `[-]` deferred (with re
 
 ## MISC
 
-- [ ] M1. Consistency pass on style, symbols and wording across the whole game
+- [x] M1. Consistency pass on style, symbols and wording across the whole game
+
+### M1 notes
+Fixed: emoji shield in the blocked-damage text → pixel icon; Unicode ⇅ on the reward screen → pixel swap icon;
+"||" on a frozen enemy's timer → pause icon; the compendium "?" badge covered card names → moved onto the art;
+long card names were cut off → auto-smaller font; tutorial wording "hand"/"sleeve" unified; reward layout
+centred on tall screens. Checked: pixel fonts everywhere, the ink palette, paper panels with hard shadows,
+stepped animations and one icon set.

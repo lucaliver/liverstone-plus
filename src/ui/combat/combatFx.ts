@@ -3,6 +3,7 @@ import { type SoundId, sfx } from '../../audio/sfx';
 import { STATUSES } from '../../data/statuses';
 import { discover } from '../../game/meta';
 import type { CombatEvent } from '../../game/types';
+import { icon } from '../art/icons';
 import { centerOf, h } from '../dom';
 import { burst, floatText, haptic, shake } from '../fx/fx';
 import type { CardLayer } from './cardLayer';
@@ -36,7 +37,7 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
           setTimeout(() => burst(e.kind, p.x, p.y, e.source === 'dot' ? 8 : big ? 30 : 18), delay);
         }
         if (e.blocked > 0) {
-          floatText(p.x + 30, p.y - 20, `🛡${e.blocked}`, 'blocked', delay);
+          floatText(p.x + 30, p.y - 20, `${icon('shield')}${e.blocked}`, 'blocked', delay, true);
           sfx('blocked');
         }
         if (e.target === 'enemy') {

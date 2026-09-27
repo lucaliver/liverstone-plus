@@ -128,10 +128,11 @@ function loop(now: number): void {
 }
 
 /** Floating combat text at a viewport point. */
-export function floatText(x: number, y: number, text: string, cls: string, delay = 0): void {
+export function floatText(x: number, y: number, text: string, cls: string, delay = 0, html = false): void {
   const el = document.createElement('div');
   el.className = `floater ${cls}`;
-  el.textContent = text;
+  if (html) el.innerHTML = text;
+  else el.textContent = text;
   el.style.left = `${x + (Math.random() * 30 - 15)}px`;
   el.style.top = `${y}px`;
   if (delay) el.style.animationDelay = `${delay}ms`;

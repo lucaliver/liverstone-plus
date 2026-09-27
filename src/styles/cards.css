@@ -59,6 +59,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.c-name.long { font-size: 10.5cqw; }
+.c-name.xlong { font-size: 9cqw; letter-spacing: -0.02em; }
 .card.is-up .c-name::after {
   content: '+';
   margin-left: 1cqw;

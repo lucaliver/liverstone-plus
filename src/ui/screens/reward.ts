@@ -3,6 +3,7 @@ import { sfx } from '../../audio/sfx';
 import { type RunState, swapCard } from '../../game/run';
 import type { CardDef, CardInst } from '../../game/types';
 import type { Screen } from '../app';
+import { icon } from '../art/icons';
 import { cardView } from '../components/cardView';
 import { openCardDetail, sortDeck } from '../components/modals';
 import { h } from '../dom';
@@ -86,11 +87,15 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
     { class: 'screen reward' },
     runHud(run),
     h('h1', { class: 'h1 reward-title' }, t('reward.victory')),
-    h('div', { class: 'swap-label' }, t('reward.yourDeck')),
-    h('div', { class: 'swap-deck-wrap scroll' }, deckGrid),
-    h('div', { class: 'swap-divider', html: '<span>⇅</span>' }),
-    h('div', { class: 'swap-label' }, t('reward.offer')),
-    offerRow,
+    h(
+      'div',
+      { class: 'swap-area' },
+      h('div', { class: 'swap-label' }, t('reward.yourDeck')),
+      h('div', { class: 'swap-deck-wrap scroll' }, deckGrid),
+      h('div', { class: 'swap-divider', html: icon('swap') }),
+      h('div', { class: 'swap-label' }, t('reward.offer')),
+      offerRow,
+    ),
     hint,
     h(
       'div',

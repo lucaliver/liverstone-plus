@@ -54,7 +54,7 @@ const en = {
   'howto.block.t': 'Block',
   'howto.block.d': 'Block soaks damage but fades. Play it right before a hit.',
   'howto.sleeve.t': 'The sleeve',
-  'howto.sleeve.d': 'Drag a card down into a hand to keep it. Your special card waits there: once per run.',
+  'howto.sleeve.d': 'Drag a card down into your sleeve to keep it for later. Your special card waits there: once per run.',
   'howto.ability.t': 'Hero ability',
   'howto.ability.d': 'Your big button: it costs a lot of mana, so grow your crystals first.',
   'howto.gotIt': "Got it, let's fight!",

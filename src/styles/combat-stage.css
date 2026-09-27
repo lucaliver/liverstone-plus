@@ -423,3 +423,4 @@
 .status .pico { font-size: 20px; }
 .status.good .pico { color: var(--b); --ink2: var(--y); }
 .status.bad .pico { color: var(--p); --ink2: var(--y); }
+.threat .t-time .pico { font-size: 20px; --ink2: var(--b); }

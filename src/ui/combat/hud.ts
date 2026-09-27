@@ -125,7 +125,8 @@ export function createHud(v: CombatView): { render(): void } {
     r.timer.style.transform = `scaleX(${p.toFixed(3)})`;
     const rate = combat.enemyTimeRate();
     const left = rate > 0 ? Math.max(0, (m.windup - e.timer) / rate) : Infinity;
-    setText(r.intentTime, rate > 0 ? `${left.toFixed(1)}s` : '||');
+    // Stunned or frozen: the timer is on hold.
+    setHtml(r.intentTime, rate > 0 ? `${left.toFixed(1)}s` : icon('pause'));
     const hostile = !v.state.ended && (m.intent === 'attack' || m.intent === 'charge');
     toggle(r.intent, 'urgent', hostile && left < 1.1);
 

@@ -20,12 +20,13 @@
 .tabs button[aria-selected='true'] { background: var(--y); }
 .comp-grid .card { cursor: pointer; }
 .comp-grid .card.undiscovered::after {
+  /* sits on the art corner, clear of the card name */
   content: '?';
   position: absolute;
-  right: -8px;
-  top: -10px;
-  width: 26px;
-  height: 26px;
+  right: 3cqw;
+  top: 28cqw;
+  width: 22px;
+  height: 22px;
   display: grid;
   place-items: center;
   font-family: var(--font-display);

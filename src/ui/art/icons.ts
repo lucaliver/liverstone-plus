@@ -201,6 +201,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   flameBc: { el: 'fire', svg: `<path d="M26 28c5 8 12 12 11 20a10 10 0 0 1-20-1c1-7 5-11 9-19z"/>` },
   flameC: { el: 'fire', svg: `<path d="M42 4c2 14 10 24 8 40a18 18 0 0 1-36-2c0-12 10-18 14-30 2 6 4 8 6 8 2-4 4-8 8-16z"/>` },
   flameCc: { el: 'fire', svg: `<path d="M36 28c3 8 9 12 8 20a10 10 0 0 1-20 0c0-8 7-12 12-20z"/>` },
+  swap: {
+    el: 'steel',
+    svg: `<path d="M20 4l14 16h-9v26h-10V20H6zM44 60L30 44h9V18h10v26h9z"/>`,
+  },
   // Innate: a starting flag ("this card comes first").
   flag: {
     el: 'holy',
