@@ -32,8 +32,12 @@ export function titleScreen(cb: TitleCallbacks): Screen {
   // Browsers only allow audio after a first tap: say so, and hide the hint as soon as sound is on.
   const soundHint = settings.music || settings.sound ? h('div', { class: 'sound-hint', html: `${icon('horn')}${t('menu.tapForSound')}` }) : null;
   if (soundHint) {
-    if (audioUnlocked()) soundHint.remove();
-    else onAudioUnlock(() => soundHint.remove());
+    // Hide it in place: removing it would shift the menu under the finger mid-tap.
+    const hide = (): void => {
+      soundHint.style.visibility = 'hidden';
+    };
+    if (audioUnlocked()) hide();
+    else onAudioUnlock(hide);
   }
 
   const el = h(
