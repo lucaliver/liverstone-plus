@@ -124,7 +124,8 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
 
 `CardDef` in `src/data/cards/<class>.ts` plus `card.<id>.name` / `card.<id>.desc` in `en.ts`. That's all
 (`cards/index.ts` collects every class array into `CARDS`; a new class file must be added there). Curses live in
-`neutral.ts` (`curseCards`, rarity `special`). `pack` marks cards locked behind an unlock pack.
+`neutral.ts` (`curseCards`, rarity `special`). `pack` marks cards locked behind an unlock pack: they show in the
+handbook but are never offered as rewards (no pack can be unlocked yet; the Workplace cards wait there).
 
 - `face` grammar: `{kind:i}` icon + value i · `{kind}` icon · `{?kind}` condition shown as (icon) · `{i}` bare
   value · `|` new line · other text as is. Kinds live in `GLYPHS` (`ui/components/cardView.ts`).

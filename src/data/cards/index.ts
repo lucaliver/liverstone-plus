@@ -14,9 +14,9 @@ for (const c of all) c.dmg ??= [...c.face.matchAll(/\{dmg:(\d)\}/g)].map((m) => 
 export const CARDS: Record<string, CardDef> = Object.fromEntries(all.map((c) => [c.id, c]));
 export const CARD_LIST: readonly CardDef[] = all;
 
-/** Cards that can appear as rewards for a class. */
+/** Cards that can appear as rewards for a class (cards from a pack stay out: no pack can be unlocked yet). */
 export function rewardPool(cls: CardClass, rarity: Rarity): CardDef[] {
-  return all.filter((c) => (c.cls === cls || c.cls === 'neutral') && c.rarity === rarity);
+  return all.filter((c) => (c.cls === cls || c.cls === 'neutral') && c.rarity === rarity && !c.pack);
 }
 
 // Card rules shared by the engine and the UI, so what a card shows is what it does.
