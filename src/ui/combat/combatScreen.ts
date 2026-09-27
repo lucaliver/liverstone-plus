@@ -53,7 +53,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       r.enemyArt.classList.add('dead');
       const p = v.enemyPoint();
       burst('gold', p.x, p.y, 40, 1.5);
-      v.banner(t('reward.victory'));
+      v.banner(t('reward.cleared'));
       sfx('victory');
     } else {
       v.banner(t('end.defeat'), true);

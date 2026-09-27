@@ -9,6 +9,15 @@ import { openCardDetail, sortDeck } from '../components/modals';
 import { h, onTapOrHold } from '../dom';
 import { runHud } from './journey';
 
+/** Title text as per-letter spans (grouped by word so lines break between words) for the drop-in animation. */
+export function dropLetters(text: string): string {
+  let i = 0;
+  return text
+    .split(' ')
+    .map((word) => `<span class="word">${[...word].map((ch) => `<span style="--i:${i++}">${ch}</span>`).join('')}</span>`)
+    .join(' ');
+}
+
 /** Tap selects; a long press opens the card detail instead (and doesn't select). */
 function selectable(el: HTMLElement, card: CardInst, onSelect: () => void): void {
   onTapOrHold(
@@ -78,9 +87,9 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
     runHud(run),
     h('h1', {
       class: 'h1 reward-title',
-      'aria-label': t('reward.victory'),
-      // Letters drop in one by one, then the print keeps slipping out of register.
-      html: [...t('reward.victory')].map((ch, i) => `<span style="--i:${i}">${ch === ' ' ? '&nbsp;' : ch}</span>`).join(''),
+      'aria-label': t('reward.cleared'),
+      // Letters drop in one by one (words kept together), then the print keeps slipping out of register.
+      html: dropLetters(t('reward.cleared')),
     }),
     h(
       'div',

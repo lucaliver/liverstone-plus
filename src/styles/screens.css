@@ -5,11 +5,13 @@
 }
 .reward-title {
   margin: 6px 0 2px;
-  font-size: clamp(40px, 13vw, 60px);
+  font-size: clamp(30px, 10vw, 48px);
+  line-height: 1.05;
   text-shadow: 4px 4px 0 var(--p), -3px 2px 0 var(--b);
   animation: misprint 2.6s steps(1) 0.9s infinite;
 }
-.reward-title span {
+.reward-title .word { display: inline-block; white-space: nowrap; }
+.reward-title .word span {
   display: inline-block;
   animation: letter-drop 0.42s steps(6) both;
   animation-delay: calc(var(--i) * 0.06s);

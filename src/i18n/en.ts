@@ -135,6 +135,7 @@ const en = {
 
   // ------------------------------------------------------------ results
   'reward.victory': 'Victory!',
+  'reward.cleared': 'Enemy cleared',
   'reward.swap': 'Swap',
   'reward.skip': 'Skip',
   'reward.yourDeck': 'Your deck',

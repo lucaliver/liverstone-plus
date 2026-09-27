@@ -177,7 +177,7 @@ Legenda: `[ ]` da fare · `[x]` fatto (dettagli nei commit).
 - [x] Home: animare anche il tasto New run / Continue run
 - [x] Home: la musica a volte non parte o parte in ritardo quando ricarichi o torni al menu
 - [x] Combattimento: tasto pausa in alto a destra, a destra della velocità
-- [ ] Ricompensa: titolo "Enemy cleared" invece di "Victory"
+- [x] Ricompensa: titolo "Enemy cleared" invece di "Victory"
 - [ ] Fine atto: "VICTORY" grande, animato e con musica dedicata (invece di "Act cleared")
 - [ ] Potenziamento: carte normali, solo quella selezionata si vede potenziata; solo il tasto "Upgrade"; titolo "Choose a card to upgrade"
 - [ ] Carte che rallentano il nastro → lo velocizzano (come pescare di più)
