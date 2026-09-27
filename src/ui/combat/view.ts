@@ -63,7 +63,7 @@ function markup(run: RunState, combat: Combat): string {
         { x: '84%', y: '44%' },
       ])}
       <div class="candle l">${candleFlame()}</div><div class="candle r">${candleFlame()}</div>
-      <!-- act decor (CSS shows the one for the current act): the afternoon's flickering tube light and water cooler -->
+      <!-- act decor (CSS shows the one for the enemy's act, so debug fights match too): the afternoon's flickering tube light and water cooler -->
       <div class="neon"></div><div class="cooler">${creature('waterCooler')}</div><div class="neon-dim"></div>
       <div class="shade"></div>
       <div class="enemy-wrap">
@@ -146,7 +146,7 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
   const el = h('div', {
     class: 'screen combat',
     'data-hero': run.hero,
-    'data-act': String(currentNode(run).act),
+    'data-act': String(combat.enemy.def.act),
     style: { '--hero-color': combat.heroDef.color } as never,
   });
   el.innerHTML = markup(run, combat);
