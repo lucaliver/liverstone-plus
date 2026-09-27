@@ -13,6 +13,50 @@ This file is the technical guide: read it before changing code.
 - Before handing over: `npm run check` and `npm run e2e` must pass, then look at the screens you touched
   (Playwright screenshot at 390×844 and at a short height such as 375×620).
 - Balance: don't spend long on simulations while design is moving; one quick sim pass is enough.
+- Keep this file true: when a change makes a line here stale (a name, a path, a rule), fix it in the same commit.
+
+## Writing code
+
+### Minimal
+
+- Do what the task asks, nothing speculative: no options, flags, abstractions or "for later" hooks without a
+  current caller. Three similar lines beat a premature helper.
+- Reuse before writing: `h`, `$`, `setText`/`setHtml`/`toggle`, `onPress`/`onTapOrHold` (`ui/dom.ts`), `Rng`,
+  `Emitter`, `load`/`store` (`core/save.ts`), existing icons, sfx, modals and CSS tokens. Grep for a similar
+  feature first and follow its shape.
+- No new dependencies without asking the owner. No framework, no state library, no CSS preprocessor.
+- Delete what you replace: dead code, unused CSS rules, i18n keys, icons and tests go in the same commit.
+  `noUnusedLocals`/`noUnusedParameters` catch only part of it.
+- Match the surrounding code: naming, comment density (short `/** */` on non-obvious fields and functions,
+  comments explain *why*), file size. Split a file only when it gains a clear responsibility.
+
+### Correct
+
+- Engine code (`game/`, `data/`) uses `combat.rng` / `Rng` only (never `Math.random`), and simulated time
+  (`dt` from `tick`) only (never `Date.now`, timers or `performance.now`), so seeds replay exactly and
+  the balance sim stays valid.
+- The UI reads `Combat` state and calls its public actions (`playCard`, `stash`, `useAbility`, …); it never
+  mutates fighters, piles or statuses directly. Anything a card or enemy does goes through `Combat` helpers
+  (`hit`, `gainBlock`, `applyStatus`, `addTempCard`, …) so events, previews and hooks stay in sync.
+- No `any`, no unchecked casts of untyped data; `!` only where the DOM element is certain (own template).
+  Widen union types (`Keyword`, `IntentType`, …) instead of passing loose strings.
+- Every screen undoes in `leave()` what it did in `enter()`: window/document listeners, emitter subscriptions,
+  timers, temporary music. Elements inside the screen's own `el` need no cleanup.
+- Save data is untrusted: read it through `core/save.ts`, validate on load, and when its shape changes bump
+  `version` in `run.ts` (or migrate) instead of letting old saves crash the game.
+- Test what you change: engine rule → `combat.test.ts`; new data shape → `content.test.ts`; new flow or screen
+  interaction → `smoke.spec.ts`. Fix a bug with a test that fails first when it's cheap to write.
+
+### Future-proof
+
+- Adding a card, enemy, hero, status or relic should touch data, i18n and art only. If it needs an `if (id === …)`
+  in the engine or UI, add a generic field or hook instead.
+- No hard-coded hero or enemy ids in UI; lists and icons come from data maps (`HEROES`, `ENEMIES`, `CARDS`,
+  `STATUSES`, `ABILITY_ICON`). Tunable numbers live in `data/config.ts` or the records, never inline in UI or engine.
+- Every player-facing string goes through `t()`; no text concatenation that assumes English word order
+  (use `{placeholders}` and plurals).
+- Layout must survive phones from 375×620 to tall screens and text that may grow in other languages: no fixed
+  widths for text boxes, no absolute positions that depend on string length.
 
 ## Stack
 
@@ -69,14 +113,18 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
 
 ### Cards
 
-`CardDef` in `src/data/cards/<class>.ts` plus `card.<id>.name` / `card.<id>.desc` in `en.ts`. That's all.
+`CardDef` in `src/data/cards/<class>.ts` plus `card.<id>.name` / `card.<id>.desc` in `en.ts`. That's all
+(`cards/index.ts` collects every class array into `CARDS`; a new class file must be added there). Curses live in
+`neutral.ts` (`curseCards`, rarity `special`). `pack` marks cards locked behind an unlock pack.
 
 - `face` grammar: `{kind:i}` icon + value i · `{kind}` icon · `{?kind}` condition shown as (icon) · `{i}` bare
   value · `|` new line · other text as is. Kinds live in `GLYPHS` (`ui/components/cardView.ts`).
 - `desc`: `{i}` values, `[kw]` keywords (need `kw.<kw>` and `kw.<kw>.d`).
 - Art colour comes from the face (attack / defense / utility / curse) unless `cat` is set. Set `dmg: []` only for
   raw damage that ignores modifiers (e.g. Juggernaut).
-- Keywords: exhaust, consume, fleeting, volatile, innate, unique, unplayable. Rarity `unique` = hero special.
+- Keyword flags (`Keyword` type, change engine behaviour): exhaust, consume, fleeting, volatile, innate, unique,
+  unplayable. Glossary-only keywords (`[rush]`, `[power]`, `[x]`, statuses…) just need their `kw.*` strings.
+  Rarity `unique` = hero special.
 - `tests/content.test.ts` checks texts, glyphs, keywords, enemy moves and starter decks.
 
 ### Enemies
@@ -91,6 +139,11 @@ Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.t
 `HeroDef` in `data/heroes.ts` (hp, maxMana, regen, blockDecay, starter deck with basic cards only + crystals,
 `special`, `ability { id, cost, use }`, hooks), a card file, a sprite, `hero.<id>.*` strings, and entries in
 `ABILITY_ICON` / `PASSIVE_ICON` (`ui/combat/view.ts`).
+
+### Statuses
+
+`StatusDef` in `data/statuses.ts` (`kind`: timed / stacks / dot, `good`, `icon`) plus `status.<id>` and
+`status.<id>.d` (`{v}` = amount). Their effect is applied where it matters in `combat.ts` (damage, ticks, decay).
 
 ### i18n
 
