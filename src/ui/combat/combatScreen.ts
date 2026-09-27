@@ -257,6 +257,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       addEventListener('resize', onResize);
       document.addEventListener('visibilitychange', onVisibility);
       render(0);
+      if (combat.enemy.def.tier === 'boss') sfx('siren');
       // The fight waits for Start: meanwhile the player can hold anything to read what it does.
       const startWrap = h(
         'div',
