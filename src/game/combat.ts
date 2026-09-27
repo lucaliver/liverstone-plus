@@ -474,9 +474,7 @@ export class Combat {
     this.events.emit({ type: 'cardPlayed', card, from: beltIdx >= 0 ? 'belt' : 'sleeve' });
     const vals = this.cardVals(card);
     if (cost < 0) vals.push(spent);
-    const times = this.mem.echo === 1 ? 2 : 1;
-    if (this.mem.echo === 1) this.mem.echo = 2;
-    for (let i = 0; i < times && !this.result; i++) this.withCard(card, def, () => def.play!(this, vals, card));
+    this.withCard(card, def, () => def.play!(this, vals, card));
     if (this.result === 'lose') return true;
 
     this.heroDef.hooks.onCardPlayed?.(this, card, def, spent);
