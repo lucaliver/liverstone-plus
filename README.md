@@ -196,7 +196,8 @@ La difficoltà cresce scendendo di piano.
   ottone, cartellini e pergamene timbrate); ingranaggi, caldaie e automi crescono nei turni successivi.
 - **Pixel art** generata dai disegni vettoriali all'avvio: livelli d'inchiostro, retino a puntini, contorno.
 - **Animazioni a scatti** (tranne le finestre, fluide); colpi con flash invertito; danni come "-N" su macchia di sangue,
-  al centro del nemico e abbastanza lenti da leggerli.
+  al centro del nemico e abbastanza lenti da leggerli. Il nemico sconfitto si scompone nei suoi inchiostri, che scivolano
+  via ognuno per conto suo; il boss prima viene timbrato *Terminated*.
 - **Colori delle carte:** banda del nome = classe (rosa Guerriero, blu Mago, verde Negromante, giallo neutre,
   nero maledizioni); illustrazione = categoria (rosa attacco, blu difesa, giallo utilità, verde maledizione);
   gemma a rombo solo per rare (blu), epiche (rosa) e leggendarie (gialla).

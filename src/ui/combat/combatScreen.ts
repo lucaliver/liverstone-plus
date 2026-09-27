@@ -11,7 +11,7 @@ import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedSelect
 import { icon, INTENT_ICON } from '../art/icons';
 import { bindMoveDetails, enemyTraits, moveEffect, movePattern } from '../components/moveText';
 import { h, onPress, onTapOrHold, setText } from '../dom';
-import { burst, haptic } from '../fx/fx';
+import { burst, haptic, shake } from '../fx/fx';
 import { createCardLayer } from './cardLayer';
 import { bindCombatFx } from './combatFx';
 import { createHud } from './hud';
@@ -52,18 +52,25 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     if (state.ended) return;
     state.ended = true;
     cards.cancelDrag();
+    const boss = combat.enemy.def.tier === 'boss';
     if (result === 'win') {
+      // The print comes apart: each ink slides off on its own. A boss gets stamped first.
       r.enemyArt.classList.add('dead');
       const p = v.enemyPoint();
       burst('gold', p.x, p.y, 40, 1.5);
-      v.banner(t('reward.cleared'));
+      if (boss) {
+        r.enemyArt.classList.add('boss');
+        r.enemyArt.append(h('div', { class: 'boss-stamp' }, t('combat.bossDown')));
+        shake('big');
+        sfx('blunt');
+      } else v.banner(t('reward.cleared'));
       sfx('victory');
     } else {
       v.banner(t('end.defeat'), true);
       sfx('defeat');
       haptic([60, 60, 120]);
     }
-    setTimeout(() => cb.onEnd(combat), 1500);
+    setTimeout(() => cb.onEnd(combat), boss && result === 'win' ? 2200 : 1500);
   };
   const unsubscribe = bindCombatFx(v, cards, finish);
 

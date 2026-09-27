@@ -155,6 +155,7 @@ const en = {
   'combat.dodged': 'Dodged!',
   'combat.parried': 'Parried!',
   'combat.stolen': 'Outsourced!',
+  'combat.bossDown': 'Terminated',
   'combat.enraged': 'Enraged!',
   'combat.sleeveHint': 'Sleeve',
   'combat.deck': 'Deck in this fight',

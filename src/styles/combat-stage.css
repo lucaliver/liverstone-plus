@@ -178,7 +178,44 @@
 @keyframes rage {
   50% { filter: drop-shadow(3px 0 0 var(--p)) drop-shadow(-3px 0 0 var(--p)) drop-shadow(0 3px 0 var(--p)); }
 }
-.enemy-art.dead { animation: die 0.6s steps(5) forwards; }
+/* defeated: the print comes apart, each ink sliding off its own way (solid inks, off the paper base) */
+.enemy-art.dead { animation: none; }
+.enemy-art.dead .ink { mix-blend-mode: normal; animation: 0.9s steps(6) forwards; }
+.enemy-art.dead .ink-W { animation-name: ink-off-W; }
+.enemy-art.dead .ink-Y { animation-name: ink-off-Y; }
+.enemy-art.dead .ink-P { animation-name: ink-off-P; }
+.enemy-art.dead .ink-B { animation-name: ink-off-B; }
+.enemy-art.dead .ink-K { animation-name: ink-off-K; }
+@keyframes ink-off-W { to { opacity: 0; } }
+@keyframes ink-off-Y { 20% { translate: -6px -4px; } 60% { opacity: 1; translate: -18px -14px; } to { opacity: 0; translate: -36px -28px; } }
+@keyframes ink-off-P { 20% { translate: 7px -3px; } 60% { opacity: 1; translate: 22px -6px; } to { opacity: 0; translate: 42px -12px; } }
+@keyframes ink-off-B { 20% { translate: -4px 6px; } 60% { opacity: 1; translate: -16px 18px; } to { opacity: 0; translate: -30px 34px; } }
+@keyframes ink-off-K { 20% { translate: 2px 7px; } 60% { opacity: 1; translate: 4px 24px; } to { opacity: 0; translate: 8px 46px; } }
+/* a boss is stamped first, then comes apart more slowly */
+.enemy-art.dead.boss .ink { animation-duration: 1.4s; animation-delay: 0.45s; }
+.boss-stamp {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  z-index: 3;
+  translate: -50% -50%;
+  rotate: -12deg;
+  padding: 2px 12px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(26px, 9vw, 40px);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--p);
+  border: 5px solid var(--p);
+  box-shadow: 4px 4px 0 var(--k), inset 4px 4px 0 var(--k);
+  text-shadow: 3px 3px 0 var(--k);
+  animation: stamp-in 0.2s steps(2) both;
+}
+@keyframes stamp-in {
+  from { scale: 2.4; opacity: 0; }
+}
 /* copying the damage it takes (the Printer's scan): a green line sweeps the sprite */
 .enemy-art.absorbing::after {
   content: '';
@@ -194,9 +231,6 @@
 }
 @keyframes scanline {
   to { top: 96%; }
-}
-@keyframes die {
-  to { transform: translateY(40px) scaleY(0.2); opacity: 0; }
 }
 
 /* threat bar: the enemy's next move, right above the belt where the eyes are */
