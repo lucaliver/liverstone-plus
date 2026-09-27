@@ -48,7 +48,7 @@ stepped animations and one icon set.
 - [x] R1. Tapping the button that opened a modal (e.g. pause) closes it and reopens it; it should just close (all modals)
 - [x] R2. Hold-to-inspect windows open too slowly and not smoothly
 - [x] R3. Victory screen: bigger, animated "Victory!"; "Swap it for" → "Rewards"
-- [ ] R4. Review: are card texts and symbols mapped smartly (centralized, minimal, no duplication, few touch points to add a card)?
+- [x] R4. Review: are card texts and symbols mapped smartly (centralized, minimal, no duplication, few touch points to add a card)?
 - [ ] R5. Conditional effects show their condition in brackets (e.g. (block) → damage)
 - [ ] R6. Card upgrade (campfire): select, then confirm
 - [ ] R7. Enemy move detail: "After Y attacks: X — …" and coloured values (damage in red, …)

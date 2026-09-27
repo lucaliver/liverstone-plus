@@ -12,7 +12,6 @@ export const necromancerCards: CardDef[] = [
     cost: 1,
     vals: [5],
     upVals: [8],
-    dmg: [0],
     art: 'bone',
     play: (c, v) => void c.hit(v[0]),
   },
@@ -37,7 +36,6 @@ export const necromancerCards: CardDef[] = [
     cost: 1,
     vals: [3, 3],
     upVals: [4, 5],
-    dmg: [0],
     art: 'dagger',
     play: (c, v) => {
       c.hit(v[0]);
@@ -53,7 +51,6 @@ export const necromancerCards: CardDef[] = [
     cost: 1,
     vals: [4, 3],
     upVals: [6, 4],
-    dmg: [0],
     art: 'fang',
     play: (c, v) => {
       c.hit(v[0], { kind: 'arcane' });
@@ -83,7 +80,6 @@ export const necromancerCards: CardDef[] = [
     cost: 0,
     vals: [3, 1],
     upVals: [5, 2],
-    dmg: [0],
     art: 'fang',
     play: (c, v) => {
       c.hit(v[0]);
@@ -153,7 +149,6 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     vals: [10, 18],
     upVals: [14, 24],
-    dmg: [0, 1],
     art: 'whirl',
     play: (c, v) => void c.hit(c.has('enemy', 'poison') ? v[1] : v[0], { kind: 'arcane' }),
   },
@@ -166,7 +161,6 @@ export const necromancerCards: CardDef[] = [
     cost: 1,
     vals: [6, 4],
     upVals: [8, 6],
-    dmg: [0],
     art: 'execute',
     play: (c, v) => {
       c.hit(v[0]);

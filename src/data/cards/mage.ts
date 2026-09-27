@@ -11,7 +11,6 @@ export const mageCards: CardDef[] = [
     cost: 1,
     vals: [7],
     upVals: [10],
-    dmg: [0],
     art: 'bolt',
     play: (c, v) => void c.hit(v[0]),
   },
@@ -36,7 +35,6 @@ export const mageCards: CardDef[] = [
     cost: 1,
     vals: [4, 3],
     upVals: [6, 4],
-    dmg: [0],
     art: 'frost',
     play: (c, v) => {
       c.hit(v[0], { kind: 'ice' });
@@ -54,7 +52,6 @@ export const mageCards: CardDef[] = [
     cost: 3,
     vals: [14, 3],
     upVals: [18, 4],
-    dmg: [0],
     art: 'fireball',
     play: (c, v) => {
       c.hit(v[0], { kind: 'fire' });
@@ -70,7 +67,6 @@ export const mageCards: CardDef[] = [
     cost: 2,
     vals: [7, 16],
     upVals: [9, 20],
-    dmg: [0, 1],
     art: 'iceLance',
     play: (c, v) => void c.hit(c.has('enemy', 'chill') ? v[1] : v[0], { kind: 'ice' }),
   },
@@ -95,7 +91,6 @@ export const mageCards: CardDef[] = [
     cost: 0,
     vals: [3],
     upVals: [5],
-    dmg: [0],
     art: 'spark',
     play: (c, v) => void c.hit(v[0], { kind: 'arcane' }),
   },
@@ -137,7 +132,6 @@ export const mageCards: CardDef[] = [
     cost: 3,
     vals: [3, 5],
     upVals: [3, 7],
-    dmg: [0],
     art: 'missiles',
     play: (c, v) => void c.hit(v[0], { hits: v[1] }),
   },
@@ -209,7 +203,6 @@ export const mageCards: CardDef[] = [
     cost: 4,
     vals: [14, 6],
     upVals: [18, 8],
-    dmg: [0],
     art: 'blizzard',
     play: (c, v) => {
       c.hit(v[0], { kind: 'ice' });
@@ -242,7 +235,6 @@ export const mageCards: CardDef[] = [
     rarity: 'unique',
     cost: 0,
     vals: [25, 5],
-    dmg: [0],
     keywords: ['unique'],
     art: 'fireball',
     play: (c, v) => {
@@ -261,7 +253,6 @@ export const mageCards: CardDef[] = [
     cost: 0,
     vals: [2, 2],
     upVals: [3, 2],
-    dmg: [0],
     art: 'missiles',
     // Every hit gets the Spellweave bonus.
     play: (c, v) => void c.hit(v[0], { hits: v[1] }),
@@ -275,7 +266,6 @@ export const mageCards: CardDef[] = [
     cost: 1,
     vals: [4, 2],
     upVals: [6, 3],
-    dmg: [0],
     art: 'bolt',
     play: (c, v) => void c.hit(v[0] + v[1] * c.stacks('hero', 'weave')),
   },
@@ -288,7 +278,6 @@ export const mageCards: CardDef[] = [
     cost: 2,
     vals: [8, 2],
     upVals: [11, 3],
-    dmg: [0],
     art: 'iceLance',
     play: (c, v) => {
       const chilled = c.has('enemy', 'chill');
@@ -307,7 +296,6 @@ export const mageCards: CardDef[] = [
     cost: 6,
     upCost: 5,
     vals: [40],
-    dmg: [0],
     art: 'pyro',
     play: (c, v) => void c.hit(v[0], { kind: 'fire' }),
   },

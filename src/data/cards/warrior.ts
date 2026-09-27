@@ -11,7 +11,6 @@ export const warriorCards: CardDef[] = [
     cost: 1,
     vals: [6],
     upVals: [9],
-    dmg: [0],
     art: 'sword',
     play: (c, v) => void c.hit(v[0]),
   },
@@ -37,7 +36,6 @@ export const warriorCards: CardDef[] = [
     upCost: 2,
     vals: [11, 2],
     upVals: [14, 2.5],
-    dmg: [0],
     art: 'hammer',
     play: (c, v) => {
       c.hit(v[0], { kind: 'blunt' });
@@ -55,7 +53,6 @@ export const warriorCards: CardDef[] = [
     cost: 1,
     vals: [9],
     upVals: [12],
-    dmg: [0],
     art: 'axe',
     play: (c, v) => void c.hit(v[0]),
   },
@@ -107,7 +104,6 @@ export const warriorCards: CardDef[] = [
     cost: 3,
     vals: [20],
     upVals: [26],
-    dmg: [0],
     art: 'maul',
     play: (c, v) => void c.hit(v[0], { kind: 'blunt' }),
   },
@@ -166,7 +162,6 @@ export const warriorCards: CardDef[] = [
     cost: -1,
     vals: [5],
     upVals: [7],
-    dmg: [0],
     art: 'whirl',
     // X cost: the engine appends the mana spent as the last value.
     play: (c, v) => void c.hit(v[0], { hits: v[v.length - 1] }),
@@ -196,7 +191,6 @@ export const warriorCards: CardDef[] = [
     cost: 1,
     vals: [7, 4],
     upVals: [8, 6],
-    dmg: [0],
     art: 'rampage',
     play: (c, v, card) => {
       c.hit(v[0]);
@@ -228,7 +222,6 @@ export const warriorCards: CardDef[] = [
     cost: 3,
     vals: [12, 32],
     upVals: [16, 42],
-    dmg: [0, 1],
     art: 'execute',
     play: (c, v) => void c.hit(c.enemy.hp <= c.enemy.maxHp * 0.3 ? v[1] : v[0]),
   },
@@ -241,7 +234,6 @@ export const warriorCards: CardDef[] = [
     cost: 3,
     vals: [14],
     upVals: [18],
-    dmg: [0],
     art: 'fang',
     play: (c, v) => {
       const dealt = c.hit(v[0]);
@@ -277,7 +269,6 @@ export const warriorCards: CardDef[] = [
     cost: 1,
     vals: [6, 11],
     upVals: [8, 15],
-    dmg: [0, 1],
     art: 'crossed',
     play: (c, v) => void c.hit(c.hero.block > 0 ? v[1] : v[0]),
   },
@@ -299,6 +290,8 @@ export const warriorCards: CardDef[] = [
   {
     id: 'juggernaut',
     face: '{block}{dmg:0}',
+    // Raw damage from the power, not modified by Strength/Weak: no live preview.
+    dmg: [],
     cls: 'warrior',
     type: 'power',
     rarity: 'epic',
@@ -320,7 +313,6 @@ export const warriorCards: CardDef[] = [
     upCost: 4,
     vals: [24, 3],
     upVals: [30, 4],
-    dmg: [0],
     art: 'quake',
     play: (c, v) => {
       c.hit(v[0], { kind: 'blunt' });

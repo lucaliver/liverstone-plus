@@ -39,7 +39,7 @@ export interface CardDef {
   upCost?: number;
   vals: number[];
   upVals?: number[];
-  /** Indexes of `vals` that are damage, so the UI can preview modified values. */
+  /** Indexes of `vals` that are damage (live previews). Derived from the `{dmg:N}` glyphs of `face` unless set. */
   dmg?: number[];
   keywords?: Keyword[];
   upKeywords?: Keyword[];
