@@ -54,11 +54,11 @@ function markup(run: RunState, combat: Combat): string {
       </div>
       <div class="enemy-info">
         <div class="enemy-name">${t(`enemy.${enemyDef.id}.name`)}${enemyDef.tier !== 'normal' ? `<span class="tier ${enemyDef.tier}">${t(`journey.node.${enemyDef.tier}`)}</span>` : ''}</div>
+        <div class="statuses js-estatus"></div>
         <div class="hpline">
           <div class="block-chip off js-eblock">${icon('shield')}<b></b></div>
           <div class="bar js-ehp"><div class="ghost"></div><div class="fill"></div><div class="txt"></div></div>
         </div>
-        <div class="statuses js-estatus"></div>
         <div class="threat" role="status" aria-live="polite">
           <div class="t-ico js-intent-ico"></div>
           <div class="t-val"></div>
@@ -73,6 +73,17 @@ function markup(run: RunState, combat: Combat): string {
       <div class="maw-eyes" aria-hidden="true"><i></i><i></i></div>
       <div class="belt-cards"></div>
     </section>
+    <!-- right under the belt: your HP, Block and statuses stay in view while you play -->
+    <section class="hero-row">
+      <div class="hero-portrait">${creature(heroId)}</div>
+      <div class="hero-info">
+        <div class="hpline">
+          <div class="block-chip off js-hblock">${icon('shield')}<b></b></div>
+          <div class="bar js-hhp"><div class="ghost"></div><div class="fill"></div><div class="incoming"></div><div class="txt"></div></div>
+        </div>
+        <div class="statuses js-hstatus"></div>
+      </div>
+    </section>
     <section class="mana-row">${icon('crystal')}<div class="mana-pips"></div><div class="mana-num"></div></section>
     <section class="action-row">
       <div class="sleeve js-sleeve"></div>
@@ -83,16 +94,6 @@ function markup(run: RunState, combat: Combat): string {
       <button class="ability-btn js-ability" aria-label="${t(`hero.${heroId}.ability`)}">
         <div class="charge"></div>${icon(ABILITY_ICON[heroId])}<span class="acost">${icon('crystal')}${combat.abilityCost()}</span><span class="albl">${t(`hero.${heroId}.ability`)}</span>
       </button>
-    </section>
-    <section class="hero-row">
-      <div class="hero-portrait">${creature(heroId)}</div>
-      <div class="hero-info">
-        <div class="hpline">
-          <div class="block-chip off js-hblock">${icon('shield')}<b></b></div>
-          <div class="bar js-hhp"><div class="ghost"></div><div class="fill"></div><div class="incoming"></div><div class="txt"></div></div>
-        </div>
-        <div class="statuses js-hstatus"></div>
-      </div>
     </section>`;
 }
 

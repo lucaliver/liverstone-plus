@@ -155,6 +155,13 @@ const SOUNDS = {
   status: () => tone(300, 0.2, { type: 'triangle', vol: 0.12, to: 520 }),
   debuff: () => tone(400, 0.25, { type: 'sawtooth', vol: 0.06, to: 200 }),
   windup: () => tone(200, 0.4, { type: 'sawtooth', vol: 0.05, to: 400, attack: 0.1 }),
+  /** An enemy hit is about to land and Block won't cover it: two low knocks, readable without looking. */
+  incoming: () => {
+    tone(150, 0.07, { type: 'square', vol: 0.09, to: 120 });
+    tone(150, 0.09, { type: 'square', vol: 0.11, to: 110, delay: 0.14 });
+  },
+  /** An enemy hit is about to land and Block covers it: one soft high tick. */
+  incomingSafe: () => tone(1100, 0.06, { type: 'triangle', vol: 0.07, to: 1000 }),
   ability: () => {
     noise(0.6, { freq: 300, to: 4000, vol: 0.3, attack: 0.05 });
     [262, 392, 523].forEach((f, i) => {

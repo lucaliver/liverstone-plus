@@ -64,7 +64,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 6px 12px 8px;
+  padding: 6px 12px calc(var(--safe-b) + 10px);
 }
 .sleeve {
   display: flex;
@@ -194,19 +194,19 @@
 [data-hero='mage'] { --res-ink: var(--b); --hero-ink: var(--b); }
 [data-hero='necromancer'] { --res-ink: var(--green); --hero-ink: var(--green); }
 
-/* hero row */
+/* hero row: right under the belt, so your HP and Block are read without looking away from the cards */
 .hero-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 12px calc(var(--safe-b) + 10px);
-  border-top: var(--line) solid var(--void);
+  padding: 6px 12px;
   background: var(--bg2);
+  border-bottom: var(--line) solid var(--void);
 }
 .hero-portrait {
   flex: none;
-  width: 66px;
-  height: 66px;
+  width: 60px;
+  height: 60px;
   background: var(--paper);
   border: var(--line) solid var(--k);
   overflow: hidden;

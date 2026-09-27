@@ -206,6 +206,14 @@
   border-right: 2px solid var(--void);
 }
 .threat .t-val:empty { display: none; }
+/* Block up: the value is what will get through, next to a shield */
+.threat .t-val.covered {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--b);
+}
+.threat .t-val.covered .pico { font-size: 18px; color: var(--b); --ink2: var(--k); }
 .threat .t-track {
   position: relative;
   flex: 1;

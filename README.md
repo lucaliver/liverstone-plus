@@ -43,8 +43,9 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 - **Nemici:** un **attacco base** lento e pesante e, a intervalli, una **mossa speciale** (colpo ancora più forte,
   maledizioni, furto, blocco); gli speciali si alternano. Ogni colpo è un momento da preparare, con respiro in mezzo. La **barra minaccia** sopra il nastro mostra la mossa,
   il valore, il caricamento e quanto manca al prossimo speciale.
-- **Difesa:** il **Blocco** assorbe i danni ma svanisce col tempo, quindi va giocato poco prima del colpo. La
-  barra vita mostra a strisce quanto perderai; i bordi dello schermo lampeggiano poco prima di un colpo non bloccato.
+- **Difesa:** il **Blocco** assorbe i danni ma svanisce col tempo, quindi va giocato poco prima del colpo. Con il
+  Blocco attivo la barra minaccia mostra il danno che passerà davvero; la barra vita mostra a strisce quanto perderai.
+  Poco prima di ogni colpo c'è un segnale sonoro (diverso se il Blocco lo copre) e, se non è bloccato, i bordi lampeggiano.
 - **Abilità dell'eroe:** mossa potente che costa molto mana, quindi va usata dopo aver fatto crescere i cristalli.
 - **Carta speciale:** una per eroe, parte nella sleeve a ogni scontro, si usa **una volta per run**.
 - **Stati:** Forza, Blocco, Veleno, Bruciatura, Congelamento, Stordimento, Debole, Vulnerabile, Schivata, Parata,
@@ -111,8 +112,9 @@ La difficoltà cresce scendendo di piano.
 - **Home:** logo animato, Lich, candele pixel animate; Nuova run / Continua, Compendio, Come si gioca, Impostazioni.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
 - **Percorso:** colonna dei piani dell'atto con icone (battaglia, falò, élite, boss).
-- **Combattimento**, dall'alto: barra superiore (piano, velocità di gioco, pausa) · nemico con vita e stati ·
-  barra minaccia · **nastro al centro** · mana · sleeve, pile, abilità · eroe in basso (ritratto, vita, stati).
+- **Combattimento**, dall'alto: barra superiore (piano, velocità di gioco, pausa) · nemico con stati e vita ·
+  barra minaccia · **nastro** · eroe (ritratto, vita, Blocco, stati) · mana · sleeve, pile, abilità. Vita del nemico,
+  mossa in arrivo e vita dell'eroe stanno a ridosso del nastro, così non serve distogliere lo sguardo dalle carte.
 - **Ricompensa, falò** (con animazione di cura), **vittoria e fine run** (statistiche), **Compendio** (carte per
   classe con scoperte, nemici con mosse).
 - **Impostazioni:** musica, effetti, velocità, riduci animazioni, vibrazione. Tutti i testi sono pronti per altre lingue.

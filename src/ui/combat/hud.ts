@@ -13,6 +13,8 @@ export function createHud(v: CombatView): { render(): void } {
   const { combat, r } = v;
   const statusSig: Record<Side, string> = { hero: '', enemy: '' };
   let lastMove: MoveDef | null = null;
+  /** `moveCount` of the last hit we warned about (one sound cue per hit). */
+  let warned = -1;
   let lastMaxMana = -1;
   let lastMana = combat.hero.mana;
 
@@ -107,7 +109,6 @@ export function createHud(v: CombatView): { render(): void } {
         v.toast(`${t(`enemy.${e.def.id}.name`)}: ${t('intent.charge')}`);
       }
     }
-    setText(r.intentVal, intentValue(m));
     // Countdown to the special move: its icon and how many main attacks until it comes.
     const special = combat.nextSpecial();
     const isMain = m === e.def.main && !!special;
@@ -133,6 +134,15 @@ export function createHud(v: CombatView): { render(): void } {
     // Preview how much HP the hit will take (after Block), and flash the screen edges just before it lands.
     const hs = combat.hero;
     const incoming = hostile ? Math.max(0, combat.intentDamage(m) * (m.hits ?? 1) - hs.block) : 0;
+    // With Block up, the value shows what will actually get through (next to a shield), so the belt is all you need to watch.
+    const covered = hostile && !!m.dmg && hs.block > 0;
+    setHtml(r.intentVal, covered ? `${icon('shield')}${incoming}` : intentValue(m));
+    toggle(r.intentVal, 'covered', covered);
+    // A sound cue just before each hit: knocks if it will hurt, a soft tick if Block covers it.
+    if (hostile && !!m.dmg && left < 1 && warned !== e.moveCount) {
+      warned = e.moveCount;
+      sfx(incoming > 0 ? 'incoming' : 'incomingSafe');
+    }
     const shown = incoming > 0 && left < 2.2;
     const lost = Math.min(hs.hp, incoming);
     r.incoming.style.left = `${((hs.hp - lost) / hs.maxHp) * 100}%`;
