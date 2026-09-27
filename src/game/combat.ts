@@ -95,8 +95,6 @@ export class Combat {
   /** Time accumulated towards the next regular draw onto the belt. */
   private spawnClock = 0;
   beltSpeed = 1;
-  /** Seconds left of the player's belt rush (cards arrive faster: like drawing more). */
-  beltRushT = 0;
   /** Seconds left of an enemy-imposed belt haste (the Spider's webs…). */
   beltHasteT = 0;
   regenMul = 1;
@@ -251,7 +249,7 @@ export class Combat {
 
   beltRate(): number {
     let r = this.beltSpeed * (this.beltRows > 1 ? CONFIG.twoRowSpeed : 1);
-    if (this.beltRushT > 0) r *= CONFIG.beltRush;
+    if (this.has('hero', 'rush')) r *= CONFIG.beltRush;
     if (this.beltHasteT > 0) r *= 1.6;
     return r;
   }
@@ -274,7 +272,6 @@ export class Combat {
     this.tickBelt(dt);
     for (const id of this.relics) RELICS[id]?.hooks?.tick?.(this, dt);
     this.heroDef.hooks.tick?.(this, dt);
-    this.beltRushT = Math.max(0, this.beltRushT - dt);
     this.beltHasteT = Math.max(0, this.beltHasteT - dt);
   }
 
@@ -723,9 +720,9 @@ export class Combat {
     delete this.fighter(side).statuses[id];
   }
 
-  /** Speeds the belt up for `t` seconds: cards (and new draws) come faster. */
+  /** Speeds the belt up for `t` seconds: cards (and new draws) come faster. A hero status, so it shows with a timer. */
   rushBelt(t: number): void {
-    this.beltRushT = Math.max(this.beltRushT, t);
+    this.applyStatus('hero', 'rush', 1, t);
   }
 
   /** Adds a temporary card (curses, generated cards) to a pile or straight onto the belt. */

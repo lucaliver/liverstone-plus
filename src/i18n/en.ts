@@ -262,6 +262,8 @@ const en = {
   'status.parry.d': 'Strike back for {v} when hit.',
   'status.haste': 'Haste',
   'status.haste.d': 'Acts 50% faster.',
+  'status.rush': 'Rush',
+  'status.rush.d': 'Your belt runs faster: cards arrive sooner.',
   'status.plague': 'Plague',
   'status.plague.d': 'Your Attacks apply {v} Poison.',
   'status.virulence': 'Virulent',

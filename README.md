@@ -37,7 +37,7 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 - **Nastro:** tocca una carta per giocarla, trascinala in su verso il nemico per giocarla, trascinala in giù
   nella sleeve per tenerla. Una carta che esce a sinistra finisce negli scarti (le maledizioni *volatili*
   lampeggiano poco prima, poi esplodono o ti puniscono). Quando il mazzo finisce, gli scarti si rimescolano. Alcune carte danno **Rush**:
-  il nastro accelera e le carte arrivano prima.
+  il nastro accelera e le carte arrivano prima (compare tra i tuoi stati, con il tempo rimasto).
 - **Mana:** si ricarica col tempo, a un ritmo che dipende dall'eroe. Il massimo parte basso e cresce con le
   carte **cristallo**, che arrivano per prime e valgono una volta per scontro. Icone coerenti ovunque:
   **gemma piena = mana** da spendere (es. da 1/3 a 3/3), **gemma vuota = cristallo** che alza il massimo e si

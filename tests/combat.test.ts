@@ -289,7 +289,10 @@ describe('combat engine', () => {
         if (e.type === 'cardSpawn') n++;
       });
       run(c, CONFIG.introTime + 0.01);
-      if (rush) c.rushBelt(6);
+      if (rush) {
+        c.rushBelt(6);
+        expect(c.has('hero', 'rush')).toBe(true);
+      }
       run(c, 6);
       return n;
     };
