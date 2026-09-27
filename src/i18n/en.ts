@@ -24,6 +24,7 @@ const en = {
   'compendium.tab.curse': 'Curses',
   'menu.abandonConfirm': 'Starting a new run will abandon your current one. Continue?',
   'common.back': 'Back',
+  'common.next': 'Next',
   'common.close': 'Close',
   'common.confirm': 'Confirm',
   'common.cancel': 'Cancel',

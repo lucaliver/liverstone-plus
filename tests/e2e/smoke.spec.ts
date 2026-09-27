@@ -5,7 +5,11 @@ test('title, hero select and journey render without errors', async ({ page }) =>
   const problems = await freshGame(page);
   await expect(page.locator('.logo')).toHaveText(/liverstone/i);
   await page.getByRole('button', { name: /new run/i }).click();
-  await expect(page.locator('.hero-card')).toHaveCount(3);
+  await expect(page.locator('.hero-slide')).toHaveCount(3);
+  // Carousel: the hero in view is the one that starts.
+  await page.locator('.hero-arrow.next').click();
+  await expect(page.locator('.hero-dot').nth(1)).toHaveAttribute('aria-current', 'true');
+  await expect(page.locator('.hero-select')).toHaveAttribute('data-hero', 'mage');
   await page.getByRole('button', { name: /enter the dungeon/i }).click();
   await expect(page.locator('.node.current')).toBeVisible();
   expect(problems).toEqual([]);

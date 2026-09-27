@@ -20,7 +20,8 @@ export async function freshGame(page: Page, opts: { tutorial?: boolean } = {}): 
 /** Title → hero select → journey → first fight, ready to play (Start pressed if present). */
 export async function startFight(page: Page, heroIndex = 0): Promise<void> {
   await page.getByRole('button', { name: /new run/i }).click();
-  await page.locator('.hero-card').nth(heroIndex).click();
+  await page.locator('.hero-dot').nth(heroIndex).click();
+  await expect(page.locator('.hero-dot').nth(heroIndex)).toHaveAttribute('aria-current', 'true');
   await page.getByRole('button', { name: /enter the dungeon/i }).click();
   await page.getByRole('button', { name: /enter floor 1/i }).click();
   await expect(page.locator('.combat')).toBeVisible();
