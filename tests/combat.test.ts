@@ -148,6 +148,34 @@ describe('combat engine', () => {
     expect(ids).toContain('manaGeode');
   });
 
+  it('perks: innate puts a copy first on the belt, discount lowers its cost', () => {
+    const deck = deckOf(new Array(10).fill('strike'));
+    deck[9] = { ...deck[9], id: 'heavyBlow', perks: ['innate', 'discount'] };
+    const c = setup({ deck });
+    const card = c.belt.find((b) => b.card.id === 'heavyBlow')?.card;
+    expect(card).toBeDefined();
+    expect(c.cardCost(card!)).toBe(c.cardCost({ uid: 0, id: 'heavyBlow', up: false }) - 1);
+  });
+
+  it('a hexed card needs its taps, then thaws, then plays normally', () => {
+    const c = setup({ deck: deckOf(new Array(8).fill('strike')) });
+    run(c, CONFIG.introTime + 0.01);
+    c.hexBelt('petrify', 1);
+    const card = c.belt.find((b) => b.card.hex)!.card;
+    for (let i = 0; i < 5; i++) expect(c.playCard(card.uid)).toBe(false);
+    expect(c.stash(card.uid)).toBe(false);
+    expect(card.hex?.left).toBe(0);
+    expect(c.playCard(card.uid)).toBe(false);
+    run(c, 0.6);
+    expect(card.hex).toBeUndefined();
+    expect(c.playCard(card.uid)).toBe(true);
+  });
+
+  it('sleeve slots come from the hero', () => {
+    expect(setup({ hero: HEROES.warrior }).sleeve.length).toBe(1);
+    expect(setup({ hero: HEROES.necromancer }).sleeve.length).toBe(3);
+  });
+
   it('mana crystals raise the cap empty', () => {
     const c = setup({ deck: deckOf(['manaGeode', 'strike']) });
     run(c, CONFIG.introTime + 0.01);

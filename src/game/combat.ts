@@ -2,8 +2,10 @@ import { Emitter } from '../core/emitter';
 import { Rng } from '../core/rng';
 import { CONFIG, EXPIRE_POS } from '../data/config';
 import { STATUSES } from '../data/statuses';
-import { CARDS } from '../data/cards';
+import { CARDS, cardCostOf, cardKeywordsOf, cardValsOf } from '../data/cards';
+import { HEXES } from '../data/hexes';
 import { RELICS } from '../data/relics';
+import type { TKey } from '../core/i18n';
 import type { BeltCard, CardDef, CardInst, CombatCard, CombatEvent, CombatResult, EnemyDef, HeroDef, MoveDef, Side, Statuses } from './types';
 
 export interface Fighter {
@@ -103,6 +105,8 @@ export class Combat {
   cardsPlayed = 0;
   /** True once the hero special has been played (the run then loses it). */
   specialUsed = false;
+  /** The last card the hero played this fight (rules such as "not the same type twice"). */
+  lastPlayed: CardDef | null = null;
   /** Card currently resolving, so effect helpers know its type. */
   private current: { card: CombatCard; def: CardDef } | null = null;
   /** Free-form per-combat state for relics and powers. */
@@ -118,7 +122,7 @@ export class Combat {
     const h = setup.hero;
 
     let maxMana = h.maxMana + (setup.bonusMaxMana ?? 0);
-    let sleeve: number = CONFIG.sleeveSlots;
+    let sleeve = h.sleeve;
     let regenMul = 1;
     for (const id of this.relics) {
       const m = RELICS[id]?.mods;
@@ -202,15 +206,11 @@ export class Combat {
   }
 
   cardVals(card: CardInst & { bonus?: number }): number[] {
-    const def = CARDS[card.id];
-    const vals = [...(card.up ? (def.upVals ?? def.vals) : def.vals)];
-    if (card.bonus && def.dmg?.length) vals[def.dmg[0]] += card.bonus;
-    return vals;
+    return cardValsOf(card);
   }
 
   cardCost(card: CardInst): number {
-    const def = CARDS[card.id];
-    return card.up && def.upCost !== undefined ? def.upCost : def.cost;
+    return cardCostOf(card);
   }
 
   canAfford(card: CardInst): boolean {
@@ -224,8 +224,18 @@ export class Combat {
   }
 
   keywords(card: CardInst): string[] {
-    const def = CARDS[card.id];
-    return (card.up ? (def.upKeywords ?? def.keywords) : def.keywords) ?? [];
+    return cardKeywordsOf(card);
+  }
+
+  /** Why the enemy's rules (passive statuses) forbid playing this card now, or null. */
+  ruleBlock(def: CardDef): TKey | null {
+    for (const side of ['hero', 'enemy'] as const) {
+      for (const id of Object.keys(this.fighter(side).statuses)) {
+        const reason = this.has(side, id) ? STATUSES[id].canPlay?.(this, side, def) : null;
+        if (reason) return reason;
+      }
+    }
+    return null;
   }
 
   /** Damage the hero would deal with `base` from `def` right now (for card previews). */
@@ -384,13 +394,23 @@ export class Combat {
     if (m.steal) for (let i = 0; i < m.steal; i++) this.stealCard();
     if (m.drainMana) this.drainMana(m.drainMana);
     if (m.beltHaste) this.beltHasteT = Math.max(this.beltHasteT, m.beltHaste);
+    if (m.hex) this.hexBelt(m.hex.id, m.hex.n);
     m.fx?.(this);
   }
 
   private tickBelt(dt: number): void {
     const rate = this.beltRate();
     const move = (dt / CONFIG.beltTime) * rate;
-    for (const b of this.belt) b.pos += move;
+    for (const b of this.belt) {
+      b.pos += move;
+      const hex = b.card.hex;
+      if (!hex || hex.left > 0) continue;
+      hex.t -= dt;
+      if (hex.t <= 0) {
+        delete b.card.hex;
+        this.events.emit({ type: 'hexBroken', card: b.card });
+      }
+    }
     // Expire cards that fell off the left edge.
     for (let i = this.belt.length - 1; i >= 0; i--) {
       const b = this.belt[i];
@@ -446,6 +466,7 @@ export class Combat {
 
   private expire(card: CombatCard): void {
     const def = CARDS[card.id];
+    delete card.hex;
     this.events.emit({ type: 'cardExpired', card });
     this.withCard(card, def, () => def.onExpire?.(this, this.cardVals(card), card));
     this.heroDef.hooks.onCardExpired?.(this, card);
@@ -463,8 +484,17 @@ export class Combat {
     const card = beltIdx >= 0 ? this.belt[beltIdx].card : sleeveIdx >= 0 ? this.sleeve[sleeveIdx] : null;
     if (!card) return false;
     const def = CARDS[card.id];
+    if (card.hex) {
+      this.tapHex(card);
+      return false;
+    }
     if (!this.isPlayable(card)) {
       this.events.emit({ type: 'text', target: 'hero', key: 'combat.unplayable', tone: 'neutral' });
+      return false;
+    }
+    const rule = this.ruleBlock(def);
+    if (rule) {
+      this.events.emit({ type: 'text', target: 'hero', key: rule, tone: 'bad' });
       return false;
     }
     if (!this.canAfford(card)) {
@@ -485,8 +515,12 @@ export class Combat {
     this.withCard(card, def, () => def.play!(this, vals, card));
     if (this.result === 'lose') return true;
 
+    this.lastPlayed = def;
     this.heroDef.hooks.onCardPlayed?.(this, card, def, spent);
     for (const id of this.relics) RELICS[id]?.hooks?.onCardPlayed?.(this, card, def);
+    for (const side of ['hero', 'enemy'] as const) {
+      for (const id of Object.keys(this.fighter(side).statuses)) if (this.has(side, id)) STATUSES[id].onCardPlayed?.(this, side, def);
+    }
 
     const kw = this.keywords(card);
     if (kw.includes('consume')) {
@@ -508,6 +542,8 @@ export class Combat {
     const target = slot ?? this.sleeve.indexOf(null);
     if (target < 0 || target >= this.sleeve.length) return false;
     const b = this.belt[beltIdx];
+    // A hexed card is stuck to the belt until freed.
+    if (b.card.hex) return false;
     const old = this.sleeve[target];
     // The hero special never leaves its hand.
     if (old?.uid === SPECIAL_UID) return false;
@@ -737,6 +773,30 @@ export class Combat {
       this.discard.push(card);
     }
     this.events.emit({ type: 'curseAdded', card, to });
+  }
+
+  /** Hexes up to `n` random belt cards (not curses, not already hexed). */
+  hexBelt(id: string, n: number): void {
+    const hex = HEXES[id];
+    const pool = this.belt.filter((b) => !b.card.hex && CARDS[b.card.id].type !== 'curse');
+    for (const b of this.rng.shuffle(pool).slice(0, n)) {
+      b.card.hex = { id, left: hex.taps, t: hex.thaw };
+      this.events.emit({ type: 'hexed', card: b.card });
+    }
+  }
+
+  /** A tap on a hexed card chips at the hex instead of playing it; the last tap starts the thaw. */
+  private tapHex(card: CombatCard): void {
+    const hex = card.hex!;
+    if (hex.left <= 0) return;
+    hex.left--;
+    this.events.emit({ type: 'hexTap', card });
+  }
+
+  /** Brings the enemy's current move closer by `s` seconds. */
+  hurryEnemy(s: number): void {
+    const e = this.enemy;
+    e.timer = Math.min(e.move.windup, e.timer + s);
   }
 
   /** The enemy steals the belt card closest to the exit; it's gone for this fight. */

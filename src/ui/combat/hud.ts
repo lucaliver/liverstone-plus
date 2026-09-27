@@ -48,7 +48,9 @@ export function createHud(v: CombatView): { render(): void } {
         tag: t(side === 'hero' ? 'status.onYou' : 'status.onEnemy'),
         tagCls: goodForPlayer ? 'good' : 'bad',
         desc: t(`status.${id}.d`, { v: s.v }),
-        extra: [timed ? t('status.timeLeft', { s: Math.ceil(s.t) }) : def.kind !== 'timed' ? t('status.stacks', { v: s.v }) : ''].filter(Boolean),
+        extra: [
+          def.passive ? '' : timed ? t('status.timeLeft', { s: Math.ceil(s.t) }) : def.kind !== 'timed' ? t('status.stacks', { v: s.v }) : '',
+        ].filter(Boolean),
         ink: goodForPlayer ? 'good' : 'bad',
       },
       () => v.inspect(false),
@@ -81,7 +83,7 @@ export function createHud(v: CombatView): { render(): void } {
       const s = f.statuses[id];
       if (!s) continue;
       const sd = STATUSES[id];
-      const val = sd.kind !== 'timed' || sd.showStacks ? String(s.v) : s.t > 999 ? '' : `${Math.ceil(s.t)}s`;
+      const val = sd.passive ? '' : sd.kind !== 'timed' || sd.showStacks ? String(s.v) : s.t > 999 ? '' : `${Math.ceil(s.t)}s`;
       setText(b.querySelector('span')!, val);
     }
   };

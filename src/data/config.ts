@@ -10,7 +10,6 @@ export const CONFIG = {
   minGap: 0.13,
   /** A card expires once its left edge is this far past the belt's left edge (fraction of card width). */
   expireOverhang: 0.45,
-  sleeveSlots: 2,
   /** Belt speed multiplier while rushed (Time Slip, Time Warp). */
   beltRush: 1.8,
   /** Global difficulty knobs applied to every enemy. */

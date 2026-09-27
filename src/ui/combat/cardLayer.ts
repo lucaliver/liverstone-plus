@@ -17,6 +17,7 @@ interface CardEl {
   el: HTMLDivElement;
   card: CombatCard;
   face: HTMLElement;
+  span: number;
 }
 
 interface Drag {
@@ -57,7 +58,14 @@ export function createCardLayer(v: CombatView): CardLayer {
 
   const makeCardEl = (card: CombatCard): CardEl => {
     const cardEl = cardView(card, { combat });
-    return { el: cardEl, card, face: cardEl.querySelector('.c-face')! };
+    const span = CARDS[card.id].span ?? 1;
+    // A wide card is a normal card with a gate stretching over the belt ahead of it (it's all one tap target).
+    if (span > 1) {
+      cardEl.classList.add('wide');
+      cardEl.style.setProperty('--span', String(span));
+      cardEl.append(h('div', { class: 'c-gate' }));
+    }
+    return { el: cardEl, card, face: cardEl.querySelector('.c-face')!, span };
   };
 
   const findCard = (uid: number): CombatCard | null =>
@@ -207,7 +215,11 @@ export function createCardLayer(v: CombatView): CardLayer {
         beltEls.set(b.card.uid, ce);
         r.beltCards.append(ce.el);
       }
-      toggle(ce.el, 'poor', !combat.canAfford(b.card) || !combat.isPlayable(b.card));
+      const hex = b.card.hex;
+      toggle(ce.el, 'poor', !hex && (!combat.canAfford(b.card) || !combat.isPlayable(b.card)));
+      toggle(ce.el, 'hexed', !!hex && hex.left > 0);
+      toggle(ce.el, 'thawing', !!hex && hex.left <= 0);
+      if (hex) ce.el.dataset.hexLeft = String(hex.left);
       // Blink on the way out only when leaving the belt does something (curses that explode, drain…).
       toggle(ce.el, 'leaving', b.pos > 0.86 && !!CARDS[b.card.id].onExpire);
       if (refreshFaces) setHtml(ce.face, cardFace(b.card, combat));
@@ -215,7 +227,8 @@ export function createCardLayer(v: CombatView): CardLayer {
       // Snap to whole pixels: crisp pixel art and a slightly stepped, printed feel.
       const x = Math.round(state.beltW * (1 - b.pos));
       ce.el.style.transform = `translate3d(${x}px, ${b.row * state.rowH}px, 0)`;
-      ce.el.style.zIndex = String(Math.round(b.pos * 100));
+      // Wide cards (Gatekeeping) ride over everything else on the belt.
+      ce.el.style.zIndex = String(Math.round(b.pos * 100) + (ce.span > 1 ? 1000 : 0));
     }
     for (const [uid, ce] of beltEls) {
       if (onBelt.has(uid)) continue;

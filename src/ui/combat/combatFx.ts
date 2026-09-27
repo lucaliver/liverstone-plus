@@ -133,6 +133,26 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         sfx('curse');
         break;
       }
+      case 'hexed': {
+        const el = cards.elementOf(e.card.uid);
+        if (el) v.retrigger(el, 'hex-in');
+        sfx('curse');
+        break;
+      }
+      case 'hexTap': {
+        const el = cards.elementOf(e.card.uid);
+        if (el) {
+          v.retrigger(el, 'hex-hit');
+          const p = centerOf(el);
+          burst('block', p.x, p.y, 5);
+        }
+        sfx('blunt');
+        haptic(8);
+        break;
+      }
+      case 'hexBroken':
+        sfx('stash');
+        break;
       case 'reshuffle': {
         // Near the belt entry, where the reshuffled cards come from.
         const rc = r.belt.getBoundingClientRect();

@@ -131,6 +131,11 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
 - Keyword flags (`Keyword` type, change engine behaviour): exhaust, consume, fleeting, volatile, innate, unique,
   unplayable. Glossary-only keywords (`[rush]`, `[power]`, `[x]`, statuses…) just need their `kw.*` strings.
   Rarity `unique` = hero special.
+- `span` (belt widths) makes a card wide: it rides over the cards ahead of it (Gatekeeping).
+- Cost, keywords and values of a copy come from `cardCostOf` / `cardKeywordsOf` / `cardValsOf` (`data/cards/index.ts`),
+  shared by engine and UI: they include upgrades and **perks** (`data/perks.ts`, permanent per copy, `CardInst.perks`).
+- **Hexes** (`data/hexes.ts`) are curses on one combat card (`CombatCard.hex`, cast by a move's `hex`): taps chip them
+  through `playCard`, then the card thaws. Curse *cards* are a different thing (temporary cards in `neutral.ts`).
 - `tests/content.test.ts` checks texts, glyphs, keywords, enemy moves and starter decks.
 
 ### Enemies
@@ -142,7 +147,7 @@ Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.t
 
 ### Heroes
 
-`HeroDef` in `data/heroes.ts` (hp, maxMana, regen, blockDecay, starter deck with basic cards only + crystals,
+`HeroDef` in `data/heroes.ts` (hp, maxMana, regen, blockDecay, `sleeve` slots, starter deck with basic cards only + crystals,
 `special`, `ability { id, cost, use }`, hooks), a card file, a sprite, `hero.<id>.*` strings, and entries in
 `ABILITY_ICON` / `PASSIVE_ICON` (`ui/combat/view.ts`).
 
@@ -150,6 +155,8 @@ Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.t
 
 `StatusDef` in `data/statuses.ts` (`kind`: timed / stacks / dot, `good`, `icon`) plus `status.<id>` and
 `status.<id>.d` (`{v}` = amount). Their effect is applied where it matters in `combat.ts` (damage, ticks, decay).
+Rule statuses carry their own hooks instead: `canPlay` (returns the i18n key of why a card can't be played) and
+`onCardPlayed`; `passive: true` marks a permanent enemy trait (no number on the chip).
 
 ### i18n
 

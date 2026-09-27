@@ -1,5 +1,5 @@
 import { t } from '../../core/i18n';
-import { CARDS } from '../../data/cards';
+import { CARDS, cardCostOf, cardKeywordsOf, cardValsOf } from '../../data/cards';
 import type { Combat } from '../../game/combat';
 import type { CardInst } from '../../game/types';
 import { h } from '../dom';
@@ -58,22 +58,14 @@ export function cardName(card: CardInst): string {
 }
 
 export function cardCostLabel(card: CardInst): string {
-  const def = CARDS[card.id];
-  const cost = card.up && def.upCost !== undefined ? def.upCost : def.cost;
+  const cost = cardCostOf(card);
   return cost < 0 ? 'X' : String(cost);
-}
-
-function cardVals(card: CardInst & { bonus?: number }): number[] {
-  const def = CARDS[card.id];
-  const vals = [...(card.up ? (def.upVals ?? def.vals) : def.vals)];
-  if (card.bonus && def.dmg?.length) vals[def.dmg[0]] += card.bonus;
-  return vals;
 }
 
 /** Value HTML with live damage preview (green = buffed/upgraded, red = weakened). */
 function valueHtml(card: CardInst & { bonus?: number }, idx: number, combat?: Combat | null): string {
   const def = CARDS[card.id];
-  const base = cardVals(card)[idx];
+  const base = cardValsOf(card)[idx];
   const upgraded = card.up && def.upVals && def.upVals[idx] !== def.vals[idx];
   if (combat && def.dmg?.includes(idx)) {
     const v = combat.previewHeroDamage(base, def);
@@ -112,23 +104,18 @@ export function cardFace(card: CardInst & { bonus?: number }, combat?: Combat | 
 /** Full rules text as HTML (detail view). */
 export function cardText(card: CardInst & { bonus?: number }): string {
   const def = CARDS[card.id];
-  const vals = cardVals(card);
+  const vals = cardValsOf(card);
   let s = t(`card.${card.id}.desc`).replace(/\{(\d)\}/g, (_, i: string) => {
     const idx = Number(i);
     const upgraded = card.up && def.upVals && def.upVals[idx] !== def.vals[idx];
     return `<span class="num ${upgraded ? 'upg' : ''}">${vals[idx]}</span>`;
   });
   s = s.replace(/\[(\w+)\]/g, (_, kw: string) => `<b class="kw">${t(`kw.${kw}`)}</b>`);
-  const kws = keywordsOf(card).filter((k) => KEYWORD_LINE.includes(k));
+  const kws = cardKeywordsOf(card).filter((k) => KEYWORD_LINE.includes(k));
   const extra = kws.map((k) => `<b class="kw">${t(`kw.${k}`)}</b>`);
   if (def.type === 'power') extra.unshift(`<b class="kw">${t('kw.power')}</b>`);
   if (extra.length) s += `<span class="kwline">${extra.join(' · ')}</span>`;
   return s;
-}
-
-function keywordsOf(card: CardInst): string[] {
-  const def = CARDS[card.id];
-  return (card.up ? (def.upKeywords ?? def.keywords) : def.keywords) ?? [];
 }
 
 /** Keywords referenced by a card, for the glossary in the detail view. */
@@ -136,7 +123,7 @@ export function cardKeywords(card: CardInst): string[] {
   const def = CARDS[card.id];
   const found = new Set<string>();
   for (const m of t(`card.${card.id}.desc`).matchAll(/\[(\w+)\]/g)) found.add(m[1]);
-  for (const k of keywordsOf(card)) if (KEYWORD_LINE.includes(k)) found.add(k);
+  for (const k of cardKeywordsOf(card)) if (KEYWORD_LINE.includes(k)) found.add(k);
   if (def.type === 'power') found.add('power');
   if (def.cost < 0) found.add('x');
   return [...found];
@@ -158,7 +145,7 @@ export function cardView(card: CardInst & { bonus?: number }, opts: CardViewOpts
     'data-uid': card.uid,
     'aria-label': cardName(card),
   });
-  const tags = keywordsOf(card)
+  const tags = cardKeywordsOf(card)
     .filter((k) => TAG_ICON[k])
     .map((k) => icon(TAG_ICON[k]))
     .join('');

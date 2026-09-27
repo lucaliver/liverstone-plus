@@ -13,6 +13,31 @@ export interface CardInst {
   uid: number;
   id: string;
   up: boolean;
+  /** Permanent perks earned on this copy (Promotion), ids of `PERKS`. */
+  perks?: string[];
+}
+
+/** A permanent perk a deck card can earn: extra keywords and/or a cost change. */
+export interface PerkDef {
+  id: string;
+  icon: string;
+  keywords?: Keyword[];
+  costDelta?: number;
+}
+
+/** A curse cast on one card during a fight (e.g. petrified): it must be tapped `taps` times, then thaws for `thaw` s. */
+export interface HexDef {
+  id: string;
+  icon: string;
+  taps: number;
+  thaw: number;
+}
+
+/** A hex on a combat card: `left` taps still needed; once 0, it thaws for `t` seconds and the card is free. */
+export interface CardHex {
+  id: string;
+  left: number;
+  t: number;
 }
 
 /** A card during combat (a copy of a deck card, or a temporary one such as an enemy curse). */
@@ -21,6 +46,7 @@ export interface CombatCard extends CardInst {
   bonus: number;
   /** Temporary cards don't belong to the run deck. */
   temp: boolean;
+  hex?: CardHex;
 }
 
 export interface BeltCard {
@@ -56,6 +82,8 @@ export interface CardDef {
   cat?: 'attack' | 'defense' | 'utility' | 'curse';
   /** Unlock pack id; cards without a pack are always available. */
   pack?: string;
+  /** Card widths it covers on the belt (default 1): wider cards ride over the ones ahead of them. */
+  span?: number;
   play?: (c: Combat, v: number[], card: CombatCard) => void;
   /** Triggered when the card leaves the belt without being played. */
   onExpire?: (c: Combat, v: number[], card: CombatCard) => void;
@@ -70,6 +98,12 @@ export interface StatusDef {
   icon: string;
   /** Timed statuses that also stack show their stacks instead of the seconds left. */
   showStacks?: boolean;
+  /** A permanent trait (enemy passives): shown without a number. */
+  passive?: boolean;
+  /** A rule while active: returns why the hero can't play this card now (an i18n key), or null. */
+  canPlay?: (c: Combat, side: Side, def: CardDef) => TKey | null;
+  /** Reacts to every card the hero plays. */
+  onCardPlayed?: (c: Combat, side: Side, def: CardDef) => void;
 }
 
 /** `v` = stacks/amount; `t` = seconds left for timed statuses. */
@@ -99,6 +133,8 @@ export interface MoveDef {
   drainMana?: number;
   /** Speeds the player's belt up for `t` seconds. */
   beltHaste?: number;
+  /** Hexes `n` cards on the belt (see `HEXES`). */
+  hex?: { id: string; n: number };
   fx?: (c: Combat) => void;
 }
 
@@ -144,6 +180,8 @@ export interface HeroDef {
   startDeck: string[];
   /** Once-per-run card that starts each fight in the sleeve (not part of the deck). */
   special: string;
+  /** Sleeve slots (the special takes the first one while unused). */
+  sleeve: number;
   starterRelic?: string;
   color: string;
   ability: {
@@ -190,6 +228,9 @@ export type CombatEvent =
   | { type: 'cardStolen'; card: CombatCard }
   | { type: 'cantAfford'; card: CombatCard }
   | { type: 'curseAdded'; card: CombatCard; to: 'belt' | 'draw' | 'discard' }
+  | { type: 'hexed'; card: CombatCard }
+  | { type: 'hexTap'; card: CombatCard }
+  | { type: 'hexBroken'; card: CombatCard }
   | { type: 'reshuffle' }
   | { type: 'enemyIntent'; move: MoveDef }
   | { type: 'enemyAct'; move: MoveDef }
