@@ -86,13 +86,18 @@
     3px 3px 0 var(--k);
   animation: floatfast 0.7s steps(7) forwards;
 }
+.floater.dmg { --splat: #d8121e; }
+.floater.hurt { --splat: #8a0a24; }
+.floater.k-poison { --splat: var(--green); }
+.floater.k-burn { --splat: #b8420c; }
 .floater.dmg::before,
 .floater.hurt::before {
   content: '';
   position: absolute;
   inset: -4px -6px;
   z-index: -1;
-  background: #d8121e;
+  background: var(--splat);
+  opacity: 0.82;
   clip-path: polygon(
     8% 18%, 22% 0, 34% 14%, 50% 2%, 62% 12%, 80% 0, 88% 20%, 100% 30%, 92% 48%, 100% 64%,
     88% 78%, 94% 100%, 72% 88%, 58% 100%, 44% 86%, 26% 98%, 18% 80%, 0 86%, 8% 62%, 0 44%
@@ -108,11 +113,10 @@
   width: 5px;
   height: 10px;
   z-index: -1;
-  background: #d8121e;
-  box-shadow: 16px -2px 0 #d8121e, 16px 4px 0 #d8121e, 30px -4px 0 0 #d8121e;
+  background: var(--splat);
+  opacity: 0.82;
+  box-shadow: 16px -2px 0 var(--splat), 16px 4px 0 var(--splat), 30px -4px 0 0 var(--splat);
 }
-.floater.hurt::before,
-.floater.hurt::after { background: #8a0a24; box-shadow: 16px -2px 0 #8a0a24, 16px 4px 0 #8a0a24, 30px -4px 0 0 #8a0a24; }
 /* damage on the enemy lingers on the sprite long enough to be read, then drifts up and fades */
 .floater.dmg { z-index: 3; animation: floatslow 1.5s steps(15) forwards; }
 @keyframes floatslow {

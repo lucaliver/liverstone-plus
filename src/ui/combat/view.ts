@@ -40,7 +40,7 @@ function markup(run: RunState, combat: Combat): string {
   const heroId = run.hero;
   return `
     <header class="topbar">
-      <div class="floor-chip">${t('common.floorOf', { n: node.floor, total: totalFloors(run) })}<small class="enemy-name">${t(`enemy.${enemyDef.id}.name`)}${enemyDef.tier !== 'normal' ? `<span class="tier ${enemyDef.tier}">${t(`journey.node.${enemyDef.tier}`)}</span>` : ''}</small></div>
+      <div class="floor-chip"><div class="enemy-name">${t(`enemy.${enemyDef.id}.name`)}${enemyDef.tier !== 'normal' ? `<span class="tier ${enemyDef.tier}">${t(`journey.node.${enemyDef.tier}`)}</span>` : ''}</div><small>${t('common.floorOf', { n: node.floor, total: totalFloors(run) })}</small></div>
       <button class="icon-btn speed-btn js-speed" aria-label="${t('combat.speed')}"></button>
       <button class="icon-btn js-pause" aria-label="${t('combat.paused')}">${icon('pause')}</button>
     </header>

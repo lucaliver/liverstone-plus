@@ -64,10 +64,17 @@ export function movePattern(e: EnemyDef, values: MoveValues = baseValues, mark?:
     return `<li class="${cls}" data-intent="${m.intent}"${m.curse ? ` data-card="${m.curse.id}"` : ''}><span class="mi">${icon(INTENT_ICON[m.intent] ?? 'star')}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m, false, values)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`;
   };
   const every = e.specials.length ? `<li class="foe-every">${t('compendium.every', { n: e.every })}</li>` : '';
-  const passives = (e.start ?? [])
-    .filter((s) => STATUSES[s.id].passive)
-    .map((s) => `<p class="foe-half">${icon(STATUSES[s.id].icon)}<b>${t(`status.${s.id}`)}</b>: ${t(`status.${s.id}.d`, { v: s.v ?? 1 })}</p>`)
+  const traits = enemyTraits(e)
+    .map((x) => `<p class="foe-half">${icon(x.icon)}${x.name ? `<b>${x.name}</b>: ` : ''}${x.desc}</p>`)
     .join('');
-  const half = e.onHalf ? `<p class="foe-half">${icon('rage')}${t(`enemy.${e.id}.half`)}</p>` : '';
-  return `<ul class="foe-moves">${row(e.main)}${every}${e.specials.map(row).join('')}</ul>${passives}${half}`;
+  return `<ul class="foe-moves">${row(e.main)}${every}${e.specials.map(row).join('')}</ul>${traits}`;
+}
+
+/** What an enemy does beyond its moves: passive statuses and what happens at half HP. */
+export function enemyTraits(e: EnemyDef): { icon: string; name: string; desc: string }[] {
+  const traits = (e.start ?? [])
+    .filter((s) => STATUSES[s.id].passive)
+    .map((s) => ({ icon: STATUSES[s.id].icon, name: t(`status.${s.id}`), desc: t(`status.${s.id}.d`, { v: s.v ?? 1 }) }));
+  if (e.onHalf) traits.push({ icon: 'rage', name: '', desc: t(`enemy.${e.id}.half`) });
+  return traits;
 }

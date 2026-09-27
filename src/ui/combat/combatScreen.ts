@@ -8,8 +8,8 @@ import type { RunState } from '../../game/run';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
 import { type InfoOpts, openHowTo, openInfo, openSettings, speedSelector } from '../components/modals';
-import { INTENT_ICON } from '../art/icons';
-import { moveEffect, movePattern } from '../components/moveText';
+import { icon, INTENT_ICON } from '../art/icons';
+import { enemyTraits, moveEffect, movePattern } from '../components/moveText';
 import { h, onPress, onTapOrHold, setText } from '../dom';
 import { burst, haptic } from '../fx/fx';
 import { createCardLayer } from './cardLayer';
@@ -255,8 +255,19 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         { class: 'start-wrap' },
         h('button', { class: 'btn cta start-btn js-start', html: `${t('combat.start')}<small>${t('combat.startHint')}</small>` }),
       );
+      // Before the fight, the enemy's passives are spelled out above it, so the player knows what they're facing.
+      const traits = enemyTraits(combat.enemy.def);
+      const traitsEl = traits.length
+        ? h(
+            'div',
+            { class: 'foe-traits' },
+            ...traits.map((x) => h('div', { class: 'trait', html: `${icon(x.icon)}<p>${x.name ? `<b>${x.name}</b>` : ''}${x.desc}</p>` })),
+          )
+        : null;
+      if (traitsEl) r.stage.append(traitsEl);
       startWrap.querySelector('button')!.addEventListener('click', () => {
         startWrap.remove();
+        traitsEl?.remove();
         state.waiting = false;
         state.paused = !!pauseModal;
         sfx('button');

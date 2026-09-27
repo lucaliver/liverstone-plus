@@ -30,7 +30,9 @@
   display: grid;
   place-items: center;
 }
-.title-hero .riso {
+.title-hero > .riso {
+  position: relative;
+  z-index: 1;
   width: min(60vw, 272px);
   aspect-ratio: 1;
   animation: bob 1.2s steps(2) infinite;

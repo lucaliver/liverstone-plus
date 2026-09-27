@@ -5,17 +5,10 @@ import type { HeroDef, HeroId } from '../../game/types';
 import type { Screen } from '../app';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
-import { ABILITY_ICON, PASSIVE_ICON } from '../combat/view';
-import { cardText } from '../components/cardView';
+import { heroFeatures } from '../components/heroSheet';
 import { motes } from '../components/decor';
 import { openDeck } from '../components/modals';
 import { h } from '../dom';
-
-const feature = (ic: string, name: string, kind: 'passive' | 'active' | 'special', desc: string): HTMLElement =>
-  h('div', {
-    class: 'hero-feature',
-    html: `${icon(ic)}<div><b>${name} <span class="ftag ${kind}">${t(`hero.tag.${kind}`)}</span></b>${desc}</div>`,
-  });
 
 function slide(hero: HeroDef, index: number): HTMLElement {
   const id = hero.id;
@@ -46,18 +39,7 @@ function slide(hero: HeroDef, index: number): HTMLElement {
         html: `${icon('cards')}${hero.startDeck.length}`,
       }),
     ),
-    h(
-      'div',
-      { class: 'hero-features' },
-      feature(PASSIVE_ICON[id], t(`hero.${id}.passiveName`), 'passive', t(`hero.${id}.passiveShort`)),
-      feature(
-        ABILITY_ICON[id],
-        t(`hero.${id}.ability`),
-        'active',
-        `${t(`hero.${id}.abilityShort`)} <span class="fcost">${icon('crystal')}${hero.ability.cost}</span>`,
-      ),
-      feature('star', t(`card.${hero.special}.name`), 'special', cardText({ uid: -1, id: hero.special, up: false })),
-    ),
+    heroFeatures(hero),
   );
 }
 

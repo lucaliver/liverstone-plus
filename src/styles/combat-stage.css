@@ -18,15 +18,17 @@
   line-height: 1.1;
   text-transform: uppercase;
 }
-.floor-chip small {
+.floor-chip .enemy-name {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 2px 8px;
-  font-family: var(--font-ui);
-  font-size: 18px;
-  color: var(--fg);
-  text-transform: none;
+  font-size: 24px;
+}
+.floor-chip small {
+  display: block;
+  font-size: 16px;
+  color: var(--muted-d);
 }
 .speed-btn {
   font-family: var(--font-ui);
@@ -418,3 +420,30 @@
 .status.good .pico { color: var(--b); --ink2: var(--y); }
 .status.bad .pico { color: var(--p); --ink2: var(--y); }
 .threat .t-time .pico { font-size: 20px; --ink2: var(--b); }
+
+/* Before Start: the enemy's passives, on paper slips over the top of the stage. */
+.foe-traits {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  z-index: 4;
+  width: min(92%, 340px);
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+}
+.trait {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  color: var(--k);
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--p);
+}
+.trait .pico { flex: none; font-size: 26px; color: var(--p); --ink2: var(--y); }
+.trait p { margin: 0; font-family: var(--font); font-size: 14px; line-height: 1.25; }
+.trait b { display: block; font-family: var(--font-ui); font-size: 17px; text-transform: uppercase; }

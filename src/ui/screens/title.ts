@@ -4,7 +4,7 @@ import { settings } from '../../game/settings';
 import type { Screen } from '../app';
 import { h } from '../dom';
 import { creature } from '../art/creatures';
-import { candleFlame, icon } from '../art/icons';
+import { icon } from '../art/icons';
 import { darkEyes, motes } from '../components/decor';
 import { openHowTo, openSettings } from '../components/modals';
 
@@ -14,6 +14,14 @@ export interface TitleCallbacks {
   onNewRun: () => void;
   onCompendium: () => void;
 }
+
+/** Office and factory props around the boss (sprite id, position class). */
+const TITLE_PROPS: [string, string][] = [
+  ['filingCabinet', 'l'],
+  ['trafficCone', 'l2'],
+  ['timeClock', 'r'],
+  ['toxicBarrel', 'r2'],
+];
 
 export function titleScreen(cb: TitleCallbacks): Screen {
   const btn = (label: string, cls: string, fn: () => void): HTMLButtonElement =>
@@ -50,7 +58,7 @@ export function titleScreen(cb: TitleCallbacks): Screen {
         { x: '8%', y: '20%' },
         { x: '82%', y: '12%' },
         { x: '76%', y: '70%' },
-      ])}<div class="candle l">${candleFlame()}</div><div class="candle r" style="--fd:-.2s">${candleFlame()}</div><div class="candle l2" style="--fd:-.35s">${candleFlame()}</div><div class="candle r2" style="--fd:-.1s">${candleFlame()}</div>${creature('ceo')}`,
+      ])}${TITLE_PROPS.map(([id, cls]) => `<div class="prop ${cls}">${creature(id)}</div>`).join('')}${creature('ceo')}`,
     }),
     h(
       'div',

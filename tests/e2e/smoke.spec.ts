@@ -83,13 +83,12 @@ test('compendium shows cards and enemies in separate sections', async ({ page })
 });
 
 for (const height of [844, 600]) {
-  test(`title candles are visible and animated (height ${height})`, async ({ page }) => {
+  test(`title props are visible (height ${height})`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height });
     await freshGame(page);
-    const candles = page.locator('.title-screen .candle');
-    await expect(candles).toHaveCount(4);
-    for (const c of await candles.all()) await expect(c).toBeVisible();
-    await expect(page.locator('.title-screen .candle .ff').first()).toHaveCSS('animation-name', 'flameframe');
+    const props = page.locator('.title-screen .prop');
+    await expect(props).toHaveCount(4);
+    for (const c of await props.all()) await expect(c).toBeVisible();
   });
 }
 

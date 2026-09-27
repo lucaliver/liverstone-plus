@@ -300,6 +300,45 @@ ${shadow}
 ${eyes(86, 114, 62, 6, '#ffd900', 'nh-g')}
 <path d="M82 80c10 9 26 9 36 0z" fill="#f6f0e4" stroke="#1b1830" stroke-width="3.5"/>`;
 
+// Title screen props (office and factory): the time clock, a filing cabinet, a traffic cone, a toxic barrel.
+const timeClock = `
+<defs>${lg('tk-m', '#9ab8f0', '#1c4fb0')}${lg('tk-g', '#ffe45a', '#d09a20')}</defs>
+${shadow}
+<rect x="40" y="16" width="120" height="164" rx="6" fill="url(#tk-m)" ${OUT}/>
+<circle cx="100" cy="66" r="36" fill="#f6f0e4" stroke="url(#tk-g)" stroke-width="8"/>
+<path d="M100 66V44M100 66l18 10" stroke="#1b1830" stroke-width="7" stroke-linecap="round"/>
+<g fill="#1b1830"><rect x="97" y="34" width="6" height="6"/><rect x="97" y="92" width="6" height="6"/><rect x="68" y="63" width="6" height="6"/><rect x="126" y="63" width="6" height="6"/></g>
+<rect x="80" y="112" width="40" height="36" fill="#f6f0e4" ${OUT}/>
+<g fill="#ff3d9a"><rect x="86" y="118" width="6" height="6"/><rect x="100" y="128" width="6" height="6"/><rect x="108" y="118" width="6" height="6"/></g>
+<rect x="58" y="146" width="84" height="12" fill="#1b1830"/>
+<rect x="160" y="76" width="16" height="44" fill="url(#tk-g)" ${OUT}/>`;
+
+const filingCabinet = `
+<defs>${lg('fc-m', '#c8c0d8', '#6d6680')}</defs>
+${shadow}
+<rect x="44" y="36" width="112" height="150" fill="url(#fc-m)" ${OUT}/>
+<rect x="54" y="46" width="92" height="36" fill="#9a94ac" ${OUT}/><rect x="54" y="90" width="92" height="36" fill="#9a94ac" ${OUT}/>
+<path d="M58 132l10-12 8 10 10-14 10 12 12-10 10 14 14-8 6 8z" fill="#f6f0e4" ${OUT}/>
+<rect x="38" y="138" width="124" height="42" fill="#9a94ac" ${OUT}/>
+<g fill="#1b1830"><rect x="88" y="60" width="24" height="8"/><rect x="88" y="104" width="24" height="8"/><rect x="88" y="154" width="24" height="8"/></g>
+<rect x="62" y="52" width="18" height="10" fill="#f6f0e4"/>
+<path d="M84 36c0-14 7-24 16-24s16 10 16 24c0 5-3 8-6 9v4H90v-4c-3-1-6-4-6-9z" fill="#f6f0e4" ${OUT}/>
+<g fill="#1b1830"><rect x="90" y="24" width="7" height="7"/><rect x="104" y="24" width="7" height="7"/></g>`;
+
+const trafficCone = `
+${shadow}
+<path d="M88 24h24l32 146H56z" fill="#ff6a2a" ${OUT}/>
+<path d="M81 74h38l5 22H76zM72 116h56l5 22H67z" fill="#f6f0e4"/>
+<rect x="36" y="166" width="128" height="18" fill="#e04a1a" ${OUT}/>`;
+
+const toxicBarrel = `
+${shadow}
+<rect x="50" y="48" width="100" height="138" rx="8" fill="#ffd900" ${OUT}/>
+<path d="M50 90h100M50 152h100" stroke="#1b1830" stroke-width="6"/>
+<path d="M86 104c0-10 6-16 14-16s14 6 14 16c0 4-2 6-4 7v5H90v-5c-2-1-4-3-4-7z" fill="#1b1830"/>
+<g fill="#ffd900"><rect x="92" y="100" width="6" height="6"/><rect x="102" y="100" width="6" height="6"/></g>
+<path d="M50 58c10-10 30-14 50-14s40 4 50 14v8c-6 0-6 16-12 16s-4-12-10-12-6 22-12 22-6-22-12-22-8 10-14 10-6-14-14-14-8 8-14 8z" fill="#8ad06a" ${OUT}/>`;
+
 /** The Break Room coffee machine: a brass-domed steampunk espresso machine with a pressure gauge and a cup under the spout. */
 const coffeeMachine = `
 <defs>${lg('cm-b', '#9ab8f0', '#1c4fb0')}${lg('cm-g', '#ffe45a', '#d09a20')}</defs>
@@ -401,6 +440,10 @@ export const CREATURES: Record<string, string> = {
   sleeper,
   newHire,
   coffeeMachine,
+  timeClock,
+  filingCabinet,
+  trafficCone,
+  toxicBarrel,
   warrior,
   mage,
   necromancer,

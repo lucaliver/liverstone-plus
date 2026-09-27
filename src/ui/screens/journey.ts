@@ -2,9 +2,11 @@ import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { currentNode, type RunNode, type RunState } from '../../game/run';
 import type { Screen } from '../app';
-import { h } from '../dom';
+import { h, onPress } from '../dom';
 import { icon } from '../art/icons';
 import { openDeck, openSettings } from '../components/modals';
+import { openHeroSheet } from '../components/heroSheet';
+import { creature } from '../art/creatures';
 
 const NODE_ICON: Record<RunNode['type'], string> = { fight: 'sword', elite: 'clipboard', rest: 'coffee', promotion: 'up', boss: 'tophat' };
 /** Height of one floor on the map (px). */
@@ -12,9 +14,13 @@ const ROW_H = 92;
 const laneX = (lane: number): number => 22 + lane * 56;
 
 export function runHud(run: RunState, extra?: HTMLElement): HTMLElement {
+  const portrait = h('button', { class: 'chip hero-chip', 'aria-label': t(`hero.${run.hero}.name`), html: creature(run.hero) });
+  // Tap or hold the portrait for the hero's sheet.
+  onPress(portrait, () => openHeroSheet(run));
   return h(
     'div',
     { class: 'run-hud' },
+    portrait,
     h('div', { class: 'chip hp', html: `${icon('heart')}<span>${run.hp}/${run.maxHp}</span>` }),
     h('button', {
       class: 'chip',

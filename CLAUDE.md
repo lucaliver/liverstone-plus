@@ -206,7 +206,7 @@ Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unloc
 - **Content** (`tests/content.test.ts`): data integrity.
 - **Balance** (`tests/balance.sim.test.ts` + `bot.ts`): heuristic bot win rates; treat them as relative.
 - **E2E** (`tests/e2e/smoke.spec.ts`): title, hero carousel, fight → reward swap, layout stability, Start gate,
-  pause (music, backdrop tap, main menu), break room upgrade, map lane choice, compendium, title candles. Use real touch
+  pause (music, backdrop tap, main menu), break room upgrade, map lane choice, compendium, title props. Use real touch
   (`page.touchscreen.tap`) when the behaviour differs on phones.
 - Ad-hoc screenshot scripts live in the git-ignored `screenshots/` folder. `dev/art.html` (open it on the dev
   server) previews every creature sprite and icon after pixelisation.

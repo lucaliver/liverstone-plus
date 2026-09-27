@@ -49,7 +49,9 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
           const mid = centerOf(r.enemyArt);
           const fx = e.target === 'enemy' ? mid.x + ox : p.x;
           const fy = e.target === 'enemy' ? mid.y + oy : p.y - 10;
-          floatText(fx, fy, `-${e.amount}`, `${e.target === 'hero' ? 'hurt' : 'dmg'} ${big ? 'big' : ''}`, delay);
+          // The splat takes the colour of the damage: blood, poison (green) or burn (dark orange).
+          const splat = e.kind === 'poison' || e.kind === 'burn' ? `k-${e.kind}` : '';
+          floatText(fx, fy, `-${e.amount}`, `${e.target === 'hero' ? 'hurt' : 'dmg'} ${big ? 'big' : ''} ${splat}`, delay);
           setTimeout(() => burst(e.kind, p.x, p.y, e.source === 'dot' ? 8 : big ? 30 : 18), delay);
         }
         if (e.blocked > 0) {
