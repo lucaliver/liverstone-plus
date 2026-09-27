@@ -110,14 +110,27 @@ ${shadow}
 ${eyes(88, 112, 55, 3.5, '#8af8ff', 'bk-g')}`;
 
 const lich = `
-<defs>${lg('li-r', '#5a3aa0', '#1b1438')}${lg('li-b', '#f4ecd6', '#c9bd98')}${lg('li-c', '#f0c030', '#b08010')}${glow('li-g', '#ff3d9a')}${lg('li-st', '#7a4a2a', '#2a1a0a')}</defs>
+<defs>${lg('li-r', '#5a3aa0', '#1b1438')}${lg('li-b', '#f4ecd6', '#c9bd98')}${lg('li-c', '#f0c030', '#b08010')}${glow('li-g', '#ff3d9a')}</defs>
 ${shadow}
-<g class="limb"><path d="M166 192l-6-164 8-1 6 165z" fill="url(#li-st)" ${OUT}/><path d="M152 30c0-16 28-16 28 0 0 9-6 14-14 16-8-2-14-7-14-16z" fill="url(#li-b)" ${OUT}/><path d="M158 28h6v6h-6zM168 28h6v6h-6z" fill="#1b1830"/><circle cx="166" cy="18" r="12" fill="url(#li-g)"/><circle cx="166" cy="18" r="4" fill="#ff3d9a"/></g>
-<path d="M34 192l8-14 6 12 8-16 8 14 8-12 8 14 8-14 8 14 8-14 8 12 8-14 8 16 6-12 8 14c-4-64-26-100-66-110-40 10-62 46-66 110z" fill="url(#li-r)" ${OUT}/>
-<path d="M100 86l-14 44 14 42 14-42z" fill="#0c0818"/>
-<path d="M58 104c-12 2-26 12-30 34l12 6c4-12 10-20 20-24z" fill="url(#li-r)" ${OUT}/>
-<path d="M20 146l-8-18 6-2 6 12-2-16 6-1 2 16 2-18 6 1-1 18 6-12 5 3-8 18z" fill="url(#li-b)" ${OUT}/>
-<path d="M142 104c10 2 18 10 20 22l-10 6c-2-10-6-16-12-18z" fill="url(#li-r)" ${OUT}/>
+<!-- staff: a spine of bone, two horns holding a soul gem -->
+<path d="M162 192l1-146h8l1 146z" fill="url(#li-b)" ${OUT}/>
+<path d="M163 58h7M163 70h7M163 82h7M163 94h7M163 106h7M163 118h7M163 130h7M163 142h7M163 154h7M163 166h7M163 178h7" stroke="#8a7a5a" stroke-width="2"/>
+<path d="M167 52c-16-2-22-18-18-36 4 12 10 18 18 20 8-2 14-8 18-20 4 18-2 34-18 36z" fill="url(#li-b)" ${OUT}/>
+<path d="M167 12l9 16-9 16-9-16z" fill="#ff3d9a" ${OUT}/><path d="M165 20h3v6h-3z" fill="#fff" opacity=".7"/>
+<!-- robe with real shoulders, ragged hem -->
+<path d="M28 192l8-12 8 10 8-14 8 12 10-10 10 12 10-12 10 12 10-12 10 12 10-12 10 10 8-12 8 14 8-10 8 12c-2-32-8-64-16-84-4-8-14-12-28-14H72c-14 2-24 6-28 14-8 20-14 52-16 84z" fill="url(#li-r)" ${OUT}/>
+<path d="M100 112l-12 38 12 40 12-40z" fill="#0c0818"/>
+<!-- mantle over the shoulders, gold clasp -->
+<path d="M42 110c6-12 26-18 58-18s52 6 58 18l-14 10-14-8-14 10-16-10-16 10-14-10-14 8z" fill="#2a1a50" ${OUT}/>
+<path d="M100 104l7 8-7 8-7-8z" fill="url(#li-c)" ${OUT}/>
+<!-- left arm: sleeve from the shoulder, bony hand raised to cast -->
+<path d="M52 106c-14 6-24 20-28 36l18 6c4-12 10-22 20-28z" fill="url(#li-r)" ${OUT}/>
+<g transform="translate(8 -6)"><path d="M20 146l-8-18 6-2 6 12-2-16 6-1 2 16 2-18 6 1-1 18 6-12 5 3-8 18z" fill="url(#li-b)" ${OUT}/></g>
+<!-- right arm: sleeve from the shoulder, one hand gripping the staff -->
+<path d="M146 104c10 2 16 8 18 16l-4 14c-8-2-16-8-22-16z" fill="url(#li-r)" ${OUT}/>
+<path d="M158 116h16c2 0 3 2 3 4v10c0 2-1 4-3 4h-16z" fill="url(#li-b)" ${OUT}/>
+<path d="M161 122h13M161 128h13" stroke="#8a7a5a" stroke-width="2"/>
+<!-- skull and crown -->
 <path d="M62 70c-2-30 16-52 38-52s40 22 38 52c-1 14-8 24-16 28l-2 22H80l-2-22c-8-4-15-14-16-28z" fill="url(#li-b)" ${OUT}/>
 <path d="M72 60l14-4 10 10-4 18-16 2-6-12zM128 60l-14-4-10 10 4 18 16 2 6-12z" fill="#0c0818"/>
 <circle cx="84" cy="72" r="9" fill="url(#li-g)"/><circle cx="116" cy="72" r="9" fill="url(#li-g)"/>
