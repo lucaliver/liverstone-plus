@@ -141,3 +141,16 @@ test('pause → main menu keeps the run: Continue restarts the same floor', asyn
   expect(run.floor).toBe(0);
   expect(run.hp).toBe(run.max);
 });
+
+test('tapping the backdrop over the pause button closes the pause menu without reopening it', async ({ page }) => {
+  await freshGame(page);
+  await startFight(page);
+  const pause = page.locator('.js-pause');
+  await pause.click();
+  await expect(page.locator('.modal')).toBeVisible();
+  const box = (await pause.boundingBox())!;
+  // A real tap where the pause button sits (the backdrop covers it).
+  await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
+  await page.waitForTimeout(300);
+  await expect(page.locator('.modal')).toHaveCount(0);
+});
