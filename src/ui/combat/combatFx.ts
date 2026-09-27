@@ -1,5 +1,6 @@
 import { t } from '../../core/i18n';
 import { type SoundId, sfx } from '../../audio/sfx';
+import { CARDS } from '../../data/cards';
 import { HEXES } from '../../data/hexes';
 import { STATUSES } from '../../data/statuses';
 import { discover } from '../../game/meta';
@@ -132,13 +133,23 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
       case 'cardSpawn':
         sfx('cardSpawn');
         break;
-      case 'curseAdded': {
+      case 'cardAdded': {
         discover([e.card.id]);
-        const p = v.enemyPoint();
-        burst('curse', p.x, p.y, 20);
-        sfx('curse');
+        // Curses come from the enemy; anything else is the hero's own doing.
+        if (CARDS[e.card.id].type === 'curse') {
+          const p = v.enemyPoint();
+          burst('curse', p.x, p.y, 20);
+          sfx('curse');
+        } else {
+          const p = v.heroPoint();
+          burst('mana', p.x, p.y, 10);
+          sfx('stash');
+        }
         break;
       }
+      case 'cardDiscarded':
+        cards.markRemoval(e.card.uid, 'expired');
+        break;
       case 'hexed': {
         const el = cards.elementOf(e.card.uid);
         if (el) v.retrigger(el, 'hex-in');

@@ -19,6 +19,8 @@ interface CardEl {
   card: CombatCard;
   face: HTMLElement;
   span: number;
+  /** Rides over the other cards (a wide gate, a lane lock). */
+  over: boolean;
   /** Stone cover with the taps left, while the card is petrified. */
   hexEl?: HTMLElement;
   /** Icon of the rule (enemy passive, stun…) that blocks the card, while one does. */
@@ -67,14 +69,21 @@ export function createCardLayer(v: CombatView): CardLayer {
 
   const makeCardEl = (card: CombatCard): CardEl => {
     const cardEl = cardView(card, { combat });
-    const span = CARDS[card.id].span ?? 1;
+    const def = CARDS[card.id];
+    const span = def.span ?? 1;
     // A wide card is a normal card with a gate stretching over the belt ahead of it (it's all one tap target).
     if (span > 1) {
       cardEl.classList.add('wide');
+      toggle(cardEl, 'tall', !!def.tall);
       cardEl.style.setProperty('--span', String(span));
       cardEl.append(h('div', { class: 'c-gate' }));
     }
-    return { el: cardEl, card, face: cardEl.querySelector('.c-face')!, span };
+    // A lane lock pulls caution tape across its whole row.
+    if (def.lockRow) {
+      cardEl.classList.add('lock-row');
+      cardEl.append(h('div', { class: 'c-lane' }));
+    }
+    return { el: cardEl, card, face: cardEl.querySelector('.c-face')!, span, over: span > 1 || !!def.lockRow };
   };
 
   const findCard = (uid: number): CombatCard | null =>
@@ -263,6 +272,7 @@ export function createCardLayer(v: CombatView): CardLayer {
       const hex = b.card.hex;
       renderPlayState(ce, b.card);
       toggle(ce.el, 'hexed', !!hex && hex.left > 0);
+      toggle(ce.el, 'covered', combat.isCovered(b.card.uid));
       toggle(ce.el, 'thawing', !!hex && hex.left <= 0);
       if (hex && hex.left > 0) {
         ce.el.dataset.hexLeft = String(hex.left);
@@ -280,8 +290,8 @@ export function createCardLayer(v: CombatView): CardLayer {
       // Reversed belt (test setting): the same run mirrored, entering on the left.
       const x = Math.round(state.reversed ? state.beltW * b.pos - state.cardW : state.beltW * (1 - b.pos));
       ce.el.style.transform = `translate3d(${x}px, ${b.row * state.rowH}px, 0)`;
-      // Wide cards (Gatekeeping) ride over everything else on the belt.
-      ce.el.style.zIndex = String(Math.round(b.pos * 100) + (ce.span > 1 ? 1000 : 0));
+      // Wide cards (Gatekeeping) and lane locks ride over everything else on the belt.
+      ce.el.style.zIndex = String(Math.round(b.pos * 100) + (ce.over ? 1000 : 0));
     }
     for (const [uid, ce] of beltEls) {
       if (onBelt.has(uid)) continue;

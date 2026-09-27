@@ -45,6 +45,12 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   weak: { icon: 'broken', unit: 's' },
   fort: { icon: 'fortress', unit: 's' },
   weave: { icon: 'bolt2', sign: '+' },
+  cards: { icon: 'cards' },
+  timer: { icon: 'timer', unit: 's' },
+  skip: { icon: 'skip' },
+  copy: { icon: 'copy' },
+  addCard: { icon: 'addCard', sign: '+' },
+  lane: { icon: 'lane' },
 };
 
 export type CardCategory = 'attack' | 'defense' | 'utility' | 'curse';

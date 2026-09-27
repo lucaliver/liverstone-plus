@@ -597,6 +597,115 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'holy',
     svg: `<path d="M6 10h52v34H26L12 58V44H6z"/><circle cx="18" cy="27" r="4.5" fill="#16121f"/><circle cx="32" cy="27" r="4.5" fill="#16121f"/><circle cx="46" cy="27" r="4.5" fill="#16121f"/>`,
   },
+  // ---- new cards (glyphs, slacking statuses, art)
+  timer: {
+    el: 'steel',
+    svg: `<circle cx="32" cy="34" r="26"/><path fill="#16121f" d="M32 14a20 20 0 0 1 20 20H32z"/><rect x="26" y="2" width="12" height="6"/>`,
+  },
+  skip: {
+    el: 'holy',
+    svg: `<path d="M4 10l24 22L4 54zM28 10l24 22-24 22z"/><rect x="52" y="10" width="8" height="44"/>`,
+  },
+  copy: {
+    el: 'holy',
+    svg: `<rect x="4" y="4" width="36" height="42"/><rect x="10" y="10" width="24" height="30" fill="#16121f"/><rect x="22" y="18" width="38" height="44"/>`,
+  },
+  addCard: {
+    el: 'holy',
+    svg: `<rect x="6" y="4" width="34" height="48"/><path fill="#16121f" d="M12 10h22v36H12z"/><path d="M40 30h8v10h10v8H48v10h-8V48H30v-8h10z"/>`,
+  },
+  lane: {
+    el: 'steel',
+    svg: `<circle cx="32" cy="32" r="28"/><rect x="12" y="26" width="40" height="12" fill="#16121f"/>`,
+  },
+  battery: {
+    el: 'steel',
+    svg: `<rect x="4" y="16" width="50" height="32"/><rect x="54" y="26" width="8" height="12"/><rect x="10" y="22" width="38" height="20" fill="#16121f"/><rect x="12" y="24" width="10" height="16"/>`,
+  },
+  sun: {
+    el: 'holy',
+    svg: `<circle cx="32" cy="32" r="14"/><path d="M29 2h6v10h-6zM29 52h6v10h-6zM2 29h10v6H2zM52 29h10v6H52zM9 13l4-4 7 7-4 4zM44 48l4-4 7 7-4 4zM9 51l7-7 4 4-7 7zM44 16l7-7 4 4-7 7z"/>`,
+  },
+  rocket: {
+    el: 'fire',
+    svg: `<path d="M32 2c12 8 16 22 12 38H20C16 24 20 10 32 2z"/><circle cx="32" cy="22" r="5" fill="#16121f"/><path d="M20 30l-10 14v8l12-6zM44 30l10 14v8l-12-6z"/><path d="M24 44h16l-4 10h-8z"/><path d="M28 56h8l-4 8z"/>`,
+  },
+  resignation: {
+    el: 'steel',
+    svg: `<path d="M6 30h52v30H6z"/><path fill="#16121f" d="M6 30h52v6H6z"/><path d="M14 30V14h8v16zM26 30c0-10 4-18 12-22 2 8-2 16-6 22z"/><path d="M40 30c2-8 8-12 16-12-2 6-6 10-12 12z"/>`,
+  },
+  hammock: {
+    el: 'nature',
+    svg: `<rect x="4" y="6" width="6" height="54"/><rect x="54" y="6" width="6" height="54"/><path d="M8 20c8 22 40 22 48 0v8c-8 20-40 20-48 0z"/><circle cx="22" cy="24" r="6"/><path d="M28 26h18l-2 6H28z"/>`,
+  },
+  palm: {
+    el: 'nature',
+    svg: `<path d="M30 60c2-14 2-26 0-38h6c3 12 3 24 0 38z"/><path d="M32 22C24 10 12 10 4 16c10-2 18 0 24 8zM34 22c8-12 20-12 28-6-10-2-18 0-24 8zM33 20C30 8 22 2 14 4c8 2 14 8 16 16zM33 20c4-12 12-18 20-16-8 2-14 8-16 16z"/><rect x="4" y="58" width="56" height="6"/>`,
+  },
+  grind: {
+    el: 'steel',
+    svg: `<circle cx="32" cy="30" r="26"/><circle cx="32" cy="30" r="19" fill="#16121f"/><path d="M32 11v38M13 30h38M18 17l28 26M46 17L18 43" stroke="#fff" stroke-width="2"/><ellipse cx="32" cy="42" rx="10" ry="7"/><circle cx="40" cy="38" r="4"/><path d="M26 56h12v8H26z"/>`,
+  },
+  shrug: {
+    el: 'holy',
+    svg: `<circle cx="32" cy="16" r="10"/><path d="M18 30h28l-2 30H20z"/><path d="M18 32L6 24l-2-12 6 2 2 8 8 4zM46 32l12-8 2-12-6 2-2 8-8 4z"/>`,
+  },
+  forward: {
+    el: 'arcane',
+    svg: `<path d="M4 18h40v32H4z"/><path fill="#16121f" d="M8 22l16 12 16-12v4L24 38 8 26z"/><path d="M40 22l20 12-20 12v-7H30V29h10z"/>`,
+  },
+  followUp: {
+    el: 'arcane',
+    svg: `<path d="M32 4c-12 0-18 10-18 20v14l-8 10h52l-8-10V24C50 14 44 4 32 4z"/><path d="M24 52h16c0 6-4 10-8 10s-8-4-8-10z"/>`,
+  },
+  q1: {
+    el: 'holy',
+    svg: `<rect x="4" y="58" width="56" height="6"/><rect x="10" y="44" width="12" height="14"/>`,
+  },
+  q2: {
+    el: 'holy',
+    svg: `<rect x="4" y="58" width="56" height="6"/><rect x="10" y="44" width="12" height="14"/><rect x="26" y="34" width="12" height="24"/>`,
+  },
+  q3: {
+    el: 'holy',
+    svg: `<rect x="4" y="58" width="56" height="6"/><rect x="6" y="44" width="11" height="14"/><rect x="20" y="34" width="11" height="24"/><rect x="34" y="22" width="11" height="36"/>`,
+  },
+  q4: {
+    el: 'holy',
+    svg: `<rect x="4" y="58" width="56" height="6"/><rect x="4" y="44" width="10" height="14"/><rect x="17" y="34" width="10" height="24"/><rect x="30" y="24" width="10" height="34"/><rect x="43" y="12" width="10" height="46"/><path d="M40 2h22v22l-8-8-10 10-6-6 10-10z"/>`,
+  },
+  clipboardCopy: {
+    el: 'arcane',
+    svg: `<rect x="8" y="10" width="36" height="50"/><rect x="18" y="4" width="16" height="10"/><rect x="14" y="20" width="24" height="4" fill="#16121f"/><rect x="14" y="30" width="24" height="4" fill="#16121f"/><rect x="30" y="34" width="28" height="26"/><rect x="34" y="40" width="20" height="4" fill="#16121f"/><rect x="34" y="48" width="20" height="4" fill="#16121f"/>`,
+  },
+  doneStamp: {
+    el: 'holy',
+    svg: `<rect x="4" y="4" width="56" height="56"/><rect x="10" y="10" width="44" height="44" fill="#16121f"/><path d="M14 32l8-8 8 8 14-16 8 8-22 24z"/>`,
+  },
+  urgentFolder: {
+    el: 'curse',
+    svg: `<path d="M4 14h22l6 6h28v38H4z"/><rect x="28" y="26" width="8" height="18" fill="#16121f"/><rect x="28" y="48" width="8" height="6" fill="#16121f"/>`,
+  },
+  padlockGate: {
+    el: 'curse',
+    svg: `<path d="M16 28V18a16 16 0 0 1 32 0v10h-8V18a8 8 0 0 0-16 0v10z"/><rect x="8" y="28" width="48" height="32"/><circle cx="32" cy="40" r="5" fill="#16121f"/><rect x="30" y="42" width="4" height="10" fill="#16121f"/>`,
+  },
+  favour: {
+    el: 'curse',
+    svg: `<rect x="24" y="4" width="10" height="30"/><path d="M14 30h32c4 0 6 4 6 8v8c0 10-8 16-18 16h-4c-10 0-16-6-16-16z"/><path fill="#16121f" d="M24 38v8M32 38v8M40 38v8" stroke="#16121f" stroke-width="3"/>`,
+  },
+  brokenPrinter: {
+    el: 'curse',
+    svg: `<rect x="16" y="4" width="32" height="14"/><rect x="4" y="18" width="56" height="26"/><rect x="14" y="44" width="36" height="16"/><path fill="#16121f" d="M30 18l-6 10 8 4-6 12h4l6-12-8-4 6-10z"/><rect x="48" y="24" width="6" height="4" fill="#16121f"/>`,
+  },
+  plant: {
+    el: 'nature',
+    svg: `<path d="M16 40h32l-5 22H21z"/><rect x="12" y="36" width="40" height="6"/><path d="M31 36V20h3v16z"/><path d="M32 22C26 10 14 8 6 12c8 6 16 10 26 10zM33 18c4-10 14-16 24-14-4 8-12 14-24 14zM32 30c-6-6-14-6-20-2 6 4 12 4 20 2z"/>`,
+  },
+  pizza: {
+    el: 'fire',
+    svg: `<path d="M6 10c16-8 36-8 52 0L32 62z"/><path fill="#16121f" d="M8 14c16-6 32-6 48 0l-2 4c-14-6-30-6-44 0z"/><circle cx="24" cy="24" r="5" fill="#16121f"/><circle cx="40" cy="26" r="5" fill="#16121f"/><circle cx="32" cy="40" r="4" fill="#16121f"/>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {

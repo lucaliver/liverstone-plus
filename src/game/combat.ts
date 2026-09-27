@@ -106,6 +106,9 @@ export class Combat {
   /** The last card the hero played this fight (rules such as "not the same type twice"). */
   lastPlayed: CardDef | null = null;
   lastPlayedAt = -Infinity;
+  /** The last card played and the values it resolved with, so it can be repeated (a repeat itself doesn't count). */
+  private lastPlay: { card: CombatCard; def: CardDef; vals: number[] } | null = null;
+  private replaying = false;
   /** Card currently resolving, so effect helpers know its type. */
   private current: { card: CombatCard; def: CardDef } | null = null;
   /** Free-form per-combat state for relics and powers. */
@@ -233,16 +236,19 @@ export class Combat {
   }
 
   /**
-   * True when a wide card (Gatekeeping) hides most of this belt card: the gate stretches left of the wide card's
-   * face over the cards ahead of it, so they can't be played or grabbed until it's paid off.
+   * True when a curse bars this belt card: a wide card (Gatekeeping) stretches left of its face over the cards ahead
+   * of it (on both rows if it's tall), and a row lock (Priority Task) holds its whole row, until paid off.
    */
   isCovered(uid: number): boolean {
     const b = this.belt.find((x) => x.card.uid === uid);
     if (!b) return false;
     return this.belt.some((w) => {
-      const span = CARDS[w.card.id].span ?? 1;
+      if (w === b) return false;
+      const def = CARDS[w.card.id];
+      if (def.lockRow && w.row === b.row) return true;
+      const span = def.span ?? 1;
       const d = b.pos - w.pos;
-      return w !== b && span > 1 && w.row === b.row && d > 0 && d < (span - 0.5) * CONFIG.cardWidth;
+      return span > 1 && (def.tall || w.row === b.row) && d > 0 && d < (span - 0.5) * CONFIG.cardWidth;
     });
   }
 
@@ -336,6 +342,11 @@ export class Combat {
     let hasDot = false;
     for (const [id, s] of Object.entries(f.statuses)) {
       const def = STATUSES[id];
+      if (def.tick && this.has(side, id)) {
+        def.tick(this, side, s, dt);
+        if (this.result) return;
+        if (f.statuses[id] !== s) continue;
+      }
       if (def.kind === 'timed' && s.t > 0) {
         s.t -= dt;
         if (s.t <= 0) delete f.statuses[id];
@@ -471,6 +482,8 @@ export class Combat {
 
   private spawnCard(pos: number, card?: CombatCard, row = this.freeRow()): boolean {
     if (row < 0) return false;
+    // A tall card rides the top row and hangs over the one below.
+    if (card && CARDS[card.id].tall) row = 0;
     let c = card;
     if (!c) {
       if (!this.draw.length) {
@@ -508,7 +521,10 @@ export class Combat {
     const card = beltIdx >= 0 ? this.belt[beltIdx].card : sleeveIdx >= 0 ? this.sleeve[sleeveIdx] : null;
     if (!card) return false;
     const def = CARDS[card.id];
-    if (beltIdx >= 0 && this.isCovered(uid)) return false;
+    if (beltIdx >= 0 && this.isCovered(uid)) {
+      this.events.emit({ type: 'text', target: 'hero', key: 'combat.covered', tone: 'neutral' });
+      return false;
+    }
     if (card.hex) {
       this.tapHex(card);
       return false;
@@ -541,16 +557,22 @@ export class Combat {
     this.events.emit({ type: 'cardPlayed', card, from: beltIdx >= 0 ? 'belt' : 'sleeve' });
     const vals = this.cardVals(card);
     if (cost < 0) vals.push(spent);
+    // Statuses react to cards played after them: one this card applies doesn't see the card itself.
+    const watching = (['hero', 'enemy'] as const).flatMap((side) =>
+      Object.keys(this.fighter(side).statuses)
+        .filter((id) => this.has(side, id) && STATUSES[id].onCardPlayed)
+        .map((id) => [side, id] as const),
+    );
+    this.replaying = false;
     this.withCard(card, def, () => def.play!(this, vals, card));
     if (this.result === 'lose') return true;
 
     this.lastPlayed = def;
     this.lastPlayedAt = this.time;
+    if (!this.replaying) this.lastPlay = { card, def, vals };
     this.heroDef.hooks.onCardPlayed?.(this, card, def, spent);
     for (const id of this.relics) RELICS[id]?.hooks?.onCardPlayed?.(this, card, def);
-    for (const side of ['hero', 'enemy'] as const) {
-      for (const id of Object.keys(this.fighter(side).statuses)) if (this.has(side, id)) STATUSES[id].onCardPlayed?.(this, side, def);
-    }
+    for (const [side, id] of watching) if (this.has(side, id)) STATUSES[id].onCardPlayed?.(this, side, def);
 
     const kw = this.keywords(card);
     if (kw.includes('consume')) {
@@ -589,7 +611,7 @@ export class Combat {
   }
 
   abilityReady(): boolean {
-    return !this.result && this.intro <= 0 && this.hero.mana >= this.abilityCost();
+    return !this.result && this.intro <= 0 && !this.has('hero', 'stun') && this.hero.mana >= this.abilityCost();
   }
 
   useAbility(): boolean {
@@ -805,7 +827,54 @@ export class Combat {
     } else {
       this.discard.push(card);
     }
-    this.events.emit({ type: 'curseAdded', card, to });
+    this.events.emit({ type: 'cardAdded', card, to });
+  }
+
+  /** Clears the whole belt into the discard pile (no leave-the-belt effects). Returns how many cards it held. */
+  discardBelt(): number {
+    const cards = this.belt.splice(0).map((b) => b.card);
+    for (const card of cards) {
+      if (card.hex && card.hex.left <= 0) delete card.hex;
+      this.discard.push(card);
+      this.events.emit({ type: 'cardDiscarded', card });
+    }
+    return cards.length;
+  }
+
+  /** The enemy drops the move it is charging and starts on the next one of its pattern. */
+  skipEnemyMove(): void {
+    const e = this.enemy;
+    e.timer = 0;
+    e.move = this.nextEnemyMove();
+    this.events.emit({ type: 'enemyIntent', move: e.move });
+  }
+
+  /** The last card played that can be repeated or copied (a Unique special never can). */
+  private repeatable(): { card: CombatCard; def: CardDef; vals: number[] } | null {
+    const last = this.lastPlay;
+    return last && !this.keywords(last.card).includes('unique') ? last : null;
+  }
+
+  /** Resolves the last card played again, with the same values. */
+  replayLast(): void {
+    const last = this.repeatable();
+    if (!last?.def.play) return;
+    const play = last.def.play;
+    this.replaying = true;
+    this.withCard(last.card, last.def, () => play(this, [...last.vals], last.card));
+  }
+
+  /** Every belt card becomes a temporary copy of the last card played; the originals go to the discard pile. */
+  copyLastOntoBelt(): void {
+    const last = this.repeatable();
+    if (!last) return;
+    for (const b of this.belt) {
+      if (b.card.hex && b.card.hex.left <= 0) delete b.card.hex;
+      this.discard.push(b.card);
+      this.events.emit({ type: 'cardDiscarded', card: b.card });
+      b.card = { uid: -++this.tempUid, id: last.card.id, up: last.card.up, bonus: 0, temp: true };
+      this.events.emit({ type: 'cardSpawn', card: b.card });
+    }
   }
 
   /** Hexes `belt` random belt cards ('all' = every one) and the next `draw` cards of the draw pile (never curses). */

@@ -215,6 +215,27 @@
   box-shadow: var(--sh) var(--sh) 0 var(--shadow);
 }
 
+/* Lockout: the gate hangs over the lane below too (tall cards always ride the top lane). */
+.card.wide.tall .c-gate { bottom: calc(var(--bw) * -1 - var(--belt-row-h)); }
+
+/* Priority Task: caution tape across its whole lane, behind its own face */
+.card.lock-row .c-lane {
+  position: absolute;
+  z-index: -1;
+  top: 40%;
+  height: 16%;
+  left: -200vw;
+  right: -200vw;
+  pointer-events: none;
+  background: repeating-linear-gradient(-45deg, var(--y) 0 8px, var(--k) 8px 16px);
+  border-top: var(--bw) solid var(--k);
+  border-bottom: var(--bw) solid var(--k);
+}
+/* out of reach behind a gate or a lane lock */
+.card.covered .c-top,
+.card.covered .c-art,
+.card.covered .c-face { opacity: 0.38; }
+
 /* Reversed belt (test setting): the stream and the maw are mirrored, gates stretch to the right. */
 .belt.reversed .belt-track { transform: scaleX(-1); }
 .belt.reversed .maw-eyes { left: auto; right: 4px; }

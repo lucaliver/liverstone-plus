@@ -86,6 +86,10 @@ export interface CardDef {
   pack?: string;
   /** Card widths it covers on the belt (default 1): wider cards ride over the ones ahead of them. */
   span?: number;
+  /** A wide card that covers both belt rows ahead of it, not just its own. */
+  tall?: boolean;
+  /** While on the belt, every other card of its row is out of reach (Priority Task). */
+  lockRow?: boolean;
   play?: (c: Combat, v: number[], card: CombatCard) => void;
   /** Triggered when the card leaves the belt without being played. */
   onExpire?: (c: Combat, v: number[], card: CombatCard) => void;
@@ -104,14 +108,17 @@ export interface StatusDef {
   passive?: boolean;
   /** A rule while active: returns why the hero can't play this card (`uid`: belt or sleeve copy) now (an i18n key), or null. */
   canPlay?: (c: Combat, side: Side, def: CardDef, uid: number) => TKey | null;
-  /** Reacts to every card the hero plays. */
+  /** Reacts to every card the hero plays after the status was applied. */
   onCardPlayed?: (c: Combat, side: Side, def: CardDef) => void;
+  /** Runs every simulation step while the status is active. */
+  tick?: (c: Combat, side: Side, s: StatusVal, dt: number) => void;
 }
 
-/** `v` = stacks/amount; `t` = seconds left for timed statuses. */
+/** `v` = stacks/amount; `t` = seconds left for timed statuses; `e` = seconds it has been up (for statuses with a tick). */
 export interface StatusVal {
   v: number;
   t: number;
+  e?: number;
 }
 
 export type Statuses = Record<string, StatusVal>;
@@ -227,7 +234,8 @@ export type CombatEvent =
   | { type: 'cardStashed'; card: CombatCard; slot: number }
   | { type: 'cardStolen'; card: CombatCard }
   | { type: 'cantAfford'; card: CombatCard }
-  | { type: 'curseAdded'; card: CombatCard; to: 'belt' | 'draw' | 'discard' }
+  | { type: 'cardAdded'; card: CombatCard; to: 'belt' | 'draw' | 'discard' }
+  | { type: 'cardDiscarded'; card: CombatCard }
   | { type: 'hexed'; card: CombatCard }
   | { type: 'hexTap'; card: CombatCard }
   | { type: 'hexBroken'; card: CombatCard }

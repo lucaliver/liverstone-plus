@@ -416,4 +416,121 @@ describe('combat engine', () => {
     run(c, 30);
     expect(c.has('hero', 'hurry')).toBe(true);
   });
+
+  describe('workplace cards', () => {
+    /** A quiet fight: the enemy never acts, lots of mana, the belt as the test sets it. */
+    const quiet = (deck: string[], over: Partial<CombatSetup> = {}): Combat => {
+      const c = setup({ deck: deckOf(deck), ...over });
+      c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+      c.enemy.hp = c.enemy.maxHp = 500;
+      run(c, CONFIG.introTime + 0.01);
+      c.hero.maxMana = c.hero.mana = 10;
+      return c;
+    };
+    const play = (c: Combat, id: string): boolean => {
+      c.addTempCard(id, 'belt');
+      const b = c.belt.find((x) => x.card.id === id)!;
+      b.card.passed = true;
+      return c.playCard(b.card.uid);
+    };
+
+    it('a stunned hero cannot play cards or use the ability', () => {
+      const c = quiet(['strike', 'strike']);
+      expect(play(c, 'quickFavour')).toBe(true);
+      expect(c.has('hero', 'stun')).toBe(true);
+      expect(c.playCard(c.belt[0].card.uid)).toBe(false);
+      expect(c.abilityReady()).toBe(false);
+      run(c, 2.1);
+      expect(c.playCard(c.belt[0].card.uid)).toBe(true);
+    });
+
+    it('Bare Minimum grows Block every second until another card is played', () => {
+      const c = quiet(['strike', 'strike']);
+      play(c, 'bareMinimum');
+      run(c, 3.01);
+      expect(c.hero.block).toBeGreaterThanOrEqual(1 + 2 + 3 - 1);
+      c.playCard(c.belt[0].card.uid);
+      expect(c.has('hero', 'bareMinimum')).toBe(false);
+    });
+
+    it('Grindset deals damage every second for its duration', () => {
+      const c = quiet(['defend']);
+      const hp = c.enemy.hp;
+      play(c, 'grindset');
+      run(c, 12.5);
+      expect(hp - c.enemy.hp).toBe(3 * 12);
+    });
+
+    it('Priority Task holds its whole row; Lockout covers both rows ahead of it', () => {
+      const c = quiet(new Array(10).fill('strike'));
+      c.addTempCard('priorityTask', 'belt');
+      const lock = c.belt.find((b) => b.card.id === 'priorityTask')!;
+      const sameRow = c.belt.filter((b) => b !== lock && b.row === lock.row);
+      const otherRow = c.belt.filter((b) => b.row !== lock.row);
+      expect(sameRow.length).toBeGreaterThan(0);
+      expect(sameRow.every((b) => c.isCovered(b.card.uid))).toBe(true);
+      expect(otherRow.some((b) => c.isCovered(b.card.uid))).toBe(false);
+
+      const d = quiet(new Array(10).fill('strike'));
+      d.addTempCard('lockout', 'belt');
+      run(d, 3);
+      const gate = d.belt.find((b) => b.card.id === 'lockout')!;
+      const ahead = d.belt.filter((b) => b.pos > gate.pos && b.pos - gate.pos < 2 * CONFIG.cardWidth);
+      expect(new Set(ahead.map((b) => b.row)).size).toBe(2);
+      expect(ahead.every((b) => d.isCovered(b.card.uid))).toBe(true);
+    });
+
+    it('Quiet Quitting discards the belt and hits once per card', () => {
+      const c = quiet(new Array(10).fill('strike'));
+      // The belt it discards doesn't include Quiet Quitting itself.
+      const n = c.belt.length;
+      const hp = c.enemy.hp;
+      play(c, 'quietQuitting');
+      expect(c.belt.length).toBe(0);
+      expect(hp - c.enemy.hp).toBe(10 * n);
+    });
+
+    it('Previous Email repeats the last card, Copy Paste copies it over the belt', () => {
+      const c = quiet(new Array(8).fill('defend'));
+      play(c, 'strike');
+      const hp = c.enemy.hp;
+      play(c, 'previousEmail');
+      expect(hp - c.enemy.hp).toBe(6);
+      // A repeat doesn't count as the last card: a second one repeats the same Punch.
+      play(c, 'previousEmail');
+      expect(hp - c.enemy.hp).toBe(12);
+      play(c, 'copyPaste');
+      expect(c.belt.length).toBeGreaterThan(0);
+      expect(c.belt.every((b) => b.card.id === 'strike' && b.card.temp)).toBe(true);
+    });
+
+    it('Not My Job skips the move being charged', () => {
+      const c = setup({ enemy: ENEMIES.skeleton });
+      run(c, CONFIG.introTime + 1);
+      c.hero.maxMana = c.hero.mana = 10;
+      const before = c.enemy.moveCount;
+      c.enemy.timer = 3;
+      play(c, 'notMyJob');
+      expect(c.enemy.timer).toBe(0);
+      expect(c.enemy.moveCount).toBe(before);
+    });
+
+    it('Follow Up and Q1 put generated cards into the draw pile', () => {
+      const c = quiet(['defend', 'defend']);
+      play(c, 'followUp');
+      expect(c.draw.filter((x) => x.id === 'alreadyDone').length).toBe(3);
+      play(c, 'q1');
+      expect(c.draw.some((x) => x.id === 'q2')).toBe(true);
+    });
+
+    it('volatile office curses bite when they leave the belt', () => {
+      const c = quiet(['defend']);
+      c.addTempCard('officePlant', 'belt');
+      c.addTempCard('machineDown', 'belt');
+      c.hero.mana = 8;
+      run(c, (CONFIG.beltTime * EXPIRE_POS) / c.beltRate() + 0.5);
+      expect(c.has('hero', 'stun')).toBe(true);
+      expect(c.hero.mana).toBeLessThan(8);
+    });
+  });
 });
