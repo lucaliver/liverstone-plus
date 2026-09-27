@@ -220,10 +220,10 @@
   position: absolute;
   z-index: 1;
   top: 16%;
-  width: 4px;
-  height: 6px;
+  width: 2px;
+  height: 4px;
   background: var(--b);
-  box-shadow: 0 0 0 2px var(--paper);
+  box-shadow: 0 0 0 1px var(--paper);
   animation: sweat 1.1s steps(5) infinite;
 }
 .hero-portrait.low::before { left: 20%; }

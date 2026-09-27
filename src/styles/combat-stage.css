@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------------ combat layout */
-.combat { --portrait: 60px; padding: 0; overflow: clip; }
+.combat { --portrait: 72px; padding: 0; overflow: clip; }
 
 .combat .topbar {
   display: flex;
