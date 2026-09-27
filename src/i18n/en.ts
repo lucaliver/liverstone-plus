@@ -97,7 +97,6 @@ const en = {
   'journey.node.elite': 'Elite',
   'journey.node.rest': 'Campfire',
   'journey.node.boss': 'Boss',
-  'journey.abandon': 'Abandon run',
   'journey.abandonConfirm': 'Abandon this run? Your progress will be lost.',
 
   // -------------------------------------------------------------- combat

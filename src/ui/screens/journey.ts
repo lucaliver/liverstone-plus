@@ -2,7 +2,6 @@ import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { currentNode, type RunNode, type RunState } from '../../game/run';
 import type { Screen } from '../app';
-import { confirmModal } from '../app';
 import { h } from '../dom';
 import { icon } from '../art/icons';
 import { openDeck, openSettings } from '../components/modals';
@@ -28,7 +27,7 @@ export function runHud(run: RunState, extra?: HTMLElement): HTMLElement {
   );
 }
 
-export function journeyScreen(run: RunState, onEnter: () => void, onAbandon: () => void): Screen {
+export function journeyScreen(run: RunState, onEnter: () => void): Screen {
   const cur = currentNode(run);
   const nodes = run.nodes.filter((n) => n.act === cur.act);
   const path = h(
@@ -85,15 +84,6 @@ export function journeyScreen(run: RunState, onEnter: () => void, onAbandon: () 
         },
       },
       t('journey.enter', { n: cur.floor }),
-    ),
-    h(
-      'button',
-      {
-        class: 'btn small secondary block',
-        style: { marginTop: '10px' },
-        onclick: () => confirmModal(t('journey.abandonConfirm'), t('common.confirm'), onAbandon, t('common.cancel')),
-      },
-      t('journey.abandon'),
     ),
   );
   return {

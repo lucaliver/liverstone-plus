@@ -113,7 +113,8 @@ La difficoltà cresce scendendo di piano.
 
 - **Home:** logo animato, Lich, candele pixel animate; Nuova run / Continua, Compendio, Come si gioca, Impostazioni.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
-- **Percorso:** colonna dei piani dell'atto con icone (battaglia, falò, élite, boss).
+- **Percorso:** colonna dei piani dell'atto con icone (battaglia, falò, élite e boss un po' più grandi) e il tasto
+  per entrare nel piano. La run si abbandona dalla pausa in combattimento o iniziandone una nuova.
 - **Combattimento**, dall'alto: barra superiore (piano, velocità di gioco, pausa) · nemico con stati e vita ·
   barra minaccia · eroe (ritratto, vita, Blocco, stati) · **nastro** · mana · sleeve, pile, abilità. Vita del nemico,
   mossa in arrivo e vita dell'eroe stanno tutte subito sopra il nastro, così non serve distogliere lo sguardo dalle carte.

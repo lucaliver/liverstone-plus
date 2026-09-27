@@ -88,4 +88,9 @@
 .node.current .num { color: var(--fg); }
 .node.elite .dot { color: var(--purple); }
 .node.boss .dot { color: var(--p); }
+/* elite and boss floors stand out: slightly bigger than the others */
+.node.elite .dot,
+.node.boss .dot { width: 62px; height: 62px; font-size: 38px; }
+.node.current.elite .dot,
+.node.current.boss .dot { width: 76px; height: 76px; font-size: 48px; }
 .node.rest .dot { color: var(--red); }

@@ -72,7 +72,7 @@ function goJourney(): void {
   }
   playMusic('menu');
   saveRun(run);
-  show(journeyScreen(run, enterNode, abandon));
+  show(journeyScreen(run, enterNode));
 }
 
 function enterNode(): void {
