@@ -71,14 +71,18 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     cards.cancelDrag();
     const boss = combat.enemy.def.tier === 'boss';
     if (result === 'win') {
-      // The print comes apart: each ink slides off on its own. A boss gets stamped first.
+      // Death throes (it shakes, bleeds and sinks), then the print comes apart ink by ink. A boss gets stamped first.
       r.enemyArt.classList.add('dead');
       const p = v.enemyPoint();
-      burst('gold', p.x, p.y, 40, 1.5);
+      burst('blood', p.x, p.y, 36, 1.4);
+      for (let i = 1; i <= (boss ? 5 : 3); i++) setTimeout(() => burst('blood', p.x + (i % 2 ? -30 : 30), p.y + i * 6, 14), i * 200);
+      setTimeout(() => burst('gold', p.x, p.y + 20, 40, 1.5), boss ? 1100 : 700);
+      shake('big');
+      haptic([40, 60, 40]);
+      sfx('enemyDown');
       if (boss) {
         r.enemyArt.classList.add('boss');
         r.enemyArt.append(h('div', { class: 'boss-stamp' }, t('combat.bossDown')));
-        shake('big');
         sfx('blunt');
       } else v.banner(t('reward.cleared'));
       // Clocking out when the next floor starts (the end of the shift after a boss).
@@ -90,7 +94,8 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       sfx('defeat');
       haptic([60, 60, 120]);
     }
-    setTimeout(() => cb.onEnd(combat), boss && result === 'win' ? 2200 : 1500);
+    // A win waits for the enemy to finish dying (longer for a boss).
+    setTimeout(() => cb.onEnd(combat), result === 'lose' ? 1500 : boss ? 3000 : 2200);
   };
   const unsubscribe = bindCombatFx(v, cards, finish);
 

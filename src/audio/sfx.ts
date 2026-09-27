@@ -206,6 +206,12 @@ const SOUNDS = {
     noise(0.08, { freq: 600, vol: 0.4, type: 'lowpass', delay: 0.3 });
     noise(0.05, { freq: 3000, vol: 0.2, q: 3, delay: 0.42 });
   },
+  /** An enemy goes down: a long falling groan over a crumble. */
+  enemyDown: () => {
+    tone(220, 0.9, { type: 'sawtooth', vol: 0.12, to: 40, attack: 0.02 });
+    tone(233, 0.9, { type: 'sawtooth', vol: 0.08, to: 42, attack: 0.02 });
+    noise(0.8, { freq: 800, to: 150, vol: 0.3, type: 'lowpass', delay: 0.5 });
+  },
   /** The boss is in: a factory steam whistle (a sour chord that slides up, plus the hiss). */
   siren: () => {
     [370, 440, 523].forEach((f) => {

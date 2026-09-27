@@ -178,21 +178,38 @@
 @keyframes rage {
   50% { filter: drop-shadow(3px 0 0 var(--p)) drop-shadow(-3px 0 0 var(--p)) drop-shadow(0 3px 0 var(--p)); }
 }
-/* defeated: the print comes apart, each ink sliding off its own way (solid inks, off the paper base) */
-.enemy-art.dead { animation: none; }
-.enemy-art.dead .ink { mix-blend-mode: normal; animation: 0.9s steps(6) forwards; }
+/* defeated: death throes first (it shakes, flashes in negative and sinks), then the print comes apart and each ink
+   drops off its own way (solid inks, off the paper base) */
+.enemy-art.dead { --throes: 0.7s; animation: death-throes var(--throes) steps(1) forwards; }
+.enemy-art.dead.boss { --throes: 1.1s; }
+.enemy-art.dead .riso { animation: death-flash var(--throes) steps(1) forwards; }
+@keyframes death-throes {
+  0% { transform: translate(-9px, 0); }
+  12% { transform: translate(9px, 2px) rotate(3deg); }
+  25% { transform: translate(-8px, 4px) rotate(-3deg); }
+  37% { transform: translate(7px, 6px) rotate(2deg); }
+  50% { transform: translate(-6px, 9px) rotate(-2deg); }
+  62% { transform: translate(5px, 12px); }
+  75% { transform: translate(-3px, 15px); }
+  87%, 100% { transform: translate(0, 18px) scaleY(0.94); }
+}
+@keyframes death-flash {
+  0%, 25%, 50% { filter: invert(1); }
+  12%, 37%, 62%, 100% { filter: none; }
+  75% { filter: invert(1) drop-shadow(0 0 0 var(--p)); }
+}
+.enemy-art.dead .ink { mix-blend-mode: normal; animation: 1.2s steps(8) var(--throes) forwards; }
+.enemy-art.dead.boss .ink { animation-duration: 1.6s; }
 .enemy-art.dead .ink-W { animation-name: ink-off-W; }
 .enemy-art.dead .ink-Y { animation-name: ink-off-Y; }
 .enemy-art.dead .ink-P { animation-name: ink-off-P; }
 .enemy-art.dead .ink-B { animation-name: ink-off-B; }
 .enemy-art.dead .ink-K { animation-name: ink-off-K; }
-@keyframes ink-off-W { to { opacity: 0; } }
-@keyframes ink-off-Y { 20% { translate: -6px -4px; } 60% { opacity: 1; translate: -18px -14px; } to { opacity: 0; translate: -36px -28px; } }
-@keyframes ink-off-P { 20% { translate: 7px -3px; } 60% { opacity: 1; translate: 22px -6px; } to { opacity: 0; translate: 42px -12px; } }
-@keyframes ink-off-B { 20% { translate: -4px 6px; } 60% { opacity: 1; translate: -16px 18px; } to { opacity: 0; translate: -30px 34px; } }
-@keyframes ink-off-K { 20% { translate: 2px 7px; } 60% { opacity: 1; translate: 4px 24px; } to { opacity: 0; translate: 8px 46px; } }
-/* a boss is stamped first, then comes apart more slowly */
-.enemy-art.dead.boss .ink { animation-duration: 1.4s; animation-delay: 0.45s; }
+@keyframes ink-off-W { 30% { opacity: 1; } to { opacity: 0; translate: 0 20px; } }
+@keyframes ink-off-Y { 25% { translate: -14px -10px; } 55% { opacity: 1; translate: -30px 10px; } to { opacity: 0; translate: -44px 90px; } }
+@keyframes ink-off-P { 25% { translate: 16px -8px; } 55% { opacity: 1; translate: 34px 14px; } to { opacity: 0; translate: 50px 96px; } }
+@keyframes ink-off-B { 25% { translate: -8px 8px; } 55% { opacity: 1; translate: -18px 34px; } to { opacity: 0; translate: -24px 110px; } }
+@keyframes ink-off-K { 25% { translate: 4px 10px; } 55% { opacity: 1; translate: 8px 40px; } to { opacity: 0; translate: 10px 120px; } }
 .boss-stamp {
   position: absolute;
   left: 50%;
