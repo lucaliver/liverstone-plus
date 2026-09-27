@@ -23,5 +23,6 @@
   .hero-info { gap: 3px; }
   .hero-portrait { width: 46px; height: 46px; }
   .bar { height: 24px; }
-  .candle { display: none; }
+  /* no room for combat candles on very short screens (the title keeps its own) */
+  .stage .candle { display: none; }
 }

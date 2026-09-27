@@ -15,7 +15,7 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done · `[-]` deferred (with re
 ## FIX
 
 - [x] F1. Floating damage text on the enemy ("-3" on a bloody background) must be clearly visible
-- [ ] F2. Home candles disappeared: they must be there and animated
+- [x] F2. Home candles disappeared: they must be there and animated
 
 ## FEATURES
 
