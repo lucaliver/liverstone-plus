@@ -326,13 +326,16 @@ ${shadow}
 <g fill="#1b1830"><rect x="90" y="24" width="7" height="7"/><rect x="104" y="24" width="7" height="7"/></g>`;
 
 const moneyBag = `
+<defs>${lg('mb-s', '#ffe45a', '#d09a20')}</defs>
 ${shadow}
-<g fill="#ffd900" ${OUT}><ellipse cx="40" cy="182" rx="16" ry="6"/><ellipse cx="160" cy="184" rx="14" ry="5"/><ellipse cx="152" cy="175" rx="14" ry="5"/></g>
-<path d="M98 50l30-18 8 16-30 18z" fill="#8ad06a" ${OUT}/>
-<path d="M62 186c-20 0-28-18-22-42 8-34 32-58 60-60 28 2 52 26 60 60 6 24-2 42-22 42z" fill="#c9a060" ${OUT}/>
-<path d="M78 86c-8-12-4-26 8-30l14 10 14-10c12 4 16 18 8 30z" fill="#c9a060" ${OUT}/>
-<path d="M76 88h48" stroke="#1b1830" stroke-width="8"/>
-<path d="M114 120c-6-8-28-8-28 4 0 14 30 8 30 24 0 12-24 14-32 4" stroke="#2a8a4a" stroke-width="10" fill="none"/><path d="M100 106v62" stroke="#2a8a4a" stroke-width="7"/>`;
+<g fill="#ffd900" ${OUT}><ellipse cx="36" cy="182" rx="18" ry="7"/><ellipse cx="166" cy="184" rx="16" ry="6"/><ellipse cx="158" cy="174" rx="16" ry="6"/></g>
+<path d="M96 44l34-20 10 18-34 20z" fill="#8ad06a" ${OUT}/>
+<path d="M56 188c-24 0-32-20-26-46 8-38 36-64 70-66 34 2 62 28 70 66 6 26-2 46-26 46z" fill="url(#mb-s)" ${OUT}/>
+<path d="M74 80c-10-14-4-30 10-34l16 12 16-12c14 4 20 20 10 34z" fill="url(#mb-s)" ${OUT}/>
+<path d="M72 82h56" stroke="#1b1830" stroke-width="9"/>
+<path d="M118 118c-8-10-34-10-34 4 0 16 36 10 36 28 0 14-30 16-38 4" stroke="#1b1830" stroke-width="16" fill="none"/>
+<path d="M118 118c-8-10-34-10-34 4 0 16 36 10 36 28 0 14-30 16-38 4" stroke="#2a8a4a" stroke-width="9" fill="none"/>
+<path d="M100 100v70" stroke="#1b1830" stroke-width="12"/><path d="M100 100v70" stroke="#2a8a4a" stroke-width="6"/>`;
 
 const toxicBarrel = `
 ${shadow}

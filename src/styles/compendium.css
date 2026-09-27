@@ -139,7 +139,7 @@
 .foe-half {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   margin: 0;
   padding: 6px 10px 8px;
   font-family: var(--font-ui);
@@ -147,6 +147,9 @@
   color: var(--paper);
   background: var(--p);
 }
+/* the passive's name, a tall rule, then what it does */
+.foe-half b { flex: none; max-width: 40%; text-transform: uppercase; }
+.foe-half .sep { flex: none; align-self: stretch; width: 3px; background: var(--paper); }
 .foe-moves li.foe-every {
   display: block;
   min-height: 0;

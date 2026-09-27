@@ -148,7 +148,7 @@ La difficoltà cresce scendendo di piano.
   mossa in arrivo e vita dell'eroe stanno tutte subito sopra il nastro, così non serve distogliere lo sguardo dalle carte.
 - **Ricompensa, sala pausa** (macchinetta del caffè steampunk, con animazione di cura), **fine turno e licenziamento** (statistiche), **Handbook** (carte per
   classe con scoperte, nemici con mosse).
-- **Impostazioni:** musica, effetti, velocità, riduci animazioni, vibrazione, nastro a due righe (sperimentale: più carte in vista, nastro un po' più lento), nastro da sinistra a destra (test; vale dal combattimento successivo). Tutti i testi sono pronti per altre lingue.
+- **Impostazioni:** musica, effetti, velocità, riduci animazioni, vibrazione, nastro da sinistra a destra (test; vale dal combattimento successivo). Tutti i testi sono pronti per altre lingue.
 
 ## 7. Direzione artistica e audio
 

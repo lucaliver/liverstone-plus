@@ -85,11 +85,6 @@ export function openSettings(onChange?: () => void): ModalHandle {
         )
       : null,
     toggleRow(
-      t('settings.twoRows'),
-      () => settings.twoRowBelt,
-      (v) => (settings.twoRowBelt = v),
-    ),
-    toggleRow(
       t('settings.reverseBelt'),
       () => settings.reverseBelt,
       (v) => (settings.reverseBelt = v),

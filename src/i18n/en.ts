@@ -42,7 +42,6 @@ const en = {
   'settings.speed': 'Game speed',
   'settings.motion': 'Reduce motion',
   'settings.haptics': 'Vibration',
-  'settings.twoRows': 'Two-row belt (test)',
   'settings.reverseBelt': 'Belt runs left to right (test)',
   'settings.language': 'Language',
 

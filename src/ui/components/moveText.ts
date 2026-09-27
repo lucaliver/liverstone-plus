@@ -65,7 +65,7 @@ export function movePattern(e: EnemyDef, values: MoveValues = baseValues, mark?:
   };
   const every = e.specials.length ? `<li class="foe-every">${t('compendium.every', { n: e.every })}</li>` : '';
   const traits = enemyTraits(e)
-    .map((x) => `<p class="foe-half">${icon(x.icon)}${x.name ? `<b>${x.name}</b>: ` : ''}${x.desc}</p>`)
+    .map((x) => `<p class="foe-half">${icon(x.icon)}${x.name ? `<b>${x.name}</b><i class="sep"></i>` : ''}<span>${x.desc}</span></p>`)
     .join('');
   return `<ul class="foe-moves">${row(e.main)}${every}${e.specials.map(row).join('')}</ul>${traits}`;
 }
