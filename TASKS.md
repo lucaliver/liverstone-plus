@@ -10,7 +10,7 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done · `[-]` deferred (with re
 - [x] T4. Split the combat screen into `ui/combat/` (view, hud, cardLayer, combatFx, combatScreen)
 - [x] T5. Split `styles/main.css` into 17 ordered partials + `index.css` (identical cascade)
 - [x] T6. Typed i18n keys: literal ids from en.ts, dynamic families by prefix (a typo now fails the typecheck)
-- [ ] T7. Pixel-art caching
+- [-] T7. Pixel-art caching — deferred: the whole art set is generated in ~26 ms at boot (title shows at ~76 ms); a cache would add invalidation risk for no visible gain. Revisit when the art set grows a lot.
 
 ## FIX
 
