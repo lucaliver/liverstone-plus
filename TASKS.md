@@ -52,4 +52,4 @@ stepped animations and one icon set.
 - [x] R5. Conditional effects show their condition in brackets (e.g. (block) → damage)
 - [x] R6. Card upgrade (campfire): select, then confirm
 - [x] R7. Enemy move detail: "After Y attacks: X — …" and coloured values (damage in red, …)
-- [ ] R8. Card cost digits (e.g. "4") are hard to read: fix the font
+- [x] R8. Card cost digits (e.g. "4") are hard to read: fix the font

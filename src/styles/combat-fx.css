@@ -60,7 +60,7 @@
 .floater {
   position: fixed;
   translate: -50% -50%;
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-weight: 700;
   font-size: 36px;
   line-height: 1;

@@ -37,9 +37,9 @@
   display: grid;
   place-items: center;
   width: 25cqw;
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-weight: 700;
-  font-size: 19cqw;
+  font-size: 24cqw;
   line-height: 1;
   color: var(--k);
   background: var(--y);

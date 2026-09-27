@@ -12,8 +12,8 @@
   flex: 1;
   color: var(--fg);
   text-align: center;
-  font-family: var(--font-display);
-  font-size: 17px;
+  font-family: var(--font-ui);
+  font-size: 20px;
   line-height: 1.1;
   text-transform: uppercase;
 }
@@ -25,8 +25,8 @@
   text-transform: none;
 }
 .speed-btn {
-  font-family: var(--font-display);
-  font-size: 15px;
+  font-family: var(--font-ui);
+  font-size: 20px;
 }
 
 /* stage */

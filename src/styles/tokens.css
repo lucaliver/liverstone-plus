@@ -33,6 +33,7 @@
 
   --line: 3px;
   --off: 4px;
+  /* Silkscreen for words in titles only; anything with numbers uses Jersey 10 (--font-ui): clearer digits. */
   --font-display: 'Silkscreen', monospace;
   --font-ui: 'Pixel UI', 'Silkscreen', monospace;
   --font: 'Space Grotesk', system-ui, sans-serif;
