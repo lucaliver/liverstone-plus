@@ -46,8 +46,8 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 
 ## 2. Regole del combattimento
 
-- **Start:** lo scontro parte solo quando premi CLOCK IN. Prima (e durante) puoi **tenere premuto** qualunque cosa per Prima di iniziare, sopra al nemico compaiono le sue abilità passive.
-  leggerla: carte, stati, abilità, ritratto (passiva), barra minaccia, mana.
+- **Start:** lo scontro parte solo quando premi CLOCK IN. Prima (e durante) puoi **tenere premuto** qualunque cosa per
+  leggerla: carte, stati, abilità, ritratto (passiva), barra minaccia, mana. Prima di iniziare, sopra al nemico compaiono le sue abilità passive.
 - **Nastro:** tocca una carta per giocarla, trascinala in su verso il nemico per giocarla, trascinala in giù
   nella sleeve per tenerla. Una carta che esce a sinistra finisce negli scarti (le maledizioni *volatili*
   lampeggiano poco prima, poi esplodono o ti puniscono). Quando il mazzo finisce, gli scarti si rimescolano. Alcune carte danno **Rush**:
