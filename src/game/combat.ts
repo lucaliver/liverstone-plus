@@ -58,7 +58,7 @@ export interface CombatSetup {
   bonusMaxMana?: number;
   /** Hero special card, placed in the first sleeve slot (omitted once used this run). */
   special?: string;
-  /** Belt rows (1 or 2). With two rows cards alternate between them and the belt runs a bit slower. */
+  /** Belt rows (default `CONFIG.beltRows`). With two rows cards alternate between them and the belt runs a bit slower. */
   beltRows?: number;
 }
 
@@ -119,7 +119,7 @@ export class Combat {
     this.heroDef = setup.hero;
     this.relics = setup.relics;
     this.relicFlags = setup.relicFlags;
-    this.beltRows = setup.beltRows ?? 1;
+    this.beltRows = setup.beltRows ?? CONFIG.beltRows;
     const h = setup.hero;
 
     let maxMana = h.maxMana + (setup.bonusMaxMana ?? 0);

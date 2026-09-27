@@ -8,8 +8,6 @@ export interface Settings {
   haptics: boolean;
   locale: string;
   seenTutorial: boolean;
-  /** Experimental: two belt rows, a bit slower. Applies from the next fight. Hidden from the settings for now. */
-  twoRowBelt: boolean;
   /** Experimental: cards enter on the left and travel right. Applies from the next fight. */
   reverseBelt: boolean;
 }
@@ -22,7 +20,6 @@ const defaults: Settings = {
   haptics: true,
   locale: 'en',
   seenTutorial: false,
-  twoRowBelt: false,
   reverseBelt: false,
 };
 

@@ -26,7 +26,9 @@ export const CONFIG = {
   introTime: 1.2,
   /** Cap on cards per belt row. */
   maxHandBelt: 7,
-  /** Two-row belt (experimental setting): each row runs at this fraction of the normal speed. */
+  /** Belt rows: two is the standard layout (cards alternate between them). */
+  beltRows: 2,
+  /** With two rows each row runs at this fraction of the one-row speed. */
   twoRowSpeed: 0.8,
 } as const;
 

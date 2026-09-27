@@ -55,8 +55,8 @@ describe('combat engine', () => {
     expect(c.discard.map((x) => x.uid)).toContain(card.uid);
   });
 
-  it('two-row belt: both rows fill up, each keeps its spacing, and the belt runs slower', () => {
-    const c = setup({ beltRows: 2, deck: deckOf(Array(14).fill('strike')) });
+  it('two-row belt (default): both rows fill up, each keeps its spacing, and the belt runs slower', () => {
+    const c = setup({ deck: deckOf(Array(14).fill('strike')) });
     expect(c.belt.filter((b) => b.row === 1).length).toBeGreaterThan(0);
     run(c, CONFIG.introTime + 10);
     for (const row of [0, 1]) {
@@ -242,7 +242,8 @@ describe('combat engine', () => {
   });
 
   it('played cards are never replaced in place: new cards always enter from the right', () => {
-    const c = setup({ deck: deckOf(['strike', 'strike', 'strike', 'strike', 'strike', 'strike']) });
+    // One row, so the spacing check below reads a single line of cards.
+    const c = setup({ beltRows: 1, deck: deckOf(['strike', 'strike', 'strike', 'strike', 'strike', 'strike']) });
     c.hero.maxMana = 10;
     run(c, CONFIG.introTime + 3);
     const spawnPositions: number[] = [];
@@ -300,7 +301,7 @@ describe('combat engine', () => {
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
     c.addTempCard('bomb', 'belt');
-    run(c, CONFIG.beltTime * EXPIRE_POS + 0.5);
+    run(c, (CONFIG.beltTime * EXPIRE_POS) / c.beltRate() + 0.5);
     expect(c.hero.hp).toBe(80 - 10);
   });
 

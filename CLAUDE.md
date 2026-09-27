@@ -177,6 +177,7 @@ Plurals: `{n|one|other}`. New language: copy `en.ts`, register it in `core/i18n.
   one concept. `content.test.ts` enforces the card side.
 - Dev hooks (dev server only): `window.__combat` (current `Combat`) and `window.__game` (`run`, `nextNode`,
   `goJourney`, `musicTrack`). E2E tests and screenshot scripts rely on them.
+- The belt has two rows by default (`CONFIG.beltRows`); tests that need one row pass `beltRows: 1`.
 
 ### CSS
 

@@ -48,7 +48,8 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 
 - **Start:** lo scontro parte solo quando premi CLOCK IN. Prima (e durante) puoi **tenere premuto** qualunque cosa per
   leggerla: carte, stati, abilità, ritratto (passiva), barra minaccia, mana. Prima di iniziare, sopra al nemico compaiono le sue abilità passive.
-- **Nastro:** tocca una carta per giocarla, trascinala in su verso il nemico per giocarla, trascinala in giù
+- **Nastro a due righe** (lo standard dalla 2.0): le carte entrano alternandosi sulle due righe, così se ne vedono il
+  doppio e restano in vista più a lungo; il nastro scorre un po' più lento. Tocca una carta per giocarla, trascinala in su verso il nemico per giocarla, trascinala in giù
   nella sleeve per tenerla. Una carta che esce a sinistra finisce negli scarti (le maledizioni *volatili*
   lampeggiano poco prima, poi esplodono o ti puniscono). Quando il mazzo finisce, gli scarti si rimescolano. Alcune carte danno **Rush**:
   il nastro accelera e le carte arrivano prima (compare tra i tuoi stati, con il tempo rimasto).
@@ -145,7 +146,7 @@ La difficoltà cresce scendendo di piano.
 - **Percorso:** in alto ritratto dell'eroe (toccalo o tienilo premuto per la sua scheda), vita e mazzo; sotto la mappa dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
   per entrare nel piano. La run si abbandona dalla pausa in combattimento o iniziandone una nuova.
 - **Combattimento**, dall'alto: barra superiore (nome del nemico in grande e piano, velocità di gioco, pausa) · nemico con stati e vita ·
-  barra minaccia · eroe (ritratto, vita, Blocco, stati) · **nastro** · mana · sleeve e abilità (i contatori di mazzo e scarti sono nascosti). Vita del nemico,
+  barra minaccia · eroe (ritratto, vita, Blocco, stati) · **nastro a due righe** · mana · sleeve e abilità (i contatori di mazzo e scarti sono nascosti). Vita del nemico,
   mossa in arrivo e vita dell'eroe stanno tutte subito sopra il nastro, così non serve distogliere lo sguardo dalle carte.
 - **Ricompensa, sala pausa** (macchinetta del caffè steampunk, con animazione di cura), **fine turno e licenziamento** (statistiche), **Handbook** (carte per
   classe con scoperte, nemici con mosse).

@@ -83,7 +83,7 @@ function enterNode(to?: number): void {
     return;
   }
   playMusic(node.type === 'boss' ? 'boss' : node.type === 'elite' ? 'elite' : 'combat');
-  const combat = new Combat({ ...combatSetup(run), beltRows: settings.twoRowBelt ? 2 : 1 });
+  const combat = new Combat(combatSetup(run));
   if (import.meta.env.DEV) Object.assign(window, { __combat: combat });
   saveRun(run);
   show(combatScreen(run, combat, { onEnd: afterCombat, onQuit: abandon, onMenu: goTitle }));
