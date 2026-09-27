@@ -117,7 +117,7 @@ La difficoltà cresce scendendo di piano.
   mossa in arrivo e vita dell'eroe stanno a ridosso del nastro, così non serve distogliere lo sguardo dalle carte.
 - **Ricompensa, falò** (con animazione di cura), **vittoria e fine run** (statistiche), **Compendio** (carte per
   classe con scoperte, nemici con mosse).
-- **Impostazioni:** musica, effetti, velocità, riduci animazioni, vibrazione. Tutti i testi sono pronti per altre lingue.
+- **Impostazioni:** musica, effetti, velocità, riduci animazioni, vibrazione, nastro a due righe (sperimentale: più carte in vista, nastro un po' più lento). Tutti i testi sono pronti per altre lingue.
 
 ## 7. Direzione artistica e audio
 

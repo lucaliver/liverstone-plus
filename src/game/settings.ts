@@ -8,6 +8,8 @@ export interface Settings {
   haptics: boolean;
   locale: string;
   seenTutorial: boolean;
+  /** Experimental: two belt rows, a bit slower. Applies from the next fight. */
+  twoRowBelt: boolean;
 }
 
 const defaults: Settings = {
@@ -18,6 +20,7 @@ const defaults: Settings = {
   haptics: true,
   locale: 'en',
   seenTutorial: false,
+  twoRowBelt: false,
 };
 
 export const settings: Settings = load('settings', defaults);

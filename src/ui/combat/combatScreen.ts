@@ -29,6 +29,8 @@ export interface CombatCallbacks {
 
 /** Fixed simulation step: the engine stays deterministic regardless of frame rate. */
 const STEP = 1 / 60;
+/** Pixels between the two rows of a two-row belt. */
+const BELT_ROW_GAP = 10;
 
 /** The combat screen: wires the view, HUD, card layer and FX together and owns pause and the game loop. */
 export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks): Screen {
@@ -67,9 +69,11 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   // ------------------------------------------------------------------ layout
   const layout = (): void => {
     state.beltW = r.belt.clientWidth || el.clientWidth;
-    // Cards follow the belt width, but shrink on short screens so the layout always fits.
-    const cw = Math.min(state.beltW * CONFIG.cardWidth, el.clientHeight * 0.118);
-    el.style.setProperty('--cw-belt', `${Math.round(cw)}px`);
+    // Cards follow the belt width, but shrink on short screens so the layout always fits (more with two rows).
+    const cw = Math.round(Math.min(state.beltW * CONFIG.cardWidth, el.clientHeight * (combat.beltRows > 1 ? 0.092 : 0.118)));
+    state.rowH = Math.round(cw * 1.4) + BELT_ROW_GAP;
+    el.style.setProperty('--cw-belt', `${cw}px`);
+    el.style.setProperty('--belt-row-h', `${state.rowH}px`);
     // Measure the enemy's room once (with the belt size applied) and lock the sprite size.
     requestAnimationFrame(() => {
       // The wrapper is flex: 1 with min-height 0, so its height is the free room, independent of the sprite.

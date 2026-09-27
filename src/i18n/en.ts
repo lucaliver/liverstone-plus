@@ -42,6 +42,7 @@ const en = {
   'settings.speed': 'Game speed',
   'settings.motion': 'Reduce motion',
   'settings.haptics': 'Vibration',
+  'settings.twoRows': 'Two-row belt (test)',
   'settings.language': 'Language',
 
   // ------------------------------------------------------------- how to

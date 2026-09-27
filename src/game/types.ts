@@ -27,6 +27,8 @@ export interface BeltCard {
   card: CombatCard;
   /** Distance travelled, in belt widths. 0 = just entering on the right. */
   pos: number;
+  /** Belt row (0 = top); always 0 on a one-row belt. */
+  row: number;
 }
 
 export interface CardDef {

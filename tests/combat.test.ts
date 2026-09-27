@@ -52,6 +52,21 @@ describe('combat engine', () => {
     expect(c.discard.map((x) => x.uid)).toContain(card.uid);
   });
 
+  it('two-row belt: both rows fill up, each keeps its spacing, and the belt runs slower', () => {
+    const c = setup({ beltRows: 2, deck: deckOf(Array(14).fill('strike')) });
+    expect(c.belt.filter((b) => b.row === 1).length).toBe(3);
+    run(c, CONFIG.introTime + 10);
+    for (const row of [0, 1]) {
+      const pos = c.belt
+        .filter((b) => b.row === row)
+        .map((b) => b.pos)
+        .sort((a, b) => a - b);
+      expect(pos.length).toBeGreaterThan(2);
+      for (let i = 1; i < pos.length; i++) expect(pos[i] - pos[i - 1]).toBeGreaterThan(CONFIG.spacing * 0.9);
+    }
+    expect(c.beltRate()).toBeCloseTo(CONFIG.twoRowSpeed);
+  });
+
   it('refuses unaffordable cards', () => {
     const c = setup({ deck: deckOf(['earthshaker', 'earthshaker']) });
     run(c, CONFIG.introTime + 0.01);

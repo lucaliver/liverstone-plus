@@ -71,6 +71,9 @@
   top: 11px;
   height: calc(var(--cw-belt) * 1.4);
 }
+/* two-row belt (experimental setting): one more row of cards, `--belt-row-h` apart (set by the combat screen) */
+.belt.rows-2 { height: calc(var(--belt-row-h) + var(--cw-belt) * 1.4 + 30px); }
+.belt.rows-2 .belt-cards { height: calc(var(--belt-row-h) + var(--cw-belt) * 1.4); }
 .belt-cards .card {
   --cw: var(--cw-belt);
   position: absolute;

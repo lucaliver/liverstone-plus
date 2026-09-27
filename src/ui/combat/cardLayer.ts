@@ -213,7 +213,7 @@ export function createCardLayer(v: CombatView): CardLayer {
       if (drag?.uid === b.card.uid && drag.moved) continue;
       // Snap to whole pixels: crisp pixel art and a slightly stepped, printed feel.
       const x = Math.round(state.beltW * (1 - b.pos));
-      ce.el.style.transform = `translate3d(${x}px, 0, 0)`;
+      ce.el.style.transform = `translate3d(${x}px, ${b.row * state.rowH}px, 0)`;
       ce.el.style.zIndex = String(Math.round(b.pos * 100));
     }
     for (const [uid, ce] of beltEls) {

@@ -84,6 +84,11 @@ export function openSettings(onChange?: () => void): ModalHandle {
           (v) => (settings.haptics = v),
         )
       : null,
+    toggleRow(
+      t('settings.twoRows'),
+      () => settings.twoRowBelt,
+      (v) => (settings.twoRowBelt = v),
+    ),
     locales.length > 1
       ? h(
           'div',

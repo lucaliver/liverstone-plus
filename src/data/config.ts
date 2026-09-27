@@ -23,7 +23,10 @@ export const CONFIG = {
   weaveMax: 5,
   /** Seconds of "Fight!" intro before the clock starts. */
   introTime: 1.2,
+  /** Cap on cards per belt row. */
   maxHandBelt: 7,
+  /** Two-row belt (experimental setting): each row runs at this fraction of the normal speed. */
+  twoRowSpeed: 0.8,
 } as const;
 
 /** Where cards enter (0) and expire, in belt-distance units. */

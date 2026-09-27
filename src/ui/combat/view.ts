@@ -19,7 +19,7 @@ export interface CombatView {
   heroId: HeroId;
   r: ReturnType<typeof queryRefs>;
   /** `waiting`: before the player presses Start; things can be inspected but not played. */
-  state: { paused: boolean; waiting: boolean; ended: boolean; frameNo: number; beltW: number };
+  state: { paused: boolean; waiting: boolean; ended: boolean; frameNo: number; beltW: number; rowH: number };
   retrigger(target: Element, cls: string): void;
   enemyPoint(): Point;
   heroPoint(): Point;
@@ -68,7 +68,7 @@ function markup(run: RunState, combat: Combat): string {
         </div>
       </div>
     </section>
-    <section class="belt">
+    <section class="belt rows-${combat.beltRows}">
       <div class="belt-track"></div>
       <div class="maw-eyes" aria-hidden="true"><i></i><i></i></div>
       <div class="belt-cards"></div>
@@ -148,7 +148,7 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
     combat,
     heroId: run.hero,
     r,
-    state: { paused: true, waiting: true, ended: false, frameNo: 0, beltW: 0 },
+    state: { paused: true, waiting: true, ended: false, frameNo: 0, beltW: 0, rowH: 0 },
     retrigger(target, cls) {
       target.classList.remove(cls);
       void (target as HTMLElement).offsetWidth;

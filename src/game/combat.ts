@@ -56,6 +56,8 @@ export interface CombatSetup {
   bonusMaxMana?: number;
   /** Hero special card, placed in the first sleeve slot (omitted once used this run). */
   special?: string;
+  /** Belt rows (1 or 2). With two rows cards alternate between them and the belt runs a bit slower. */
+  beltRows?: number;
 }
 
 interface DamageOpts {
@@ -87,6 +89,7 @@ export class Combat {
   discard: CombatCard[] = [];
   exhaust: CombatCard[] = [];
   belt: BeltCard[] = [];
+  readonly beltRows: number;
   sleeve: (CombatCard | null)[];
 
   /** Time accumulated towards the next regular draw onto the belt. */
@@ -113,6 +116,7 @@ export class Combat {
     this.heroDef = setup.hero;
     this.relics = setup.relics;
     this.relicFlags = setup.relicFlags;
+    this.beltRows = setup.beltRows ?? 1;
     const h = setup.hero;
 
     let maxMana = h.maxMana + (setup.bonusMaxMana ?? 0);
@@ -173,10 +177,10 @@ export class Combat {
     this.draw = [...this.draw.filter((c) => !innate.includes(c)), ...innate];
 
     for (const id of this.relics) RELICS[id]?.hooks?.onCombatStart?.(this);
-    // Prewarm the belt so the fight starts with something to look at.
-    this.spawnCard(CONFIG.spacing * 2.1);
-    this.spawnCard(CONFIG.spacing * 1.05);
-    this.spawnCard(0.02);
+    // Prewarm the belt so the fight starts with something to look at (a second row is staggered by half a gap).
+    for (let row = 0; row < this.beltRows; row++) {
+      for (const k of [2.1, 1.05, 0]) this.spawnCard(Math.max(0.02, CONFIG.spacing * (k + row / 2)), undefined, row);
+    }
   }
 
   // ---------------------------------------------------------------- queries
@@ -245,7 +249,7 @@ export class Combat {
   }
 
   beltRate(): number {
-    let r = this.beltSpeed;
+    let r = this.beltSpeed * (this.beltRows > 1 ? CONFIG.twoRowSpeed : 1);
     if (this.beltRushT > 0) r *= CONFIG.beltRush;
     if (this.beltHasteT > 0) r *= 1.6;
     return r;
@@ -398,18 +402,35 @@ export class Combat {
       if (this.result) return;
     }
     // Draw cadence is a fixed clock (scaled with belt speed so spacing stays constant):
-    // playing cards quickly never makes new ones arrive sooner.
-    const every = CONFIG.spacing * CONFIG.beltTime;
+    // playing cards quickly never makes new ones arrive sooner. Each row keeps the one-row spacing, so a
+    // two-row belt shows twice the cards (more to choose from, mana decides) and each stays in view longer.
+    const every = (CONFIG.spacing * CONFIG.beltTime) / this.beltRows;
     this.spawnClock = Math.min(every, this.spawnClock + dt * rate);
-    const gap = this.belt.length ? Math.min(...this.belt.map((b) => b.pos)) : Infinity;
-    if (this.belt.length >= CONFIG.maxHandBelt) return;
-    if (this.spawnClock >= every && gap >= CONFIG.minGap) {
-      this.spawnClock -= every;
-      this.spawnCard(0);
-    }
+    const row = this.freeRow();
+    if (row < 0 || this.spawnClock < every || this.rowGap(row) < CONFIG.minGap) return;
+    this.spawnClock -= every;
+    this.spawnCard(0, undefined, row);
   }
 
-  private spawnCard(pos: number, card?: CombatCard): boolean {
+  /** Distance from the entry to the newest card of a row (Infinity if the row is empty). */
+  private rowGap(row: number): number {
+    let gap = Infinity;
+    for (const b of this.belt) if (b.row === row && b.pos < gap) gap = b.pos;
+    return gap;
+  }
+
+  /** The row with the most room at the entry, or -1 if every row is full. */
+  private freeRow(): number {
+    let best = -1;
+    for (let r = 0; r < this.beltRows; r++) {
+      if (this.belt.filter((b) => b.row === r).length >= CONFIG.maxHandBelt) continue;
+      if (best < 0 || this.rowGap(r) > this.rowGap(best)) best = r;
+    }
+    return best;
+  }
+
+  private spawnCard(pos: number, card?: CombatCard, row = this.freeRow()): boolean {
+    if (row < 0) return false;
     let c = card;
     if (!c) {
       if (!this.draw.length) {
@@ -420,7 +441,7 @@ export class Combat {
       }
       c = this.draw.pop()!;
     }
-    this.belt.push({ card: c, pos });
+    this.belt.push({ card: c, pos, row });
     this.events.emit({ type: 'cardSpawn', card: c });
     return true;
   }
@@ -493,7 +514,7 @@ export class Combat {
     // The hero special never leaves its hand.
     if (old?.uid === SPECIAL_UID) return false;
     this.sleeve[target] = b.card;
-    if (old) this.belt[beltIdx] = { card: old, pos: b.pos };
+    if (old) this.belt[beltIdx] = { card: old, pos: b.pos, row: b.row };
     else this.belt.splice(beltIdx, 1);
     this.events.emit({ type: 'cardStashed', card: b.card, slot: target });
     return true;
@@ -717,8 +738,7 @@ export class Combat {
     // Temporary cards get negative uids so they never collide with deck cards.
     const card: CombatCard = { uid: -++this.tempUid, id, up, bonus: 0, temp: true };
     if (to === 'belt') {
-      if (this.belt.length >= CONFIG.maxHandBelt) this.discard.push(card);
-      else this.spawnCard(0, card);
+      if (!this.spawnCard(0, card)) this.discard.push(card);
     } else if (to === 'draw') {
       this.draw.splice(this.rng.int(0, this.draw.length), 0, card);
     } else {
