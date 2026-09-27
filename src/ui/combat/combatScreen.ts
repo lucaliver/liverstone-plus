@@ -246,7 +246,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       const startWrap = h(
         'div',
         { class: 'start-wrap' },
-        h('button', { class: 'btn start-btn js-start', html: `${t('combat.start')}<small>${t('combat.startHint')}</small>` }),
+        h('button', { class: 'btn cta start-btn js-start', html: `${t('combat.start')}<small>${t('combat.startHint')}</small>` }),
       );
       startWrap.querySelector('button')!.addEventListener('click', () => {
         startWrap.remove();

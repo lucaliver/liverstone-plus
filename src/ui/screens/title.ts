@@ -43,8 +43,8 @@ export function titleScreen(cb: TitleCallbacks): Screen {
     h(
       'div',
       { class: 'menu' },
-      cb.hasSave ? btn(t('menu.continue'), '', cb.onContinue) : null,
-      btn(t('menu.newRun'), cb.hasSave ? 'secondary' : '', cb.onNewRun),
+      cb.hasSave ? btn(t('menu.continue'), 'cta', cb.onContinue) : null,
+      btn(t('menu.newRun'), cb.hasSave ? 'secondary' : 'cta', cb.onNewRun),
       btn(t('menu.compendium'), 'secondary small', cb.onCompendium),
       h(
         'div',

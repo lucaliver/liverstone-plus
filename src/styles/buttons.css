@@ -50,3 +50,31 @@
   transform: translate(3px, 3px);
   box-shadow: none;
 }
+
+/* call to action: the one button the screen wants you to press (New run, Continue, Start) */
+.btn.cta {
+  overflow: hidden;
+  box-shadow: 6px 6px 0 var(--p);
+  animation: cta-pulse 0.9s steps(2) infinite;
+}
+.btn.cta::after {
+  /* a pixel glint sweeps across now and then */
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -30%;
+  width: 18%;
+  background: repeating-linear-gradient(90deg, #fff9 0 4px, transparent 4px 8px);
+  transform: skewX(-20deg);
+  animation: cta-glint 2.6s steps(10) infinite;
+  pointer-events: none;
+}
+@keyframes cta-pulse {
+  50% { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--p); }
+}
+@keyframes cta-glint {
+  0%, 60% { left: -30%; }
+  100% { left: 130%; }
+}
+.btn.cta:active:not(:disabled) { animation: none; transform: translate(var(--off), var(--off)); box-shadow: none; }
