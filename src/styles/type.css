@@ -1,0 +1,23 @@
+/* ------------------------------------------------------------------ type */
+.h1 {
+  margin: 8px 0 4px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(24px, 7.2vw, 32px);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--fg);
+  text-shadow: 3px 3px 0 var(--p);
+}
+.sub {
+  margin: 6px 0 12px;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 18px;
+  color: var(--muted-d);
+}
+.kw {
+  font-weight: 700;
+  color: var(--b);
+}

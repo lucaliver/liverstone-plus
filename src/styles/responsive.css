@@ -1,0 +1,27 @@
+/* ------------------------------------------------------------------ short screens (must stay last) */
+/* short phones: compact the fixed rows so the stage keeps its room and nothing overflows */
+@media (max-height: 740px) {
+  .combat .topbar { padding-top: calc(var(--safe-t) + 4px); }
+  .combat .icon-btn { width: 40px; height: 40px; }
+  .threat { height: 34px; }
+  .threat .t-val { font-size: 22px; }
+  .mana-row { padding-top: 6px; }
+  .pip { height: 18px; }
+  .action-row { padding: 4px 12px; }
+  .ability-btn { width: 70px; height: 70px; }
+  .ability-btn .pico { font-size: 32px; margin-top: -20px; }
+  .hero-row { padding-top: 4px; padding-bottom: calc(var(--safe-b) + 6px); }
+  .hero-portrait { width: 52px; height: 52px; }
+}
+@media (max-height: 700px) {
+  .enemy-name { display: none; }
+  .enemy-info { gap: 4px; }
+  .enemy-info .statuses,
+  .hero-info .statuses { height: 22px; }
+  .status { height: 22px; font-size: 14px; }
+  .status .pico { font-size: 16px; }
+  .hero-info { gap: 3px; }
+  .hero-portrait { width: 46px; height: 46px; }
+  .bar { height: 24px; }
+  .candle { display: none; }
+}

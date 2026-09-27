@@ -64,6 +64,8 @@ src/
   game/        combat (pure engine), run (node graph, rewards, saves), meta (discovery), settings, types
   ui/          app (screens + modals), dom helpers, art (icons, creatures, riso renderer),
                components (card view, modals, decor), fx (particles, floaters), screens/*
+  ui/combat/   combat screen: view, hud, cardLayer (belt/sleeve/input), combatFx, combatScreen
+  styles/      index.css imports ordered partials (tokens → components → screens → responsive last)
   audio/       sfx.ts (synth), music.ts (sequencer)
 tests/         engine unit tests, content integrity, balance bot + simulation
 ```

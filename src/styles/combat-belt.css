@@ -1,0 +1,110 @@
+/* belt */
+.belt {
+  position: relative;
+  flex: none;
+  height: calc(var(--cw-belt) * 1.4 + 30px);
+  touch-action: none;
+  z-index: 2;
+}
+.belt-track {
+  /* The spectral stream: a violet current of drifting ink dots between pixel-toothed banks. */
+  position: absolute;
+  inset: 0;
+  background-color: #2c2345;
+  background-image: radial-gradient(circle, #362b54 30%, transparent 34%);
+  background-size: 10px 10px;
+  background-position: var(--belt-x, 0) 0;
+  border-top: var(--line) solid var(--void);
+  border-bottom: var(--line) solid var(--void);
+}
+.belt-track::after {
+  /* pixel teeth on both banks */
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  background:
+    conic-gradient(from 135deg at 50% 0, var(--bg2) 90deg, transparent 0) 0 0 / 10px 5px repeat-x,
+    conic-gradient(from -45deg at 50% 100%, var(--bg2) 90deg, transparent 0) 0 100% / 10px 5px repeat-x;
+}
+.belt-track::before {
+  /* the maw: cards that reach the left edge are swallowed by the dark (solid, then dithered) */
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 46px;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--void) 20px, transparent 20px),
+    conic-gradient(var(--void) 25%, transparent 0 50%, var(--void) 0 75%, transparent 0) 0 0 / 6px 6px;
+}
+.maw-eyes {
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  z-index: 4;
+  display: flex;
+  gap: 5px;
+  translate: 0 -50%;
+  pointer-events: none;
+  animation: blink 3.4s steps(1) infinite;
+}
+.maw-eyes i {
+  width: 4px;
+  height: 4px;
+  background: #b0306e;
+}
+@keyframes blink {
+  0%, 92%, 100% { opacity: 1; }
+  94%, 98% { opacity: 0; }
+}
+.belt-cards {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 11px;
+  height: calc(var(--cw-belt) * 1.4);
+}
+.belt-cards .card {
+  --cw: var(--cw-belt);
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+  touch-action: none;
+  cursor: pointer;
+}
+.card.poor .c-top,
+.card.poor .c-art,
+.card.poor .c-face { opacity: 0.38; }
+.card.poor .c-cost { background: var(--paper2); }
+.card.leaving { animation: leaving 0.3s steps(2) infinite; }
+@keyframes leaving {
+  50% { border-color: var(--p); box-shadow: var(--sh) var(--sh) 0 var(--p); }
+}
+.card.dragging {
+  z-index: 200 !important;
+  box-shadow: calc(var(--sh) * 2) calc(var(--sh) * 2) 0 var(--shadow);
+}
+.card.nope { animation: nope 0.24s steps(4); }
+@keyframes nope {
+  25% { margin-left: -7px; }
+  50% { margin-left: 7px; }
+  75% { margin-left: -4px; }
+}
+.card.fly-out {
+  transition: transform 0.28s steps(5), opacity 0.28s steps(5);
+  opacity: 0;
+  pointer-events: none;
+}
+.card.fall-out {
+  transition: transform 0.4s steps(5), opacity 0.4s steps(5);
+  opacity: 0;
+  pointer-events: none;
+}

@@ -1,0 +1,83 @@
+@font-face {
+  font-family: 'Pixel UI';
+  src: url('../../node_modules/@fontsource/jersey-10/files/jersey-10-latin-400-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-display: block;
+  size-adjust: 128%;
+}
+
+/* =====================================================================
+   Liverstone — riso-pixel design system
+   Flat risograph inks on paper, pixel art, hard offsets. No gradients
+   for shading, no glows, no soft shadows.
+   ===================================================================== */
+:root {
+  --paper: #f6f0e4;
+  --paper2: #ece3d0;
+  --k: #1b1830;
+  --p: #ff3d9a;
+  --b: #1c5fd0;
+  --y: #ffd900;
+  /* Overprints (multiply of two inks on paper) */
+  --red: #f63a1e;
+  --green: #2a8a4a;
+  --purple: #4a2aa0;
+  --muted: #6d6680;
+  /* Night: the dark print the paper pieces sit on */
+  --bg: #241b3b;
+  --bg2: #1a1330;
+  --void: #0c0818;
+  --shadow: #0a0714;
+  --fg: #f6f0e4;
+  --muted-d: #a397c4;
+
+  --line: 3px;
+  --off: 4px;
+  --font-display: 'Silkscreen', monospace;
+  --font-ui: 'Pixel UI', 'Silkscreen', monospace;
+  --font: 'Space Grotesk', system-ui, sans-serif;
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --app-w: min(100vw, 520px);
+  color-scheme: light;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+* {
+  box-sizing: border-box;
+  font-synthesis: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: var(--void);
+  color: var(--fg);
+  font-family: var(--font);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: var(--line) dashed var(--b);
+  outline-offset: 3px;
+}

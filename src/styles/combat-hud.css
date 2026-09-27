@@ -1,0 +1,250 @@
+/* mana */
+.mana-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 4px;
+}
+.mana-row > .pico {
+  font-size: 26px;
+  color: #5a8ef0;
+  --ink2: var(--p);
+}
+.mana-pips {
+  flex: 1;
+  display: flex;
+  gap: 4px;
+}
+.pip {
+  position: relative;
+  flex: 1;
+  max-width: 34px;
+  height: 22px;
+  background: var(--bg2);
+  border: var(--line) solid var(--void);
+  overflow: hidden;
+}
+.pip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  transform: scaleX(var(--f, 0));
+  background-image: radial-gradient(circle, #5a8ef0 40%, transparent 44%);
+  background-size: 4px 4px;
+}
+.pip.full::before {
+  transform: none;
+  background: var(--b);
+}
+.pip.gain { animation: pipgain 0.3s steps(2); }
+@keyframes pipgain {
+  50% { background: var(--y); }
+}
+.mana-row.flash .pip { animation: flashpip 0.3s steps(2); }
+@keyframes flashpip {
+  50% { border-color: var(--p); background: var(--p); }
+}
+.mana-num {
+  min-width: 56px;
+  color: #8fb6ff;
+  text-align: right;
+  font-family: var(--font-ui);
+  font-size: 26px;
+  line-height: 1;
+}
+.mana-num small {
+  font-size: 18px;
+  color: var(--muted-d);
+}
+
+/* action row: sleeve + piles + ability */
+.action-row {
+  --cw: calc(var(--cw-belt) * 0.8);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px 8px;
+}
+.sleeve {
+  display: flex;
+  gap: 12px;
+}
+.sleeve-slot {
+  position: relative;
+  flex: none;
+  width: var(--cw);
+  height: calc(var(--cw) * 1.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  color: var(--muted-d);
+  border: var(--line) dashed var(--muted-d);
+  touch-action: none;
+}
+.sleeve-slot > .pico { font-size: 28px; }
+/* two hands: the left slot shows a mirrored (left) hand */
+.sleeve-slot:first-child > .pico { transform: scaleX(-1); }
+.sleeve-slot.target {
+  border-style: solid;
+  border-color: var(--k);
+  background: var(--y);
+  color: var(--k);
+}
+.sleeve-slot .card {
+  --cw: calc(var(--cw-belt) * 0.8 - 12px);
+  color: var(--k);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  animation: stash-in 0.2s steps(3);
+}
+@keyframes stash-in {
+  from { transform: translateY(-40px); }
+}
+.piles {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.pile {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--fg);
+  font-family: var(--font-ui);
+  font-size: 19px;
+}
+.pile .pico { font-size: 24px; --ink2: var(--p); }
+.pile.discard { color: var(--muted-d); }
+
+.ability-btn {
+  position: relative;
+  flex: none;
+  width: 84px;
+  height: 84px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
+}
+.ability-btn .charge {
+  position: absolute;
+  inset: 0;
+  transform-origin: bottom;
+  transform: scaleY(var(--p, 0));
+  background-image: radial-gradient(circle, var(--res-ink) 38%, transparent 42%);
+  background-size: 6px 6px;
+}
+.ability-btn .pico {
+  position: relative;
+  font-size: 40px;
+  margin-top: -24px;
+  color: var(--k);
+  --ink2: var(--res-ink);
+}
+.ability-btn .albl {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 2px 2px 3px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--k);
+}
+.ability-btn.ready {
+  background: var(--y);
+  animation: ready 0.5s steps(2) infinite;
+}
+.ability-btn.ready .charge { display: none; }
+.ability-btn.ready .albl { background: var(--res-ink); }
+@keyframes ready {
+  50% { box-shadow: 7px 7px 0 var(--res-ink); transform: translate(-2px, -2px); }
+}
+.ability-btn:active { transform: translate(var(--off), var(--off)); box-shadow: none; }
+[data-hero='warrior'] { --res-ink: var(--p); --hero-ink: var(--p); }
+[data-hero='mage'] { --res-ink: var(--b); --hero-ink: var(--b); }
+[data-hero='necromancer'] { --res-ink: var(--green); --hero-ink: var(--green); }
+
+/* hero row */
+.hero-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px calc(var(--safe-b) + 10px);
+  border-top: var(--line) solid var(--void);
+  background: var(--bg2);
+}
+.hero-portrait {
+  flex: none;
+  width: 66px;
+  height: 66px;
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  overflow: hidden;
+}
+.hero-portrait .riso { width: 100%; height: 100%; }
+.hero-portrait.hurt { animation: hurt 0.3s steps(2); }
+@keyframes hurt {
+  50% { background: var(--p); transform: translate(3px, -2px); }
+}
+.hero-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.resource {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  text-transform: uppercase;
+}
+.resource .rbar {
+  flex: 1;
+  height: 12px;
+  background: var(--void);
+  border: 2px solid var(--void);
+  overflow: hidden;
+}
+.resource .rfill {
+  height: 100%;
+  transform-origin: left;
+  background: var(--res-ink);
+}
+.weave-badge {
+  padding: 1px 6px;
+  color: var(--paper);
+  background: var(--b);
+  box-shadow: 2px 2px 0 var(--p);
+}
+.weave-badge.off { display: none; }
+.hero-info .statuses {
+  justify-content: flex-start;
+  min-height: 0;
+  height: 26px;
+}
+/* status rows have a fixed height (one line) so they never push the layout around */
+.enemy-info .statuses,
+.hero-info .statuses {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+.enemy-info .statuses { height: 26px; }

@@ -1,0 +1,52 @@
+/* ------------------------------------------------------------------ buttons */
+.btn {
+  position: relative;
+  min-height: 54px;
+  padding: 10px 20px;
+  font-family: var(--font-ui);
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--k);
+  background: var(--y);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
+}
+.btn:active:not(:disabled) {
+  transform: translate(var(--off), var(--off));
+  box-shadow: none;
+}
+.btn:disabled {
+  color: var(--muted);
+  background: var(--paper2);
+  box-shadow: none;
+  border-style: dashed;
+  cursor: default;
+}
+.btn.secondary { background: var(--paper); }
+.btn.danger {
+  color: var(--paper);
+  background: var(--p);
+}
+.btn.small {
+  min-height: 46px;
+  padding: 6px 14px;
+  font-size: 16px;
+}
+.btn.block { width: 100%; }
+
+.icon-btn {
+  color: var(--k);
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: 3px 3px 0 var(--shadow);
+}
+.icon-btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}

@@ -8,7 +8,7 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done · `[-]` deferred (with re
 - [x] T2. Move the Playwright checks into the repo (`tests/e2e`, `npm run e2e`) as a safety net for the refactors
 - [x] T3. Lint + format: Biome (typescript-eslint doesn't support TypeScript 7 yet); all findings fixed; `npm run check`
 - [x] T4. Split the combat screen into `ui/combat/` (view, hud, cardLayer, combatFx, combatScreen)
-- [ ] T5. Split `styles/main.css` into ordered partials (same cascade order)
+- [x] T5. Split `styles/main.css` into 17 ordered partials + `index.css` (identical cascade)
 - [ ] T6. Type the static i18n keys so typos fail the build
 - [ ] T7. Pixel-art caching
 

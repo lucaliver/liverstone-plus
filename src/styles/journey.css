@@ -1,0 +1,91 @@
+/* ------------------------------------------------------------------ journey */
+.run-hud {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.chip {
+  color: var(--k);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 46px;
+  padding: 6px 12px;
+  font-family: var(--font-ui);
+  font-size: 20px;
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: 3px 3px 0 var(--shadow);
+}
+.chip .pico { font-size: 24px; --ink2: var(--y); }
+.chip.hp .pico { color: var(--p); }
+.run-hud .spacer { flex: 1; }
+.act-banner { text-align: center; margin-top: 10px; }
+.path {
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0 20px;
+}
+.path::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  bottom: 40px;
+  left: 50%;
+  width: 6px;
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(180deg, var(--muted-d) 0 6px, transparent 6px 12px);
+}
+.node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+.node .dot {
+  grid-column: 2;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  font-size: 32px;
+  color: var(--k);
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  --ink2: var(--y);
+}
+.node .label {
+  grid-column: 3;
+  font-family: var(--font-ui);
+  font-size: 19px;
+  color: var(--fg);
+  white-space: nowrap;
+}
+.node .num {
+  grid-column: 1;
+  justify-self: end;
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--muted-d);
+}
+.node.done { opacity: 0.35; }
+.node.current .dot {
+  width: 68px;
+  height: 68px;
+  font-size: 42px;
+  background: var(--y);
+  box-shadow: 5px 5px 0 var(--p);
+  animation: bob 0.8s steps(2) infinite;
+  --ink2: var(--p);
+}
+.node.current .label { font-size: 20px; font-weight: 700; }
+.node.current .num { color: var(--fg); }
+.node.elite .dot { color: var(--purple); }
+.node.boss .dot { color: var(--p); }
+.node.rest .dot { color: var(--red); }

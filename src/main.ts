@@ -2,7 +2,7 @@ import '@fontsource/silkscreen/400.css';
 import '@fontsource/silkscreen/700.css';
 import '@fontsource/space-grotesk/500.css';
 import '@fontsource/space-grotesk/700.css';
-import './styles/main.css';
+import './styles/index.css';
 
 import { setLocale, t } from './core/i18n';
 import { randomSeed } from './core/rng';

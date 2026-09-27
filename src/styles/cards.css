@@ -1,0 +1,169 @@
+/* ------------------------------------------------------------------ cards */
+.card {
+  --cw: 100px;
+  --band: var(--y);
+  --band-text: var(--k);
+  --bw: max(2px, calc(var(--cw) * 0.028));
+  --sh: calc(var(--cw) * 0.045);
+  position: relative;
+  flex: none;
+  width: var(--cw);
+  height: calc(var(--cw) * 1.4);
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  color: var(--k);
+  background: var(--paper);
+  border: var(--bw) solid var(--k);
+  box-shadow: var(--sh) var(--sh) 0 var(--shadow);
+}
+.card[data-cls='warrior'] { --band: var(--p); --band-text: var(--paper); }
+.card[data-cls='mage'] { --band: var(--b); --band-text: var(--paper); }
+.card[data-cls='neutral'] { --band: var(--y); --band-text: var(--k); }
+.card[data-cls='curse'] { --band: var(--k); --band-text: var(--y); }
+.card[data-cls='necromancer'] { --band: var(--green); --band-text: var(--paper); }
+
+.c-top {
+  flex: none;
+  display: flex;
+  align-items: stretch;
+  height: 25cqw;
+  background: var(--band);
+  color: var(--band-text);
+  border-bottom: var(--bw) solid var(--k);
+}
+.c-cost {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 25cqw;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19cqw;
+  line-height: 1;
+  color: var(--k);
+  background: var(--y);
+  border-right: var(--bw) solid var(--k);
+}
+.card[data-cls='neutral'] .c-cost { background: var(--paper); }
+.c-name {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 3cqw;
+  font-family: var(--font-ui);
+  font-size: 12.5cqw;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card.is-up .c-name::after {
+  content: '+';
+  margin-left: 1cqw;
+  color: var(--y);
+}
+.card[data-cls='neutral'].is-up .c-name::after { color: var(--p); }
+
+.c-art {
+  flex: none;
+  height: 42cqw;
+  display: grid;
+  place-items: center;
+  border-bottom: var(--bw) solid var(--k);
+  background-color: var(--paper);
+  background-image: radial-gradient(circle, var(--art-dot, #9bb8ea) 30%, transparent 33%);
+  background-size: 7cqw 7cqw;
+}
+.card[data-cat='attack'] .c-art { background-color: #ffc2de; --art-dot: #ff6fb2; --art-ink2: var(--y); }
+.card[data-cat='defense'] .c-art { background-color: #c6d9f8; --art-dot: #6f9be6; --art-ink2: var(--y); }
+.card[data-cat='utility'] .c-art { background-color: #fff0a0; --art-dot: #f0c800; --art-ink2: var(--b); }
+.card[data-cat='curse'] .c-art { background-color: #bfe38a; --art-dot: #5aa04a; --art-ink2: var(--p); }
+.c-art .pico {
+  font-size: 34cqw;
+  color: var(--k);
+  --ink2: var(--art-ink2, var(--p));
+}
+
+.c-face {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5cqw;
+  padding: 1cqw 2cqw 3cqw;
+}
+.gl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5cqw;
+  font-family: var(--font-ui);
+  font-size: 27cqw;
+  line-height: 1;
+  white-space: nowrap;
+}
+.c-face.two .gl { font-size: 20cqw; }
+.gl .pico { font-size: 1.05em; }
+.gl .unit { font-size: 0.6em; margin-left: -0.5cqw; }
+.gl .buff,
+.gl .upg { color: var(--green); }
+.gl .nerf { color: var(--red); }
+.gl .op { font-size: 0.8em; }
+.gk-dmg .pico { color: var(--p); --ink2: var(--y); }
+.gk-block .pico,
+.gk-mana .pico,
+.gk-maxmana .pico,
+.gk-chill .pico,
+.gk-snow .pico,
+.gk-slow .pico,
+.gk-dodge .pico { color: var(--b); --ink2: var(--p); }
+.gk-heal .pico,
+.gk-hp .pico,
+.gk-str .pico,
+.gk-rage .pico,
+.gk-burn .pico { color: var(--p); --ink2: var(--y); }
+.gk-heal .pico { color: var(--green); }
+.gk-crystal .pico { color: var(--b); --ink2: var(--y); }
+.gk-exit .pico + .pico { color: var(--p); --ink2: var(--y); }
+.gk-poison .pico { color: var(--green); --ink2: var(--y); }
+.gk-weak .pico { color: var(--purple); --ink2: var(--y); }
+.gk-vuln .pico,
+.gk-sac .pico { color: var(--p); --ink2: var(--k); }
+.gk-frenzy .pico,
+.gk-stun .pico,
+.gk-parry .pico,
+.gk-grow .pico,
+.gk-skull .pico,
+.gk-exit .pico,
+.gk-clog .pico { color: var(--k); --ink2: var(--y); }
+.gk-clog .pico { font-size: 1.5em; }
+
+.c-tags {
+  position: absolute;
+  left: 3cqw;
+  bottom: 2.5cqw;
+  display: flex;
+  gap: 1.5cqw;
+  font-size: 12cqw;
+  color: var(--muted);
+}
+.c-gem {
+  position: absolute;
+  right: 3.5cqw;
+  bottom: 3.5cqw;
+  width: 7cqw;
+  height: 7cqw;
+  background: var(--paper);
+  border: max(1.5px, 1.6cqw) solid var(--k);
+}
+.card[data-rarity='rare'] .c-gem { background: var(--b); }
+.card[data-rarity='epic'] .c-gem { background: var(--p); }
+.card[data-rarity='legendary'] .c-gem { background: var(--y); }
+.card[data-rarity='legendary'] { box-shadow: var(--sh) var(--sh) 0 var(--p); }
+.card[data-rarity='special'] .c-gem { background: var(--k); }
+.card[data-rarity='unique'] { border-color: var(--k); box-shadow: 0 0 0 max(2px, calc(var(--cw) * 0.025)) var(--y), var(--sh) var(--sh) 0 var(--p); }
+.card[data-rarity='unique'] .c-gem { background: var(--y); border-color: var(--p); }

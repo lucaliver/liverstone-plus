@@ -1,0 +1,112 @@
+/* ------------------------------------------------------------------ hero select */
+.topline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.topline .h1 {
+  flex: 1;
+  margin: 0 58px 0 0;
+}
+.hero-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 16px 8px 18px 2px;
+}
+.hero-card {
+  color: var(--k);
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 10px 14px;
+  padding: 14px;
+  text-align: left;
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
+}
+.hero-card[aria-pressed='true'] {
+  background: var(--y);
+  box-shadow: 7px 7px 0 var(--hero-ink);
+}
+.hero-card .portrait {
+  width: 96px;
+  height: 96px;
+  border: var(--line) solid var(--k);
+  background: var(--paper);
+  overflow: hidden;
+}
+.hero-card .portrait .riso { width: 100%; height: 100%; }
+.hero-card .who {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+.hero-card h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(17px, 5.2vw, 24px);
+  overflow-wrap: anywhere;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.hero-stats {
+  display: flex;
+  gap: 6px;
+}
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  font-family: var(--font-ui);
+  font-size: 19px;
+  background: var(--paper);
+  border: 2px solid var(--k);
+}
+.stat .pico { font-size: 20px; }
+.stat.hp .pico { color: var(--p); --ink2: var(--y); }
+.stat.mana .pico { color: var(--b); --ink2: var(--p); }
+.hero-feature {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--paper);
+  border: 2px solid var(--k);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+.hero-feature .pico {
+  font-size: 30px;
+  color: var(--hero-ink);
+  --ink2: var(--y);
+}
+.hero-feature .ftag {
+  margin-left: 4px;
+  padding: 0 4px 1px;
+  font-size: 11px;
+  vertical-align: 2px;
+  color: var(--paper);
+  background: var(--k);
+}
+.hero-feature .ftag.active { background: var(--p); }
+.hero-feature .ftag.special { color: var(--k); background: var(--y); border: 2px solid var(--k); }
+.hero-feature .kwline { display: none; }
+.hero-feature b.kw {
+  display: inline;
+  font-family: inherit;
+  font-size: inherit;
+  text-transform: none;
+}
+.hero-feature b {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 17px;
+  text-transform: uppercase;
+}
