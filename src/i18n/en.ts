@@ -65,6 +65,7 @@ const en = {
   'hero.select': "Who's on shift?",
   'hero.start': 'Start shift',
   'hero.starterDeck': 'Starter deck',
+  'hero.sleeve': 'Sleeve slots: {n}',
   'hero.tag.passive': 'Passive',
   'hero.abilityCost': 'Costs {n} mana. Grow your crystals to afford it.',
   'hero.tag.active': 'Active',

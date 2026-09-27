@@ -32,6 +32,7 @@ function slide(hero: HeroDef, index: number): HTMLElement {
       { class: 'hero-stats' },
       h('span', { class: 'stat hp', html: `${icon('heart')}${hero.hp}` }),
       h('span', { class: 'stat mana', html: `${icon('crystal')}${hero.maxMana}` }),
+      h('span', { class: 'stat sleeve', 'aria-label': t('hero.sleeve', { n: hero.sleeve }), html: `${icon('hand')}${hero.sleeve}` }),
       h('button', {
         class: 'stat deck',
         'aria-label': t('hero.starterDeck'),

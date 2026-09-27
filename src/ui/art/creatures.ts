@@ -244,12 +244,17 @@ ${shadow}
 
 const warrior = `
 <defs>${lg('wa-h', '#9ac0f8', '#1c5fd0', 1, 1)}${lg('wa-s', '#ffb4d4', '#ff86bc')}${lg('wa-a', '#ff8ac8', '#d03a8a')}${lg('wa-y', '#ffc890', '#ffbc80')}</defs>
-<path d="M14 200c0-46 36-70 86-70s86 24 86 70z" fill="url(#wa-a)" ${OUT}/>
-<path d="M14 176c0-28 18-46 44-48l14 46zM186 176c0-28-18-46-44-48l-14 46z" fill="url(#wa-h)" ${OUT}/>
-<path d="M22 142l-10-20 22 8zM178 142l10-20-22 8zM40 130l-4-22 16 14zM160 130l4-22-16 14z" fill="#fbf4df" ${OUT}/>
+<path d="M14 200c0-46 36-70 86-70 34 0 58 10 70 30l6 40z" fill="url(#wa-a)" ${OUT}/>
+<path d="M14 176c0-28 18-46 44-48l14 46z" fill="url(#wa-h)" ${OUT}/>
+<path d="M22 142l-10-20 22 8zM40 130l-4-22 16 14z" fill="#fbf4df" ${OUT}/>
+<!-- right arm lost on the job: a bandaged stump -->
+<path d="M132 132c16-8 38-4 46 12 6 12 0 26-14 28l-34-14z" fill="#f6f0e4" ${OUT}/>
+<path d="M146 134l-8 28M160 136l-8 30M172 144l-6 26" stroke="#c9bd98" stroke-width="4"/>
+<circle cx="168" cy="160" r="6" fill="#ff3d9a"/>
 <path d="M72 120h56v26H72z" fill="url(#wa-s)" ${OUT}/>
 <path d="M50 86c0-40 22-66 50-66s50 26 50 66v22c0 24-22 40-50 40S50 132 50 108z" fill="url(#wa-s)" ${OUT}/>
 <path d="M72 34c7-7 15-10 22-10" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+<path d="M50 60c0-30 22-46 50-46s50 16 50 46z" fill="#ffd900" ${OUT}/><path d="M95 16h10v44H95z" fill="#e8b820"/>
 <path d="M46 60h108v18H46z" fill="url(#wa-h)" ${OUT}/>
 <path d="M58 62v14M142 62v14M100 62v14" stroke="#fbf4df" stroke-width="3"/>
 <path d="M46 76h18v40c-10-4-18-16-18-28zM154 76h-18v40c10-4 18-16 18-28z" fill="url(#wa-h)" ${OUT}/>
@@ -275,7 +280,10 @@ const mage = `
 <path d="M76 104c8-6 16-6 24-2 8-4 16-4 24 2-6 6-16 6-24 2-8 4-18 4-24-2z" fill="url(#ma-b)" ${OUT}/>
 <path d="M84 124v14M100 126v18M116 124v14" stroke="#a89880" stroke-width="3"/>
 <path d="M60 62c10-10 24-14 40-14s30 4 40 14l-4 12c-10-6-22-8-36-8s-26 2-36 8z" fill="url(#ma-h)" ${OUT}/>
+<path d="M60 50c20-8 60-8 80 0" stroke="#1b1830" stroke-width="6" fill="none"/>
+<circle cx="84" cy="46" r="10" fill="#1c5fd0" stroke="#ffd900" stroke-width="4"/><circle cx="116" cy="46" r="10" fill="#1c5fd0" stroke="#ffd900" stroke-width="4"/>
 <path d="M74 76l16 2M126 76l-16 2" stroke="#1b1830" stroke-width="4"/>
+<g fill="#3a3450" opacity=".7"><rect x="70" y="100" width="6" height="4"/><rect x="124" y="96" width="5" height="4"/></g>
 <circle cx="85" cy="88" r="10" fill="#f6f0e4" stroke="#1b1830" stroke-width="4"/>
 <circle cx="115" cy="88" r="10" fill="#f6f0e4" stroke="#1b1830" stroke-width="4"/>
 <path d="M95 88h10M75 86l-9-3M125 86l9-3" stroke="#1b1830" stroke-width="3"/>
@@ -300,6 +308,8 @@ const necromancer = `
 <rect x="89" y="84" width="3" height="5" fill="#3a1a08"/><rect x="109" y="84" width="3" height="5" fill="#3a1a08"/>
 <path d="M98 94l2 6 2-6" stroke="#1b1830" stroke-width="2.5" fill="none"/>
 <path d="M90 104c6 3 14 3 20 0" stroke="#1b1830" stroke-width="3" fill="none"/>
+<path d="M84 134l16 30 16-30" stroke="#1c5fd0" stroke-width="4" fill="none"/><rect x="90" y="162" width="20" height="24" fill="#f6f0e4" ${OUT}/><rect x="94" y="166" width="12" height="8" fill="#3aa05a"/>
+<circle cx="62" cy="168" r="11" fill="#ff3d9a" ${OUT}/><rect x="58" y="161" width="8" height="12" rx="2" fill="#ffd900"/>
 <path d="M150 200l8-150" stroke="#1b1830" stroke-width="8"/>
 <path d="M146 44c0-12 20-12 20 0 0 8-4 12-10 14-6-2-10-6-10-14z" fill="url(#ne-s)" ${OUT}/>
 <circle cx="152" cy="46" r="2.5" fill="#1b1830"/><circle cx="160" cy="46" r="2.5" fill="#1b1830"/>`;

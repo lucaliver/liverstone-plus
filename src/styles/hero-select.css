@@ -135,6 +135,7 @@
 .stat .pico { font-size: 22px; }
 .stat.hp .pico { color: var(--p); --ink2: var(--y); }
 .stat.mana .pico { color: var(--b); --ink2: var(--p); }
+.stat.sleeve .pico { color: var(--k); --ink2: var(--y); }
 .stat.deck { cursor: pointer; }
 .stat.deck .pico { --ink2: var(--y); }
 .stat.deck:active { transform: translate(3px, 3px); box-shadow: none; }

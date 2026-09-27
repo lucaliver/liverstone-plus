@@ -91,6 +91,7 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 | Archetipo | Blocco e attacchi pesanti | Catene di incantesimi, gelo, fuoco | Veleno |
 | Passiva | **Thick Skin**: il Blocco svanisce più lentamente | **Multitasking**: gli incantesimi in catena diventano più forti | **Virulence**: il Veleno fa più danno |
 | Abilità | **Overtime**: attacchi potenziati per qualche secondo | **Time Theft**: congela il nemico e accelera il nastro | **General Strike**: raddoppia il Veleno sul nemico |
+| Sleeve | 1 slot (ha perso un braccio sul lavoro) | 2 slot | 3 slot |
 | Speciale | **Picket Line**: Blocco e Forza | **Boiler Burst**: danno enorme e Bruciatura | **Wildcat Strike**: cura e Veleno |
 
 I mazzi iniziali hanno solo carte base e cristalli; tutte le altre arrivano come ricompensa.
