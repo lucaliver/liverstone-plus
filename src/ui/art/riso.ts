@@ -6,8 +6,6 @@
  * then split into one image per ink. The UI stacks those layers with `mix-blend-mode: multiply`
  * and slight offsets, reproducing a misregistered riso print.
  */
-import { CREATURES } from './creatures';
-import { ICONS } from './icons';
 
 export type Ink = 'Y' | 'P' | 'B' | 'K';
 export const INK_ORDER: Ink[] = ['Y', 'P', 'B', 'K'];
@@ -219,13 +217,17 @@ async function buildMask(svgBody: string, size: number): Promise<string> {
 export const SPRITE_RES = 64;
 export const ICON_RES = 20;
 
-/** Builds every sprite and icon once at boot; the UI then uses them synchronously. */
-export async function preloadArt(): Promise<void> {
+/**
+ * Builds every sprite and icon once at boot; the UI then uses them synchronously.
+ * The vector sources are passed in (not imported) so this renderer doesn't depend on the art modules,
+ * which themselves use it: no import cycle.
+ */
+export async function preloadArt(src: { creatures: Record<string, string>; icons: Record<string, { svg: string }> }): Promise<void> {
   const jobs: Promise<void>[] = [];
-  for (const [id, body] of Object.entries(CREATURES)) {
+  for (const [id, body] of Object.entries(src.creatures)) {
     jobs.push(buildSprite(body, SPRITE_RES).then((s) => void sprites.set(id, s)));
   }
-  for (const [id, ic] of Object.entries(ICONS)) {
+  for (const [id, ic] of Object.entries(src.icons)) {
     jobs.push(buildMask(ic.svg, ICON_RES).then((m) => void masks.set(id, m)));
   }
   await Promise.all(jobs);

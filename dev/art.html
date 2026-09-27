@@ -11,7 +11,7 @@ body{margin:0;background:#f6f0e4;font-family:sans-serif;padding:12px}
 import { preloadArt, sprite, pixelIcon } from '/src/ui/art/riso.ts';
 import { CREATURES } from '/src/ui/art/creatures.ts';
 import { ICONS } from '/src/ui/art/icons.ts';
-await preloadArt();
+await preloadArt({ creatures: CREATURES, icons: ICONS });
 document.getElementById('g').innerHTML = Object.keys(CREATURES).map((id) => sprite(id)).join('');
 document.getElementById('i').innerHTML = Object.keys(ICONS).map((id) => pixelIcon(id)).join('');
 document.title='ready';

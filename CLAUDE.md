@@ -123,7 +123,8 @@ Plurals: `{n|one|other}`. New language: copy `en.ts`, register it in `core/i18n.
 ### Pixel art
 
 Icons (`ICONS`, 64×64) and creatures (`CREATURES`, 200×200) are written as SVG with the ink palette in mind and
-rasterised at boot by `ui/art/riso.ts` (~26 ms total). `icon(id)` returns a pixel icon tinted by `color` and
+rasterised at boot by `ui/art/riso.ts` (~26 ms total); `main.ts` passes the sources to `preloadArt` (the renderer
+imports no art module, so there is no import cycle). `icon(id)` returns a pixel icon tinted by `color` and
 `--ink2`; `creature(id)` returns stacked ink layers (kept in register; no offsets).
 
 ### Audio
@@ -139,7 +140,8 @@ Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unloc
 - **E2E** (`tests/e2e/smoke.spec.ts`): title, hero carousel, fight → reward swap, layout stability, Start gate,
   pause (music, backdrop tap, main menu), campfire upgrade, compendium, title candles. Use real touch
   (`page.touchscreen.tap`) when the behaviour differs on phones.
-- Ad-hoc screenshot scripts live in the git-ignored `screenshots/` folder.
+- Ad-hoc screenshot scripts live in the git-ignored `screenshots/` folder. `dev/art.html` (open it on the dev
+  server) previews every creature sprite and icon after pixelisation.
 
 ## Known technical debt
 

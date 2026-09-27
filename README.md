@@ -183,4 +183,4 @@ Legenda: `[ ]` da fare · `[x]` fatto (dettagli nei commit).
 - [x] Carte che rallentano il nastro → lo velocizzano (come pescare di più)
 - [x] Combattimento: barra vita e barra d'attacco del nemico con colori diversi
 - [x] Falò: animazione di cuori fluttuanti dopo la cura, prima di tornare alla mappa
-- [ ] Controllo finale del codice: sostenibilità, pulizia, ordine, migliorie
+- [x] Controllo finale del codice: sostenibilità, pulizia, ordine, migliorie

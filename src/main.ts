@@ -15,6 +15,8 @@ import type { HeroId } from './game/types';
 import { confirmModal, initApp, show } from './ui/app';
 import { initFx } from './ui/fx/fx';
 import { preloadArt } from './ui/art/riso';
+import { CREATURES } from './ui/art/creatures';
+import { ICONS } from './ui/art/icons';
 import { combatScreen } from './ui/combat/combatScreen';
 import { endScreen } from './ui/screens/end';
 import { heroSelectScreen } from './ui/screens/heroSelect';
@@ -138,7 +140,7 @@ async function boot(): Promise<void> {
   addEventListener('pointerdown', unlockAudio, { passive: true });
   addEventListener('keydown', unlockAudio);
   // Pixel art is generated from the vector sources once, before the first screen.
-  await preloadArt();
+  await preloadArt({ creatures: CREATURES, icons: ICONS });
   goTitle();
   if (import.meta.env.DEV)
     Object.assign(window, {
