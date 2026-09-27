@@ -18,12 +18,14 @@
   right: 0;
   top: 26%;
   z-index: 45;
+  padding: 0 16px;
   text-align: center;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(38px, 12vw, 56px);
+  line-height: 1;
   text-transform: uppercase;
-  color: var(--k);
+  color: var(--fg);
   text-shadow: 5px 5px 0 var(--y), -3px 3px 0 var(--p);
   pointer-events: none;
   animation: banner 1.1s steps(8) forwards;
