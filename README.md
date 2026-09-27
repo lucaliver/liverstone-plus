@@ -181,6 +181,6 @@ Legenda: `[ ]` da fare · `[x]` fatto (dettagli nei commit).
 - [x] Fine atto: "VICTORY" grande, animato e con musica dedicata (invece di "Act cleared")
 - [x] Potenziamento: carte normali, solo quella selezionata si vede potenziata; solo il tasto "Upgrade"; titolo "Choose a card to upgrade"
 - [x] Carte che rallentano il nastro → lo velocizzano (come pescare di più)
-- [ ] Combattimento: barra vita e barra d'attacco del nemico con colori diversi
+- [x] Combattimento: barra vita e barra d'attacco del nemico con colori diversi
 - [ ] Falò: animazione di cuori fluttuanti dopo la cura, prima di tornare alla mappa
 - [ ] Controllo finale del codice: sostenibilità, pulizia, ordine, migliorie

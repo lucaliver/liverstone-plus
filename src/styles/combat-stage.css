@@ -217,8 +217,8 @@
   position: absolute;
   inset: 0;
   transform-origin: left;
-  background: var(--t-ink, var(--b));
-  opacity: 0.85;
+  /* diagonal ink stripes: a "charging" fill, clearly different from the solid pink HP bar */
+  background: repeating-linear-gradient(-45deg, var(--t-ink, var(--b)) 0 6px, var(--t-ink2, var(--t-ink, var(--b))) 6px 10px);
 }
 .threat .t-lbl {
   position: absolute;
@@ -254,14 +254,16 @@
   border-left: 2px solid var(--void);
 }
 .threat[data-intent='attack'],
-.threat[data-intent='charge'] { --t-ink: var(--p); }
+.threat[data-intent='charge'] { --t-ink: var(--red); --t-ink2: #ff8a2a; }
 .threat[data-intent='attack'] .t-ico,
-.threat[data-intent='charge'] .t-ico { color: var(--p); }
+.threat[data-intent='charge'] .t-ico { color: var(--red); }
 .threat[data-intent='defend'] .t-ico { color: var(--b); }
 .threat[data-intent='buff'] .t-ico,
 .threat[data-intent='curse'] .t-ico { color: var(--purple); }
 .threat[data-intent='curse'],
-.threat[data-intent='buff'] { --t-ink: #9a7ae0; }
+.threat[data-intent='buff'] { --t-ink: #9a7ae0; --t-ink2: #b89af0; }
+.threat[data-intent='defend'] { --t-ink: var(--b); --t-ink2: #4a82e8; }
+.threat[data-intent='steal'] { --t-ink: #d09000; --t-ink2: var(--y); }
 .threat[data-intent='charge'] { background-color: var(--y); }
 .threat.pop { animation: pop 0.2s steps(2); }
 @keyframes pop {
