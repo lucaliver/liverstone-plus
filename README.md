@@ -23,9 +23,15 @@ The build is static (`dist/`) and can be hosted anywhere.
 
 ## Adding content
 
-- **Card**: add a `CardDef` to `src/data/cards/<class>.ts` (a `face` of icon glyphs plus a `play` function)
-  and its `card.<id>.name` / `card.<id>.desc` strings in `src/i18n/en.ts`. `tests/content.test.ts`
-  checks that the texts, glyphs and keywords exist.
+- **Card**: add a `CardDef` to `src/data/cards/<class>.ts` and its `card.<id>.name` / `card.<id>.desc` strings
+  in `src/i18n/en.ts`. That's it: `tests/content.test.ts` checks that texts, glyphs and keywords exist.
+  - `vals` / `upVals`: the numbers; logic, card face and rules text all read them.
+  - `play(c, v)`: the effect, using the engine helpers (`c.hit`, `c.gainBlock`, `c.applyStatus`…).
+  - `face`: the language-neutral card face. `{kind:i}` is an icon plus value i, `{kind}` an icon, `{?kind}` a
+    condition shown as (icon), `{i}` a bare value, `|` a new line. Glyph kinds live in `GLYPHS` in
+    `src/ui/components/cardView.ts`. Damage values are the `{dmg:i}` ones (live previews); the art colour comes
+    from the face (attack / defense / utility) unless `cat` is set.
+  - `desc`: the full text; `{i}` for values, `[kw]` for glossary keywords.
 - **Enemy**: add an `EnemyDef` to `src/data/enemies.ts`, a vector sprite in `src/ui/art/creatures.ts`
   (it is pixelised automatically) and the `enemy.*` / `move.*` strings.
 - **Hero**: add a `HeroDef` to `src/data/heroes.ts`, a card file, a sprite and the `hero.*` strings.

@@ -142,7 +142,7 @@ export const necromancerCards: CardDef[] = [
   // Rares
   {
     id: 'deathCoil',
-    face: '{dmg:0}|{poison}{dmg:1}',
+    face: '{dmg:0}|{?poison}{dmg:1}',
     cls: 'necromancer',
     type: 'spell',
     rarity: 'rare',
@@ -241,7 +241,7 @@ export const necromancerCards: CardDef[] = [
   // Archetype synergy: Poison
   {
     id: 'contagion',
-    face: '{poison:0}|{poison}{poison:1}',
+    face: '{poison:0}|{?poison}{poison:1}',
     cls: 'necromancer',
     type: 'spell',
     rarity: 'common',

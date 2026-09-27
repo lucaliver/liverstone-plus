@@ -125,7 +125,7 @@ export const curseCards: CardDef[] = [
   },
   {
     id: 'hex',
-    face: '{exit}{hp:0}',
+    face: '{?exit}{hp:0}',
     cls: 'curse',
     type: 'curse',
     rarity: 'special',
@@ -138,7 +138,7 @@ export const curseCards: CardDef[] = [
   },
   {
     id: 'bomb',
-    face: '{exit}{boom:0}',
+    face: '{?exit}{boom:0}',
     cls: 'curse',
     type: 'curse',
     rarity: 'special',
@@ -152,7 +152,7 @@ export const curseCards: CardDef[] = [
   },
   {
     id: 'leech',
-    face: '{exit}{drain:0}',
+    face: '{?exit}{drain:0}',
     cls: 'curse',
     type: 'curse',
     rarity: 'special',
@@ -165,7 +165,7 @@ export const curseCards: CardDef[] = [
   },
   {
     id: 'toxin',
-    face: '{exit}{poison:0}',
+    face: '{?exit}{poison:0}',
     cls: 'curse',
     type: 'curse',
     rarity: 'special',

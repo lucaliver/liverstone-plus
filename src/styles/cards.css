@@ -115,6 +115,15 @@
 .gl .upg { color: var(--green); }
 .gl .nerf { color: var(--red); }
 .gl .op { font-size: 0.8em; }
+/* condition: "(icon) effect" — the effect only applies if the condition holds */
+.gl .cond {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0.5cqw;
+  font-size: 0.75em;
+  color: var(--muted);
+}
+.gl .cond .pico { font-size: 1.1em; color: var(--k); --ink2: var(--y); }
 .gk-dmg .pico { color: var(--p); --ink2: var(--y); }
 .gk-block .pico,
 .gk-mana .pico,

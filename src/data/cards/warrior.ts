@@ -215,7 +215,7 @@ export const warriorCards: CardDef[] = [
   },
   {
     id: 'execute',
-    face: '{dmg:0}|{skull}{dmg:1}',
+    face: '{dmg:0}|{?skull}{dmg:1}',
     cls: 'warrior',
     type: 'attack',
     rarity: 'epic',
@@ -262,7 +262,7 @@ export const warriorCards: CardDef[] = [
   // Archetype synergy: Block
   {
     id: 'counterstrike',
-    face: '{dmg:0}|{block}{dmg:1}',
+    face: '{dmg:0}|{?block}{dmg:1}',
     cls: 'warrior',
     type: 'attack',
     rarity: 'common',
@@ -289,7 +289,7 @@ export const warriorCards: CardDef[] = [
   },
   {
     id: 'juggernaut',
-    face: '{block}{dmg:0}',
+    face: '{?block}{dmg:0}',
     // Raw damage from the power, not modified by Strength/Weak: no live preview.
     dmg: [],
     cls: 'warrior',

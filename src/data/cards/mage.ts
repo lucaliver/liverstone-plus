@@ -60,7 +60,7 @@ export const mageCards: CardDef[] = [
   },
   {
     id: 'iceLance',
-    face: '{dmg:0}|{snow}{dmg:1}',
+    face: '{dmg:0}|{?snow}{dmg:1}',
     cls: 'mage',
     type: 'spell',
     rarity: 'common',
@@ -271,7 +271,7 @@ export const mageCards: CardDef[] = [
   },
   {
     id: 'shatter',
-    face: '{dmg:0}|{snow}{stun:1}',
+    face: '{dmg:0}|{?snow}{stun:1}',
     cls: 'mage',
     type: 'spell',
     rarity: 'rare',
