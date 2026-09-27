@@ -22,7 +22,7 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 | --- | --- |
 | Carte che scorrono "come i piattini del sushi" | Il **nastro**, a cadenza fissa: giocare veloce non fa pescare di più |
 | Mana che si ricarica, carte che alzano il massimo | **Cristalli**: si parte con poco mana e si cresce durante lo scontro |
-| Un nemico per piano con la sua velocità d'attacco | Attacco base frequente + **mossa speciale** periodica, telegrafati |
+| Un nemico per piano con la sua velocità d'attacco | Attacco base lento e pesante + **mossa speciale** periodica, telegrafati |
 | Scambio di una carta dopo ogni battaglia | **Ricompensa = sempre uno scambio** (il mazzo ha dimensione fissa) |
 | "Manica" per tenere carte da parte | **Sleeve** con pochi slot, con dentro la carta speciale dell'eroe |
 | Eroi con abilità | Eroi con passiva, abilità a mana e carta speciale una volta per run |
@@ -40,8 +40,8 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
   il nastro accelera e le carte arrivano prima.
 - **Mana:** si ricarica col tempo, a un ritmo che dipende dall'eroe. Il massimo parte basso e cresce con le
   carte **cristallo**, che arrivano per prime e valgono una volta per scontro.
-- **Nemici:** un **attacco base** frequente e, a intervalli, una **mossa speciale** (colpo lento e pesante,
-  maledizioni, furto, blocco); gli speciali si alternano. La **barra minaccia** sopra il nastro mostra la mossa,
+- **Nemici:** un **attacco base** lento e pesante e, a intervalli, una **mossa speciale** (colpo ancora più forte,
+  maledizioni, furto, blocco); gli speciali si alternano. Ogni colpo è un momento da preparare, con respiro in mezzo. La **barra minaccia** sopra il nastro mostra la mossa,
   il valore, il caricamento e quanto manca al prossimo speciale.
 - **Difesa:** il **Blocco** assorbe i danni ma svanisce col tempo, quindi va giocato poco prima del colpo. La
   barra vita mostra a strisce quanto perderai; i bordi dello schermo lampeggiano poco prima di un colpo non bloccato.

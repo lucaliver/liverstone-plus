@@ -106,7 +106,7 @@ export interface EnemyDef {
   tier: 'normal' | 'elite' | 'boss';
   hp: number;
   art: string;
-  /** The frequent basic attack. */
+  /** The steady basic attack. */
   main: MoveDef;
   /** Special moves, used in turn: one after every `every` main attacks. */
   specials: MoveDef[];

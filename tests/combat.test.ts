@@ -226,7 +226,8 @@ describe('combat engine', () => {
     c.events.on((e) => {
       if (e.type === 'enemyAct') seen.push(e.move.id);
     });
-    run(c, CONFIG.introTime + 45);
+    const { main, specials } = ENEMIES.skeleton;
+    run(c, CONFIG.introTime + 4 * main.windup + 2 * specials[0].windup + 1);
     expect(seen.slice(0, 6)).toEqual(['slash', 'slash', 'boneCrush', 'slash', 'slash', 'boneCrush']);
   });
 

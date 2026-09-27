@@ -3,8 +3,9 @@ import type { EnemyDef, MoveDef } from '../game/types';
 const atk = (id: string, dmg: number, windup: number, extra: Partial<MoveDef> = {}): MoveDef => ({ id, intent: 'attack', dmg, windup, ...extra });
 
 /**
- * Every enemy has one frequent main attack and, every `every` main attacks, a special move
+ * Every enemy has one steady main attack and, every `every` main attacks, a special move
  * (slow heavy hits, curses, theft…). Specials rotate when there are several.
+ * Moves are slow and heavy on purpose: each hit is an event to prepare for, with room to breathe in between.
  */
 const defs: EnemyDef[] = [
   // ------------------------------------------------------------- Act 1
@@ -14,9 +15,9 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 26,
     art: 'rat',
-    main: atk('bite', 3, 2.6),
-    every: 3,
-    specials: [atk('frenzy', 3, 5, { hits: 3, intent: 'charge' })],
+    main: atk('bite', 6, 6),
+    every: 2,
+    specials: [atk('frenzy', 4, 8, { hits: 3, intent: 'charge' })],
   },
   {
     id: 'skeleton',
@@ -24,9 +25,9 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 36,
     art: 'skeleton',
-    main: atk('slash', 5, 4),
+    main: atk('slash', 9, 8),
     every: 2,
-    specials: [atk('boneCrush', 15, 8, { intent: 'charge' })],
+    specials: [atk('boneCrush', 22, 11, { intent: 'charge' })],
   },
   {
     id: 'slime',
@@ -34,11 +35,11 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 44,
     art: 'slime',
-    main: atk('slam', 5, 4),
+    main: atk('slam', 9, 8),
     every: 2,
     specials: [
-      { id: 'spit', intent: 'curse', windup: 5, curse: { id: 'slime', n: 2, to: 'belt' } },
-      { id: 'toxicSpit', intent: 'curse', windup: 5, curse: { id: 'toxin', n: 2, to: 'draw' } },
+      { id: 'spit', intent: 'curse', windup: 7, curse: { id: 'slime', n: 2, to: 'belt' } },
+      { id: 'toxicSpit', intent: 'curse', windup: 7, curse: { id: 'toxin', n: 2, to: 'draw' } },
     ],
   },
   {
@@ -47,10 +48,10 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 40,
     art: 'cultist',
-    main: atk('darkBolt', 4, 3.5),
-    every: 3,
+    main: atk('darkBolt', 7, 7),
+    every: 2,
     specials: [
-      { id: 'ritual', intent: 'buff', windup: 6, status: [{ id: 'strength', v: 3, target: 'enemy' }], curse: { id: 'leech', n: 1, to: 'draw' } },
+      { id: 'ritual', intent: 'buff', windup: 8, status: [{ id: 'strength', v: 3, target: 'enemy' }], curse: { id: 'leech', n: 1, to: 'draw' } },
     ],
   },
   {
@@ -59,11 +60,11 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 30,
     art: 'goblin',
-    main: atk('stab', 4, 3),
+    main: atk('stab', 7, 6),
     every: 2,
     specials: [
-      { id: 'snatch', intent: 'steal', windup: 4, dmg: 3, steal: 1 },
-      { id: 'lightFuse', intent: 'curse', windup: 4, curse: { id: 'bomb', n: 1, to: 'belt' } },
+      { id: 'snatch', intent: 'steal', windup: 6, dmg: 5, steal: 1 },
+      { id: 'lightFuse', intent: 'curse', windup: 6, curse: { id: 'bomb', n: 1, to: 'belt' } },
     ],
   },
   {
@@ -72,11 +73,11 @@ const defs: EnemyDef[] = [
     tier: 'elite',
     hp: 88,
     art: 'boneKnight',
-    main: atk('cleave', 7, 4),
+    main: atk('cleave', 13, 8),
     every: 2,
     specials: [
-      atk('rend', 12, 7, { intent: 'charge', status: [{ id: 'vulnerable', t: 5, target: 'hero' }] }),
-      { id: 'shieldWall', intent: 'defend', block: 18, windup: 4 },
+      atk('rend', 18, 11, { intent: 'charge', status: [{ id: 'vulnerable', t: 5, target: 'hero' }] }),
+      { id: 'shieldWall', intent: 'defend', block: 24, windup: 6 },
     ],
     onHalf: (c) => c.applyStatus('enemy', 'strength', 3),
   },
@@ -86,12 +87,12 @@ const defs: EnemyDef[] = [
     tier: 'boss',
     hp: 145,
     art: 'lich',
-    main: atk('soulBolt', 6, 3.5),
+    main: atk('soulBolt', 11, 7),
     every: 2,
     specials: [
-      { id: 'hexes', intent: 'curse', windup: 5, curse: { id: 'hex', n: 2, to: 'draw' } },
-      { id: 'bombs', intent: 'curse', windup: 5, curse: { id: 'bomb', n: 2, to: 'belt' } },
-      atk('doom', 26, 10, { intent: 'charge' }),
+      { id: 'hexes', intent: 'curse', windup: 7, curse: { id: 'hex', n: 2, to: 'draw' } },
+      { id: 'bombs', intent: 'curse', windup: 7, curse: { id: 'bomb', n: 2, to: 'belt' } },
+      atk('doom', 34, 13, { intent: 'charge' }),
     ],
     onHalf: (c) => c.applyStatus('enemy', 'haste', 1, 9999),
   },
