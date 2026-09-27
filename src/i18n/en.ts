@@ -444,7 +444,7 @@ const en = {
   'enemy.rat.name': 'The Snitch',
   'enemy.skeleton.name': 'Senior Boomer',
   'enemy.slime.name': 'Toxic Coworker',
-  'enemy.cultist.name': 'Synergy Coach',
+  'enemy.cultist.name': 'Team Leader',
   'enemy.goblin.name': 'Goblin Consultant',
   'enemy.boneKnight.name': 'Security Automaton',
   'enemy.lich.name': 'Slaves CEO',

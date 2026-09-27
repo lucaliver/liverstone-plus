@@ -23,7 +23,7 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
   finiscano negli scarti. Una run è una **giornata lavorativa**, e ogni atto è un **turno**: mattino, pomeriggio,
   notte. Il tono passa dal comico (il nuovo assunto nel turno del mattino) al dark (il turno di notte).
 - **Satira sociale, un po' socialista**, che colpisce il sistema (dirigenti, burocrazia, il padrone) ma anche i
-  colleghi: il collega tossico, la spia, il boomer anziano, il coach motivazionale.
+  colleghi: il collega tossico, la spia, il boomer anziano, il team leader.
 - **Alto fantasy mischiato:** golem, automi, robot e steampunk convivono con goblin, scheletri e rospi.
 - **Gli eroi restano eroi fantasy**, con appena un tocco di mansione nel titolo (es. *Shield of the Loading Dock*).
 - **Nomi:** carte, nemici, mosse e maledizioni hanno nomi da posto di lavoro (*Punch*, *Hard Hat*, *Reply All*,
@@ -117,7 +117,7 @@ I mazzi iniziali hanno solo carte base e cristalli; tutte le altre arrivano come
 | The Snitch | La spia: colpi rapidi e raffiche (*Rat Out*) |
 | Senior Boomer | Colpi lenti, poi un colpo pesantissimo (*Seniority*) |
 | Toxic Coworker | Il collega tossico: riempie il nastro di *Drama* e il mazzo di *Gossip* |
-| Synergy Coach | *Team Building* lo rende più forte e ti rifila *Mandatory Fun* |
+| Team Leader | *Team Building* lo rende più forte e ti rifila *Mandatory Fun* |
 | Goblin Consultant | Ruba carte (*Outsource*) e ti mette *Deadline* sul nastro |
 | **Security Automaton** (élite) | Colpi che rendono Vulnerabile, *Lockdown* (blocco), si infuria a metà vita |
 | **Slaves CEO** (boss) | *Write-Ups*, *Deadlines* e il colpo *YOU'RE FIRED*; a metà vita accelera |

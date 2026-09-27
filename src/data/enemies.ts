@@ -49,7 +49,7 @@ const defs: EnemyDef[] = [
     act: 1,
     tier: 'normal',
     hp: 40,
-    art: 'coach',
+    art: 'teamLeader',
     main: atk('darkBolt', 7, 7),
     every: 2,
     specials: [

@@ -107,8 +107,8 @@ ${shadow}
 <path d="M22 118c-6 0-10 6-8 12l12 2c4-4 4-10 0-14z" fill="url(#tc-b)" ${OUT}/>
 <path d="M138 188c2-10 6-16 14-16s14 6 14 16z" fill="url(#tc-b)" ${OUT}/><path d="M144 186v-6M152 186v-8M160 186v-6" stroke="#1a1422" stroke-width="2"/>`;
 
-/** Synergy Coach: a hooded cult leader with a headset, a manic grin, a thumbs-up and a flip chart where the line only goes up. */
-const coach = `
+/** Team Leader: a hooded cult leader with a headset, a manic grin, a thumbs-up and a flip chart where the line only goes up. */
+const teamLeader = `
 <defs>${lg('sc-r', '#b070d8', '#4a2090')}${lg('sc-h', '#c080e0', '#5a2aa0')}${glow('sc-g', '#ff4af0')}</defs>
 ${shadow}
 <!-- flip chart on an easel -->
@@ -308,7 +308,7 @@ export const CREATURES: Record<string, string> = {
   snitch,
   boomer,
   coworker,
-  coach,
+  teamLeader,
   consultant,
   automaton,
   ceo,
