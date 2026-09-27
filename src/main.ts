@@ -85,7 +85,7 @@ function enterNode(): void {
   const combat = new Combat(combatSetup(run));
   if (import.meta.env.DEV) Object.assign(window, { __combat: combat });
   saveRun(run);
-  show(combatScreen(run, combat, { onEnd: afterCombat, onQuit: abandon }));
+  show(combatScreen(run, combat, { onEnd: afterCombat, onQuit: abandon, onMenu: goTitle }));
 }
 
 function afterCombat(combat: Combat): void {

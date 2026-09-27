@@ -122,3 +122,22 @@ test('pausing switches to the pause theme and resuming restores the fight music'
   await page.getByRole('button', { name: /resume/i }).click();
   expect(await track()).toBe('combat');
 });
+
+test('pause → main menu keeps the run: Continue restarts the same floor', async ({ page }) => {
+  await freshGame(page);
+  await startFight(page);
+  await combat(page, 'c.hero.hp -= 10;');
+  await page.locator('.js-pause').click();
+  await page.getByRole('button', { name: 'Main menu' }).click();
+  await page.getByRole('button', { name: 'Confirm' }).click();
+  await expect(page.locator('.title-screen')).toBeVisible();
+  await page.getByRole('button', { name: /continue run/i }).click();
+  await expect(page.locator('.node.current')).toBeVisible();
+  const run = (await page.evaluate('({ floor: window.__game.run.current, hp: window.__game.run.hp, max: window.__game.run.maxHp })')) as {
+    floor: number;
+    hp: number;
+    max: number;
+  };
+  expect(run.floor).toBe(0);
+  expect(run.hp).toBe(run.max);
+});

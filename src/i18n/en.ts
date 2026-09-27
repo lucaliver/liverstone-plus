@@ -105,6 +105,8 @@ const en = {
   'combat.paused': 'Paused',
   'combat.resume': 'Resume',
   'combat.quit': 'Abandon run',
+  'combat.toMenu': 'Main menu',
+  'combat.toMenuConfirm': 'Leave to the main menu? Your run is saved, but this fight will start over.',
   'combat.unplayable': "Can't be played",
   'combat.noMana': 'Not enough mana',
   'combat.dodged': 'Dodged!',

@@ -20,7 +20,10 @@ export { ABILITY_ICON } from './view';
 
 export interface CombatCallbacks {
   onEnd: (c: Combat) => void;
+  /** Abandon the whole run. */
   onQuit: () => void;
+  /** Back to the title keeping the run (this fight restarts on Continue). */
+  onMenu: () => void;
 }
 
 /** Fixed simulation step: the engine stays deterministic regardless of frame rate. */
@@ -169,6 +172,20 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
           cls: 'secondary',
           onClick: () => {
             openSettings(renderSpeed);
+            return false;
+          },
+        },
+        {
+          label: t('combat.toMenu'),
+          cls: 'secondary',
+          onClick: () => {
+            openModal({
+              body: t('combat.toMenuConfirm'),
+              actions: [
+                { label: t('common.confirm'), onClick: () => cb.onMenu() },
+                { label: t('common.cancel'), cls: 'secondary' },
+              ],
+            });
             return false;
           },
         },

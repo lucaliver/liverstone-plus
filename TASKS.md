@@ -28,7 +28,7 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done · `[-]` deferred (with re
 - [x] FE7. Elite soundtrack (darker, more epic, same style)
 - [x] FE8. Remove the secondary stat and bar (Rage, Arcana, Decay); active abilities cost a lot of mana instead
 - [x] FE9. Calmer soundtrack while paused
-- [ ] FE10. Pause menu: "Main menu" button (keeps the run; only the current fight is lost)
+- [x] FE10. Pause menu: "Main menu" button (keeps the run; only the current fight is lost)
 - [ ] FE11. A couple of new cards per hero with strong archetype synergy
 - [ ] FE12. Card corner marks: explain or remove the bottom-right square; better Innate symbol
 
