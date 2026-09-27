@@ -177,11 +177,12 @@ test('coming back from the background while paused keeps the pause → fight mus
   await freshGame(page);
   await startFight(page);
   await page.locator('.js-pause').click();
-  await page.evaluate(async () => {
-    const m = await import('/src/audio/music.ts');
+  // The dev server serves source modules: load the music module in the page (a variable keeps tsc out of it).
+  await page.evaluate(async (url) => {
+    const m = await import(url);
     m.suspendMusic(true);
     m.suspendMusic(false);
-  });
+  }, '/src/audio/music.ts');
   expect(await page.evaluate('window.__game.musicTrack()')).toBe('pause');
   await page.getByRole('button', { name: /resume/i }).click();
   expect(await page.evaluate('window.__game.musicTrack()')).toBe('combat');
