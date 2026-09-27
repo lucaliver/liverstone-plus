@@ -1,39 +1,71 @@
 /* ------------------------------------------------------------------ reward / rest / end */
 .reward {
-  align-items: center;
-  gap: 8px;
+  gap: 6px;
+  padding-bottom: calc(var(--safe-b) + 12px);
 }
-.reward-cards {
+.reward-title { margin: 4px 0 0; }
+.swap-label {
+  font-family: var(--font-ui);
+  font-size: 17px;
+  color: var(--muted-d);
+  text-transform: uppercase;
+}
+/* the whole deck on top (scrolls if it grows), the offer below */
+.swap-deck-wrap {
   flex: 1;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
+  min-height: 0;
+  padding: 6px 4px 8px 2px;
 }
-.reward-cards .card {
-  --cw: min(calc((min(100vw, 520px) - 32px - 34px) / 3), 150px);
+.swap-deck,
+.swap-offer {
+  display: grid;
+  justify-content: space-between;
+  gap: 14px 8px;
+}
+/* 10-card deck = 5 × 2; the four offered cards are a bit bigger */
+.swap-deck { --swap-cw: calc((min(100vw, 520px) - 32px - 4 * 8px - 10px) / 5); grid-template-columns: repeat(5, var(--swap-cw)); }
+.swap-offer { --swap-cw: calc((min(100vw, 520px) - 32px - 3 * 8px - 10px) / 4); grid-template-columns: repeat(4, var(--swap-cw)); }
+.swap-deck .card,
+.swap-offer .card {
+  --cw: var(--swap-cw);
   cursor: pointer;
-  /* all three cards enter together and fully opaque (no staggered fades) */
-  animation: deal 0.24s steps(3);
+  transition: transform 0.1s steps(2), opacity 0.1s steps(2);
 }
+.swap-offer .card { animation: deal 0.24s steps(3); }
 @keyframes deal {
-  from { transform: translateY(60px); }
+  from { transform: translateY(40px); }
 }
-.reward-cards.has-sel .card:not(.sel) { opacity: 0.4; }
-.reward-cards .card.sel {
-  transform: translateY(-14px);
+.swap-deck.has-sel .card:not(.sel),
+.swap-offer.has-sel .card:not(.sel) { opacity: 0.45; }
+.swap-deck .card.sel,
+.swap-offer .card.sel {
+  transform: translateY(-6px);
   outline: 4px solid var(--y);
   outline-offset: 3px;
 }
+.swap-deck .card.sel { outline-color: var(--p); }
+.swap-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--y);
+  font-family: var(--font-ui);
+  font-size: 22px;
+}
+.swap-divider::before,
+.swap-divider::after {
+  content: '';
+  flex: 1;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, var(--muted-d) 0 6px, transparent 6px 12px);
+}
+.swap-offer { padding: 6px 2px 4px; }
+.swap-hint { margin: 2px 0; min-height: 22px; }
 .reward-actions {
-  width: min(100%, 380px);
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 12px;
 }
-.reward-actions .full { grid-column: 1 / -1; }
-.reward-actions.single { grid-template-columns: 1fr; }
 
 .rest-fire {
   position: relative;

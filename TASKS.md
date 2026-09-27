@@ -20,7 +20,7 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done · `[-]` deferred (with re
 ## FEATURES
 
 - [x] FE1. Hero select: horizontal, game-like carousel
-- [ ] FE2. Card reward: always a swap. The whole deck on top, 4 reward cards at the bottom; pick one of each, then Swap (or Skip)
+- [x] FE2. Card reward: always a swap. The whole deck on top, 4 reward cards at the bottom; pick one of each, then Swap (or Skip)
 - [ ] FE3. Enemy patterns: a frequent main attack plus a special move every X attacks
 - [ ] FE4. Quick hero balance: starter decks with only basic cards (duplicates ok); advanced cards only from rewards
 - [ ] FE5. Long press on statuses (enemy and own) shows their details

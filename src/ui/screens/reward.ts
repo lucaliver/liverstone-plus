@@ -1,81 +1,105 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
-import { addCard, swapCard, type RunState } from '../../game/run';
-import type { CardDef } from '../../game/types';
+import { type RunState, swapCard } from '../../game/run';
+import type { CardDef, CardInst } from '../../game/types';
 import type { Screen } from '../app';
-import { h } from '../dom';
 import { cardView } from '../components/cardView';
-import { openCardDetail, openDeck } from '../components/modals';
+import { openCardDetail, sortDeck } from '../components/modals';
+import { h } from '../dom';
 import { runHud } from './journey';
 
-/** Post-fight reward: Add the card, Swap it for one in the deck (Cardstone's classic), or Skip. */
-/** `allowSwap`: only elite rewards let you replace a deck card. */
-export function rewardScreen(run: RunState, picks: CardDef[], onDone: (msg?: string) => void, allowSwap = false): Screen {
-  let sel: CardDef | null = null;
-  const addBtn = h('button', { class: 'btn', disabled: true }, t('reward.add'));
-  const swapBtn = h('button', { class: 'btn secondary', disabled: true }, t('reward.swap'));
-  const row = h('div', { class: 'reward-cards' });
-  const cardEls = picks.map((def, i) => {
-    const c = cardView({ uid: -100 - i, id: def.id, up: false });
-    let pressTimer = 0;
-    c.addEventListener('pointerdown', () => {
-      pressTimer = window.setTimeout(() => {
-        pressTimer = -1;
-        openCardDetail({ uid: -1, id: def.id, up: false });
-      }, 450);
-    });
-    c.addEventListener('pointerup', () => {
-      if (pressTimer === -1) return;
-      clearTimeout(pressTimer);
-      sel = sel === def ? null : def;
-      sfx('tap');
-      cardEls.forEach((x, j) => {
-        x.classList.toggle('sel', picks[j] === sel);
-      });
-      row.classList.toggle('has-sel', !!sel);
-      addBtn.disabled = !sel;
-      swapBtn.disabled = !sel;
-    });
-    c.addEventListener('pointerleave', () => clearTimeout(pressTimer));
-    return c;
-  });
-  row.append(...cardEls);
+const LONG_PRESS_MS = 420;
 
-  addBtn.addEventListener('click', () => {
-    if (!sel) return;
-    sfx('button');
-    addCard(run, sel.id);
-    onDone(t('reward.added', { name: t(`card.${sel.id}.name`) }));
+/** Tap selects; a long press opens the card detail instead (and doesn't select). */
+function selectable(el: HTMLElement, card: CardInst, onSelect: () => void): void {
+  let timer = 0;
+  let long = false;
+  el.addEventListener('pointerdown', () => {
+    long = false;
+    timer = window.setTimeout(() => {
+      long = true;
+      openCardDetail(card);
+    }, LONG_PRESS_MS);
   });
-  swapBtn.addEventListener('click', () => {
-    if (!sel) return;
-    const pick = sel;
+  for (const ev of ['pointerup', 'pointerleave', 'pointercancel']) el.addEventListener(ev, () => clearTimeout(timer));
+  el.addEventListener('click', () => {
+    if (long) return;
     sfx('tap');
-    openDeck(run.deck, {
-      title: t('reward.swapHint', { name: t(`card.${pick.id}.name`) }),
-      onPick: (c) => {
-        swapCard(run, c.uid, pick.id);
-        onDone();
-      },
+    onSelect();
+  });
+  el.addEventListener('contextmenu', (e) => e.preventDefault());
+}
+
+/**
+ * Post-fight reward, Cardstone style: the deck never grows. Pick a card of your deck (top) and one of the
+ * offered cards (bottom), then Swap them, or Skip.
+ */
+export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void): Screen {
+  let fromDeck: CardInst | null = null;
+  let offer: CardDef | null = null;
+
+  const swapBtn = h('button', { class: 'btn', disabled: true }, t('reward.swap'));
+  const deckGrid = h('div', { class: 'swap-deck' });
+  const offerRow = h('div', { class: 'swap-offer' });
+  const hint = h('p', { class: 'sub swap-hint' });
+
+  const deckEls = sortDeck(run.deck).map((card) => {
+    const el = cardView(card);
+    selectable(el, card, () => {
+      fromDeck = fromDeck?.uid === card.uid ? null : card;
+      refresh();
     });
+    return { el, card };
+  });
+  deckGrid.append(...deckEls.map((d) => d.el));
+
+  const offerEls = picks.map((def, i) => {
+    const card: CardInst = { uid: -100 - i, id: def.id, up: false };
+    const el = cardView(card);
+    selectable(el, card, () => {
+      offer = offer === def ? null : def;
+      refresh();
+    });
+    return { el, def };
+  });
+  offerRow.append(...offerEls.map((o) => o.el));
+
+  function refresh(): void {
+    for (const d of deckEls) d.el.classList.toggle('sel', d.card.uid === fromDeck?.uid);
+    for (const o of offerEls) o.el.classList.toggle('sel', o.def === offer);
+    deckGrid.classList.toggle('has-sel', !!fromDeck);
+    offerRow.classList.toggle('has-sel', !!offer);
+    swapBtn.disabled = !(fromDeck && offer);
+    hint.textContent =
+      !fromDeck && !offer ? t('reward.pickBoth') : !fromDeck ? t('reward.pickDeck') : !offer ? t('reward.pickOffer') : t('reward.ready');
+  }
+
+  swapBtn.addEventListener('click', () => {
+    if (!fromDeck || !offer) return;
+    sfx('button');
+    swapCard(run, fromDeck.uid, offer.id);
+    onDone();
   });
 
   const el = h(
     'div',
     { class: 'screen reward' },
     runHud(run),
-    h('h1', { class: 'h1', style: { fontSize: '36px', marginTop: '16px' } }, t('reward.victory')),
-    h('p', { class: 'sub' }, t('reward.choose')),
-    row,
+    h('h1', { class: 'h1 reward-title' }, t('reward.victory')),
+    h('div', { class: 'swap-label' }, t('reward.yourDeck')),
+    h('div', { class: 'swap-deck-wrap scroll' }, deckGrid),
+    h('div', { class: 'swap-divider', html: '<span>⇅</span>' }),
+    h('div', { class: 'swap-label' }, t('reward.offer')),
+    offerRow,
+    hint,
     h(
       'div',
-      { class: `reward-actions ${allowSwap ? '' : 'single'}` },
-      addBtn,
-      allowSwap ? swapBtn : null,
+      { class: 'reward-actions' },
+      swapBtn,
       h(
         'button',
         {
-          class: 'btn small secondary full',
+          class: 'btn small secondary',
           onclick: () => {
             sfx('tap');
             onDone();
@@ -85,5 +109,6 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: (msg?: str
       ),
     ),
   );
+  refresh();
   return { el };
 }

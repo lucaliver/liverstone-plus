@@ -28,6 +28,18 @@ test('a fight can be played and won, then a reward is offered', async ({ page })
   }
   await combat(page, "c.damage('hero', 'enemy', 999, { raw: true }, 'hero');");
   await expect(page.locator('.reward')).toBeVisible({ timeout: 5000 });
+  // Reward = swap: the whole deck on top, 4 offers below; Swap needs one of each.
+  await expect(page.locator('.swap-deck .card')).toHaveCount(10);
+  await expect(page.locator('.swap-offer .card')).toHaveCount(4);
+  const swap = page.getByRole('button', { name: 'Swap' });
+  await expect(swap).toBeDisabled();
+  await page.locator('.swap-deck .card').first().click();
+  await page.locator('.swap-offer .card').first().click();
+  await expect(swap).toBeEnabled();
+  await swap.click();
+  await expect(page.locator('.node.current')).toBeVisible();
+  const deck = (await page.evaluate('window.__game.run.deck.length')) as number;
+  expect(deck).toBe(10);
   expect(problems).toEqual([]);
 });
 

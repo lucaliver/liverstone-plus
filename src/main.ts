@@ -106,7 +106,7 @@ function afterCombat(combat: Combat): void {
   }
   const picks = node.type !== 'boss' ? rollRewards(r, node.type === 'elite' ? 'elite' : 'fight') : [];
   saveRun(r);
-  show(rewardScreen(r, picks, nextNode, node.type === 'elite'));
+  show(rewardScreen(r, picks, nextNode));
 }
 
 function nextNode(): void {

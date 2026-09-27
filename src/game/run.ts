@@ -160,11 +160,13 @@ const REWARD_ODDS: Record<'fight' | 'elite', [Rarity, number][]> = {
   ],
 };
 
-/** Three distinct reward cards for the current node. */
+/** Four distinct reward cards for the current node (the player swaps one into the deck). */
+export const REWARD_CHOICES = 4;
+
 export function rollRewards(run: RunState, kind: 'fight' | 'elite'): CardDef[] {
   const rng = rngOf(run);
   const picks: CardDef[] = [];
-  for (let tries = 0; picks.length < 3 && tries < 50; tries++) {
+  for (let tries = 0; picks.length < REWARD_CHOICES && tries < 80; tries++) {
     const rarity = rng.weighted(REWARD_ODDS[kind], ([, w]) => w)[0];
     const pool = rewardPool(run.hero, rarity).filter((c) => !picks.includes(c));
     if (pool.length) picks.push(rng.pick(pool));
@@ -179,10 +181,6 @@ function newCard(run: RunState, id: string): CardInst {
   const card = { uid: nextUid(), id, up: false };
   run.uid = peekUid();
   return card;
-}
-
-export function addCard(run: RunState, id: string): void {
-  run.deck.push(newCard(run, id));
 }
 
 /** Cardstone's classic "swap": the new card replaces one already in the deck. */
