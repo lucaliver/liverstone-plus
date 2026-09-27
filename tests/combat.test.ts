@@ -28,9 +28,12 @@ const run = (c: Combat, seconds: number): void => {
 };
 
 describe('combat engine', () => {
-  it('prewarms the belt and waits for the intro', () => {
+  it('prewarms only the right half of the belt and waits for the intro', () => {
     const c = setup();
-    expect(c.belt.length).toBe(3);
+    const pos = c.belt.map((b) => b.pos);
+    expect(pos.length).toBeGreaterThanOrEqual(2);
+    expect(Math.max(...pos)).toBeCloseTo(CONFIG.prewarm, 1);
+    expect(Math.max(...pos)).toBeLessThanOrEqual(CONFIG.prewarm + 0.01);
     c.tick(CONFIG.introTime / 2);
     expect(c.time).toBe(0);
   });
@@ -54,7 +57,7 @@ describe('combat engine', () => {
 
   it('two-row belt: both rows fill up, each keeps its spacing, and the belt runs slower', () => {
     const c = setup({ beltRows: 2, deck: deckOf(Array(14).fill('strike')) });
-    expect(c.belt.filter((b) => b.row === 1).length).toBe(3);
+    expect(c.belt.filter((b) => b.row === 1).length).toBeGreaterThan(0);
     run(c, CONFIG.introTime + 10);
     for (const row of [0, 1]) {
       const pos = c.belt

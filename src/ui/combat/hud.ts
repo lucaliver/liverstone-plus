@@ -134,10 +134,7 @@ export function createHud(v: CombatView): { render(): void } {
     // Preview how much HP the hit will take (after Block), and flash the screen edges just before it lands.
     const hs = combat.hero;
     const incoming = hostile ? Math.max(0, combat.intentDamage(m) * (m.hits ?? 1) - hs.block) : 0;
-    // With Block up, the value shows what will actually get through (next to a shield), so the belt is all you need to watch.
-    const covered = hostile && !!m.dmg && hs.block > 0;
-    setHtml(r.intentVal, covered ? `${icon('shield')}${incoming}` : intentValue(m));
-    toggle(r.intentVal, 'covered', covered);
+    setText(r.intentVal, intentValue(m));
     // A sound cue just before each hit: knocks if it will hurt, a soft tick if Block covers it.
     if (hostile && !!m.dmg && left < 1 && warned !== e.moveCount) {
       warned = e.moveCount;

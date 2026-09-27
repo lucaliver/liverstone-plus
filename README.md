@@ -36,15 +36,15 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
   leggerla: carte, stati, abilità, ritratto (passiva), barra minaccia, mana.
 - **Nastro:** tocca una carta per giocarla, trascinala in su verso il nemico per giocarla, trascinala in giù
   nella sleeve per tenerla. Una carta che esce a sinistra finisce negli scarti (le maledizioni *volatili*
-  esplodono o ti puniscono). Quando il mazzo finisce, gli scarti si rimescolano. Alcune carte danno **Rush**:
+  lampeggiano poco prima, poi esplodono o ti puniscono). Quando il mazzo finisce, gli scarti si rimescolano. Alcune carte danno **Rush**:
   il nastro accelera e le carte arrivano prima.
 - **Mana:** si ricarica col tempo, a un ritmo che dipende dall'eroe. Il massimo parte basso e cresce con le
   carte **cristallo**, che arrivano per prime e valgono una volta per scontro.
 - **Nemici:** un **attacco base** lento e pesante e, a intervalli, una **mossa speciale** (colpo ancora più forte,
   maledizioni, furto, blocco); gli speciali si alternano. Ogni colpo è un momento da preparare, con respiro in mezzo. La **barra minaccia** sopra il nastro mostra la mossa,
   il valore, il caricamento e quanto manca al prossimo speciale.
-- **Difesa:** il **Blocco** assorbe i danni ma svanisce col tempo, quindi va giocato poco prima del colpo. Con il
-  Blocco attivo la barra minaccia mostra il danno che passerà davvero; la barra vita mostra a strisce quanto perderai.
+- **Difesa:** il **Blocco** assorbe i danni ma svanisce col tempo, quindi va giocato poco prima del colpo. La
+  barra vita mostra a strisce quanto perderai.
   Poco prima di ogni colpo c'è un segnale sonoro (diverso se il Blocco lo copre) e, se non è bloccato, i bordi lampeggiano.
 - **Abilità dell'eroe:** mossa potente che costa molto mana, quindi va usata dopo aver fatto crescere i cristalli.
 - **Carta speciale:** una per eroe, parte nella sleeve a ogni scontro, si usa **una volta per run**.

@@ -177,10 +177,11 @@ export class Combat {
     this.draw = [...this.draw.filter((c) => !innate.includes(c)), ...innate];
 
     for (const id of this.relics) RELICS[id]?.hooks?.onCombatStart?.(this);
-    // Prewarm the belt so the fight starts with something to look at (a second row is staggered by half a gap).
-    for (let row = 0; row < this.beltRows; row++) {
-      for (const k of [2.1, 1.05, 0]) this.spawnCard(Math.max(0.02, CONFIG.spacing * (k + row / 2)), undefined, row);
-    }
+    // Prewarm: run the belt on its own until the first card reaches `prewarm`, so the fight starts with
+    // the right side filled at the normal spacing (and a second row alternating) without crowding it.
+    this.spawnClock = Infinity;
+    const step = 1 / 60;
+    for (let t = 0; t < (CONFIG.prewarm * CONFIG.beltTime) / this.beltRate(); t += step) this.tickBelt(step);
   }
 
   // ---------------------------------------------------------------- queries

@@ -208,7 +208,8 @@ export function createCardLayer(v: CombatView): CardLayer {
         r.beltCards.append(ce.el);
       }
       toggle(ce.el, 'poor', !combat.canAfford(b.card) || !combat.isPlayable(b.card));
-      toggle(ce.el, 'leaving', b.pos > 0.86);
+      // Blink on the way out only when leaving the belt does something (curses that explode, drain…).
+      toggle(ce.el, 'leaving', b.pos > 0.86 && !!CARDS[b.card.id].onExpire);
       if (refreshFaces) setHtml(ce.face, cardFace(b.card, combat));
       if (drag?.uid === b.card.uid && drag.moved) continue;
       // Snap to whole pixels: crisp pixel art and a slightly stepped, printed feel.
