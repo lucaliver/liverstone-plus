@@ -267,6 +267,48 @@ export const warriorCards: CardDef[] = [
     },
   },
 
+  // Archetype synergy: Block
+  {
+    id: 'counterstrike',
+    face: '{dmg:0}|{block}{dmg:1}',
+    cls: 'warrior',
+    type: 'attack',
+    rarity: 'common',
+    cost: 1,
+    vals: [6, 11],
+    upVals: [8, 15],
+    dmg: [0, 1],
+    art: 'crossed',
+    play: (c, v) => void c.hit(c.hero.block > 0 ? v[1] : v[0]),
+  },
+  {
+    id: 'bulwark',
+    face: '{block:0}|{fort:1}',
+    cls: 'warrior',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 2,
+    vals: [8, 6],
+    upVals: [12, 8],
+    art: 'wall',
+    play: (c, v) => {
+      c.gainBlock('hero', v[0]);
+      c.applyStatus('hero', 'fortified', 1, v[1]);
+    },
+  },
+  {
+    id: 'juggernaut',
+    face: '{block}{dmg:0}',
+    cls: 'warrior',
+    type: 'power',
+    rarity: 'epic',
+    cost: 2,
+    vals: [4],
+    upVals: [6],
+    art: 'helm',
+    play: (c, v) => c.applyStatus('hero', 'juggernaut', v[0]),
+  },
+
   // Legendary
   {
     id: 'earthshaker',

@@ -244,6 +244,34 @@ export const necromancerCards: CardDef[] = [
     },
   },
 
+  // Archetype synergy: Poison
+  {
+    id: 'contagion',
+    face: '{poison:0}|{poison}{poison:1}',
+    cls: 'necromancer',
+    type: 'spell',
+    rarity: 'common',
+    cost: 1,
+    vals: [3, 7],
+    upVals: [4, 10],
+    art: 'drop',
+    play: (c, v) => c.applyStatus('enemy', 'poison', c.has('enemy', 'poison') ? v[1] : v[0]),
+  },
+  {
+    id: 'siphonRot',
+    cat: 'defense',
+    face: '{heal}={poison}',
+    cls: 'necromancer',
+    type: 'spell',
+    rarity: 'rare',
+    cost: 2,
+    upCost: 1,
+    vals: [],
+    keywords: ['exhaust'],
+    art: 'fang',
+    play: (c) => void c.heal('hero', c.stacks('enemy', 'poison')),
+  },
+
   // Legendary
   {
     id: 'blackDeath',

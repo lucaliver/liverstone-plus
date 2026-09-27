@@ -251,6 +251,52 @@ export const mageCards: CardDef[] = [
     },
   },
 
+  // Archetype synergy: Spellweave and Chill
+  {
+    id: 'flurry',
+    face: '{dmg:0}×{1}',
+    cls: 'mage',
+    type: 'spell',
+    rarity: 'common',
+    cost: 0,
+    vals: [2, 2],
+    upVals: [3, 2],
+    dmg: [0],
+    art: 'missiles',
+    // Every hit gets the Spellweave bonus.
+    play: (c, v) => void c.hit(v[0], { hits: v[1] }),
+  },
+  {
+    id: 'arcaneEcho',
+    face: '{dmg:0}|{weave:1}',
+    cls: 'mage',
+    type: 'spell',
+    rarity: 'rare',
+    cost: 1,
+    vals: [4, 2],
+    upVals: [6, 3],
+    dmg: [0],
+    art: 'bolt',
+    play: (c, v) => void c.hit(v[0] + v[1] * c.stacks('hero', 'weave')),
+  },
+  {
+    id: 'shatter',
+    face: '{dmg:0}|{snow}{stun:1}',
+    cls: 'mage',
+    type: 'spell',
+    rarity: 'rare',
+    cost: 2,
+    vals: [8, 2],
+    upVals: [11, 3],
+    dmg: [0],
+    art: 'iceLance',
+    play: (c, v) => {
+      const chilled = c.has('enemy', 'chill');
+      c.hit(v[0], { kind: 'ice' });
+      if (chilled) c.applyStatus('enemy', 'stun', 1, v[1]);
+    },
+  },
+
   // Legendary
   {
     id: 'pyroblast',

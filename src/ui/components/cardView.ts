@@ -34,6 +34,8 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   poison: { icon: 'drop' },
   vuln: { icon: 'crack', unit: 's' },
   weak: { icon: 'broken', unit: 's' },
+  fort: { icon: 'fortress', unit: 's' },
+  weave: { icon: 'bolt2', sign: '+' },
 };
 
 export type CardCategory = 'attack' | 'defense' | 'utility' | 'curse';

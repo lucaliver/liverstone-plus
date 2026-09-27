@@ -288,8 +288,8 @@ export class Combat {
 
   private tickFighter(side: Side, dt: number): void {
     const f = this.fighter(side);
-    // Block decays in steps: 10% of current block (at least 1) per interval.
-    if (f.block > 0) {
+    // Block decays in steps: 10% of current block (at least 1) per interval. Fortified Block holds.
+    if (f.block > 0 && !this.has(side, 'fortified')) {
       f.blockTimer += dt;
       while (f.blockTimer >= f.blockDecay && f.block > 0) {
         f.blockTimer -= f.blockDecay;

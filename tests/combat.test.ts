@@ -237,6 +237,29 @@ describe('combat engine', () => {
     expect(c.useAbility()).toBe(false);
   });
 
+  it('synergy cards: Fortified Block holds, Counterstrike reads Block, Contagion reads Poison', () => {
+    const c = setup({ deck: deckOf(['bulwark', 'counterstrike']) });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.maxMana = 10;
+    c.hero.mana = 10;
+    c.playCard(c.belt.find((b) => b.card.id === 'bulwark')!.card.uid);
+    const block = c.hero.block;
+    run(c, 3);
+    expect(c.hero.block).toBe(block);
+    const hp = c.enemy.hp;
+    c.hero.mana = 10;
+    c.playCard(c.belt.find((b) => b.card.id === 'counterstrike')!.card.uid);
+    expect(hp - c.enemy.hp).toBe(11);
+
+    const n = setup({ hero: HEROES.necromancer, hp: 62, maxHp: 62, deck: deckOf(['contagion', 'contagion']) });
+    run(n, CONFIG.introTime + 0.01);
+    n.hero.mana = 5;
+    n.playCard(n.belt[0].card.uid);
+    n.playCard(n.belt[0].card.uid);
+    expect(n.stacks('enemy', 'poison')).toBe(3 + 7);
+  });
+
   it('temp curses never collide with deck uids', () => {
     const c = setup({ enemy: ENEMIES.slime });
     c.addTempCard('slime', 'discard');

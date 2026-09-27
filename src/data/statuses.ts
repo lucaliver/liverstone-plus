@@ -6,6 +6,7 @@ const defs: StatusDef[] = [
   { id: 'thorns', kind: 'stacks', good: true, icon: 'thorns' },
   { id: 'dodge', kind: 'stacks', good: true, icon: 'mirror' },
   { id: 'juggernaut', kind: 'stacks', good: true, icon: 'helm' },
+  { id: 'fortified', kind: 'timed', good: true, icon: 'fortress' },
   { id: 'regen', kind: 'dot', good: true, icon: 'leaf' },
   { id: 'berserk', kind: 'timed', good: true, icon: 'rage' },
   { id: 'parry', kind: 'timed', good: true, icon: 'crossed' },
