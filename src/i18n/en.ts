@@ -81,7 +81,7 @@ const en = {
   'hero.mage.job': 'IT guy, knows your password',
   'hero.mage.title': 'Keeper of the Furnace',
   'hero.mage.passiveName': 'Multitasking',
-  'hero.mage.passiveShort': 'Chain spells: +1 damage each.',
+  'hero.mage.passiveShort': 'Chain attacks: +1 damage each.',
   'hero.mage.abilityShort': 'Freeze the enemy for 4s and rush your belt.',
   'hero.mage.ability': 'Time Theft',
 

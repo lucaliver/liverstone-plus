@@ -7,19 +7,19 @@ const POLICY_WINDOW = 3;
 
 const defs: StatusDef[] = [
   { id: 'strength', kind: 'stacks', good: true, icon: 'fist' },
-  { id: 'spellpower', kind: 'stacks', good: true, icon: 'star' },
+  { id: 'spellpower', kind: 'stacks', good: true, icon: 'wand' },
   { id: 'thorns', kind: 'stacks', good: true, icon: 'thorns' },
   { id: 'dodge', kind: 'stacks', good: true, icon: 'mirror' },
   { id: 'juggernaut', kind: 'stacks', good: true, icon: 'helm' },
   { id: 'fortified', kind: 'timed', good: true, icon: 'fortress' },
   { id: 'regen', kind: 'dot', good: true, icon: 'leaf' },
-  { id: 'berserk', kind: 'timed', good: true, icon: 'rage' },
+  { id: 'berserk', kind: 'timed', good: true, icon: 'overtime' },
   { id: 'parry', kind: 'timed', good: true, icon: 'crossed' },
-  { id: 'haste', kind: 'timed', good: true, icon: 'wing' },
-  { id: 'rush', kind: 'timed', good: true, icon: 'cards' },
+  { id: 'haste', kind: 'timed', good: true, icon: 'gauge' },
+  { id: 'rush', kind: 'timed', good: true, icon: 'speedCards' },
   { id: 'weave', kind: 'timed', good: true, icon: 'bolt2', showStacks: true },
-  { id: 'plague', kind: 'stacks', good: true, icon: 'drop' },
-  { id: 'virulence', kind: 'stacks', good: true, icon: 'skull' },
+  { id: 'plague', kind: 'stacks', good: true, icon: 'wrench' },
+  { id: 'virulence', kind: 'stacks', good: true, icon: 'biohazard' },
   { id: 'burn', kind: 'dot', good: false, icon: 'flame' },
   { id: 'poison', kind: 'dot', good: false, icon: 'drop' },
   { id: 'weak', kind: 'timed', good: false, icon: 'broken' },
@@ -33,7 +33,7 @@ const defs: StatusDef[] = [
     kind: 'stacks',
     good: true,
     passive: true,
-    icon: 'clipboard',
+    icon: 'rulebook',
     // Curses are exempt: paying one off is never "the same type" as the card before.
     canPlay: (c, side, def) =>
       side === 'enemy' && def.type !== 'curse' && c.lastPlayed?.type === def.type && c.time - c.lastPlayedAt < POLICY_WINDOW ? 'combat.policy' : null,
@@ -43,7 +43,7 @@ const defs: StatusDef[] = [
     kind: 'stacks',
     good: true,
     passive: true,
-    icon: 'hourglass',
+    icon: 'zzz',
     onCardPlayed: (c, side) => {
       if (side === 'enemy') c.hurryEnemy(WAKE_PER_CARD);
     },

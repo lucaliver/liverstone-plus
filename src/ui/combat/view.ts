@@ -8,8 +8,8 @@ import { darkEyes, motes } from '../components/decor';
 import { $, centerOf, h } from '../dom';
 import { settings } from '../../game/settings';
 
-export const ABILITY_ICON: Record<string, string> = { warrior: 'rage', mage: 'hourglass', necromancer: 'thorns' };
-export const PASSIVE_ICON: Record<string, string> = { warrior: 'shield', mage: 'bolt2', necromancer: 'drop' };
+export const ABILITY_ICON: Record<string, string> = { warrior: 'overtime', mage: 'stolenClock', necromancer: 'shutdown' };
+export const PASSIVE_ICON: Record<string, string> = { warrior: 'thickSkin', mage: 'bolt2', necromancer: 'biohazard' };
 
 export type Point = { x: number; y: number };
 

@@ -35,7 +35,7 @@ export const mageCards: CardDef[] = [
     cost: 2,
     vals: [4, 3],
     upVals: [6, 4],
-    art: 'frost',
+    art: 'coldCall',
     play: (c, v) => {
       c.hit(v[0], { kind: 'ice' });
       c.applyStatus('enemy', 'chill', 1, v[1]);
@@ -79,7 +79,7 @@ export const mageCards: CardDef[] = [
     cost: 0,
     vals: [2],
     upVals: [3],
-    art: 'crystal',
+    art: 'coffeePot',
     play: (c, v) => c.gainMana(v[0]),
   },
   {
@@ -91,7 +91,7 @@ export const mageCards: CardDef[] = [
     cost: 0,
     vals: [3],
     upVals: [5],
-    art: 'spark',
+    art: 'plug',
     play: (c, v) => void c.hit(v[0], { kind: 'arcane' }),
   },
   {
@@ -103,7 +103,7 @@ export const mageCards: CardDef[] = [
     cost: 3,
     vals: [10, 3],
     upVals: [13, 4],
-    art: 'frostArmor',
+    art: 'coldStorage',
     play: (c, v) => {
       c.gainBlock('hero', v[0]);
       c.applyStatus('enemy', 'chill', 1, v[1]);
@@ -118,7 +118,7 @@ export const mageCards: CardDef[] = [
     cost: 2,
     vals: [6],
     upVals: [9],
-    art: 'flame',
+    art: 'match',
     play: (c, v) => c.applyStatus('enemy', 'burn', v[0]),
   },
 
@@ -145,7 +145,7 @@ export const mageCards: CardDef[] = [
     upCost: 1,
     vals: [6],
     upVals: [8],
-    art: 'hourglass',
+    art: 'remote',
     play: (c, v) => c.rushBelt(v[0]),
   },
   {
@@ -158,7 +158,7 @@ export const mageCards: CardDef[] = [
     upCost: 1,
     vals: [1],
     keywords: ['exhaust'],
-    art: 'mirror',
+    art: 'papers',
     play: (c, v) => c.applyStatus('hero', 'dodge', v[0]),
   },
   {
@@ -172,7 +172,7 @@ export const mageCards: CardDef[] = [
     upCost: 2,
     vals: [2],
     upVals: [3],
-    art: 'combust',
+    art: 'meltdown',
     play: (c, v) => {
       const burn = c.stacks('enemy', 'burn');
       c.removeStatus('enemy', 'burn');
@@ -220,7 +220,7 @@ export const mageCards: CardDef[] = [
     vals: [1, 3],
     upVals: [1, 5],
     keywords: ['exhaust'],
-    art: 'evocation',
+    art: 'powerNap',
     play: (c, v) => {
       c.addManaCrystals(v[0]);
       c.gainMana(v[1]);
@@ -237,7 +237,7 @@ export const mageCards: CardDef[] = [
     cost: 0,
     vals: [25, 5],
     keywords: ['unique'],
-    art: 'fireball',
+    art: 'boiler',
     play: (c, v) => {
       c.hit(v[0], { kind: 'fire' });
       c.applyStatus('enemy', 'burn', v[1]);
@@ -254,7 +254,7 @@ export const mageCards: CardDef[] = [
     cost: 0,
     vals: [2, 2],
     upVals: [3, 2],
-    art: 'missiles',
+    art: 'keyboard',
     // Every hit gets the Spellweave bonus.
     play: (c, v) => void c.hit(v[0], { hits: v[1] }),
   },
@@ -267,7 +267,7 @@ export const mageCards: CardDef[] = [
     cost: 2,
     vals: [4, 2],
     upVals: [6, 3],
-    art: 'bolt',
+    art: 'echo',
     play: (c, v) => void c.hit(v[0] + v[1] * c.stacks('hero', 'weave')),
   },
   {
@@ -279,7 +279,7 @@ export const mageCards: CardDef[] = [
     cost: 3,
     vals: [8, 2],
     upVals: [11, 3],
-    art: 'iceLance',
+    art: 'glassPane',
     play: (c, v) => {
       const chilled = c.has('enemy', 'chill');
       c.hit(v[0], { kind: 'ice' });
@@ -297,7 +297,7 @@ export const mageCards: CardDef[] = [
     cost: 7,
     upCost: 6,
     vals: [40],
-    art: 'pyro',
+    art: 'blastFurnace',
     play: (c, v) => void c.hit(v[0], { kind: 'fire' }),
   },
 
@@ -311,7 +311,7 @@ export const mageCards: CardDef[] = [
     cost: 2,
     vals: [4, 2],
     upVals: [6, 3],
-    art: 'snow',
+    art: 'thermostat',
     play: (c, v) => {
       c.applyStatus('enemy', 'burn', v[0]);
       c.applyStatus('enemy', 'chill', 1, v[1]);
@@ -326,7 +326,7 @@ export const mageCards: CardDef[] = [
     cost: 1,
     vals: [4, 2],
     upVals: [5, 3],
-    art: 'hourglass',
+    art: 'kanban',
     play: (c, v) => {
       c.rushBelt(v[0]);
       c.gainMana(v[1]);
@@ -341,7 +341,7 @@ export const mageCards: CardDef[] = [
     cost: 3,
     vals: [12, 4],
     upVals: [16, 6],
-    art: 'fortress',
+    art: 'fireWall',
     play: (c, v) => {
       c.gainBlock('hero', v[0]);
       c.applyStatus('enemy', 'burn', v[1]);

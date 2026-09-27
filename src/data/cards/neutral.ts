@@ -12,7 +12,7 @@ export const neutralCards: CardDef[] = [
     vals: [1],
     upVals: [2],
     keywords: ['exhaust'],
-    art: 'crystalSlot',
+    art: 'bean',
     play: (c, v) => c.addManaCrystals(v[0]),
   },
   {
@@ -25,7 +25,7 @@ export const neutralCards: CardDef[] = [
     vals: [2],
     upVals: [3],
     keywords: ['exhaust'],
-    art: 'geode',
+    art: 'espresso',
     play: (c, v) => c.addManaCrystals(v[0]),
   },
   {
@@ -77,7 +77,7 @@ export const neutralCards: CardDef[] = [
     vals: [4],
     upVals: [6],
     keywords: ['fleeting'],
-    art: 'dagger',
+    art: 'stapler',
     play: (c, v) => void c.hit(v[0]),
   },
   {
@@ -118,7 +118,7 @@ export const neutralCards: CardDef[] = [
     vals: [5, 1],
     upVals: [8, 2],
     keywords: ['exhaust'],
-    art: 'coffee',
+    art: 'donut',
     play: (c, v) => {
       c.heal('hero', v[0]);
       c.gainMana(v[1]);
@@ -139,7 +139,7 @@ export const curseCards: CardDef[] = [
     keywords: ['exhaust'],
     // Three cards wide: it rides over the cards ahead of it until paid off.
     span: 3,
-    art: 'gate',
+    art: 'turnstile',
     play: () => {},
   },
   {
@@ -151,7 +151,7 @@ export const curseCards: CardDef[] = [
     cost: 1,
     vals: [],
     keywords: ['exhaust'],
-    art: 'slime',
+    art: 'dramaMask',
     play: () => {},
   },
   {
@@ -163,7 +163,7 @@ export const curseCards: CardDef[] = [
     cost: 1,
     vals: [4],
     keywords: ['exhaust', 'volatile'],
-    art: 'hex',
+    art: 'writeUp',
     play: () => {},
     onExpire: (c, v) => c.loseHp(v[0]),
   },
@@ -176,7 +176,7 @@ export const curseCards: CardDef[] = [
     cost: 2,
     vals: [10],
     keywords: ['exhaust', 'volatile'],
-    art: 'bomb',
+    art: 'calendar',
     play: () => {},
     // Explodes at the end of the belt. Block absorbs it.
     onExpire: (c, v) => void c.damage('enemy', 'hero', v[0], { raw: true, kind: 'fire' }, 'dot'),
@@ -190,7 +190,7 @@ export const curseCards: CardDef[] = [
     cost: 1,
     vals: [2],
     keywords: ['exhaust', 'volatile'],
-    art: 'fang',
+    art: 'partyHat',
     play: () => {},
     onExpire: (c, v) => c.drainMana(v[0]),
   },
@@ -203,7 +203,7 @@ export const curseCards: CardDef[] = [
     cost: 1,
     vals: [4],
     keywords: ['exhaust', 'volatile'],
-    art: 'drop',
+    art: 'lips',
     play: () => {},
     onExpire: (c, v) => c.applyStatus('hero', 'poison', v[0]),
   },
@@ -218,7 +218,7 @@ export const curseCards: CardDef[] = [
     cost: 0,
     vals: [],
     keywords: ['unplayable', 'fleeting'],
-    art: 'cards',
+    art: 'meeting',
   },
   {
     id: 'pip',
@@ -229,7 +229,7 @@ export const curseCards: CardDef[] = [
     cost: 1,
     vals: [5],
     keywords: ['exhaust', 'volatile'],
-    art: 'broken',
+    art: 'pipChart',
     play: () => {},
     onExpire: (c, v) => c.applyStatus('hero', 'weak', 1, v[0]),
   },
@@ -242,7 +242,7 @@ export const curseCards: CardDef[] = [
     cost: 1,
     vals: [4],
     keywords: ['exhaust', 'volatile'],
-    art: 'crack',
+    art: 'tapeRoll',
     play: () => {},
     onExpire: (c, v) => c.applyStatus('hero', 'vulnerable', 1, v[0]),
   },

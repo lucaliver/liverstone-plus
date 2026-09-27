@@ -11,7 +11,7 @@ export const warriorCards: CardDef[] = [
     cost: 2,
     vals: [6],
     upVals: [9],
-    art: 'sword',
+    art: 'punchCard',
     play: (c, v) => void c.hit(v[0]),
   },
   {
@@ -23,7 +23,7 @@ export const warriorCards: CardDef[] = [
     cost: 2,
     vals: [6],
     upVals: [9],
-    art: 'shield',
+    art: 'hardHat',
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {
@@ -53,7 +53,7 @@ export const warriorCards: CardDef[] = [
     cost: 2,
     vals: [9],
     upVals: [12],
-    art: 'axe',
+    art: 'crowbar',
     play: (c, v) => void c.hit(v[0]),
   },
   {
@@ -77,7 +77,7 @@ export const warriorCards: CardDef[] = [
     cost: 2,
     upCost: 1,
     vals: [],
-    art: 'shieldBash',
+    art: 'shoulderCheck',
     play: (c) => void c.hit(c.hero.block, { kind: 'blunt' }),
   },
   {
@@ -89,7 +89,7 @@ export const warriorCards: CardDef[] = [
     cost: 0,
     vals: [2, 3],
     upVals: [3, 5],
-    art: 'horn',
+    art: 'megaphone',
     play: (c, v) => {
       c.gainMana(v[0]);
       c.gainBlock('hero', v[1]);
@@ -116,7 +116,7 @@ export const warriorCards: CardDef[] = [
     cost: 0,
     vals: [3, 2],
     upVals: [3, 3],
-    art: 'blood',
+    art: 'doubleClock',
     play: (c, v) => {
       c.loseHp(v[0]);
       c.gainMana(v[1]);
@@ -134,7 +134,7 @@ export const warriorCards: CardDef[] = [
     upCost: 2,
     vals: [4, 10],
     upVals: [6, 15],
-    art: 'crossed',
+    art: 'pushback',
     play: (c, v) => {
       c.gainBlock('hero', v[0]);
       c.applyStatus('hero', 'parry', v[1], 2.5);
@@ -176,7 +176,7 @@ export const warriorCards: CardDef[] = [
     vals: [8, 8],
     upVals: [11, 11],
     keywords: ['exhaust'],
-    art: 'heart',
+    art: 'sandwich',
     play: (c, v) => {
       c.heal('hero', v[0]);
       c.gainBlock('hero', v[1]);
@@ -191,7 +191,7 @@ export const warriorCards: CardDef[] = [
     cost: 2,
     vals: [7, 4],
     upVals: [8, 6],
-    art: 'rampage',
+    art: 'crunchTime',
     play: (c, v, card) => {
       c.hit(v[0]);
       card.bonus += v[1];
@@ -210,7 +210,7 @@ export const warriorCards: CardDef[] = [
     vals: [30],
     upVals: [40],
     keywords: ['exhaust'],
-    art: 'fortress',
+    art: 'contract',
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {
@@ -252,7 +252,7 @@ export const warriorCards: CardDef[] = [
     cost: 0,
     vals: [20, 3],
     keywords: ['unique'],
-    art: 'fortress',
+    art: 'picketSign',
     play: (c, v) => {
       c.gainBlock('hero', v[0]);
       c.applyStatus('hero', 'strength', v[1]);
@@ -269,7 +269,7 @@ export const warriorCards: CardDef[] = [
     cost: 2,
     vals: [6, 11],
     upVals: [8, 15],
-    art: 'crossed',
+    art: 'grievance',
     play: (c, v) => void c.hit(c.hero.block > 0 ? v[1] : v[0]),
   },
   {
@@ -281,7 +281,7 @@ export const warriorCards: CardDef[] = [
     cost: 3,
     vals: [8, 6],
     upVals: [12, 8],
-    art: 'wall',
+    art: 'safetySign',
     play: (c, v) => {
       c.gainBlock('hero', v[0]);
       c.applyStatus('hero', 'fortified', 1, v[1]);
@@ -298,7 +298,7 @@ export const warriorCards: CardDef[] = [
     cost: 3,
     vals: [4],
     upVals: [6],
-    art: 'helm',
+    art: 'forklift',
     play: (c, v) => c.applyStatus('hero', 'juggernaut', v[0]),
   },
 
@@ -330,7 +330,7 @@ export const warriorCards: CardDef[] = [
     cost: 3,
     vals: [8, 6],
     upVals: [11, 8],
-    art: 'hammer',
+    art: 'crate',
     play: (c, v) => {
       c.hit(v[0], { kind: 'blunt' });
       c.gainBlock('hero', v[1]);
@@ -346,7 +346,7 @@ export const warriorCards: CardDef[] = [
     vals: [5, 2],
     upVals: [5, 3],
     keywords: ['exhaust'],
-    art: 'rage',
+    art: 'hazardCoin',
     play: (c, v) => {
       c.loseHp(v[0]);
       c.applyStatus('hero', 'strength', v[1]);

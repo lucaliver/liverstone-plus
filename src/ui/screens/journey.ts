@@ -8,7 +8,13 @@ import { openDeck, openSettings } from '../components/modals';
 import { openHeroSheet } from '../components/heroSheet';
 import { creature } from '../art/creatures';
 
-const NODE_ICON: Record<RunNode['type'], string> = { fight: 'sword', elite: 'clipboard', rest: 'coffee', promotion: 'up', boss: 'tophat' };
+export const NODE_ICON: Record<RunNode['type'], string> = {
+  fight: 'toolbox',
+  elite: 'clipboard',
+  rest: 'coffee',
+  promotion: 'ladder',
+  boss: 'tophat',
+};
 /** Height of one floor on the map (px). */
 const ROW_H = 92;
 const laneX = (lane: number): number => 22 + lane * 56;
@@ -93,7 +99,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void): Sc
       },
       h('button', {
         class: 'dot',
-        html: icon(past ? 'cross' : NODE_ICON[n.type]),
+        html: icon(past ? 'check' : NODE_ICON[n.type]),
         'aria-label': `${t('common.floor', { n: n.floor })} · ${label}`,
         disabled: !open,
         onclick: () => {

@@ -36,7 +36,7 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     vals: [3, 3],
     upVals: [4, 5],
-    art: 'dagger',
+    art: 'toxicMemo',
     play: (c, v) => {
       c.hit(v[0]);
       c.applyStatus('enemy', 'poison', v[1]);
@@ -51,7 +51,7 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     vals: [4, 3],
     upVals: [6, 4],
-    art: 'fang',
+    art: 'bloodMoney',
     play: (c, v) => {
       c.hit(v[0], { kind: 'arcane' });
       c.heal('hero', v[1]);
@@ -68,7 +68,7 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     vals: [6],
     upVals: [9],
-    art: 'drop',
+    art: 'nail',
     play: (c, v) => c.applyStatus('enemy', 'poison', v[0]),
   },
   {
@@ -80,7 +80,7 @@ export const necromancerCards: CardDef[] = [
     cost: 0,
     vals: [3, 1],
     upVals: [5, 2],
-    art: 'fang',
+    art: 'zombieHand',
     play: (c, v) => {
       c.hit(v[0]);
       c.heal('hero', v[1]);
@@ -95,7 +95,7 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     vals: [5],
     upVals: [8],
-    art: 'crack',
+    art: 'whistle',
     play: (c, v) => c.applyStatus('enemy', 'vulnerable', 1, v[0]),
   },
   {
@@ -107,7 +107,7 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     vals: [4, 3],
     upVals: [6, 4],
-    art: 'smoke',
+    art: 'smokestack',
     play: (c, v) => {
       c.applyStatus('enemy', 'poison', v[0]);
       c.applyStatus('enemy', 'weak', 1, v[1]);
@@ -122,7 +122,7 @@ export const necromancerCards: CardDef[] = [
     cost: 3,
     vals: [12],
     upVals: [16],
-    art: 'wall',
+    art: 'barricade',
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {
@@ -135,7 +135,7 @@ export const necromancerCards: CardDef[] = [
     cost: 3,
     vals: [1],
     upVals: [2],
-    art: 'combust',
+    art: 'pipeLeak',
     play: (c, v) => void c.hit(c.stacks('enemy', 'poison') * v[0], { kind: 'poison' }),
   },
 
@@ -149,7 +149,7 @@ export const necromancerCards: CardDef[] = [
     cost: 3,
     vals: [10, 18],
     upVals: [14, 24],
-    art: 'whirl',
+    art: 'envelope',
     play: (c, v) => void c.hit(c.has('enemy', 'poison') ? v[1] : v[0], { kind: 'arcane' }),
   },
   {
@@ -161,7 +161,7 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     vals: [6, 4],
     upVals: [8, 6],
-    art: 'execute',
+    art: 'pillBottle',
     play: (c, v) => {
       c.hit(v[0]);
       c.applyStatus('enemy', 'poison', v[1]);
@@ -177,7 +177,7 @@ export const necromancerCards: CardDef[] = [
     upCost: 2,
     vals: [2],
     upVals: [3],
-    art: 'skull',
+    art: 'sabot',
     play: (c, v) => c.applyStatus('hero', 'plague', v[0]),
   },
   {
@@ -189,7 +189,7 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     upCost: 1,
     vals: [6],
-    art: 'broken',
+    art: 'snail',
     play: (c, v) => c.applyStatus('enemy', 'weak', 1, v[0]),
   },
 
@@ -204,7 +204,7 @@ export const necromancerCards: CardDef[] = [
     upCost: 2,
     vals: [],
     keywords: ['exhaust'],
-    art: 'thorns',
+    art: 'walkout',
     play: (c) => c.applyStatus('enemy', 'poison', c.stacks('enemy', 'poison')),
   },
   {
@@ -231,7 +231,7 @@ export const necromancerCards: CardDef[] = [
     cost: 0,
     vals: [15, 12],
     keywords: ['unique'],
-    art: 'tomb',
+    art: 'cat',
     play: (c, v) => {
       c.heal('hero', v[0]);
       c.applyStatus('enemy', 'poison', v[1]);
@@ -248,7 +248,7 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     vals: [3, 7],
     upVals: [4, 10],
-    art: 'drop',
+    art: 'speech',
     play: (c, v) => c.applyStatus('enemy', 'poison', c.has('enemy', 'poison') ? v[1] : v[0]),
   },
   {
@@ -262,7 +262,7 @@ export const necromancerCards: CardDef[] = [
     upCost: 2,
     vals: [],
     keywords: ['exhaust'],
-    art: 'fang',
+    art: 'claw',
     play: (c) => void c.heal('hero', c.stacks('enemy', 'poison')),
   },
 
@@ -277,7 +277,7 @@ export const necromancerCards: CardDef[] = [
     vals: [20],
     upVals: [28],
     keywords: ['exhaust'],
-    art: 'skull',
+    art: 'cart',
     play: (c, v) => c.applyStatus('enemy', 'poison', v[0]),
   },
 
@@ -291,7 +291,7 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     vals: [3, 4],
     upVals: [4, 6],
-    art: 'leaf',
+    art: 'smiley',
     play: (c, v) => {
       c.applyStatus('enemy', 'weak', 1, v[0]);
       c.heal('hero', v[1]);
@@ -306,7 +306,7 @@ export const necromancerCards: CardDef[] = [
     cost: 0,
     vals: [2, 2],
     upVals: [2, 3],
-    art: 'blood',
+    art: 'unionCard',
     play: (c, v) => {
       c.loseHp(v[0]);
       c.gainMana(v[1]);
@@ -321,7 +321,7 @@ export const necromancerCards: CardDef[] = [
     cost: 3,
     vals: [10, 3],
     upVals: [14, 4],
-    art: 'tomb',
+    art: 'kettlebell',
     play: (c, v) => {
       c.hit(v[0]);
       c.applyStatus('enemy', 'vulnerable', 1, v[1]);
@@ -336,7 +336,7 @@ export const necromancerCards: CardDef[] = [
     cost: 4,
     vals: [8, 8],
     upVals: [11, 11],
-    art: 'bone',
+    art: 'moon',
     play: (c, v) => {
       c.applyStatus('enemy', 'poison', v[0]);
       c.gainBlock('hero', v[1]);

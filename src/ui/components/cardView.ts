@@ -7,7 +7,14 @@ import { h } from '../dom';
 import { icon } from '../art/icons';
 
 const KEYWORD_LINE = ['unique', 'innate', 'exhaust', 'consume', 'fleeting', 'volatile', 'unplayable'];
-const TAG_ICON: Record<string, string> = { unique: 'star', innate: 'flag', exhaust: 'cross', consume: 'drop', fleeting: 'wing', volatile: 'combust' };
+export const TAG_ICON: Record<string, string> = {
+  unique: 'star',
+  innate: 'flag',
+  exhaust: 'cross',
+  consume: 'trash',
+  fleeting: 'wing',
+  volatile: 'combust',
+};
 
 /** Glyph kind → icon and the unit shown after its value. */
 export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string }> = {
@@ -17,16 +24,16 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   mana: { icon: 'crystal', sign: '+' },
   stun: { icon: 'stars', unit: 's' },
   chill: { icon: 'snow', unit: 's' },
-  rush: { icon: 'cards', unit: 's' },
+  rush: { icon: 'speedCards', unit: 's' },
   burn: { icon: 'flame' },
   str: { icon: 'fist', sign: '+' },
   dodge: { icon: 'mirror' },
   parry: { icon: 'crossed' },
   hp: { icon: 'blood', sign: '-' },
-  grow: { icon: 'up', sign: '+' },
-  skull: { icon: 'skull' },
+  grow: { icon: 'growth', sign: '+' },
   snow: { icon: 'snow' },
-  exit: { icon: 'left' },
+  skull: { icon: 'heartbreak' },
+  exit: { icon: 'exitSlot' },
   clog: { icon: 'slime' },
   gate: { icon: 'gate' },
   boom: { icon: 'bomb' },

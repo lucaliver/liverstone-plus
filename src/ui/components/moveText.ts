@@ -49,7 +49,7 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
     const n = belt === 'all' ? t('move.fx.hexAll', { n: draw }) : `×${belt + draw}`;
     parts.push(`<span class="fx fx-curse">${icon(HEXES[m.hex.id].icon)}${t(`hex.${m.hex.id}`)} <b>${n}</b></span>`);
   }
-  if (m.steal) parts.push(`<span class="fx fx-steal">${icon('hand')}${t('compendium.steal')}</span>`);
+  if (m.steal) parts.push(`<span class="fx fx-steal">${icon('snatch')}${t('compendium.steal')}</span>`);
   return parts.join(' ');
 }
 
