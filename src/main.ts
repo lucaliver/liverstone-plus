@@ -81,7 +81,7 @@ function enterNode(): void {
     show(restScreen(run, nextNode));
     return;
   }
-  playMusic(node.type === 'boss' ? 'boss' : 'combat');
+  playMusic(node.type === 'boss' ? 'boss' : node.type === 'elite' ? 'elite' : 'combat');
   const combat = new Combat(combatSetup(run));
   if (import.meta.env.DEV) Object.assign(window, { __combat: combat });
   saveRun(run);

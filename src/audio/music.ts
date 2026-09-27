@@ -7,7 +7,7 @@
  */
 import { audioGraph, onAudioUnlock } from './sfx';
 
-export type TrackId = 'menu' | 'combat' | 'boss' | 'rest';
+export type TrackId = 'menu' | 'combat' | 'elite' | 'boss' | 'rest';
 
 /** [step (0-15), midi note, length in 16th steps] */
 type NoteEv = [number, number, number];
@@ -59,6 +59,7 @@ const A4 = 69,
   A5 = 81,
   Bb5 = 82,
   B5 = 83,
+  Ab5 = 80,
   G4 = 67;
 
 const TRACKS: Record<TrackId, Track> = {
@@ -229,6 +230,72 @@ const TRACKS: Record<TrackId, Track> = {
     drums: ['k..k..k.k..k..k.', '....s.......s..s', 'hhhhhhhhhhhhhhhh'],
     pad: false,
     gain: 0.75,
+  },
+  // Elite: a dark war march in C minor. Heavy half-time drums, a droning pulse bass with a tritone
+  // sting, choir-like pads and a slow, heroic lead over a Neapolitan (Db) turn.
+  elite: {
+    bpm: 112,
+    chords: [
+      { root: 36, tones: MIN }, // Cm
+      { root: 32, tones: MAJ }, // Ab
+      { root: 29, tones: MIN }, // Fm
+      { root: 31, tones: DOM7 }, // G7 (harmonic minor)
+      { root: 36, tones: MIN }, // Cm
+      { root: 37, tones: MAJ }, // Db (Neapolitan)
+      { root: 34, tones: MAJ }, // Bb
+      { root: 31, tones: MAJ }, // G
+    ],
+    bass: [0, _, 0, _, 0, _, 0, 12, 0, _, 0, _, 7, _, 6, _],
+    bassWave: 'pulse',
+    arp: [0, _, _, 2, _, _, 1, _, 0, _, _, 2, _, _, 3, _],
+    arpOctave: 4,
+    lead: [
+      [
+        [0, G5, 6],
+        [6, Ds5, 2],
+        [8, C5, 8],
+      ],
+      [
+        [0, C5, 4],
+        [4, Ds5, 4],
+        [8, Ab5, 8],
+      ],
+      [
+        [0, G5, 4],
+        [4, F5, 4],
+        [8, C5, 8],
+      ],
+      [
+        [0, D5, 6],
+        [6, F5, 2],
+        [8, B4, 8],
+      ],
+      [
+        [0, C5, 6],
+        [6, Ds5, 2],
+        [8, G5, 8],
+      ],
+      [
+        [0, Ab5, 4],
+        [4, F5, 4],
+        [8, Cs5, 8],
+      ],
+      [
+        [0, D5, 4],
+        [4, F5, 4],
+        [8, Bb4, 8],
+      ],
+      [
+        [0, B4, 4],
+        [4, D5, 4],
+        [8, G4, 8],
+      ],
+    ],
+    leadOn: (p) => p >= 1,
+    leadVoice: 'pulse',
+    drums: ['k.......k.......', '........s.......', 'h...h...h...h...', '............t.tt'],
+    pad: true,
+    gain: 0.8,
   },
   // A moment of warmth by the fire; still minor, still a little sad.
   rest: {
