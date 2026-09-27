@@ -74,6 +74,8 @@ export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
         return 6 * urgency;
       }
       default: {
+        // Don't feed a Printer while it copies the damage it takes.
+        if (c.enemy.move.absorb) return -1;
         if (/rot|frailty|noxiousCloud|wither|blackDeath|epidemic/.test(card.id)) return 9;
         if (card.id === 'blightBurst') return c.stacks('enemy', 'poison') * 0.8;
         const dmg = def.dmg?.length ? c.previewHeroDamage(v[def.dmg[0]], def) * (card.id === 'arcaneMissiles' ? v[1] : 1) : 8;

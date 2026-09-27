@@ -34,7 +34,7 @@ const HIT_OFFSETS: [number, number][] = [
 export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'win' | 'lose') => void): () => void {
   const { r } = v;
 
-  /** Hexes already explained this fight (one hint each). */
+  /** Hexes (and Inflation) already explained this fight (one hint each). */
   const hexHinted = new Set<string>();
 
   const onEvent = (e: CombatEvent): void => {
@@ -159,6 +159,21 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
           hexHinted.add(id);
           v.toast(t(`hex.${id}.d`, { n: HEXES[id].taps }));
         }
+        break;
+      }
+      case 'inflated': {
+        const el = cards.elementOf(e.card.uid);
+        if (el) v.retrigger(el, 'hex-in');
+        if (!hexHinted.has('inflation')) {
+          hexHinted.add('inflation');
+          v.toast(t('combat.inflation'));
+        }
+        break;
+      }
+      case 'absorbed': {
+        const p = v.enemyPoint();
+        floatText(p.x, p.y - 30, `+${e.amount}`, 'copied');
+        sfx('stash');
         break;
       }
       case 'hexTap': {

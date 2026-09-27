@@ -25,15 +25,15 @@ const TIERS: EnemyDef['tier'][] = ['normal', 'elite', 'boss'];
 function foeView(e: EnemyDef): HTMLElement {
   const el = h('article', {
     class: 'foe',
-    html: `<div class="foe-head"><div class="foe-art">${creature(e.art)}</div><div class="foe-id"><h3>${t(`enemy.${e.id}.name`)}</h3>${
+    html: `<div class="foe-head"><div class="foe-art">${creature(e.art)}</div><div class="foe-id"><h3>${t(`enemy.${e.id}.name`)}</h3><span class="tier act">${t('journey.title', { n: e.act })}</span>${
       e.tier !== 'normal' ? `<span class="tier ${e.tier}">${t(`journey.node.${e.tier}`)}</span>` : ''
     }<span class="foe-hp">${icon('heart')}${Math.round(e.hp * CONFIG.enemyHp)}</span></div></div>${movePattern(e)}`,
   });
-  // Moves that add a curse: press to see the card.
-  for (const li of el.querySelectorAll<HTMLElement>('li[data-card]')) {
-    onPress(li, () => {
+  // Curses a move adds: press to see the card.
+  for (const fx of el.querySelectorAll<HTMLElement>('[data-card]')) {
+    onPress(fx, () => {
       sfx('tap');
-      openCardDetail({ uid: -1, id: li.dataset.card!, up: false });
+      openCardDetail({ uid: -1, id: fx.dataset.card!, up: false });
     });
   }
   return el;
@@ -50,7 +50,11 @@ export function compendiumScreen(onBack: () => void): Screen {
   const grid = h('div', { class: 'deck-grid comp-grid' });
 
   const sectionSwitch = h('div', { class: 'seg section-switch', role: 'tablist' });
-  const foes = h('div', { class: 'foes' }, ...[...ENEMY_LIST].sort((a, b) => TIERS.indexOf(a.tier) - TIERS.indexOf(b.tier)).map(foeView));
+  const foes = h(
+    'div',
+    { class: 'foes' },
+    ...[...ENEMY_LIST].sort((a, b) => a.act - b.act || TIERS.indexOf(a.tier) - TIERS.indexOf(b.tier)).map(foeView),
+  );
   const cardsWrap = h('div', null);
   const sub = h('p', { class: 'sub' });
 

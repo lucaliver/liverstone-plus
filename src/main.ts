@@ -130,7 +130,8 @@ function afterCombat(combat: Combat): void {
     show(endScreen(r, true, () => goHeroSelect(), goTitle));
     return;
   }
-  const picks = node.type !== 'boss' ? rollRewards(r, node.type === 'elite' ? 'elite' : 'fight') : [];
+  // Elites and act bosses pay better.
+  const picks = rollRewards(r, node.type === 'fight' ? 'fight' : 'elite');
   saveRun(r);
   show(rewardScreen(r, picks, nextNode));
 }

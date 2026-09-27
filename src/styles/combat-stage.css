@@ -174,6 +174,22 @@
   50% { filter: drop-shadow(3px 0 0 var(--p)) drop-shadow(-3px 0 0 var(--p)) drop-shadow(0 3px 0 var(--p)); }
 }
 .enemy-art.dead { animation: die 0.6s steps(5) forwards; }
+/* copying the damage it takes (the Printer's scan): a green line sweeps the sprite */
+.enemy-art.absorbing::after {
+  content: '';
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 0;
+  height: 6px;
+  z-index: 2;
+  background: #1cffc0;
+  box-shadow: 0 0 0 2px var(--k);
+  animation: scanline 1s steps(10) infinite;
+}
+@keyframes scanline {
+  to { top: 96%; }
+}
 @keyframes die {
   to { transform: translateY(40px) scaleY(0.2); opacity: 0; }
 }
@@ -269,6 +285,9 @@
 .threat[data-intent='buff'] { --t-ink: #9a7ae0; --t-ink2: #b89af0; }
 .threat[data-intent='defend'] { --t-ink: var(--b); --t-ink2: #4a82e8; }
 .threat[data-intent='steal'] { --t-ink: #d09000; --t-ink2: var(--y); }
+.threat[data-intent='idle'] { --t-ink: var(--muted); --t-ink2: #9a94ac; }
+.threat[data-intent='absorb'] { --t-ink: #1cc0a0; --t-ink2: #8ae8d0; }
+.threat[data-intent='absorb'] .t-ico { color: #1a9a80; }
 .threat[data-intent='charge'] { background-color: var(--y); }
 .threat.pop { animation: pop 0.2s steps(2); }
 @keyframes pop {

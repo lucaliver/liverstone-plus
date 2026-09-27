@@ -33,7 +33,7 @@ const defs: EnemyDef[] = [
     every: 2,
     specials: [
       atk('boneCrush', 13, 11, { intent: 'charge' }),
-      { id: 'gatekeep', intent: 'curse', windup: 7, curse: { id: 'gatekeeping', n: 2, to: 'belt' } },
+      { id: 'gatekeep', intent: 'curse', windup: 7, curse: [{ id: 'gatekeeping', n: 2, to: 'belt' }] },
     ],
   },
   {
@@ -45,8 +45,8 @@ const defs: EnemyDef[] = [
     main: atk('slam', 5, 8),
     every: 2,
     specials: [
-      { id: 'spit', intent: 'curse', windup: 7, curse: { id: 'slime', n: 2, to: 'belt' } },
-      { id: 'toxicSpit', intent: 'curse', windup: 7, curse: { id: 'toxin', n: 2, to: 'draw' } },
+      { id: 'spit', intent: 'curse', windup: 7, curse: [{ id: 'slime', n: 2, to: 'belt' }] },
+      { id: 'toxicSpit', intent: 'curse', windup: 7, curse: [{ id: 'toxin', n: 2, to: 'draw' }] },
     ],
   },
   {
@@ -58,8 +58,8 @@ const defs: EnemyDef[] = [
     main: atk('darkBolt', 4, 7),
     every: 2,
     specials: [
-      { id: 'ritual', intent: 'buff', windup: 8, status: [{ id: 'strength', v: 3, target: 'enemy' }], curse: { id: 'leech', n: 1, to: 'draw' } },
-      { id: 'syncUp', intent: 'curse', windup: 7, curse: { id: 'quickSync', n: 2, to: 'belt' } },
+      { id: 'ritual', intent: 'buff', windup: 8, status: [{ id: 'strength', v: 3, target: 'enemy' }], curse: [{ id: 'leech', n: 1, to: 'draw' }] },
+      { id: 'syncUp', intent: 'curse', windup: 7, curse: [{ id: 'quickSync', n: 2, to: 'belt' }] },
     ],
   },
   {
@@ -72,7 +72,7 @@ const defs: EnemyDef[] = [
     every: 2,
     specials: [
       { id: 'snatch', intent: 'steal', windup: 6, dmg: 3, steal: 1 },
-      { id: 'lightFuse', intent: 'curse', windup: 6, curse: { id: 'bomb', n: 1, to: 'belt' } },
+      { id: 'lightFuse', intent: 'curse', windup: 6, curse: [{ id: 'bomb', n: 1, to: 'belt' }] },
     ],
   },
   {
@@ -84,8 +84,8 @@ const defs: EnemyDef[] = [
     main: atk('memo', 4, 7),
     every: 2,
     specials: [
-      { id: 'review', intent: 'curse', windup: 7, curse: { id: 'pip', n: 2, to: 'draw' } },
-      { id: 'writeYouUp', intent: 'curse', windup: 7, curse: { id: 'hex', n: 1, to: 'draw' } },
+      { id: 'review', intent: 'curse', windup: 7, curse: [{ id: 'pip', n: 2, to: 'draw' }] },
+      { id: 'writeYouUp', intent: 'curse', windup: 7, curse: [{ id: 'hex', n: 1, to: 'draw' }] },
     ],
     start: [{ id: 'policy' }],
   },
@@ -122,7 +122,7 @@ const defs: EnemyDef[] = [
     specials: [
       atk('rend', 11, 11, { intent: 'charge', status: [{ id: 'vulnerable', t: 5, target: 'hero' }] }),
       { id: 'shieldWall', intent: 'defend', block: 14, windup: 6 },
-      { id: 'clearance', intent: 'curse', windup: 6, curse: { id: 'redTape', n: 2, to: 'draw' } },
+      { id: 'clearance', intent: 'curse', windup: 6, curse: [{ id: 'redTape', n: 2, to: 'draw' }] },
     ],
     onHalf: (c) => c.applyStatus('enemy', 'strength', 3),
   },
@@ -135,10 +135,157 @@ const defs: EnemyDef[] = [
     main: atk('soulBolt', 7, 7),
     every: 2,
     specials: [
-      { id: 'hexes', intent: 'curse', windup: 7, curse: { id: 'hex', n: 2, to: 'draw' } },
-      { id: 'bombs', intent: 'curse', windup: 7, curse: { id: 'bomb', n: 2, to: 'belt' } },
+      { id: 'hexes', intent: 'curse', windup: 7, curse: [{ id: 'hex', n: 2, to: 'draw' }] },
+      { id: 'bombs', intent: 'curse', windup: 7, curse: [{ id: 'bomb', n: 2, to: 'belt' }] },
       atk('doom', 20, 13, { intent: 'charge' }),
     ],
+    onHalf: (c) => c.applyStatus('enemy', 'haste', 1, 9999),
+  },
+
+  // ------------------------------------------------------------- Act 2
+  {
+    // Everything in its lane: you have to alternate the rows of the belt.
+    id: 'meticulous',
+    act: 2,
+    tier: 'normal',
+    hp: 60,
+    art: 'mantis',
+    main: atk('nitpick', 6, 6),
+    every: 2,
+    specials: [
+      { id: 'reprioritize', intent: 'curse', windup: 7, curse: [{ id: 'priorityTask', n: 1, to: 'belt' }] },
+      atk('redPen', 14, 10, { intent: 'charge' }),
+    ],
+    start: [{ id: 'meticulous' }],
+  },
+  {
+    // Does nothing for a long while, then everything at once.
+    id: 'dave',
+    act: 2,
+    tier: 'normal',
+    hp: 65,
+    art: 'dave',
+    main: { id: 'scrolling', intent: 'idle', windup: 4 },
+    every: 4,
+    specials: [
+      atk('lastMinute', 14, 2, {
+        intent: 'charge',
+        curse: [
+          { id: 'quickFavour', n: 1, to: 'draw' },
+          { id: 'officePlant', n: 1, to: 'draw' },
+          { id: 'machineDown', n: 1, to: 'draw' },
+          { id: 'hex', n: 1, to: 'draw' },
+        ],
+      }),
+    ],
+  },
+  {
+    id: 'happiness',
+    act: 2,
+    tier: 'normal',
+    hp: 60,
+    art: 'happiness',
+    main: atk('highFive', 6, 6),
+    every: 2,
+    specials: [
+      { id: 'pizzaParty', intent: 'curse', windup: 7, curse: [{ id: 'freePizza', n: 4, to: 'draw' }] },
+      { id: 'teamLunch', intent: 'curse', windup: 6, curse: [{ id: 'freePizza', n: 3, to: 'belt' }] },
+    ],
+  },
+  {
+    id: 'wellness',
+    act: 2,
+    tier: 'normal',
+    hp: 50,
+    art: 'wellness',
+    main: atk('stretch', 6, 6),
+    every: 2,
+    specials: [{ id: 'mindfulness', intent: 'heal', windup: 6, heal: 8 }, atk('burpees', 4, 8, { hits: 3, intent: 'charge' })],
+    start: [{ id: 'chillOut' }],
+  },
+  {
+    id: 'beanCounter',
+    act: 2,
+    tier: 'normal',
+    hp: 55,
+    art: 'beanCounter',
+    main: atk('audit', 6, 6),
+    every: 2,
+    specials: [
+      { id: 'expenseReport', intent: 'curse', windup: 7, curse: [{ id: 'officePlant', n: 2, to: 'draw' }] },
+      { id: 'costCutting', intent: 'drain', windup: 6, drainMana: 3 },
+    ],
+    start: [{ id: 'budgetFreeze' }],
+  },
+  {
+    // The Snitch's opposite number: from half HP on, everything slows to a crawl.
+    id: 'compliance',
+    act: 2,
+    tier: 'normal',
+    hp: 65,
+    art: 'compliance',
+    main: atk('citation', 7, 7),
+    every: 2,
+    specials: [
+      { id: 'paperwork', intent: 'curse', windup: 7, curse: [{ id: 'redTape', n: 2, to: 'draw' }] },
+      atk('violation', 15, 10, { intent: 'charge' }),
+    ],
+    onHalf: (c) => c.applyStatus('hero', 'slowdown', 1, 20),
+  },
+  {
+    id: 'janitor',
+    act: 2,
+    tier: 'normal',
+    hp: 60,
+    art: 'janitor',
+    main: atk('mop', 6, 6),
+    every: 2,
+    specials: [
+      { id: 'lightsOut', intent: 'debuff', windup: 7, status: [{ id: 'blackout', t: 8, target: 'hero' }] },
+      { id: 'fuseBox', intent: 'curse', windup: 7, curse: [{ id: 'machineDown', n: 1, to: 'belt' }] },
+    ],
+  },
+  {
+    // Copies the damage it takes while scanning, then prints it back at you.
+    id: 'printer',
+    act: 2,
+    tier: 'elite',
+    hp: 110,
+    art: 'printer',
+    main: { id: 'scan', intent: 'absorb', windup: 5, absorb: true },
+    every: 1,
+    specials: [atk('printOut', 4, 5, { intent: 'charge', release: true })],
+  },
+  {
+    id: 'veteran',
+    act: 2,
+    tier: 'elite',
+    hp: 110,
+    art: 'veteran',
+    main: atk('grumble', 9, 7),
+    every: 2,
+    specials: [
+      { id: 'inMyDay', intent: 'debuff', windup: 7, inflate: 4 },
+      atk('oldSchool', 18, 11, { intent: 'charge' }),
+      { id: 'longStory', intent: 'debuff', windup: 6, status: [{ id: 'slowdown', t: 8, target: 'hero' }] },
+    ],
+  },
+  {
+    // Cuts in with "any updates?" whenever you stop playing for a moment.
+    id: 'micromanager',
+    act: 2,
+    tier: 'boss',
+    hp: 190,
+    art: 'micromanager',
+    main: atk('anyUpdates', 4, 5),
+    every: 2,
+    specials: [
+      { id: 'topPriority', intent: 'curse', windup: 7, curse: [{ id: 'priorityTask', n: 1, to: 'belt' }] },
+      { id: 'quickQuestion', intent: 'curse', windup: 6, curse: [{ id: 'quickFavour', n: 2, to: 'draw' }] },
+      { id: 'allHands', intent: 'curse', windup: 7, curse: [{ id: 'lockout', n: 1, to: 'belt' }] },
+      atk('performanceReview', 22, 12, { intent: 'charge' }),
+    ],
+    start: [{ id: 'micromanage' }],
     onHalf: (c) => c.applyStatus('enemy', 'haste', 1, 9999),
   },
 ];

@@ -99,7 +99,9 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
   };
 
   const intentValue = (m: MoveDef): string => {
-    if (m.dmg) {
+    // Copying: how much it has stored so far.
+    if (m.absorb) return combat.enemy.stored ? `+${combat.enemy.stored}` : '';
+    if (m.dmg || m.release) {
       const d = combat.intentDamage(m);
       return m.hits && m.hits > 1 ? `${d}×${m.hits}` : String(d);
     }
@@ -141,7 +143,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     // Stunned or frozen: the timer is on hold.
     // Tenths only when they matter (long fuses such as Guy Asleep's would not fit the box).
     setHtml(r.intentTime, rate > 0 ? `${left >= 10 ? Math.ceil(left) : left.toFixed(1)}s` : icon('pause'));
-    const hostile = !v.state.ended && (m.intent === 'attack' || m.intent === 'charge');
+    const hostile = !v.state.ended && (m.intent === 'attack' || m.intent === 'charge' || !!m.release);
     toggle(r.intent, 'urgent', hostile && left < 1.1);
 
     // Preview how much HP the hit will take (after Block), and flash the screen edges just before it lands.
@@ -149,7 +151,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     const incoming = hostile ? Math.max(0, combat.intentDamage(m) * (m.hits ?? 1) - hs.block) : 0;
     setText(r.intentVal, intentValue(m));
     // A sound cue just before each hit: knocks if it will hurt, a soft tick if Block covers it.
-    if (hostile && !!m.dmg && left < 1 && warned !== e.moveCount) {
+    if (hostile && combat.intentDamage(m) > 0 && left < 1 && warned !== e.moveCount) {
       warned = e.moveCount;
       sfx(incoming > 0 ? 'incoming' : 'incomingSafe');
     }
@@ -159,7 +161,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     r.incoming.style.width = shown ? `${(lost / hs.maxHp) * 100}%` : '0';
     toggle(v.el, 'danger', shown && left < 0.8);
     // The hit being charged would knock the hero out (Dodge would save them): alarm on the edges, and a siren once.
-    const lethal = hostile && !!m.dmg && incoming >= hs.hp && combat.stacks('hero', 'dodge') === 0;
+    const lethal = hostile && combat.intentDamage(m) > 0 && incoming >= hs.hp && combat.stacks('hero', 'dodge') === 0;
     toggle(v.el, 'lethal', lethal);
     if (lethal && alarmed !== e.moveCount) sfx('lethal');
     alarmed = lethal ? e.moveCount : -1;
@@ -170,6 +172,9 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     toggle(r.enemyArt, 'frozen', combat.has('enemy', 'frozen'));
     toggle(r.enemyArt, 'chilled', combat.has('enemy', 'chill'));
     toggle(r.enemyArt, 'enraged', combat.has('enemy', 'haste') || (combat.enemy.halfTriggered && !!combat.enemy.def.onHalf));
+    toggle(r.enemyArt, 'absorbing', !!combat.enemy.move.absorb && combat.enemyTimeRate() > 0);
+    // Blackout: every card turns black but its art and cost.
+    toggle(v.el, 'blackout', combat.has('hero', 'blackout'));
   };
 
   const renderMana = (): void => {

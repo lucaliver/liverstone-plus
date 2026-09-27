@@ -49,6 +49,8 @@ export interface CombatCard extends CardInst {
   hex?: CardHex;
   /** True once the card has ridden the whole belt this fight (a Pending card becomes playable). */
   passed?: boolean;
+  /** Extra mana cost for this fight (Inflation). */
+  tax?: number;
 }
 
 export interface BeltCard {
@@ -108,13 +110,15 @@ export interface StatusDef {
   passive?: boolean;
   /** A rule while active: returns why the hero can't play this card (`uid`: belt or sleeve copy) now (an i18n key), or null. */
   canPlay?: (c: Combat, side: Side, def: CardDef, uid: number) => TKey | null;
+  /** While active (on either side), the hero's max mana can't grow past this. */
+  manaCap?: number;
   /** Reacts to every card the hero plays after the status was applied. */
   onCardPlayed?: (c: Combat, side: Side, def: CardDef) => void;
   /** Runs every simulation step while the status is active. */
   tick?: (c: Combat, side: Side, s: StatusVal, dt: number) => void;
 }
 
-/** `v` = stacks/amount; `t` = seconds left for timed statuses; `e` = seconds it has been up (for statuses with a tick). */
+/** `v` = stacks/amount; `t` = seconds left for timed statuses; `e` = a free clock for statuses with a tick. */
 export interface StatusVal {
   v: number;
   t: number;
@@ -123,7 +127,7 @@ export interface StatusVal {
 
 export type Statuses = Record<string, StatusVal>;
 
-export type IntentType = 'attack' | 'defend' | 'buff' | 'debuff' | 'curse' | 'heal' | 'steal' | 'charge' | 'drain';
+export type IntentType = 'attack' | 'defend' | 'buff' | 'debuff' | 'curse' | 'heal' | 'steal' | 'charge' | 'drain' | 'idle' | 'absorb';
 
 export interface MoveDef {
   id: string;
@@ -136,12 +140,18 @@ export interface MoveDef {
   heal?: number;
   /** Statuses applied on resolve. */
   status?: { id: string; v?: number; t?: number; target: Side }[];
-  /** Curses shuffled into the player's piles. */
-  curse?: { id: string; n: number; to: 'belt' | 'draw' | 'discard' };
+  /** Curses shuffled into the player's piles (several kinds at once if needed). */
+  curse?: { id: string; n: number; to: 'belt' | 'draw' | 'discard' }[];
   steal?: number;
   drainMana?: number;
   /** Hexes cards (see `HEXES`): a `share` (0–1) of the belt, and the same share of the rest of the deck. */
   hex?: { id: string; share: number };
+  /** Inflation: this many random cards (belt first, then the rest of the deck) cost 1 more mana for the fight. */
+  inflate?: number;
+  /** While this move charges, the damage the enemy takes from cards is stored instead of lost… */
+  absorb?: boolean;
+  /** …and a `release` move adds everything stored to its hit. */
+  release?: boolean;
   fx?: (c: Combat) => void;
 }
 
@@ -242,6 +252,8 @@ export type CombatEvent =
   | { type: 'cardAdded'; card: CombatCard; to: 'belt' | 'draw' | 'discard' }
   | { type: 'cardDiscarded'; card: CombatCard }
   | { type: 'hexed'; card: CombatCard }
+  | { type: 'inflated'; card: CombatCard }
+  | { type: 'absorbed'; amount: number }
   | { type: 'hexTap'; card: CombatCard }
   | { type: 'hexBroken'; card: CombatCard }
   | { type: 'reshuffle' }

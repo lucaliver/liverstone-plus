@@ -711,6 +711,39 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M18 30V20a14 14 0 0 1 28 0v10h-7V20a7 7 0 0 0-14 0v10z"/><rect x="10" y="30" width="44" height="30"/><circle cx="32" cy="42" r="5" fill="#16121f"/><path d="M29 44h6l2 10H27z" fill="#16121f"/>`,
   },
+  // ---- act 2 rules (intents, enemy passives, Blackout, Inflation)
+  dots: {
+    el: 'shadow',
+    svg: `<rect x="4" y="26" width="14" height="14"/><rect x="25" y="26" width="14" height="14"/><rect x="46" y="26" width="14" height="14"/>`,
+  },
+  scanner: {
+    el: 'arcane',
+    svg: `<rect x="4" y="30" width="56" height="26"/><rect x="10" y="36" width="44" height="6" fill="#16121f"/><path d="M4 26l8-18h40l8 18z"/><rect x="2" y="44" width="60" height="4"/>`,
+  },
+  ruler: {
+    el: 'steel',
+    svg: `<rect x="-6" y="24" width="76" height="18" transform="rotate(-35 32 32)"/><g transform="rotate(-35 32 32)" fill="#16121f"><rect x="2" y="24" width="3" height="8"/><rect x="12" y="24" width="3" height="5"/><rect x="22" y="24" width="3" height="8"/><rect x="32" y="24" width="3" height="5"/><rect x="42" y="24" width="3" height="8"/><rect x="52" y="24" width="3" height="5"/></g>`,
+  },
+  lotus: {
+    el: 'nature',
+    svg: `<circle cx="32" cy="12" r="9"/><path d="M22 24h20l6 24H16z"/><ellipse cx="32" cy="50" rx="28" ry="9"/><path d="M22 28L8 44l6 4 12-14zM42 28l14 16-6 4-12-14z"/>`,
+  },
+  calculator: {
+    el: 'steel',
+    svg: `<rect x="10" y="4" width="44" height="56"/><rect x="16" y="10" width="32" height="12" fill="#16121f"/><g fill="#16121f"><rect x="16" y="28" width="8" height="7"/><rect x="28" y="28" width="8" height="7"/><rect x="40" y="28" width="8" height="7"/><rect x="16" y="39" width="8" height="7"/><rect x="28" y="39" width="8" height="7"/><rect x="40" y="39" width="8" height="18"/><rect x="16" y="50" width="20" height="7"/></g>`,
+  },
+  watchEye: {
+    el: 'arcane',
+    svg: `<path d="M2 32C12 14 22 8 32 8s20 6 30 24C52 50 42 56 32 56S12 50 2 32z"/><circle cx="32" cy="32" r="14" fill="#16121f"/><circle cx="32" cy="32" r="7"/><circle cx="32" cy="32" r="3" fill="#16121f"/>`,
+  },
+  bulbOff: {
+    el: 'shadow',
+    svg: `<path d="M32 4c12 0 20 8 20 20 0 8-4 12-8 16v8H20v-8c-4-4-8-8-8-16 0-12 8-20 20-20z"/><path d="M26 24l12 12M38 24L26 36" stroke="#16121f" stroke-width="5"/><rect x="20" y="50" width="24" height="5"/><rect x="24" y="57" width="16" height="5"/>`,
+  },
+  inflation: {
+    el: 'holy',
+    svg: `<circle cx="24" cy="38" r="20"/><path d="M20 30h10v5h-6v2h6v11H20v-5h6v-2h-6z" fill="#16121f"/><path d="M44 4h16v16l-5-5-8 8-6-6 8-8z"/>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {
@@ -723,6 +756,8 @@ export const INTENT_ICON: Record<string, string> = {
   steal: 'snatch',
   charge: 'burst',
   drain: 'crystal',
+  idle: 'dots',
+  absorb: 'scanner',
 };
 
 /** Animated pixel candle flame: three hand-drawn frames cycled slowly. */

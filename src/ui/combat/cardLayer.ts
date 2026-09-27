@@ -4,9 +4,9 @@ import { CARDS } from '../../data/cards';
 import { STATUSES } from '../../data/statuses';
 import type { CombatCard } from '../../game/types';
 import { icon } from '../art/icons';
-import { cardFace, cardView } from '../components/cardView';
+import { cardCostLabel, cardFace, cardView } from '../components/cardView';
 import { openCardDetail } from '../components/modals';
-import { LONG_PRESS_MS, h, setHtml, toggle } from '../dom';
+import { LONG_PRESS_MS, h, setHtml, setText, toggle } from '../dom';
 import { burst } from '../fx/fx';
 import type { CombatView } from './view';
 
@@ -18,6 +18,7 @@ interface CardEl {
   el: HTMLDivElement;
   card: CombatCard;
   face: HTMLElement;
+  cost: HTMLElement;
   span: number;
   /** Rides over the other cards (a wide gate, a lane lock). */
   over: boolean;
@@ -83,7 +84,14 @@ export function createCardLayer(v: CombatView): CardLayer {
       cardEl.classList.add('lock-row');
       cardEl.append(h('div', { class: 'c-lane' }));
     }
-    return { el: cardEl, card, face: cardEl.querySelector('.c-face')!, span, over: span > 1 || !!def.lockRow };
+    return {
+      el: cardEl,
+      card,
+      face: cardEl.querySelector('.c-face')!,
+      cost: cardEl.querySelector('.c-cost')!,
+      span,
+      over: span > 1 || !!def.lockRow,
+    };
   };
 
   const findCard = (uid: number): CombatCard | null =>
@@ -141,6 +149,11 @@ export function createCardLayer(v: CombatView): CardLayer {
         const card = findCard(uid);
         cancelDrag();
         if (!card) return;
+        // In a blackout the cards can't be read, not even up close.
+        if (combat.has('hero', 'blackout')) {
+          v.toast(t('combat.blackout'));
+          return;
+        }
         sfx('tap');
         v.inspect(true);
         openCardDetail(card, () => v.inspect(false));
@@ -249,6 +262,9 @@ export function createCardLayer(v: CombatView): CardLayer {
       const k = Math.min(1, (hs.mana + hs.manaTimer / hs.regen) / cost);
       ce.el.style.setProperty('--charge', String(Math.floor(k * CHARGE_STEPS) / CHARGE_STEPS));
     }
+    // Inflation raises the cost mid-fight: the label follows, in red.
+    setText(ce.cost, cardCostLabel(card));
+    toggle(ce.cost, 'taxed', !!card.tax);
     const ruleId = rule?.status;
     if (ruleId !== ce.rule) {
       ce.rule = ruleId;

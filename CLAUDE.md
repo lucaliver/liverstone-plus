@@ -113,8 +113,9 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
   Hooks (`HeroHooks`, `RelicHooks`) extend behaviour without touching the engine loop.
 - **One source of truth.** Card numbers live in `vals`/`upVals`. The face, the rules text, damage previews and
   the logic all read them. Damage indices are derived from the `{dmg:i}` glyphs of the face.
-- **Run as a graph.** `RunNode.next[]` + `lane`: each act is a shared first fight, two lanes (`LANES` in `run.ts`) with
-  `LINKS` links between them (diagonal upward, or flat both ways; never on neighbouring floors), and the boss. `advance(run, to)` moves along a link; `run.path` records the nodes entered.
+- **Run as a graph.** `RunNode.next[]` + `lane`: each act (`ACTS`, two for now) is a shared first fight, two lanes
+  (`LANES` in `run.ts`) with `LINKS` links between them (diagonal upward, or flat both ways; never on neighbouring
+  floors), and the boss, which leads to the next act (full heal, elite-grade reward; the map switches act). `advance(run, to)` moves along a link; `run.path` records the nodes entered.
 - **Per-frame rendering is diff-based** (`setText`, `setHtml`, `toggle` only write on change). Status chips are
   rebuilt only when the set changes, so presses aren't lost.
 
@@ -145,8 +146,10 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
 
 ### Enemies
 
-`EnemyDef` = `main` (frequent attack) + `specials[]` (rotating) + `every` (mains between specials),
-optional `onHalf`, `start` statuses. Add a vector sprite to `creatures.ts` (pixelised automatically),
+`EnemyDef` = `act`, `main` (frequent attack) + `specials[]` (rotating) + `every` (mains between specials),
+optional `onHalf`, `start` statuses. A `MoveDef` can hit, block, heal, apply statuses, add `curse` cards (a list, several
+kinds at once), steal, drain mana, `hex` a share of your cards, `inflate` card costs, or `absorb` the damage it takes while
+charging and `release` it with the next hit (intents include `idle` and `absorb`). Add a vector sprite to `creatures.ts` (pixelised automatically),
 plus `enemy.<id>.name`, `move.<id>` for every move, and `enemy.<id>.half` if it has `onHalf`.
 Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.ts` (`enemyScale`).
 
@@ -161,7 +164,8 @@ through `progress()` in `game/meta.ts`), a card file, a sprite, `hero.<id>.*` st
 
 `StatusDef` in `data/statuses.ts` (`kind`: timed / stacks / dot, `good`, `icon`) plus `status.<id>` and
 `status.<id>.d` (`{v}` = amount). Their effect is applied where it matters in `combat.ts` (damage, ticks, decay).
-Rule statuses carry their own hooks instead: `canPlay` (returns the i18n key of why a card can't be played; the belt
+Rule statuses carry their own hooks instead: `manaCap` (the hero's max mana can't grow past it),
+`canPlay` (returns the i18n key of why a card can't be played; the belt
 shows that status's icon on the card), `onCardPlayed` (cards played after the status was applied) and `tick` (every step;
 `everySecond` in `statuses.ts` for per-second effects); `passive: true` marks a permanent enemy trait (no number on the chip).
 A stunned hero can't play cards or use the ability.

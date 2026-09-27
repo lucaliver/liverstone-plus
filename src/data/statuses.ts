@@ -5,6 +5,14 @@ import type { Side, StatusDef, StatusVal } from '../game/types';
 const WAKE_PER_CARD = 1;
 /** The No Repeats Policy only covers cards played this close together (s), so a one-type deck is slowed, never locked. */
 const POLICY_WINDOW = 3;
+/** Meticulous: two cards from the same belt row can't be played this close together (s), so an empty row never locks you. */
+const LANE_WINDOW = 4;
+/** Chill Out: seconds between two cards. */
+const CHILL_GAP = 2;
+/** Micromanagement: seconds without playing a card before he cuts in. */
+const IDLE_LIMIT = 2;
+/** Spending Freeze: the hero's max mana. */
+const FROZEN_BUDGET = 3;
 
 /** A status tick that runs `fn` once per whole second the status has been up (n = 1, 2, 3…). */
 const everySecond =
@@ -70,6 +78,8 @@ const defs: StatusDef[] = [
   { id: 'stun', kind: 'timed', good: false, icon: 'stars', canPlay: (_c, side) => (side === 'hero' ? 'combat.stunned' : null) },
   { id: 'frozen', kind: 'timed', good: false, icon: 'hourglass' },
   { id: 'hurry', kind: 'timed', good: false, icon: 'stopwatch' },
+  // Every card turns black: only the art and the cost are left to go by.
+  { id: 'blackout', kind: 'timed', good: false, icon: 'bulbOff' },
   { id: 'slowdown', kind: 'timed', good: false, icon: 'cone' },
   // Enemy passives (permanent traits).
   {
@@ -81,6 +91,41 @@ const defs: StatusDef[] = [
     // Curses are exempt: paying one off is never "the same type" as the card before.
     canPlay: (c, side, def) =>
       side === 'enemy' && def.type !== 'curse' && c.lastPlayed?.type === def.type && c.time - c.lastPlayedAt < POLICY_WINDOW ? 'combat.policy' : null,
+  },
+  {
+    id: 'meticulous',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'ruler',
+    // Belt cards only (the sleeve is off the belt), and curses can always be paid off.
+    canPlay: (c, side, def, uid) => {
+      if (side !== 'enemy' || def.type === 'curse' || c.time - c.lastPlayedAt >= LANE_WINDOW) return null;
+      const row = c.rowOf(uid);
+      return row >= 0 && row === c.lastRow ? 'combat.meticulous' : null;
+    },
+  },
+  {
+    id: 'chillOut',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'lotus',
+    canPlay: (c, side) => (side === 'enemy' && c.time - c.lastPlayedAt < CHILL_GAP ? 'combat.chillOut' : null),
+  },
+  { id: 'budgetFreeze', kind: 'stacks', good: true, passive: true, icon: 'calculator', manaCap: FROZEN_BUDGET },
+  {
+    id: 'micromanage',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'watchEye',
+    // `e` holds when he last cut in, so one quiet spell costs one hit.
+    tick: (c, side, s) => {
+      if (side !== 'enemy' || c.time - Math.max(c.lastPlayedAt, s.e ?? 0) < IDLE_LIMIT) return;
+      s.e = c.time;
+      c.enemyStrike();
+    },
   },
   {
     id: 'lightSleeper',

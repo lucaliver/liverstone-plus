@@ -39,11 +39,16 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
       `<span class="fx ${bad ? 'fx-bad' : 'fx-good'}">${icon(STATUSES[st.id].icon)}${t(`status.${st.id}`)} <b>${st.t ? `${st.t}s` : `+${st.v ?? 1}`}</b></span>`,
     );
   }
-  if (m.curse) {
-    const card = t(`card.${m.curse.id}.name`);
-    const n = m.curse.n > 1 ? ` ×${m.curse.n}` : '';
-    parts.push(`<span class="fx fx-curse">${icon('skull')}${verbose ? t('move.fx.adds', { card }) : card}<b>${n}</b></span>`);
+  // Each curse names its card, so the handbook can open it on a press.
+  for (const cu of m.curse ?? []) {
+    const card = t(`card.${cu.id}.name`);
+    const n = cu.n > 1 ? ` ×${cu.n}` : '';
+    parts.push(`<span class="fx fx-curse" data-card="${cu.id}">${icon('skull')}${verbose ? t('move.fx.adds', { card }) : card}<b>${n}</b></span>`);
   }
+  if (m.inflate) parts.push(`<span class="fx fx-bad">${icon('inflation')}${t('move.fx.inflate', { n: m.inflate })}</span>`);
+  if (m.absorb) parts.push(`<span class="fx fx-block">${icon('scanner')}${t('move.fx.absorb')}</span>`);
+  if (m.release) parts.push(`<span class="fx fx-dmg">${icon('copy')}${t('move.fx.release')}</span>`);
+  if (m.intent === 'idle') parts.push(`<span class="fx">${t('move.fx.idle')}</span>`);
   if (m.hex) {
     const n = t('move.fx.hexShare', { n: Math.round(m.hex.share * 100) });
     parts.push(`<span class="fx fx-curse">${icon(HEXES[m.hex.id].icon)}${t(`hex.${m.hex.id}`)} <b>${n}</b></span>`);
@@ -59,8 +64,7 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
 export function movePattern(e: EnemyDef, values: MoveValues = baseValues, mark?: { now: MoveDef; next: MoveDef | null }): string {
   const row = (m: MoveDef): string => {
     const cls = m === mark?.now ? 'now' : m === mark?.next ? 'next' : '';
-    // A curse row names its card, so the handbook can open it on a press.
-    return `<li class="${cls}" data-intent="${m.intent}"${m.curse ? ` data-card="${m.curse.id}"` : ''}><span class="mi">${icon(INTENT_ICON[m.intent] ?? 'star')}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m, false, values)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`;
+    return `<li class="${cls}" data-intent="${m.intent}"><span class="mi">${icon(INTENT_ICON[m.intent] ?? 'star')}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m, false, values)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`;
   };
   const every = e.specials.length ? `<li class="foe-every">${t('compendium.every', { n: e.every })}</li>` : '';
   const traits = enemyTraits(e)

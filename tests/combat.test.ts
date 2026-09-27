@@ -3,7 +3,7 @@ import { Combat, type CombatSetup } from '../src/game/combat';
 import { CONFIG, EXPIRE_POS } from '../src/data/config';
 import { ENEMIES } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
-import { CARD_LIST } from '../src/data/cards';
+import { CARD_LIST, CARDS } from '../src/data/cards';
 import type { CardInst } from '../src/game/types';
 
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
@@ -531,6 +531,99 @@ describe('combat engine', () => {
       run(c, (CONFIG.beltTime * EXPIRE_POS) / c.beltRate() + 0.5);
       expect(c.has('hero', 'stun')).toBe(true);
       expect(c.hero.mana).toBeLessThan(8);
+    });
+  });
+
+  describe('act 2 enemies', () => {
+    const vs = (enemy: string, deck = new Array(12).fill('strike')): Combat => {
+      const c = setup({ enemy: ENEMIES[enemy], deck: deckOf(deck), hp: 999, maxHp: 999 });
+      run(c, CONFIG.introTime + 0.01);
+      c.hero.maxMana = Math.min(c.hero.maxMana, c.manaCap());
+      return c;
+    };
+
+    it('Meticulous Colleague: two cards in a row from the same lane are refused', () => {
+      const c = vs('meticulous');
+      c.hero.mana = c.hero.maxMana = 10;
+      const first = c.belt.find((b) => b.row === 0)!;
+      expect(c.playCard(first.card.uid)).toBe(true);
+      const same = c.belt.find((b) => b.row === 0);
+      const other = c.belt.find((b) => b.row === 1)!;
+      if (same) expect(c.playCard(same.card.uid)).toBe(false);
+      expect(c.playCard(other.card.uid)).toBe(true);
+    });
+
+    it('Wellness Coach: one card every 2 seconds', () => {
+      const c = vs('wellness');
+      c.hero.mana = c.hero.maxMana = 10;
+      expect(c.playCard(c.belt[0].card.uid)).toBe(true);
+      expect(c.playCard(c.belt[0].card.uid)).toBe(false);
+      run(c, 2.05);
+      c.hero.mana = 10;
+      expect(c.playCard(c.belt[0].card.uid)).toBe(true);
+    });
+
+    it('Bean Counter: max mana is frozen at 3, crystals included', () => {
+      const c = vs('beanCounter', ['manaGeode', 'manaGeode', 'strike']);
+      expect(c.hero.maxMana).toBeLessThanOrEqual(3);
+      c.hero.mana = 3;
+      c.addManaCrystals(3);
+      expect(c.hero.maxMana).toBe(3);
+    });
+
+    it('Micromanager: standing still for 2 seconds brings an instant hit', () => {
+      const c = vs('micromanager');
+      c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+      const hp = c.hero.hp;
+      run(c, 2.1);
+      expect(c.hero.hp).toBeLessThan(hp);
+      // Playing cards keeps him off your back.
+      const after = c.hero.hp;
+      for (let i = 0; i < 4; i++) {
+        c.hero.mana = 10;
+        c.playCard(c.belt[0].card.uid);
+        run(c, 1);
+      }
+      expect(c.hero.hp).toBe(after);
+    });
+
+    it('The Printer stores the damage it takes while scanning and prints it back', () => {
+      const c = vs('printer');
+      expect(c.enemy.move.absorb).toBe(true);
+      c.hero.mana = c.hero.maxMana = 10;
+      const hp = c.enemy.hp;
+      c.playCard(c.belt[0].card.uid);
+      expect(c.enemy.hp).toBe(hp);
+      expect(c.enemy.stored).toBe(6);
+      run(c, 5);
+      expect(c.enemy.move.release).toBe(true);
+      expect(c.intentDamage(c.enemy.move)).toBe(4 + 6);
+      const heroHp = c.hero.hp;
+      run(c, 5.1);
+      expect(heroHp - c.hero.hp).toBe(10);
+      expect(c.enemy.stored).toBe(0);
+    });
+
+    it('The Veteran inflates card costs for the fight', () => {
+      const c = vs('veteran');
+      c.inflateCards(40);
+      expect(c.belt.every((b) => c.cardCost(b.card) === 3)).toBe(true);
+    });
+
+    it('Dave idles four times, then hits hard and adds four different curses', () => {
+      const c = vs('dave');
+      const acts: string[] = [];
+      c.events.on((e) => {
+        if (e.type === 'enemyAct') acts.push(e.move.id);
+      });
+      const hp = c.hero.hp;
+      run(c, 4 * 4 + 0.5);
+      expect(acts).toEqual(['scrolling', 'scrolling', 'scrolling', 'scrolling']);
+      expect(c.hero.hp).toBe(hp);
+      run(c, 2);
+      expect(acts[4]).toBe('lastMinute');
+      expect(c.hero.hp).toBeLessThan(hp);
+      expect(new Set(c.draw.filter((x) => CARDS[x.id].type === 'curse').map((x) => x.id)).size).toBe(4);
     });
   });
 });

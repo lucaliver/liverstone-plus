@@ -150,6 +150,8 @@
 .floater.status.good { background: var(--b); }
 .floater.status.bad { background: var(--p); }
 .floater.mana { color: var(--b); font-size: 26px; }
+/* damage the Printer copies instead of taking */
+.floater.copied { color: #1a9a80; font-size: 30px; }
 @keyframes float {
   0% { transform: translateY(8px) scale(0.6); opacity: 0; }
   15% { transform: translateY(-6px) scale(1.1); opacity: 1; }

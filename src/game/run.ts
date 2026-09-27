@@ -66,7 +66,7 @@ const LANES: NodeType[][] = [
 ];
 /** Links between the lanes per act: diagonal (to the other lane one floor up) or flat (across the same floor, both ways). */
 const LINKS = 2;
-export const ACTS = 1;
+export const ACTS = 2;
 
 export function newRun(hero: HeroId, seed: number): RunState {
   resetUid(0);
@@ -184,6 +184,8 @@ export function applyCombat(run: RunState, combat: Combat): void {
   if (combat.result === 'win') {
     run.stats.kills++;
     if (combat.enemy.def.tier === 'elite') run.stats.elites++;
+    // A new shift starts rested: beating an act boss heals fully.
+    if (currentNode(run).type === 'boss' && currentNode(run).next.length) run.hp = run.maxHp;
   }
   run.cleared = true;
 }

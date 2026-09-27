@@ -273,3 +273,21 @@ test('handbook: the ? button explains how to read a card', async ({ page }) => {
   await page.getByRole('button', { name: /how to read a card/i }).click();
   await expect(page.locator('.anatomy .spot')).toHaveCount(6);
 });
+
+test('after the Act 1 boss the map turns to Act 2', async ({ page }) => {
+  const problems = await freshGame(page);
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  await page.evaluate(
+    '(() => { const g = window.__game; const boss = g.run.nodes.find((n) => n.type === "boss" && n.act === 1); g.run.current = boss.id; g.run.path.push(boss.id); g.run.cleared = true; g.goJourney(); })()',
+  );
+  await expect(page.locator('.journey:not(.leaving) .act-banner .h1')).toHaveText(/act 2/i);
+  await expect(page.locator('.journey:not(.leaving) .node.open')).toHaveCount(1);
+  await page
+    .locator('.journey:not(.leaving)')
+    .getByRole('button', { name: /enter floor 1/i })
+    .click();
+  await expect(page.locator('.combat')).toBeVisible();
+  expect(await page.evaluate('window.__combat.enemy.def.act')).toBe(2);
+  expect(problems).toEqual([]);
+});

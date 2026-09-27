@@ -435,6 +435,175 @@ const necromancer = `
 <path d="M146 44c0-12 20-12 20 0 0 8-4 12-10 14-6-2-10-6-10-14z" fill="url(#ne-s)" ${OUT}/>
 <circle cx="152" cy="46" r="2.5" fill="#1b1830"/><circle cx="160" cy="46" r="2.5" fill="#1b1830"/>`;
 
+// ------------------------------------------------------------------ Act 2: the afternoon shift
+
+/** Meticulous Colleague: a praying mantis in an argyle vest, ruler in one claw, magnifying glass in the other. */
+const mantis = `
+<defs>${lg('mc-b', '#a8e070', '#3a8a3a')}${lg('mc-v', '#ff8ac8', '#c02a80')}</defs>
+${shadow}
+<path d="M84 150l-20 38M116 150l20 38M92 150l-4 38M108 150l4 38" stroke="#120e18" stroke-width="9" stroke-linecap="round"/>
+<path d="M84 150l-20 38M116 150l20 38M92 150l-4 38M108 150l4 38" stroke="#6ab04a" stroke-width="4" stroke-linecap="round"/>
+<ellipse cx="100" cy="146" rx="30" ry="20" fill="url(#mc-b)" ${OUT}/>
+<path d="M76 80c6-6 14-8 24-8s18 2 24 8l6 64H70z" fill="url(#mc-v)" ${OUT}/>
+<path d="M76 98l24 18 24-18M74 122l26 18 26-18" stroke="#ffd900" stroke-width="4" fill="none"/>
+<path d="M90 72h20l-10 14z" fill="#f6f0e4" ${OUT}/>
+<g class="limb"><path d="M74 88c-20 4-30 16-30 32l10 2c0-10 6-18 20-22z" fill="url(#mc-b)" ${OUT}/><path d="M44 120l-4 26 10 2 6-26z" fill="url(#mc-b)" ${OUT}/>
+<rect x="8" y="96" width="54" height="11" transform="rotate(-62 35 101)" fill="#ffd900" ${OUT}/><path d="M28 118l4-6M34 106l4-6M40 94l4-6" stroke="#120e18" stroke-width="2.5"/></g>
+<path d="M126 88c20 4 30 16 30 32l-10 2c0-10-6-18-20-22z" fill="url(#mc-b)" ${OUT}/>
+<g class="limb"><path d="M154 118l10 22" stroke="#120e18" stroke-width="9" stroke-linecap="round"/><circle cx="168" cy="150" r="15" fill="#c6e0ff" stroke="#120e18" stroke-width="6"/><path d="M162 144c3-3 6-4 9-3" stroke="#fff" stroke-width="3" fill="none"/></g>
+<path d="M90 30C82 16 74 10 62 8M110 30c8-14 16-20 28-22" stroke="#120e18" stroke-width="4" fill="none"/>
+<path d="M64 40c0-10 14-16 36-16s36 6 36 16c0 16-18 34-36 40-18-6-36-24-36-40z" fill="url(#mc-b)" ${OUT}/>
+<ellipse cx="78" cy="42" rx="13" ry="15" fill="#ffd900" ${OUT}/><ellipse cx="122" cy="42" rx="13" ry="15" fill="#ffd900" ${OUT}/>
+<g class="eye"><circle cx="81" cy="45" r="4.5" fill="#120e18"/><circle cx="119" cy="45" r="4.5" fill="#120e18"/></g>
+<path d="M92 66h16" stroke="#120e18" stroke-width="4"/>`;
+
+/** Dave: a grey troll slumped in a beanbag, hoodie up, headphones on, eyes half shut, thumb on his phone. */
+const dave = `
+<defs>${rg('dv-b', '#c8c8d8', '#5a5a70')}${lg('dv-h', '#ff8ac8', '#c02a80')}</defs>
+${shadow}
+<path d="M26 188c-6-34 20-56 74-56s80 22 74 56z" fill="#1c5fd0" ${OUT}/>
+<path d="M36 176c20-8 108-8 128 0" stroke="#5a8ef0" stroke-width="5" fill="none"/>
+<path d="M50 162c0-40 20-66 52-66s50 26 50 66z" fill="url(#dv-h)" ${OUT}/>
+<path d="M90 98l12 26 12-26" stroke="#f6f0e4" stroke-width="4" fill="none"/>
+<path d="M60 132c-14 4-20 14-18 28h12c0-8 4-14 10-16z" fill="url(#dv-h)" ${OUT}/>
+<g class="limb"><path d="M140 132c16 0 24-8 26-20l-10-4c-2 8-8 12-16 12z" fill="url(#dv-h)" ${OUT}/><rect x="150" y="78" width="22" height="36" rx="3" fill="#1b1830" ${OUT}/><rect x="154" y="84" width="14" height="22" fill="#9ab8f0"/></g>
+<path d="M58 60c0-28 18-46 44-46s44 18 44 46c0 22-18 40-44 40S58 82 58 60z" fill="url(#dv-b)" ${OUT}/>
+<path d="M52 62c0-32 22-52 50-52s50 20 50 52" stroke="#120e18" stroke-width="9" fill="none"/>
+<rect x="42" y="48" width="18" height="30" rx="6" fill="#ffd900" ${OUT}/><rect x="144" y="48" width="18" height="30" rx="6" fill="#ffd900" ${OUT}/>
+<g class="eye"><circle cx="86" cy="58" r="8" fill="#f6f0e4" ${OUT}/><circle cx="118" cy="58" r="8" fill="#f6f0e4" ${OUT}/><circle cx="86" cy="61" r="3.5" fill="#120e18"/><circle cx="118" cy="61" r="3.5" fill="#120e18"/></g>
+<path d="M77 55h18M109 55h18" stroke="#6a6a80" stroke-width="8"/>
+<ellipse cx="102" cy="72" rx="9" ry="7" fill="#8a8aa0" ${OUT}/>
+<path d="M88 86c8 4 20 4 28 0" stroke="#120e18" stroke-width="4" fill="none"/><path d="M93 87l3 7 3-6z" fill="#f6f0e4"/>`;
+
+/** The Printer: a cursed photocopier, lid open like a jaw full of teeth, one green scanner eye, cables for tentacles. */
+const printer = `
+<defs>${lg('pr-b', '#ece6d8', '#9a94ac')}${glow('pr-g', '#1cffc0')}</defs>
+${shadow}
+<path class="limb" d="M40 150c-24 6-30 24-22 38M160 150c24 6 30 24 22 38" stroke="#1b1830" stroke-width="8" fill="none" stroke-linecap="round"/>
+<path class="limb" d="M40 150c-24 6-30 24-22 38M160 150c24 6 30 24 22 38" stroke="#ff3d9a" stroke-width="3" fill="none" stroke-linecap="round"/>
+<rect x="34" y="92" width="132" height="82" fill="url(#pr-b)" ${OUT}/>
+<rect x="44" y="150" width="112" height="16" fill="#6d6680" ${OUT}/><rect x="88" y="155" width="24" height="6" fill="#1b1830"/>
+<rect x="118" y="100" width="40" height="24" fill="#1b1830" ${OUT}/><rect x="122" y="104" width="16" height="9" fill="#1cc0a0"/><circle cx="148" cy="107" r="3.5" fill="#ffd900"/><circle cx="148" cy="117" r="3.5" fill="#ff3d9a"/>
+<path d="M40 92l8-8 8 8 8-8 8 8 8-8 8 8 8-8 8 8 8-8 8 8 8-8 8 8 8-8 8 8 8-8z" fill="#f6f0e4" ${OUT}/>
+<path d="M44 80l6-50h100l6 50z" fill="url(#pr-b)" ${OUT}/>
+<path d="M44 80h112l-2 6-6-6-8 8-8-8-8 8-8-8-8 8-8-8-8 8-8-8-8 8-8-8-8 8-8-8-8 8-6-6z" fill="#f6f0e4" ${OUT}/>
+<path d="M58 40h84" stroke="#1cc0a0" stroke-width="5"/>
+<circle cx="100" cy="58" r="14" fill="#1b1830" ${OUT}/>
+<g class="eye"><circle cx="100" cy="58" r="22" fill="url(#pr-g)"/><circle cx="100" cy="58" r="8" fill="#1cffc0"/><circle cx="97" cy="55" r="3" fill="#fff"/></g>
+<g class="limb"><path d="M156 128l38-10 4 22-38 10z" fill="#f6f0e4" ${OUT}/><path d="M164 132l24-6M166 140l24-6" stroke="#1b1830" stroke-width="2.5"/></g>`;
+
+/** Chief Happiness Officer: a round pink imp in a party hat, grin stretched far too wide, pizza box held high. */
+const happiness = `
+<defs>${rg('ho-b', '#ffb8dc', '#e0408a')}${glow('ho-g', '#ffd900')}</defs>
+${shadow}
+<path d="M72 174l-4 14h22l-2-14zM116 174l-2 14h22l-4-14z" fill="#1b1830" ${OUT}/>
+<ellipse cx="100" cy="126" rx="58" ry="54" fill="url(#ho-b)" ${OUT}/>
+<path d="M50 124c-14-4-24 2-28 14l10 4c4-6 10-8 18-6z" fill="url(#ho-b)" ${OUT}/>
+<g class="limb"><path d="M150 122c14-6 22-18 22-32l-10-2c0 10-6 18-16 22z" fill="url(#ho-b)" ${OUT}/><rect x="138" y="60" width="54" height="18" fill="#f6f0e4" ${OUT}/><path d="M144 69h42" stroke="#ff3d9a" stroke-width="4"/></g>
+<path d="M78 80l22-66 22 66z" fill="#ffd900" ${OUT}/><path d="M85 58l30 8M92 38l18 5" stroke="#1c5fd0" stroke-width="6"/><circle cx="100" cy="14" r="8" fill="#1c5fd0" ${OUT}/>
+<path d="M56 120c10 34 78 34 88 0z" fill="#1b1830" ${OUT}/><path d="M62 122h76l-4 9H66z" fill="#f6f0e4"/>
+${eyes(80, 120, 98, 8, '#ffd900', 'ho-g')}
+<path d="M66 82c6-6 14-8 22-4M134 82c-6-6-14-8-22-4" stroke="#120e18" stroke-width="5" fill="none" stroke-linecap="round"/>
+<rect x="78" y="152" width="44" height="16" fill="#f6f0e4" ${OUT}/><rect x="78" y="152" width="44" height="5" fill="#1c5fd0"/>`;
+
+/** Wellness Coach: a blue spirit floating in lotus pose over a yoga mat, sweatband on, eyes serenely shut, smoothie at hand. */
+const wellness = `
+<defs>${lg('wc-b', '#c6e6ff', '#4a82e8')}</defs>
+<ellipse cx="100" cy="188" rx="46" ry="6" fill="#000" opacity=".3"/>
+<rect x="26" y="176" width="148" height="9" fill="#8ad06a" ${OUT}/>
+<path d="M150 146h18l-3 24h-12z" fill="#ff8ac8" ${OUT}/><path d="M160 146l6-16" stroke="#1b1830" stroke-width="3"/>
+<path d="M42 146c10-16 36-18 58-8 22-10 48-8 58 8-10 12-38 14-58 6-20 8-48 6-58-6z" fill="url(#wc-b)" ${OUT}/>
+<path d="M70 146c-4-40 8-66 30-66s34 26 30 66z" fill="url(#wc-b)" ${OUT}/>
+<rect x="76" y="98" width="48" height="18" fill="#ff3d9a" ${OUT}/>
+<g class="limb"><path d="M78 100C60 88 58 60 94 30l6 6c-26 26-24 46-14 56z" fill="url(#wc-b)" ${OUT}/><path d="M122 100c18-12 20-40-16-70l-6 6c26 26 24 46 14 56z" fill="url(#wc-b)" ${OUT}/></g>
+<circle cx="100" cy="64" r="22" fill="url(#wc-b)" ${OUT}/>
+<rect x="77" y="50" width="46" height="9" fill="#ffd900" ${OUT}/>
+<g class="eye"><path d="M84 68c4 4 9 4 13 0M103 68c4 4 9 4 13 0" stroke="#120e18" stroke-width="3.5" fill="none"/></g>
+<path d="M93 78c4 3 10 3 14 0" stroke="#120e18" stroke-width="3" fill="none"/>`;
+
+/** Bean Counter: a mole in shirtsleeves and a green visor, thick glasses, punching an adding machine that spits a long receipt. */
+const beanCounter = `
+<defs>${rg('bc-b', '#b09080', '#4a3028')}${lg('bc-s', '#f8f2e2', '#d8d0c0')}</defs>
+${shadow}
+<path d="M52 186c0-50 20-80 48-80s48 30 48 80z" fill="url(#bc-s)" ${OUT}/>
+<path d="M94 108h12l4 60-10 10-10-10z" fill="#1c5fd0" ${OUT}/>
+<path d="M56 130h26M118 130h26" stroke="#ff3d9a" stroke-width="6"/>
+<path d="M22 146h156v12H22z" fill="#8a5a2a" ${OUT}/><path d="M32 158h12v30H32zM156 158h12v30h-12z" fill="#6a4a2a" ${OUT}/>
+<rect x="112" y="118" width="46" height="28" fill="#6d6680" ${OUT}/>
+<g fill="#f6f0e4"><rect x="118" y="130" width="7" height="5"/><rect x="129" y="130" width="7" height="5"/><rect x="140" y="130" width="7" height="5"/><rect x="118" y="138" width="7" height="5"/><rect x="129" y="138" width="7" height="5"/></g>
+<g class="limb"><path d="M120 118c-4-16 0-34 18-44 12 10 12 26 6 44z" fill="#f6f0e4" ${OUT}/><path d="M128 110h14M128 100h14M130 90h12" stroke="#1b1830" stroke-width="2.5"/></g>
+<path d="M66 132c-10 4-14 10-12 16h14" stroke="#120e18" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M66 132c-10 4-14 10-12 16h14" stroke="#ff8ac8" stroke-width="5" fill="none" stroke-linecap="round"/>
+<ellipse cx="100" cy="74" rx="36" ry="32" fill="url(#bc-b)" ${OUT}/>
+<ellipse cx="100" cy="92" rx="14" ry="10" fill="#ff8ac8" ${OUT}/>
+<circle cx="84" cy="70" r="12" fill="#f6f0e4" stroke="#120e18" stroke-width="5"/><circle cx="116" cy="70" r="12" fill="#f6f0e4" stroke="#120e18" stroke-width="5"/><path d="M96 70h8" stroke="#120e18" stroke-width="4"/>
+<g class="eye"><circle cx="84" cy="71" r="3.5" fill="#120e18"/><circle cx="116" cy="71" r="3.5" fill="#120e18"/></g>
+<path d="M58 54c10-10 24-14 42-14s32 4 42 14l12 6-12 6H58l-12-6z" fill="#8ad06a" ${OUT}/>`;
+
+/** Compliance Officer: a one-eyed ogre in a hard hat and hi-vis vest, checklist in one hand, giant rubber stamp raised in the other. */
+const compliance = `
+<defs>${lg('co-b', '#ffc080', '#c86a20')}${lg('co-v', '#ffe45a', '#e0b000')}</defs>
+${shadow}
+<path d="M62 190l6-30h64l6 30z" fill="#1b1830" ${OUT}/>
+<path d="M46 170c-4-50 18-80 54-80s58 30 54 80z" fill="url(#co-b)" ${OUT}/>
+<path d="M60 104c10-8 24-12 40-12s30 4 40 12l6 66H54z" fill="url(#co-v)" ${OUT}/>
+<path d="M56 140h88" stroke="#c6e0ff" stroke-width="8"/><path d="M100 94v76" stroke="#1b1830" stroke-width="4"/>
+<g class="limb"><path d="M146 116c16-4 24-18 22-36h-12c0 12-4 22-14 26z" fill="url(#co-b)" ${OUT}/><rect x="150" y="28" width="16" height="38" fill="#8a5a2a" ${OUT}/><rect x="136" y="62" width="44" height="18" fill="#ff3d9a" ${OUT}/></g>
+<rect x="20" y="112" width="38" height="48" fill="#c9a060" ${OUT}/><rect x="25" y="120" width="28" height="34" fill="#f6f0e4"/><path d="M30 130l4 4 8-8M30 144l4 4 8-8" stroke="#2a8a4a" stroke-width="3" fill="none"/>
+<path d="M64 60c0-24 16-40 36-40s36 16 36 40c0 18-16 30-36 30S64 78 64 60z" fill="url(#co-b)" ${OUT}/>
+<path d="M58 40c0-18 18-30 42-30s42 12 42 30z" fill="#ffd900" ${OUT}/><rect x="50" y="38" width="100" height="8" fill="#ffd900" ${OUT}/>
+<circle cx="100" cy="62" r="16" fill="#f6f0e4" ${OUT}/><g class="eye"><circle cx="100" cy="62" r="8" fill="#ff3b3b"/><circle cx="97" cy="59" r="3" fill="#fff"/></g>
+<path d="M84 80h32" stroke="#120e18" stroke-width="4"/>`;
+
+/** The Veteran: a mummy who has worked here since forever, cardigan and cane, thick glasses, "#1" mug. */
+const veteran = `
+<defs>${lg('vt-w', '#f8f2e2', '#c8bca0')}${lg('vt-c', '#c080e0', '#6a3aa0')}</defs>
+${shadow}
+<path d="M152 112v76" stroke="#120e18" stroke-width="9"/><path d="M152 112v76" stroke="#8a5a2a" stroke-width="4"/><path d="M152 114c0-14 16-14 16 0" stroke="#120e18" stroke-width="8" fill="none"/>
+<path d="M72 150l-4 38h24l2-38zM108 150l2 38h24l-4-38z" fill="url(#vt-w)" ${OUT}/>
+<path d="M52 158c-4-44 16-72 48-72s52 28 48 72z" fill="url(#vt-c)" ${OUT}/>
+<path d="M88 88l12 70 12-70z" fill="url(#vt-w)" ${OUT}/><g fill="#ffd900"><circle cx="84" cy="112" r="3"/><circle cx="84" cy="128" r="3"/><circle cx="84" cy="144" r="3"/></g>
+<path d="M140 104c10 4 14 12 12 22" stroke="#120e18" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M140 104c10 4 14 12 12 22" stroke="url(#vt-c)" stroke-width="6" fill="none" stroke-linecap="round"/>
+<g class="limb"><path d="M58 108c-12 6-16 16-14 28h12c0-8 2-14 8-18z" fill="url(#vt-c)" ${OUT}/><rect x="28" y="130" width="26" height="28" fill="#f6f0e4" ${OUT}/><path d="M28 138h26" stroke="#ff3d9a" stroke-width="4"/><path d="M54 136c9 0 9 14 0 14" stroke="#120e18" stroke-width="4" fill="none"/></g>
+<path d="M68 52c0-24 14-40 32-40s32 16 32 40c0 18-14 32-32 32S68 70 68 52z" fill="url(#vt-w)" ${OUT}/>
+<path d="M70 34l60 10M68 60l64-6M72 74l56 6" stroke="#b0a488" stroke-width="4"/>
+<circle cx="86" cy="50" r="12" fill="#1b1830" stroke="#120e18" stroke-width="4"/><circle cx="114" cy="50" r="12" fill="#1b1830" stroke="#120e18" stroke-width="4"/>
+<g class="eye"><circle cx="86" cy="50" r="4.5" fill="#ffd900"/><circle cx="114" cy="50" r="4.5" fill="#ffd900"/></g>
+<path d="M97 50h6" stroke="#120e18" stroke-width="4"/>
+<path d="M78 12c5 6 2 12-3 14M122 12c-5 6-2 12 3 14" stroke="#f6f0e4" stroke-width="3" fill="none"/>`;
+
+/** Night Janitor: a hooded wraith with a mop, a bucket and a ring of keys; the light bulb above him is dead. */
+const janitor = `
+<defs>${lg('nj-c', '#5a3ab0', '#1b1830')}${glow('nj-g', '#ffd900')}</defs>
+${shadow}
+<path d="M128 150h46l-6 38h-34z" fill="#9a94ac" ${OUT}/><path d="M128 150c0-12 46-12 46 0" stroke="#120e18" stroke-width="4" fill="none"/>
+<path d="M46 188c0-70 22-120 54-120s54 50 54 120c-10-6-16-6-22 0-6-6-14-6-20 0-6-6-14-6-20 0-6-6-14-6-20 0-8-6-16-6-26 0z" fill="url(#nj-c)" ${OUT}/>
+<g class="limb"><path d="M40 30l20 130" stroke="#120e18" stroke-width="10"/><path d="M40 30l20 130" stroke="#c9a060" stroke-width="5"/><path d="M42 154h34l6 32H36z" fill="#f6f0e4" ${OUT}/><path d="M48 160l-2 24M58 160v24M68 160l2 24" stroke="#9a94ac" stroke-width="3"/></g>
+<path d="M64 110c-10 2-14 8-12 16h10c0-4 2-8 6-10z" fill="url(#nj-c)" ${OUT}/>
+<circle cx="118" cy="128" r="8" fill="none" stroke="#ffd900" stroke-width="4"/><path d="M114 134l-4 12M122 134l4 12" stroke="#ffd900" stroke-width="4"/>
+<path d="M62 70c0-34 16-56 38-56s38 22 38 56c-10 10-24 14-38 14s-28-4-38-14z" fill="url(#nj-c)" ${OUT}/>
+<path d="M74 70c0-22 12-36 26-36s26 14 26 36c-8 6-16 8-26 8s-18-2-26-8z" fill="#0c0818"/>
+${eyes(90, 110, 58, 4, '#ffd900', 'nj-g')}
+<path d="M160 0v26" stroke="#120e18" stroke-width="3"/><rect x="155" y="24" width="10" height="7" fill="#1b1830"/><circle cx="160" cy="40" r="10" fill="#6d6680" ${OUT}/>`;
+
+/** The Micromanager: a floating eye-tyrant in a headset and tie, every stalk-eye on your work. */
+const micromanager = `
+<defs>${rg('mm-b', '#ff9ad0', '#8a1a5a')}${glow('mm-g', '#ff3b3b')}</defs>
+${shadow}
+<path d="M94 162h12l8 26H86z" fill="#1c5fd0" ${OUT}/>
+<g class="limb" fill="none" stroke-linecap="round">
+<path d="M66 70C48 50 44 30 50 14M84 56c-6-18-2-34 10-44M116 56c6-18 2-34-10-44M134 70c18-20 22-40 16-56M152 98c20-6 32 2 38 16M48 98c-20-6-32 2-38 16" stroke="#120e18" stroke-width="11"/>
+<path d="M66 70C48 50 44 30 50 14M84 56c-6-18-2-34 10-44M116 56c6-18 2-34-10-44M134 70c18-20 22-40 16-56M152 98c20-6 32 2 38 16M48 98c-20-6-32 2-38 16" stroke="#e0408a" stroke-width="5"/>
+</g>
+<g fill="#f6f0e4" ${OUT}><circle cx="50" cy="14" r="10"/><circle cx="94" cy="12" r="10"/><circle cx="106" cy="12" r="10"/><circle cx="150" cy="14" r="10"/><circle cx="190" cy="114" r="10"/><circle cx="10" cy="114" r="10"/></g>
+<g class="eye" fill="#ff3b3b"><circle cx="52" cy="16" r="4"/><circle cx="94" cy="14" r="4"/><circle cx="106" cy="14" r="4"/><circle cx="148" cy="16" r="4"/><circle cx="188" cy="116" r="4"/><circle cx="12" cy="116" r="4"/></g>
+<circle cx="100" cy="108" r="58" fill="url(#mm-b)" ${OUT}/>
+<path d="M44 100c0-38 24-60 56-60s56 22 56 60" stroke="#120e18" stroke-width="7" fill="none"/>
+<rect x="36" y="92" width="14" height="28" fill="#1b1830" ${OUT}/><path d="M42 120c0 16 14 26 30 26" stroke="#120e18" stroke-width="4" fill="none"/><rect x="70" y="142" width="12" height="8" fill="#1b1830"/>
+<ellipse cx="100" cy="100" rx="30" ry="24" fill="#f6f0e4" ${OUT}/>
+<g class="eye"><circle cx="100" cy="100" r="14" fill="#ff3b3b"/><circle cx="100" cy="100" r="6" fill="#120e18"/><circle cx="95" cy="95" r="3" fill="#fff"/></g>
+<path d="M64 80l26 10M136 80l-26 10" stroke="#120e18" stroke-width="7" stroke-linecap="round"/>
+<path d="M74 134c12 14 40 14 52 0z" fill="#1b1830" ${OUT}/><path d="M80 136l4 6 4-6 4 6 4-6 4 6 4-6 4 6 4-6 4 6 4-6" stroke="#f6f0e4" stroke-width="2.5" fill="none"/>`;
+
 export const CREATURES: Record<string, string> = {
   snitch,
   boomer,
@@ -446,6 +615,16 @@ export const CREATURES: Record<string, string> = {
   hr,
   sleeper,
   newHire,
+  mantis,
+  dave,
+  printer,
+  happiness,
+  wellness,
+  beanCounter,
+  compliance,
+  veteran,
+  janitor,
+  micromanager,
   coffeeMachine,
   timeClock,
   filingCabinet,

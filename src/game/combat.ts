@@ -39,6 +39,8 @@ export interface EnemyState extends Fighter {
   specialIdx: number;
   halfTriggered: boolean;
   dmgScale: number;
+  /** Damage stored by an absorbing move, dealt back by the next releasing one. */
+  stored: number;
   /** Free-form state for custom AIs. */
   mem: Record<string, number>;
 }
@@ -106,6 +108,8 @@ export class Combat {
   /** The last card the hero played this fight (rules such as "not the same type twice"). */
   lastPlayed: CardDef | null = null;
   lastPlayedAt = -Infinity;
+  /** Belt row the last card was played from (-1: the sleeve, or nothing yet). */
+  lastRow = -1;
   /** The last card played and the values it resolved with, so it can be repeated (a repeat itself doesn't count). */
   private lastPlay: { card: CombatCard; def: CardDef; vals: number[] } | null = null;
   private replaying = false;
@@ -171,10 +175,13 @@ export class Combat {
       specialIdx: 0,
       halfTriggered: false,
       dmgScale: setup.scale.dmg,
+      stored: 0,
       mem: {},
     };
     this.enemy.move = this.nextEnemyMove();
     for (const s of e.start ?? []) this.applyStatus('enemy', s.id, s.v ?? 1, s.t ?? 0, true);
+    this.hero.maxMana = Math.min(this.hero.maxMana, this.manaCap());
+    this.hero.mana = Math.min(this.hero.mana, this.hero.maxMana);
 
     this.draw = this.rng.shuffle(setup.deck.map((c) => ({ ...c, bonus: 0, temp: false })));
     // Innate cards go on top of the draw pile (the end of the array), so they reach the belt first.
@@ -230,6 +237,23 @@ export class Combat {
     return cardKeywordsOf(card);
   }
 
+  /** Belt row of a card, or -1 when it's not on the belt (sleeve). */
+  rowOf(uid: number): number {
+    return this.belt.find((b) => b.card.uid === uid)?.row ?? -1;
+  }
+
+  /** The highest max mana allowed right now (statuses such as a Spending Freeze lower it). */
+  manaCap(): number {
+    let cap: number = CONFIG.maxManaCap;
+    for (const side of ['hero', 'enemy'] as const) {
+      for (const id of Object.keys(this.fighter(side).statuses)) {
+        const c = STATUSES[id].manaCap;
+        if (c !== undefined && this.has(side, id)) cap = Math.min(cap, c);
+      }
+    }
+    return cap;
+  }
+
   /** A Pending card can't be played (or stashed) until it has ridden the whole belt once this fight. */
   isPending(card: CombatCard): boolean {
     return !card.passed && this.keywords(card).includes('pending');
@@ -269,10 +293,11 @@ export class Combat {
     return this.computeDamage('hero', 'enemy', base, def);
   }
 
-  /** Damage per hit of the given enemy move after modifiers. */
+  /** Damage per hit of the given enemy move after modifiers (a releasing move adds what was stored). */
   intentDamage(move: MoveDef): number {
-    if (!move.dmg) return 0;
-    return this.computeDamage('enemy', 'hero', Math.round(move.dmg * this.enemy.dmgScale), null);
+    const stored = move.release ? this.enemy.stored : 0;
+    if (!move.dmg && !stored) return 0;
+    return this.computeDamage('enemy', 'hero', Math.round((move.dmg ?? 0) * this.enemy.dmgScale) + stored, null);
   }
 
   enemyTimeRate(): number {
@@ -402,6 +427,13 @@ export class Combat {
     return m;
   }
 
+  /** The enemy lands its main attack right now, outside its pattern (a Micromanager cutting in). */
+  enemyStrike(): void {
+    if (this.enemyTimeRate() === 0) return;
+    this.events.emit({ type: 'text', target: 'enemy', key: 'combat.micromanaged', tone: 'bad' });
+    this.resolveMove(this.enemy.def.main);
+  }
+
   /** The special move the enemy will use next (for the UI countdown). */
   nextSpecial(): MoveDef | null {
     const d = this.enemy.def;
@@ -411,23 +443,28 @@ export class Combat {
   private resolveMove(m: MoveDef): void {
     this.events.emit({ type: 'enemyAct', move: m });
     const scale = this.enemy.dmgScale;
-    if (m.dmg) {
+    const stored = m.release ? this.enemy.stored : 0;
+    if (m.release) this.enemy.stored = 0;
+    if (m.dmg || stored) {
       const hits = m.hits ?? 1;
       for (let i = 0; i < hits && !this.result; i++) {
-        this.damage('enemy', 'hero', Math.round(m.dmg * scale), { kind: 'claw' }, 'enemy', i);
+        this.damage('enemy', 'hero', Math.round((m.dmg ?? 0) * scale) + stored, { kind: 'claw' }, 'enemy', i);
       }
       if (this.result) return;
     }
     if (m.block) this.gainBlock('enemy', Math.round(m.block * scale));
     if (m.heal) this.heal('enemy', Math.round(m.heal * scale));
     for (const s of m.status ?? []) this.applyStatus(s.target, s.id, s.v ?? 1, s.t ?? 0);
-    if (m.curse) {
-      const gap = CONFIG.spacing * (CARDS[m.curse.id].span ?? 1);
-      for (let i = 0; i < m.curse.n; i++) this.addTempCard(m.curse.id, m.curse.to, false, -i * gap);
+    let queued = 0;
+    for (const cu of m.curse ?? []) {
+      // Curses arriving on the belt together come in one after the other.
+      const gap = CONFIG.spacing * (CARDS[cu.id].span ?? 1);
+      for (let i = 0; i < cu.n; i++) this.addTempCard(cu.id, cu.to, false, cu.to === 'belt' ? -queued++ * gap : 0);
     }
     if (m.steal) for (let i = 0; i < m.steal; i++) this.stealCard();
     if (m.drainMana) this.drainMana(m.drainMana);
     if (m.hex) this.hexCards(m.hex.id, m.hex.share);
+    if (m.inflate) this.inflateCards(m.inflate);
     m.fx?.(this);
   }
 
@@ -549,6 +586,7 @@ export class Combat {
     const cost = this.cardCost(card);
     const spent = cost < 0 ? this.hero.mana : cost;
     this.hero.mana -= spent;
+    const row = beltIdx >= 0 ? this.belt[beltIdx].row : -1;
     if (beltIdx >= 0) this.belt.splice(beltIdx, 1);
     else this.sleeve[sleeveIdx] = null;
 
@@ -569,6 +607,7 @@ export class Combat {
 
     this.lastPlayed = def;
     this.lastPlayedAt = this.time;
+    this.lastRow = beltIdx >= 0 ? row : -1;
     if (!this.replaying) this.lastPlay = { card, def, vals };
     this.heroDef.hooks.onCardPlayed?.(this, card, def, spent);
     for (const id of this.relics) RELICS[id]?.hooks?.onCardPlayed?.(this, card, def);
@@ -674,6 +713,12 @@ export class Combat {
 
     const blocked = opts.ignoreBlock ? 0 : Math.min(target.block, dmg);
     target.block -= blocked;
+    // An absorbing enemy stores what the hero's cards deal (damage over time still gets through).
+    if (to === 'enemy' && source === 'hero' && this.enemy.move.absorb && dmg - blocked > 0) {
+      this.enemy.stored += dmg - blocked;
+      this.events.emit({ type: 'absorbed', amount: dmg - blocked });
+      return 0;
+    }
     const lost = Math.min(target.hp, dmg - blocked);
     target.hp -= lost;
     this.events.emit({ type: 'damage', target: to, amount: dmg - blocked, blocked, source, hitIndex, kind: opts.kind ?? 'hit' });
@@ -775,7 +820,7 @@ export class Combat {
   addManaCrystals(n: number): void {
     const h = this.hero;
     const before = h.maxMana;
-    h.maxMana = Math.min(CONFIG.maxManaCap, h.maxMana + n);
+    h.maxMana = Math.min(this.manaCap(), h.maxMana + n);
     if (h.maxMana > before) this.events.emit({ type: 'manaCrystal', amount: h.maxMana - before });
   }
 
@@ -888,6 +933,17 @@ export class Combat {
     for (const card of [...some(this.belt.map((b) => b.card)), ...some([...this.draw, ...this.discard])]) {
       card.hex = { id, left: hex.taps, t: hex.thaw };
       this.events.emit({ type: 'hexed', card });
+    }
+  }
+
+  /** Inflation: `n` random cards (belt first, then the rest of the deck) cost 1 more mana for the rest of the fight. */
+  inflateCards(n: number): void {
+    const fits = (c: CombatCard): boolean => CARDS[c.id].type !== 'curse' && this.cardCost(c) >= 0;
+    const onBelt = this.rng.shuffle(this.belt.map((b) => b.card).filter(fits));
+    const rest = this.rng.shuffle([...this.draw, ...this.discard].filter(fits));
+    for (const card of [...onBelt, ...rest].slice(0, n)) {
+      card.tax = (card.tax ?? 0) + 1;
+      this.events.emit({ type: 'inflated', card });
     }
   }
 

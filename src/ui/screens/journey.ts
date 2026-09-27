@@ -48,10 +48,12 @@ export function runHud(run: RunState, extra?: HTMLElement): HTMLElement {
  */
 export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onHome: () => void): Screen {
   const cur = currentNode(run);
-  const nodes = run.nodes.filter((n) => n.act === cur.act);
+  const options = run.cleared ? cur.next.filter((id) => !run.path.includes(id)) : [];
+  // After an act boss the map turns to the next act.
+  const act = options.length ? run.nodes[options[0]].act : cur.act;
+  const nodes = run.nodes.filter((n) => n.act === act);
   const floors = Math.max(...nodes.map((n) => n.floor));
   const minFloor = Math.min(...nodes.map((n) => n.floor));
-  const options = run.cleared ? cur.next.filter((id) => !run.path.includes(id)) : [];
   let picked: number | null = !run.cleared ? cur.id : options.length === 1 ? options[0] : null;
   const y = (n: RunNode): number => (floors - n.floor + 0.5) * ROW_H;
 
@@ -89,7 +91,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   for (const n of nodes) {
     const past = run.path.includes(n.id) && (n.id !== cur.id || run.cleared);
     const open = n.id === cur.id ? !run.cleared : options.includes(n.id);
-    const missed = !past && !open && n.floor <= cur.floor && n.id !== cur.id;
+    const missed = !past && !open && n.act === cur.act && n.floor <= cur.floor && n.id !== cur.id;
     const label = t(`journey.node.${n.type}`);
     const el = h(
       'div',
@@ -148,8 +150,8 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     h(
       'div',
       { class: 'act-banner' },
-      h('div', { class: 'h1' }, t('journey.title', { n: cur.act })),
-      h('p', { class: 'sub' }, t(`journey.actName.${cur.act}`)),
+      h('div', { class: 'h1' }, t('journey.title', { n: act })),
+      h('p', { class: 'sub' }, t(`journey.actName.${act}`)),
     ),
     h('div', { class: 'scroll', style: { flex: '1' } }, path),
     enterBtn,
