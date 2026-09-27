@@ -32,7 +32,7 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 
 ### Cosa viene da Cardstone e cosa abbiamo cambiato
 
-| Cardstone | Liverstone |
+| Cardstone | Punchcard |
 | --- | --- |
 | Carte che scorrono "come i piattini del sushi" | Il **nastro**, a cadenza fissa: giocare veloce non fa pescare di più |
 | Mana che si ricarica, carte che alzano il massimo | **Cristalli**: si parte con poco mana e si cresce durante lo scontro |

@@ -1,6 +1,6 @@
 {
-  "name": "Liverstone",
-  "short_name": "Liverstone",
+  "name": "Punchcard",
+  "short_name": "Punchcard",
   "start_url": "./",
   "display": "fullscreen",
   "orientation": "portrait",
