@@ -5,7 +5,7 @@ import { CONFIG, GAME_SPEEDS } from '../../data/config';
 import type { Combat } from '../../game/combat';
 import type { MoveDef } from '../../game/types';
 import { clockAt, currentNode, type RunState, totalFloors } from '../../game/run';
-import { meetEnemy } from '../../game/meta';
+import { meetEnemy, unlockedByFinishing } from '../../game/meta';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
 import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedSelector } from '../components/modals';
@@ -92,7 +92,17 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       sfx(boss ? 'bossVictory' : 'victory');
     } else {
       // Fired: a pink slip flutters down.
-      v.el.append(h('div', { class: 'pink-slip' }, h('b', null, t('combat.pinkSlip')), h('p', null, t('combat.pinkSlipBody'))));
+      // If this ends a run that hires someone new, management already has the next one in mind.
+      const next = unlockedByFinishing(run.hero)[0];
+      v.el.append(
+        h(
+          'div',
+          { class: 'pink-slip' },
+          h('b', null, t('combat.pinkSlip')),
+          h('p', null, t('combat.pinkSlipBody')),
+          next ? h('div', { class: 'slip-speech' }, t('end.nextHire', { hero: t(`hero.${next}.name`) })) : null,
+        ),
+      );
       sfx('defeat');
       haptic('defeat');
     }

@@ -355,3 +355,23 @@
   --ink2: var(--paper);
   animation: bob 1.2s steps(2) infinite;
 }
+
+/* the next hire this run unlocked: a note with the new hero, so the end is a step forward */
+.new-hire {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(100%, 340px);
+  margin: 2px 0 8px;
+  padding: 6px 12px 6px 6px;
+  text-align: left;
+  color: var(--k);
+  background: var(--y);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--p);
+  rotate: -1.5deg;
+  animation: slip-stamp 0.2s steps(2) 1.2s both;
+}
+.new-hire .riso { flex: none; width: 52px; height: 52px; }
+.new-hire b { display: block; font-family: var(--font-display); font-size: 14px; text-transform: uppercase; }
+.new-hire span { font-size: 15px; font-weight: 600; }

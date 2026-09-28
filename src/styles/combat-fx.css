@@ -409,3 +409,25 @@
   4%, 92% { scale: 1; opacity: 1; }
   100% { opacity: 0; }
 }
+
+/* on the pink slip: management already talking about the next hire */
+.slip-speech {
+  position: relative;
+  margin-top: 10px;
+  padding: 6px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--k);
+  background: var(--paper);
+  border: 2px solid var(--k);
+}
+.slip-speech::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  bottom: 100%;
+  width: 12px;
+  height: 10px;
+  background: var(--k);
+  clip-path: polygon(0 100%, 30% 0, 100% 100%);
+}

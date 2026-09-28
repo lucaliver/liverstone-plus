@@ -265,6 +265,8 @@ const en = {
   'end.slip.paid': 'Paid',
   'end.slip.void': 'Void',
   'end.again': 'Clock in again',
+  'end.newHire': 'New hire',
+  'end.nextHire': "Let's hire the next one. {hero}, it is.",
   'end.title': 'Main menu',
   'deck.title': 'Your deck',
   'deck.empty': 'No cards',

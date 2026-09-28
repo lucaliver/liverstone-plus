@@ -323,9 +323,10 @@ export function advance(run: RunState, to?: number): boolean {
 }
 
 /** The run is over (won or lost): heroes unlocked by finishing a run with this hero. */
-export function finishRun(run: RunState): void {
+/** Ends the run; returns the heroes it unlocked (the next hires). */
+export function finishRun(run: RunState): HeroId[] {
   clearRun();
-  progress((u) => 'finishRun' in u && u.finishRun === run.hero);
+  return progress((u) => 'finishRun' in u && u.finishRun === run.hero);
 }
 
 export function saveRun(run: RunState): void {

@@ -128,13 +128,11 @@ function afterCombat(combat: Combat): void {
   playMusic('menu');
   const node = currentNode(r);
   if (combat.result === 'lose') {
-    finishRun(r);
-    show(endScreen(r, false, () => goHeroSelect(), goTitle));
+    show(endScreen(r, false, finishRun(r), () => goHeroSelect(), goTitle));
     return;
   }
   if (combat.result === 'win' && node.next.length === 0) {
-    finishRun(r);
-    show(endScreen(r, true, () => goHeroSelect(), goTitle));
+    show(endScreen(r, true, finishRun(r), () => goHeroSelect(), goTitle));
     return;
   }
   // Elites and act bosses pay better.
@@ -148,8 +146,7 @@ function nextNode(): void {
   if (!run) return;
   run.cleared = true;
   if (!currentNode(run).next.length) {
-    finishRun(run);
-    show(endScreen(run, true, () => goHeroSelect(), goTitle));
+    show(endScreen(run, true, finishRun(run), () => goHeroSelect(), goTitle));
     return;
   }
   goJourney();

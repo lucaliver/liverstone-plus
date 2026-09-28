@@ -1,6 +1,7 @@
 import { type TKey, t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { currentNode, type RunState } from '../../game/run';
+import type { HeroId } from '../../game/types';
 import type { Screen } from '../app';
 import { h } from '../dom';
 import { creature } from '../art/creatures';
@@ -8,7 +9,8 @@ import { dropLetters, motes } from '../components/decor';
 import { burst, haptic } from '../fx/fx';
 import { playMusic } from '../../audio/music';
 
-export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMenu: () => void): Screen {
+/** The end of a run; `hired` are the heroes it unlocked (shown as the next hire, so the end is a step forward). */
+export function endScreen(run: RunState, won: boolean, hired: HeroId[], onAgain: () => void, onMenu: () => void): Screen {
   const node = currentNode(run);
   const title = won ? t('end.victory') : t('end.defeat');
   let confetti = 0;
@@ -28,6 +30,12 @@ export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMe
       { class: 'end-body' },
       h('h1', { class: 'h1 end-title', 'aria-label': title, html: dropLetters(title) }),
       h('div', { class: 'portrait-lg', html: `${motes(10)}${creature(run.hero)}` }),
+      ...hired.map((id) =>
+        h('div', {
+          class: 'new-hire',
+          html: `${creature(id)}<div><b>${t('end.newHire')}</b><span>${t('end.nextHire', { hero: t(`hero.${id}.name`) })}</span></div>`,
+        }),
+      ),
       h('p', { class: 'sub' }, won ? t('end.victoryDesc') : t('end.defeatDesc', { n: node.floor })),
       // The run's stats as a dot-matrix payslip: all that work, and the net pay is still zero.
       h(
