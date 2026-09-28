@@ -58,7 +58,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   sleeve: { icon: 'hand' },
   tickDown: { icon: 'timer', sign: '-' },
   undo: { icon: 'undo' },
-  curse: { icon: 'skull' },
+  auto: { icon: 'autopilot', unit: 's' },
 };
 
 /** Long names get a smaller font so they fit the title band instead of being cut. */

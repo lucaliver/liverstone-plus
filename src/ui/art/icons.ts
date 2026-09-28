@@ -670,6 +670,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'arcane',
     svg: `<path d="M18 8h30c8 0 12 5 12 12v8c0 7-4 12-12 12H30l-10 8v-8h-2c-8 0-12-5-12-12v-8C6 13 10 8 18 8z"/><circle cx="12" cy="54" r="5"/><circle cx="4" cy="61" r="3"/><g fill="#16121f"><rect x="20" y="21" width="6" height="6"/><rect x="30" y="21" width="6" height="6"/><rect x="40" y="21" width="6" height="6"/></g>`,
   },
+  autopilot: {
+    el: 'steel',
+    svg: `<path d="M28 4h8l2 8 7 3 7-4 6 6-4 7 3 7 8 2v8l-8 2-3 7 4 7-6 6-7-4-7 3-2 8h-8l-2-8-7-3-7 4-6-6 4-7-3-7-8-2v-8l8-2 3-7-4-7 6-6 7 4 7-3z"/><path d="M26 22l16 10-16 10z" fill="#16121f"/>`,
+  },
   timer: {
     el: 'steel',
     svg: `<circle cx="32" cy="34" r="26"/><path fill="#16121f" d="M32 14a20 20 0 0 1 20 20H32z"/><rect x="26" y="2" width="12" height="6"/>`,

@@ -126,8 +126,8 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
 - **Carte da sleeve** (una per eroe, un bonus finché aspettano nella sleeve): *Tool Belt* (Guerriero: attacchi +2),
   *Cache* (Mago: ogni incantesimo giocato le aggiunge danno, speso quando la giochi), *Burn Book* (Negromante: ogni
   colpo che subisci avvelena il nemico).
-- **Carte pop:** *Severance* (taglia via tutte le maledizioni e cura), *Ctrl+Z* (riporta sul nastro l'ultima carta
-  uscita), *Unlimited PTO* (rigenerazione, ma sei in ferie: stordito), *Hide the Pain* (Guerriero: più Blocco quanto più
+- **Carte pop:** *Severance* (Forza, e per qualche secondo le carte che escono dal nastro si giocano da sole se puoi
+  pagarle), *Ctrl+Z* (recuperi gli HP persi negli ultimi secondi), *Unlimited PTO* (rigenerazione, ma sei in ferie: stordito), *Hide the Pain* (Guerriero: più Blocco quanto più
   sei ferito), *Turn It Off* / *Turn It On* e *sudo* (Mago: per qualche secondo nessuna regola ferma le tue carte).
 - **Faccia:** le carte mostrano **icone e numeri grandi**; il testo completo e il glossario si leggono tenendo
   premuto. Una condizione è tra parentesi (es. un attacco che fa più danni se hai Blocco).

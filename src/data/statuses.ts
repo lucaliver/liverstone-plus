@@ -44,6 +44,8 @@ const defs: StatusDef[] = [
   { id: 'parry', kind: 'timed', good: true, icon: 'crossed' },
   { id: 'haste', kind: 'timed', good: true, icon: 'gauge' },
   { id: 'rush', kind: 'timed', good: true, icon: 'speedCards' },
+  // Autopilot (Severance): cards slipping off the belt play themselves when they can.
+  { id: 'autopilot', kind: 'timed', good: true, icon: 'autopilot' },
   // Root access (sudo): no rule can stop the hero's cards.
   { id: 'sudo', kind: 'timed', good: true, icon: 'terminal' },
   { id: 'weave', kind: 'timed', good: true, icon: 'bolt2', showStacks: true },

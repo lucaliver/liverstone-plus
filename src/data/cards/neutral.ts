@@ -283,31 +283,34 @@ export const neutralCards: CardDef[] = [
   // Pop culture
   {
     id: 'severance',
-    face: '{curse}|{heal:0}',
+    face: '{str:0}|{auto:1}',
     cls: 'neutral',
     type: 'skill',
     rarity: 'rare',
     cost: 2,
-    upCost: 1,
-    vals: [3],
+    vals: [3, 9],
+    upVals: [5, 10],
     keywords: ['exhaust'],
     art: 'scissors',
+    // Work and self, severed: the work part carries on by itself for a while.
     play: (c, v) => {
-      const n = c.purgeCurses();
-      if (n) c.heal('hero', n * v[0]);
+      c.applyStatus('hero', 'strength', v[0]);
+      c.applyStatus('hero', 'autopilot', 1, v[1]);
     },
   },
   {
     id: 'ctrlZ',
-    face: '{undo}',
+    face: '{undo}{heal}|{timer:0}',
     cls: 'neutral',
     type: 'skill',
-    rarity: 'common',
+    rarity: 'rare',
     cost: 1,
-    upCost: 0,
-    vals: [],
+    vals: [3],
+    upVals: [5],
+    keywords: ['exhaust'],
     art: 'ctrlZ',
-    play: (c) => void c.returnLastExpired(),
+    // Undo: every HP lost in the last few seconds comes back.
+    play: (c, v) => void c.heal('hero', c.hpLostWithin(v[0])),
   },
   {
     id: 'unlimitedPto',

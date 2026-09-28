@@ -671,27 +671,25 @@ describe('pop culture cards', () => {
     return { c, uid: c.belt[c.belt.length - 1].card.uid };
   };
 
-  it('Severance cuts every curse off the belt and discard pile and heals for each', () => {
+  it('Severance: Strength, then cards slipping off the belt play themselves while you can pay', () => {
     const { c, uid } = ready('severance');
-    c.addTempCard('slime', 'belt');
-    c.addTempCard('toxin', 'discard');
-    c.addTempCard('toxin', 'discard');
-    c.hero.hp = 50;
-    expect(c.playCard(uid)).toBe(true);
-    const all = [...c.belt.map((b) => b.card), ...c.discard];
-    expect(all.some((x) => CARDS[x.id].type === 'curse')).toBe(false);
-    expect(c.hero.hp).toBe(50 + 3 * 3);
+    c.playCard(uid);
+    expect(c.stacks('hero', 'strength')).toBe(3);
+    const hp = c.enemy.hp;
+    const played = c.cardsPlayed;
+    run(c, 8.9);
+    expect(c.cardsPlayed).toBeGreaterThan(played);
+    expect(c.enemy.hp).toBeLessThan(hp);
   });
 
-  it('Ctrl+Z brings back the last card that slipped off the belt', () => {
+  it('Ctrl+Z heals back the HP lost in the last few seconds', () => {
     const { c, uid } = ready('ctrlZ');
-    c.stash(uid, 0);
-    run(c, CONFIG.beltTime * EXPIRE_POS + 0.5);
-    const gone = c.lastExpired;
-    expect(gone).not.toBeNull();
-    expect(c.playCard(uid)).toBe(true);
-    expect(c.belt.some((b) => b.card === gone)).toBe(true);
-    expect(c.discard.includes(gone!)).toBe(false);
+    c.damage('enemy', 'hero', 10, { raw: true }, 'enemy');
+    run(c, 4);
+    c.damage('enemy', 'hero', 7, { raw: true }, 'enemy');
+    const hp = c.hero.hp;
+    c.playCard(uid);
+    expect(c.hero.hp).toBe(hp + 7);
   });
 
   it('Unlimited PTO heals over time but stuns you meanwhile', () => {

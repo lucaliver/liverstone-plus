@@ -107,8 +107,8 @@ export class Combat {
   specialUsed = false;
   /** The last card the hero played this fight (rules such as "not the same type twice"). */
   lastPlayed: CardDef | null = null;
-  /** The last card that slipped off the belt unplayed (Ctrl+Z brings it back). */
-  lastExpired: CombatCard | null = null;
+  /** The hero's recent HP losses (fight time, amount), for effects that undo them (Ctrl+Z). */
+  private hurtLog: { t: number; n: number }[] = [];
   lastPlayedAt = -Infinity;
   /** Belt row the last card was played from (-1: the sleeve, or nothing yet). */
   lastRow = -1;
@@ -504,6 +504,8 @@ export class Combat {
     for (let i = this.belt.length - 1; i >= 0; i--) {
       const b = this.belt[i];
       if (b.pos < EXPIRE_POS) continue;
+      // On autopilot, a card slipping off plays itself if it can (mana, rules…); otherwise it's lost as usual.
+      if (this.has('hero', 'autopilot') && this.playCard(b.card.uid)) continue;
       this.belt.splice(i, 1);
       this.expire(b.card);
       if (this.result) return;
@@ -562,7 +564,6 @@ export class Combat {
     // A hex stays on the card through the piles until it's broken; one already cracked is gone.
     if (card.hex && card.hex.left <= 0) delete card.hex;
     card.passed = true;
-    this.lastExpired = card;
     this.events.emit({ type: 'cardExpired', card });
     this.withCard(card, def, () => def.onExpire?.(this, this.cardVals(card), card));
     this.heroDef.hooks.onCardExpired?.(this, card);
@@ -754,6 +755,7 @@ export class Combat {
     target.hp -= lost;
     this.events.emit({ type: 'damage', target: to, amount: dmg - blocked, blocked, source, hitIndex, kind: opts.kind ?? 'hit' });
     if (lost > 0) for (const [id, s] of Object.entries(target.statuses)) if (this.has(to, id)) STATUSES[id].onHurt?.(this, to, s, lost);
+    if (lost > 0 && to === 'hero') this.hurtLog.push({ t: this.time, n: lost });
 
     if (source === 'enemy' && to === 'hero') {
       this.heroDef.hooks.onHeroHit?.(this, lost);
@@ -832,6 +834,7 @@ export class Combat {
   loseHp(n: number): void {
     const lost = Math.min(this.hero.hp, n);
     this.hero.hp -= lost;
+    if (lost > 0) this.hurtLog.push({ t: this.time, n: lost });
     this.events.emit({ type: 'damage', target: 'hero', amount: lost, blocked: 0, source: 'dot', hitIndex: 0, kind: 'blood' });
     this.checkDeaths();
   }
@@ -919,27 +922,9 @@ export class Combat {
     return cards.length;
   }
 
-  /** Removes every curse card from the belt and the discard pile for the rest of the fight. Returns how many. */
-  purgeCurses(): number {
-    const isCurse = (card: CombatCard): boolean => CARDS[card.id].type === 'curse';
-    const onBelt = this.belt.filter((b) => isCurse(b.card));
-    this.belt = this.belt.filter((b) => !isCurse(b.card));
-    const inDiscard = this.discard.filter(isCurse);
-    this.discard = this.discard.filter((card) => !isCurse(card));
-    for (const b of onBelt) this.events.emit({ type: 'cardDiscarded', card: b.card });
-    this.exhaust.push(...onBelt.map((b) => b.card), ...inDiscard);
-    return onBelt.length + inDiscard.length;
-  }
-
-  /** Puts the last card that slipped off the belt back at its entry (from the discard or exhaust pile). */
-  returnLastExpired(): boolean {
-    const card = this.lastExpired;
-    if (!card) return false;
-    const pile = this.discard.includes(card) ? this.discard : this.exhaust.includes(card) ? this.exhaust : null;
-    if (!pile || !this.spawnCard(0, card)) return false;
-    pile.splice(pile.indexOf(card), 1);
-    this.lastExpired = null;
-    return true;
+  /** HP the hero lost in the last `seconds` of the fight. */
+  hpLostWithin(seconds: number): number {
+    return this.hurtLog.filter((x) => x.t >= this.time - seconds).reduce((sum, x) => sum + x.n, 0);
   }
 
   /** The enemy drops the move it is charging and starts on the next one of its pattern. */

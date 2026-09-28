@@ -10,9 +10,9 @@
 
 - [x] Rinomina carta "Clawback" in "Meal voucer" e cambia l'icona art
 
-- [ ] Carta "Ctrl+Z": cambia l'effetto in "Recupera tutti gli HP che hai perso negli ultimi 3 s". Costo 1, Exhaust. Potenziata: finestra di 5 s.
+- [x] Carta "Ctrl+Z": cambia l'effetto in "Recupera tutti gli HP che hai perso negli ultimi 3 s". Costo 1, Exhaust. Potenziata: finestra di 5 s.
 
-- [ ] Carta "Severance": cambiala in "Ottieni 3 strength. Per 9 s, le carte che escono dal nastro si giocano da sole (se hai il mana per pagarle). Potenziata: 5 strength e 10 s."
+- [x] Carta "Severance": cambiala in "Ottieni 3 strength. Per 9 s, le carte che escono dal nastro si giocano da sole (se hai il mana per pagarle). Potenziata: 5 strength e 10 s."
 
 - [ ] Aggiungi nuova carta "Work-Life balance": effetto "Infligge 3 danni, si ripete ad ogni successiva carta che giochi, finchè non ne giochi due dello stesso tipo consecutivamente"
 
