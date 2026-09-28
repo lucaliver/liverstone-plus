@@ -204,6 +204,8 @@
   overflow: hidden;
 }
 .hero-portrait .riso { width: 100%; height: 100%; }
+/* a bust, not the whole figure: the sprite is zoomed so the hero fills the frame (feet and shadow cropped) */
+.hero-portrait > .riso { scale: 1.3; transform-origin: 50% 22%; }
 .hero-portrait.hurt { animation: hurt 0.3s steps(2); }
 @keyframes hurt {
   50% { background: var(--p); transform: translate(3px, -2px); }
