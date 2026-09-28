@@ -185,10 +185,14 @@ La difficoltà cresce scendendo di piano. Le élite e lo Slaves CEO guadagnano 1
 
 ## 6. Schermate e interfaccia
 
-- **Avvio:** una schermata con il logo, il timbracartellino e *Start game* (il primo tocco sblocca anche l'audio).
-- **Home:** logo animato, boss tra oggetti d'ufficio e di fabbrica (timbracartellino, schedario, sacco di soldi, barile tossico); *New run* / *Back to work* (continua), *Handbook*,
-  *How to play* (apre l'Onboarding), Impostazioni, tutti con un'icona; un bottone temporaneo *Debug: pick a fight*
-  per affrontare qualunque nemico con qualunque eroe.
+- **Avvio:** stile manifesto: una fascia gialla in diagonale, il logo su carta, lo slogan, il timbracartellino e
+  *Start game* (il primo tocco sblocca anche l'audio).
+- **Home:** un manifesto di propaganda appeso al muro (il boss enorme stampato in due inchiostri e tagliato dal bordo,
+  il logo su un blocco giallo, lo slogan timbrato *Work · Obey · Punch in*, la targa *Punchcard Inc.*); il boss è il
+  primo che non hai ancora incontrato. Sotto, sulla scrivania, il **cartellino** da timbrare accanto al
+  timbracartellino: *New run*, oppure *Back to work* con eroe, atto, piano e vita della run in corso; toccandolo entra
+  nel timbracartellino (KA-CHUNK). Poi *Handbook*, *How to play*, Impostazioni e i bottoni temporanei *Debug fight* e
+  *Reset progress*.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
 - **Percorso:** in alto ritratto dell'eroe (toccalo o tienilo premuto per la sua scheda), vita e mazzo, Home e Impostazioni; sotto la mappa dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
   per entrare nel piano. Il boss dell'atto 1 è un orologio che segna l'ora della giornata lavorativa (il turno del

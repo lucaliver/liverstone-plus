@@ -72,11 +72,11 @@
 
 ## Home e splash (restyle totale)
 
-- [ ] Nuova home + nuova schermata "Start game", direzione **H1 manifesto di propaganda**:
+- [x] Nuova home + nuova schermata "Start game", direzione **H1 manifesto di propaganda**:
   - composizione diagonale costruttivista, CEO enorme tagliato dal bordo in due inchiostri, fasce di colore pieno
   - logo come titolo del manifesto su un blocco giallo, slogan timbrato
-- [ ] Spunti da **H2 timbracartellino**: logo o CTA su un cartellino perforato; *New run* = cartellino che entra
+- [x] Spunti da **H2 timbracartellino**: logo o CTA su un cartellino perforato; *New run* = cartellino che entra
   (KA-CHUNK); con una run in corso il cartellino mostra eroe, atto, piano e vita
-- [ ] Spunti da **H3 ufficio del capo**: oggetti appoggiati su un piano (niente sprite che fluttuano), targa
+- [x] Spunti da **H3 ufficio del capo**: oggetti appoggiati su un piano (niente sprite che fluttuano), targa
   "PUNCHCARD INC."; il boss mostrato cambia con i progressi
 - Controllo a 390×844 e 375×620

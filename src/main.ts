@@ -48,7 +48,7 @@ function goTitle(): void {
   const saved = loadRun();
   show(
     titleScreen({
-      hasSave: !!saved,
+      save: saved,
       onContinue: () => {
         run = loadRun();
         if (!run) {

@@ -83,12 +83,14 @@ test('compendium shows cards and enemies in separate sections', async ({ page })
 });
 
 for (const height of [844, 600]) {
-  test(`title props are visible (height ${height})`, async ({ page }) => {
+  test(`title poster, time card and menu fit (height ${height})`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height });
     await freshGame(page);
-    const props = page.locator('.title-screen .prop');
-    await expect(props).toHaveCount(4);
-    for (const c of await props.all()) await expect(c).toBeVisible();
+    for (const sel of ['.poster', '.poster .logo', '.timecard-cta', '.desk-clock', '.menu .btn >> nth=-1']) {
+      await expect(page.locator(sel)).toBeInViewport({ ratio: 0.9 });
+    }
+    // The boss is cut by the poster's edge on purpose.
+    await expect(page.locator('.poster-boss')).toBeVisible();
   });
 }
 

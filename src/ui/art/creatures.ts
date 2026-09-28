@@ -314,39 +314,6 @@ ${shadow}
 <rect x="58" y="146" width="84" height="12" fill="#1b1830"/>
 <rect x="160" y="76" width="16" height="44" fill="url(#tk-g)" ${OUT}/>`;
 
-const filingCabinet = `
-<defs>${lg('fc-m', '#c8c0d8', '#6d6680')}</defs>
-${shadow}
-<rect x="44" y="36" width="112" height="150" fill="url(#fc-m)" ${OUT}/>
-<rect x="54" y="46" width="92" height="36" fill="#9a94ac" ${OUT}/><rect x="54" y="90" width="92" height="36" fill="#9a94ac" ${OUT}/>
-<path d="M58 132l10-12 8 10 10-14 10 12 12-10 10 14 14-8 6 8z" fill="#f6f0e4" ${OUT}/>
-<rect x="38" y="138" width="124" height="42" fill="#9a94ac" ${OUT}/>
-<g fill="#1b1830"><rect x="88" y="60" width="24" height="8"/><rect x="88" y="104" width="24" height="8"/><rect x="88" y="154" width="24" height="8"/></g>
-<rect x="62" y="52" width="18" height="10" fill="#f6f0e4"/>
-<path d="M84 36c0-14 7-24 16-24s16 10 16 24c0 5-3 8-6 9v4H90v-4c-3-1-6-4-6-9z" fill="#f6f0e4" ${OUT}/>
-<g fill="#1b1830"><rect x="90" y="24" width="7" height="7"/><rect x="104" y="24" width="7" height="7"/></g>`;
-
-const moneyBag = `
-${shadow}
-<!-- crisp edges: no half-covered rim pixels, so no pale dither on the outline -->
-<g shape-rendering="crispEdges">
-<g fill="#ffd900" ${OUT}><ellipse cx="36" cy="182" rx="18" ry="7"/><ellipse cx="166" cy="184" rx="16" ry="6"/><ellipse cx="158" cy="174" rx="16" ry="6"/></g>
-<path d="M96 44l34-20 10 18-34 20z" fill="#8ad06a" ${OUT}/>
-<path d="M56 188c-24 0-32-20-26-46 8-38 36-64 70-66 34 2 62 28 70 66 6 26-2 46-26 46z" fill="#ffd900" stroke="#120e18" stroke-width="6" stroke-linejoin="round"/>
-<path d="M74 80c-10-14-4-30 10-34l16 12 16-12c14 4 20 20 10 34z" fill="#ffd900" stroke="#120e18" stroke-width="6" stroke-linejoin="round"/>
-<path d="M72 82h56" stroke="#1b1830" stroke-width="9"/>
-<!-- the dollar, drawn on the pixel grid with stepped diagonals -->
-<g fill="#1f6a3a"><rect x="96.875" y="109.375" width="6.25" height="6.25"/><rect x="90.625" y="115.625" width="6.25" height="6.25"/><rect x="96.875" y="115.625" width="6.25" height="6.25"/><rect x="103.125" y="115.625" width="6.25" height="6.25"/><rect x="109.375" y="115.625" width="6.25" height="6.25"/><rect x="84.375" y="121.875" width="6.25" height="6.25"/><rect x="96.875" y="121.875" width="6.25" height="6.25"/><rect x="84.375" y="128.125" width="6.25" height="6.25"/><rect x="96.875" y="128.125" width="6.25" height="6.25"/><rect x="90.625" y="134.375" width="6.25" height="6.25"/><rect x="96.875" y="134.375" width="6.25" height="6.25"/><rect x="96.875" y="140.625" width="6.25" height="6.25"/><rect x="103.125" y="140.625" width="6.25" height="6.25"/><rect x="96.875" y="146.875" width="6.25" height="6.25"/><rect x="109.375" y="146.875" width="6.25" height="6.25"/><rect x="96.875" y="153.125" width="6.25" height="6.25"/><rect x="109.375" y="153.125" width="6.25" height="6.25"/><rect x="84.375" y="159.375" width="6.25" height="6.25"/><rect x="90.625" y="159.375" width="6.25" height="6.25"/><rect x="96.875" y="159.375" width="6.25" height="6.25"/><rect x="103.125" y="159.375" width="6.25" height="6.25"/><rect x="96.875" y="165.625" width="6.25" height="6.25"/></g>
-</g>`;
-
-const toxicBarrel = `
-${shadow}
-<rect x="50" y="48" width="100" height="138" rx="8" fill="#ffd900" ${OUT}/>
-<path d="M50 90h100M50 152h100" stroke="#1b1830" stroke-width="6"/>
-<path d="M86 104c0-10 6-16 14-16s14 6 14 16c0 4-2 6-4 7v5H90v-5c-2-1-4-3-4-7z" fill="#1b1830"/>
-<g fill="#ffd900"><rect x="92" y="100" width="6" height="6"/><rect x="102" y="100" width="6" height="6"/></g>
-<path d="M50 58c10-10 30-14 50-14s40 4 50 14v8c-6 0-6 16-12 16s-4-12-10-12-6 22-12 22-6-22-12-22-8 10-14 10-6-14-14-14-8 8-14 8z" fill="#8ad06a" ${OUT}/>`;
-
 /** Office Chair: a gaming office chair come alive, angry face on the backrest, RGB stripes, five yellow casters. */
 const officeChair = `
 <defs>${glow('oc-g', '#ff3d9a')}</defs>
@@ -658,9 +625,6 @@ export const CREATURES: Record<string, string> = {
   micromanager,
   coffeeMachine,
   timeClock,
-  filingCabinet,
-  moneyBag,
-  toxicBarrel,
   waterCooler,
   warrior,
   mage,

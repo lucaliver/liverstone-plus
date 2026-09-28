@@ -1,11 +1,10 @@
-/* ------------------------------------------------------------------ title */
+/* ------------------------------------------------------------------ title: a propaganda poster, then a desk to punch in */
 .title-screen {
   align-items: center;
-  text-align: center;
   gap: 14px;
 }
 .logo {
-  margin: 5vh 0 0;
+  margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(34px, 11vw, 52px);
@@ -22,41 +21,187 @@
   91% { text-shadow: 2px 6px 0 var(--p), -2px -1px 0 var(--b); }
   94% { text-shadow: 5px 3px 0 var(--p), -4px 1px 0 var(--b); }
 }
-.title-hero {
+@keyframes bob {
+  50% { transform: translateY(-5px); }
+}
+
+/* the poster: paper pinned to the wall, a diagonal pink band, the boss huge and cut by the edge in two inks */
+.poster {
   position: relative;
   flex: 1;
-  width: 100%;
   min-height: 0;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr);
-  place-items: center;
+  width: min(100%, 360px);
+  margin-top: 6px;
+  overflow: hidden;
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
+  rotate: -1.5deg;
 }
-/* the boss shrinks with the room left above the menu, so he never covers it */
-.title-hero > .riso {
-  position: relative;
-  z-index: 1;
-  height: min(60vw, 272px, 100%);
+/* two strips of tape hold it up */
+.poster::before,
+.poster::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  z-index: 5;
+  width: 44px;
+  height: 14px;
+  background: #d8ccb4;
+  opacity: 0.85;
+}
+.poster::before { left: 10px; rotate: -8deg; }
+.poster::after { right: 10px; rotate: 6deg; }
+.poster-band {
+  position: absolute;
+  inset: 0;
+  background: var(--p);
+  clip-path: polygon(0 62%, 100% 22%, 100% 52%, 0 92%);
+}
+.poster-boss {
+  position: absolute;
+  right: -18%;
+  bottom: -14%;
+  height: 92%;
   aspect-ratio: 1;
-  animation: bob 1.2s steps(2) infinite;
 }
-.menu {
+.poster-boss .riso { width: 100%; height: 100%; }
+/* printed in two inks only: pink and black (plus the paper) */
+.poster-boss .ink-Y,
+.poster-boss .ink-B { display: none; }
+.poster .logo {
+  position: absolute;
+  left: 6%;
+  top: 7%;
+  z-index: 2;
+  max-width: 88%;
+  padding: 6px 10px 8px;
+  font-size: clamp(26px, 8.4vw, 38px);
+  color: var(--k);
+  background: var(--y);
+  border: var(--line) solid var(--k);
+  rotate: -6deg;
+  text-shadow: 3px 3px 0 var(--p);
+  animation: none;
+}
+.poster-slogan {
+  position: absolute;
+  left: 5%;
+  bottom: 16%;
+  z-index: 2;
+  max-width: 62%;
+  padding: 2px 10px 4px;
+  font-family: var(--font-display);
+  font-size: clamp(14px, 4.4vw, 19px);
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: var(--k);
+  border: 4px solid var(--k);
+  background: var(--paper);
+  rotate: 5deg;
+  animation: poster-stamp 0.2s steps(2) 0.35s both;
+}
+@keyframes poster-stamp {
+  from { scale: 2.2; opacity: 0; }
+}
+.poster-plate {
+  position: absolute;
+  left: 50%;
+  bottom: 3%;
+  z-index: 2;
+  translate: -50% 0;
+  padding: 1px 8px 2px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: var(--k);
+  background: #d8a830;
+  border: 2px solid var(--k);
+}
+
+/* the desk: the time card to punch in, next to the time clock */
+.desk {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  width: min(100%, 360px);
+  padding-bottom: 8px;
+  border-bottom: 6px solid #5a3a28;
+}
+.timecard-cta {
+  position: relative;
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  width: min(100%, 340px);
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 12px 10px 24px;
+  text-align: left;
+  color: var(--k);
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--p);
+  rotate: -2deg;
+  animation: cta-pulse 1.6s steps(2) infinite;
 }
-.menu .row {
+/* the card's punched column along its left edge */
+.tc-holes {
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 7px;
+  background: repeating-linear-gradient(var(--k) 0 7px, transparent 7px 13px);
+}
+.tc-title {
+  font-family: var(--font-display);
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.tc-action {
+  font-family: var(--font-ui);
+  font-size: 30px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.tc-run {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  color: var(--muted);
+}
+.tc-run .riso { flex: none; width: 26px; height: 26px; }
+.tc-run .pico { color: var(--p); --ink2: var(--k); }
+/* punched: the card slides right into the clock */
+.timecard-cta.punching { animation: tc-punch 0.38s steps(4) forwards; }
+@keyframes tc-punch {
+  40% { transform: translateX(30px); }
+  100% { transform: translate(90px, -10px) scale(0.4); opacity: 0; }
+}
+.desk-clock {
+  flex: none;
+  width: 92px;
+  height: 92px;
+}
+.desk-clock .riso { width: 100%; height: 100%; }
+
+.menu {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 10px;
+  width: min(100%, 360px);
 }
 .version {
   font-family: var(--font-ui);
   font-size: 14px;
   color: var(--muted-d);
-}
-@keyframes bob {
-  50% { transform: translateY(-5px); }
 }
 
 /* ------------------------------------------------------------------ splash (the first tap also unlocks audio) */
@@ -64,16 +209,48 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 18px;
+  gap: 16px;
+  overflow: hidden;
 }
-.splash .logo { margin: 0; font-size: clamp(40px, 13vw, 64px); }
+/* a wide yellow band across the night, the poster's diagonal */
+.splash-band {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--y);
+  clip-path: polygon(0 34%, 100% 16%, 100% 42%, 0 60%);
+}
+.splash .logo {
+  margin: 0;
+  max-width: 92%;
+  padding: 8px 14px 10px;
+  font-size: clamp(30px, 9.6vw, 50px);
+  color: var(--k);
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--p);
+  rotate: -5deg;
+  text-shadow: 3px 3px 0 var(--p);
+  animation: none;
+}
+.splash-tagline {
+  margin: 0;
+  padding: 2px 10px;
+  font-family: var(--font-display);
+  font-size: clamp(13px, 4vw, 17px);
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--k);
+  rotate: -5deg;
+}
 .splash-art {
-  width: min(56vw, 240px);
+  width: min(52vw, 220px);
   aspect-ratio: 1;
   animation: bob 1.2s steps(2) infinite;
 }
 .splash-art .riso { width: 100%; height: 100%; }
 .splash .btn { width: min(100%, 300px); }
+
 /* menu buttons carry a pixel icon before the label */
 .menu .btn,
 .splash .btn,

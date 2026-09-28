@@ -4,7 +4,6 @@
   .reward-title { font-size: 28px; }
   .title-screen { gap: 10px; }
   .menu { gap: 10px; }
-  .menu .row { gap: 10px; }
   .combat .topbar { padding-top: calc(var(--safe-t) + 4px); }
   .combat .icon-btn { width: 40px; height: 40px; }
   .threat { height: 34px; }
@@ -37,7 +36,7 @@
   .action-row { --cw: calc(var(--cw-belt) * 0.85); }
   .sleeve-slot .card { --cw: calc(var(--cw-belt) * 0.85 - 8px); }
   .bar { height: 24px; }
-  /* no room for combat candles on very short screens (the title keeps its own) */
+  /* no room for combat candles on very short screens */
   .stage .candle,
   .stage .cooler { display: none; }
   .hint-toast.alert { top: 7%; padding: 6px 12px; font-size: 19px; }
