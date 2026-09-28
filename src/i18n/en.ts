@@ -143,7 +143,7 @@ const en = {
   'journey.info.promotion': 'Give one card of your deck a permanent perk.',
   'journey.info.boss': 'The boss of the shift. Beat it to clock out.',
   'journey.info.enemy': 'On the job: {name}',
-  'journey.abandonConfirm': 'Call in sick? Your progress will be lost.',
+  'journey.abandonConfirm': 'Abandon run? Your progress will be lost.',
 
   // -------------------------------------------------------------- combat
   'combat.fight': 'Get to work!',
@@ -201,7 +201,7 @@ const en = {
 
   // ------------------------------------------------------------ results
   'reward.cleared': 'Problem solved',
-  'reward.title': 'Pick your paycheck',
+  'reward.title': 'Pick your bonus',
   'reward.swap': 'Swap',
   'reward.skip': 'Skip',
   'reward.skipHp': '+{n} max HP',

@@ -134,9 +134,9 @@ ${eyes(86, 114, 66, 4.5, '#ff6af5', 'sc-g')}
 <rect x="52" y="40" width="12" height="22" rx="4" fill="#1c5fd0" ${OUT}/><rect x="136" y="40" width="12" height="22" rx="4" fill="#1c5fd0" ${OUT}/>
 <path d="M60 62c2 16 8 24 18 26" stroke="#1b1830" stroke-width="4" fill="none"/><circle cx="80" cy="88" r="5" fill="#ff3d9a" ${OUT}/>`;
 
-/** Goblin Consultant: slicked hair, glasses, a cheap suit and tie, a briefcase full of invoices and a knife for your back. */
+/** Goblin Consultant: pale, a mop of curls, a big hooked nose and an evil grin, a cheap suit, a briefcase full of invoices and a knife for your back. */
 const consultant = `
-<defs>${rg('gc-b', '#a8c860', '#5a8a30')}${lg('gc-s', '#5a6ac0', '#1c2a70')}${lg('gc-c', '#b07a3a', '#6a3a1a')}${glow('gc-g', '#ffe14a')}</defs>
+<defs>${rg('gc-b', '#a8c860', '#5a8a30')}${rg('gc-p', '#f6f0e4', '#c8c0d8')}${lg('gc-s', '#5a6ac0', '#1c2a70')}${lg('gc-c', '#b07a3a', '#6a3a1a')}${glow('gc-g', '#ffe14a')}</defs>
 ${shadow}
 <!-- briefcase -->
 <path d="M140 134v-10h24v10" stroke="#1b1830" stroke-width="6" fill="none"/>
@@ -147,15 +147,16 @@ ${shadow}
 <path d="M96 110h8l2 6-3 30-3 4-3-4-3-30z" fill="#ff3d9a" ${OUT}/>
 <path d="M84 106l-8 24 22 12zM116 106l8 24-22 12z" fill="#2a3a90" ${OUT}/>
 <path d="M130 126c10 2 16 8 18 16l-10 4c-2-4-6-8-10-8z" fill="url(#gc-s)" ${OUT}/><circle cx="146" cy="132" r="7" fill="url(#gc-b)" ${OUT}/>
-<!-- head: big ears, slicked hair, glasses, crooked grin -->
-<path d="M30 60l40 22-6 14c-18-4-30-18-34-36zM170 60l-40 22 6 14c18-4 30-18 34-36z" fill="url(#gc-b)" ${OUT}/>
-<path d="M58 70c0-26 18-42 42-42s42 16 42 42c0 22-16 42-42 42S58 92 58 70z" fill="url(#gc-b)" ${OUT}/>
-<path d="M60 58c4-22 20-32 40-32s36 10 40 28c-14-8-30-10-46-4-12-2-24 0-34 8z" fill="#1b1830"/><path d="M84 36c8-4 20-4 30 0" stroke="#5a6ac0" stroke-width="3"/>
-<path d="M74 62h22v16H74zM104 62h22v16h-22z" fill="#f6f0e4" stroke="#1b1830" stroke-width="3.5"/><path d="M96 68h8" stroke="#1b1830" stroke-width="3"/>
-<g class="eye"><rect x="82" y="67" width="7" height="7" fill="#1a2a12"/><rect x="111" y="67" width="7" height="7" fill="#1a2a12"/></g>
-<path d="M80 94c10 8 30 8 40 0" stroke="#1a2a12" stroke-width="4" fill="#3a1414" stroke-linecap="round"/>
-<path d="M86 95l4 6 3-5M108 96l3 5 4-6" fill="#f6ecd2"/>
-<path d="M96 78l4 10 4-10z" fill="#4f9a3a" ${OUT}/>
+<!-- head: pale skin, pointed ears, a mop of dark curls, a big hooked nose, an evil grin -->
+<path d="M28 58l42 24-6 14c-18-4-32-18-36-38zM172 58l-42 24 6 14c18-4 32-18 36-38z" fill="url(#gc-p)" ${OUT}/>
+<path d="M58 72c0-26 18-42 42-42s42 16 42 42c0 22-16 40-42 40S58 94 58 72z" fill="url(#gc-p)" ${OUT}/>
+<g fill="#1b1830" ${OUT}><circle cx="66" cy="44" r="11"/><circle cx="80" cy="32" r="12"/><circle cx="98" cy="26" r="12"/><circle cx="116" cy="30" r="12"/><circle cx="132" cy="42" r="11"/><circle cx="72" cy="56" r="8"/><circle cx="128" cy="56" r="8"/></g>
+<g stroke="#5a6ac0" stroke-width="3" fill="none"><path d="M76 30c4-4 8-4 10 0M96 22c4-4 8-4 10 0M112 26c4-4 8-4 10 0"/></g>
+<path d="M72 60l20 8M128 60l-20 8" stroke="#1b1830" stroke-width="6" stroke-linecap="round"/>
+<g class="eye"><path d="M76 70h16l-3 6H79z" fill="#ffd900" ${OUT}/><path d="M108 70h16l-3 6h-10z" fill="#ffd900" ${OUT}/><rect x="83" y="71" width="4" height="4" fill="#1b1830"/><rect x="113" y="71" width="4" height="4" fill="#1b1830"/></g>
+<path d="M68 90c10 14 54 14 64 0-6 10-58 10-64 0z" fill="#3a1414" stroke="#1b1830" stroke-width="4" stroke-linejoin="round"/>
+<path d="M76 93l4 7 4-6 4 7 4-7 4 7 4-7 4 7 4-7 4 7 4-6 4 6 4-7" fill="none" stroke="#f6ecd2" stroke-width="3"/>
+<path d="M96 70c-2 10-10 16-8 22 3 6 14 6 18 2 2-4-2-6-6-6 2-6 2-12 0-18z" fill="url(#gc-p)" ${OUT}/>
 <!-- left arm and a knife -->
 <g class="limb"><path d="M62 128c-14 4-22 14-20 26l12 2c0-8 4-14 12-16z" fill="url(#gc-s)" ${OUT}/><circle cx="46" cy="154" r="7" fill="url(#gc-b)" ${OUT}/><path d="M42 150l-14-30 7-3 14 30z" fill="#dfe6ee" ${OUT}/></g>`;
 
