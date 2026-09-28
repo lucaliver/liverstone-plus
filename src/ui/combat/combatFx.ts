@@ -240,6 +240,8 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
       case 'enrage': {
         const p = v.enemyPoint();
         floatText(p.x, p.y - 70, t('combat.enraged'), 'status bad');
+        // Spell out what its half-HP trait just did (the belt speeds up, it hits harder…).
+        v.toast(t(`enemy.${v.combat.enemy.def.id}.half`), true);
         burst('blood', p.x, p.y, 30, 1.4);
         sfx('enrage');
         shake('big');

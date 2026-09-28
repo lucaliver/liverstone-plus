@@ -55,6 +55,13 @@
   pointer-events: none;
   animation: toast 1.4s steps(6) forwards;
 }
+.hint-toast.alert {
+  color: var(--k);
+  background: var(--y);
+  border: var(--line) solid var(--k);
+  box-shadow: 4px 4px 0 var(--p);
+  animation-duration: 3s;
+}
 @keyframes toast {
   0% { opacity: 0; }
   10%, 80% { opacity: 1; }
