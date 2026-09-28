@@ -1,5 +1,6 @@
 /* ------------------------------------------------------------------ combat layout */
-.combat { --portrait: 72px; padding: 0; overflow: clip; }
+/* the portrait spans the hero row: as tall as the HP bar and status line next to it */
+.combat { --portrait: 70px; padding: 0; overflow: clip; }
 
 .combat .topbar {
   display: flex;
