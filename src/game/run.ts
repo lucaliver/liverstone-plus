@@ -66,15 +66,21 @@ const LANES: NodeType[][] = [
   ['fight', 'fight', 'rest', 'fight', 'elite', 'fight', 'fight', 'rest'],
   ['fight', 'promotion', 'fight', 'rest', 'fight', 'promotion', 'fight', 'rest'],
 ];
+/** Floors on a single road at the start of act 1, before the map splits in two (then the lanes skip as many floors). */
+const ACT1_OPENING = 3;
 /** Links between the lanes per act: diagonal (to the other lane one floor up) or flat (across the same floor, both ways). */
 const LINKS = 2;
 export const ACTS = 2;
 
-export function newRun(hero: HeroId, seed: number): RunState {
+/** Seed of the very first run: its map is always the same, with the enemies in order of difficulty. */
+export const FIRST_RUN_SEED = 1;
+
+/** A new run; a `scripted` one (the very first) meets the normal enemies easiest first instead of shuffled. */
+export function newRun(hero: HeroId, seed: number, scripted = false): RunState {
   resetUid(0);
   const rng = new Rng(seed);
   const def = HEROES[hero];
-  const nodes = buildNodes(rng);
+  const nodes = buildNodes(rng, scripted);
   discover(def.special ? [...def.startDeck, def.special] : def.startDeck);
   return {
     version: 2,
@@ -96,32 +102,39 @@ export function newRun(hero: HeroId, seed: number): RunState {
   };
 }
 
-/** A shared first fight, two lanes linked a couple of times, and the boss where they meet again. */
-function buildNodes(rng: Rng): RunNode[] {
+/** A shared road (one fight; three floors in act 1), two lanes linked a couple of times, and the boss where they meet. */
+function buildNodes(rng: Rng, scripted: boolean): RunNode[] {
   const nodes: RunNode[] = [];
   let last: RunNode[] = [];
   for (let act = 1; act <= ACTS; act++) {
-    // Deal normal enemies from a shuffled bag so the same one doesn't repeat back to back.
+    // Deal normal enemies from a shuffled bag so the same one doesn't repeat back to back (scripted: easiest first).
     let bag: EnemyDef[] = [];
     const add = (floor: number, lane: number, type: NodeType): RunNode => {
       let enemy: string | undefined;
       if (type === 'fight') {
-        if (!bag.length) bag = rng.shuffle(enemiesFor(act, 'normal'));
+        if (!bag.length) bag = scripted ? enemiesFor(act, 'normal').reverse() : rng.shuffle(enemiesFor(act, 'normal'));
         enemy = bag.pop()!.id;
       } else if (type === 'elite' || type === 'boss') {
-        enemy = rng.pick(enemiesFor(act, type)).id;
+        enemy = scripted ? enemiesFor(act, type)[0].id : rng.pick(enemiesFor(act, type)).id;
       }
       const node: RunNode = { id: nodes.length, act, floor, lane, type, next: [], enemy };
       nodes.push(node);
       return node;
     };
-    const lanes = rng.shuffle(LANES.map((l) => [...l]));
+    const opening = act === 1 ? ACT1_OPENING : 1;
+    const lanes = rng.shuffle(LANES.map((l) => l.slice(opening - 1)));
     for (let i = 0; i < lanes[0].length - 1; i++) if (rng.next() < 0.3) [lanes[0][i], lanes[1][i]] = [lanes[1][i], lanes[0][i]];
 
-    const first = add(1, 0.5, 'fight');
-    for (const n of last) n.next.push(first.id);
-    const rows = lanes[0].map((_, i) => [add(i + 2, 0, lanes[0][i]), add(i + 2, 1, lanes[1][i])]);
-    first.next.push(rows[0][0].id, rows[0][1].id);
+    // The shared road: one fight per floor, then the two lanes.
+    let road = add(1, 0.5, 'fight');
+    for (const n of last) n.next.push(road.id);
+    for (let f = 2; f <= opening; f++) {
+      const n = add(f, 0.5, 'fight');
+      road.next.push(n.id);
+      road = n;
+    }
+    const rows = lanes[0].map((_, i) => [add(i + opening + 1, 0, lanes[0][i]), add(i + opening + 1, 1, lanes[1][i])]);
+    road.next.push(rows[0][0].id, rows[0][1].id);
     for (let i = 1; i < rows.length; i++) {
       for (const side of [0, 1]) rows[i - 1][side].next.push(rows[i][side].id);
     }
@@ -138,7 +151,7 @@ function buildNodes(rng: Rng): RunNode[] {
         rows[i][1 - side].next.push(rows[i][side].id);
       }
     }
-    const boss = add(lanes[0].length + 2, 0.5, 'boss');
+    const boss = add(lanes[0].length + opening + 1, 0.5, 'boss');
     for (const n of rows[rows.length - 1]) n.next.push(boss.id);
     last = [boss];
   }

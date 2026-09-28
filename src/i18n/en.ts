@@ -101,7 +101,7 @@ const en = {
   'hero.start': 'Start shift',
   'hero.locked': 'Locked',
   'hero.new': 'New!',
-  'hero.unlock.finishRun': 'Play a run to the end with the {hero} to unlock.',
+  'hero.unlock.finishRun': 'Play a run with {hero} to unlock.',
   'hero.unlock.reachBoss': 'Reach the boss of Act {n} to unlock.',
   'hero.starterDeck': 'Starter deck',
   'hero.sleeve': 'Sleeve slots: {n}',

@@ -1,82 +1,40 @@
 # TASKS
 
-## Riferimenti pop (nomi carte)
+- [x] Act1 map should start with a single road for the first 3 nodes, than it divides
 
-- [x] **Red Stapler**: rinomina *Thrown Stapler* (`daggerThrow`)
-- [x] **Metamorphosis**: rinomina *Retraining* (`polymorph`, Mago)
-- [x] **Severance**: neutrale, toglie tutte le maledizioni da nastro e scarti e cura per ognuna
-- [x] **Hide the Pain**: Guerriero, Blocco +1 ogni N HP mancanti
-- [x] **Modern Times**: rinomina *Fast Forward* (`timeSlip`)
-- [x] **Turn It Off** → aggiunge al mazzo **Turn It On** (coppia nuova, Mago/IT)
-- [x] Rinomina carte esistenti adatte (o, al massimo, crea carte nuove):
-  - [x] **sudo**: gioca ignorando le regole (No Repeats, Chill Out, Meticulous…) per qualche secondo (nuova?)
-  - [x] **Ctrl+Z**: riporta sul nastro l'ultima carta uscita (nuova?)
-  - [x] **Blue Screen**: rinomina *Glass Ceiling* (`shatter`)
-  - [x] **Declare Bankruptcy**: rinomina *Tool Tornado* (`whirlwind`, la carta X)
-  - [x] **Stonks**: rinomina *Crunch Time* (`rampage`)
-  - [x] **Unlimited PTO**: Rigenerazione, ma sei stordito per qualche secondo
+- [x] per la primissima run voglio che la mappa sia scriptata e non casuale, mettendoci i nemici in ordine dal più facile al più difficile (lo stesso ordine deve essere quello usato nell'handbook)
 
-## Piccole fix
-  - [x] Nella selezione dei personaggi, l'aura colorata dietro ad essi potrebbe essere un po' più grande e non tagliata orizzontalmente in cima.
+- [ ] deck view: should have on the top a sorter by name/type/cost; also multiple identical cards should be rappresented by just one card and "x2" for example
 
-  - [x] assicurati che la gestione della vibrazione sia fatta in modo corretto best practice; inoltre sfruttala leggermente di più, tipo al click di tasti importanti o durante azioni importanti del combattimento
+- [ ] home: move the reset progress button into the settings page; make the debug button small and not part of the usual layout (like just a floating button on top)
 
-  - [x] Nella mappa: lascia che si vedano i trattini in trasparenza sotto ai titoli dei nodi
+- [ ] dragging card out of sleeve anywhere should play it
 
-  - [x] il cartellino "NEW" sui personaggi da provare non dovrebbe avere quell'effetto sfarfallio, mettigliene uno più fancy
+- [ ] rename a card "Arbeit macht frei"
 
-  - [x] nuovo nemico "Office chair": dagli delle mosse molto meme
+- [ ] nella mappa: sposta il bottone home dentro al menu settings; muovi il contatore di monete al posto di dov'era il bottone home; metti una icona più leggibile al contatore di monete
 
-  - [x] nella schermata di game over (e di vittoria): il protagonista rovesciato è troppo piccolo, prima era più grande
+- [ ] le carte che dicono "gain +x damage this fight" dovrebbero specificare "This gains +X..." (altrimenti si confonde con la strength)
 
-  - [x] nella selezione personaggi: la scritta su come li si sblocca dovrebbe essere subito sotto al lucchetto; il tap sul lucchetto deve essere reattivo (vibrazione, suono di catene, animazione)
+- [ ] effect that apply stun for enemy and auto- [ ]stun should have different icons!
 
-  - [x] onboarding: aggiungi anche un punto con icona di una lente d'ingrandimento in cui dici che per sapere cosa fanno carte, effetti o altro basta sempre fare long press
+- [ ] tutti gli effetti passivi anche quelli ancora da attivare (es. Al 50% degli hp fa questo) dovrebbero apparire negli status del nemico
 
-  - [x] warrior: rimuovigli proprio la carta once per run (lui è la classe più semplice, ci sta che non la abbia)
+- [ ] quando il nastro si velocizza per un effetto, anche la soundtrack dovrebbe velocizzarsi un po'
+
+- [ ] CHECK: P1 FAI Un giro di coerenza, sulle schermate cresciute di recente: icone, maiuscole, spazi, ombre, testi troppo lunghi, stati vuoti, etc.
+
+- [ ] add a new enemy: he just has one big attack X after Ysec, but it's passive is that if he receives X damages, then he forgets to attack and goes to thinking move for tot seconds
+
+- [ ] controlla che runni su tutti i browser, ci sono altri accorgimenti che dovrei avere per pluging o altro? Best practice? Sito apposto con descrizione e tutto?
+
+- [ ] P3 Aggiungi Musica per atto: una traccia di combattimento diversa nell'Atto 2 e un breve tema di vittoria per il boss.
+
+- [ ] P4 Transizione tra mappa e combattimento: oggi il cambio è secco; potrebbe esserci un passaggio animato (animazione immersiva a tutto schermo della porta dell'ufficio che si apre, per esempio).
 
 
-  - [x] in base al tempo che ci metti a battere un nemico, accumuli denaro (che non è altro che il tuo punteggio); mostra il denaro accumulato anche in alto nella mappa
+New tasks, after the others:
 
-  - [x] il nemico "toxic coworker" dovrebbe applicare veleno anziché danno
+- [ ] Carta "Ctrl+Z": cambia l'effetto in "Recupera tutti gli HP che hai perso negli ultimi 3 s". Costo 1, Exhaust. Potenziata: finestra di 5 s.
 
-  - [x] l'animazione delle carte che fanno exhaust è troppo lenta, voglio che si rimpiccioliscano (oltre a bruciarsi) senza muoversi in altre direzioni
-
-  - [x] battuto il boss dell'act 1 metti qualche animazione o scritta che mi introduca all'act 2 con più solennità, al momento atterro nella mappa di Act2 senza nulla
-
-  - [x] long press su un nodo della mappa dovrebbe aprire popup con informazioni
-
-  - [x] assicurati che long press funzioni ovunque per vedere informazioni su quella carta/effetto/stat: ad esempio nella selezione giocatore non funziona la long press sul deck (e neanche su il mana o sulla sleeve, dovrebbero aprirsi piccoli popup di spiegazione)
-
-  - [x] in alcuni boss e negli elite: metti che assieme all'attacco hanno anche un +1 aggiungi Strength (così dei spronato a batterli velocemente)
-
-- [x] carta "quick sync" non dovrebbe costare zero ma 99
-
-- [x] rendi le icone degli status sia del nemico che propri più grandi, e allineale all'inizio della barra salute (stando rispettivamente sopra o sotto)
-
-- [x] handbook: nel personnel come nelle carte segna quelli non ancora incontrati mettendogli il nome con tutti "????"
-
-- [x] cambia sprite: rendi il goblin consultant pallido e col nasone e con i ricciolini e il sorriso malefico
-
-- [x] le sleeve mettile più centrali; inoltre rendi la hitbox più larga (così da poterci mettere carte al volo semplicemente trascinandole nell'area sotto)
-
-- [x] per il nemico the snitch (e per quelli simili in cui c'è un trigger per la loro passiva): quando scendi sotto il 50% dovrebbe comparire una scritta pioù grande, e dovrebbe esserci un suono
-
-
-## Meccaniche nuove
-
-- [x] nuova carta **Overtime** (danno, chiamata *Unpaid Overtime* per non confonderla con l'abilità del Guerriero): il danno cresce ogni secondo che resta sul nastro
-- [x] nuova carta **Patience** (Blocco): massimo quando entra sul nastro, poi cala
-- [x] nuove **Carte con effetto bonus in sleeve** (Tool Belt, Cache, Burn Book): una per eroe, con un effetto creativo che vale solo mentre sta nella sleeve
-- Ogni carta: dati + i18n + art; numero sulla faccia aggiornato in tempo reale; test in `combat.test.ts`
-
-## Home e splash (restyle totale)
-
-- [x] Nuova home + nuova schermata "Start game", direzione **H1 manifesto di propaganda**:
-  - composizione diagonale costruttivista, CEO enorme tagliato dal bordo in due inchiostri, fasce di colore pieno
-  - logo come titolo del manifesto su un blocco giallo, slogan timbrato
-- [x] Spunti da **H2 timbracartellino**: logo o CTA su un cartellino perforato; *New run* = cartellino che entra
-  (KA-CHUNK); con una run in corso il cartellino mostra eroe, atto, piano e vita
-- [x] Spunti da **H3 ufficio del capo**: oggetti appoggiati su un piano (niente sprite che fluttuano), targa
-  "PUNCHCARD INC."; il boss mostrato cambia con i progressi
-- Controllo a 390×844 e 375×620
+- [ ] Carta "Severance": cambiala in "Ottieni 3 strength. Per 9 s, le carte che escono dal nastro si giocano da sole (se hai il mana per pagarle). Potenziata: 5 strength e 10 s."

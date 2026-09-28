@@ -37,8 +37,8 @@ test('a fight can be played and won, then a reward is offered', async ({ page })
   await page.locator('.swap-offer .card').first().click();
   await expect(swap).toBeEnabled();
   await swap.click();
-  // Back on the map: the two lanes ahead are open to choose.
-  await expect(page.locator('.node.open')).toHaveCount(2);
+  // Back on the map: act 1 starts on a single road, so the one floor ahead is open.
+  await expect(page.locator('.node.open')).toHaveCount(1);
   const deck = (await page.evaluate('window.__game.run.deck.length')) as number;
   expect(deck).toBe(9);
   expect(problems).toEqual([]);
@@ -196,20 +196,26 @@ test('coming back from the background while paused keeps the pause → fight mus
   expect(await page.evaluate('window.__game.musicTrack()')).toBe('combat');
 });
 
-test('map: after a node, the player picks one of the two lanes and enters it', async ({ page }) => {
+test('map: where the road splits, the player picks one of the two lanes and enters it', async ({ page }) => {
   const problems = await freshGame(page);
   await page.getByRole('button', { name: /new run/i }).click();
   await page.getByRole('button', { name: /start shift/i }).click();
-  await page.evaluate('(() => { const g = window.__game; g.run.cleared = true; g.goJourney(); })()');
-  const enter = page.getByRole('button', { name: /choose your path/i });
+  // The end of act 1's shared road (floor 3): two lanes ahead.
+  await page.evaluate(
+    '(() => { const g = window.__game; const n = g.run.nodes.find((x) => x.act === 1 && x.floor === 3); g.run.current = n.id; g.run.path = [0, 1, 2]; g.run.cleared = true; g.goJourney(); })()',
+  );
+  const enter = page.locator('.journey:not(.leaving)').getByRole('button', { name: /choose your path/i });
   await expect(enter).toBeDisabled();
-  await page.locator('.node.open .dot').last().click();
-  await page.getByRole('button', { name: /enter floor 2/i }).click();
+  await page.locator('.journey:not(.leaving) .node.open .dot').last().click();
+  await page
+    .locator('.journey:not(.leaving)')
+    .getByRole('button', { name: /enter floor 4/i })
+    .click();
   const at = (await page.evaluate('({ floor: window.__game.run.nodes[window.__game.run.current].floor, path: window.__game.run.path.length })')) as {
     floor: number;
     path: number;
   };
-  expect(at).toEqual({ floor: 2, path: 2 });
+  expect(at).toEqual({ floor: 4, path: 4 });
   expect(problems).toEqual([]);
 });
 

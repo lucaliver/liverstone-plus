@@ -4,7 +4,7 @@ import enStrings from '../src/i18n/en';
 /** Indexed as a plain dictionary: these tests check keys that are built at runtime. */
 const en: Record<string, string> = enStrings;
 import { CARD_LIST } from '../src/data/cards';
-import { ENEMY_LIST, enemyMoves } from '../src/data/enemies';
+import { DIFFICULTY, ENEMY_LIST, enemyMoves } from '../src/data/enemies';
 import { HERO_LIST } from '../src/data/heroes';
 import { PERK_LIST } from '../src/data/perks';
 import { STATUS_ORDER, STATUSES } from '../src/data/statuses';
@@ -30,6 +30,7 @@ describe('content integrity', () => {
   it('every enemy and move has a name, every hero deck exists', () => {
     for (const e of ENEMY_LIST) {
       expect(en[`enemy.${e.id}.name`], e.id).toBeTruthy();
+      expect(DIFFICULTY, `${e.id} missing from DIFFICULTY`).toContain(e.id);
       for (const m of enemyMoves(e)) expect(en[`move.${m.id}`], m.id).toBeTruthy();
     }
     const ids = new Set(CARD_LIST.map((c) => c.id));

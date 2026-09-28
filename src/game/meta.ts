@@ -12,13 +12,24 @@ interface Meta {
   fresh: HeroId[];
   /** Enemy ids fought at least once (the handbook hides the others' names). */
   met: string[];
+  /** Runs started so far (the very first one has a scripted map). */
+  runs: number;
 }
 
-const meta: Meta = load('meta', { discovered: [], heroes: [], fresh: [], met: [] });
+const meta: Meta = load('meta', { discovered: [], heroes: [], fresh: [], met: [], runs: 0 });
 // Saved data is untrusted: keep only known hero ids.
 for (const k of ['heroes', 'fresh'] as const) meta[k] = Array.isArray(meta[k]) ? meta[k].filter((id) => id in HEROES) : [];
 const discovered = new Set(Array.isArray(meta.discovered) ? meta.discovered : []);
 if (!Array.isArray(meta.met)) meta.met = [];
+if (typeof meta.runs !== 'number') meta.runs = 0;
+
+/** True for the very first run ever; counts the run as started. */
+export function startingFirstRun(): boolean {
+  const first = meta.runs === 0;
+  meta.runs++;
+  store('meta', meta);
+  return first;
+}
 
 export function discover(ids: Iterable<string>): void {
   let changed = false;

@@ -308,10 +308,36 @@ const defs: EnemyDef[] = [
   },
 ];
 
+/** Easiest first: the very first run meets the normal enemies in this order, and the handbook lists them so. */
+export const DIFFICULTY = [
+  'rat',
+  'sleeper',
+  'slime',
+  'newHire',
+  'cultist',
+  'goblin',
+  'skeleton',
+  'hr',
+  'boneKnight',
+  'lich',
+  'happiness',
+  'dave',
+  'officeChair',
+  'wellness',
+  'meticulous',
+  'beanCounter',
+  'compliance',
+  'janitor',
+  'printer',
+  'veteran',
+  'micromanager',
+];
+
 export const ENEMIES: Record<string, EnemyDef> = Object.fromEntries(defs.map((e) => [e.id, e]));
-export const ENEMY_LIST: readonly EnemyDef[] = defs;
+export const ENEMY_LIST: readonly EnemyDef[] = [...defs].sort((a, b) => DIFFICULTY.indexOf(a.id) - DIFFICULTY.indexOf(b.id));
 
 /** Main attack followed by the specials, for lists such as the compendium. */
 export const enemyMoves = (e: EnemyDef): MoveDef[] => [e.main, ...e.specials];
 
-export const enemiesFor = (act: number, tier: EnemyDef['tier']): EnemyDef[] => defs.filter((e) => e.act === act && e.tier === tier);
+/** Enemies of an act and tier, easiest first. */
+export const enemiesFor = (act: number, tier: EnemyDef['tier']): EnemyDef[] => ENEMY_LIST.filter((e) => e.act === act && e.tier === tier);

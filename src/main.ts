@@ -16,6 +16,7 @@ import {
   clearRun,
   combatSetup,
   currentNode,
+  FIRST_RUN_SEED,
   finishRun,
   loadRun,
   newRun,
@@ -23,6 +24,7 @@ import {
   saveRun,
   type RunState,
 } from './game/run';
+import { startingFirstRun } from './game/meta';
 import { settings } from './game/settings';
 import type { HeroId } from './game/types';
 import { confirmModal, initApp, show } from './ui/app';
@@ -87,7 +89,9 @@ function goHeroSelect(): void {
 }
 
 function startRun(hero: HeroId): void {
-  run = newRun(hero, randomSeed());
+  // The very first run always has the same map, meeting the enemies easiest first.
+  const first = startingFirstRun();
+  run = newRun(hero, first ? FIRST_RUN_SEED : randomSeed(), first);
   goJourney();
 }
 
