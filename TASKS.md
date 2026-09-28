@@ -8,8 +8,8 @@
 
 - [x] Record battuti: quando superi un record, sulla payslip di fine run compare un timbro "NEW RECORD" accanto alla riga.
 
-- [ ] Crea un nuovo nemico a tema: effetto il contrario di openBeltRows: al 50% di hp chiude una corsia (le carte vengono scartate immediatamente), un "restructuring". La saracinesca e il suono di macchinario ci sono già.
+- [x] Crea un nuovo nemico a tema: effetto il contrario di openBeltRows: al 50% di hp chiude una corsia (le carte vengono scartate immediatamente), un "restructuring". La saracinesca e il suono di macchinario ci sono già.
 
-- [ ] Nella prima run scriptata, voglio scriptare anche i reward, per lo meno per i primi 3 combattimenti
+- [x] Nella prima run scriptata, voglio scriptare anche i reward, per lo meno per i primi 3 combattimenti
 
 - [ ] After signing it the first time, the employment contract screen should not be shown anymore

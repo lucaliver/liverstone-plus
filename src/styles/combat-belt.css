@@ -279,6 +279,9 @@
 }
 .belt.row-opening:not(.row-shut) .belt-cards::after { animation: row-open 2.2s steps(22) forwards; }
 .belt.row-opening:not(.ltr):not(.row-shut) .belt-cards::after { animation-name: row-open-rtl; }
+/* shut mid-fight (a restructuring): the same shutter grinds back in from the exit */
+.belt.row-closing.row-shut .belt-cards::after { animation: row-open 2.2s steps(22) reverse backwards; }
+.belt.row-closing.row-shut:not(.ltr) .belt-cards::after { animation-name: row-open-rtl; }
 @keyframes row-open {
   from { clip-path: inset(0 0 0 0); }
   to { clip-path: inset(0 0 0 100%); background-position: 240px 0; }

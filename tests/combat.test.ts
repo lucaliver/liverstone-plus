@@ -29,6 +29,19 @@ const run = (c: Combat, seconds: number): void => {
 };
 
 describe('combat engine', () => {
+  it('a restructuring shuts a belt row and discards the cards riding it', () => {
+    const c = setup({ enemy: ENEMIES.changeManager });
+    run(c, 6);
+    const onRow1 = c.belt.filter((b) => b.row === 1).map((b) => b.card.uid);
+    expect(onRow1.length).toBeGreaterThan(0);
+    c.closeBeltRows(1);
+    expect(c.rowsOpen).toBe(1);
+    expect(c.belt.every((b) => b.row === 0)).toBe(true);
+    expect(c.discard.map((x) => x.uid)).toEqual(expect.arrayContaining(onRow1));
+    run(c, 6);
+    expect(c.belt.every((b) => b.row === 0)).toBe(true);
+  });
+
   it('prewarms only the right half of the belt and waits for the intro', () => {
     const c = setup();
     const pos = c.belt.map((b) => b.pos);

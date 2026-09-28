@@ -459,6 +459,19 @@ export class Combat {
     this.events.emit({ type: 'rowsOpen' });
   }
 
+  /** Shuts the belt down to `rows` open rows (a restructuring): the cards on the rows shut go straight to the discard pile. */
+  closeBeltRows(rows = 1): void {
+    if (this.rowsOpen <= rows) return;
+    this.rowsOpen = rows;
+    for (const b of this.belt.filter((x) => x.row >= rows)) {
+      if (b.card.hex && b.card.hex.left <= 0) delete b.card.hex;
+      this.discard.push(b.card);
+      this.events.emit({ type: 'cardDiscarded', card: b.card });
+    }
+    this.belt = this.belt.filter((x) => x.row < rows);
+    this.events.emit({ type: 'rowsClose' });
+  }
+
   /** The enemy drops the move it is charging for `move` (e.g. it lost its train of thought); its pattern goes on after. */
   distractEnemy(move: MoveDef): void {
     const e = this.enemy;

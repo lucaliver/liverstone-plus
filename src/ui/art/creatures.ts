@@ -385,6 +385,34 @@ ${shadow}
 <g fill="#ff3d9a" ${OUT}><circle cx="160" cy="62" r="7"/><circle cx="160" cy="88" r="7"/></g>
 <g fill="#1b1830"><rect x="152" y="110" width="16" height="4"/><rect x="152" y="120" width="16" height="4"/><rect x="152" y="130" width="16" height="4"/></g>`;
 
+/** Change Manager: a grinning pale ghoul in a slim suit and headset, giant scissors in one hand, pointing at a chart going down. */
+const changeManager = `
+<defs>${lg('chm-s', '#8a84a0', '#3a3450')}${lg('chm-f', '#e0f0c0', '#98b878')}</defs>
+${shadow}
+<path d="M142 188l12-74M180 188l-12-74" stroke="#6a4a2a" stroke-width="6"/>
+<rect x="128" y="56" width="60" height="64" fill="#f6f0e4" ${OUT}/>
+<g fill="#1c5fd0"><rect x="136" y="72" width="11" height="40"/><rect x="151" y="86" width="11" height="26"/><rect x="166" y="100" width="11" height="12"/></g>
+<path d="M136 66l38 36" stroke="#ff3d9a" stroke-width="5"/><path d="M178 94v12h-12z" fill="#ff3d9a"/>
+<path d="M58 188c0-48 16-80 42-80s42 32 42 80z" fill="url(#chm-s)" ${OUT}/>
+<path d="M86 110l14 32 14-32z" fill="#f6f0e4" ${OUT}/>
+<path d="M96 116h8l5 36-9 9-9-9z" fill="#ff3d9a" ${OUT}/>
+<path d="M84 112l-8 30 12-6M116 112l8 30-12-6" fill="none" stroke="#1b1830" stroke-width="3"/>
+<g class="limb">
+<path d="M70 130c-14 8-20 18-18 28" stroke="#120e18" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M70 130c-14 8-20 18-18 28" stroke="#5a5470" stroke-width="7" fill="none" stroke-linecap="round"/>
+<path d="M54 156L14 118l-4 6 38 36z" fill="#c8c0d8" ${OUT}/><path d="M54 156L10 160l0 7 44-3z" fill="#c8c0d8" ${OUT}/>
+<circle cx="60" cy="166" r="7" fill="none" stroke="#ff3d9a" stroke-width="5"/><circle cx="64" cy="152" r="7" fill="none" stroke="#ff3d9a" stroke-width="5"/>
+</g>
+<path d="M130 126c10-8 16-22 12-36" stroke="#120e18" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M130 126c10-8 16-22 12-36" stroke="#5a5470" stroke-width="7" fill="none" stroke-linecap="round"/>
+<circle cx="142" cy="86" r="7" fill="url(#chm-f)" ${OUT}/>
+<ellipse cx="100" cy="72" rx="27" ry="33" fill="url(#chm-f)" ${OUT}/>
+<path d="M72 64c0-28 16-38 30-38s28 10 28 28c-12-14-32-16-58 10z" fill="#1b1830" ${OUT}/>
+<path d="M70 66c0-30 60-30 60 0" stroke="#1b1830" stroke-width="4" fill="none"/>
+<path d="M72 74c-2 14 6 22 18 22" stroke="#1b1830" stroke-width="3" fill="none"/><circle cx="91" cy="96" r="3.5" fill="#1b1830"/>
+<path d="M80 62l14 6M120 62l-14 6" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
+<g class="eye"><ellipse cx="88" cy="72" rx="6" ry="4" fill="#ffd900" ${OUT}/><ellipse cx="112" cy="72" rx="6" ry="4" fill="#ffd900" ${OUT}/><circle cx="89" cy="72" r="2" fill="#120e18"/><circle cx="111" cy="72" r="2" fill="#120e18"/></g>
+<path d="M80 86c10 12 30 12 40 0z" fill="#f6f0e4" ${OUT}/>
+<path d="M88 87v6M96 88v7M104 88v7M112 87v6" stroke="#120e18" stroke-width="2"/>`;
+
 /** Act 2 stage prop: an office water cooler, upside-down jug on top (CSS adds the rising bubble). */
 const waterCooler = `
 ${shadow}
@@ -673,6 +701,7 @@ export const CREATURES: Record<string, string> = {
   officeChair,
   hrVideo,
   hrVideoAngry,
+  changeManager,
   overthinker,
   wellness,
   beanCounter,

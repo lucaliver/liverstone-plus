@@ -3,7 +3,7 @@ import enStrings from '../src/i18n/en';
 
 /** Indexed as a plain dictionary: these tests check keys that are built at runtime. */
 const en: Record<string, string> = enStrings;
-import { CARD_LIST } from '../src/data/cards';
+import { CARD_LIST, CARDS } from '../src/data/cards';
 import { DIFFICULTY, ENEMY_LIST, enemyMoves } from '../src/data/enemies';
 import { HERO_LIST } from '../src/data/heroes';
 import { PERK_LIST } from '../src/data/perks';
@@ -35,6 +35,13 @@ describe('content integrity', () => {
     }
     const ids = new Set(CARD_LIST.map((c) => c.id));
     for (const h of HERO_LIST) for (const id of h.startDeck) expect(ids.has(id), id).toBe(true);
+    // The first run's hand-picked rewards: real cards the hero could be offered, four each time.
+    for (const h of HERO_LIST)
+      for (const offer of h.firstRewards ?? []) {
+        expect(offer.length, h.id).toBe(4);
+        for (const id of offer)
+          expect(CARDS[id] && (CARDS[id].cls === h.id || CARDS[id].cls === 'neutral') && !CARDS[id].pack, `${h.id}: ${id}`).toBeTruthy();
+      }
   });
 
   it('every card has its own art, never shared with another card or a rule icon', () => {

@@ -254,7 +254,8 @@ export interface HeroDef {
   /** Seconds per point of Block lost. */
   blockDecay: number;
   startDeck: string[];
-  /** Once-per-run card that starts each fight in the sleeve (not part of the deck). */
+  /** The very first run's reward offers after its first fights, in order (picked to teach, not rolled). */
+  firstRewards?: string[][];
   /** Once-per-run special card, waiting in the first sleeve slot (the simplest hero has none). */
   special?: string;
   /** Sleeve slots (the special takes the first one while unused). */
@@ -321,6 +322,7 @@ export type CombatEvent =
   | { type: 'relic'; id: string }
   | { type: 'enrage' }
   | { type: 'rowsOpen' }
+  | { type: 'rowsClose' }
   | { type: 'end'; result: CombatResult };
 
 export type CombatResult = 'win' | 'lose';

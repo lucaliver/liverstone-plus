@@ -56,6 +56,8 @@ export interface RunState {
   uid: number;
   /** The hero special is once per run. */
   specialUsed?: boolean;
+  /** The very first run: its map is fixed and its first rewards are picked (`HeroDef.firstRewards`). */
+  scripted?: boolean;
 }
 
 const SAVE_KEY = 'run';
@@ -103,6 +105,7 @@ export function newRun(hero: HeroId, seed: number, scripted = false): RunState {
     stats: { kills: 0, elites: 0, cardsPlayed: 0, damageTaken: 0 },
     money: 0,
     uid: peekUid(),
+    scripted,
   };
 }
 
@@ -256,6 +259,12 @@ const REWARD_ODDS: Record<'fight' | 'elite', [Rarity, number][]> = {
 export const REWARD_CHOICES = 4;
 
 export function rollRewards(run: RunState, kind: 'fight' | 'elite'): CardDef[] {
+  // The very first run teaches with hand-picked offers after its first fights (the win just counted is `kills`).
+  const firsts = run.scripted ? HEROES[run.hero].firstRewards?.[run.stats.kills - 1] : undefined;
+  if (firsts) {
+    discover(firsts);
+    return firsts.map((id) => CARDS[id]);
+  }
   const rng = rngOf(run);
   const picks: CardDef[] = [];
   for (let tries = 0; picks.length < REWARD_CHOICES && tries < 80; tries++) {

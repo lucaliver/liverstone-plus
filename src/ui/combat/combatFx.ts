@@ -260,7 +260,9 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         break;
       }
       case 'rowsOpen':
-        r.belt.classList.add('row-opening');
+      case 'rowsClose':
+        r.belt.classList.remove('row-opening', 'row-closing');
+        r.belt.classList.add(e.type === 'rowsOpen' ? 'row-opening' : 'row-closing');
         sfx('machinery');
         break;
       case 'end':

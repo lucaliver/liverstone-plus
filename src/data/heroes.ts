@@ -13,6 +13,11 @@ const warrior: HeroDef = {
   blockDecay: 1.2,
   // Starter decks: only basic cards (plus mana crystals); everything else comes from rewards.
   startDeck: [...rep('strike', 4), ...rep('defend', 4), 'manaGeode'],
+  firstRewards: [
+    ['heavyLifting', 'cleave', 'ironWall', 'bandage'],
+    ['battleCry', 'shieldBash', 'coffeeBreak', 'counterstrike'],
+    ['warDrums', 'rampage', 'secondWind', 'parry'],
+  ],
   // The simplest class: no once-per-run special. One arm left: a single sleeve slot.
   sleeve: 1,
   color: '#d0563f',
@@ -34,6 +39,11 @@ const mage: HeroDef = {
   regen: 0.8,
   blockDecay: 1.0,
   startDeck: [...rep('arcaneBolt', 4), ...rep('ward', 3), 'manaShard', 'manaGeode'],
+  firstRewards: [
+    ['frostbolt', 'fireball', 'frostArmor', 'bandage'],
+    ['manaSurge', 'spark', 'coffeeBreak', 'ignite'],
+    ['arcaneMissiles', 'shatter', 'timeSlip', 'mirrorImage'],
+  ],
   special: 'meteor',
   sleeve: 2,
   color: '#5b8cff',
@@ -64,6 +74,11 @@ const necromancer: HeroDef = {
   regen: 1.25,
   blockDecay: 0.9,
   startDeck: [...rep('boneSpike', 3), ...rep('graveWard', 3), 'toxicDart', 'manaShard', 'manaGeode'],
+  firstRewards: [
+    ['drainLife', 'rot', 'boneWall', 'bandage'],
+    ['unionDues', 'ghoulBite', 'coffeeBreak', 'frailty'],
+    ['deathCoil', 'festeringStrike', 'plague', 'wither'],
+  ],
   special: 'deathsDoor',
   sleeve: 3,
   color: '#2a8a4a',
