@@ -101,6 +101,15 @@ export interface CardDef {
    * (it grows when `to` is above the base, decays when below). Frozen while the card waits in the sleeve.
    */
   ride?: { i: number; by: number; to: number };
+  /** Bonus effects that only work while the card waits in the sleeve (`v` = its values, `card` = the copy held). */
+  inSleeve?: {
+    /** Extra damage for the hero's cards of any type (`def` = the card dealing it). */
+    bonusDamage?: (c: Combat, v: number[], def: CardDef | null) => number;
+    /** Another card was just played. */
+    onCardPlayed?: (c: Combat, v: number[], card: CombatCard, played: CardDef) => void;
+    /** An enemy hit got through to the hero. */
+    onHeroHit?: (c: Combat, v: number[], card: CombatCard, lost: number) => void;
+  };
   play?: (c: Combat, v: number[], card: CombatCard) => void;
   /** Triggered when the card leaves the belt without being played. */
   onExpire?: (c: Combat, v: number[], card: CombatCard) => void;

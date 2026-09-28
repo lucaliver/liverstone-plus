@@ -618,6 +618,7 @@ export class Combat {
     this.lastRow = beltIdx >= 0 ? row : -1;
     if (!this.replaying) this.lastPlay = { card, def, vals };
     this.heroDef.hooks.onCardPlayed?.(this, card, def, spent);
+    for (const [held, hd] of this.held()) hd.inSleeve?.onCardPlayed?.(this, this.cardVals(held), held, def);
     for (const id of this.relics) RELICS[id]?.hooks?.onCardPlayed?.(this, card, def);
     for (const [side, id] of watching) if (this.has(side, id)) STATUSES[id].onCardPlayed?.(this, side, def);
 
@@ -694,12 +695,18 @@ export class Combat {
     return total;
   }
 
+  /** Cards waiting in the sleeve, with their definitions (their `inSleeve` bonuses are active). */
+  private held(): [CombatCard, CardDef][] {
+    return this.sleeve.filter((c) => c !== null).map((c) => [c, CARDS[c.id]]);
+  }
+
   private computeDamage(from: Side, to: Side, base: number, def: CardDef | null): number {
     let dmg = base;
     if (from === 'hero') {
       if (def?.type === 'attack') dmg += this.stacks('hero', 'strength');
       if (def?.type === 'spell') dmg += this.stacks('hero', 'spellpower');
       dmg += this.heroDef.hooks.bonusDamage?.(this, def) ?? 0;
+      for (const [held, hd] of this.held()) dmg += hd.inSleeve?.bonusDamage?.(this, this.cardVals(held), def) ?? 0;
       dmg *= this.heroDef.hooks.damageMult?.(this, def) ?? 1;
     } else {
       dmg += this.stacks('enemy', 'strength');
@@ -735,6 +742,7 @@ export class Combat {
 
     if (source === 'enemy' && to === 'hero') {
       this.heroDef.hooks.onHeroHit?.(this, lost);
+      for (const [held, hd] of this.held()) hd.inSleeve?.onHeroHit?.(this, this.cardVals(held), held, lost);
       const thorns = this.stacks('hero', 'thorns');
       if (thorns > 0) this.damage('hero', 'enemy', thorns, { raw: true, kind: 'thorns' }, 'hero');
       const parry = this.fighter('hero').statuses.parry;

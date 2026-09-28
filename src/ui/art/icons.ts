@@ -450,6 +450,19 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M4 44h56v12H4z"/><path d="M6 40l40-22c6-3 14 0 14 8v10H6z"/><rect x="10" y="47" width="30" height="4" fill="#16121f"/>`,
   },
+  // Sleeve cards
+  toolBelt: {
+    el: 'steel',
+    svg: `<rect x="2" y="22" width="60" height="12"/><rect x="26" y="20" width="12" height="16" fill="#16121f"/><rect x="29" y="23" width="6" height="10"/><path d="M8 34h12v20H8zM44 34h12v16H44z"/><path d="M12 34V14h4v20zM48 34V8l6 6-2 2v18z"/>`,
+  },
+  floppy: {
+    el: 'arcane',
+    svg: `<path d="M6 6h44l8 8v44H6z"/><rect x="16" y="6" width="26" height="18" fill="#16121f"/><rect x="32" y="9" width="6" height="12"/><rect x="14" y="34" width="36" height="22" fill="#16121f" opacity=".35"/><rect x="18" y="40" width="28" height="3" fill="#16121f"/><rect x="18" y="47" width="20" height="3" fill="#16121f"/>`,
+  },
+  burnBook: {
+    el: 'necro',
+    svg: `<path d="M8 8h40c4 0 8 4 8 8v42H16c-4 0-8-4-8-8z"/><path d="M8 50c0-4 4-8 8-8h40" stroke="#16121f" stroke-width="3" fill="none"/><path d="M32 14c-7 0-12 5-12 11 0 4 2 6 4 8v4h16v-4c2-2 4-4 4-8 0-6-5-11-12-11z" fill="#16121f"/><g fill="currentColor"><rect x="25" y="23" width="5" height="5"/><rect x="34" y="23" width="5" height="5"/></g>`,
+  },
   // Time on the belt
   lateClock: {
     el: 'blood',

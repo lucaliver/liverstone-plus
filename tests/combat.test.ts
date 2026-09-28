@@ -775,3 +775,43 @@ describe('cards that change on the belt', () => {
     expect(c.cardVals(late)[0]).toBe(3);
   });
 });
+
+describe('sleeve cards', () => {
+  const held = (id: string): Combat => {
+    const c = setup({ deck: deckOf(Array(6).fill('strike')) });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.mana = c.hero.maxMana = 10;
+    c.addTempCard(id, 'belt');
+    c.stash(c.belt[c.belt.length - 1].card.uid, 0);
+    expect(c.sleeve[0]?.id).toBe(id);
+    return c;
+  };
+
+  it('Tool Belt: attacks deal more while it waits in the sleeve', () => {
+    const c = held('toolBelt');
+    const hp = c.enemy.hp;
+    c.playCard(c.belt[0].card.uid);
+    expect(hp - c.enemy.hp).toBe(6 + 2);
+    c.playCard(c.sleeve[0]!.uid);
+    expect(c.hero.block).toBe(6);
+  });
+
+  it('Cache: every spell played while it waits is cached into its damage, spent when played', () => {
+    const c = held('cache');
+    c.addTempCard('arcaneBolt', 'belt');
+    c.playCard(c.belt[c.belt.length - 1].card.uid);
+    expect(c.cardVals(c.sleeve[0]!)[0]).toBe(4 + 2);
+    const cache = c.sleeve[0]!;
+    const hp = c.enemy.hp;
+    c.playCard(cache.uid);
+    expect(hp - c.enemy.hp).toBeGreaterThanOrEqual(6);
+    expect(cache.bonus).toBe(0);
+  });
+
+  it('Burn Book: every hit you take while it waits poisons the enemy', () => {
+    const c = held('burnBook');
+    c.damage('enemy', 'hero', 5, {}, 'enemy');
+    expect(c.stacks('enemy', 'poison')).toBe(2);
+  });
+});

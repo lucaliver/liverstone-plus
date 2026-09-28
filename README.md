@@ -123,6 +123,9 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
   (tre *Already Done* nel mazzo), la catena *Q1 → Q4* e *Copy Paste* (il nastro diventa copie dell'ultima carta).
 - **Carte che cambiano sul nastro:** *Unpaid Overtime* fa più danno per ogni secondo che resta sul nastro, *Patience*
   dà meno Blocco; nella sleeve si congelano (mettercele al momento giusto è la mossa).
+- **Carte da sleeve** (una per eroe, un bonus finché aspettano nella sleeve): *Tool Belt* (Guerriero: attacchi +2),
+  *Cache* (Mago: ogni incantesimo giocato le aggiunge danno, speso quando la giochi), *Burn Book* (Negromante: ogni
+  colpo che subisci avvelena il nemico).
 - **Carte pop:** *Severance* (taglia via tutte le maledizioni e cura), *Ctrl+Z* (riporta sul nastro l'ultima carta
   uscita), *Unlimited PTO* (rigenerazione, ma sei in ferie: stordito), *Hide the Pain* (Guerriero: più Blocco quanto più
   sei ferito), *Turn It Off* / *Turn It On* e *sudo* (Mago: per qualche secondo nessuna regola ferma le tue carte).

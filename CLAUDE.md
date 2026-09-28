@@ -138,6 +138,8 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
   Rarity `unique` = hero special.
 - `ride` makes one value change for every second the card rides the belt (`CombatCard.age`, frozen in the sleeve),
   read through `cardValsOf` like everything else (Unpaid Overtime grows, Patience decays).
+- `inSleeve` hooks (`bonusDamage`, `onCardPlayed`, `onHeroHit`) work only while the card waits in the sleeve
+  (Tool Belt, Cache, Burn Book); the face shows them after `{?sleeve}`.
 - `span` (belt widths) makes a card wide: it rides over the cards ahead of it (Gatekeeping); `tall` makes it cover both
   rows (Lockout). `lockRow` holds every other card of its row (Priority Task). Covered cards can't be played or stashed.
 - Cost, keywords and values of a copy come from `cardCostOf` / `cardKeywordsOf` / `cardValsOf` (`data/cards/index.ts`),

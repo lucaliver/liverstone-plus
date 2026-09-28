@@ -347,6 +347,27 @@ export const mageCards: CardDef[] = [
     },
   },
 
+  // Sleeve card: every spell played while it waits there is cached into it
+  {
+    id: 'cache',
+    face: '{dmg:0}|{?sleeve}{grow:1}',
+    cls: 'mage',
+    type: 'spell',
+    rarity: 'rare',
+    cost: 2,
+    vals: [4, 2],
+    upVals: [5, 3],
+    art: 'floppy',
+    inSleeve: {
+      onCardPlayed: (_c, v, card, played) => {
+        if (played.type === 'spell') card.bonus += v[1];
+      },
+    },
+    play: (c, v, card) => {
+      c.hit(v[0]);
+      card.bonus = 0;
+    },
+  },
   // Pop culture: IT support
   {
     id: 'turnItOff',

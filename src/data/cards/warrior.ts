@@ -336,6 +336,20 @@ export const warriorCards: CardDef[] = [
     },
   },
 
+  // Sleeve card: a bonus while it waits there (one slot: a real choice)
+  {
+    id: 'toolBelt',
+    face: '{block:0}|{?sleeve}{str:1}',
+    cls: 'warrior',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 1,
+    vals: [6, 2],
+    upVals: [8, 3],
+    art: 'toolBelt',
+    inSleeve: { bonusDamage: (_c, v, def) => (def?.type === 'attack' ? v[1] : 0) },
+    play: (c, v) => c.gainBlock('hero', v[0]),
+  },
   // Pop culture
   {
     id: 'hideThePain',

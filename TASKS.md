@@ -67,7 +67,7 @@
 
 - [x] nuova carta **Overtime** (danno, chiamata *Unpaid Overtime* per non confonderla con l'abilità del Guerriero): il danno cresce ogni secondo che resta sul nastro
 - [x] nuova carta **Patience** (Blocco): massimo quando entra sul nastro, poi cala
-- [ ] nuove **Carte con effetto bonus in sleeve**: una per eroe, con un effetto creativo che vale solo mentre sta nella sleeve
+- [x] nuove **Carte con effetto bonus in sleeve** (Tool Belt, Cache, Burn Book): una per eroe, con un effetto creativo che vale solo mentre sta nella sleeve
 - Ogni carta: dati + i18n + art; numero sulla faccia aggiornato in tempo reale; test in `combat.test.ts`
 
 ## Home e splash (restyle totale)
