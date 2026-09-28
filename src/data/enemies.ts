@@ -246,6 +246,21 @@ const defs: EnemyDef[] = [
     ],
   },
   {
+    // The office chair nobody claims: spins, sinks, and swears the RGB strip adds performance.
+    id: 'officeChair',
+    act: 2,
+    tier: 'normal',
+    hp: 60,
+    art: 'officeChair',
+    main: atk('swivel', 6, 6),
+    every: 2,
+    specials: [
+      atk('spinToWin', 2, 9, { hits: 6, intent: 'charge' }),
+      { id: 'slowSink', intent: 'debuff', windup: 6, status: [{ id: 'slowdown', t: 8, target: 'hero' }] },
+      { id: 'gamerMode', intent: 'buff', windup: 6, status: [{ id: 'strength', v: 2, target: 'enemy' }] },
+    ],
+  },
+  {
     // Copies the damage it takes while scanning, then prints it back at you.
     id: 'printer',
     act: 2,

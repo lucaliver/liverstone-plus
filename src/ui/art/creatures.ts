@@ -346,6 +346,23 @@ ${shadow}
 <g fill="#ffd900"><rect x="92" y="100" width="6" height="6"/><rect x="102" y="100" width="6" height="6"/></g>
 <path d="M50 58c10-10 30-14 50-14s40 4 50 14v8c-6 0-6 16-12 16s-4-12-10-12-6 22-12 22-6-22-12-22-8 10-14 10-6-14-14-14-8 8-14 8z" fill="#8ad06a" ${OUT}/>`;
 
+/** Office Chair: a gaming office chair come alive, angry face on the backrest, RGB stripes, five yellow casters. */
+const officeChair = `
+<defs>${glow('oc-g', '#ff3d9a')}</defs>
+${shadow}
+<path d="M100 150L38 174M100 150l62 24M100 150l-32 32M100 150l32 32" stroke="#1b1830" stroke-width="11" stroke-linecap="round"/>
+<g fill="#ffd900" ${OUT}><circle cx="36" cy="176" r="9"/><circle cx="164" cy="176" r="9"/><circle cx="66" cy="184" r="9"/><circle cx="134" cy="184" r="9"/></g>
+<rect x="91" y="110" width="18" height="44" fill="#9a94ac" ${OUT}/>
+<path d="M112 128h22v6h-22z" fill="#1b1830"/>
+<path d="M44 102h112c7 0 11 6 9 12l-4 9H39l-4-9c-2-6 2-12 9-12z" fill="#1c5fd0" ${OUT}/>
+<path d="M28 66h26v12H42v28H30z" fill="#3a3450" ${OUT}/><path d="M172 66h-26v12h12v28h12z" fill="#3a3450" ${OUT}/>
+<path d="M54 22c0-9 8-16 17-16h58c9 0 17 7 17 16v68c0 8-7 14-15 14H69c-8 0-15-6-15-14z" fill="#1c5fd0" ${OUT}/>
+<path d="M60 24v64M140 24v64" stroke="#ff3d9a" stroke-width="6"/>
+<path d="M70 34l24 9M130 34l-24 9" stroke="#1b1830" stroke-width="7" stroke-linecap="round"/>
+${eyes(82, 118, 52, 6, '#ff3d9a', 'oc-g')}
+<path d="M74 70h52c0 13-11 20-26 20s-26-7-26-20z" fill="#1b1830" ${OUT}/>
+<path d="M84 70v7M95 70v9M106 70v9M117 70v7" stroke="#f6f0e4" stroke-width="4"/>`;
+
 /** Act 2 stage prop: an office water cooler, upside-down jug on top (CSS adds the rising bubble). */
 const waterCooler = `
 ${shadow}
@@ -631,6 +648,7 @@ export const CREATURES: Record<string, string> = {
   dave,
   printer,
   happiness,
+  officeChair,
   wellness,
   beanCounter,
   compliance,
