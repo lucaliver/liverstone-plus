@@ -2,7 +2,7 @@
 .run-hud {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 .chip {
   color: var(--k);
@@ -19,8 +19,9 @@
 }
 .chip .pico { font-size: 24px; --ink2: var(--y); }
 .chip.hp .pico { color: var(--p); }
+.chip.money .pico { color: var(--y); --ink2: var(--k); }
 .run-hud .spacer { flex: 1; }
-.hud-btns { display: flex; gap: 8px; }
+.hud-btns { display: flex; gap: 6px; }
 .hero-chip { width: 50px; padding: 2px; justify-content: center; }
 .hero-chip .riso { width: 40px; height: 40px; }
 /* hero sheet (hold the portrait on the map) */
@@ -31,7 +32,8 @@
 .sheet-head p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
 .hero-sheet .hero-stats { justify-content: flex-start; margin-bottom: 10px; }
 .hero-feature.used { opacity: 0.4; }
-.act-banner { text-align: center; margin-top: 10px; }
+.act-banner { position: relative; text-align: center; margin-top: 10px; }
+.act-banner .chip.money { position: absolute; right: 0; top: 50%; translate: 0 -50%; min-height: 40px; padding: 4px 10px; }
 /* the workday clock, drawn on the dot of an act's boss: four ticks and a pink pin; the hands run forward in steps */
 .shift-clock {
   position: relative;

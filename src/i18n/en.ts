@@ -58,6 +58,7 @@ const en = {
   'common.deck': 'Deck',
   'common.mana': 'Mana',
   'common.floor': 'Floor {n}',
+  'common.pay': 'Pay earned',
   'common.floorOf': 'Act {a} · Floor {n}/{total}',
 
   // ------------------------------------------------------------ settings
@@ -231,7 +232,9 @@ const en = {
   'end.slip.kills': 'Problems solved',
   'end.slip.overtime': 'Overtime (inspections)',
   'end.slip.cards': 'Cards processed',
+  'end.slip.gross': 'Gross pay',
   'end.slip.deductions': 'Deductions',
+  'end.slip.ceoBonus': 'CEO bonus',
   'end.slip.injuries': 'Injuries',
   'end.slip.net': 'Net pay',
   'end.slip.netValue': '0.00',

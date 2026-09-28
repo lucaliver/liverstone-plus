@@ -211,6 +211,8 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       { class: 'act-banner' },
       h('div', { class: 'h1' }, t('journey.title', { n: act })),
       h('p', { class: 'sub' }, t(`journey.actName.${act}`)),
+      // Pay earned so far (the run's score), beside the act title where there's room.
+      h('div', { class: 'chip money', 'aria-label': t('common.pay'), html: `${icon('coin')}<span>${run.money}</span>` }),
     ),
     h('div', { class: 'scroll', style: { flex: '1' } }, path),
     enterBtn,

@@ -87,6 +87,9 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
   l'anteprima, confermi).
 - **Promotion:** scegli un vantaggio permanente per una carta del mazzo: *Fast Track* (Innate: arriva tra le prime
   sul nastro) o *Budget Cut* (costa 1 mana in meno).
+- **Paga (punteggio):** ogni scontro vinto paga una base (più per élite e boss) e un bonus per ogni secondo sotto il
+  tempo di riferimento: più vinci in fretta, più guadagni. Il totale si vede accanto al titolo dell'atto sulla mappa e
+  nella busta paga di fine run (dove il bonus del CEO se lo porta via tutto).
 - **Salvataggio** a ogni piano. Dalla pausa: *Main menu* (la run resta, lo scontro riparte) o *Call in sick*
   (abbandona la run).
 

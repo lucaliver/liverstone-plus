@@ -4,6 +4,7 @@ import { CONFIG, EXPIRE_POS } from '../src/data/config';
 import { ENEMIES } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
 import { CARD_LIST, CARDS } from '../src/data/cards';
+import { fightPay } from '../src/game/run';
 import type { CardInst } from '../src/game/types';
 
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
@@ -729,5 +730,13 @@ describe('pop culture cards', () => {
     c.applyStatus('hero', 'stun', 1, 5);
     expect(c.ruleBlock(c.belt[0].card)).toBeNull();
     expect(c.playCard(c.belt[0].card.uid)).toBe(true);
+  });
+});
+
+describe('run pay', () => {
+  it('pays a base by tier plus a bonus for every second under par', () => {
+    expect(fightPay('normal', CONFIG.pay.par + 20)).toBe(CONFIG.pay.normal);
+    expect(fightPay('normal', CONFIG.pay.par - 10)).toBe(CONFIG.pay.normal + 10 * CONFIG.pay.perSecond);
+    expect(fightPay('boss', 0)).toBe(CONFIG.pay.boss + CONFIG.pay.par * CONFIG.pay.perSecond);
   });
 });

@@ -635,6 +635,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<circle cx="26" cy="26" r="20"/><circle cx="26" cy="26" r="12" fill="#16121f"/><path d="M40 36l20 18-7 7-18-20z"/><path ${HI} d="M18 20c2-4 6-6 10-6-3 2-5 5-6 9z"/>`,
   },
+  coin: {
+    el: 'holy',
+    svg: `<circle cx="32" cy="32" r="27"/><circle cx="32" cy="32" r="19" fill="#16121f" opacity=".3"/><path d="M28 16h8v5c4 1 7 4 7 8h-7c0-2-2-3-4-3s-4 1-4 3 2 3 5 4c6 1 10 4 10 9 0 4-3 7-7 8v5h-8v-5c-5-1-8-4-8-9h7c0 3 2 4 5 4s4-1 4-3-2-3-5-4c-6-1-10-4-10-9 0-4 3-7 7-8z" fill="#16121f"/>`,
+  },
   timer: {
     el: 'steel',
     svg: `<circle cx="32" cy="34" r="26"/><path fill="#16121f" d="M32 14a20 20 0 0 1 20 20H32z"/><rect x="26" y="2" width="12" height="6"/>`,

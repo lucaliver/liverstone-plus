@@ -50,6 +50,8 @@ export interface RunState {
   /** True once the current node has been completed. */
   cleared: boolean;
   stats: RunStats;
+  /** Pay earned so far: the run's score (fast wins pay more). */
+  money: number;
   uid: number;
   /** The hero special is once per run. */
   specialUsed?: boolean;
@@ -89,6 +91,7 @@ export function newRun(hero: HeroId, seed: number): RunState {
     path: [0],
     cleared: false,
     stats: { kills: 0, elites: 0, cardsPlayed: 0, damageTaken: 0 },
+    money: 0,
     uid: peekUid(),
   };
 }
@@ -184,6 +187,12 @@ export function combatSetup(run: RunState): CombatSetup {
   };
 }
 
+/** Pay for beating an enemy of this tier in `seconds`: the base, plus a bonus for every second under par. */
+export function fightPay(tier: EnemyDef['tier'], seconds: number): number {
+  const p = CONFIG.pay;
+  return p[tier] + Math.max(0, Math.round(p.par - seconds)) * p.perSecond;
+}
+
 /** Copies the combat outcome back into the run. */
 export function applyCombat(run: RunState, combat: Combat): void {
   run.stats.damageTaken += Math.max(0, run.hp - combat.hero.hp);
@@ -194,6 +203,7 @@ export function applyCombat(run: RunState, combat: Combat): void {
   if (combat.result === 'win') {
     run.stats.kills++;
     if (combat.enemy.def.tier === 'elite') run.stats.elites++;
+    run.money += fightPay(combat.enemy.def.tier, combat.time);
     // A new shift starts rested: beating an act boss heals fully.
     if (currentNode(run).type === 'boss' && currentNode(run).next.length) run.hp = run.maxHp;
   }
@@ -311,6 +321,8 @@ export function loadRun(): RunState | null {
   if (run?.version !== 2 || !HEROES[run.hero]) return null;
   // Drop the save if content changed and it references cards/enemies that no longer exist.
   if (run.deck.some((c) => !CARDS[c.id] || c.perks?.some((p) => !PERKS[p])) || run.nodes.some((n) => n.enemy && !ENEMIES[n.enemy])) return null;
+  // Saves from before pay existed start at zero.
+  if (typeof run.money !== 'number') run.money = 0;
   return run;
 }
 

@@ -34,6 +34,8 @@ export const CONFIG = {
   beltRows: 2,
   /** With two rows each row runs at this fraction of the one-row speed. */
   twoRowSpeed: 0.8,
+  /** Pay for a won fight (the run's score): a base by enemy tier, plus `perSecond` for every second under `par`. */
+  pay: { normal: 10, elite: 25, boss: 50, par: 60, perSecond: 1 },
   /** Workday clock of each act (hours), shown on the map: its first floor starts at the first, its boss floor ends at the second. */
   shiftHours: [
     [8, 12],
