@@ -241,24 +241,6 @@ export const warriorCards: CardDef[] = [
     },
   },
 
-  // Unique (hero special, once per run)
-  {
-    id: 'lastStand',
-    cat: 'defense',
-    face: '{block:0}|{str:1}',
-    cls: 'warrior',
-    type: 'skill',
-    rarity: 'unique',
-    cost: 0,
-    vals: [15, 3],
-    keywords: ['unique'],
-    art: 'picketSign',
-    play: (c, v) => {
-      c.gainBlock('hero', v[0]);
-      c.applyStatus('hero', 'strength', v[1]);
-    },
-  },
-
   // Archetype synergy: Block
   {
     id: 'counterstrike',

@@ -73,7 +73,7 @@ export function newRun(hero: HeroId, seed: number): RunState {
   const rng = new Rng(seed);
   const def = HEROES[hero];
   const nodes = buildNodes(rng);
-  discover([...def.startDeck, def.special]);
+  discover(def.special ? [...def.startDeck, def.special] : def.startDeck);
   return {
     version: 2,
     seed,

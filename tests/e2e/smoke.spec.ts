@@ -296,8 +296,8 @@ test('tapping the hero portrait in a fight shows the deck in play and pauses', a
   await freshGame(page);
   await startFight(page);
   await page.locator('.hero-portrait').click();
-  // The 9-card deck plus the hero special waiting in the sleeve.
-  await expect(page.locator('.modal .deck-grid .card')).toHaveCount(10);
+  // The warrior's 9-card deck (he has no once-per-run special).
+  await expect(page.locator('.modal .deck-grid .card')).toHaveCount(9);
   const clock = () => page.evaluate('window.__combat.time');
   const before = await clock();
   await page.waitForTimeout(300);

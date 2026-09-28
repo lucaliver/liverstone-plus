@@ -13,8 +13,7 @@ const warrior: HeroDef = {
   blockDecay: 1.2,
   // Starter decks: only basic cards (plus mana crystals); everything else comes from rewards.
   startDeck: [...rep('strike', 4), ...rep('defend', 4), 'manaGeode'],
-  special: 'lastStand',
-  // One arm left: a single sleeve slot (the special takes it until played).
+  // The simplest class: no once-per-run special. One arm left: a single sleeve slot.
   sleeve: 1,
   color: '#d0563f',
   ability: {

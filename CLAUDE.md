@@ -156,7 +156,7 @@ Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.t
 ### Heroes
 
 `HeroDef` in `data/heroes.ts` (hp, maxMana, regen, blockDecay, `sleeve` slots, starter deck with basic cards only + crystals,
-`special`, `ability { id, cost, use }`, hooks, optional `unlock`: finish a run with a hero, or reach an act's boss; checked
+optional `special` (the warrior has none), `ability { id, cost, use }`, hooks, optional `unlock`: finish a run with a hero, or reach an act's boss; checked
 through `progress()` in `game/meta.ts`), a card file, a sprite, `hero.<id>.*` strings, and entries in
 `ABILITY_ICON` / `PASSIVE_ICON` (`ui/combat/view.ts`).
 

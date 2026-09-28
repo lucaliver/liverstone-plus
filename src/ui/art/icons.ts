@@ -251,10 +251,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'holy',
     svg: `<path d="M10 4h36v44H10z"/><path d="M16 12h24M16 20h24M16 28h14" stroke="#16121f" stroke-width="4"/><circle cx="44" cy="46" r="12"/><path d="M38 54l-4 9 6-3 4 3v-7zM50 54l4 9-6-3-4 3v-7z"/><circle cx="44" cy="46" r="5" fill="#16121f"/>`,
   },
-  picketSign: {
-    el: 'blood',
-    svg: `<rect x="6" y="4" width="52" height="32" rx="2"/><rect x="28" y="36" width="8" height="26"/><path d="M14 14h36M14 25h24" stroke="#16121f" stroke-width="5"/>`,
-  },
   safetySign: {
     el: 'holy',
     svg: `<path d="M32 4l30 54H2z"/><rect x="28" y="20" width="8" height="20" fill="#16121f"/><rect x="28" y="44" width="8" height="8" fill="#16121f"/>`,

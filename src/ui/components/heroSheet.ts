@@ -30,7 +30,7 @@ export function heroFeatures(hero: HeroDef): HTMLElement {
       'active',
       `${t(`hero.${id}.abilityShort`)} <span class="fcost">${icon('crystal')}${hero.ability.cost}</span>`,
     ),
-    feature('star', t(`card.${hero.special}.name`), 'special', cardText({ uid: -1, id: hero.special, up: false })),
+    hero.special ? feature('star', t(`card.${hero.special}.name`), 'special', cardText({ uid: -1, id: hero.special, up: false })) : null,
   );
 }
 
@@ -39,7 +39,7 @@ export function openHeroSheet(run: RunState): void {
   const hero = HEROES[run.hero];
   sfx('tap');
   const features = heroFeatures(hero);
-  if (run.specialUsed) features.lastElementChild?.classList.add('used');
+  if (hero.special && run.specialUsed) features.lastElementChild?.classList.add('used');
   const body = h(
     'div',
     { class: 'hero-sheet' },

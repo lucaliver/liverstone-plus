@@ -524,8 +524,6 @@ const en = {
   'card.manaShard.desc': '+{0} max mana (empty [crystal]).',
   'card.manaGeode.name': 'Double Espresso',
   'card.manaGeode.desc': '+{0} max mana (empty [crystal]).',
-  'card.lastStand.name': 'Picket Line',
-  'card.lastStand.desc': 'Gain {0} [block] and {1} [strength].',
   'card.meteor.name': 'Burnout',
   'card.meteor.desc': 'Apply {0} [burn].',
   'card.deathsDoor.name': 'Wildcat Strike',

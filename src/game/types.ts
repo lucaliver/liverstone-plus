@@ -203,7 +203,8 @@ export interface HeroDef {
   blockDecay: number;
   startDeck: string[];
   /** Once-per-run card that starts each fight in the sleeve (not part of the deck). */
-  special: string;
+  /** Once-per-run special card, waiting in the first sleeve slot (the simplest hero has none). */
+  special?: string;
   /** Sleeve slots (the special takes the first one while unused). */
   sleeve: number;
   starterRelic?: string;
