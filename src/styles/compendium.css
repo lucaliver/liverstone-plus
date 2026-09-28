@@ -18,8 +18,6 @@
 }
 .tabs button + button { border-left: 2px solid var(--void); }
 .tabs button[aria-selected='true'] { background: var(--y); }
-/* the sort line sits on the night here, not on paper */
-.compendium .deck-sort button[aria-pressed='true'] { color: var(--fg); }
 .comp-grid .card { cursor: pointer; }
 .comp-grid .card.undiscovered .c-art,
 .comp-grid .card.undiscovered .c-face { filter: grayscale(0.7); }

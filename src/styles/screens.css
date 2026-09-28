@@ -28,6 +28,9 @@
   color: var(--muted-d);
   text-transform: uppercase;
 }
+/* "Your deck" and its sort line share a row */
+.swap-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 8px; }
+.swap-head .deck-sort { margin: 0; }
 /* the whole deck on top (scrolls if it grows), the offer below */
 .swap-area {
   flex: 1;

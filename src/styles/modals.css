@@ -228,7 +228,7 @@
   --cw: calc((min(100vw, 520px) - 32px - 32px - 20px - 22px) / 3);
 }
 /* how many identical copies a card stands for */
-.deck-grid .copies {
+.card .copies {
   position: absolute;
   right: -8px;
   bottom: -10px;
@@ -263,6 +263,8 @@
   color: var(--muted);
 }
 .deck-sort button[aria-pressed='true'] { color: var(--k); text-decoration: underline 2px; text-underline-offset: 4px; }
+/* on a screen the sort line sits on the night, not on paper */
+.screen .deck-sort button[aria-pressed='true'] { color: var(--fg); }
 .deck-sort .pico { font-size: 16px; color: var(--p); --ink2: transparent; }
 .deck-grid.pick .card { cursor: pointer; }
 .deck-grid.pick .card:active { transform: translate(3px, 3px); box-shadow: none; }
@@ -390,6 +392,16 @@
 
 /* debug fight picker */
 .debug-fight { display: flex; flex-direction: column; gap: 10px; }
+.debug-heroes button {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 8px 8px;
+}
+.debug-heroes .riso { width: 44px; height: 44px; }
 .debug-foes { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
 .debug-foe {
   display: flex;

@@ -41,7 +41,7 @@ function volumeRow(label: string, get: () => number, set: (v: number) => void): 
   return h('div', { class: 'setting' }, h('span', null, label), h('div', { class: 'slider-wrap' }, input, num));
 }
 
-export function speedSelector(onChange?: (s: number) => void): HTMLElement {
+export function speedSelector(): HTMLElement {
   const seg = h('div', { class: 'seg', role: 'group' });
   const render = (): void => {
     seg.replaceChildren(
@@ -55,7 +55,6 @@ export function speedSelector(onChange?: (s: number) => void): HTMLElement {
               saveSettings();
               sfx('tap');
               render();
-              onChange?.(s);
             },
           },
           `${s}×`,
@@ -68,7 +67,7 @@ export function speedSelector(onChange?: (s: number) => void): HTMLElement {
 }
 
 /** Settings; `extra` actions go above Reset progress and Close (e.g. Main menu from the map). */
-export function openSettings(onChange?: () => void, extra: ModalAction[] = []): ModalHandle {
+export function openSettings(extra: ModalAction[] = []): ModalHandle {
   const locales = availableLocales();
   const body = h(
     'div',
@@ -89,7 +88,7 @@ export function openSettings(onChange?: () => void, extra: ModalAction[] = []): 
         setSfxVolume(v);
       },
     ),
-    h('div', { class: 'setting' }, h('span', null, t('settings.speed')), speedSelector(onChange)),
+    h('div', { class: 'setting' }, h('span', null, t('settings.speed')), speedSelector()),
     toggleRow(
       t('settings.motion'),
       () => settings.reduceMotion,
@@ -158,7 +157,6 @@ export function openSettings(onChange?: () => void, extra: ModalAction[] = []): 
     title: t('settings.title'),
     body,
     actions: [...extra, reset, { label: t('common.close'), cls: 'secondary' }],
-    onClose: onChange,
   });
 }
 
@@ -276,7 +274,7 @@ let deckSort: DeckSort = 'type';
 /** Descending on the sort's main key (tapping the active sort again flips it). */
 let deckDesc = false;
 
-export function sortDeck(deck: CardInst[], by: DeckSort = 'type', desc = false): CardInst[] {
+function sortDeck(deck: CardInst[], by: DeckSort, desc: boolean): CardInst[] {
   const name = (c: CardInst): string => t(`card.${c.id}.name`);
   const sign = desc ? -1 : 1;
   return [...deck].sort((a, b) => {
@@ -321,7 +319,7 @@ export function sortControl(onChange: () => void): HTMLElement {
 export const sortCards = (cards: CardInst[]): CardInst[] => sortDeck(cards, deckSort, deckDesc);
 
 /** Identical copies (same card, upgrade and perks) shown once, with how many there are. */
-function groupCopies(cards: CardInst[]): { card: CardInst; n: number }[] {
+export function groupCopies(cards: CardInst[]): { card: CardInst; n: number }[] {
   const groups = new Map<string, { card: CardInst; n: number }>();
   for (const c of cards) {
     const key = `${c.id}|${c.up}|${[...(c.perks ?? [])].sort().join()}`;
@@ -409,10 +407,15 @@ export function openDeck(
 
 /** What each part of a card means: a sample card with numbered spots, and the legend (handbook "?" button). */
 export function openCardAnatomy(): ModalHandle {
-  // A placeholder card: the layout of a real one (rare, two effects, a modifier), with dummy name and art.
+  // A placeholder card: the layout of a real one (rare, two effects, a modifier), with dummy name, art and numbers
+  // (letters, so nobody takes it for a real card).
   const sample = cardView({ uid: -1, id: 'secondWind', up: false });
   sample.querySelector('.c-name')!.textContent = t('anatomy.sample');
   sample.querySelector('.c-art')!.innerHTML = icon('question');
+  sample.querySelector('.c-cost')!.textContent = 'X';
+  sample.querySelectorAll('.c-face b').forEach((b, i) => {
+    b.textContent = 'YZ'[i] ?? '';
+  });
   // Numbered spots just outside the card, level with the part they name (in % of the card box).
   const spots: [number, number][] = [
     [-12, 9],
@@ -474,22 +477,20 @@ export function openCardAnatomy(): ModalHandle {
 /** Temporary debug tool: fight any enemy with any hero (a fresh run on floor 1). */
 export function openDebugFight(onPick: (hero: HeroId, enemy: string) => void): ModalHandle {
   let hero: HeroId = HERO_LIST[0].id;
-  const heroSeg = h('div', { class: 'seg' });
+  // The heroes across the whole width, each with its portrait.
+  const heroSeg = h('div', { class: 'seg debug-heroes', role: 'group', 'aria-label': t('debug.hero') });
   const renderHeroes = (): void => {
     heroSeg.replaceChildren(
       ...HERO_LIST.map((hd) =>
-        h(
-          'button',
-          {
-            'aria-pressed': String(hd.id === hero),
-            onclick: () => {
-              hero = hd.id;
-              sfx('tap');
-              renderHeroes();
-            },
+        h('button', {
+          'aria-pressed': String(hd.id === hero),
+          onclick: () => {
+            hero = hd.id;
+            sfx('tap');
+            renderHeroes();
           },
-          t(`compendium.tab.${hd.id}`),
-        ),
+          html: `${creature(hd.id)}<span>${t(`compendium.tab.${hd.id}`)}</span>`,
+        }),
       ),
     );
   };
@@ -514,7 +515,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string) => void): M
   );
   handle = openModal({
     title: t('debug.title'),
-    body: h('div', { class: 'debug-fight' }, h('div', { class: 'setting' }, h('span', null, t('debug.hero')), heroSeg), list),
+    body: h('div', { class: 'debug-fight' }, heroSeg, list),
     actions: [{ label: t('common.close'), cls: 'secondary' }],
   });
   return handle;

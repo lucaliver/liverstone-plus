@@ -6,7 +6,7 @@ import type { CardDef, CardInst } from '../../game/types';
 import type { Screen } from '../app';
 import { icon } from '../art/icons';
 import { cardView } from '../components/cardView';
-import { openCardDetail, sortDeck } from '../components/modals';
+import { groupCopies, openCardDetail, sortCards, sortControl } from '../components/modals';
 import { h, onTapOrHold } from '../dom';
 import { dropLetters } from '../components/decor';
 import { runHud } from './journey';
@@ -37,15 +37,25 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
   const offerRow = h('div', { class: 'swap-offer' });
   const hint = h('p', { class: 'sub swap-hint' });
 
-  const deckEls = sortDeck(run.deck).map((card) => {
-    const el = cardView(card);
-    selectable(el, card, () => {
-      fromDeck = fromDeck?.uid === card.uid ? null : card;
-      refresh();
+  // The deck as in the deck window: identical copies grouped (any of them is the one swapped out), sortable.
+  let deckEls: { el: HTMLElement; card: CardInst }[] = [];
+  const renderDeck = (): void => {
+    deckEls = groupCopies(sortCards(run.deck)).map(({ card, n }) => {
+      const el = cardView(card);
+      if (n > 1) el.append(h('span', { class: 'copies' }, t('deck.copies', { n })));
+      selectable(el, card, () => {
+        fromDeck = fromDeck?.uid === card.uid ? null : card;
+        refresh();
+      });
+      return { el, card };
     });
-    return { el, card };
+    deckGrid.replaceChildren(...deckEls.map((d) => d.el));
+  };
+  const sorter = sortControl(() => {
+    renderDeck();
+    refresh();
   });
-  deckGrid.append(...deckEls.map((d) => d.el));
+  renderDeck();
 
   const offerEls = picks.map((def, i) => {
     const card: CardInst = { uid: -100 - i, id: def.id, up: false };
@@ -89,7 +99,7 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
     h(
       'div',
       { class: 'swap-area' },
-      h('div', { class: 'swap-label' }, t('reward.yourDeck')),
+      h('div', { class: 'swap-head' }, h('div', { class: 'swap-label' }, t('reward.yourDeck')), sorter),
       h('div', { class: 'swap-deck-wrap scroll' }, deckGrid),
       h('div', { class: 'swap-divider', html: icon('swap') }),
       h('div', { class: 'swap-label' }, t('reward.offer')),

@@ -31,10 +31,6 @@
   font-size: 16px;
   color: var(--muted-d);
 }
-.speed-btn {
-  font-family: var(--font-ui);
-  font-size: 20px;
-}
 
 /* stage */
 .stage {

@@ -28,12 +28,12 @@
 
 - [x] Nemico "HR orientation dummy": solo per lui, non mostrare il tooltip della passiva prima dell'inizio della partita (altrimenti è spoiler)
 
-- [ ] Schermata "Pick your bonus": vorrei che anche qui il deck fosse mostrato in modo smart come il dettaglio del deck dalle altre schermate, con tanto di opzione di sort in cima
+- [x] Schermata "Pick your bonus": vorrei che anche qui il deck fosse mostrato in modo smart come il dettaglio del deck dalle altre schermate, con tanto di opzione di sort in cima
 
-- [ ] La porta dell'animazione pre-combattimento dovrebbe avere sopra anche un porttrait del nemico
+- [x] La porta dell'animazione pre-combattimento dovrebbe avere sopra anche un porttrait del nemico
 
-- [ ] Nella schermata di combattimento: nascondi il tasto della velocità (tanto è già dentro al menu pausa)
+- [x] Nella schermata di combattimento: nascondi il tasto della velocità (tanto è già dentro al menu pausa)
 
-- [ ] Schermata "Reading a card": la carta non dovrebbe avere valori veri, ma costo X e nell'effetto +Y Z.
+- [x] Schermata "Reading a card": la carta non dovrebbe avere valori veri, ma costo X e nell'effetto +Y Z.
 
-- [ ] Schermata di selezioen debug: il selecter dell'eroe è scarno e troppo stretto, mettigli un'icona e del padding
+- [x] Schermata di selezioen debug: il selecter dell'eroe è scarno e troppo stretto, mettigli un'icona e del padding

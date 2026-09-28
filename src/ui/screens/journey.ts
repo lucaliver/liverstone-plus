@@ -203,7 +203,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       html: icon('gear'),
       onclick: () => {
         sfx('tap');
-        openSettings(undefined, [{ label: t('menu.home'), icon: 'home', cls: 'secondary', onClick: onHome }]);
+        openSettings([{ label: t('menu.home'), icon: 'home', cls: 'secondary', onClick: onHome }]);
       },
     }),
   );

@@ -1,7 +1,7 @@
 import { t } from '../../core/i18n';
 import { endTemporaryMusic, playTemporaryMusic, setMusicTempo } from '../../audio/music';
 import { sfx } from '../../audio/sfx';
-import { CONFIG, GAME_SPEEDS } from '../../data/config';
+import { CONFIG } from '../../data/config';
 import type { Combat } from '../../game/combat';
 import type { MoveDef } from '../../game/types';
 import { clockAt, currentNode, type RunState, totalFloors } from '../../game/run';
@@ -9,9 +9,10 @@ import { meetEnemy } from '../../game/meta';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
 import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedSelector } from '../components/modals';
+import { creature } from '../art/creatures';
 import { icon, INTENT_ICON } from '../art/icons';
 import { bindMoveDetails, enemyTraits, moveEffect, movePattern } from '../components/moveText';
-import { h, onPress, onTapOrHold, setText } from '../dom';
+import { h, onPress, onTapOrHold } from '../dom';
 import { burst, haptic, shake } from '../fx/fx';
 import { clockText } from '../screens/journey';
 import { createCardLayer } from './cardLayer';
@@ -184,15 +185,6 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   // The mana bar explains itself only on a hold (it's right under the thumb while playing).
   onTapOrHold(r.manaRow, () => {}, manaInfo);
 
-  const renderSpeed = (): void => setText(r.speed, `${settings.speed}×`);
-  r.speed.addEventListener('click', () => {
-    const i = GAME_SPEEDS.indexOf(settings.speed as (typeof GAME_SPEEDS)[number]);
-    settings.speed = GAME_SPEEDS[(i + 1) % GAME_SPEEDS.length];
-    saveSettings();
-    renderSpeed();
-    sfx('tap');
-  });
-
   const openPause = (): void => {
     if (pauseModal || state.ended) return;
     cards.cancelDrag();
@@ -203,7 +195,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     const body = h(
       'div',
       { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
-      h('div', { class: 'setting' }, h('span', null, t('settings.speed')), speedSelector(renderSpeed)),
+      h('div', { class: 'setting' }, h('span', null, t('settings.speed')), speedSelector()),
     );
     pauseModal = openModal({
       title: t('combat.paused'),
@@ -224,7 +216,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
           icon: 'gear',
           cls: 'secondary',
           onClick: () => {
-            openSettings(renderSpeed);
+            openSettings();
             return false;
           },
         },
@@ -294,13 +286,14 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     el,
     enter() {
       layout();
-      renderSpeed();
-      // The way in: seen from the corridor, an office double door with the enemy's name on the glass; a knock, the
-      // latch, the doors swing open on their hinges onto the lit room, and we walk through into the fight.
+      // The way in: seen from the corridor, an office double door with the enemy's name on the glass and its framed
+      // portrait over the frame; three knocks, the latch, the doors swing open on their hinges onto the lit room, and
+      // we walk through into the fight.
       const node = currentNode(run);
       const door = h(
         'div',
         { class: 'office-door', 'aria-hidden': 'true' },
+        h('div', { class: 'door-portrait', html: creature(combat.enemy.def.art) }),
         h(
           'div',
           { class: 'door-frame' },
