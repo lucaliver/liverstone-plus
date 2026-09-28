@@ -1,8 +1,8 @@
 {
   "id": "./",
   "name": "Punchcard",
-  "short_name": "Punchcard",
-  "description": "A real-time deckbuilding roguelike on a conveyor belt.",
+  "short_name": "Punchcard Game",
+  "description": "A real-time deckbuilding roguelike that feels like a job.",
   "lang": "en",
   "start_url": "./",
   "display": "fullscreen",

@@ -13,3 +13,4 @@
 - [x] Nella prima run scriptata, voglio scriptare anche i reward, per lo meno per i primi 3 combattimenti
 
 - [x] After signing it the first time, the employment contract screen should not be shown anymore
+

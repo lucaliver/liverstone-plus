@@ -756,7 +756,6 @@ const en = {
   'move.snatch': 'Outsource',
   'move.rend': 'Pat-Down',
   'move.cleave': 'Baton',
-  'move.shieldWall': 'Lockdown',
   'move.soulBolt': 'Stopwatch',
   'move.hexes': 'Write-Ups',
   'move.doom': "YOU'RE FIRED",

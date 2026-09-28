@@ -634,12 +634,15 @@ describe('combat engine', () => {
       c.playCard(c.belt[0].card.uid);
       expect(c.enemy.hp).toBe(hp);
       expect(c.enemy.stored).toBe(6);
-      run(c, 5);
+      // Numbers from the data, so rebalancing the Printer doesn't break the rule being tested.
+      const { main, specials } = ENEMIES.printer;
+      const printOut = specials[0].dmg ?? 0;
+      run(c, main.windup);
       expect(c.enemy.move.release).toBe(true);
-      expect(c.intentDamage(c.enemy.move)).toBe(4 + 6);
+      expect(c.intentDamage(c.enemy.move)).toBe(printOut + 6);
       const heroHp = c.hero.hp;
-      run(c, 5.1);
-      expect(heroHp - c.hero.hp).toBe(10);
+      run(c, specials[0].windup + 0.1);
+      expect(heroHp - c.hero.hp).toBe(printOut + 6);
       expect(c.enemy.stored).toBe(0);
     });
 
