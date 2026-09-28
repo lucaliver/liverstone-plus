@@ -1,7 +1,7 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { ENEMY_LIST } from '../../data/enemies';
-import { contractSigned, enemyMet, signContract } from '../../game/meta';
+import { enemyMet, signContract } from '../../game/meta';
 import { currentNode, type RunState, totalFloors } from '../../game/run';
 import { haptic } from '../fx/fx';
 import type { Screen } from '../app';
@@ -124,60 +124,49 @@ export function titleScreen(cb: TitleCallbacks): Screen {
 const SIGN_MS = 900;
 
 /**
- * The very first screen: an employment contract. The first time, it is signed with a hold, which teaches "hold to
- * learn" (the terms can be held to read them); afterwards it's signed already and one tap starts. Either way, that
- * first gesture also lets the browser play sound.
+ * The very first screen, until it's signed: an employment contract, signed with a hold, which teaches "hold to learn"
+ * (the terms can be held to read them, and must be read first). That gesture also lets the browser play sound.
  */
 export function splashScreen(onStart: () => void): Screen {
   let timer = 0;
-  const signed = contractSigned();
   /** The terms must be read before signing (that's where "hold to learn" is taught). */
-  let read = signed;
+  let read = false;
   const terms = h('button', { class: 'contract-terms', html: `${icon('magnifier')}<span>${t('contract.terms')}</span>` });
   onPress(terms, () => {
     read = true;
     sfx('tap');
     openInfo({ icon: 'magnifier', title: t('contract.termsTitle'), desc: t('contract.termsText') });
   });
-  const signature = h('div', { class: `contract-sig ${signed ? 'done' : ''}`, html: SIGNATURE });
+  const signature = h('div', { class: 'contract-sig', html: SIGNATURE });
   const stamp = h('div', { class: 'contract-stamp' }, t('contract.hired'));
-  const start = (): void => {
-    sfx('button');
-    haptic('tap');
-    onStart();
+  const action = h('button', { class: 'btn cta sign-btn', html: `<span class="fill"></span>${icon('pen')}<span>${t('contract.sign')}</span>` });
+  const cancel = (): void => {
+    clearTimeout(timer);
+    action.classList.remove('holding');
   };
-  const action = signed
-    ? h('button', { class: 'btn cta', onclick: start, html: `${icon('play')}<span>${t('menu.start')}</span>` })
-    : h('button', { class: 'btn cta sign-btn', html: `<span class="fill"></span>${icon('pen')}<span>${t('contract.sign')}</span>` });
-  if (!signed) {
-    const cancel = (): void => {
-      clearTimeout(timer);
+  action.addEventListener('pointerdown', () => {
+    if (!read) {
+      retrigger(terms, 'shake-big');
+      retrigger(action, 'shake-small');
+      sfx('error');
+      haptic('error');
+      return;
+    }
+    action.classList.add('holding');
+    haptic('tap');
+    timer = window.setTimeout(() => {
+      signContract();
       action.classList.remove('holding');
-    };
-    action.addEventListener('pointerdown', () => {
-      if (!read) {
-        retrigger(terms, 'shake-big');
-        retrigger(action, 'shake-small');
-        sfx('error');
-        haptic('error');
-        return;
-      }
-      action.classList.add('holding');
-      haptic('tap');
-      timer = window.setTimeout(() => {
-        signContract();
-        action.classList.remove('holding');
-        action.classList.add('signed');
-        signature.classList.add('done');
-        stamp.classList.add('in');
-        sfx('punchClock');
-        haptic('ability');
-        timer = window.setTimeout(onStart, 1100);
-      }, SIGN_MS);
-    });
-    for (const ev of ['pointerup', 'pointerleave', 'pointercancel'])
-      action.addEventListener(ev, () => !action.classList.contains('signed') && cancel());
-  }
+      action.classList.add('signed');
+      signature.classList.add('done');
+      stamp.classList.add('in');
+      sfx('punchClock');
+      haptic('ability');
+      timer = window.setTimeout(onStart, 1100);
+    }, SIGN_MS);
+  });
+  for (const ev of ['pointerup', 'pointerleave', 'pointercancel'])
+    action.addEventListener(ev, () => !action.classList.contains('signed') && cancel());
   const el = h(
     'div',
     { class: 'screen splash' },
@@ -195,7 +184,6 @@ export function splashScreen(onStart: () => void): Screen {
     action,
     h('div', { class: 'version' }, `v${__APP_VERSION__}`),
   );
-  if (signed) stamp.classList.add('in');
   return {
     el,
     leave() {

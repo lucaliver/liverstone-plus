@@ -328,6 +328,13 @@ test('tapping the hero portrait in a fight shows the deck in play and pauses', a
   expect(await clock()).toBe(before);
 });
 
+test('once signed, the contract is never shown again: the game opens on the title', async ({ page }) => {
+  await freshGame(page);
+  await page.reload();
+  await expect(page.locator('.title-screen')).toBeVisible();
+  await expect(page.locator('.splash')).toHaveCount(0);
+});
+
 test('reset progress wipes saves after a confirmation', async ({ page }) => {
   await freshGame(page);
   page.on('dialog', (d) => d.accept());

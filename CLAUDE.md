@@ -233,7 +233,7 @@ Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unloc
 - **Unit** (`tests/combat.test.ts`): engine rules. Add a test for every new mechanic.
 - **Content** (`tests/content.test.ts`): data integrity.
 - **Balance** (`tests/balance.sim.test.ts` + `bot.ts`): heuristic bot win rates; treat them as relative.
-- **E2E** (`tests/e2e/smoke.spec.ts`): splash → title, hero carousel and locks, fight → reward swap or skip, layout
+- **E2E** (`tests/e2e/smoke.spec.ts`): contract (first launch only) → title, hero carousel and locks, fight → reward swap or skip, layout
   stability, Start gate, pause (music, backdrop tap, main menu, open windows), break room upgrade, map lane choice,
   compendium (cards, personnel, records) and card anatomy, debug fight, title poster and time card fit. `freshGame` unlocks every hero unless `locked`. Use real touch
   (`page.touchscreen.tap`) when the behaviour differs on phones.

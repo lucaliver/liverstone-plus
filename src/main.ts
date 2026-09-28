@@ -25,7 +25,7 @@ import {
   saveRun,
   type RunState,
 } from './game/run';
-import { startingFirstRun } from './game/meta';
+import { contractSigned, startingFirstRun } from './game/meta';
 import { settings } from './game/settings';
 import type { HeroId } from './game/types';
 import { confirmModal, initApp, show } from './ui/app';
@@ -172,7 +172,9 @@ async function boot(): Promise<void> {
   addEventListener('keydown', unlockAudio);
   // Pixel art is generated from the vector sources once, before the first screen.
   await preloadArt({ creatures: CREATURES, icons: ICONS });
-  show(splashScreen(goTitle));
+  // The employment contract only until it's signed; afterwards the game opens on the title.
+  if (contractSigned()) goTitle();
+  else show(splashScreen(goTitle));
   if (import.meta.env.DEV)
     Object.assign(window, {
       __game: {

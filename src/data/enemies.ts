@@ -100,14 +100,11 @@ const defs: EnemyDef[] = [
     id: 'hr',
     act: 1,
     tier: 'normal',
-    hp: 45,
+    hp: 50,
     art: 'hr',
-    main: atk('memo', 4, 7),
+    main: { id: 'review', intent: 'curse', windup: 8, curse: [{ id: 'pip', n: 2, to: 'draw' }] },
     every: 2,
-    specials: [
-      { id: 'review', intent: 'curse', windup: 7, curse: [{ id: 'pip', n: 2, to: 'draw' }] },
-      { id: 'writeYouUp', intent: 'curse', windup: 7, curse: [{ id: 'hex', n: 1, to: 'draw' }] },
-    ],
+    specials: [atk('memo', 8, 6), { id: 'writeYouUp', intent: 'curse', windup: 4, curse: [{ id: 'hex', n: 2, to: 'draw' }] }],
     start: [{ id: 'policy' }],
   },
   {
