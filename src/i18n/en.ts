@@ -84,6 +84,8 @@ const en = {
   'howto.sleeve.d': 'Drag a card down into your sleeve to keep it for later.',
   'howto.ability.t': 'Hero ability',
   'howto.ability.d': 'Your big button: it costs a lot of mana. It is your character ultimate.',
+  'howto.inspect.t': 'Hold to learn',
+  'howto.inspect.d': 'Not sure what something does? Press and hold it: cards, statuses, moves, stats. The fight waits for you.',
   'howto.gotIt': "Got it! Let's get to work.",
 
   // ------------------------------------------------------------- heroes

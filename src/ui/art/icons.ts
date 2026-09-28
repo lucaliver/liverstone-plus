@@ -635,6 +635,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<g ${S} stroke-width="8"><path d="M20 22h20a16 16 0 0 1 0 32H22"/></g><path d="M4 22l18-16v32z"/>`,
   },
+  magnifier: {
+    el: 'steel',
+    svg: `<circle cx="26" cy="26" r="20"/><circle cx="26" cy="26" r="12" fill="#16121f"/><path d="M40 36l20 18-7 7-18-20z"/><path ${HI} d="M18 20c2-4 6-6 10-6-3 2-5 5-6 9z"/>`,
+  },
   timer: {
     el: 'steel',
     svg: `<circle cx="32" cy="34" r="26"/><path fill="#16121f" d="M32 14a20 20 0 0 1 20 20H32z"/><rect x="26" y="2" width="12" height="6"/>`,

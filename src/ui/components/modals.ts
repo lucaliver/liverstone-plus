@@ -146,6 +146,7 @@ export function openHowTo(onClose?: () => void, firstTime = false): ModalHandle 
     ['shield', 'block'],
     ['hand', 'sleeve'],
     ['star', 'ability'],
+    ['magnifier', 'inspect'],
   ];
   const body = h(
     'div',
