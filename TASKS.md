@@ -20,7 +20,7 @@
 
 - [x] tutti gli effetti passivi anche quelli ancora da attivare (es. Al 50% degli hp fa questo) dovrebbero apparire negli status del nemico
 
-- [ ] quando il nastro si velocizza per un effetto, anche la soundtrack dovrebbe velocizzarsi un po'
+- [x] quando il nastro si velocizza per un effetto, anche la soundtrack dovrebbe velocizzarsi un po'
 
 - [ ] CHECK: P1 FAI Un giro di coerenza, sulle schermate cresciute di recente: icone, maiuscole, spazi, ombre, testi troppo lunghi, stati vuoti, etc.
 

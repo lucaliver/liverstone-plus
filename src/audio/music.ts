@@ -532,7 +532,8 @@ function start(id: TrackId): void {
   lp.frequency.value = 5200;
   out.connect(lp).connect(bus);
 
-  const sixteenth = 60 / tr.bpm / 4;
+  // Read every step, so a tempo change (the belt rushing) is heard right away.
+  const sixteenth = (): number => 60 / tr.bpm / 4 / tempo;
   let step = 0;
   let next = ctx.currentTime + 0.1;
 
@@ -547,7 +548,7 @@ function start(id: TrackId): void {
     if (b !== null) {
       const len = tr.bass.slice(i + 1).findIndex((x) => x !== null);
       const steps = len < 0 ? 16 - i : len + 1;
-      note(out, m(ch.root + b), t, sixteenth * Math.min(steps, 4) * 0.9, {
+      note(out, m(ch.root + b), t, sixteenth() * Math.min(steps, 4) * 0.9, {
         wave: tr.bassWave === 'pulse' ? 'thin' : 'triangle',
         vol: tr.bassWave === 'pulse' ? 0.16 : 0.34,
         release: 0.04,
@@ -558,14 +559,14 @@ function start(id: TrackId): void {
     if (a !== null) {
       const tone = ch.tones[a % ch.tones.length] + 12 * Math.floor(a / ch.tones.length);
       const f = m((ch.root % 12) + 12 * (tr.arpOctave + 1) + tone);
-      if (tr.leadVoice === 'bell') note(out, f, t, sixteenth * 1.6, { wave: 'triangle', vol: 0.07, release: 0.12 });
-      else note(out, f, t, sixteenth * 0.8, { wave: 'thin', vol: 0.045, release: 0.02 });
+      if (tr.leadVoice === 'bell') note(out, f, t, sixteenth() * 1.6, { wave: 'triangle', vol: 0.07, release: 0.12 });
+      else note(out, f, t, sixteenth() * 0.8, { wave: 'thin', vol: 0.045, release: 0.02 });
     }
 
     if (tr.leadOn(phrase)) {
       for (const [st, n, len] of tr.lead[chordIdx % tr.lead.length]) {
         if (st !== i) continue;
-        const dur = sixteenth * len;
+        const dur = sixteenth() * len;
         if (tr.leadVoice === 'bell') bell(out, m(n), t, dur * 1.4, 0.12);
         else note(out, m(n), t, dur * 0.92, { wave: 'pulse', vol: 0.09, vibrato: true, release: 0.05 });
       }
@@ -574,7 +575,7 @@ function start(id: TrackId): void {
     if (tr.pad && i === 0) {
       for (const tone of ch.tones.slice(0, 3)) {
         for (const det of [-7, 7])
-          note(out, m(ch.root + 12 + tone), t, sixteenth * 15, { wave: 'triangle', vol: 0.035, attack: 0.5, release: 0.5, detune: det });
+          note(out, m(ch.root + 12 + tone), t, sixteenth() * 15, { wave: 'triangle', vol: 0.035, attack: 0.5, release: 0.5, detune: det });
       }
     }
 
@@ -583,13 +584,13 @@ function start(id: TrackId): void {
       if (c && c !== '.') drum(out, c, t, id === 'menu' ? 0.5 : 0.8);
     }
 
-    if (tr.crackle && Math.random() < 0.35) drum(out, 'c', t + Math.random() * sixteenth, 1);
+    if (tr.crackle && Math.random() < 0.35) drum(out, 'c', t + Math.random() * sixteenth(), 1);
   };
 
   const timer = window.setInterval(() => {
     while (next < ctx.currentTime + 0.15) {
       schedule(step, next);
-      next += sixteenth;
+      next += sixteenth();
       step++;
     }
   }, 25);
@@ -612,6 +613,13 @@ function stop(fade = 0.6): void {
     fade * 1000 + 200,
   );
   current = null;
+}
+
+/** Playback speed of every track (1 = as written); the fight nudges it when the belt speeds up or slows down. */
+let tempo = 1;
+
+export function setMusicTempo(k: number): void {
+  tempo = k;
 }
 
 /** Track to go back to when a temporary track (e.g. the pause theme) ends. */

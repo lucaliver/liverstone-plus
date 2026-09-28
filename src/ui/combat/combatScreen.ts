@@ -1,5 +1,5 @@
 import { t } from '../../core/i18n';
-import { endTemporaryMusic, playTemporaryMusic } from '../../audio/music';
+import { endTemporaryMusic, playTemporaryMusic, setMusicTempo } from '../../audio/music';
 import { sfx } from '../../audio/sfx';
 import { CONFIG, GAME_SPEEDS } from '../../data/config';
 import type { Combat } from '../../game/combat';
@@ -40,6 +40,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   const { el, r, state } = v;
   let pauseModal: ModalHandle | null = null;
   let beltOffset = 0;
+  let lastTempo = 1;
   let acc = 0;
 
   // The fight runs only while no window at all is open (card detail, status info, pause menu…) and Start was pressed.
@@ -275,6 +276,12 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   // ------------------------------------------------------------------ loop
   const render = (dt: number): void => {
     state.frameNo++;
+    // The music follows the belt a little: faster while it rushes, slower while it drags.
+    const tempo = 1 + (combat.beltBoost() - 1) * CONFIG.musicFollowsBelt;
+    if (tempo !== lastTempo) {
+      lastTempo = tempo;
+      setMusicTempo(tempo);
+    }
     hud.render();
     cards.render();
     if (!state.paused && !state.ended && state.stop <= 0 && combat.intro <= 0) {
@@ -333,6 +340,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       }
     },
     leave() {
+      setMusicTempo(1);
       unsubscribe();
       removeEventListener('resize', onResize);
       document.removeEventListener('visibilitychange', onVisibility);
