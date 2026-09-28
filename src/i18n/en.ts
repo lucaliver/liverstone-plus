@@ -337,6 +337,7 @@ const en = {
 
   // ------------------------------------------------------------ statuses
   'status.onYou': 'On you',
+  'status.half': 'At half HP',
   'status.onEnemy': 'On the enemy',
   'status.timeLeft': '{s}s left',
   'status.stacks': 'Stacks: {v}',

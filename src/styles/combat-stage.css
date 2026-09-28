@@ -509,6 +509,10 @@
 .status .pico { font-size: 26px; }
 .status.good .pico { color: var(--b); --ink2: var(--y); }
 .status.bad .pico { color: var(--p); --ink2: var(--y); }
+/* an enemy's half-HP trait: waiting (muted), then lit once it has kicked in */
+.status.half .pico { color: var(--muted); --ink2: transparent; }
+.status.half.fired { background: var(--p); }
+.status.half.fired .pico { color: var(--paper); --ink2: var(--k); }
 .threat .t-time .pico { font-size: 20px; --ink2: var(--b); }
 
 /* Before Start: the enemy's passives, on paper slips over the top of the stage. */

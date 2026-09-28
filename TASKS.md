@@ -18,7 +18,7 @@
 
 - [x] effect that apply stun for enemy and auto-stun should have different icons!
 
-- [ ] tutti gli effetti passivi anche quelli ancora da attivare (es. Al 50% degli hp fa questo) dovrebbero apparire negli status del nemico
+- [x] tutti gli effetti passivi anche quelli ancora da attivare (es. Al 50% degli hp fa questo) dovrebbero apparire negli status del nemico
 
 - [ ] quando il nastro si velocizza per un effetto, anche la soundtrack dovrebbe velocizzarsi un po'
 

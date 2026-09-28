@@ -74,12 +74,26 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     const ids = list.join('|');
     if (ids !== statusSig[side]) {
       statusSig[side] = ids;
-      // The hero's passive always leads the hero's row, like a permanent status.
+      // The hero's passive always leads the hero's row, like a permanent status; an enemy's half-HP trait leads its
+      // row (waiting, then lit once it has kicked in).
+      const e = combat.enemy.def;
       const passive =
         side === 'hero'
           ? h('button', { class: 'status passive', html: icon(PASSIVE_ICON[v.heroId]), 'aria-label': t(`hero.${v.heroId}.passiveName`) })
-          : null;
-      if (passive) onPress(passive, onPassive);
+          : e.onHalf
+            ? h('button', { class: 'status passive half', html: icon('rage'), 'aria-label': t('status.half') })
+            : null;
+      if (passive && side === 'hero') onPress(passive, onPassive);
+      else if (passive) {
+        onPress(passive, () => {
+          sfx('tap');
+          v.inspect(true);
+          openInfo(
+            { icon: 'rage', title: t('status.half'), tag: t('status.onEnemy'), tagCls: 'bad', desc: t(`enemy.${e.id}.half`), ink: 'bad' },
+            () => v.inspect(false),
+          );
+        });
+      }
       box.replaceChildren(
         ...(passive ? [passive] : []),
         ...list.map((id) => {
@@ -94,6 +108,10 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
           return b;
         }),
       );
+    }
+    if (side === 'enemy') {
+      const half = box.querySelector('.half');
+      if (half) toggle(half, 'fired', combat.enemy.halfTriggered);
     }
     for (const b of box.children) {
       const id = (b as HTMLElement).dataset.status;
