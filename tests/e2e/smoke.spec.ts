@@ -297,8 +297,8 @@ test('handbook: the ? button explains how to read a card', async ({ page }) => {
   await expect(page.locator('.anatomy .spot')).toHaveCount(6);
 });
 
-test('after the Act 1 boss the map turns to Act 2', async ({ page }) => {
-  const problems = await freshGame(page);
+test('after the Act 1 boss the map turns to Act 2 (the very first run ends there)', async ({ page }) => {
+  const problems = await freshGame(page, { veteran: true });
   await page.getByRole('button', { name: /new run/i }).click();
   await page.getByRole('button', { name: /start shift/i }).click();
   await page.evaluate(

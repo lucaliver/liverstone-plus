@@ -1,6 +1,6 @@
 import { type TKey, t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
-import { currentNode, type RunState } from '../../game/run';
+import { ACTS, currentNode, type RunState } from '../../game/run';
 import type { HeroId } from '../../game/types';
 import type { Screen } from '../app';
 import { h } from '../dom';
@@ -36,7 +36,7 @@ export function endScreen(run: RunState, won: boolean, hired: HeroId[], onAgain:
           html: `${creature(id)}<div><b>${t('end.newHire')}</b><span>${t('end.nextHire', { hero: t(`hero.${id}.name`) })}</span></div>`,
         }),
       ),
-      h('p', { class: 'sub' }, won ? t('end.victoryDesc') : t('end.defeatDesc', { n: node.floor })),
+      h('p', { class: 'sub' }, won ? t(node.act < ACTS ? 'end.firstShiftDesc' : 'end.victoryDesc') : t('end.defeatDesc', { n: node.floor })),
       // The run's stats as a dot-matrix payslip: all that work, and the net pay is still zero.
       h(
         'div',

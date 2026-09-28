@@ -32,9 +32,12 @@
 /* the counter scrolls with the content, right under the switch */
 .compendium .scroll > .sub { margin: 12px 0; }
 .section-switch button {
-  min-width: 120px;
+  min-width: 96px;
+  padding: 0 8px;
   color: var(--k);
 }
+.payslip.records { margin: 12px auto 16px; }
+.records .slip-head { margin-bottom: 4px; padding-bottom: 6px; border-bottom: 2px dashed var(--k); }
 .foes {
   display: flex;
   flex-direction: column;

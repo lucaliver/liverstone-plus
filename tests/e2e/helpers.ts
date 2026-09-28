@@ -1,10 +1,11 @@
 import { expect, type Page } from '@playwright/test';
 
 /**
- * Fresh game: no saves, tutorial already seen, every hero unlocked (unless `locked`).
+ * Fresh game: no saves, tutorial already seen, every hero unlocked (unless `locked`). `veteran`: not the very first run
+ * (that one is scripted and short).
  * Collects console errors and warnings (e.g. missing i18n keys).
  */
-export async function freshGame(page: Page, opts: { tutorial?: boolean; locked?: boolean } = {}): Promise<string[]> {
+export async function freshGame(page: Page, opts: { tutorial?: boolean; locked?: boolean; veteran?: boolean } = {}): Promise<string[]> {
   const problems: string[] = [];
   page.on('console', (m) => {
     if (m.type() === 'error' || m.type() === 'warning') problems.push(m.text());
@@ -12,12 +13,13 @@ export async function freshGame(page: Page, opts: { tutorial?: boolean; locked?:
   page.on('pageerror', (e) => problems.push(`pageerror: ${e.message}`));
   await page.goto('/');
   await page.evaluate(
-    ([seen, unlocked]) => {
+    ([seen, unlocked, veteran]) => {
       localStorage.clear();
       if (seen) localStorage.setItem('cardstone+:settings', JSON.stringify({ seenTutorial: true }));
-      if (unlocked) localStorage.setItem('cardstone+:meta', JSON.stringify({ discovered: [], heroes: ['mage', 'necromancer'], fresh: [] }));
+      const heroes = unlocked ? ['mage', 'necromancer'] : [];
+      if (unlocked || veteran) localStorage.setItem('cardstone+:meta', JSON.stringify({ discovered: [], heroes, fresh: [], runs: veteran ? 1 : 0 }));
     },
-    [!opts.tutorial, !opts.locked],
+    [!opts.tutorial, !opts.locked, !!opts.veteran],
   );
   await page.reload();
   // The splash screen comes first: the contract, signed with a hold the first time, then one tap (it unlocks audio).

@@ -115,7 +115,8 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
   the logic all read them. Damage indices are derived from the `{dmg:i}` glyphs of the face.
 - **Run as a graph.** `RunNode.next[]` + `lane`: each act (`ACT_DEFS` in `data/acts.ts`, two for now) is a shared first fight, two lanes
   (`LANES` in `run.ts`) with `LINKS` links between them (diagonal upward, or flat both ways; never on neighbouring
-  floors), and the boss, which leads to the next act (full heal, elite-grade reward; the map switches act). `advance(run, to)` moves along a link; `run.path` records the nodes entered.
+  floors), and the boss, which leads to the next act (full heal, elite-grade reward; the map switches act). The very first run is scripted
+(`newRun(…, scripted)`): fixed seed, enemies easiest first, and it ends with act 1's boss. `advance(run, to)` moves along a link; `run.path` records the nodes entered.
 - **Per-frame rendering is diff-based** (`setText`, `setHtml`, `toggle` only write on change). Status chips are
   rebuilt only when the set changes, so presses aren't lost.
 
@@ -233,7 +234,7 @@ Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unloc
 - **Balance** (`tests/balance.sim.test.ts` + `bot.ts`): heuristic bot win rates; treat them as relative.
 - **E2E** (`tests/e2e/smoke.spec.ts`): splash → title, hero carousel and locks, fight → reward swap or skip, layout
   stability, Start gate, pause (music, backdrop tap, main menu, open windows), break room upgrade, map lane choice,
-  compendium and card anatomy, debug fight, title poster and time card fit. `freshGame` unlocks every hero unless `locked`. Use real touch
+  compendium (cards, personnel, records) and card anatomy, debug fight, title poster and time card fit. `freshGame` unlocks every hero unless `locked`. Use real touch
   (`page.touchscreen.tap`) when the behaviour differs on phones.
 - Other engines: `npx playwright test --browser=webkit` (Safari/iOS) passes too; Firefox needs a config without
   `isMobile` (same viewport, `hasTouch`). Keep CSS to what Safari 16 supports (no `color-mix`).

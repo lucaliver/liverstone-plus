@@ -1,11 +1,11 @@
-import { t } from '../../core/i18n';
+import { type TKey, t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { CARD_LIST } from '../../data/cards';
 import { CONFIG } from '../../data/config';
 import { ENEMY_LIST } from '../../data/enemies';
 import type { EnemyDef } from '../../game/types';
 import { HERO_LIST } from '../../data/heroes';
-import { enemyMet, isDiscovered } from '../../game/meta';
+import { enemyMet, isDiscovered, records } from '../../game/meta';
 import type { CardClass } from '../../game/types';
 import type { Screen } from '../app';
 import { h, onPress } from '../dom';
@@ -35,10 +35,32 @@ function foeView(e: EnemyDef): HTMLElement {
   return el;
 }
 
-/** Every card in the game by class, plus every enemy and its moves. */
+/** Lifetime records, printed like the end of a run's payslip. */
+function recordSlip(): HTMLElement {
+  const r = records();
+  const none = t('records.none');
+  const row = (k: TKey, v: string | number): HTMLElement => h('div', { class: 'slip-row' }, h('span', null, t(k)), h('b', null, String(v)));
+  return h(
+    'div',
+    { class: 'payslip records' },
+    h('div', { class: 'slip-head' }, h('b', null, t('records.title')), h('span', null, t('end.slip.company'))),
+    row('records.runs', r.runs),
+    row('records.wins', r.wins),
+    row('records.fullDays', r.fullDays),
+    row('records.furthest', r.bestAct ? t('records.furthestValue', { a: r.bestAct, n: r.bestFloor }) : none),
+    row('records.kills', r.kills),
+    row('records.elites', r.elites),
+    row('records.bosses', r.bosses),
+    row('records.cards', r.cardsPlayed),
+    row('records.bestPay', r.bestPay),
+    row('records.fastest', r.fastest ? t('records.seconds', { n: r.fastest }) : none),
+  );
+}
+
+/** Every card in the game by class, every enemy and its moves, and the player's records. */
 export function compendiumScreen(onBack: () => void): Screen {
   let tab: CardClass = TABS[0];
-  let section: 'cards' | 'enemies' = 'cards';
+  let section: 'cards' | 'enemies' | 'records' = 'cards';
   const total = CARD_LIST.length;
   const found = CARD_LIST.filter((c) => isDiscovered(c.id)).length;
 
@@ -53,10 +75,11 @@ export function compendiumScreen(onBack: () => void): Screen {
   );
   const cardsWrap = h('div', null);
   const sub = h('p', { class: 'sub' });
+  const slip = recordSlip();
 
   const render = (): void => {
     sectionSwitch.replaceChildren(
-      ...(['cards', 'enemies'] as const).map((sct) =>
+      ...(['cards', 'enemies', 'records'] as const).map((sct) =>
         h(
           'button',
           {
@@ -73,9 +96,16 @@ export function compendiumScreen(onBack: () => void): Screen {
         ),
       ),
     );
-    sub.textContent = section === 'cards' ? t('compendium.progress', { n: found, total }) : t('compendium.foes', { n: ENEMY_LIST.length });
+    sub.textContent =
+      section === 'cards'
+        ? t('compendium.progress', { n: found, total })
+        : section === 'enemies'
+          ? t('compendium.foes', { n: ENEMY_LIST.length })
+          : '';
+    sub.hidden = section === 'records';
     cardsWrap.hidden = section !== 'cards';
     foes.hidden = section !== 'enemies';
+    slip.hidden = section !== 'records';
     tabs.replaceChildren(
       ...TABS.map((c) =>
         h(
@@ -140,7 +170,7 @@ export function compendiumScreen(onBack: () => void): Screen {
       }),
     ),
     sectionSwitch,
-    h('div', { class: 'scroll', style: { flex: '1' } }, sub, cardsWrap, foes),
+    h('div', { class: 'scroll', style: { flex: '1' } }, sub, cardsWrap, foes, slip),
   );
   return { el };
 }

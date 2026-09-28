@@ -8,7 +8,7 @@ import { CONFIG } from '../data/config';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HEROES } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
-import { discover, progress } from './meta';
+import { discover, progress, recordFight, recordRun } from './meta';
 import type { CardDef, CardInst, EnemyDef, HeroId, Rarity } from './types';
 
 export type NodeType = 'fight' | 'elite' | 'rest' | 'promotion' | 'boss';
@@ -76,7 +76,10 @@ export const ACTS = ACT_DEFS.length;
 /** Seed of the very first run: its map is always the same, with the enemies in order of difficulty. */
 export const FIRST_RUN_SEED = 1;
 
-/** A new run; a `scripted` one (the very first) meets the normal enemies easiest first instead of shuffled. */
+/**
+ * A new run; a `scripted` one (the very first) meets the normal enemies easiest first instead of shuffled, and ends with
+ * act 1's boss.
+ */
 export function newRun(hero: HeroId, seed: number, scripted = false): RunState {
   resetUid(0);
   const rng = new Rng(seed);
@@ -107,7 +110,7 @@ export function newRun(hero: HeroId, seed: number, scripted = false): RunState {
 function buildNodes(rng: Rng, scripted: boolean): RunNode[] {
   const nodes: RunNode[] = [];
   let last: RunNode[] = [];
-  for (let act = 1; act <= ACTS; act++) {
+  for (let act = 1; act <= (scripted ? 1 : ACTS); act++) {
     // Deal normal enemies from a shuffled bag so the same one doesn't repeat back to back (scripted: easiest first).
     let bag: EnemyDef[] = [];
     const add = (floor: number, lane: number, type: NodeType): RunNode => {
@@ -215,6 +218,15 @@ export function applyCombat(run: RunState, combat: Combat): void {
   run.stats.damageTaken += Math.max(0, run.hp - combat.hero.hp);
   run.hp = Math.max(0, combat.hero.hp);
   run.stats.cardsPlayed += combat.cardsPlayed;
+  const node = currentNode(run);
+  recordFight({
+    tier: combat.enemy.def.tier,
+    won: combat.result === 'win',
+    seconds: combat.time,
+    cards: combat.cardsPlayed,
+    act: node.act,
+    floor: node.floor,
+  });
   if (combat.specialUsed) run.specialUsed = true;
   if (combat.consumed.length) run.deck = run.deck.filter((c) => !combat.consumed.includes(c.uid));
   if (combat.result === 'win') {
@@ -222,7 +234,7 @@ export function applyCombat(run: RunState, combat: Combat): void {
     if (combat.enemy.def.tier === 'elite') run.stats.elites++;
     run.money += fightPay(combat.enemy.def.tier, combat.time);
     // A new shift starts rested: beating an act boss heals fully.
-    if (currentNode(run).type === 'boss' && currentNode(run).next.length) run.hp = run.maxHp;
+    if (node.type === 'boss' && node.next.length) run.hp = run.maxHp;
   }
   run.cleared = true;
 }
@@ -325,8 +337,9 @@ export function advance(run: RunState, to?: number): boolean {
 
 /** The run is over (won or lost): heroes unlocked by finishing a run with this hero. */
 /** Ends the run; returns the heroes it unlocked (the next hires). */
-export function finishRun(run: RunState): HeroId[] {
+export function finishRun(run: RunState, won: boolean): HeroId[] {
   clearRun();
+  recordRun(won, won && currentNode(run).act === ACTS, run.money);
   return progress((u) => 'finishRun' in u && u.finishRun === run.hero);
 }
 

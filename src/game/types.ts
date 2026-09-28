@@ -218,6 +218,24 @@ export interface HeroHooks {
   tick?: (c: Combat, dt: number) => void;
 }
 
+/** Lifetime records, kept across runs (the handbook's Records tab). */
+export interface Records {
+  /** Runs won (the trial shift too), and full workdays won (every act). */
+  wins: number;
+  fullDays: number;
+  kills: number;
+  elites: number;
+  bosses: number;
+  cardsPlayed: number;
+  /** Most pay earned in one run. */
+  bestPay: number;
+  /** Furthest act and floor reached. */
+  bestAct: number;
+  bestFloor: number;
+  /** Fastest fight won, in seconds (0 = none yet). */
+  fastest: number;
+}
+
 /** How a hero is unlocked: finish a run (win or lose) with another hero, or reach the boss of an act. */
 export type HeroUnlock = { finishRun: HeroId } | { reachBoss: number };
 
