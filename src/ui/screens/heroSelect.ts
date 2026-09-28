@@ -21,7 +21,7 @@ function slide(hero: HeroDef, index: number): HTMLElement {
   // A locked hero shows as a dark silhouette with a padlock and, right under it, how to unlock it; the sheet stays readable.
   const badge =
     locked && hero.unlock
-      ? `<button class="hero-lock" aria-label="${t('hero.locked')}">${icon('lock')}</button><p class="hero-unlock">${unlockText(hero.unlock)}</p>`
+      ? `<button class="hero-lock" aria-label="${unlockText(hero.unlock)}">${icon('lock')}</button><p class="hero-unlock" aria-hidden="true">${unlockText(hero.unlock)}</p>`
       : heroFresh(id)
         ? `<div class="hero-new">${t('hero.new')}</div>`
         : '';
