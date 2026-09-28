@@ -211,6 +211,21 @@ test('map: after a node, the player picks one of the two lanes and enters it', a
   expect(problems).toEqual([]);
 });
 
+test('map: holding a node explains it, even one out of reach, without picking it', async ({ page }) => {
+  const problems = await freshGame(page);
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  const boss = page.locator('.node.boss .dot');
+  await boss.scrollIntoViewIfNeeded();
+  await boss.hover();
+  await page.mouse.down();
+  await page.waitForTimeout(500);
+  await page.mouse.up();
+  await expect(page.locator('.modal')).toContainText('Boss');
+  await expect(page.locator('.node.boss')).not.toHaveClass(/current/);
+  expect(problems).toEqual([]);
+});
+
 test('closing the pause menu keeps the fight paused while another window is still open', async ({ page }) => {
   await freshGame(page);
   await startFight(page);

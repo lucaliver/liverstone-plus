@@ -134,6 +134,12 @@ const en = {
   'journey.node.elite': 'Inspection',
   'journey.node.rest': 'Break Room',
   'journey.node.boss': 'Boss',
+  'journey.info.fight': 'A regular job: beat the enemy, then swap a card into your deck.',
+  'journey.info.elite': 'An inspection: a tougher enemy, better pay and rarer cards.',
+  'journey.info.rest': 'Take a nap to heal, or train to upgrade a card.',
+  'journey.info.promotion': 'Give one card of your deck a permanent perk.',
+  'journey.info.boss': 'The boss of the shift. Beat it to clock out.',
+  'journey.info.enemy': 'On the job: {name}',
   'journey.abandonConfirm': 'Call in sick? Your progress will be lost.',
 
   // -------------------------------------------------------------- combat

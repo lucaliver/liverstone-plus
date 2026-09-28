@@ -3,9 +3,9 @@ import { sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
 import { clockAt, currentNode, type RunNode, type RunState } from '../../game/run';
 import type { Screen } from '../app';
-import { h, onPress } from '../dom';
+import { h, onPress, onTapOrHold } from '../dom';
 import { icon } from '../art/icons';
-import { openDeck, openSettings } from '../components/modals';
+import { openDeck, openInfo, openSettings } from '../components/modals';
 import { openHeroSheet } from '../components/heroSheet';
 import { dropLetters } from '../components/decor';
 import { creature } from '../art/creatures';
@@ -162,20 +162,38 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
         class: 'dot',
         html: past || !(n.type === 'boss' && BOSS_CLOCK.has(n.act)) ? icon(past ? 'check' : NODE_ICON[n.type]) : undefined,
         'aria-label': `${t('common.floor', { n: n.floor })} · ${label}`,
-        disabled: !open,
-        onclick: () => {
-          if (picked === n.id) {
-            go();
-            return;
-          }
-          sfx('tap');
-          picked = n.id;
-          refresh();
-        },
+        // Not `disabled`: every node can still be held to read what it is.
+        'aria-disabled': String(!open),
       }),
       h('span', { class: 'label' }, label),
     );
-    if (!past && n.type === 'boss' && BOSS_CLOCK.has(n.act)) el.querySelector('.dot')!.append(clockFace());
+    const dot = el.querySelector<HTMLElement>('.dot')!;
+    if (!past && n.type === 'boss' && BOSS_CLOCK.has(n.act)) dot.append(clockFace());
+    // Tap an open node to pick it (again to go in); hold any node to learn what it is.
+    onTapOrHold(
+      dot,
+      () => {
+        if (!open) return;
+        if (picked === n.id) {
+          go();
+          return;
+        }
+        sfx('tap');
+        picked = n.id;
+        refresh();
+      },
+      () => {
+        sfx('tap');
+        const enemy = n.enemy ? t(`enemy.${n.enemy}.name`) : null;
+        openInfo({
+          icon: NODE_ICON[n.type],
+          title: label,
+          tag: t('common.floor', { n: n.floor }),
+          desc: t(`journey.info.${n.type}`),
+          extra: enemy ? [t('journey.info.enemy', { name: enemy })] : undefined,
+        });
+      },
+    );
     nodeEls.set(n.id, el);
     path.append(el);
   }
