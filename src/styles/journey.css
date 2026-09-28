@@ -138,7 +138,8 @@
   font-size: 16px;
   color: var(--fg);
   white-space: nowrap;
-  background: var(--bg);
+  /* see-through: the dotted links still show under the label */
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
 }
 .node.done { opacity: 0.45; }
 .node.missed { opacity: 0.22; }
