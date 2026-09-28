@@ -14,8 +14,8 @@ export interface Settings {
 }
 
 const defaults: Settings = {
-  sfxVolume: 0.8,
-  musicVolume: 0.8,
+  sfxVolume: 0.5,
+  musicVolume: 0.5,
   speed: 1,
   reduceMotion: typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches,
   haptics: true,

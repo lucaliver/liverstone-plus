@@ -16,7 +16,7 @@
 
 - [ ] Fixa: l'anteprima del link non presenta alcuna immagine quando lo condivido
 
-- [ ] Metti i valori di default di musica e audio a 5 e 5
+- [x] Metti i valori di default di musica e audio a 5 e 5
 
 - [ ] La primissima run non deve avere un Act2, ma finishe col boss dell'Act1.
 
@@ -26,4 +26,7 @@
 
 - [ ] Nella selezione personaggi: finchè un pg non è sbloccato, le sue attive/passive/carta speciale dovrebbero avere "????" come caratteri al posto del testo (come hai fatto con i titoli delle carte del handbook non sbloccate)
 
-- Nemico "HR orientation dummy": solo per lui, non mostrare il tooltip della passiva prima dell'inizio della partita (altrimenti è spoiler)
+- [ ] Nemico "HR orientation dummy": solo per lui, non mostrare il tooltip della passiva prima dell'inizio della partita (altrimenti è spoiler)
+
+- [ ] Schermata "Pick your bonus": vorrei che anche qui il deck fosse mostrato in modo smart come il dettaglio del deck dalle altre schermate, con tanto di opzione di sort in cima
+
