@@ -737,9 +737,9 @@ export class Combat {
     const target = this.fighter(to);
     const dmg = opts.raw ? base : this.computeDamage(from, to, base, this.current?.def ?? null);
 
-    if (source === 'enemy' && to === 'hero' && this.stacks('hero', 'dodge') > 0) {
-      this.addStacks('hero', 'dodge', -1);
-      this.events.emit({ type: 'text', target: 'hero', key: 'combat.dodged', tone: 'good' });
+    // Dodge: immune to every kind of damage while it lasts.
+    if (to === 'hero' && this.has('hero', 'dodge')) {
+      if (source === 'enemy') this.events.emit({ type: 'text', target: 'hero', key: 'combat.dodged', tone: 'good' });
       return 0;
     }
 
@@ -875,14 +875,6 @@ export class Combat {
     }
     if (!silent) this.events.emit({ type: 'status', target: side, id, amount: def.kind === 'timed' ? t || v : v });
     if (side === 'enemy' && v > 0) this.heroDef.hooks.onEnemyStatus?.(this, id, v);
-  }
-
-  private addStacks(side: Side, id: string, v: number): void {
-    const f = this.fighter(side);
-    const s = f.statuses[id];
-    if (!s) return;
-    s.v += v;
-    if (s.v <= 0) delete f.statuses[id];
   }
 
   removeStatus(side: Side, id: string): void {

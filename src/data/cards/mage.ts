@@ -156,10 +156,11 @@ export const mageCards: CardDef[] = [
     rarity: 'rare',
     cost: 2,
     upCost: 1,
-    vals: [1],
+    vals: [2],
+    upVals: [3],
     keywords: ['exhaust'],
     art: 'papers',
-    play: (c, v) => c.applyStatus('hero', 'dodge', v[0]),
+    play: (c, v) => c.applyStatus('hero', 'dodge', 1, v[0]),
   },
   {
     id: 'combustion',

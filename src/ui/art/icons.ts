@@ -472,6 +472,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M10 8h44v48H10v-8a6 6 0 0 0 0-12v-8a6 6 0 0 0 0-12z"/><g fill="#16121f"><rect x="18" y="16" width="28" height="4"/><path d="M22 28h8v20h-6V34h-2zM34 28h12v5h-7v3h7v12H34v-5h7v-3h-7z"/></g>`,
   },
+  scales: {
+    el: 'holy',
+    svg: `<rect x="30" y="8" width="4" height="46"/><rect x="18" y="54" width="28" height="6"/><rect x="8" y="12" width="48" height="4"/><path d="M4 36h20c0 6-4 10-10 10S4 42 4 36zM40 30h20c0 6-4 10-10 10s-10-4-10-10z"/><path d="M14 16L6 36h2l6-16 6 16h2zM50 16l-8 14h2l6-10 6 10h2z"/><g fill="#16121f"><rect x="9" y="30" width="10" height="5"/><path d="M45 26h10v4H45z"/></g>`,
+  },
   // Pop culture
   powerOff: {
     el: 'arcane',
@@ -673,6 +677,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   autopilot: {
     el: 'steel',
     svg: `<path d="M28 4h8l2 8 7 3 7-4 6 6-4 7 3 7 8 2v8l-8 2-3 7 4 7-6 6-7-4-7 3-2 8h-8l-2-8-7-3-7 4-6-6 4-7-3-7-8-2v-8l8-2 3-7-4-7 6-6 7 4 7-3z"/><path d="M26 22l16 10-16 10z" fill="#16121f"/>`,
+  },
+  seesaw: {
+    el: 'steel',
+    svg: `<path d="M4 30l56-12 2 6-56 12z"/><path d="M32 30l-10 26h20z"/><rect x="6" y="18" width="12" height="12"/><rect x="46" y="8" width="12" height="10"/>`,
   },
   timer: {
     el: 'steel',

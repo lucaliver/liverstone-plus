@@ -30,7 +30,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   rush: { icon: 'speedCards', unit: 's' },
   burn: { icon: 'flame' },
   str: { icon: 'fist', sign: '+' },
-  dodge: { icon: 'mirror' },
+  dodge: { icon: 'mirror', unit: 's' },
   parry: { icon: 'crossed' },
   hp: { icon: 'blood', sign: '-' },
   grow: { icon: 'growth', sign: '+' },
@@ -59,6 +59,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   tickDown: { icon: 'timer', sign: '-' },
   undo: { icon: 'undo' },
   auto: { icon: 'autopilot', unit: 's' },
+  balance: { icon: 'seesaw' },
 };
 
 /** Long names get a smaller font so they fit the title band instead of being cut. */

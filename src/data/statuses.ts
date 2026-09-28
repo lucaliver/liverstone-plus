@@ -1,6 +1,6 @@
 import type { Combat } from '../game/combat';
 import type { MoveDef, Side, StatusDef, StatusVal } from '../game/types';
-import { cardCategory } from './cards';
+import { type CardCategory, cardCategory } from './cards';
 
 /** How long every card played brings the Light Sleeper's hit closer (seconds). */
 const WAKE_PER_CARD = 1;
@@ -12,6 +12,8 @@ const LANE_WINDOW = 4;
 const CHILL_GAP = 2;
 /** Micromanagement: seconds without playing a card before he cuts in. */
 const IDLE_LIMIT = 2;
+/** Card colours, by index (a status's free number `e` remembers one). */
+const CATEGORIES: CardCategory[] = ['attack', 'defense', 'utility', 'curse'];
 /** What the Overthinker does once it has lost its train of thought. */
 const WHERE_WAS_I: MoveDef = { id: 'whereWasI', intent: 'idle', windup: 4 };
 /** Spending Freeze: the hero's max mana. */
@@ -36,7 +38,7 @@ const defs: StatusDef[] = [
   { id: 'strength', kind: 'stacks', good: true, icon: 'fist' },
   { id: 'spellpower', kind: 'stacks', good: true, icon: 'wand' },
   { id: 'thorns', kind: 'stacks', good: true, icon: 'thorns' },
-  { id: 'dodge', kind: 'stacks', good: true, icon: 'mirror' },
+  { id: 'dodge', kind: 'timed', good: true, icon: 'mirror' },
   { id: 'juggernaut', kind: 'stacks', good: true, icon: 'helm' },
   { id: 'fortified', kind: 'timed', good: true, icon: 'fortress' },
   { id: 'regen', kind: 'dot', good: true, icon: 'leaf' },
@@ -44,6 +46,24 @@ const defs: StatusDef[] = [
   { id: 'parry', kind: 'timed', good: true, icon: 'crossed' },
   { id: 'haste', kind: 'timed', good: true, icon: 'gauge' },
   { id: 'rush', kind: 'timed', good: true, icon: 'speedCards' },
+  // Work-Life Balance: every card played hits again (for v), until two cards of the same colour come one after the
+  // other; `e` is the colour of the last one.
+  {
+    id: 'workLife',
+    kind: 'stacks',
+    good: true,
+    icon: 'seesaw',
+    onCardPlayed: (c, side, def) => {
+      const s = c.fighter(side).statuses.workLife;
+      const cat = CATEGORIES.indexOf(cardCategory(def.id));
+      if (s.e === cat) {
+        c.removeStatus(side, 'workLife');
+        return;
+      }
+      s.e = cat;
+      c.hit(s.v);
+    },
+  },
   // Autopilot (Severance): cards slipping off the belt play themselves when they can.
   { id: 'autopilot', kind: 'timed', good: true, icon: 'autopilot' },
   // Root access (sudo): no rule can stop the hero's cards.

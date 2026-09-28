@@ -299,6 +299,24 @@ export const neutralCards: CardDef[] = [
     },
   },
   {
+    id: 'workLife',
+    face: '{dmg:0}|{balance}',
+    cls: 'neutral',
+    type: 'attack',
+    rarity: 'rare',
+    cost: 2,
+    vals: [3],
+    upVals: [4],
+    art: 'scales',
+    play: (c, v) => {
+      c.hit(v[0]);
+      c.applyStatus('hero', 'workLife', v[0]);
+      // The balance starts from this card: another attack right after breaks it (no status if that hit won the fight).
+      const s = c.fighter('hero').statuses.workLife;
+      if (s) s.e = 0;
+    },
+  },
+  {
     id: 'ctrlZ',
     face: '{undo}{heal}|{timer:0}',
     cls: 'neutral',

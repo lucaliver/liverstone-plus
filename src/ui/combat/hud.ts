@@ -186,7 +186,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     r.incoming.style.width = shown ? `${(lost / hs.maxHp) * 100}%` : '0';
     toggle(v.el, 'danger', shown && left < 0.8);
     // The hit being charged would knock the hero out (Dodge would save them): alarm on the edges, and a siren once.
-    const lethal = hostile && combat.intentDamage(m) > 0 && incoming >= hs.hp && combat.stacks('hero', 'dodge') === 0;
+    const lethal = hostile && combat.intentDamage(m) > 0 && incoming >= hs.hp && !combat.has('hero', 'dodge');
     toggle(v.el, 'lethal', lethal);
     if (lethal && alarmed !== e.moveCount) {
       sfx('lethal');

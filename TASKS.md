@@ -14,9 +14,9 @@
 
 - [x] Carta "Severance": cambiala in "Ottieni 3 strength. Per 9 s, le carte che escono dal nastro si giocano da sole (se hai il mana per pagarle). Potenziata: 5 strength e 10 s."
 
-- [ ] Aggiungi nuova carta "Work-Life balance": effetto "Infligge 3 danni, si ripete ad ogni successiva carta che giochi, finchè non ne giochi due dello stesso tipo consecutivamente"
+- [x] Aggiungi nuova carta "Work-Life balance": effetto "Infligge 3 danni, si ripete ad ogni successiva carta che giochi, finchè non ne giochi due dello stesso tipo consecutivamente"
 
-- [ ] Cambia funzionalità effetto "Dodge" nelle carte: anzichè "Completly avoid the next enemy hit" diventa "Become immune to damage for 2sec"
+- [x] Cambia funzionalità effetto "Dodge" nelle carte: anzichè "Completly avoid the next enemy hit" diventa "Become immune to damage for 2sec"
 
 - [ ] Nuova carta "Complaint box": "Infligge 2 danni. Il danno aumenta di 1 per ogni secondo in cui hai overflow di mana" (l'aumento si ha sia mentre è in campo che nel mazzo che ovunque)
 
