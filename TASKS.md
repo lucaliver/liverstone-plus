@@ -8,11 +8,11 @@
 
 - [x] home: move the reset progress button into the settings page; make the debug button small and not part of the usual layout (like just a floating button on top)
 
-- [ ] dragging card out of sleeve anywhere should play it
+- [x] dragging card out of sleeve anywhere should play it
 
-- [ ] rename a card "Arbeit macht frei"
+- [ ] rename a card "Arbeit macht frei" — NON FATTO: è la scritta dei cancelli di Auschwitz; proposte alternative in chat
 
-- [ ] nella mappa: sposta il bottone home dentro al menu settings; muovi il contatore di monete al posto di dov'era il bottone home; metti una icona più leggibile al contatore di monete
+- [x] nella mappa: sposta il bottone home dentro al menu settings; muovi il contatore di monete al posto di dov'era il bottone home; metti una icona più leggibile al contatore di monete
 
 - [ ] le carte che dicono "gain +x damage this fight" dovrebbero specificare "This gains +X..." (altrimenti si confonde con la strength)
 
@@ -32,8 +32,11 @@
 
 - [ ] P4 Transizione tra mappa e combattimento: oggi il cambio è secco; potrebbe esserci un passaggio animato (animazione immersiva a tutto schermo della porta dell'ufficio che si apre, per esempio).
 
+- [ ] L'icona del pulsante Handbook non assomiglia abbastanza a un libro (sembra il simbolo della pausa), migliorala
 
-New tasks, after the others:
+- [ ] Rinomina carta "Clawback" in "Meal voucer" e cambia l'icona art
+
+# New tasks, after the others:
 
 - [ ] Carta "Ctrl+Z": cambia l'effetto in "Recupera tutti gli HP che hai perso negli ultimi 3 s". Costo 1, Exhaust. Potenziata: finestra di 5 s.
 

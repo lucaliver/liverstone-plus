@@ -41,3 +41,9 @@
   .stage .cooler { display: none; }
   .hint-toast.alert { top: 7%; padding: 6px 12px; font-size: 19px; }
 }
+/* narrow phones: the map header (portrait, HP, deck, pay, settings) must fit in one line */
+@media (max-width: 400px) {
+  .run-hud { gap: 5px; }
+  .run-hud .chip:not(.hero-chip) { padding: 6px 6px; font-size: 18px; }
+  .run-hud .chip .pico { font-size: 20px; }
+}

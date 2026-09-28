@@ -191,31 +191,23 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   }
   refresh();
 
+  // Pay earned so far (the run's score), then Settings (Main menu is in there).
+  const pay = h('button', { class: 'chip money', 'aria-label': t('common.pay'), html: `${icon('coin')}<span>${run.money}</span>` });
+  onPress(pay, () => openStatInfo('pay'));
   const menuBtns = h(
     'div',
     { class: 'hud-btns' },
-    h('button', {
-      class: 'icon-btn',
-      'aria-label': t('menu.home'),
-      html: icon('home'),
-      onclick: () => {
-        sfx('tap');
-        onHome();
-      },
-    }),
+    pay,
     h('button', {
       class: 'icon-btn',
       'aria-label': t('menu.settings'),
       html: icon('gear'),
       onclick: () => {
         sfx('tap');
-        openSettings();
+        openSettings(undefined, [{ label: t('menu.home'), icon: 'home', cls: 'secondary', onClick: onHome }]);
       },
     }),
   );
-  // Pay earned so far (the run's score), beside the act title where there's room.
-  const pay = h('button', { class: 'chip money', 'aria-label': t('common.pay'), html: `${icon('coin')}<span>${run.money}</span>` });
-  onPress(pay, () => openStatInfo('pay'));
   const el = h(
     'div',
     { class: 'screen journey' },
@@ -225,7 +217,6 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       { class: 'act-banner' },
       h('div', { class: 'h1' }, t('journey.title', { n: act })),
       h('p', { class: 'sub' }, t(`journey.actName.${act}`)),
-      pay,
     ),
     h('div', { class: 'scroll', style: { flex: '1' } }, path),
     enterBtn,

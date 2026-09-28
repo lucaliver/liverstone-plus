@@ -211,10 +211,13 @@ export function createCardLayer(v: CombatView): CardLayer {
       return;
     }
     const slot = d.from === 'belt' ? slotAt(ev.clientX, ev.clientY) : -1;
-    const toStage = ev.clientY < r.belt.getBoundingClientRect().top;
+    // A belt card is played when dragged up to the stage; a sleeve card, when dragged anywhere out of the sleeve.
+    const rc = r.sleeve.getBoundingClientRect();
+    const outOfSleeve = ev.clientX < rc.left || ev.clientX > rc.right || ev.clientY < rc.top || ev.clientY > rc.bottom;
+    const play = d.from === 'sleeve' ? outOfSleeve : ev.clientY < r.belt.getBoundingClientRect().top;
     cancelDrag();
     if (slot >= 0) combat.stash(d.uid, slot);
-    else if (toStage) playUid(d.uid);
+    else if (play) playUid(d.uid);
   };
 
   r.beltCards.addEventListener('pointerdown', (e) => onDown(e, 'belt'));

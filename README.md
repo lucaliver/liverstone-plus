@@ -194,7 +194,7 @@ La difficoltà cresce scendendo di piano. Le élite e lo Slaves CEO guadagnano 1
   nel timbracartellino (KA-CHUNK). Poi *Handbook*, *How to play* e Impostazioni (dove sta anche *Reset progress*);
   un piccolo bottone flottante temporaneo apre *Debug fight*.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
-- **Percorso:** in alto ritratto dell'eroe (toccalo o tienilo premuto per la sua scheda), vita e mazzo, Home e Impostazioni; sotto la mappa dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
+- **Percorso:** in alto ritratto dell'eroe (toccalo o tienilo premuto per la sua scheda), vita, mazzo, paga e Impostazioni (con *Main menu*); sotto la mappa dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
   per entrare nel piano. Il boss dell'atto 1 è un orologio che segna l'ora della giornata lavorativa (il turno del
   mattino dalle 8 a mezzogiorno, il pomeriggio dalle 13 alle 17; il boss chiude il turno) e avanza a scatti quando torni da un lavoro; la strada fatta
   è una fila di passi, e l'ultimo tratto si ripercorre passo dopo passo. La run si abbandona dalla pausa in combattimento o iniziandone una nuova.

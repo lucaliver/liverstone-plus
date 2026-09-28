@@ -659,7 +659,7 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   },
   coin: {
     el: 'holy',
-    svg: `<circle cx="32" cy="32" r="27"/><circle cx="32" cy="32" r="19" fill="#16121f" opacity=".3"/><path d="M28 16h8v5c4 1 7 4 7 8h-7c0-2-2-3-4-3s-4 1-4 3 2 3 5 4c6 1 10 4 10 9 0 4-3 7-7 8v5h-8v-5c-5-1-8-4-8-9h7c0 3 2 4 5 4s4-1 4-3-2-3-5-4c-6-1-10-4-10-9 0-4 3-7 7-8z" fill="#16121f"/>`,
+    svg: `<rect x="8" y="44" width="48" height="14" rx="7"/><rect x="8" y="30" width="48" height="14" rx="7"/><ellipse cx="32" cy="22" rx="24" ry="12"/><g fill="#16121f"><rect x="8" y="42" width="48" height="3"/><rect x="8" y="28" width="48" height="3"/><rect x="26" y="18" width="12" height="7"/></g>`,
   },
   timer: {
     el: 'steel',
