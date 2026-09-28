@@ -206,6 +206,14 @@ const SOUNDS = {
     noise(0.08, { freq: 600, vol: 0.4, type: 'lowpass', delay: 0.3 });
     noise(0.05, { freq: 3000, vol: 0.2, q: 3, delay: 0.42 });
   },
+  /** A padlock rattled: chain links clinking, then the shackle's clank. */
+  chains: () => {
+    [0, 0.06, 0.1, 0.17, 0.22].forEach((d, i) => {
+      noise(0.05, { freq: 3800 + i * 500, q: 8, vol: 0.18, delay: d });
+      tone(2400 + i * 180, 0.06, { type: 'triangle', vol: 0.04, delay: d });
+    });
+    tone(700, 0.12, { type: 'square', vol: 0.06, to: 500, delay: 0.3 });
+  },
   /** An enemy goes down: a long falling groan over a crumble. */
   enemyDown: () => {
     tone(220, 0.9, { type: 'sawtooth', vol: 0.12, to: 40, attack: 0.02 });

@@ -276,7 +276,33 @@
   border: var(--line) solid var(--k);
   box-shadow: var(--off) var(--off) 0 var(--hero-ink);
 }
-.hero-unlock { color: var(--y); }
+.hero-lock.rattle { animation: rattle 0.36s steps(6); }
+@keyframes rattle {
+  17% { rotate: -14deg; }
+  33% { rotate: 12deg; }
+  50% { rotate: -9deg; }
+  67% { rotate: 6deg; }
+  83% { rotate: -3deg; }
+}
+/* how to unlock it, right under the padlock */
+.hero-unlock {
+  position: absolute;
+  left: 50%;
+  top: calc(38% + 42px);
+  z-index: 2;
+  width: min(84%, 280px);
+  margin: 0;
+  padding: 4px 8px;
+  translate: -50% 0;
+  text-align: center;
+  text-wrap: balance;
+  font-family: var(--font-ui);
+  font-size: 18px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--y);
+  background: color-mix(in srgb, var(--void) 80%, transparent);
+}
 .hero-new {
   /* a starburst sticker slapped on the stage, rocking in two steps */
   position: absolute;

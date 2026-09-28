@@ -18,9 +18,14 @@ const unlockText = (u: HeroUnlock): string =>
 function slide(hero: HeroDef, index: number): HTMLElement {
   const id = hero.id;
   const locked = !heroUnlocked(id);
-  // A locked hero shows as a dark silhouette with a padlock and how to unlock it; the sheet stays readable.
-  const badge = locked ? `<div class="hero-lock">${icon('lock')}</div>` : heroFresh(id) ? `<div class="hero-new">${t('hero.new')}</div>` : '';
-  return h(
+  // A locked hero shows as a dark silhouette with a padlock and, right under it, how to unlock it; the sheet stays readable.
+  const badge =
+    locked && hero.unlock
+      ? `<button class="hero-lock" aria-label="${t('hero.locked')}">${icon('lock')}</button><p class="hero-unlock">${unlockText(hero.unlock)}</p>`
+      : heroFresh(id)
+        ? `<div class="hero-new">${t('hero.new')}</div>`
+        : '';
+  const el = h(
     'section',
     { class: `hero-slide ${locked ? 'locked' : ''}`, 'data-hero': id, 'aria-roledescription': 'slide', 'aria-label': t(`hero.${id}.name`) },
     h('div', {
@@ -28,7 +33,7 @@ function slide(hero: HeroDef, index: number): HTMLElement {
       html: `${motes(8)}<div class="pedestal"></div><div class="hero-sprite">${creature(id)}</div><div class="hero-num">${String(index + 1).padStart(2, '0')}</div>${badge}`,
     }),
     h('h2', { class: 'hero-name' }, t(`hero.${id}.name`)),
-    locked && hero.unlock ? h('p', { class: 'hero-job hero-unlock' }, unlockText(hero.unlock)) : h('p', { class: 'hero-job' }, t(`hero.${id}.job`)),
+    h('p', { class: 'hero-job' }, t(`hero.${id}.job`)),
     h(
       'div',
       { class: 'hero-stats' },
@@ -50,6 +55,16 @@ function slide(hero: HeroDef, index: number): HTMLElement {
     ),
     heroFeatures(hero),
   );
+  // Tapping the padlock rattles its chains.
+  const lock = el.querySelector<HTMLElement>('.hero-lock');
+  lock?.addEventListener('click', () => {
+    sfx('chains');
+    haptic('locked');
+    lock.classList.remove('rattle');
+    void lock.offsetWidth;
+    lock.classList.add('rattle');
+  });
+  return el;
 }
 
 /** Game-style hero select: one hero per screen, swipe or use the arrows; the hero in view is the one chosen. */
