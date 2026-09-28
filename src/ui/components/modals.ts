@@ -1,5 +1,6 @@
 import { availableLocales, getLocale, setLocale, type TKey, t } from '../../core/i18n';
 import { setSfxVolume, sfx } from '../../audio/sfx';
+import { haptic } from '../fx/fx';
 import { setMusicVolume } from '../../audio/music';
 import { CARDS } from '../../data/cards';
 import { GAME_SPEEDS } from '../../data/config';
@@ -418,6 +419,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string) => void): M
         'data-enemy': e.id,
         onclick: () => {
           sfx('button');
+          haptic('tap');
           handle?.close();
           onPick(hero, e.id);
         },

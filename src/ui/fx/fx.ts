@@ -36,6 +36,10 @@ export function initFx(root: HTMLElement): void {
   };
   resize();
   addEventListener('resize', resize);
+  // A pattern still running when the page goes to the background stops.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && 'vibrate' in navigator) navigator.vibrate(0);
+  });
   requestAnimationFrame(loop);
 }
 
@@ -155,12 +159,38 @@ export function shake(strength: 'small' | 'big' = 'small'): void {
   target.classList.add(`shake-${strength}`);
 }
 
-export function haptic(ms: number | number[]): void {
-  if (settings.haptics && 'vibrate' in navigator) {
-    try {
-      navigator.vibrate(ms);
-    } catch {
-      /* unsupported */
-    }
+/**
+ * Vibration patterns (ms): short and sparse, so a strong one still means something. Buttons and picks get a tick,
+ * hits a knock, big moments a pattern.
+ */
+const HAPTICS = {
+  tap: 8,
+  play: 10,
+  stash: [6, 40, 6],
+  error: 15,
+  hexTap: 8,
+  hit: 25,
+  heavy: 60,
+  alarm: [30, 60, 30],
+  ability: [20, 40, 20],
+  locked: [10, 30, 10, 30, 10],
+  kill: [40, 60, 40],
+  defeat: [60, 60, 120],
+} satisfies Record<string, number | number[]>;
+export type HapticId = keyof typeof HAPTICS;
+
+let lastHaptic = 0;
+/** Vibrates (if the player allows it, the page is visible and the player has already touched it; never twice within 50ms). */
+export function haptic(id: HapticId): void {
+  if (!settings.haptics || !('vibrate' in navigator) || document.hidden) return;
+  // Before the first gesture browsers block (and warn about) vibration.
+  if (navigator.userActivation && !navigator.userActivation.hasBeenActive) return;
+  const now = performance.now();
+  if (now - lastHaptic < 50) return;
+  lastHaptic = now;
+  try {
+    navigator.vibrate(HAPTICS[id]);
+  } catch {
+    /* unsupported */
   }
 }

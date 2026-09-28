@@ -1,5 +1,6 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
+import { haptic } from '../fx/fx';
 import type { Screen } from '../app';
 import { h } from '../dom';
 import { creature } from '../art/creatures';
@@ -31,6 +32,7 @@ export function titleScreen(cb: TitleCallbacks): Screen {
       class: `btn block ${cls}`,
       onclick: () => {
         sfx('button');
+        haptic('tap');
         fn();
       },
       html: `${icon(ic)}<span>${label}</span>`,
@@ -82,6 +84,7 @@ export function splashScreen(onStart: () => void): Screen {
       class: 'btn cta',
       onclick: () => {
         sfx('button');
+        haptic('tap');
         onStart();
       },
       html: `${icon('play')}<span>${t('menu.start')}</span>`,

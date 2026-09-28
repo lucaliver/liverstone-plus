@@ -5,7 +5,7 @@ import type { Screen } from '../app';
 import { h } from '../dom';
 import { creature } from '../art/creatures';
 import { dropLetters, motes } from '../components/decor';
-import { burst } from '../fx/fx';
+import { burst, haptic } from '../fx/fx';
 import { playMusic } from '../../audio/music';
 
 export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMenu: () => void): Screen {
@@ -55,6 +55,7 @@ export function endScreen(run: RunState, won: boolean, onAgain: () => void, onMe
           class: 'btn cta block',
           onclick: () => {
             sfx('button');
+            haptic('tap');
             onAgain();
           },
         },

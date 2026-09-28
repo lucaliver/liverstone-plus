@@ -1,5 +1,6 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
+import { haptic } from '../fx/fx';
 import { clockAt, currentNode, type RunNode, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h, onPress } from '../dom';
@@ -102,6 +103,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   const go = (): void => {
     if (picked === null) return;
     sfx('button');
+    haptic('tap');
     onEnter(picked === cur.id ? undefined : picked);
   };
   enterBtn.onclick = go;

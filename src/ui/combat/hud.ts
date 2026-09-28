@@ -1,5 +1,6 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
+import { haptic } from '../fx/fx';
 import { STATUS_ORDER, STATUSES } from '../../data/statuses';
 import type { Fighter } from '../../game/combat';
 import type { MoveDef, Side } from '../../game/types';
@@ -166,7 +167,10 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     // The hit being charged would knock the hero out (Dodge would save them): alarm on the edges, and a siren once.
     const lethal = hostile && combat.intentDamage(m) > 0 && incoming >= hs.hp && combat.stacks('hero', 'dodge') === 0;
     toggle(v.el, 'lethal', lethal);
-    if (lethal && alarmed !== e.moveCount) sfx('lethal');
+    if (lethal && alarmed !== e.moveCount) {
+      sfx('lethal');
+      haptic('alarm');
+    }
     alarmed = lethal ? e.moveCount : -1;
   };
 

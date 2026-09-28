@@ -95,7 +95,7 @@ const defs: StatusDef[] = [
     canPlay: (c, side, def) =>
       side === 'enemy' &&
       def.type !== 'curse' &&
-      !!c.lastPlayed &&
+      c.lastPlayed &&
       cardCategory(c.lastPlayed.id) === cardCategory(def.id) &&
       c.time - c.lastPlayedAt < POLICY_WINDOW
         ? 'combat.policy'

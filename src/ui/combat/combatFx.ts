@@ -79,7 +79,7 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
           if (e.amount > 0) {
             v.retrigger(r.portrait, 'hurt');
             shake(e.amount >= 12 ? 'big' : 'small');
-            haptic(e.amount >= 12 ? 60 : 25);
+            haptic(e.amount >= 12 ? 'heavy' : 'hit');
           }
           sfx('enemyHit');
         }
@@ -120,12 +120,13 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         v.retrigger(r.manaRow, 'flash');
         v.toast(t('combat.noMana'));
         sfx('error');
-        haptic(15);
+        haptic('error');
         break;
       }
       case 'cardPlayed':
         cards.markRemoval(e.card.uid, 'played');
         sfx('cardPlay');
+        haptic('play');
         break;
       case 'cardExpired':
         cards.markRemoval(e.card.uid, 'expired');
@@ -141,6 +142,7 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
       case 'cardStashed':
         cards.markRemoval(e.card.uid, 'stashed');
         sfx('stash');
+        haptic('stash');
         break;
       case 'cardSpawn':
         sfx('cardSpawn');
@@ -196,7 +198,7 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
           burst('block', p.x, p.y, 5);
         }
         sfx('blunt');
-        haptic(8);
+        haptic('hexTap');
         break;
       }
       case 'hexBroken':
@@ -232,7 +234,7 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         v.el.append(f);
         v.banner(t(`hero.${v.heroId}.ability`));
         sfx('ability');
-        haptic([20, 40, 20]);
+        haptic('ability');
         break;
       }
       case 'enrage': {

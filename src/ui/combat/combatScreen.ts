@@ -78,7 +78,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       for (let i = 1; i <= (boss ? 5 : 3); i++) setTimeout(() => burst('blood', p.x + (i % 2 ? -30 : 30), p.y + i * 6, 14), i * 200);
       setTimeout(() => burst('gold', p.x, p.y + 20, 40, 1.5), boss ? 1100 : 700);
       shake('big');
-      haptic([40, 60, 40]);
+      haptic('kill');
       sfx('enemyDown');
       if (boss) {
         r.enemyArt.classList.add('boss');
@@ -92,7 +92,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       // Fired: a pink slip flutters down.
       v.el.append(h('div', { class: 'pink-slip' }, h('b', null, t('combat.pinkSlip')), h('p', null, t('combat.pinkSlipBody'))));
       sfx('defeat');
-      haptic([60, 60, 120]);
+      haptic('defeat');
     }
     // A win waits for the enemy to finish dying (longer for a boss).
     setTimeout(() => cb.onEnd(combat), result === 'lose' ? 1500 : boss ? 3000 : 2200);
@@ -196,6 +196,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     cards.cancelDrag();
     state.paused = true;
     sfx('button');
+    haptic('tap');
     playTemporaryMusic('pause');
     const body = h(
       'div',
@@ -312,6 +313,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         state.waiting = false;
         syncPause();
         sfx('button');
+        haptic('tap');
         v.banner(t('combat.fight'));
         timeCard('in', clockText(clockAt(run, currentNode(run))));
       });

@@ -1,5 +1,6 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
+import { haptic } from '../fx/fx';
 import { type RunState, SKIP_MAX_HP, skipReward, swapCard } from '../../game/run';
 import type { CardDef, CardInst } from '../../game/types';
 import type { Screen } from '../app';
@@ -70,6 +71,7 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
   swapBtn.addEventListener('click', () => {
     if (!fromDeck || !offer) return;
     sfx('button');
+    haptic('tap');
     swapCard(run, fromDeck.uid, offer.id);
     onDone();
   });

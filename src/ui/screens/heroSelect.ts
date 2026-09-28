@@ -1,5 +1,6 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
+import { haptic } from '../fx/fx';
 import { HERO_LIST } from '../../data/heroes';
 import { heroFresh, heroUnlocked, markHeroSeen } from '../../game/meta';
 import type { HeroDef, HeroId, HeroUnlock } from '../../game/types';
@@ -74,6 +75,7 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
       onclick: () => {
         if (!heroUnlocked(HERO_LIST[index].id)) return;
         sfx('button');
+        haptic('tap');
         onStart(HERO_LIST[index].id);
       },
     },
