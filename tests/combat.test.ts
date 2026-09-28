@@ -740,3 +740,38 @@ describe('run pay', () => {
     expect(fightPay('boss', 0)).toBe(CONFIG.pay.boss + CONFIG.pay.par * CONFIG.pay.perSecond);
   });
 });
+
+describe('cards that change on the belt', () => {
+  const onBelt = (id: string): { c: Combat; uid: number } => {
+    const c = setup({ deck: deckOf(Array(6).fill('strike')) });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.mana = c.hero.maxMana = 10;
+    c.addTempCard(id, 'belt');
+    return { c, uid: c.belt[c.belt.length - 1].card.uid };
+  };
+  const card = (c: Combat, uid: number) => [...c.belt.map((b) => b.card), ...c.sleeve].find((x) => x?.uid === uid)!;
+
+  it('Unpaid Overtime hits harder for every second it rides the belt, up to its cap', () => {
+    const { c, uid } = onBelt('unpaidOvertime');
+    expect(c.cardVals(card(c, uid))[0]).toBe(3);
+    run(c, 3.05);
+    expect(c.cardVals(card(c, uid))[0]).toBe(6);
+    const hp = c.enemy.hp;
+    c.playCard(uid);
+    expect(hp - c.enemy.hp).toBe(6);
+  });
+
+  it('Patience gives less Block the longer it rides, never below its floor, and the sleeve freezes it', () => {
+    const { c, uid } = onBelt('patience');
+    run(c, 2.05);
+    expect(c.cardVals(card(c, uid))[0]).toBe(12);
+    c.stash(uid, 0);
+    run(c, 5);
+    expect(c.cardVals(card(c, uid))[0]).toBe(12);
+    c.playCard(uid);
+    expect(c.hero.block).toBe(12);
+    const late = { uid: 999, id: 'patience', up: false, age: 60 };
+    expect(c.cardVals(late)[0]).toBe(3);
+  });
+});

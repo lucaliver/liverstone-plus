@@ -252,6 +252,34 @@ export const neutralCards: CardDef[] = [
     play: (c) => c.copyLastOntoBelt(),
   },
 
+  // Time on the belt: they change for every second they ride it (the sleeve freezes them).
+  {
+    id: 'unpaidOvertime',
+    face: '{dmg:0}|{tickUp:1}',
+    cls: 'neutral',
+    type: 'attack',
+    rarity: 'common',
+    cost: 1,
+    vals: [3, 1, 12],
+    upVals: [4, 1, 15],
+    ride: { i: 0, by: 1, to: 2 },
+    art: 'lateClock',
+    play: (c, v) => void c.hit(v[0]),
+  },
+  {
+    id: 'patience',
+    face: '{block:0}|{tickDown:1}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'common',
+    cost: 1,
+    vals: [14, 1, 3],
+    upVals: [18, 1, 4],
+    ride: { i: 0, by: 1, to: 2 },
+    art: 'queueTicket',
+    play: (c, v) => c.gainBlock('hero', v[0]),
+  },
+
   // Pop culture
   {
     id: 'severance',

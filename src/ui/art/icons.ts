@@ -450,6 +450,15 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M4 44h56v12H4z"/><path d="M6 40l40-22c6-3 14 0 14 8v10H6z"/><rect x="10" y="47" width="30" height="4" fill="#16121f"/>`,
   },
+  // Time on the belt
+  lateClock: {
+    el: 'blood',
+    svg: `<circle cx="30" cy="34" r="26"/><circle cx="30" cy="34" r="19" fill="#16121f" opacity=".35"/><path d="M30 34V18M30 34l-10 6" stroke="#16121f" stroke-width="5" fill="none"/><path d="M54 4a12 12 0 1 0 8 18 10 10 0 1 1-8-18z"/>`,
+  },
+  queueTicket: {
+    el: 'steel',
+    svg: `<path d="M10 8h44v48H10v-8a6 6 0 0 0 0-12v-8a6 6 0 0 0 0-12z"/><g fill="#16121f"><rect x="18" y="16" width="28" height="4"/><path d="M22 28h8v20h-6V34h-2zM34 28h12v5h-7v3h7v12H34v-5h7v-3h-7z"/></g>`,
+  },
   // Pop culture
   powerOff: {
     el: 'arcane',

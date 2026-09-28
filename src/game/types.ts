@@ -51,6 +51,8 @@ export interface CombatCard extends CardInst {
   passed?: boolean;
   /** Extra mana cost until the card is next played (Inflation). */
   tax?: number;
+  /** Seconds spent on the belt since it was drawn (cards with `ride` change with it). */
+  age?: number;
 }
 
 export interface BeltCard {
@@ -94,6 +96,11 @@ export interface CardDef {
   tall?: boolean;
   /** While on the belt, every other card of its row is out of reach (Priority Task). */
   lockRow?: boolean;
+  /**
+   * The value at `vals[i]` changes by `vals[by]` for every second the card rides the belt, until it reaches `vals[to]`
+   * (it grows when `to` is above the base, decays when below). Frozen while the card waits in the sleeve.
+   */
+  ride?: { i: number; by: number; to: number };
   play?: (c: Combat, v: number[], card: CombatCard) => void;
   /** Triggered when the card leaves the belt without being played. */
   onExpire?: (c: Combat, v: number[], card: CombatCard) => void;

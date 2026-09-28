@@ -52,6 +52,8 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   addCard: { icon: 'addCard', sign: '+' },
   lane: { icon: 'lane' },
   sudo: { icon: 'terminal', unit: 's' },
+  tickUp: { icon: 'timer', sign: '+' },
+  tickDown: { icon: 'timer', sign: '-' },
   undo: { icon: 'undo' },
   curse: { icon: 'skull' },
 };

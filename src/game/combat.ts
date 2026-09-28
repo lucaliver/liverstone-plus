@@ -217,7 +217,7 @@ export class Combat {
     return this.fighter(side).statuses[id]?.v ?? 0;
   }
 
-  cardVals(card: CardInst & { bonus?: number }): number[] {
+  cardVals(card: CardInst & { bonus?: number; age?: number }): number[] {
     return cardValsOf(card);
   }
 
@@ -477,6 +477,7 @@ export class Combat {
     const move = (dt / CONFIG.beltTime) * rate;
     for (const b of this.belt) {
       b.pos += move;
+      b.card.age = (b.card.age ?? 0) + dt;
       const hex = b.card.hex;
       if (!hex || hex.left > 0) continue;
       hex.t -= dt;
@@ -534,6 +535,8 @@ export class Combat {
         this.events.emit({ type: 'reshuffle' });
       }
       c = this.draw.pop()!;
+      // A fresh draw starts its ride from zero (a card back from the sleeve keeps its age).
+      c.age = 0;
     }
     this.belt.push({ card: c, pos, row });
     this.events.emit({ type: 'cardSpawn', card: c });

@@ -51,10 +51,15 @@ export function cardCostOf(card: CardInst & { tax?: number }): number {
   return Math.max(def.minCost ?? 0, cost + (card.perks ?? []).reduce((d, p) => d + (PERKS[p]?.costDelta ?? 0), 0)) + (card.tax ?? 0);
 }
 
-/** Values of a card copy (upgrade and per-fight bonus included). */
-export function cardValsOf(card: CardInst & { bonus?: number }): number[] {
+/** Values of a card copy (upgrade, per-fight bonus and time on the belt included). */
+export function cardValsOf(card: CardInst & { bonus?: number; age?: number }): number[] {
   const def = CARDS[card.id];
   const vals = [...(card.up ? (def.upVals ?? def.vals) : def.vals)];
   if (card.bonus && def.dmg?.length) vals[def.dmg[0]] += card.bonus;
+  if (def.ride && card.age) {
+    const { i, by, to } = def.ride;
+    const step = Math.floor(card.age) * vals[by];
+    vals[i] = vals[to] > vals[i] ? Math.min(vals[to], vals[i] + step) : Math.max(vals[to], vals[i] - step);
+  }
   return vals;
 }
