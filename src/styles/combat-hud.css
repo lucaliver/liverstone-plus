@@ -76,7 +76,10 @@
   padding: 6px 12px calc(var(--safe-b) + 10px);
 }
 .sleeve {
+  /* centred in the room left of the ability button */
+  flex: 1;
   display: flex;
+  justify-content: center;
   gap: 12px;
 }
 .sleeve-slot {

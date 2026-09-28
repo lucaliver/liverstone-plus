@@ -115,12 +115,17 @@ export function createCardLayer(v: CombatView): CardLayer {
 
   // ------------------------------------------------------------------ input
 
+  /** The sleeve slot a drag would drop into: anywhere below the belt counts, the slot nearest the finger wins. */
   const slotAt = (x: number, y: number): number => {
-    for (let i = 0; i < slotEls.length; i++) {
-      const rc = slotEls[i].getBoundingClientRect();
-      if (x >= rc.left - 14 && x <= rc.right + 14 && y >= rc.top - 20 && y <= rc.bottom + 14) return i;
-    }
-    return -1;
+    if (y < r.belt.getBoundingClientRect().bottom) return -1;
+    let best = -1;
+    let bestD = Infinity;
+    slotEls.forEach((s, i) => {
+      const rc = s.getBoundingClientRect();
+      const d = Math.abs(x - (rc.left + rc.width / 2));
+      if (d < bestD) [best, bestD] = [i, d];
+    });
+    return best;
   };
 
   const cancelDrag = (): void => {
