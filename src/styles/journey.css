@@ -142,7 +142,7 @@
   color: var(--fg);
   white-space: nowrap;
   /* see-through: the dotted links still show under the label */
-  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  background: #241b3b8c; /* --bg at 55% (a plain hex: color-mix needs Safari 16.2+) */
 }
 .node.done { opacity: 0.45; }
 .node.missed { opacity: 0.22; }

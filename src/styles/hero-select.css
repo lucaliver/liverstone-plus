@@ -301,7 +301,7 @@
   line-height: 1.1;
   text-transform: uppercase;
   color: var(--y);
-  background: color-mix(in srgb, var(--void) 80%, transparent);
+  background: #0c0818cc; /* --void at 80% */
 }
 .hero-new {
   /* a starburst sticker slapped on the stage, rocking in two steps */

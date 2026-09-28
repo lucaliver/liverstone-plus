@@ -26,7 +26,7 @@
 
 - [x] add a new enemy (The Overthinker): he just has one big attack X after Ysec, but it's passive is that if he receives X damages, then he forgets to attack and goes to thinking move for tot seconds
 
-- [ ] controlla che runni su tutti i browser, ci sono altri accorgimenti che dovrei avere per pluging o altro? Best practice? Sito apposto con descrizione e tutto?
+- [x] controlla che runni su tutti i browser, ci sono altri accorgimenti che dovrei avere per pluging o altro? Best practice? Sito apposto con descrizione e tutto?
 
 - [ ] P3 Aggiungi Musica per atto: una traccia di combattimento diversa nell'Atto 2 e un breve tema di vittoria per il boss.
 

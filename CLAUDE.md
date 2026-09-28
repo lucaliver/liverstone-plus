@@ -232,6 +232,8 @@ Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unloc
   stability, Start gate, pause (music, backdrop tap, main menu, open windows), break room upgrade, map lane choice,
   compendium and card anatomy, debug fight, title poster and time card fit. `freshGame` unlocks every hero unless `locked`. Use real touch
   (`page.touchscreen.tap`) when the behaviour differs on phones.
+- Other engines: `npx playwright test --browser=webkit` (Safari/iOS) passes too; Firefox needs a config without
+  `isMobile` (same viewport, `hasTouch`). Keep CSS to what Safari 16 supports (no `color-mix`).
 - Ad-hoc screenshot scripts live in the git-ignored `screenshots/` folder. `dev/art.html` (open it on the dev
   server) previews every creature sprite and icon after pixelisation.
 
