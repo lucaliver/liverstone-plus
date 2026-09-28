@@ -242,8 +242,28 @@
   border: 2px solid var(--k);
   box-shadow: 2px 2px 0 var(--k);
 }
-.deck-sort { margin: 0 0 12px; }
-.deck-sort button { flex: 1; }
+.deck-sort {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin: -4px 0 10px;
+  font-family: var(--font-ui);
+  font-size: 17px;
+  color: var(--muted);
+}
+.deck-sort span { margin-right: 4px; }
+.deck-sort button {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 36px;
+  padding: 0 6px;
+  font: inherit;
+  color: var(--muted);
+}
+.deck-sort button[aria-pressed='true'] { color: var(--k); text-decoration: underline 2px; text-underline-offset: 4px; }
+.deck-sort .pico { font-size: 16px; color: var(--p); --ink2: transparent; }
 .deck-grid.pick .card { cursor: pointer; }
 .deck-grid.pick .card:active { transform: translate(3px, 3px); box-shadow: none; }
 .deck-grid.pick.has-sel .card:not(.sel) { opacity: 0.45; }

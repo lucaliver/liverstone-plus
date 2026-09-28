@@ -258,6 +258,7 @@ const en = {
   'deck.title': 'Your deck',
   'deck.empty': 'No cards',
   'deck.copies': '×{n}',
+  'deck.sortBy': 'Sort by',
   'deck.sort.type': 'Type',
   'deck.sort.cost': 'Cost',
   'deck.sort.name': 'Name',

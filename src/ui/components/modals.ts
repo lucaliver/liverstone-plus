@@ -344,22 +344,21 @@ export function openDeck(
     return el;
   };
   const grid = h('div', { class: `deck-grid ${opts.onPick ? 'pick' : ''}` });
-  const sorter = h('div', { class: 'seg deck-sort', role: 'group' });
+  // A slim line of text links: "Sort by  Type · Cost · Name", the active one marked with the sort arrow.
+  const sorter = h('div', { class: 'deck-sort', role: 'group', 'aria-label': t('deck.sortBy') });
   function render(): void {
     sorter.replaceChildren(
+      h('span', null, t('deck.sortBy')),
       ...DECK_SORTS.map((by) =>
-        h(
-          'button',
-          {
-            'aria-pressed': String(by === deckSort),
-            onclick: () => {
-              sfx('tap');
-              deckSort = by;
-              render();
-            },
+        h('button', {
+          'aria-pressed': String(by === deckSort),
+          html: `${by === deckSort ? icon('down') : ''}${t(`deck.sort.${by}`)}`,
+          onclick: () => {
+            sfx('tap');
+            deckSort = by;
+            render();
           },
-          t(`deck.sort.${by}`),
-        ),
+        }),
       ),
     );
     grid.replaceChildren(...groupCopies(sortDeck(cards, deckSort)).map((g) => makeEl(g.card, g.n)));
