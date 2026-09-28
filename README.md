@@ -149,7 +149,7 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
 | --- | --- |
 | The Snitch | La spia: colpi rapidi e raffiche (*Rat Out*); sotto metà vita accelera il tuo nastro per il resto dello scontro |
 | Senior Boomer | Colpi lenti, un colpo pesantissimo (*Seniority*) e *Gatekeep*: due maledizioni larghe tre carte che coprono le carte davanti a sé sul nastro finché non le paghi (2 mana l'una) |
-| Toxic Coworker | Il collega tossico: riempie il nastro di *Drama* e il mazzo di *Gossip* |
+| Toxic Coworker | Il collega tossico: non colpisce, avvelena (*Snark*); riempie il nastro di *Drama* e il mazzo di *Gossip* |
 | Team Leader | *Team Building* lo rende più forte e ti rifila *Mandatory Fun*; *Let's Sync* ti mette due riunioni sul nastro |
 | Goblin Consultant | Ruba carte (*Outsource*) e ti mette *Deadline* sul nastro |
 | HR Bitch | Passiva *No Repeats Policy*: non puoi giocare due carte dello stesso colore (attacco, difesa, utilità) a meno di 3 s l'una dall'altra; *Performance Review* ti mette due *Improvement Plan* nel mazzo |

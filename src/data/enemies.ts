@@ -42,7 +42,8 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 50,
     art: 'coworker',
-    main: atk('slam', 5, 8),
+    // Toxic: the snark doesn't hit, it poisons (and Block can't stop it).
+    main: { id: 'slam', intent: 'debuff', windup: 8, status: [{ id: 'poison', v: 3, target: 'hero' }] },
     every: 2,
     specials: [
       { id: 'spit', intent: 'curse', windup: 7, curse: [{ id: 'slime', n: 2, to: 'belt' }] },
