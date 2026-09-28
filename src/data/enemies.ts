@@ -27,6 +27,7 @@ const defs: EnemyDef[] = [
     firstRunOnly: true,
     halfSpeech: true,
     halfArt: 'hrVideoAngry',
+    halfSecret: true,
     onHalf: (c) => c.openBeltRows(),
   },
   // ------------------------------------------------------------- Act 1

@@ -90,7 +90,7 @@ src/
   core/        rng (seeded), emitter, i18n (typed keys), save (safe localStorage), util
   i18n/en.ts   every player-facing string (key → text)
   data/        config, acts (shift hours, fight music, map boss per act), statuses, heroes, enemies, perks, hexes, relics (empty, hooks ready), cards/<class>.ts
-  game/        combat.ts (engine), run.ts (node graph, rewards, saves), meta.ts (discovery), settings, types
+  game/        combat.ts (engine), run.ts (node graph, rewards, saves), meta.ts (discovery, unlocks, lifetime records), settings, types
   ui/          app.ts (screens + modals), dom.ts (h, onPress, onTapOrHold, LONG_PRESS_MS)
     art/       icons.ts (64×64 vector icons), creatures.ts (200×200 vector sprites), riso.ts (pixel renderer)
     combat/    view (DOM + refs + shared state), hud, cardLayer (belt/sleeve/input), combatFx (events → FX), combatScreen
@@ -158,7 +158,7 @@ kinds at once), steal, drain mana, `hex` a share of your cards, `inflate` card c
 charging and `release` it with the next hit (intents include `idle` and `absorb`). Add a vector sprite to `creatures.ts` (pixelised automatically),
 plus `enemy.<id>.name`, `move.<id>` for every move, and `enemy.<id>.half` if it has `onHalf`.
 Optional: `startRows` (belt rows open at the start; `openBeltRows()` opens the rest), `halfSpeech` (says `enemy.<id>.speech`
-at half HP), `halfArt` (sprite after its half-HP trait triggers), `firstRunOnly` (only the first fight of the very first run). Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.ts` (`enemyScale`).
+at half HP), `halfArt` (sprite after its half-HP trait triggers), `halfSecret` (that trait isn't shown until it triggers), `firstRunOnly` (only the first fight of the very first run). Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.ts` (`enemyScale`).
 
 ### Heroes
 

@@ -65,6 +65,9 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
 /** Long names get a smaller font so they fit the title band instead of being cut. */
 const nameFit = (name: string): string => (name.length > 14 ? 'xlong' : name.length > 10 ? 'long' : '');
 
+/** Stands in for the name or text of something not met or unlocked yet (handbook, hero select). */
+export const UNKNOWN = '????';
+
 export function cardName(card: CardInst): string {
   return t(`card.${card.id}.name`);
 }

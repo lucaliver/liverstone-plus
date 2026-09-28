@@ -11,7 +11,7 @@ import type { Screen } from '../app';
 import { h, onPress } from '../dom';
 import { icon } from '../art/icons';
 import { creature } from '../art/creatures';
-import { cardView } from '../components/cardView';
+import { cardView, UNKNOWN } from '../components/cardView';
 import { bindMoveDetails, movePattern } from '../components/moveText';
 import { openCardAnatomy, openCardDetail, sortCards, sortControl } from '../components/modals';
 
@@ -20,9 +20,6 @@ const TABS: CardClass[] = [...HERO_LIST.map((hd) => hd.id), 'neutral', 'curse'];
 const tabLabel = (c: CardClass): string => t(`compendium.tab.${c}`);
 
 const TIERS: EnemyDef['tier'][] = ['normal', 'elite', 'boss'];
-
-/** Name of something not met yet in the handbook. */
-const UNKNOWN = '????';
 
 function foeView(e: EnemyDef): HTMLElement {
   const el = h('article', {

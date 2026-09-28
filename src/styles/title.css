@@ -84,6 +84,19 @@
   text-shadow: 3px 3px 0 var(--p);
   animation: none;
 }
+/* tapped: it jolts under the punch and keeps a hole (a secret) */
+.poster .logo.punched { animation: shake-s 0.2s steps(4); }
+.logo-hole {
+  position: absolute;
+  z-index: 1;
+  width: 10px;
+  height: 14px;
+  /* the poster's paper shows through, the cut edge in shadow */
+  background: var(--paper);
+  box-shadow: inset 3px 3px 0 var(--k);
+  pointer-events: none;
+  animation: stamp-in 0.12s steps(2);
+}
 .poster-slogan {
   position: absolute;
   left: 5%;

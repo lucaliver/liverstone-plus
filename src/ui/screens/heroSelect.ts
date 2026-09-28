@@ -18,7 +18,8 @@ const unlockText = (u: HeroUnlock): string =>
 function slide(hero: HeroDef, index: number): HTMLElement {
   const id = hero.id;
   const locked = !heroUnlocked(id);
-  // A locked hero shows as a dark silhouette with a padlock and, right under it, how to unlock it; the sheet stays readable.
+  // A locked hero shows as a dark silhouette with a padlock and, right under it, how to unlock it; its stats stay
+  // readable, its features stay a secret.
   const badge =
     locked && hero.unlock
       ? `<button class="hero-lock" aria-label="${unlockText(hero.unlock)}">${icon('lock')}</button><p class="hero-unlock" aria-hidden="true">${unlockText(hero.unlock)}</p>`
@@ -47,7 +48,7 @@ function slide(hero: HeroDef, index: number): HTMLElement {
       }),
       h('button', { class: 'stat deck', 'aria-label': t('hero.starterDeck'), html: `${icon('cards')}${hero.startDeck.length}` }),
     ),
-    heroFeatures(hero),
+    heroFeatures(hero, locked),
   );
   // Every stat explains itself on a tap or a hold; the deck opens the starter deck.
   for (const stat of ['hp', 'mana', 'sleeve'] as const)

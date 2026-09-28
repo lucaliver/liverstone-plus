@@ -20,6 +20,9 @@ export interface TitleCallbacks {
   onDebugFight: () => void;
 }
 
+/** Holes the logo takes before it's swapped for a fresh one. */
+const LOGO_HOLES = 7;
+
 /** How long the time card takes to slide into the clock before the next screen (ms). */
 const PUNCH_MS = 380;
 
@@ -49,6 +52,16 @@ export function titleScreen(cb: TitleCallbacks): Screen {
   const poster = h('div', {
     class: 'poster',
     html: `<div class="poster-band"></div><div class="poster-boss">${creature(posterBoss())}</div><h1 class="logo">${t('app.title')}</h1><div class="poster-slogan">${t('menu.slogan')}</div><div class="poster-plate">${t('menu.plate')}</div>`,
+  });
+  // A little secret: tapping the logo punches a hole in it (a few at most, then the plate is fresh again).
+  const logo = poster.querySelector<HTMLElement>('.logo')!;
+  logo.addEventListener('click', () => {
+    const holes = logo.querySelectorAll('.logo-hole');
+    if (holes.length >= LOGO_HOLES) for (const x of holes) x.remove();
+    logo.append(h('span', { class: 'logo-hole', style: { left: `${8 + Math.random() * 84}%`, top: `${12 + Math.random() * 60}%` } }));
+    retrigger(logo, 'punched');
+    sfx('punchClock');
+    haptic('tap');
   });
 
   // The time card: tap it and it slides into the clock (ka-chunk), then the shift starts.

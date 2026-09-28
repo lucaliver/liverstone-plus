@@ -335,7 +335,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         h('button', { class: 'btn cta start-btn js-start', html: `${t('combat.start')}<small>${t('combat.startHint')}</small>` }),
       );
       // Before the fight, the enemy's passives are spelled out above it, so the player knows what they're facing.
-      const traits = enemyTraits(combat.enemy.def);
+      const traits = enemyTraits(combat.enemy.def, !combat.enemy.def.halfSecret);
       const traitsEl = traits.length
         ? h(
             'div',

@@ -8,7 +8,7 @@ import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { ABILITY_ICON, PASSIVE_ICON } from '../combat/view';
 import { h } from '../dom';
-import { cardText } from './cardView';
+import { cardText, UNKNOWN } from './cardView';
 import { openDeck } from './modals';
 
 const feature = (ic: string, name: string, kind: 'passive' | 'active' | 'special', desc: string): HTMLElement =>
@@ -17,20 +17,24 @@ const feature = (ic: string, name: string, kind: 'passive' | 'active' | 'special
     html: `${icon(ic)}<div><b>${name} <span class="ftag ${kind}">${t(`hero.tag.${kind}`)}</span></b>${desc}</div>`,
   });
 
-/** Passive, ability and once-per-run special of a hero (hero select and the in-run hero sheet). */
-export function heroFeatures(hero: HeroDef): HTMLElement {
+/**
+ * Passive, ability and once-per-run special of a hero (hero select and the in-run hero sheet). `hidden`: a locked hero
+ * shows only what kind of features it has, their names and texts replaced by question marks.
+ */
+export function heroFeatures(hero: HeroDef, hidden = false): HTMLElement {
   const id = hero.id;
+  const say = (text: string): string => (hidden ? UNKNOWN : text);
   return h(
     'div',
     { class: 'hero-features' },
-    feature(PASSIVE_ICON[id], t(`hero.${id}.passiveName`), 'passive', t(`hero.${id}.passiveShort`)),
+    feature(PASSIVE_ICON[id], say(t(`hero.${id}.passiveName`)), 'passive', say(t(`hero.${id}.passiveShort`))),
     feature(
       ABILITY_ICON[id],
-      t(`hero.${id}.ability`),
+      say(t(`hero.${id}.ability`)),
       'active',
-      `${t(`hero.${id}.abilityShort`)} <span class="fcost">${icon('crystal')}${hero.ability.cost}</span>`,
+      `${say(t(`hero.${id}.abilityShort`))} <span class="fcost">${icon('crystal')}${hero.ability.cost}</span>`,
     ),
-    hero.special ? feature('star', t(`card.${hero.special}.name`), 'special', cardText({ uid: -1, id: hero.special, up: false })) : null,
+    hero.special ? feature('star', say(t(`card.${hero.special}.name`)), 'special', say(cardText({ uid: -1, id: hero.special, up: false }))) : null,
   );
 }
 

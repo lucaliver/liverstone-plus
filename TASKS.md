@@ -22,11 +22,11 @@
 
 - [x] Nell'handbook: aggiungere una nuova tab per record e achievements
 
-- [ ] Nella home: piccola chicca, la punchcard quando cliccata dovrebbe fare un suono e animazione
+- [x] Nella home: piccola chicca, la punchcard quando cliccata dovrebbe fare un suono e animazione
 
-- [ ] Nella selezione personaggi: finchè un pg non è sbloccato, le sue attive/passive/carta speciale dovrebbero avere "????" come caratteri al posto del testo (come hai fatto con i titoli delle carte del handbook non sbloccate)
+- [x] Nella selezione personaggi: finchè un pg non è sbloccato, le sue attive/passive/carta speciale dovrebbero avere "????" come caratteri al posto del testo (come hai fatto con i titoli delle carte del handbook non sbloccate)
 
-- [ ] Nemico "HR orientation dummy": solo per lui, non mostrare il tooltip della passiva prima dell'inizio della partita (altrimenti è spoiler)
+- [x] Nemico "HR orientation dummy": solo per lui, non mostrare il tooltip della passiva prima dell'inizio della partita (altrimenti è spoiler)
 
 - [ ] Schermata "Pick your bonus": vorrei che anche qui il deck fosse mostrato in modo smart come il dettaglio del deck dalle altre schermate, con tanto di opzione di sort in cima
 
@@ -34,3 +34,6 @@
 
 - [ ] Nella schermata di combattimento: nascondi il tasto della velocità (tanto è già dentro al menu pausa)
 
+- [ ] Schermata "Reading a card": la carta non dovrebbe avere valori veri, ma costo X e nell'effetto +Y Z.
+
+- [ ] Schermata di selezioen debug: il selecter dell'eroe è scarno e troppo stretto, mettigli un'icona e del padding

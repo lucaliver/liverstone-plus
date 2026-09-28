@@ -198,6 +198,8 @@ export interface EnemyDef {
   halfSpeech?: boolean;
   /** Sprite once its half-HP trait has triggered (it shows its true face). */
   halfArt?: string;
+  /** Its half-HP trait is a surprise: not announced before the fight starts. */
+  halfSecret?: boolean;
   /** Belt rows open at the start of the fight (the rest stay shut until `openBeltRows`). */
   startRows?: number;
   /** Only met as the very first fight of the very first run (never dealt at random). */

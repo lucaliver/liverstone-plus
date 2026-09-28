@@ -69,16 +69,18 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
   const renderStatuses = (side: Side, box: HTMLElement): void => {
     const f = combat.fighter(side);
     const list = STATUS_ORDER.filter((id) => f.statuses[id] && (STATUSES[id].kind === 'timed' ? f.statuses[id].t > 0 : f.statuses[id].v > 0));
-    const ids = list.join('|');
+    const e = combat.enemy.def;
+    // A secret half-HP trait only shows once it has kicked in.
+    const secret = side === 'enemy' && !!e.halfSecret && !combat.enemy.halfTriggered;
+    const ids = `${list.join('|')}${secret ? '|secret' : ''}`;
     if (ids !== statusSig[side]) {
       statusSig[side] = ids;
       // The hero's passive always leads the hero's row, like a permanent status; an enemy's half-HP trait leads its
       // row (waiting, then lit once it has kicked in).
-      const e = combat.enemy.def;
       const passive =
         side === 'hero'
           ? h('button', { class: 'status passive', html: icon(PASSIVE_ICON[v.heroId]), 'aria-label': t(`hero.${v.heroId}.passiveName`) })
-          : e.onHalf
+          : e.onHalf && !secret
             ? h('button', { class: 'status passive half', html: icon(HALF_ICON), 'aria-label': t('status.half') })
             : null;
       if (passive && side === 'hero') onPress(passive, onPassive);
