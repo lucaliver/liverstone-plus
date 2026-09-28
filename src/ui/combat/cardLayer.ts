@@ -6,7 +6,7 @@ import type { CombatCard } from '../../game/types';
 import { icon } from '../art/icons';
 import { cardCostLabel, cardFace, cardView } from '../components/cardView';
 import { openCardDetail, openInfo } from '../components/modals';
-import { LONG_PRESS_MS, h, onPress, setHtml, setText, toggle } from '../dom';
+import { LONG_PRESS_MS, h, onTapOrHold, setHtml, setText, toggle } from '../dom';
 import { burst } from '../fx/fx';
 import type { CombatView } from './view';
 
@@ -66,16 +66,21 @@ export function createCardLayer(v: CombatView): CardLayer {
   const slotHint = `${icon('hand')}<span>${t('combat.sleeveHint')}</span>`;
   const slotEls: HTMLElement[] = combat.sleeve.map((_, i) => h('div', { class: 'sleeve-slot', 'data-slot': i, html: slotHint }));
   r.sleeve.append(...slotEls);
-  // An empty slot explains the sleeve on a tap or a hold (a card in it has its own inspect).
+  // An empty slot explains the sleeve on a hold (a card in it has its own inspect); a tap does nothing.
   for (const slot of slotEls) {
-    onPress(slot, () => {
-      if (slot.querySelector('.card')) return;
-      sfx('tap');
-      v.inspect(true);
-      openInfo({ icon: 'hand', title: t('howto.sleeve.t'), desc: t('howto.sleeve.d'), extra: [t('hero.sleeve', { n: combat.sleeve.length })] }, () =>
-        v.inspect(false),
-      );
-    });
+    onTapOrHold(
+      slot,
+      () => {},
+      () => {
+        if (slot.querySelector('.card')) return;
+        sfx('tap');
+        v.inspect(true);
+        openInfo(
+          { icon: 'hand', title: t('howto.sleeve.t'), desc: t('howto.sleeve.d'), extra: [t('hero.sleeve', { n: combat.sleeve.length })] },
+          () => v.inspect(false),
+        );
+      },
+    );
   }
   let drag: Drag | null = null;
 

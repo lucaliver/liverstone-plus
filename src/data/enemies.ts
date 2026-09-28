@@ -14,7 +14,7 @@ const ramp: Partial<MoveDef> = { status: [{ id: 'strength', v: 1, target: 'enemy
 const defs: EnemyDef[] = [
   {
     // The very first fight of the very first run: an orientation video on a haunted TV. One belt row to start with;
-    // at half HP it assigns you the second one.
+    // at half HP it assigns you the second one, and the friendly face on the screen turns out to be a mask.
     id: 'hrVideo',
     act: 1,
     tier: 'normal',
@@ -26,6 +26,7 @@ const defs: EnemyDef[] = [
     startRows: 1,
     firstRunOnly: true,
     halfSpeech: true,
+    halfArt: 'hrVideoAngry',
     onHalf: (c) => c.openBeltRows(),
   },
   // ------------------------------------------------------------- Act 1

@@ -454,7 +454,9 @@ export class Combat {
 
   /** Opens every belt row (the ones an enemy kept shut). */
   openBeltRows(): void {
+    if (this.rowsOpen === this.beltRows) return;
     this.rowsOpen = this.beltRows;
+    this.events.emit({ type: 'rowsOpen' });
   }
 
   /** The enemy drops the move it is charging for `move` (e.g. it lost its train of thought); its pattern goes on after. */

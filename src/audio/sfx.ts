@@ -201,6 +201,13 @@ const SOUNDS = {
     tone(420, 0.6, { type: 'sawtooth', vol: 0.03, to: 260, delay: 0.72, attack: 0.1 });
     noise(0.45, { freq: 1400, to: 700, q: 6, vol: 0.06, delay: 0.72 });
   },
+  /** Heavy machinery starting up (a belt row opening): a motor spinning up under a train of clunks, then a latch. */
+  machinery: () => {
+    tone(45, 2.2, { type: 'sawtooth', vol: 0.08, to: 75, attack: 0.3 });
+    noise(2.2, { freq: 200, to: 500, vol: 0.12, type: 'lowpass', attack: 0.3 });
+    for (let i = 0; i < 12; i++) noise(0.05, { freq: 700, vol: 0.18, type: 'lowpass', delay: 0.1 + i * 0.17 });
+    tone(140, 0.1, { type: 'square', vol: 0.12, to: 80, delay: 2.2 });
+  },
   /** A boss is down: a longer brass-like fanfare, rising in thirds, ending on a held chord. */
   bossVictory: () => {
     [523, 659, 784, 659, 784, 1046].forEach((f, i) => {

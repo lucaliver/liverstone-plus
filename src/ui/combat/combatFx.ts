@@ -6,6 +6,7 @@ import { STATUSES } from '../../data/statuses';
 import { discover } from '../../game/meta';
 import { settings } from '../../game/settings';
 import type { CombatEvent } from '../../game/types';
+import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { centerOf, h } from '../dom';
 import { burst, floatText, haptic, shake } from '../fx/fx';
@@ -247,6 +248,10 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
           bubble.addEventListener('animationend', () => bubble.remove());
           r.stage.append(bubble);
         } else v.toast(t(`enemy.${v.combat.enemy.def.id}.half`), true);
+        // Its true face: the sprite changes for good.
+        const art = v.combat.enemy.def.halfArt;
+        const riso = r.enemyArt.querySelector('.riso');
+        if (art && riso) riso.outerHTML = creature(art);
         burst('blood', p.x, p.y, 30, 1.4);
         sfx('enrage');
         sfx('klaxon');
@@ -254,6 +259,10 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         shake('big');
         break;
       }
+      case 'rowsOpen':
+        r.belt.classList.add('row-opening');
+        sfx('machinery');
+        break;
       case 'end':
         onEnd(e.result);
         break;

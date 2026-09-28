@@ -196,6 +196,8 @@ export interface EnemyDef {
   onHalf?: (c: Combat) => void;
   /** At half HP it also says something (`enemy.<id>.speech`, shown in a speech bubble). */
   halfSpeech?: boolean;
+  /** Sprite once its half-HP trait has triggered (it shows its true face). */
+  halfArt?: string;
   /** Belt rows open at the start of the fight (the rest stay shut until `openBeltRows`). */
   startRows?: number;
   /** Only met as the very first fight of the very first run (never dealt at random). */
@@ -296,6 +298,7 @@ export type CombatEvent =
   | { type: 'ability'; id: string }
   | { type: 'relic'; id: string }
   | { type: 'enrage' }
+  | { type: 'rowsOpen' }
   | { type: 'end'; result: CombatResult };
 
 export type CombatResult = 'win' | 'lose';

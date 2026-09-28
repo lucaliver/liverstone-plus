@@ -8,11 +8,11 @@
 
 - [x] Handbook cards: Metti il select dell'ordinamento anche qui, in cima alla lista
 
-- [ ] Nemico "HR orientation dummy": l'apertura della seconda corsia della belt dovrebbe avvenire lentamente con una animazione di slide e un suono prolungato di macchinario; quando si triggera la passiva della doppia belt, lo sprite dovrebbe cambiare ed essere una TV arrabbiata e cattiva
+- [x] Nemico "HR orientation dummy": l'apertura della seconda corsia della belt dovrebbe avvenire lentamente con una animazione di slide e un suono prolungato di macchinario; quando si triggera la passiva della doppia belt, lo sprite dovrebbe cambiare ed essere una TV arrabbiata e cattiva
 
 - [ ] Il popup di info sulle sleeve dovrebbero aprirsi solo quando fai hold, non al tap; idem sulla barra di mana
 
-- [ ] Rimuovi la cardina rosa che compare sopra al combattimento quando perdi, mi basta la schermata di game over con la PAYSLIP.
+- [x] Rimuovi la cardina rosa che compare sopra al combattimento quando perdi, mi basta la schermata di game over con la PAYSLIP.
 
 - [ ] Fixa: l'anteprima del link non presenta alcuna immagine quando lo condivido
 
@@ -24,4 +24,6 @@
 
 - [ ] Nella home: piccola chicca, la punchcard quando cliccata dovrebbe fare un suono e animazione
 
-- 
+- [ ] Nella selezione personaggi: finchè un pg non è sbloccato, le sue attive/passive/carta speciale dovrebbero avere "????" come caratteri al posto del testo (come hai fatto con i titoli delle carte del handbook non sbloccate)
+
+- Nemico "HR orientation dummy": solo per lui, non mostrare il tooltip della passiva prima dell'inizio della partita (altrimenti è spoiler)

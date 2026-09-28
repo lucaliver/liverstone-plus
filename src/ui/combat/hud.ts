@@ -201,10 +201,8 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     toggle(r.enemyArt, 'absorbing', !!combat.enemy.move.absorb && combat.enemyTimeRate() > 0);
     // Blackout: every card turns black but its art and cost.
     toggle(v.el, 'blackout', combat.has('hero', 'blackout'));
-    // Belt rows an enemy keeps shut are barred; when they open, the bars slide away.
-    const shut = combat.rowsOpen < combat.beltRows;
-    if (!shut && r.belt.classList.contains('row-shut')) r.belt.classList.add('row-opening');
-    toggle(r.belt, 'row-shut', shut);
+    // Belt rows an enemy keeps shut are barred (the `rowsOpen` event slides the bars away).
+    toggle(r.belt, 'row-shut', combat.rowsOpen < combat.beltRows);
   };
 
   const renderMana = (): void => {

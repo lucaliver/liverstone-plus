@@ -260,7 +260,8 @@
 .combat.blackout .belt-cards .card .c-art .pico,
 .combat.blackout .sleeve .card .c-art .pico { color: var(--paper); --ink2: var(--muted); }
 
-/* a belt row an enemy keeps shut: barred with hazard stripes; when it opens, the bars slide off in steps */
+/* a belt row an enemy keeps shut: barred with hazard stripes; when it opens, the shutter grinds slowly off towards the
+   exit (the stripes crawl as it goes), so the row's first cards show first */
 .belt.row-shut .belt-cards::after,
 .belt.row-opening .belt-cards::after {
   content: '';
@@ -276,7 +277,13 @@
   opacity: 0.9;
   pointer-events: none;
 }
-.belt.row-opening:not(.row-shut) .belt-cards::after { animation: row-open 0.6s steps(6) forwards; }
+.belt.row-opening:not(.row-shut) .belt-cards::after { animation: row-open 2.2s steps(22) forwards; }
+.belt.row-opening:not(.ltr):not(.row-shut) .belt-cards::after { animation-name: row-open-rtl; }
 @keyframes row-open {
-  to { clip-path: inset(0 0 0 100%); }
+  from { clip-path: inset(0 0 0 0); }
+  to { clip-path: inset(0 0 0 100%); background-position: 240px 0; }
+}
+@keyframes row-open-rtl {
+  from { clip-path: inset(0 0 0 0); }
+  to { clip-path: inset(0 100% 0 0); background-position: -240px 0; }
 }

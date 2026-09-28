@@ -71,10 +71,6 @@ export function markHeroSeen(id: HeroId): void {
 }
 
 /** Records progress that can unlock heroes (a run finished with a hero, an act boss reached). Returns the heroes it unlocked. */
-/** Heroes that finishing a run with `hero` would unlock (not unlocked yet). */
-export const unlockedByFinishing = (hero: HeroId): HeroId[] =>
-  HERO_LIST.filter((hd) => hd.unlock && 'finishRun' in hd.unlock && hd.unlock.finishRun === hero && !heroUnlocked(hd.id)).map((hd) => hd.id);
-
 export function progress(met: (u: HeroUnlock) => boolean): HeroId[] {
   const unlocked = HERO_LIST.filter((hd) => hd.unlock && !heroUnlocked(hd.id) && met(hd.unlock)).map((hd) => hd.id);
   if (!unlocked.length) return unlocked;

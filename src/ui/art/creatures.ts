@@ -367,6 +367,24 @@ ${shadow}
 <g fill="#ffd900" ${OUT}><circle cx="160" cy="62" r="7"/><circle cx="160" cy="88" r="7"/></g>
 <g fill="#1b1830"><rect x="152" y="110" width="16" height="4"/><rect x="152" y="120" width="16" height="4"/><rect x="152" y="130" width="16" height="4"/></g>`;
 
+/** The same TV at half HP, mask off: a cracked red screen, bent sparking antennae, glaring eyes and a jagged grin. */
+const hrVideoAngry = `
+${shadow}
+<path d="M70 30L44 12M130 30l20-24" stroke="#1b1830" stroke-width="5" stroke-linecap="round"/>
+<path d="M36 4l8 8-10 2 12 8M150 0l2 10 8-4" stroke="#ffd900" stroke-width="3" fill="none"/>
+<path d="M58 160l-8 26h14l8-26M142 160l8 26h-14l-8-26" fill="#6a3a1a" ${OUT}/>
+<rect x="24" y="30" width="152" height="134" rx="14" fill="#b07a3a" ${OUT}/>
+<rect x="34" y="40" width="112" height="108" rx="18" fill="#1b1830" ${OUT}/>
+<rect x="42" y="48" width="96" height="92" rx="14" fill="#ff3d9a"/>
+<path d="M42 70h96M42 94h96M42 118h96" stroke="#1b1830" stroke-width="3" opacity=".35"/>
+<path d="M58 70l28 12M122 70l-28 12" stroke="#1b1830" stroke-width="7" stroke-linecap="round"/>
+<path d="M62 84l22 8-4 8H64zM118 84l-22 8 4 8h16z" fill="#ffd900" ${OUT}/>
+<path d="M60 108h60l-6 20H66z" fill="#1b1830"/>
+<path d="M60 108l5 9 5-9 5 9 5-9 5 9 5-9 5 9 5-9 5 9 5-9 5 9 5-9z" fill="#f6f0e4"/>
+<path d="M124 50l-10 16 10 6-12 16" stroke="#1b1830" stroke-width="3" fill="none"/>
+<g fill="#ff3d9a" ${OUT}><circle cx="160" cy="62" r="7"/><circle cx="160" cy="88" r="7"/></g>
+<g fill="#1b1830"><rect x="152" y="110" width="16" height="4"/><rect x="152" y="120" width="16" height="4"/><rect x="152" y="130" width="16" height="4"/></g>`;
+
 /** Act 2 stage prop: an office water cooler, upside-down jug on top (CSS adds the rising bubble). */
 const waterCooler = `
 ${shadow}
@@ -654,6 +672,7 @@ export const CREATURES: Record<string, string> = {
   happiness,
   officeChair,
   hrVideo,
+  hrVideoAngry,
   overthinker,
   wellness,
   beanCounter,
