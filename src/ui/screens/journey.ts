@@ -5,7 +5,7 @@ import { clockAt, currentNode, type RunNode, type RunState } from '../../game/ru
 import type { Screen } from '../app';
 import { h, onPress, onTapOrHold } from '../dom';
 import { icon } from '../art/icons';
-import { openDeck, openInfo, openSettings } from '../components/modals';
+import { openDeck, openInfo, openSettings, openStatInfo } from '../components/modals';
 import { openHeroSheet } from '../components/heroSheet';
 import { dropLetters } from '../components/decor';
 import { creature } from '../art/creatures';
@@ -36,23 +36,15 @@ export function runHud(run: RunState, extra?: HTMLElement): HTMLElement {
   const portrait = h('button', { class: 'chip hero-chip', 'aria-label': t(`hero.${run.hero}.name`), html: creature(run.hero) });
   // Tap or hold the portrait for the hero's sheet.
   onPress(portrait, () => openHeroSheet(run));
-  return h(
-    'div',
-    { class: 'run-hud' },
-    portrait,
-    h('div', { class: 'chip hp', html: `${icon('heart')}<span>${run.hp}/${run.maxHp}</span>` }),
-    h('button', {
-      class: 'chip',
-      onclick: () => {
-        sfx('tap');
-        openDeck(run.deck);
-      },
-      html: `${icon('cards')}<span>${run.deck.length}</span>`,
-      'aria-label': t('common.deck'),
-    }),
-    h('div', { class: 'spacer' }),
-    extra ?? null,
-  );
+  // HP explains itself and the deck opens, on a tap or a hold alike.
+  const hp = h('button', { class: 'chip hp', html: `${icon('heart')}<span>${run.hp}/${run.maxHp}</span>` });
+  onPress(hp, () => openStatInfo('hp'));
+  const deck = h('button', { class: 'chip', html: `${icon('cards')}<span>${run.deck.length}</span>`, 'aria-label': t('common.deck') });
+  onPress(deck, () => {
+    sfx('tap');
+    openDeck(run.deck);
+  });
+  return h('div', { class: 'run-hud' }, portrait, hp, deck, h('div', { class: 'spacer' }), extra ?? null);
 }
 
 /**
@@ -221,6 +213,9 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       },
     }),
   );
+  // Pay earned so far (the run's score), beside the act title where there's room.
+  const pay = h('button', { class: 'chip money', 'aria-label': t('common.pay'), html: `${icon('coin')}<span>${run.money}</span>` });
+  onPress(pay, () => openStatInfo('pay'));
   const el = h(
     'div',
     { class: 'screen journey' },
@@ -230,8 +225,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       { class: 'act-banner' },
       h('div', { class: 'h1' }, t('journey.title', { n: act })),
       h('p', { class: 'sub' }, t(`journey.actName.${act}`)),
-      // Pay earned so far (the run's score), beside the act title where there's room.
-      h('div', { class: 'chip money', 'aria-label': t('common.pay'), html: `${icon('coin')}<span>${run.money}</span>` }),
+      pay,
     ),
     h('div', { class: 'scroll', style: { flex: '1' } }, path),
     enterBtn,

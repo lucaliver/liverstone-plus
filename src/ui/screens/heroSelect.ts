@@ -9,8 +9,8 @@ import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { heroFeatures } from '../components/heroSheet';
 import { motes } from '../components/decor';
-import { openDeck } from '../components/modals';
-import { h } from '../dom';
+import { openDeck, openStatInfo } from '../components/modals';
+import { h, onPress } from '../dom';
 
 const unlockText = (u: HeroUnlock): string =>
   'finishRun' in u ? t('hero.unlock.finishRun', { hero: t(`hero.${u.finishRun}.name`) }) : t('hero.unlock.reachBoss', { n: u.reachBoss });
@@ -37,24 +37,28 @@ function slide(hero: HeroDef, index: number): HTMLElement {
     h(
       'div',
       { class: 'hero-stats' },
-      h('span', { class: 'stat hp', html: `${icon('heart')}${hero.hp}` }),
-      h('span', { class: 'stat mana', html: `${icon('crystal')}${hero.maxMana}` }),
-      h('span', { class: 'stat sleeve', 'aria-label': t('hero.sleeve', { n: hero.sleeve }), html: `${icon('hand')}${hero.sleeve}` }),
+      h('button', { class: 'stat hp', 'data-stat': 'hp', html: `${icon('heart')}${hero.hp}` }),
+      h('button', { class: 'stat mana', 'data-stat': 'mana', html: `${icon('crystal')}${hero.maxMana}` }),
       h('button', {
-        class: 'stat deck',
-        'aria-label': t('hero.starterDeck'),
-        onclick: () => {
-          sfx('tap');
-          openDeck(
-            hero.startDeck.map((cid, i) => ({ uid: i + 1, id: cid, up: false })),
-            { title: t('hero.starterDeck') },
-          );
-        },
-        html: `${icon('cards')}${hero.startDeck.length}`,
+        class: 'stat sleeve',
+        'data-stat': 'sleeve',
+        'aria-label': t('hero.sleeve', { n: hero.sleeve }),
+        html: `${icon('hand')}${hero.sleeve}`,
       }),
+      h('button', { class: 'stat deck', 'aria-label': t('hero.starterDeck'), html: `${icon('cards')}${hero.startDeck.length}` }),
     ),
     heroFeatures(hero),
   );
+  // Every stat explains itself on a tap or a hold; the deck opens the starter deck.
+  for (const stat of ['hp', 'mana', 'sleeve'] as const)
+    onPress(el.querySelector<HTMLElement>(`[data-stat='${stat}']`)!, () => openStatInfo(stat, hero.sleeve));
+  onPress(el.querySelector<HTMLElement>('.stat.deck')!, () => {
+    sfx('tap');
+    openDeck(
+      hero.startDeck.map((cid, i) => ({ uid: i + 1, id: cid, up: false })),
+      { title: t('hero.starterDeck') },
+    );
+  });
   // Tapping the padlock rattles its chains.
   const lock = el.querySelector<HTMLElement>('.hero-lock');
   lock?.addEventListener('click', () => {

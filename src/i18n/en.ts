@@ -59,6 +59,9 @@ const en = {
   'common.mana': 'Mana',
   'common.floor': 'Floor {n}',
   'common.pay': 'Pay earned',
+  'info.hp.t': 'Health',
+  'info.hp.d': 'Your HP. It carries over from floor to floor; at 0 you are fired.',
+  'info.pay.d': 'Every job you win pays, and the faster you win, the more. It is your score for the run.',
   'common.floorOf': 'Act {a} · Floor {n}/{total}',
 
   // ------------------------------------------------------------ settings

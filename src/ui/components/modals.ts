@@ -196,6 +196,18 @@ export function openInfo(opts: InfoOpts, onClose?: () => void): ModalHandle {
   return openModal({ body, actions: [{ label: t('common.close'), cls: 'secondary' }], onClose });
 }
 
+/** What a hero or run stat means (hero select, map header): HP, mana, sleeve slots (`n`), pay. */
+export function openStatInfo(stat: 'hp' | 'mana' | 'sleeve' | 'pay', n = 0): ModalHandle {
+  sfx('tap');
+  const info: Record<typeof stat, InfoOpts> = {
+    hp: { icon: 'heart', title: t('info.hp.t'), desc: t('info.hp.d') },
+    mana: { icon: 'crystal', title: t('common.mana'), desc: t('howto.mana.d') },
+    sleeve: { icon: 'hand', title: t('howto.sleeve.t'), desc: t('howto.sleeve.d'), extra: [t('hero.sleeve', { n })] },
+    pay: { icon: 'coin', title: t('common.pay'), desc: t('info.pay.d') },
+  };
+  return openInfo(info[stat]);
+}
+
 export function openCardDetail(card: CardInst, onClose?: () => void): ModalHandle {
   const wrap = h('div', { class: 'detail' });
   let showUp = card.up;
