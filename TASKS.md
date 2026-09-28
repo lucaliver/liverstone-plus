@@ -52,7 +52,7 @@
 
 - [x] carta "quick sync" non dovrebbe costare zero ma 99
 
-- [ ]rendi le icone degli status sia del nemico che propri più grandi, e allineale all'inizio della barra salute (stando rispettivamente sopra o sotto)
+- [x] rendi le icone degli status sia del nemico che propri più grandi, e allineale all'inizio della barra salute (stando rispettivamente sopra o sotto)
 
 - [x] handbook: nel personnel come nelle carte segna quelli non ancora incontrati mettendogli il nome con tutti "????"
 

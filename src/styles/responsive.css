@@ -28,11 +28,11 @@
 @media (max-height: 700px) {
   .enemy-info { gap: 4px; }
   .enemy-info .statuses,
-  .hero-info .statuses { height: 22px; }
-  .status { height: 22px; font-size: 14px; }
-  .status .pico { font-size: 16px; }
+  .hero-info .statuses { height: 26px; }
+  .status { height: 26px; font-size: 16px; }
+  .status .pico { font-size: 20px; }
   .hero-info { gap: 3px; }
-  .combat { --portrait: 62px; }
+  .combat { --portrait: 67px; }
   /* the sleeve grows less here: the enemy needs the room */
   .action-row { --cw: calc(var(--cw-belt) * 0.85); }
   .sleeve-slot .card { --cw: calc(var(--cw-belt) * 0.85 - 8px); }

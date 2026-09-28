@@ -249,7 +249,8 @@
 .hero-info .statuses {
   justify-content: flex-start;
   min-height: 0;
-  height: 26px;
+  height: 32px;
+  padding-left: calc(var(--chip-w) + 6px);
 }
 /* status rows have a fixed height (one line) so they never push the layout around */
 .enemy-info .statuses,
@@ -257,4 +258,4 @@
   flex-wrap: nowrap;
   overflow: hidden;
 }
-.enemy-info .statuses { height: 26px; }
+.enemy-info .statuses { height: 32px; }
