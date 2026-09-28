@@ -6,6 +6,7 @@ import { CARDS, cardCostOf } from '../../data/cards';
 import { GAME_SPEEDS } from '../../data/config';
 import { ENEMY_LIST } from '../../data/enemies';
 import { HERO_LIST } from '../../data/heroes';
+import { unlockAll } from '../../game/meta';
 import { saveSettings, settings } from '../../game/settings';
 import type { CardInst, CardType, HeroId } from '../../game/types';
 import { confirmModal, type ModalAction, openModal, type ModalHandle } from '../app';
@@ -135,6 +136,7 @@ export function openSettings(extra: ModalAction[] = []): ModalHandle {
           ),
         )
       : null,
+    h('div', { class: 'version' }, t('settings.version', { v: __APP_VERSION__ })),
   );
   const reset: ModalAction = {
     label: t('menu.reset'),
@@ -516,7 +518,21 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string) => void): M
   handle = openModal({
     title: t('debug.title'),
     body: h('div', { class: 'debug-fight' }, heroSeg, list),
-    actions: [{ label: t('common.close'), cls: 'secondary' }],
+    actions: [
+      {
+        label: t('debug.unlockAll'),
+        icon: 'lock',
+        onClick: () => {
+          unlockAll(
+            Object.keys(CARDS),
+            ENEMY_LIST.map((e) => e.id),
+          );
+          sfx('ability');
+          haptic('ability');
+        },
+      },
+      { label: t('common.close'), cls: 'secondary' },
+    ],
   });
   return handle;
 }

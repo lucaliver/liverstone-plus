@@ -86,6 +86,16 @@ export function meetEnemy(id: string): void {
 }
 export const enemyMet = (id: string): boolean => meta.met.includes(id);
 
+/** Debug: every hero hired, every card discovered and every enemy met. */
+export function unlockAll(cards: Iterable<string>, enemies: Iterable<string>): void {
+  meta.heroes = HERO_LIST.filter((hd) => hd.unlock).map((hd) => hd.id);
+  meta.fresh = [];
+  meta.met = [...enemies];
+  for (const id of cards) discovered.add(id);
+  meta.discovered = [...discovered];
+  store('meta', meta);
+}
+
 export const heroUnlocked = (id: HeroId): boolean => !HEROES[id].unlock || meta.heroes.includes(id);
 export const heroFresh = (id: HeroId): boolean => meta.fresh.includes(id);
 

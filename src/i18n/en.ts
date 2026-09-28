@@ -80,6 +80,7 @@ const en = {
   'debug.button': 'Debug fight',
   'debug.title': 'Debug fight',
   'debug.hero': 'Hero',
+  'debug.unlockAll': 'Unlock all',
   'menu.abandonConfirm': 'A new run will scrap your current workday. Continue?',
   'common.back': 'Back',
   'common.next': 'Next',
@@ -97,6 +98,7 @@ const en = {
 
   // ------------------------------------------------------------ settings
   'settings.title': 'Settings',
+  'settings.version': 'Version {v}',
   'settings.sound': 'Sound effects',
   'settings.music': 'Music',
   'settings.speed': 'Game speed',
@@ -214,6 +216,8 @@ const en = {
   'move.fx.absorb': 'copies the damage it takes',
   'move.fx.release': 'plus all it copied',
   'move.fx.idle': 'does nothing',
+  'move.fx.heal': 'HP',
+  'move.fx.drain': 'drains {n} mana',
 
   'intent.attack': 'Attack',
   'intent.defend': 'Defend',
@@ -448,6 +452,8 @@ const en = {
   'status.lightSleeper.d': 'Every card you play wakes him 1s sooner.',
   'rule.inflation': 'Inflation',
   'rule.inflation.d': 'The card costs 1 more mana until you play it once.',
+  'rule.drain': 'Mana drain',
+  'rule.drain.d': 'Empties that much mana from your bar, if you have it. Spend it before the move lands.',
   'rule.copy': 'Copying',
   'rule.copy.d':
     'While it scans, the damage your cards deal it is stored instead of lost; its next hit prints all of it back at you. Damage over time still gets through.',

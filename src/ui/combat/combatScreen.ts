@@ -142,7 +142,11 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       desc: t(`hero.${v.heroId}.passiveShort`),
     });
   // Live values: floor scaling, enemy Strength, Weak and Vulnerable, exactly as the threat bar shows them.
-  const live = { dmg: (m: MoveDef) => combat.intentDamage(m), block: (m: MoveDef) => Math.round((m.block ?? 0) * combat.enemy.dmgScale) };
+  const live = {
+    dmg: (m: MoveDef) => combat.intentDamage(m),
+    block: (m: MoveDef) => Math.round((m.block ?? 0) * combat.enemy.dmgScale),
+    heal: (m: MoveDef) => Math.round((m.heal ?? 0) * combat.enemy.dmgScale),
+  };
   /** The move being charged, then the enemy's whole pattern (the next special marked). */
   const moveInfo = (): void => {
     const e = combat.enemy;

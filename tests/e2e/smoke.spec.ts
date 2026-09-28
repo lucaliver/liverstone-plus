@@ -290,6 +290,20 @@ test('debug button: pick a hero and an enemy, the fight starts against it', asyn
   expect(problems).toEqual([]);
 });
 
+test('debug: Unlock all hires every hero and reveals every card and enemy in the handbook', async ({ page }) => {
+  await freshGame(page, { locked: true });
+  await page.getByRole('button', { name: /debug/i }).click();
+  await page.getByRole('button', { name: /unlock all/i }).click();
+  await page.getByRole('button', { name: /handbook/i }).click();
+  await expect(page.locator('.card.undiscovered')).toHaveCount(0);
+  await page.getByRole('tab', { name: /personnel/i }).click();
+  await expect(page.locator('.foe h3', { hasText: '????' })).toHaveCount(0);
+  await page.getByRole('button', { name: /back/i }).click();
+  await expect(page.locator('.timecard-cta')).toHaveCount(1);
+  await page.getByRole('button', { name: /new run/i }).click();
+  await expect(page.locator('.hero-dot.locked')).toHaveCount(0);
+});
+
 test('handbook: the ? button explains how to read a card', async ({ page }) => {
   await freshGame(page);
   await page.getByRole('button', { name: /handbook/i }).click();

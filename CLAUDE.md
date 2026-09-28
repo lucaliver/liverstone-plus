@@ -19,6 +19,7 @@ This file is the technical guide: read it before changing code.
 - Before handing over: `npm run check` and `npm run e2e` must pass, then look at the screens you touched
   (Playwright screenshot at 390×844 and at a short height such as 375×620).
 - Balance: don't spend long on simulations while design is moving; one quick sim pass is enough.
+- Bump `version` in `package.json` at the end of every big batch of changes (it shows in Settings).
 - Keep this file true: when a change makes a line here stale (a name, a path, a rule), fix it in the same commit.
 
 ## Writing code
@@ -197,7 +198,8 @@ Plurals: `{n|one|other}`. New language: copy `en.ts`, register it in `core/i18n.
 - Dev hooks (dev server only): `window.__combat` (current `Combat`) and `window.__game` (`run`, `nextNode`,
   `goJourney`, `musicTrack`). E2E tests and screenshot scripts rely on them.
 - The belt has two rows by default (`CONFIG.beltRows`); tests that need one row pass `beltRows: 1`.
-- The title has a temporary floating "Debug fight" button (any hero against any enemy, on a fresh run); "Reset progress"
+- The title has a temporary floating "Debug fight" button (any hero against any enemy, on a fresh run; "Unlock all" hires
+  every hero and reveals every card and enemy); "Reset progress"
   lives in Settings (`clearAll` in `core/save.ts`).
 - Move descriptions (`moveEffect`) tag curses, statuses, hexes and rules with `data-*`; `bindMoveDetails` makes them
   pressable (explained in a popup) wherever a pattern is shown.

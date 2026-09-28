@@ -418,3 +418,5 @@
 }
 .debug-foe .riso { width: 56px; height: 56px; }
 .debug-foe small { font-size: 12px; color: var(--muted); }
+/* the build, at the foot of Settings */
+.modal .version { margin-top: 12px; text-align: center; color: var(--muted); }

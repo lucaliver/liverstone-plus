@@ -16,12 +16,15 @@ import { openCardDetail, openInfo } from './modals';
 export interface MoveValues {
   /** Damage per hit as it will land (floor scaling, Strength, Weak…). */
   dmg: (m: MoveDef) => number;
+  /** Block and heal scale alike. */
   block: (m: MoveDef) => number;
+  heal: (m: MoveDef) => number;
 }
 
 const baseValues: MoveValues = {
   dmg: (m) => Math.round((m.dmg ?? 0) * CONFIG.enemyDmg),
   block: (m) => Math.round((m.block ?? 0) * CONFIG.enemyDmg),
+  heal: (m) => Math.round((m.heal ?? 0) * CONFIG.enemyDmg),
 };
 
 export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = baseValues): string {
@@ -35,6 +38,11 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
     const n = values.block(m);
     parts.push(`<span class="fx fx-block">${icon('shield')}<b>${n}</b>${verbose ? ` ${t('kw.block')}` : ''}</span>`);
   }
+  if (m.heal) {
+    const n = values.heal(m);
+    parts.push(`<span class="fx fx-bad">${icon('heart')}<b>+${n}</b>${verbose ? ` ${t('move.fx.heal')}` : ''}</span>`);
+  }
+  if (m.drainMana) parts.push(`<span class="fx fx-bad" data-rule="drain">${icon('crystal')}${t('move.fx.drain', { n: m.drainMana })}</span>`);
   for (const st of m.status ?? []) {
     // Tone from the player's point of view: an enemy buff or a debuff on the hero is bad news.
     const bad = st.target === 'hero' ? !STATUSES[st.id].good : STATUSES[st.id].good;
@@ -91,6 +99,7 @@ export function enemyTraits(e: EnemyDef, withHalf = true): { icon: string; name:
 /** Rules a move can bring that aren't statuses or cards, explained on a press. */
 const RULES: Record<string, { icon: string; title: TKey; desc: TKey }> = {
   inflation: { icon: 'inflation', title: 'rule.inflation', desc: 'rule.inflation.d' },
+  drain: { icon: 'drain', title: 'rule.drain', desc: 'rule.drain.d' },
   copy: { icon: 'scanner', title: 'rule.copy', desc: 'rule.copy.d' },
 };
 
