@@ -138,6 +138,7 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
   Rarity `unique` = hero special.
 - `ride` makes one value change for every second the card rides the belt (`CombatCard.age`, frozen in the sleeve),
   read through `cardValsOf` like everything else (Unpaid Overtime grows, Patience decays).
+- `onOverflow`: damage the card gains for every second of full, wasted mana, wherever it is (Complaint Box).
 - `inSleeve` hooks (`bonusDamage`, `onCardPlayed`, `onHeroHit`) work only while the card waits in the sleeve
   (Tool Belt, Cache, Burn Book); the face shows them after `{?sleeve}`.
 - `span` (belt widths) makes a card wide: it rides over the cards ahead of it (Gatekeeping); `tall` makes it cover both

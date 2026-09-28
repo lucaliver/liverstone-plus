@@ -476,6 +476,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'holy',
     svg: `<rect x="30" y="8" width="4" height="46"/><rect x="18" y="54" width="28" height="6"/><rect x="8" y="12" width="48" height="4"/><path d="M4 36h20c0 6-4 10-10 10S4 42 4 36zM40 30h20c0 6-4 10-10 10s-10-4-10-10z"/><path d="M14 16L6 36h2l6-16 6 16h2zM50 16l-8 14h2l6-10 6 10h2z"/><g fill="#16121f"><rect x="9" y="30" width="10" height="5"/><path d="M45 26h10v4H45z"/></g>`,
   },
+  complaintBox: {
+    el: 'blood',
+    svg: `<rect x="8" y="20" width="48" height="40"/><rect x="4" y="14" width="56" height="8"/><rect x="18" y="16" width="28" height="4" fill="#16121f"/><path d="M26 2h14l2 12H24z" fill="#fff" opacity=".85"/><g fill="#16121f"><rect x="16" y="32" width="32" height="4"/><rect x="16" y="40" width="24" height="4"/><rect x="16" y="48" width="28" height="4"/></g>`,
+  },
   // Pop culture
   powerOff: {
     el: 'arcane',

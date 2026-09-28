@@ -101,6 +101,8 @@ export interface CardDef {
    * (it grows when `to` is above the base, decays when below). Frozen while the card waits in the sleeve.
    */
   ride?: { i: number; by: number; to: number };
+  /** Damage this card gains for every second the hero's mana is full and overflowing, wherever the card is. */
+  onOverflow?: number;
   /** Bonus effects that only work while the card waits in the sleeve (`v` = its values, `card` = the copy held). */
   inSleeve?: {
     /** Extra damage for the hero's cards of any type (`def` = the card dealing it). */

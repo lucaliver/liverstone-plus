@@ -107,6 +107,8 @@ export class Combat {
   specialUsed = false;
   /** The last card the hero played this fight (rules such as "not the same type twice"). */
   lastPlayed: CardDef | null = null;
+  /** Seconds of mana overflow not yet turned into growth (see `onOverflow`). */
+  private overflow = 0;
   /** The hero's recent HP losses (fight time, amount), for effects that undo them (Ctrl+Z). */
   private hurtLog: { t: number; n: number }[] = [];
   lastPlayedAt = -Infinity;
@@ -357,7 +359,18 @@ export class Combat {
       if (h.mana >= h.maxMana) h.manaTimer = 0;
     } else {
       h.manaTimer = 0;
+      // Mana overflowing (full, the regen wasted): every whole second, cards that grow on it do, wherever they are.
+      this.overflow += dt;
+      if (this.overflow >= 1) {
+        this.overflow -= 1;
+        for (const card of this.allCards()) card.bonus += CARDS[card.id].onOverflow ?? 0;
+      }
     }
+  }
+
+  /** Every card of the fight, wherever it is: piles, belt and sleeve. */
+  private allCards(): CombatCard[] {
+    return [...this.draw, ...this.discard, ...this.exhaust, ...this.belt.map((b) => b.card), ...this.sleeve.filter((c) => c !== null)];
   }
 
   private tickFighter(side: Side, dt: number): void {

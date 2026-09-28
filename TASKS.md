@@ -18,7 +18,7 @@
 
 - [x] Cambia funzionalità effetto "Dodge" nelle carte: anzichè "Completly avoid the next enemy hit" diventa "Become immune to damage for 2sec"
 
-- [ ] Nuova carta "Complaint box": "Infligge 2 danni. Il danno aumenta di 1 per ogni secondo in cui hai overflow di mana" (l'aumento si ha sia mentre è in campo che nel mazzo che ovunque)
+- [x] Nuova carta "Complaint box": "Infligge 2 danni. Il danno aumenta di 1 per ogni secondo in cui hai overflow di mana" (l'aumento si ha sia mentre è in campo che nel mazzo che ovunque)
 
 - [ ] Aggiungi un nuovo nemico "HR Orientation Video" (lo sprite è una TV fantasy con volto sereno), usato solo come primo nemico nella primissima run: la sua passiva è che la belt ha una sola riga, ma quando scende sotto il 50% degli hp aggiunge la seconda row (con animazione e con fumetto di dialogo "Great job. You've been assigned a second line. No raise.")
 

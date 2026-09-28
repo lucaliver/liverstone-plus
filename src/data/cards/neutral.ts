@@ -317,6 +317,20 @@ export const neutralCards: CardDef[] = [
     },
   },
   {
+    id: 'complaintBox',
+    face: '{dmg:0}|{?crystal}{grow}',
+    cls: 'neutral',
+    type: 'attack',
+    rarity: 'common',
+    cost: 1,
+    vals: [2],
+    upVals: [3],
+    // Every second of wasted (overflowing) mana is another complaint in the box.
+    onOverflow: 1,
+    art: 'complaintBox',
+    play: (c, v) => void c.hit(v[0]),
+  },
+  {
     id: 'ctrlZ',
     face: '{undo}{heal}|{timer:0}',
     cls: 'neutral',

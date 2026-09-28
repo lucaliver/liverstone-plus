@@ -829,3 +829,35 @@ describe('the Overthinker', () => {
     expect(c.enemy.move.id).toBe('bigIdea');
   });
 });
+
+describe('Work-Life Balance', () => {
+  it('hits again with every card played until two of the same colour come in a row', () => {
+    const c = setup({ deck: deckOf(Array(6).fill('strike')) });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.mana = c.hero.maxMana = 10;
+    const play = (id: string): void => {
+      c.addTempCard(id, 'belt');
+      c.playCard(c.belt[c.belt.length - 1].card.uid);
+    };
+    play('workLife');
+    let hp = c.enemy.hp;
+    play('defend');
+    expect(hp - c.enemy.hp).toBe(3);
+    hp = c.enemy.hp;
+    play('defend');
+    expect(hp - c.enemy.hp).toBe(0);
+    expect(c.has('hero', 'workLife')).toBe(false);
+  });
+});
+
+describe('Complaint Box', () => {
+  it('grows by 1 for every second of overflowing mana, even in the draw pile', () => {
+    const c = setup({ deck: deckOf(['strike', 'strike', 'complaintBox']) });
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.mana = c.hero.maxMana;
+    run(c, 3.05);
+    const box = [...c.draw, ...c.discard, ...c.belt.map((b) => b.card)].find((x) => x.id === 'complaintBox')!;
+    expect(c.cardVals(box)[0]).toBeGreaterThanOrEqual(2 + 3);
+  });
+});

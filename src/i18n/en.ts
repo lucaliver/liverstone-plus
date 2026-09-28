@@ -629,6 +629,8 @@ const en = {
   'card.severance.desc': 'Gain {0} [strength]. For {1}s, the work does itself: cards slipping off the belt play themselves if you can pay for them.',
   'card.workLife.name': 'Work-Life Balance',
   'card.workLife.desc': 'Deal {0} damage, then again with every card you play, until you play two cards of the same colour in a row.',
+  'card.complaintBox.name': 'Complaint Box',
+  'card.complaintBox.desc': 'Deal {0} damage. This card gains +1 damage for every second your mana is full and going to waste (wherever it is).',
   'card.ctrlZ.name': 'Ctrl+Z',
   'card.ctrlZ.desc': 'Undo: heal all the HP you lost in the last {0}s.',
   'card.unlimitedPto.name': 'Unlimited PTO',
