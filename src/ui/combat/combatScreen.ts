@@ -295,22 +295,28 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     enter() {
       layout();
       renderSpeed();
-      // The way in: an office double door with the enemy's name on the glass swings open onto the fight.
+      // The way in: seen from the corridor, an office double door with the enemy's name on the glass; a knock, the
+      // latch, the doors swing open on their hinges onto the lit room, and we walk through into the fight.
       const node = currentNode(run);
       const door = h(
         'div',
         { class: 'office-door', 'aria-hidden': 'true' },
         h(
           'div',
-          { class: 'door-half l' },
+          { class: 'door-frame' },
+          h('div', { class: 'door-light' }),
           h(
             'div',
-            { class: 'door-glass' },
-            h('b', null, t(`enemy.${combat.enemy.def.id}.name`)),
-            h('span', null, t('common.floorOf', { a: node.act, n: node.floor, total: totalFloors(run) })),
+            { class: 'door-half l' },
+            h(
+              'div',
+              { class: 'door-glass' },
+              h('b', null, t(`enemy.${combat.enemy.def.id}.name`)),
+              h('span', null, t('common.floorOf', { a: node.act, n: node.floor, total: totalFloors(run) })),
+            ),
           ),
+          h('div', { class: 'door-half r' }, h('div', { class: 'door-glass' })),
         ),
-        h('div', { class: 'door-half r' }, h('div', { class: 'door-glass' })),
       );
       door.addEventListener('animationend', (e) => {
         if (e.target === door) door.remove();

@@ -280,45 +280,69 @@
   100% { transform: rotate(-3deg); }
 }
 
-/* the way into a fight: an office double door (the enemy's name on the frosted glass) swings open in steps */
+/* the way into a fight: an office double door seen from the corridor. It swings open on its hinges onto the lit room
+   (each leaf narrows towards its hinge, stepped), then we walk through: the whole scene grows and fades. */
 .office-door {
   position: absolute;
   inset: 0;
   z-index: 300;
   display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
   pointer-events: none;
-  animation: door-done 1.3s steps(1) forwards;
+  /* the corridor wall: striped wallpaper */
+  background-color: #2a2040;
+  background-image: repeating-linear-gradient(90deg, transparent 0 18px, #332850 18px 30px);
+  transform-origin: 50% 58%;
+  animation: door-walk 0.5s steps(5) 1.15s forwards;
 }
-@keyframes door-done {
-  to { visibility: hidden; }
+@keyframes door-walk {
+  to { transform: scale(3.2); opacity: 0; visibility: hidden; }
+}
+.door-frame {
+  position: relative;
+  display: flex;
+  width: 76%;
+  height: 84%;
+  border: 10px solid #d8a830;
+  border-bottom: 0;
+  box-shadow: 0 0 0 4px var(--void);
+}
+/* the room beyond, lit: seen once the doors open */
+.door-light {
+  position: absolute;
+  inset: 0;
+  background-color: var(--y);
+  background-image: radial-gradient(circle, #fff3a0 30%, transparent 34%);
+  background-size: 6px 6px;
 }
 .door-half {
+  position: relative;
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 0 14px;
+  padding: 0 10px;
   background-color: #3a2a3a;
   /* vertical planks, hard edges */
   background-image: repeating-linear-gradient(90deg, transparent 0 22px, #2a1e2a 22px 25px);
-  border: var(--line) solid var(--void);
-  animation: 0.55s steps(6) 0.55s forwards;
+  border: 3px solid var(--void);
+  animation: door-swing 0.5s steps(5) 0.6s forwards;
 }
-.door-half.l { justify-content: flex-end; border-right-width: 2px; animation-name: door-l; }
-.door-half.r { justify-content: flex-start; border-left-width: 2px; animation-name: door-r; }
-@keyframes door-l {
-  to { transform: translateX(-100%); }
-}
-@keyframes door-r {
-  to { transform: translateX(100%); }
+.door-half.l { justify-content: flex-end; transform-origin: left; }
+.door-half.r { justify-content: flex-start; transform-origin: right; }
+/* swinging inwards: the leaf narrows towards its hinge and darkens as it turns away */
+@keyframes door-swing {
+  to { transform: scaleX(0.14); filter: brightness(0.45); }
 }
 .door-glass {
-  width: min(100%, 150px);
-  min-height: 150px;
+  width: min(100%, 130px);
+  min-height: 130px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 6px;
-  padding: 12px 10px;
+  padding: 10px 8px;
   text-align: center;
   color: var(--k);
   background-color: #d8ccb4;
@@ -328,23 +352,23 @@
 }
 .door-glass b {
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.15;
   text-transform: uppercase;
 }
 .door-glass span {
   font-family: var(--font-ui);
-  font-size: 15px;
+  font-size: 14px;
   color: var(--muted);
 }
 /* the handles, by the seam */
 .door-half::after {
   content: '';
   width: 6px;
-  height: 34px;
+  height: 30px;
   flex: none;
   background: #d8a830;
   border: 2px solid var(--void);
 }
-.door-half.l::after { order: 1; margin-left: 10px; }
-.door-half.r::after { order: -1; margin-right: 10px; }
+.door-half.l::after { order: 1; margin-left: 8px; }
+.door-half.r::after { order: -1; margin-right: 8px; }

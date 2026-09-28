@@ -199,7 +199,7 @@ La difficoltà cresce scendendo di piano. Le élite e lo Slaves CEO guadagnano 1
   per entrare nel piano. Il boss dell'atto 1 è un orologio che segna l'ora della giornata lavorativa (il turno del
   mattino dalle 8 a mezzogiorno, il pomeriggio dalle 13 alle 17; il boss chiude il turno) e avanza a scatti quando torni da un lavoro; la strada fatta
   è una fila di passi, e l'ultimo tratto si ripercorre passo dopo passo. La run si abbandona dalla pausa in combattimento o iniziandone una nuova.
-- **Ingresso nello scontro:** una doppia porta d'ufficio col nome del nemico sul vetro smerigliato si spalanca (cigolio e scatto di serratura).
+- **Ingresso nello scontro:** dal corridoio, una doppia porta d'ufficio col nome del nemico sul vetro smerigliato: si bussa, scatta la serratura, i battenti si aprono sui cardini verso la stanza illuminata e si entra (la scena avanza e sfuma nello scontro).
 - **Combattimento**, dall'alto: barra superiore (nome del nemico in grande e piano, velocità di gioco, pausa) · nemico con stati e vita ·
   barra minaccia · eroe (ritratto, vita, Blocco, stati) · **nastro a due righe** · mana · sleeve e abilità (i contatori di mazzo e scarti sono nascosti). Vita del nemico,
   mossa in arrivo e vita dell'eroe stanno tutte subito sopra il nastro, così non serve distogliere lo sguardo dalle carte.

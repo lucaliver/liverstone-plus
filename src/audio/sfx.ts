@@ -189,12 +189,16 @@ const SOUNDS = {
       tone(f, 0.4, { type: 'triangle', vol: 0.18, delay: i * 0.11 });
     });
   },
-  /** The office door: the latch clunks, then a long creak as it swings open. */
+  /** The office door: two knocks, the latch clunks, then a creak as it swings open. */
   door: () => {
-    tone(140, 0.08, { type: 'square', vol: 0.12, to: 90 });
-    noise(0.06, { freq: 900, vol: 0.3, type: 'lowpass' });
-    tone(420, 0.7, { type: 'sawtooth', vol: 0.03, to: 260, delay: 0.35, attack: 0.1 });
-    noise(0.5, { freq: 1400, to: 700, q: 6, vol: 0.06, delay: 0.35 });
+    for (const d of [0, 0.16]) {
+      tone(110, 0.07, { type: 'sine', vol: 0.4, to: 70, delay: d });
+      noise(0.05, { freq: 600, vol: 0.25, type: 'lowpass', delay: d });
+    }
+    tone(140, 0.08, { type: 'square', vol: 0.12, to: 90, delay: 0.45 });
+    noise(0.06, { freq: 900, vol: 0.3, type: 'lowpass', delay: 0.45 });
+    tone(420, 0.6, { type: 'sawtooth', vol: 0.03, to: 260, delay: 0.55, attack: 0.1 });
+    noise(0.45, { freq: 1400, to: 700, q: 6, vol: 0.06, delay: 0.55 });
   },
   /** A boss is down: a longer brass-like fanfare, rising in thirds, ending on a held chord. */
   bossVictory: () => {

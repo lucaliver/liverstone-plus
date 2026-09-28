@@ -4,7 +4,7 @@
 
 - [x] quando il nastro si velocizza per un effetto, anche la soundtrack dovrebbe velocizzarsi di più (stesso cambiamento di velocità del nastro)
 
-- [ ] P4 Transizione tra mappa e combattimento: voelvo una animazione immersiva a tutto schermo della porta dell'ufficio che si apre, ma quella attuale non mi piace: non si apre effettivamente ed è troppo statica...
+- [x] P4 Transizione tra mappa e combattimento: voelvo una animazione immersiva a tutto schermo della porta dell'ufficio che si apre, ma quella attuale non mi piace: non si apre effettivamente ed è troppo statica...
 
 - [ ] L'icona del pulsante Handbook non assomiglia abbastanza a un libro (sembra il simbolo della pausa), migliorala
 
