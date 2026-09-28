@@ -286,14 +286,12 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     el,
     enter() {
       layout();
-      // The way in: seen from the corridor, an office double door with the enemy's name on the glass and its framed
-      // portrait over the frame; three knocks, the latch, the doors swing open on their hinges onto the lit room, and
-      // we walk through into the fight.
+      // The way in: seen from the corridor, an office double door with the enemy's portrait and name on the glass;
+      // three knocks, the latch, the doors swing open on their hinges onto the lit room, and we walk through into the fight.
       const node = currentNode(run);
       const door = h(
         'div',
         { class: 'office-door', 'aria-hidden': 'true' },
-        h('div', { class: 'door-portrait', html: creature(combat.enemy.def.art) }),
         h(
           'div',
           { class: 'door-frame' },
@@ -304,6 +302,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
             h(
               'div',
               { class: 'door-glass' },
+              h('div', { class: 'door-portrait', html: creature(combat.enemy.def.art) }),
               h('b', null, t(`enemy.${combat.enemy.def.id}.name`)),
               h('span', null, t('common.floorOf', { a: node.act, n: node.floor, total: totalFloors(run) })),
             ),

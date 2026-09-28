@@ -27,6 +27,8 @@ const NO_RECORDS: Records = {
   bosses: 0,
   cardsPlayed: 0,
   bestPay: 0,
+  bestKills: 0,
+  bestCards: 0,
   bestAct: 0,
   bestFloor: 0,
   fastest: 0,
@@ -93,14 +95,10 @@ export function markHeroSeen(id: HeroId): void {
   store('meta', meta);
 }
 
-/** A fight ended: counts it in the records (kills, cards, the furthest floor, the fastest win). */
-export function recordFight(f: { tier: EnemyDef['tier']; won: boolean; seconds: number; cards: number; act: number; floor: number }): void {
+/** A fight ended: counts it in the records (kills, cards, the fastest win). */
+export function recordFight(f: { tier: EnemyDef['tier']; won: boolean; seconds: number; cards: number }): void {
   const r = meta.records;
   r.cardsPlayed += f.cards;
-  if (f.act > r.bestAct || (f.act === r.bestAct && f.floor > r.bestFloor)) {
-    r.bestAct = f.act;
-    r.bestFloor = f.floor;
-  }
   if (f.won) {
     r.kills++;
     if (f.tier === 'elite') r.elites++;
@@ -110,13 +108,34 @@ export function recordFight(f: { tier: EnemyDef['tier']; won: boolean; seconds: 
   store('meta', meta);
 }
 
-/** A run ended: `fullDay` when it was won through every act. */
-export function recordRun(won: boolean, fullDay: boolean, pay: number): void {
+/** Records one run can beat (the payslip stamps them). */
+export type RunRecord = 'bestFloor' | 'bestKills' | 'bestCards' | 'bestPay';
+
+/**
+ * A run ended (`fullDay`: won through every act). Returns the one-run records it beat; the very first value set
+ * doesn't count, there was nothing to beat.
+ */
+export function recordRun(f: { won: boolean; fullDay: boolean; act: number; floor: number; pay: number; kills: number; cards: number }): RunRecord[] {
   const r = meta.records;
-  if (won) r.wins++;
-  if (fullDay) r.fullDays++;
-  r.bestPay = Math.max(r.bestPay, pay);
+  const beaten: RunRecord[] = [];
+  if (f.won) r.wins++;
+  if (f.fullDay) r.fullDays++;
+  if (f.act > r.bestAct || (f.act === r.bestAct && f.floor > r.bestFloor)) {
+    if (r.bestAct) beaten.push('bestFloor');
+    r.bestAct = f.act;
+    r.bestFloor = f.floor;
+  }
+  for (const [k, v] of [
+    ['bestPay', f.pay],
+    ['bestKills', f.kills],
+    ['bestCards', f.cards],
+  ] as const) {
+    if (v <= r[k]) continue;
+    if (r[k]) beaten.push(k);
+    r[k] = v;
+  }
   store('meta', meta);
+  return beaten;
 }
 
 export const records = (): Readonly<Records & { runs: number }> => ({ ...meta.records, runs: meta.runs });

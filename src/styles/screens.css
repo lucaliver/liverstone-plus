@@ -257,6 +257,26 @@
 .slip-row b { font-weight: 400; }
 .slip-row.slip-section { margin-top: 6px; color: var(--p); text-transform: uppercase; }
 .slip-row.slip-section span::after { content: none; }
+/* a one-run record beaten: a small pink stamp over the dot leaders, landing as its line prints */
+.slip-record {
+  flex: none;
+  order: 1;
+  align-self: center;
+  padding: 0 4px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-style: normal;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--p);
+  border: 2px solid var(--p);
+  rotate: -6deg;
+  /* backwards, not both: a finished stepped animation can stay on its last step by a float rounding */
+  animation: stamp-in 0.12s steps(2) backwards;
+  animation-delay: calc(var(--i) * 0.09s + 0.5s);
+}
+.end .share-btn { display: flex; align-items: center; justify-content: center; gap: 10px; }
+.end .share-btn .pico { font-size: 1.2em; --ink2: var(--p); }
 .slip-row.slip-net {
   margin-top: 8px;
   padding-top: 6px;
@@ -265,10 +285,10 @@
 }
 .slip-row.slip-net b { font-weight: 700; }
 .slip-stamp {
-  /* over the dot leaders, clear of the labels and the amounts */
+  /* over the deductions' dot leaders, clear of the labels, the amounts and the record stamps */
   position: absolute;
   left: 56%;
-  top: 56%;
+  top: 76%;
   translate: -50% -50%;
   rotate: -10deg;
   padding: 0 10px;

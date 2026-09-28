@@ -6,7 +6,7 @@ import type { CardDef, CardInst } from '../../game/types';
 import type { Screen } from '../app';
 import { icon } from '../art/icons';
 import { cardView } from '../components/cardView';
-import { groupCopies, openCardDetail, sortCards, sortControl } from '../components/modals';
+import { openCardDetail, sortCards, sortControl } from '../components/modals';
 import { h, onTapOrHold } from '../dom';
 import { dropLetters } from '../components/decor';
 import { runHud } from './journey';
@@ -37,12 +37,11 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
   const offerRow = h('div', { class: 'swap-offer' });
   const hint = h('p', { class: 'sub swap-hint' });
 
-  // The deck as in the deck window: identical copies grouped (any of them is the one swapped out), sortable.
+  // Every card of the deck, one by one (copies aren't grouped: the swap takes one of them out), sortable.
   let deckEls: { el: HTMLElement; card: CardInst }[] = [];
   const renderDeck = (): void => {
-    deckEls = groupCopies(sortCards(run.deck)).map(({ card, n }) => {
+    deckEls = sortCards(run.deck).map((card) => {
       const el = cardView(card);
-      if (n > 1) el.append(h('span', { class: 'copies' }, t('deck.copies', { n })));
       selectable(el, card, () => {
         fromDeck = fromDeck?.uid === card.uid ? null : card;
         refresh();

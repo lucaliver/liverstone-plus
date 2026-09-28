@@ -229,8 +229,10 @@ export interface Records {
   elites: number;
   bosses: number;
   cardsPlayed: number;
-  /** Most pay earned in one run. */
+  /** Most pay, kills and cards played in one run. */
   bestPay: number;
+  bestKills: number;
+  bestCards: number;
   /** Furthest act and floor reached. */
   bestAct: number;
   bestFloor: number;

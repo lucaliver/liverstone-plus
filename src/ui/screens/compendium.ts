@@ -50,6 +50,8 @@ function recordSlip(): HTMLElement {
     row('records.bosses', r.bosses),
     row('records.cards', r.cardsPlayed),
     row('records.bestPay', r.bestPay),
+    row('records.bestKills', r.bestKills),
+    row('records.bestCards', r.bestCards),
     row('records.fastest', r.fastest ? t('records.seconds', { n: r.fastest }) : none),
   );
 }

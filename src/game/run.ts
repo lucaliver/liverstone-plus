@@ -8,7 +8,7 @@ import { CONFIG } from '../data/config';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HEROES } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
-import { discover, progress, recordFight, recordRun } from './meta';
+import { discover, progress, type RunRecord, recordFight, recordRun } from './meta';
 import type { CardDef, CardInst, EnemyDef, HeroId, Rarity } from './types';
 
 export type NodeType = 'fight' | 'elite' | 'rest' | 'promotion' | 'boss';
@@ -224,8 +224,6 @@ export function applyCombat(run: RunState, combat: Combat): void {
     won: combat.result === 'win',
     seconds: combat.time,
     cards: combat.cardsPlayed,
-    act: node.act,
-    floor: node.floor,
   });
   if (combat.specialUsed) run.specialUsed = true;
   if (combat.consumed.length) run.deck = run.deck.filter((c) => !combat.consumed.includes(c.uid));
@@ -335,12 +333,26 @@ export function advance(run: RunState, to?: number): boolean {
   return true;
 }
 
-/** The run is over (won or lost): heroes unlocked by finishing a run with this hero. */
-/** Ends the run; returns the heroes it unlocked (the next hires). */
-export function finishRun(run: RunState, won: boolean): HeroId[] {
+/** What the end of a run brought: the heroes it unlocked (the next hires) and the one-run records it beat. */
+export interface RunEnd {
+  hired: HeroId[];
+  beaten: RunRecord[];
+}
+
+/** Ends the run (won or lost): records it and unlocks the heroes that finishing a run with this hero brings. */
+export function finishRun(run: RunState, won: boolean): RunEnd {
   clearRun();
-  recordRun(won, won && currentNode(run).act === ACTS, run.money);
-  return progress((u) => 'finishRun' in u && u.finishRun === run.hero);
+  const node = currentNode(run);
+  const beaten = recordRun({
+    won,
+    fullDay: won && node.act === ACTS,
+    act: node.act,
+    floor: node.floor,
+    pay: run.money,
+    kills: run.stats.kills,
+    cards: run.stats.cardsPlayed,
+  });
+  return { hired: progress((u) => 'finishRun' in u && u.finishRun === run.hero), beaten };
 }
 
 export function saveRun(run: RunState): void {

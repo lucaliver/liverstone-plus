@@ -100,14 +100,15 @@ export interface Sprite {
 const sprites = new Map<string, Sprite>();
 const masks = new Map<string, string>();
 
-function loadSvg(svg: string): Promise<HTMLImageElement> {
+function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = reject;
-    img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    img.src = src;
   });
 }
+const loadSvg = (svg: string): Promise<HTMLImageElement> => loadImage(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`);
 
 function canvas(w: number, h: number): [HTMLCanvasElement, CanvasRenderingContext2D] {
   const c = document.createElement('canvas');
@@ -242,6 +243,36 @@ export function sprite(id: string, cls = ''): string {
     .map((k) => `<img class="ink ink-${k}" src="${s.layers[k]}" alt="" draggable="false">`)
     .join('');
   return `<div class="riso ${cls}" aria-hidden="true"><img class="ink ink-W" src="${s.base}" alt="" draggable="false">${layers}</div>`;
+}
+
+/** Draws a creature sprite on a canvas (share images): the paper base, then the inks multiplied over it. */
+export async function drawSprite(g: CanvasRenderingContext2D, id: string, x: number, y: number, size: number): Promise<void> {
+  const s = sprites.get(id);
+  if (!s) return;
+  const imgs = await Promise.all([s.base, ...INK_ORDER.flatMap((k) => s.layers[k] ?? [])].map(loadImage));
+  g.save();
+  g.imageSmoothingEnabled = false;
+  imgs.forEach((img, i) => {
+    g.globalCompositeOperation = i ? 'multiply' : 'source-over';
+    g.drawImage(img, x, y, size, size);
+  });
+  g.restore();
+}
+
+/** Draws a pixel icon in one colour on a canvas (share images). */
+export async function drawIcon(g: CanvasRenderingContext2D, id: string, x: number, y: number, size: number, color: string): Promise<void> {
+  const m = masks.get(id) ?? masks.get('star');
+  if (!m) return;
+  const img = await loadImage(m);
+  const [c, cg] = canvas(img.width, img.height);
+  cg.drawImage(img, 0, 0);
+  cg.globalCompositeOperation = 'source-in';
+  cg.fillStyle = color;
+  cg.fillRect(0, 0, c.width, c.height);
+  g.save();
+  g.imageSmoothingEnabled = false;
+  g.drawImage(c, x, y, size, size);
+  g.restore();
 }
 
 /** HTML for a pixel icon, tinted by CSS `color` (with a misregistered shadow in `--ink2`). */
