@@ -189,6 +189,17 @@ const SOUNDS = {
       tone(f, 0.4, { type: 'triangle', vol: 0.18, delay: i * 0.11 });
     });
   },
+  /** A boss is down: a longer brass-like fanfare, rising in thirds, ending on a held chord. */
+  bossVictory: () => {
+    [523, 659, 784, 659, 784, 1046].forEach((f, i) => {
+      tone(f, 0.22, { type: 'square', vol: 0.08, delay: i * 0.12 });
+      tone(f / 2, 0.22, { type: 'triangle', vol: 0.1, delay: i * 0.12 });
+    });
+    [523, 659, 784, 1046].forEach((f) => {
+      tone(f, 1.1, { type: 'triangle', vol: 0.1, delay: 0.75, attack: 0.02 });
+    });
+    noise(0.5, { freq: 6000, vol: 0.05, type: 'highpass', delay: 0.75 });
+  },
   defeat: () => {
     [392, 330, 262, 196].forEach((f, i) => {
       tone(f, 0.5, { type: 'triangle', vol: 0.16, delay: i * 0.16 });

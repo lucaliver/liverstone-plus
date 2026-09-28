@@ -89,7 +89,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       } else v.banner(t('reward.cleared'));
       // Clocking out when the next floor starts (the end of the shift after a boss).
       timeCard('out', clockText(clockAt(run, { ...currentNode(run), floor: currentNode(run).floor + 1 })));
-      sfx('victory');
+      sfx(boss ? 'bossVictory' : 'victory');
     } else {
       // Fired: a pink slip flutters down.
       v.el.append(h('div', { class: 'pink-slip' }, h('b', null, t('combat.pinkSlip')), h('p', null, t('combat.pinkSlipBody'))));

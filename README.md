@@ -224,5 +224,5 @@ La difficoltà cresce scendendo di piano. Le élite e lo Slaves CEO guadagnano 1
   nero maledizioni); illustrazione = categoria (rosa attacco, blu difesa, giallo utilità, verde maledizione);
   gemma a rombo solo per rare (blu), epiche (rosa) e leggendarie (gialla).
 - **Font:** Silkscreen per le parole dei titoli, Jersey 10 per interfaccia e numeri, Space Grotesk per i testi lunghi.
-- **Musica chiptune procedurale:** menu (carillon), combattimento, élite (marcia cupa), boss, sala pausa, pausa (calma),
-  vittoria. Effetti sonori sintetizzati (con il fischio a vapore della fabbrica quando entra un boss), vibrazione sui colpi.
+- **Musica chiptune procedurale:** menu (carillon), combattimento (una traccia per turno: l'Atto 2 ha una musica d'ascensore d'ufficio andata storta), élite (marcia cupa), boss, sala pausa, pausa (calma),
+  vittoria. Effetti sonori sintetizzati (con il fischio a vapore della fabbrica quando entra un boss, fanfara quando cade), vibrazione sui colpi.

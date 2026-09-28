@@ -7,7 +7,7 @@
  */
 import { audioGraph, onAudioUnlock, resumeAudio } from './sfx';
 
-export type TrackId = 'menu' | 'combat' | 'elite' | 'boss' | 'rest' | 'pause' | 'victory';
+export type TrackId = 'menu' | 'combat' | 'combat2' | 'elite' | 'boss' | 'rest' | 'pause' | 'victory';
 
 /** [step (0-15), midi note, length in 16th steps] */
 type NoteEv = [number, number, number];
@@ -60,6 +60,7 @@ const A4 = 69,
   Bb5 = 82,
   B5 = 83,
   Ab5 = 80,
+  Gs5 = 80,
   Fs5 = 78,
   G4 = 67;
 
@@ -181,6 +182,79 @@ const TRACKS: Record<TrackId, Track> = {
     drums: ['k.......k.k.....', '....s.......s...', '..h...h...h...hh'],
     pad: false,
     gain: 0.8,
+  },
+  // The afternoon shift: office elevator music gone wrong. A minor seventh chords, a bell arp, four-on-the-floor
+  // machinery with off-beat hats, a syncopated bass and a nagging lead.
+  combat2: {
+    bpm: 128,
+    chords: [
+      { root: 45, tones: [0, 3, 7, 10] }, // Am7
+      { root: 41, tones: MAJ7 }, // Fmaj7
+      { root: 36, tones: MAJ }, // C
+      { root: 43, tones: MAJ }, // G
+      { root: 45, tones: [0, 3, 7, 10] }, // Am7
+      { root: 38, tones: MIN }, // Dm
+      { root: 40, tones: DOM7 }, // E7
+      { root: 40, tones: DOM7 }, // E7
+    ],
+    bass: [0, _, _, 0, _, _, 12, _, 0, _, 7, _, 10, _, 12, _],
+    bassWave: 'pulse',
+    arp: [0, _, 2, 1, _, 3, 2, _, 0, _, 2, 1, _, 3, 1, 2],
+    arpOctave: 4,
+    lead: [
+      [
+        [0, E5, 2],
+        [2, E5, 2],
+        [4, D5, 2],
+        [6, C5, 4],
+        [12, A4, 4],
+      ],
+      [
+        [0, F5, 6],
+        [6, E5, 2],
+        [8, C5, 8],
+      ],
+      [
+        [0, G5, 2],
+        [2, E5, 2],
+        [4, G5, 2],
+        [6, E5, 2],
+        [8, C5, 8],
+      ],
+      [
+        [0, D5, 4],
+        [4, B4, 4],
+        [8, D5, 4],
+        [12, G5, 4],
+      ],
+      [
+        [0, A5, 4],
+        [4, G5, 2],
+        [6, E5, 2],
+        [8, C5, 4],
+        [12, E5, 4],
+      ],
+      [
+        [0, F5, 4],
+        [4, D5, 4],
+        [8, A4, 8],
+      ],
+      [
+        [0, Gs5, 4],
+        [4, E5, 4],
+        [8, B4, 4],
+        [12, D5, 4],
+      ],
+      [
+        [0, E5, 12],
+        [12, B4, 4],
+      ],
+    ],
+    leadOn: (p) => p % 2 === 1,
+    leadVoice: 'pulse',
+    drums: ['k...k...k...k...', '....s.......s..s', '..h...h...h...h.'],
+    pad: true,
+    gain: 0.75,
   },
   // Phrygian dread: hammering E bass, tritone turnaround, dissonant riff.
   boss: {

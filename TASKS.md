@@ -28,7 +28,7 @@
 
 - [x] controlla che runni su tutti i browser, ci sono altri accorgimenti che dovrei avere per pluging o altro? Best practice? Sito apposto con descrizione e tutto?
 
-- [ ] P3 Aggiungi Musica per atto: una traccia di combattimento diversa nell'Atto 2 e un breve tema di vittoria per il boss.
+- [x] P3 Aggiungi Musica per atto: una traccia di combattimento diversa nell'Atto 2 e un breve tema di vittoria per il boss.
 
 - [ ] P4 Transizione tra mappa e combattimento: oggi il cambio è secco; potrebbe esserci un passaggio animato (animazione immersiva a tutto schermo della porta dell'ufficio che si apre, per esempio).
 
