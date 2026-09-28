@@ -218,7 +218,7 @@ export function createCardLayer(v: CombatView): CardLayer {
     if (reason === 'played' && combat.exhaust.includes(ce.card)) {
       el2.classList.add('exhaust-out');
       burst('ash', rc.left + rc.width / 2, rc.top + rc.height / 2, 18);
-      setTimeout(() => el2.remove(), 600);
+      setTimeout(() => el2.remove(), 350);
       return;
     }
     const target =
