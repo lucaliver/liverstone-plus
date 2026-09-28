@@ -244,6 +244,8 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         v.toast(t(`enemy.${v.combat.enemy.def.id}.half`), true);
         burst('blood', p.x, p.y, 30, 1.4);
         sfx('enrage');
+        sfx('klaxon');
+        haptic('alarm');
         shake('big');
         break;
       }

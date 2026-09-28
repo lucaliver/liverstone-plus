@@ -56,11 +56,24 @@
   animation: toast 1.4s steps(6) forwards;
 }
 .hint-toast.alert {
+  /* over the enemy, clear of its HP and threat bars */
+  top: 11%;
+  width: min(92%, 360px);
+  max-width: none;
+  padding: 10px 16px;
+  font-size: 24px;
+  line-height: 1.1;
   color: var(--k);
   background: var(--y);
   border: var(--line) solid var(--k);
-  box-shadow: 4px 4px 0 var(--p);
-  animation-duration: 3s;
+  box-shadow: 5px 5px 0 var(--p);
+  animation: alert 3.2s steps(1) forwards;
+}
+/* it slams in (big, then settled), holds, and is gone */
+@keyframes alert {
+  0% { opacity: 1; scale: 1.25; }
+  6%, 90% { opacity: 1; scale: 1; }
+  100% { opacity: 0; }
 }
 @keyframes toast {
   0% { opacity: 0; }

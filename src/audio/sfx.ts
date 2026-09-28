@@ -206,6 +206,13 @@ const SOUNDS = {
     noise(0.08, { freq: 600, vol: 0.4, type: 'lowpass', delay: 0.3 });
     noise(0.05, { freq: 3000, vol: 0.2, q: 3, delay: 0.42 });
   },
+  /** An enemy's half-HP trait kicks in: a factory klaxon, three honks. */
+  klaxon: () => {
+    for (let i = 0; i < 3; i++) {
+      tone(330, 0.18, { type: 'sawtooth', vol: 0.1, to: 300, delay: i * 0.24 });
+      tone(415, 0.18, { type: 'square', vol: 0.05, to: 380, delay: i * 0.24 });
+    }
+  },
   /** A padlock rattled: chain links clinking, then the shackle's clank. */
   chains: () => {
     [0, 0.06, 0.1, 0.17, 0.22].forEach((d, i) => {

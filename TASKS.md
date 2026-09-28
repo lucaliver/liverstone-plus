@@ -60,7 +60,7 @@
 
 - [x] le sleeve mettile più centrali; inoltre rendi la hitbox più larga (così da poterci mettere carte al volo semplicemente trascinandole nell'area sotto)
 
-- [ ] per il nemico the snitch (e per quelli simili in cui c'è un trigger per la loro passiva): quando scendi sotto il 50% dovrebbe comparire una scritta pioù grande, e dovrebbe esserci un suono
+- [x] per il nemico the snitch (e per quelli simili in cui c'è un trigger per la loro passiva): quando scendi sotto il 50% dovrebbe comparire una scritta pioù grande, e dovrebbe esserci un suono
 
 
 ## Meccaniche nuove

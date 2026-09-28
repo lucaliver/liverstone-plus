@@ -40,4 +40,5 @@
   /* no room for combat candles on very short screens (the title keeps its own) */
   .stage .candle,
   .stage .cooler { display: none; }
+  .hint-toast.alert { top: 7%; padding: 6px 12px; font-size: 19px; }
 }
