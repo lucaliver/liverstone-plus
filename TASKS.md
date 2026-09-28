@@ -50,7 +50,7 @@
 
   - [x] in alcuni boss e negli elite: metti che assieme all'attacco hanno anche un +1 aggiungi Strength (così dei spronato a batterli velocemente)
 
-- [ ]carta "quick sync" non dovrebbe costare zero ma 99
+- [x] carta "quick sync" non dovrebbe costare zero ma 99
 
 - [ ]rendi le icone degli status sia del nemico che propri più grandi, e allineale all'inizio della barra salute (stando rispettivamente sopra o sotto)
 

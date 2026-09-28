@@ -438,7 +438,8 @@ export const curseCards: CardDef[] = [
     cls: 'curse',
     type: 'curse',
     rarity: 'special',
-    cost: 0,
+    // A meeting you can't buy your way out of.
+    cost: 99,
     vals: [],
     keywords: ['unplayable', 'fleeting'],
     art: 'meeting',
