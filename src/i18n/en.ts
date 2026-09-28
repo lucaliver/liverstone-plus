@@ -542,7 +542,7 @@ const en = {
   'card.shatter.desc': 'Deal {0} damage. If the enemy is [chill]ed, [stun] for {1}s.',
   'card.contagion.name': 'Word of Mouth',
   'card.contagion.desc': 'Apply {0} [poison], or {1} if the enemy is already [poison]ed.',
-  'card.siphonRot.name': 'Clawback',
+  'card.siphonRot.name': 'Meal Voucher',
   'card.siphonRot.desc': "Heal HP equal to the enemy's [poison].",
   'card.manaShard.name': 'Coffee',
   'card.manaShard.desc': '+{0} max mana (empty [crystal]).',

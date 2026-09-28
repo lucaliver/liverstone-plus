@@ -262,7 +262,7 @@ export const necromancerCards: CardDef[] = [
     upCost: 2,
     vals: [],
     keywords: ['exhaust'],
-    art: 'claw',
+    art: 'mealVoucher',
     play: (c) => void c.heal('hero', c.stacks('enemy', 'poison')),
   },
 

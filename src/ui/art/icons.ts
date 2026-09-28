@@ -409,9 +409,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'necro',
     svg: `<rect x="10" y="4" width="44" height="10" rx="2"/><path d="M27 14h10v34l-5 14-5-14z"/><g fill="#16121f"><rect x="28" y="22" width="4" height="5"/><rect x="32" y="34" width="4" height="5"/></g>`,
   },
-  claw: {
-    el: 'necro',
-    svg: `<path d="M6 58C8 34 18 16 30 6c-6 14-10 30-8 52zM26 60c2-22 10-40 22-52-4 16-8 34-6 52zM44 60c2-18 8-30 16-40-2 14-4 28-2 40z"/>`,
+  mealVoucher: {
+    el: 'nature',
+    svg: `<path d="M4 14h56v10a6 6 0 0 0 0 12v10H4V36a6 6 0 0 0 0-12z"/><g fill="#16121f"><path d="M14 20h3v10h2V20h3v10h2V20h3v12c0 3-2 5-5 5v11h-3V37c-3 0-5-2-5-5z"/><path d="M36 20c5 0 7 6 7 12h-3v16h-4z"/><rect x="48" y="22" width="3" height="3"/><rect x="48" y="30" width="3" height="3"/><rect x="48" y="38" width="3" height="3"/></g>`,
   },
   toxicMemo: {
     el: 'necro',
@@ -616,7 +616,8 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   plus: { el: 'holy', svg: `<path d="M25 6h14v19h19v14H39v19H25V39H6V25h19z"/>` },
   book: {
     el: 'holy',
-    svg: `<path d="M4 12c9-5 18-5 26 1v44c-8-5-17-5-26-1z"/><path d="M60 12c-9-5-18-5-26 1v44c8-5 17-5 26-1z"/>`,
+    // A thick closed book: cover, a spine band and the page block, so it never reads as a pause sign.
+    svg: `<path d="M10 8h36c4 0 6 2 6 6v40c0 4-2 6-6 6H14c-4 0-6-2-6-6V12c0-2 1-4 2-4z"/><path d="M14 50h38v8H14c-2 0-4-2-4-4s2-4 4-4z" fill="#fff" opacity=".85"/><g fill="#16121f"><rect x="18" y="8" width="5" height="42"/><rect x="28" y="18" width="18" height="4"/><rect x="28" y="26" width="12" height="4"/><rect x="14" y="52" width="36" height="2"/></g>`,
   },
   question: {
     el: 'holy',

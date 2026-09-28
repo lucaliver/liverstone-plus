@@ -6,9 +6,9 @@
 
 - [x] P4 Transizione tra mappa e combattimento: voelvo una animazione immersiva a tutto schermo della porta dell'ufficio che si apre, ma quella attuale non mi piace: non si apre effettivamente ed è troppo statica...
 
-- [ ] L'icona del pulsante Handbook non assomiglia abbastanza a un libro (sembra il simbolo della pausa), migliorala
+- [x] L'icona del pulsante Handbook non assomiglia abbastanza a un libro (sembra il simbolo della pausa), migliorala
 
-- [ ] Rinomina carta "Clawback" in "Meal voucer" e cambia l'icona art
+- [x] Rinomina carta "Clawback" in "Meal voucer" e cambia l'icona art
 
 - [ ] Carta "Ctrl+Z": cambia l'effetto in "Recupera tutti gli HP che hai perso negli ultimi 3 s". Costo 1, Exhaust. Potenziata: finestra di 5 s.
 
