@@ -271,21 +271,54 @@ export function openCardDetail(card: CardInst, onClose?: () => void): ModalHandl
 const TYPE_ORDER: CardType[] = ['attack', 'spell', 'skill', 'power', 'potion', 'curse'];
 const DECK_SORTS = ['type', 'cost', 'name'] as const;
 type DeckSort = (typeof DECK_SORTS)[number];
-/** The deck windows' sort, kept while the game is open. */
+/** The deck windows' and handbook's sort, kept while the game is open. */
 let deckSort: DeckSort = 'type';
+/** Descending on the sort's main key (tapping the active sort again flips it). */
+let deckDesc = false;
 
-export function sortDeck(deck: CardInst[], by: DeckSort = 'type'): CardInst[] {
+export function sortDeck(deck: CardInst[], by: DeckSort = 'type', desc = false): CardInst[] {
   const name = (c: CardInst): string => t(`card.${c.id}.name`);
+  const sign = desc ? -1 : 1;
   return [...deck].sort((a, b) => {
     const da = CARDS[a.id];
     const db = CARDS[b.id];
     const type = TYPE_ORDER.indexOf(da.type) - TYPE_ORDER.indexOf(db.type);
     const cost = cardCostOf(a) - cardCostOf(b);
     const byName = name(a).localeCompare(name(b));
-    const first = by === 'cost' ? cost || type : by === 'name' ? byName : type || cost;
-    return first || byName || Number(b.up) - Number(a.up);
+    const first = sign * (by === 'cost' ? cost : by === 'name' ? byName : type);
+    return first || (by === 'type' ? cost : type) || byName || Number(b.up) - Number(a.up);
   });
 }
+
+/**
+ * A slim line of text links: "Sort by  Type · Cost · Name", the active one marked with the sort arrow; tapping it
+ * again flips the order. `onChange` re-renders the list, sorted with `sortCards`.
+ */
+export function sortControl(onChange: () => void): HTMLElement {
+  const el = h('div', { class: 'deck-sort', role: 'group', 'aria-label': t('deck.sortBy') });
+  const render = (): void =>
+    el.replaceChildren(
+      h('span', null, t('deck.sortBy')),
+      ...DECK_SORTS.map((by) =>
+        h('button', {
+          'aria-pressed': String(by === deckSort),
+          html: `${by === deckSort ? icon(deckDesc ? 'up' : 'down') : ''}${t(`deck.sort.${by}`)}`,
+          onclick: () => {
+            sfx('tap');
+            deckDesc = by === deckSort && !deckDesc;
+            deckSort = by;
+            render();
+            onChange();
+          },
+        }),
+      ),
+    );
+  render();
+  return el;
+}
+
+/** Cards in the order the sort control shows. */
+export const sortCards = (cards: CardInst[]): CardInst[] => sortDeck(cards, deckSort, deckDesc);
 
 /** Identical copies (same card, upgrade and perks) shown once, with how many there are. */
 function groupCopies(cards: CardInst[]): { card: CardInst; n: number }[] {
@@ -344,24 +377,9 @@ export function openDeck(
     return el;
   };
   const grid = h('div', { class: `deck-grid ${opts.onPick ? 'pick' : ''}` });
-  // A slim line of text links: "Sort by  Type · Cost · Name", the active one marked with the sort arrow.
-  const sorter = h('div', { class: 'deck-sort', role: 'group', 'aria-label': t('deck.sortBy') });
+  const sorter = sortControl(() => render());
   function render(): void {
-    sorter.replaceChildren(
-      h('span', null, t('deck.sortBy')),
-      ...DECK_SORTS.map((by) =>
-        h('button', {
-          'aria-pressed': String(by === deckSort),
-          html: `${by === deckSort ? icon('down') : ''}${t(`deck.sort.${by}`)}`,
-          onclick: () => {
-            sfx('tap');
-            deckSort = by;
-            render();
-          },
-        }),
-      ),
-    );
-    grid.replaceChildren(...groupCopies(sortDeck(cards, deckSort)).map((g) => makeEl(g.card, g.n)));
+    grid.replaceChildren(...groupCopies(sortCards(cards)).map((g) => makeEl(g.card, g.n)));
     grid.classList.toggle('has-sel', !!selected);
   }
   render();

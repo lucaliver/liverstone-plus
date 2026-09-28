@@ -16,7 +16,7 @@ const en = {
   'menu.plate': 'Punchcard Inc. · est. 1887',
   'menu.freshDay': 'A fresh workday',
   'contract.title': 'Employment Contract',
-  'contract.intro': 'Punchcard Inc. hereby hires the undersigned as a Hero (temporary, overtime unpaid).',
+  'contract.intro': 'Punchcard Inc. hereby hires the undersigned as a Hero. Overtime unpaid.',
   'contract.c1': 'Play your cards before they slip off the belt.',
   'contract.c2': 'Hold anything to read its fine print. Try it on the terms below.',
   'contract.c3': 'Breaks are a privilege, not a right.',

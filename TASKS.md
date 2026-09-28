@@ -1,30 +1,27 @@
 # TASKS
 
-- [x] deck view: the sorting by name/type/cost should have a symbol to know its sorting and shouldnt be 3 tabs but 3 textlink or a triple selector
+- [ ] Nella schermata di employment contract: "Terms e condition" dovrebbe essere più grande, colorato blu e magari con un'icona; il bottone "Hold to sign" dovrebbe avere l'icona di una penna; provare a firmare senza aver aperto i terms dovrebbe venire impedito (con animazione, suono, vibrazione)
 
-- [x] quando il nastro si velocizza per un effetto, anche la soundtrack dovrebbe velocizzarsi di più (stesso cambiamento di velocità del nastro)
+- [ ] Prima dell'animazione d'apertura della porta metti il suono di 3 knocks on door.
 
-- [x] P4 Transizione tra mappa e combattimento: voelvo una animazione immersiva a tutto schermo della porta dell'ufficio che si apre, ma quella attuale non mi piace: non si apre effettivamente ed è troppo statica...
+- [x] Dettaglio deck: al tap su una voce di ordinamento già selezionata, la freccia dovrebbe invertirsi e l'ordine passare da crescente a decrescente
 
-- [x] L'icona del pulsante Handbook non assomiglia abbastanza a un libro (sembra il simbolo della pausa), migliorala
+- [x] Handbook cards: Metti il select dell'ordinamento anche qui, in cima alla lista
 
-- [x] Rinomina carta "Clawback" in "Meal voucer" e cambia l'icona art
+- [ ] Nemico "HR orientation dummy": l'apertura della seconda corsia della belt dovrebbe avvenire lentamente con una animazione di slide e un suono prolungato di macchinario; quando si triggera la passiva della doppia belt, lo sprite dovrebbe cambiare ed essere una TV arrabbiata e cattiva
 
-- [x] Carta "Ctrl+Z": cambia l'effetto in "Recupera tutti gli HP che hai perso negli ultimi 3 s". Costo 1, Exhaust. Potenziata: finestra di 5 s.
+- [ ] Il popup di info sulle sleeve dovrebbero aprirsi solo quando fai hold, non al tap; idem sulla barra di mana
 
-- [x] Carta "Severance": cambiala in "Ottieni 3 strength. Per 9 s, le carte che escono dal nastro si giocano da sole (se hai il mana per pagarle). Potenziata: 5 strength e 10 s."
+- [ ] Rimuovi la cardina rosa che compare sopra al combattimento quando perdi, mi basta la schermata di game over con la PAYSLIP.
 
-- [x] Aggiungi nuova carta "Work-Life balance": effetto "Infligge 3 danni, si ripete ad ogni successiva carta che giochi, finchè non ne giochi due dello stesso tipo consecutivamente"
+- [ ] Fixa: l'anteprima del link non presenta alcuna immagine quando lo condivido
 
-- [x] Cambia funzionalità effetto "Dodge" nelle carte: anzichè "Completly avoid the next enemy hit" diventa "Become immune to damage for 2sec"
+- [ ] Metti i valori di default di musica e audio a 5 e 5
 
-- [x] Nuova carta "Complaint box": "Infligge 2 danni. Il danno aumenta di 1 per ogni secondo in cui hai overflow di mana" (l'aumento si ha sia mentre è in campo che nel mazzo che ovunque)
+- [ ] La primissima run non deve avere un Act2, ma finishe col boss dell'Act1.
 
-- [x] Aggiungi un nuovo nemico "HR Orientation Video" (lo sprite è una TV fantasy con volto sereno), usato solo come primo nemico nella primissima run: la sua passiva è che la belt ha una sola riga, ma quando scende sotto il 50% degli hp aggiunge la seconda row (con animazione e con fumetto di dialogo "Great job. You've been assigned a second line. No raise.")
+- [ ] Nell'handbook: aggiungere una nuova tab per record e achievements
 
-- [x] Schermata Start Game: cambiala con un contratto da firmare tenendo premuto. Al primo avvio firmi l'assunzione con un hold. Insegna il gesto "tieni premuto = ispeziona" prima del combattimento, con una battuta sui termini e condizioni.
+- [ ] Nella home: piccola chicca, la punchcard quando cliccata dovrebbe fare un suono e animazione
 
-- [ ] Alla fine della primissima run: Nella lettera rosa, un fumetto dice qualcosa tipo "Let's hire the next one, Mr Mage it is.". La prima sconfitta (o anche fosse una vittoria) deve sembrare un passo avanti, non uno stop.
-
-
-- [x] controlla che non ci siano martellate brutte nel codice, no roba duplicata o hardcoded che può creare problemi in futuro crescendo le meccaniche, anche nella UI voglio componenti sensati, senza complicarsi la vita e senza complicarsi il futuro
+- 

@@ -6,16 +6,15 @@ import { ENEMY_LIST } from '../../data/enemies';
 import type { EnemyDef } from '../../game/types';
 import { HERO_LIST } from '../../data/heroes';
 import { enemyMet, isDiscovered } from '../../game/meta';
-import type { CardClass, Rarity } from '../../game/types';
+import type { CardClass } from '../../game/types';
 import type { Screen } from '../app';
 import { h, onPress } from '../dom';
 import { icon } from '../art/icons';
 import { creature } from '../art/creatures';
 import { cardView } from '../components/cardView';
 import { bindMoveDetails, movePattern } from '../components/moveText';
-import { openCardAnatomy, openCardDetail } from '../components/modals';
+import { openCardAnatomy, openCardDetail, sortCards, sortControl } from '../components/modals';
 
-const RARITY_ORDER: Rarity[] = ['starter', 'common', 'rare', 'epic', 'legendary', 'special'];
 const TABS: CardClass[] = [...HERO_LIST.map((hd) => hd.id), 'neutral', 'curse'];
 
 const tabLabel = (c: CardClass): string => t(`compendium.tab.${c}`);
@@ -94,26 +93,24 @@ export function compendiumScreen(onBack: () => void): Screen {
         ),
       ),
     );
-    const cards = CARD_LIST.filter((c) => c.cls === tab).sort(
-      (a, b) => RARITY_ORDER.indexOf(a.rarity) - RARITY_ORDER.indexOf(b.rarity) || a.cost - b.cost || a.id.localeCompare(b.id),
-    );
+    const cards = sortCards(CARD_LIST.filter((c) => c.cls === tab).map((c) => ({ uid: -1, id: c.id, up: false })));
     grid.replaceChildren(
-      ...cards.map((def) => {
+      ...cards.map((card) => {
         // Every card can be inspected; undiscovered ones hide their name behind question marks.
-        const known = isDiscovered(def.id);
-        const el = cardView({ uid: -1, id: def.id, up: false }, { cls: known ? '' : 'undiscovered' });
+        const known = isDiscovered(card.id);
+        const el = cardView(card, { cls: known ? '' : 'undiscovered' });
         const name = el.querySelector<HTMLElement>('.c-name');
         if (!known && name) name.textContent = UNKNOWN;
         onPress(el, () => {
           sfx('tap');
-          openCardDetail({ uid: -1, id: def.id, up: false });
+          openCardDetail(card);
         });
         return el;
       }),
     );
     grid.scrollTop = 0;
   };
-  cardsWrap.append(tabs, h('div', { style: { height: '12px' } }), grid);
+  cardsWrap.append(tabs, h('div', { style: { height: '12px' } }), sortControl(render), grid);
   render();
 
   const el = h(

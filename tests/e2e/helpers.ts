@@ -41,10 +41,13 @@ export async function startFight(page: Page, heroIndex = 0): Promise<void> {
 
 export const combat = (page: Page, fn: string): Promise<unknown> => page.evaluate(`(() => { const c = window.__combat; ${fn} })()`);
 
-/** On the start screen: hold to sign the contract (first launch), or tap Start game once it's signed. */
+/** On the start screen: read the terms and hold to sign the contract (first launch), or tap Start game once it's signed. */
 export async function signAndStart(page: Page): Promise<void> {
   const sign = page.locator('.sign-btn');
   if (await sign.count()) {
+    // The terms must be read first.
+    await page.locator('.contract-terms').click();
+    await page.getByRole('button', { name: 'Close' }).click();
     await sign.hover();
     await page.mouse.down();
     await page.waitForTimeout(1100);

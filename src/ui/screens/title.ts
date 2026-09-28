@@ -5,7 +5,7 @@ import { contractSigned, enemyMet, signContract } from '../../game/meta';
 import { currentNode, type RunState, totalFloors } from '../../game/run';
 import { haptic } from '../fx/fx';
 import type { Screen } from '../app';
-import { h, onPress } from '../dom';
+import { h, onPress, retrigger } from '../dom';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { openHowTo, openInfo, openSettings } from '../components/modals';
@@ -118,8 +118,11 @@ const SIGN_MS = 900;
 export function splashScreen(onStart: () => void): Screen {
   let timer = 0;
   const signed = contractSigned();
-  const terms = h('button', { class: 'contract-terms' }, t('contract.terms'));
+  /** The terms must be read before signing (that's where "hold to learn" is taught). */
+  let read = signed;
+  const terms = h('button', { class: 'contract-terms', html: `${icon('magnifier')}<span>${t('contract.terms')}</span>` });
   onPress(terms, () => {
+    read = true;
     sfx('tap');
     openInfo({ icon: 'magnifier', title: t('contract.termsTitle'), desc: t('contract.termsText') });
   });
@@ -132,13 +135,20 @@ export function splashScreen(onStart: () => void): Screen {
   };
   const action = signed
     ? h('button', { class: 'btn cta', onclick: start, html: `${icon('play')}<span>${t('menu.start')}</span>` })
-    : h('button', { class: 'btn cta sign-btn', html: `<span class="fill"></span>${icon('hand')}<span>${t('contract.sign')}</span>` });
+    : h('button', { class: 'btn cta sign-btn', html: `<span class="fill"></span>${icon('pen')}<span>${t('contract.sign')}</span>` });
   if (!signed) {
     const cancel = (): void => {
       clearTimeout(timer);
       action.classList.remove('holding');
     };
     action.addEventListener('pointerdown', () => {
+      if (!read) {
+        retrigger(terms, 'shake-big');
+        retrigger(action, 'shake-small');
+        sfx('error');
+        haptic('error');
+        return;
+      }
       action.classList.add('holding');
       haptic('tap');
       timer = window.setTimeout(() => {

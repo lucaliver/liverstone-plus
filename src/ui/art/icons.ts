@@ -621,6 +621,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   ladder: { el: 'holy', svg: `<path d="M10 2h9v60h-9zM45 2h9v60h-9z"/><path d="M19 10h26v7H19zM19 25h26v7H19zM19 40h26v7H19zM19 55h26v7H19z"/>` },
   // ---- menu buttons
   play: { el: 'holy', svg: `<path d="M14 6l42 26-42 26z"/>` },
+  pen: {
+    el: 'holy',
+    svg: `<path d="M44 4l16 16-26 26-16-16z"/><path fill="#16121f" d="M40 8l16 16-4 4-16-16z"/><path d="M18 30l16 16L4 60z"/><path d="M4 60l18-18" stroke="#16121f" stroke-width="3"/><circle cx="23" cy="41" r="3.5" fill="#16121f"/>`,
+  },
   plus: { el: 'holy', svg: `<path d="M25 6h14v19h19v14H39v19H25V39H6V25h19z"/>` },
   book: {
     el: 'holy',

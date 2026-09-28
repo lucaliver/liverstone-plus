@@ -277,7 +277,7 @@
   100% { transform: rotate(-3deg); }
 }
 
-/* the way into a fight: an office double door seen from the corridor. It swings open on its hinges onto the lit room
+/* the way into a fight: an office double door seen from the corridor. After three knocks (sfx 'door') it swings open on its hinges onto the lit room
    (each leaf narrows towards its hinge, stepped), then we walk through: the whole scene grows and fades. */
 .office-door {
   position: absolute;
@@ -292,7 +292,7 @@
   background-color: #2a2040;
   background-image: repeating-linear-gradient(90deg, transparent 0 18px, #332850 18px 30px);
   transform-origin: 50% 58%;
-  animation: door-walk 0.5s steps(5) 1.15s forwards;
+  animation: door-walk 0.5s steps(5) 1.27s forwards;
 }
 @keyframes door-walk {
   to { transform: scale(3.2); opacity: 0; visibility: hidden; }
@@ -324,7 +324,7 @@
   /* vertical planks, hard edges */
   background-image: repeating-linear-gradient(90deg, transparent 0 22px, #2a1e2a 22px 25px);
   border: 3px solid var(--void);
-  animation: door-swing 0.5s steps(5) 0.6s forwards;
+  animation: door-swing 0.5s steps(5) 0.72s forwards;
 }
 .door-half.l { justify-content: flex-end; transform-origin: left; }
 .door-half.r { justify-content: flex-start; transform-origin: right; }
