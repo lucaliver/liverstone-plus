@@ -154,6 +154,7 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
 
 | Nemico | Stile |
 | --- | --- |
+| HR Orientation Video | Solo il primissimo scontro della prima run: una TV stregata dal volto sereno. Il nastro ha una sola riga; sotto metà vita apre la seconda (*"Great job. You've been assigned a second line. No raise."*) |
 | The Snitch | La spia: colpi rapidi e raffiche (*Rat Out*); sotto metà vita accelera il tuo nastro per il resto dello scontro |
 | Senior Boomer | Colpi lenti, un colpo pesantissimo (*Seniority*) e *Gatekeep*: due maledizioni larghe tre carte che coprono le carte davanti a sé sul nastro finché non le paghi (2 mana l'una) |
 | Toxic Coworker | Il collega tossico: non colpisce, avvelena (*Snark*); riempie il nastro di *Drama* e il mazzo di *Gossip* |

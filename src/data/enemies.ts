@@ -12,6 +12,22 @@ const ramp: Partial<MoveDef> = { status: [{ id: 'strength', v: 1, target: 'enemy
  * names come from `enemy.<id>.name` and sprites from `art`.
  */
 const defs: EnemyDef[] = [
+  {
+    // The very first fight of the very first run: an orientation video on a haunted TV. One belt row to start with;
+    // at half HP it assigns you the second one.
+    id: 'hrVideo',
+    act: 1,
+    tier: 'normal',
+    hp: 26,
+    art: 'hrVideo',
+    main: atk('safetyFirst', 3, 7),
+    every: 2,
+    specials: [{ id: 'coreValues', intent: 'defend', windup: 6, block: 6 }],
+    startRows: 1,
+    firstRunOnly: true,
+    halfSpeech: true,
+    onHalf: (c) => c.openBeltRows(),
+  },
   // ------------------------------------------------------------- Act 1
   {
     id: 'rat',
@@ -322,6 +338,7 @@ const defs: EnemyDef[] = [
 
 /** Easiest first: the very first run meets the normal enemies in this order, and the handbook lists them so. */
 export const DIFFICULTY = [
+  'hrVideo',
   'rat',
   'sleeper',
   'slime',
@@ -353,4 +370,8 @@ export const ENEMY_LIST: readonly EnemyDef[] = [...defs].sort((a, b) => DIFFICUL
 export const enemyMoves = (e: EnemyDef): MoveDef[] => [e.main, ...e.specials];
 
 /** Enemies of an act and tier, easiest first. */
-export const enemiesFor = (act: number, tier: EnemyDef['tier']): EnemyDef[] => ENEMY_LIST.filter((e) => e.act === act && e.tier === tier);
+export const enemiesFor = (act: number, tier: EnemyDef['tier']): EnemyDef[] =>
+  ENEMY_LIST.filter((e) => e.act === act && e.tier === tier && !e.firstRunOnly);
+
+/** The enemy of the very first fight of the very first run, if any. */
+export const firstRunEnemy = (): EnemyDef | undefined => ENEMY_LIST.find((e) => e.firstRunOnly);

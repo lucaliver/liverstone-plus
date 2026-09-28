@@ -372,3 +372,40 @@
 }
 .door-half.l::after { order: 1; margin-left: 8px; }
 .door-half.r::after { order: -1; margin-right: 8px; }
+
+/* an enemy speaking: a paper speech bubble over the stage, pointing at it */
+.speech {
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  z-index: 35;
+  width: min(80%, 300px);
+  translate: -50% 0;
+  padding: 10px 14px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--k);
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: 4px 4px 0 var(--shadow);
+  pointer-events: none;
+  animation: speech 4s steps(1) forwards;
+}
+.speech::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 16px;
+  height: 14px;
+  translate: -50% 0;
+  background: var(--k);
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+@keyframes speech {
+  0% { scale: 0.6; }
+  4%, 92% { scale: 1; opacity: 1; }
+  100% { opacity: 0; }
+}

@@ -259,3 +259,24 @@
 .combat.blackout .sleeve .card .c-art { background: var(--k); }
 .combat.blackout .belt-cards .card .c-art .pico,
 .combat.blackout .sleeve .card .c-art .pico { color: var(--paper); --ink2: var(--muted); }
+
+/* a belt row an enemy keeps shut: barred with hazard stripes; when it opens, the bars slide off in steps */
+.belt.row-shut .belt-cards::after,
+.belt.row-opening .belt-cards::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--belt-row-h);
+  height: calc(var(--cw-belt) * 1.4);
+  z-index: 5;
+  background: repeating-linear-gradient(-45deg, #1b1830 0 12px, #3a3450 12px 24px);
+  border-top: 3px solid var(--y);
+  border-bottom: 3px solid var(--y);
+  opacity: 0.9;
+  pointer-events: none;
+}
+.belt.row-opening:not(.row-shut) .belt-cards::after { animation: row-open 0.6s steps(6) forwards; }
+@keyframes row-open {
+  to { clip-path: inset(0 0 0 100%); }
+}

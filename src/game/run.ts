@@ -4,7 +4,7 @@ import { nextUid, peekUid, resetUid } from '../core/util';
 import { CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../data/cards';
 import { PERKS } from '../data/perks';
 import { CONFIG } from '../data/config';
-import { ENEMIES, enemiesFor } from '../data/enemies';
+import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HEROES } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
 import { discover, progress } from './meta';
@@ -127,6 +127,9 @@ function buildNodes(rng: Rng, scripted: boolean): RunNode[] {
 
     // The shared road: one fight per floor, then the two lanes.
     let road = add(1, 0.5, 'fight');
+    // The very first run opens on its orientation fight.
+    const intro = act === 1 && scripted ? firstRunEnemy() : undefined;
+    if (intro) road.enemy = intro.id;
     for (const n of last) n.next.push(road.id);
     for (let f = 2; f <= opening; f++) {
       const n = add(f, 0.5, 'fight');

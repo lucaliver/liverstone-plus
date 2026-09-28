@@ -350,6 +350,23 @@ ${shadow}
 <g fill="#ffd900" ${OUT}><circle cx="162" cy="38" r="8"/><circle cx="180" cy="36" r="6"/></g>
 <g fill="#1b1830"><circle cx="162" cy="38" r="3"/><circle cx="180" cy="36" r="2"/></g>`;
 
+/** HR Orientation Video: a haunted wooden TV on clawed legs, antennae with orbs, a serene smiling face on the screen. */
+const hrVideo = `
+<defs>${glow('hv-g', '#ffd900')}</defs>
+${shadow}
+<path d="M70 30L52 6M130 30l18-24" stroke="#1b1830" stroke-width="5" stroke-linecap="round"/>
+<circle cx="52" cy="6" r="7" fill="#ff3d9a" ${OUT}/><circle cx="148" cy="6" r="7" fill="#ffd900" ${OUT}/>
+<path d="M58 160l-8 26h14l8-26M142 160l8 26h-14l-8-26" fill="#6a3a1a" ${OUT}/>
+<rect x="24" y="30" width="152" height="134" rx="14" fill="#b07a3a" ${OUT}/>
+<rect x="34" y="40" width="112" height="108" rx="18" fill="#1b1830" ${OUT}/>
+<rect x="42" y="48" width="96" height="92" rx="14" fill="#9ab8f0"/>
+<path d="M42 70h96M42 94h96M42 118h96" stroke="#1c5fd0" stroke-width="3" opacity=".5"/>
+<path d="M66 82c4-6 12-6 16 0M98 82c4-6 12-6 16 0" stroke="#1b1830" stroke-width="5" fill="none" stroke-linecap="round"/>
+<path d="M70 104c10 12 30 12 40 0" stroke="#1b1830" stroke-width="5" fill="none" stroke-linecap="round"/>
+<circle cx="64" cy="98" r="5" fill="#ff8ac8"/><circle cx="116" cy="98" r="5" fill="#ff8ac8"/>
+<g fill="#ffd900" ${OUT}><circle cx="160" cy="62" r="7"/><circle cx="160" cy="88" r="7"/></g>
+<g fill="#1b1830"><rect x="152" y="110" width="16" height="4"/><rect x="152" y="120" width="16" height="4"/><rect x="152" y="130" width="16" height="4"/></g>`;
+
 /** Act 2 stage prop: an office water cooler, upside-down jug on top (CSS adds the rising bubble). */
 const waterCooler = `
 ${shadow}
@@ -636,6 +653,7 @@ export const CREATURES: Record<string, string> = {
   printer,
   happiness,
   officeChair,
+  hrVideo,
   overthinker,
   wellness,
   beanCounter,

@@ -194,6 +194,12 @@ export interface EnemyDef {
   start?: { id: string; v?: number; t?: number }[];
   /** Called once when HP drops under 50%. */
   onHalf?: (c: Combat) => void;
+  /** At half HP it also says something (`enemy.<id>.speech`, shown in a speech bubble). */
+  halfSpeech?: boolean;
+  /** Belt rows open at the start of the fight (the rest stay shut until `openBeltRows`). */
+  startRows?: number;
+  /** Only met as the very first fight of the very first run (never dealt at random). */
+  firstRunOnly?: boolean;
 }
 
 export interface HeroHooks {

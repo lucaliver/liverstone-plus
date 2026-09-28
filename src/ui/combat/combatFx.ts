@@ -241,7 +241,12 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         const p = v.enemyPoint();
         floatText(p.x, p.y - 70, t('combat.enraged'), 'status bad');
         // Spell out what its half-HP trait just did (the belt speeds up, it hits harder…).
-        v.toast(t(`enemy.${v.combat.enemy.def.id}.half`), true);
+        // Some enemies say it themselves, in a speech bubble; for the others, a notice spells it out.
+        if (v.combat.enemy.def.halfSpeech) {
+          const bubble = h('div', { class: 'speech' }, t(`enemy.${v.combat.enemy.def.id}.speech`));
+          bubble.addEventListener('animationend', () => bubble.remove());
+          r.stage.append(bubble);
+        } else v.toast(t(`enemy.${v.combat.enemy.def.id}.half`), true);
         burst('blood', p.x, p.y, 30, 1.4);
         sfx('enrage');
         sfx('klaxon');

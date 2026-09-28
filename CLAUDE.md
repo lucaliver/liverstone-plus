@@ -156,7 +156,8 @@ optional `onHalf`, `start` statuses. A `MoveDef` can hit, block, heal, apply sta
 kinds at once), steal, drain mana, `hex` a share of your cards, `inflate` card costs, or `absorb` the damage it takes while
 charging and `release` it with the next hit (intents include `idle` and `absorb`). Add a vector sprite to `creatures.ts` (pixelised automatically),
 plus `enemy.<id>.name`, `move.<id>` for every move, and `enemy.<id>.half` if it has `onHalf`.
-Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.ts` (`enemyScale`).
+Optional: `startRows` (belt rows open at the start; `openBeltRows()` opens the rest), `halfSpeech` (says `enemy.<id>.speech`
+at half HP), `firstRunOnly` (only the first fight of the very first run). Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.ts` (`enemyScale`).
 
 ### Heroes
 

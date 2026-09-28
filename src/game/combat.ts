@@ -94,6 +94,8 @@ export class Combat {
   exhaust: CombatCard[] = [];
   belt: BeltCard[] = [];
   readonly beltRows: number;
+  /** Belt rows cards can spawn on right now (an enemy may keep some shut for a while). */
+  rowsOpen: number;
   sleeve: (CombatCard | null)[];
 
   /** Time accumulated towards the next regular draw onto the belt. */
@@ -129,6 +131,7 @@ export class Combat {
     this.relics = setup.relics;
     this.relicFlags = setup.relicFlags;
     this.beltRows = setup.beltRows ?? CONFIG.beltRows;
+    this.rowsOpen = Math.min(setup.enemy.startRows ?? this.beltRows, this.beltRows);
     const h = setup.hero;
 
     let maxMana = h.maxMana + (setup.bonusMaxMana ?? 0);
@@ -449,6 +452,11 @@ export class Combat {
     return m;
   }
 
+  /** Opens every belt row (the ones an enemy kept shut). */
+  openBeltRows(): void {
+    this.rowsOpen = this.beltRows;
+  }
+
   /** The enemy drops the move it is charging for `move` (e.g. it lost its train of thought); its pattern goes on after. */
   distractEnemy(move: MoveDef): void {
     const e = this.enemy;
@@ -526,7 +534,7 @@ export class Combat {
     // Draw cadence is a fixed clock (scaled with belt speed so spacing stays constant):
     // playing cards quickly never makes new ones arrive sooner. Each row keeps the one-row spacing, so a
     // two-row belt shows twice the cards (more to choose from, mana decides) and each stays in view longer.
-    const every = (CONFIG.spacing * CONFIG.beltTime) / this.beltRows;
+    const every = (CONFIG.spacing * CONFIG.beltTime) / this.rowsOpen;
     this.spawnClock = Math.min(every, this.spawnClock + dt * rate);
     const row = this.freeRow();
     if (row < 0 || this.spawnClock < every || this.rowGap(row) < CONFIG.minGap) return;
@@ -544,7 +552,7 @@ export class Combat {
   /** The row with the most room at the entry, or -1 if every row is full. */
   private freeRow(): number {
     let best = -1;
-    for (let r = 0; r < this.beltRows; r++) {
+    for (let r = 0; r < this.rowsOpen; r++) {
       if (this.belt.filter((b) => b.row === r).length >= CONFIG.maxHandBelt) continue;
       if (best < 0 || this.rowGap(r) > this.rowGap(best)) best = r;
     }
