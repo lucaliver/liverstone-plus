@@ -22,7 +22,7 @@
 
 - [x] quando il nastro si velocizza per un effetto, anche la soundtrack dovrebbe velocizzarsi un po'
 
-- [ ] CHECK: P1 FAI Un giro di coerenza, sulle schermate cresciute di recente: icone, maiuscole, spazi, ombre, testi troppo lunghi, stati vuoti, etc.
+- [x] CHECK: P1 FAI Un giro di coerenza, sulle schermate cresciute di recente: icone, maiuscole, spazi, ombre, testi troppo lunghi, stati vuoti, etc.
 
 - [ ] add a new enemy: he just has one big attack X after Ysec, but it's passive is that if he receives X damages, then he forgets to attack and goes to thinking move for tot seconds
 

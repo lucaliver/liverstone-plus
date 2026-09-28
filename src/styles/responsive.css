@@ -39,6 +39,8 @@
   /* no room for combat candles on very short screens */
   .stage .candle,
   .stage .cooler { display: none; }
+  /* the sleeve slot is too small for its label here: the hand says it */
+  .sleeve-slot > span { display: none; }
   .hint-toast.alert { top: 7%; padding: 6px 12px; font-size: 19px; }
 }
 /* narrow phones: the map header (portrait, HP, deck, pay, settings) must fit in one line */
