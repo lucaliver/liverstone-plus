@@ -7,6 +7,7 @@ import { h, onPress } from '../dom';
 import { icon } from '../art/icons';
 import { openDeck, openSettings } from '../components/modals';
 import { openHeroSheet } from '../components/heroSheet';
+import { dropLetters } from '../components/decor';
 import { creature } from '../art/creatures';
 
 export const NODE_ICON: Record<RunNode['type'], string> = {
@@ -217,10 +218,31 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     h('div', { class: 'scroll', style: { flex: '1' } }, path),
     enterBtn,
   );
+
+  // A new shift begins (the act boss is down): a curtain with the act's title, its clock-in time and the factory whistle.
+  const actIntro = (): void => {
+    const title = t('journey.title', { n: act });
+    const curtain = h(
+      'div',
+      { class: 'act-intro' },
+      h('div', { class: 'h1 act-intro-title', 'aria-label': title, html: dropLetters(title) }),
+      h('p', { class: 'act-intro-name' }, t(`journey.actName.${act}`)),
+      h('p', { class: 'act-intro-clock', html: `${icon('timer')}${t('combat.clockIn', { time: clockText(to) })}` }),
+    );
+    curtain.addEventListener('click', () => curtain.classList.add('out'));
+    curtain.addEventListener('animationend', (e) => {
+      if (e.target === curtain && e.animationName === 'act-out') curtain.remove();
+    });
+    el.append(curtain);
+    sfx('siren');
+    haptic('ability');
+  };
+
   return {
     el,
     enter() {
       el.querySelector('.node.current, .node.open')?.scrollIntoView({ block: 'center' });
+      if (act !== cur.act) actIntro();
     },
   };
 }
