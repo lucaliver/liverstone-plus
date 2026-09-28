@@ -1,6 +1,6 @@
 # TASKS
 
-- [ ] Nella schermata di employment contract: "Terms e condition" dovrebbe essere più grande, colorato blu e magari con un'icona; il bottone "Hold to sign" dovrebbe avere l'icona di una penna; provare a firmare senza aver aperto i terms dovrebbe venire impedito (con animazione, suono, vibrazione)
+- [x] Nella schermata di employment contract: "Terms e condition" dovrebbe essere più grande, colorato blu e magari con un'icona; il bottone "Hold to sign" dovrebbe avere l'icona di una penna; provare a firmare senza aver aperto i terms dovrebbe venire impedito (con animazione, suono, vibrazione)
 
 - [ ] Prima dell'animazione d'apertura della porta metti il suono di 3 knocks on door.
 
