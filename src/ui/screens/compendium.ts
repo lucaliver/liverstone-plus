@@ -5,7 +5,7 @@ import { CONFIG } from '../../data/config';
 import { ENEMY_LIST } from '../../data/enemies';
 import type { EnemyDef } from '../../game/types';
 import { HERO_LIST } from '../../data/heroes';
-import { isDiscovered } from '../../game/meta';
+import { enemyMet, isDiscovered } from '../../game/meta';
 import type { CardClass, Rarity } from '../../game/types';
 import type { Screen } from '../app';
 import { h, onPress } from '../dom';
@@ -22,10 +22,13 @@ const tabLabel = (c: CardClass): string => t(`compendium.tab.${c}`);
 
 const TIERS: EnemyDef['tier'][] = ['normal', 'elite', 'boss'];
 
+/** Name of something not met yet in the handbook. */
+const UNKNOWN = '????';
+
 function foeView(e: EnemyDef): HTMLElement {
   const el = h('article', {
     class: 'foe',
-    html: `<div class="foe-head"><div class="foe-art">${creature(e.art)}</div><div class="foe-id"><h3>${t(`enemy.${e.id}.name`)}</h3><span class="tier act">${t('journey.title', { n: e.act })}</span>${
+    html: `<div class="foe-head"><div class="foe-art">${creature(e.art)}</div><div class="foe-id"><h3>${enemyMet(e.id) ? t(`enemy.${e.id}.name`) : UNKNOWN}</h3><span class="tier act">${t('journey.title', { n: e.act })}</span>${
       e.tier !== 'normal' ? `<span class="tier ${e.tier}">${t(`journey.node.${e.tier}`)}</span>` : ''
     }<span class="foe-hp">${icon('heart')}${Math.round(e.hp * CONFIG.enemyHp)}</span></div></div>${movePattern(e)}`,
   });
@@ -100,7 +103,7 @@ export function compendiumScreen(onBack: () => void): Screen {
         const known = isDiscovered(def.id);
         const el = cardView({ uid: -1, id: def.id, up: false }, { cls: known ? '' : 'undiscovered' });
         const name = el.querySelector<HTMLElement>('.c-name');
-        if (!known && name) name.textContent = name.textContent!.replace(/\S/g, '?');
+        if (!known && name) name.textContent = UNKNOWN;
         onPress(el, () => {
           sfx('tap');
           openCardDetail({ uid: -1, id: def.id, up: false });

@@ -5,6 +5,7 @@ import { CONFIG, GAME_SPEEDS } from '../../data/config';
 import type { Combat } from '../../game/combat';
 import type { MoveDef } from '../../game/types';
 import { clockAt, currentNode, type RunState } from '../../game/run';
+import { meetEnemy } from '../../game/meta';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
 import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedSelector } from '../components/modals';
@@ -290,6 +291,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       addEventListener('resize', onResize);
       document.addEventListener('visibilitychange', onVisibility);
       render(0);
+      meetEnemy(combat.enemy.def.id);
       if (combat.enemy.def.tier === 'boss') sfx('siren');
       // The fight waits for Start: meanwhile the player can hold anything to read what it does.
       const startWrap = h(

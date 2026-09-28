@@ -89,7 +89,7 @@ const en = {
   'howto.ability.t': 'Hero ability',
   'howto.ability.d': 'Your big button: it costs a lot of mana. It is your character ultimate.',
   'howto.inspect.t': 'Hold to learn',
-  'howto.inspect.d': 'Not sure what something does? Press and hold it: cards, statuses, moves, stats. The fight waits for you.',
+  'howto.inspect.d': 'Not sure what something does? Press and hold it: cards, statuses, moves, stats.',
   'howto.gotIt': "Got it! Let's get to work.",
 
   // ------------------------------------------------------------- heroes
