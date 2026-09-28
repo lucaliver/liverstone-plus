@@ -2,13 +2,14 @@ import { availableLocales, getLocale, setLocale, type TKey, t } from '../../core
 import { setSfxVolume, sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
 import { setMusicVolume } from '../../audio/music';
-import { CARDS } from '../../data/cards';
+import { CARDS, cardCostOf } from '../../data/cards';
 import { GAME_SPEEDS } from '../../data/config';
 import { ENEMY_LIST } from '../../data/enemies';
 import { HERO_LIST } from '../../data/heroes';
 import { saveSettings, settings } from '../../game/settings';
 import type { CardInst, CardType, HeroId } from '../../game/types';
-import { openModal, type ModalHandle } from '../app';
+import { confirmModal, type ModalAction, openModal, type ModalHandle } from '../app';
+import { clearAll } from '../../core/save';
 import { h, onPress, onTapOrHold } from '../dom';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
@@ -66,7 +67,8 @@ export function speedSelector(onChange?: (s: number) => void): HTMLElement {
   return seg;
 }
 
-export function openSettings(onChange?: () => void): ModalHandle {
+/** Settings; `extra` actions go above Reset progress and Close (e.g. Main menu from the map). */
+export function openSettings(onChange?: () => void, extra: ModalAction[] = []): ModalHandle {
   const locales = availableLocales();
   const body = h(
     'div',
@@ -135,7 +137,29 @@ export function openSettings(onChange?: () => void): ModalHandle {
         )
       : null,
   );
-  return openModal({ title: t('settings.title'), body, actions: [{ label: t('common.close'), cls: 'secondary' }], onClose: onChange });
+  const reset: ModalAction = {
+    label: t('menu.reset'),
+    icon: 'trash',
+    cls: 'danger',
+    onClick: () => {
+      confirmModal(
+        t('menu.resetConfirm'),
+        t('common.confirm'),
+        () => {
+          clearAll();
+          location.reload();
+        },
+        t('common.cancel'),
+      );
+      return false;
+    },
+  };
+  return openModal({
+    title: t('settings.title'),
+    body,
+    actions: [...extra, reset, { label: t('common.close'), cls: 'secondary' }],
+    onClose: onChange,
+  });
 }
 
 export function openHowTo(onClose?: () => void, firstTime = false): ModalHandle {
@@ -245,20 +269,40 @@ export function openCardDetail(card: CardInst, onClose?: () => void): ModalHandl
 }
 
 const TYPE_ORDER: CardType[] = ['attack', 'spell', 'skill', 'power', 'potion', 'curse'];
+const DECK_SORTS = ['type', 'cost', 'name'] as const;
+type DeckSort = (typeof DECK_SORTS)[number];
+/** The deck windows' sort, kept while the game is open. */
+let deckSort: DeckSort = 'type';
 
-export function sortDeck(deck: CardInst[]): CardInst[] {
+export function sortDeck(deck: CardInst[], by: DeckSort = 'type'): CardInst[] {
+  const name = (c: CardInst): string => t(`card.${c.id}.name`);
   return [...deck].sort((a, b) => {
     const da = CARDS[a.id];
     const db = CARDS[b.id];
-    return TYPE_ORDER.indexOf(da.type) - TYPE_ORDER.indexOf(db.type) || da.cost - db.cost || a.id.localeCompare(b.id) || Number(b.up) - Number(a.up);
+    const type = TYPE_ORDER.indexOf(da.type) - TYPE_ORDER.indexOf(db.type);
+    const cost = cardCostOf(a) - cardCostOf(b);
+    const byName = name(a).localeCompare(name(b));
+    const first = by === 'cost' ? cost || type : by === 'name' ? byName : type || cost;
+    return first || byName || Number(b.up) - Number(a.up);
   });
 }
 
-/** Deck grid. With `onPick`, tapping a card selects it; otherwise tapping opens its detail. */
+/** Identical copies (same card, upgrade and perks) shown once, with how many there are. */
+function groupCopies(cards: CardInst[]): { card: CardInst; n: number }[] {
+  const groups = new Map<string, { card: CardInst; n: number }>();
+  for (const c of cards) {
+    const key = `${c.id}|${c.up}|${[...(c.perks ?? [])].sort().join()}`;
+    const g = groups.get(key);
+    if (g) g.n++;
+    else groups.set(key, { card: c, n: 1 });
+  }
+  return [...groups.values()];
+}
+
 /**
- * Deck grid. Without `onPick`, tapping (or holding) a card opens its detail.
- * With `onPick`: tap selects a card (shown as `previewSelected` if given, e.g. its upgraded version),
- * hold shows its detail, and the single confirm button calls `onPick`. Tapping outside cancels.
+ * Deck grid, sortable by type, cost or name, identical copies grouped (×N). Without `onPick`, tapping (or holding) a
+ * card opens its detail. With `onPick`: tap selects a card (shown as `previewSelected` if given, e.g. its upgraded
+ * version), hold shows its detail, and the single confirm button calls `onPick`. Tapping outside cancels.
  */
 export function openDeck(
   deck: CardInst[],
@@ -271,13 +315,15 @@ export function openDeck(
     onClose?: () => void;
   } = {},
 ): ModalHandle {
-  const cards = sortDeck(deck).filter(opts.filter ?? (() => true));
+  const cards = deck.filter(opts.filter ?? (() => true));
   let selected: CardInst | null = null;
   let confirm: HTMLButtonElement | null = null;
 
-  const makeEl = (c: CardInst, isSelected: boolean): HTMLElement => {
+  const makeEl = (c: CardInst, n: number): HTMLElement => {
+    const isSelected = selected?.uid === c.uid;
     const el = cardView(isSelected && opts.previewSelected ? opts.previewSelected(c) : c);
     el.classList.toggle('sel', isSelected);
+    if (n > 1) el.append(h('span', { class: 'copies' }, t('deck.copies', { n })));
     if (!opts.onPick) {
       onPress(el, () => {
         sfx('tap');
@@ -289,32 +335,41 @@ export function openDeck(
       el,
       () => {
         sfx('tap');
-        select(selected?.uid === c.uid ? null : c);
+        selected = selected?.uid === c.uid ? null : c;
+        render();
+        if (confirm) confirm.disabled = !selected;
       },
       () => openCardDetail(isSelected && opts.previewSelected ? opts.previewSelected(c) : c),
     );
     return el;
   };
-  const els = cards.map((c) => makeEl(c, false));
-  const grid = h('div', { class: `deck-grid ${opts.onPick ? 'pick' : ''}` }, ...els);
-
-  // Re-render the old and new selection (they may change look, e.g. base ↔ upgraded).
-  function select(c: CardInst | null): void {
-    const prev = selected;
-    selected = c;
-    for (const [i, card] of cards.entries()) {
-      if (card.uid !== prev?.uid && card.uid !== c?.uid) continue;
-      const fresh = makeEl(card, card.uid === c?.uid);
-      els[i].replaceWith(fresh);
-      els[i] = fresh;
-    }
+  const grid = h('div', { class: `deck-grid ${opts.onPick ? 'pick' : ''}` });
+  const sorter = h('div', { class: 'seg deck-sort', role: 'group' });
+  function render(): void {
+    sorter.replaceChildren(
+      ...DECK_SORTS.map((by) =>
+        h(
+          'button',
+          {
+            'aria-pressed': String(by === deckSort),
+            onclick: () => {
+              sfx('tap');
+              deckSort = by;
+              render();
+            },
+          },
+          t(`deck.sort.${by}`),
+        ),
+      ),
+    );
+    grid.replaceChildren(...groupCopies(sortDeck(cards, deckSort)).map((g) => makeEl(g.card, g.n)));
     grid.classList.toggle('has-sel', !!selected);
-    if (confirm) confirm.disabled = !selected;
   }
+  render();
 
   const handle = openModal({
     title: opts.onPick ? (opts.title ?? t('deck.title')) : `${opts.title ?? t('deck.title')} (${cards.length})`,
-    body: cards.length ? grid : h('p', null, t('deck.empty')),
+    body: cards.length ? h('div', null, sorter, grid) : h('p', null, t('deck.empty')),
     actions: opts.onPick
       ? [
           {

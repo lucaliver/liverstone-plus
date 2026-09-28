@@ -227,6 +227,23 @@
 .deck-grid .card {
   --cw: calc((min(100vw, 520px) - 32px - 32px - 20px - 22px) / 3);
 }
+/* how many identical copies a card stands for */
+.deck-grid .copies {
+  position: absolute;
+  right: -8px;
+  bottom: -10px;
+  z-index: 3;
+  padding: 1px 6px 2px;
+  font-family: var(--font-ui);
+  font-size: 18px;
+  line-height: 1;
+  color: var(--k);
+  background: var(--y);
+  border: 2px solid var(--k);
+  box-shadow: 2px 2px 0 var(--k);
+}
+.deck-sort { margin: 0 0 12px; }
+.deck-sort button { flex: 1; }
 .deck-grid.pick .card { cursor: pointer; }
 .deck-grid.pick .card:active { transform: translate(3px, 3px); box-shadow: none; }
 .deck-grid.pick.has-sel .card:not(.sel) { opacity: 0.45; }

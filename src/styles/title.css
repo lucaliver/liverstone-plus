@@ -198,6 +198,18 @@
   gap: 10px;
   width: min(100%, 360px);
 }
+/* an odd one out spans the whole row */
+.menu .btn:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.debug-fab {
+  position: absolute;
+  top: calc(var(--safe-t) + 6px);
+  right: 6px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  opacity: 0.7;
+}
 .version {
   font-family: var(--font-ui);
   font-size: 14px;

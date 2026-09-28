@@ -18,7 +18,6 @@ export interface TitleCallbacks {
   onCompendium: () => void;
   /** Temporary: fight any enemy with any hero. */
   onDebugFight: () => void;
-  onResetProgress: () => void;
 }
 
 /** How long the time card takes to slide into the clock before the next screen (ms). */
@@ -88,9 +87,17 @@ export function titleScreen(cb: TitleCallbacks): Screen {
       btn('book', t('menu.compendium'), 'secondary small', cb.onCompendium),
       btn('question', t('menu.howTo'), 'secondary small', () => openHowTo()),
       btn('gear', t('menu.settings'), 'secondary small', () => openSettings()),
-      btn('bug', t('debug.button'), 'secondary small debug-btn', cb.onDebugFight),
-      btn('trash', t('menu.reset'), 'danger small', cb.onResetProgress),
     ),
+    // Temporary: a small floating button, off the menu's layout.
+    h('button', {
+      class: 'icon-btn debug-fab',
+      'aria-label': t('debug.button'),
+      html: icon('bug'),
+      onclick: () => {
+        sfx('tap');
+        cb.onDebugFight();
+      },
+    }),
   );
   return {
     el,

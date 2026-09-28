@@ -319,8 +319,9 @@ test('tapping the hero portrait in a fight shows the deck in play and pauses', a
   await freshGame(page);
   await startFight(page);
   await page.locator('.hero-portrait').click();
-  // The warrior's 9-card deck (he has no once-per-run special).
-  await expect(page.locator('.modal .deck-grid .card')).toHaveCount(9);
+  // The warrior's 9-card deck (he has no once-per-run special), identical copies grouped.
+  await expect(page.locator('.modal h2')).toContainText('9');
+  await expect(page.locator('.modal .deck-grid .card')).toHaveCount(3);
   const clock = () => page.evaluate('window.__combat.time');
   const before = await clock();
   await page.waitForTimeout(300);
@@ -330,6 +331,7 @@ test('tapping the hero portrait in a fight shows the deck in play and pauses', a
 test('reset progress wipes saves after a confirmation', async ({ page }) => {
   await freshGame(page);
   page.on('dialog', (d) => d.accept());
+  await page.getByRole('button', { name: /settings/i }).click();
   await page.getByRole('button', { name: /reset progress/i }).click();
   await page.getByRole('button', { name: 'Confirm' }).click();
   await expect(page.locator('.splash')).toBeVisible();

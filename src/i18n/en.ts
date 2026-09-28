@@ -257,6 +257,10 @@ const en = {
   'end.title': 'Main menu',
   'deck.title': 'Your deck',
   'deck.empty': 'No cards',
+  'deck.copies': '×{n}',
+  'deck.sort.type': 'Type',
+  'deck.sort.cost': 'Cost',
+  'deck.sort.name': 'Name',
   'detail.showUpgrade': 'Show upgrade',
   'detail.hideUpgrade': 'Show base',
 

@@ -6,7 +6,7 @@
 
 - [ ] deck view: should have on the top a sorter by name/type/cost; also multiple identical cards should be rappresented by just one card and "x2" for example
 
-- [ ] home: move the reset progress button into the settings page; make the debug button small and not part of the usual layout (like just a floating button on top)
+- [x] home: move the reset progress button into the settings page; make the debug button small and not part of the usual layout (like just a floating button on top)
 
 - [ ] dragging card out of sleeve anywhere should play it
 
@@ -38,3 +38,15 @@ New tasks, after the others:
 - [ ] Carta "Ctrl+Z": cambia l'effetto in "Recupera tutti gli HP che hai perso negli ultimi 3 s". Costo 1, Exhaust. Potenziata: finestra di 5 s.
 
 - [ ] Carta "Severance": cambiala in "Ottieni 3 strength. Per 9 s, le carte che escono dal nastro si giocano da sole (se hai il mana per pagarle). Potenziata: 5 strength e 10 s."
+
+- [ ] Aggiungi nuova carta "Work-Life balance": effetto "Infligge 3 danni, si ripete ad ogni successiva carta che giochi, finchè non ne giochi due dello stesso tipo consecutivamente"
+
+- [ ] Cambia funzionalità effetto "Dodge" nelle carte: anzichè "Completly avoid the next enemy hit" diventa "Become immune to damage for 2sec"
+
+- [ ] Nuova carta "Complaint box": "Infligge 2 danni. Il danno aumenta di 1 per ogni secondo in cui hai overflow di mana" (l'aumento si ha sia mentre è in campo che nel mazzo che ovunque)
+
+- [ ] Aggiungi un nuovo nemico "HR Orientation Video" (lo sprite è una TV fantasy con volto sereno), usato solo come primo nemico nella primissima run: la sua passiva è che la belt ha una sola riga, ma quando scende sotto il 50% degli hp aggiunge la seconda row (con animazione e con fumetto di dialogo "Great job. You've been assigned a second line. No raise.")
+
+- [ ] Schermata Start Game: cambiala con un contratto da firmare tenendo premuto. Al primo avvio firmi l'assunzione con un hold. Insegna il gesto "tieni premuto = ispeziona" prima del combattimento, con una battuta sui termini e condizioni.
+
+- [ ] Alla fine della primissima run: Nella lettera rosa, un fumetto dice qualcosa tipo "Let's hire the next one, Mr Mage it is.". La prima sconfitta (o anche fosse una vittoria) deve sembrare un passo avanti, non uno stop.
