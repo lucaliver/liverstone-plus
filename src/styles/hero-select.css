@@ -278,17 +278,33 @@
 }
 .hero-unlock { color: var(--y); }
 .hero-new {
+  /* a starburst sticker slapped on the stage, rocking in two steps */
   position: absolute;
-  top: 8px;
-  left: 6%;
+  top: 0;
+  left: 4%;
   z-index: 2;
-  padding: 2px 8px 4px;
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
   font-family: var(--font-ui);
   font-size: 20px;
+  line-height: 1;
+  text-transform: uppercase;
   color: var(--k);
+  filter: drop-shadow(3px 3px 0 var(--hero-ink));
+  animation: sticker 1.4s steps(1) infinite;
+}
+.hero-new::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: var(--y);
-  border: 2px solid var(--k);
-  box-shadow: 3px 3px 0 var(--hero-ink);
-  animation: blink 1.2s steps(1) infinite;
+  clip-path: polygon(50% 0%, 60% 11%, 75% 7%, 78% 22%, 93% 25%, 89% 40%, 100% 50%, 89% 60%, 93% 75%, 78% 78%, 75% 93%, 60% 89%, 50% 100%, 40% 89%, 25% 93%, 22% 78%, 7% 75%, 11% 60%, 0% 50%, 11% 40%, 7% 25%, 22% 22%, 25% 7%, 40% 11%);
+}
+@keyframes sticker {
+  0% { rotate: -12deg; scale: 1; }
+  50% { rotate: -4deg; scale: 1.08; }
 }
 .hero-dot.locked { opacity: 0.45; }
