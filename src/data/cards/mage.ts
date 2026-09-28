@@ -145,7 +145,7 @@ export const mageCards: CardDef[] = [
     upCost: 1,
     vals: [6],
     upVals: [8],
-    art: 'remote',
+    art: 'gears',
     play: (c, v) => c.rushBelt(v[0]),
   },
   {
@@ -192,7 +192,7 @@ export const mageCards: CardDef[] = [
     vals: [4],
     upVals: [6],
     keywords: ['exhaust', 'pending'],
-    art: 'sheep',
+    art: 'beetle',
     play: (c, v) => c.applyStatus('enemy', 'stun', 1, v[0]),
   },
   {
@@ -277,7 +277,7 @@ export const mageCards: CardDef[] = [
     cost: 3,
     vals: [8, 2],
     upVals: [11, 3],
-    art: 'glassPane',
+    art: 'blueScreen',
     play: (c, v) => {
       const chilled = c.has('enemy', 'chill');
       c.hit(v[0], { kind: 'ice' });

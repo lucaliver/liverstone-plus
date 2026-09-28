@@ -162,7 +162,7 @@ export const warriorCards: CardDef[] = [
     cost: -1,
     vals: [5],
     upVals: [7],
-    art: 'whirl',
+    art: 'bankrupt',
     // X cost: the engine appends the mana spent as the last value.
     play: (c, v) => void c.hit(v[0], { hits: v[v.length - 1] }),
   },
@@ -191,7 +191,7 @@ export const warriorCards: CardDef[] = [
     cost: 2,
     vals: [7, 4],
     upVals: [8, 6],
-    art: 'crunchTime',
+    art: 'stonks',
     play: (c, v, card) => {
       c.hit(v[0]);
       card.bonus += v[1];

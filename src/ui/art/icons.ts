@@ -57,9 +57,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'blood',
     svg: `<ellipse cx="32" cy="24" rx="22" ry="8"/><path d="M10 24v20c0 5 10 9 22 9s22-4 22-9V24c0 5-10 9-22 9s-22-4-22-9z"/><path fill="#16121f" opacity=".35" d="M14 32l6 18M26 34l4 19M38 34l-4 19M50 32l-6 18" stroke="#16121f" stroke-width="2"/><g ${S} stroke-width="4"><path d="M20 4l10 16M46 4L36 20"/></g>`,
   },
-  whirl: {
+  bankrupt: {
     el: 'steel',
-    svg: `<g ${S} stroke-width="5.5"><path d="M32 32m-4 0a4 4 0 1 1 8 0 10 10 0 1 1-20 0 16 16 0 1 1 32 0 22 22 0 1 1-44 0"/></g><path d="M8 33l-4-9 11 2z"/>`,
+    svg: `<path d="M4 26h48v32H4z"/><path d="M6 26l32-14 6 14z"/><rect x="38" y="34" width="22" height="14" rx="2"/><circle cx="46" cy="41" r="3" fill="#16121f"/><path d="M12 4l6 8 6-8-2 12h-8zM30 2l4 5 4-5-1 8h-6z"/>`,
   },
   heart: { el: 'nature', svg: heart },
   fortress: {
@@ -104,9 +104,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'fire',
     svg: `<path d="M32 2l6 16 16-8-8 16 16 6-16 6 8 16-16-8-6 16-6-16-16 8 8-16-16-6 16-6-8-16 16 8z"/><circle cx="32" cy="32" r="9" fill="#fff" opacity=".5"/>`,
   },
-  sheep: {
+  beetle: {
     el: 'arcane',
-    svg: `<g><circle cx="22" cy="30" r="10"/><circle cx="34" cy="24" r="11"/><circle cx="44" cy="32" r="10"/><circle cx="30" cy="38" r="11"/><rect x="20" y="42" width="5" height="14" rx="2"/><rect x="38" y="42" width="5" height="14" rx="2"/><ellipse cx="12" cy="30" rx="8" ry="7"/><circle cx="10" cy="29" r="1.6" fill="#16121f"/></g>`,
+    svg: `<ellipse cx="32" cy="38" rx="15" ry="19"/><circle cx="32" cy="15" r="8"/><path d="M32 22v34" stroke="#16121f" stroke-width="3"/><g ${S} stroke-width="4"><path d="M18 28L7 22M17 39H5M18 50L7 57M46 28l11-6M47 39h12M46 50l11 7M28 9l-5-6M36 9l5-6"/></g>`,
   },
   blizzard: {
     el: 'ice',
@@ -279,9 +279,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M44 4h8c6 0 10 4 10 10v4h-6v-4c0-3-1-4-4-4h-4z"/><path d="M50 16l6 4L14 60l-6-4z"/><path d="M8 56l-6-6 4-4 6 6z"/>`,
   },
-  crunchTime: {
+  stonks: {
     el: 'blood',
-    svg: `<circle cx="30" cy="36" r="24"/><rect x="24" y="4" width="12" height="8"/><path d="M30 36V20M30 36l10 6" stroke="#16121f" stroke-width="5" fill="none"/><g ${S} stroke-width="4.5"><path d="M52 10l8-6M56 22l8-2"/></g>`,
+    svg: `<rect x="4" y="4" width="5" height="56"/><rect x="4" y="55" width="56" height="5"/><g ${S} stroke-width="6"><path d="M15 46l11-12 8 8 16-20"/></g><path d="M42 12h18v18z"/>`,
   },
   // Mage
   echo: {
@@ -316,9 +316,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'arcane',
     svg: `<path d="M8 20h34v40H8z"/><path d="M16 12h34v40h-5V17H16z"/><path d="M24 4h34v40h-5V9H24z"/><g fill="#16121f"><rect x="13" y="28" width="24" height="3"/><rect x="13" y="36" width="24" height="3"/><rect x="13" y="44" width="16" height="3"/></g>`,
   },
-  glassPane: {
+  blueScreen: {
     el: 'ice',
-    svg: `<rect x="6" y="6" width="52" height="52"/><path d="M6 6l20 24-8 28M26 30l32-8M26 30l14 28M26 30l6-24" stroke="#16121f" stroke-width="3.5" fill="none"/>`,
+    svg: `<rect x="4" y="6" width="56" height="40" rx="3"/><rect x="26" y="46" width="12" height="8"/><rect x="14" y="54" width="36" height="5"/><g fill="#16121f"><rect x="14" y="15" width="5" height="5"/><rect x="14" y="27" width="5" height="5"/><rect x="14" y="38" width="32" height="3"/></g><path d="M34 12c-7 5-7 17 0 22" stroke="#16121f" stroke-width="4" fill="none"/>`,
   },
   kanban: {
     el: 'arcane',
@@ -328,9 +328,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'ice',
     svg: `<circle cx="32" cy="32" r="27"/><circle cx="32" cy="32" r="17" fill="#16121f"/><circle cx="32" cy="32" r="12"/><path d="M32 32l8-8" stroke="#16121f" stroke-width="4.5"/>`,
   },
-  remote: {
+  gears: {
     el: 'arcane',
-    svg: `<rect x="20" y="4" width="24" height="56" rx="6"/><g fill="#16121f"><circle cx="32" cy="14" r="4"/><path d="M25 25l8 6-8 6zM33 25l8 6-8 6z"/><rect x="25" y="44" width="6" height="6"/><rect x="34" y="44" width="6" height="6"/></g>`,
+    svg: `<circle cx="22" cy="40" r="13"/><rect x="19.0" y="22" width="6" height="6" transform="rotate(0 22 40)"/><rect x="19.0" y="22" width="6" height="6" transform="rotate(45 22 40)"/><rect x="19.0" y="22" width="6" height="6" transform="rotate(90 22 40)"/><rect x="19.0" y="22" width="6" height="6" transform="rotate(135 22 40)"/><rect x="19.0" y="22" width="6" height="6" transform="rotate(180 22 40)"/><rect x="19.0" y="22" width="6" height="6" transform="rotate(225 22 40)"/><rect x="19.0" y="22" width="6" height="6" transform="rotate(270 22 40)"/><rect x="19.0" y="22" width="6" height="6" transform="rotate(315 22 40)"/><circle cx="22" cy="40" r="5" fill="#16121f"/><circle cx="45" cy="19" r="10"/><rect x="42.5" y="5" width="5" height="5" transform="rotate(0 45 19)"/><rect x="42.5" y="5" width="5" height="5" transform="rotate(51 45 19)"/><rect x="42.5" y="5" width="5" height="5" transform="rotate(103 45 19)"/><rect x="42.5" y="5" width="5" height="5" transform="rotate(154 45 19)"/><rect x="42.5" y="5" width="5" height="5" transform="rotate(206 45 19)"/><rect x="42.5" y="5" width="5" height="5" transform="rotate(257 45 19)"/><rect x="42.5" y="5" width="5" height="5" transform="rotate(309 45 19)"/><circle cx="45" cy="19" r="4" fill="#16121f"/>`,
   },
   coldStorage: {
     el: 'ice',
