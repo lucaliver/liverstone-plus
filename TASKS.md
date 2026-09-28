@@ -30,7 +30,7 @@
 
 - [x] P3 Aggiungi Musica per atto: una traccia di combattimento diversa nell'Atto 2 e un breve tema di vittoria per il boss.
 
-- [ ] P4 Transizione tra mappa e combattimento: oggi il cambio è secco; potrebbe esserci un passaggio animato (animazione immersiva a tutto schermo della porta dell'ufficio che si apre, per esempio).
+- [x] P4 Transizione tra mappa e combattimento: oggi il cambio è secco; potrebbe esserci un passaggio animato (animazione immersiva a tutto schermo della porta dell'ufficio che si apre, per esempio).
 
 - [ ] L'icona del pulsante Handbook non assomiglia abbastanza a un libro (sembra il simbolo della pausa), migliorala
 

@@ -4,7 +4,7 @@ import { sfx } from '../../audio/sfx';
 import { CONFIG, GAME_SPEEDS } from '../../data/config';
 import type { Combat } from '../../game/combat';
 import type { MoveDef } from '../../game/types';
-import { clockAt, currentNode, type RunState } from '../../game/run';
+import { clockAt, currentNode, type RunState, totalFloors } from '../../game/run';
 import { meetEnemy } from '../../game/meta';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
@@ -295,6 +295,28 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     enter() {
       layout();
       renderSpeed();
+      // The way in: an office double door with the enemy's name on the glass swings open onto the fight.
+      const node = currentNode(run);
+      const door = h(
+        'div',
+        { class: 'office-door', 'aria-hidden': 'true' },
+        h(
+          'div',
+          { class: 'door-half l' },
+          h(
+            'div',
+            { class: 'door-glass' },
+            h('b', null, t(`enemy.${combat.enemy.def.id}.name`)),
+            h('span', null, t('common.floorOf', { a: node.act, n: node.floor, total: totalFloors(run) })),
+          ),
+        ),
+        h('div', { class: 'door-half r' }, h('div', { class: 'door-glass' })),
+      );
+      door.addEventListener('animationend', (e) => {
+        if (e.target === door) door.remove();
+      });
+      el.append(door);
+      sfx('door');
       addEventListener('resize', onResize);
       document.addEventListener('visibilitychange', onVisibility);
       render(0);
