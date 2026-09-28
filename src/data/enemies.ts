@@ -1,6 +1,8 @@
 import type { EnemyDef, MoveDef } from '../game/types';
 
 const atk = (id: string, dmg: number, windup: number, extra: Partial<MoveDef> = {}): MoveDef => ({ id, intent: 'attack', dmg, windup, ...extra });
+/** Elites and some bosses get stronger with every attack (+1 Strength), so a long fight costs more. */
+const ramp: Partial<MoveDef> = { status: [{ id: 'strength', v: 1, target: 'enemy' }] };
 
 /**
  * Every enemy has one steady main attack and, every `every` main attacks, a special move
@@ -118,7 +120,7 @@ const defs: EnemyDef[] = [
     tier: 'elite',
     hp: 100,
     art: 'automaton',
-    main: atk('cleave', 8, 8),
+    main: atk('cleave', 8, 8, ramp),
     every: 2,
     specials: [
       atk('rend', 11, 11, { intent: 'charge', status: [{ id: 'vulnerable', t: 5, target: 'hero' }] }),
@@ -133,7 +135,7 @@ const defs: EnemyDef[] = [
     tier: 'boss',
     hp: 165,
     art: 'ceo',
-    main: atk('soulBolt', 7, 7),
+    main: atk('soulBolt', 7, 7, ramp),
     every: 2,
     specials: [
       { id: 'hexes', intent: 'curse', windup: 7, curse: [{ id: 'hex', n: 2, to: 'draw' }] },
@@ -270,7 +272,7 @@ const defs: EnemyDef[] = [
     art: 'printer',
     main: { id: 'scan', intent: 'absorb', windup: 5, absorb: true },
     every: 1,
-    specials: [atk('printOut', 4, 5, { intent: 'charge', release: true })],
+    specials: [atk('printOut', 4, 5, { intent: 'charge', release: true, ...ramp })],
   },
   {
     id: 'veteran',
@@ -278,7 +280,7 @@ const defs: EnemyDef[] = [
     tier: 'elite',
     hp: 110,
     art: 'veteran',
-    main: atk('grumble', 9, 7),
+    main: atk('grumble', 9, 7, ramp),
     every: 2,
     specials: [
       { id: 'inMyDay', intent: 'debuff', windup: 7, inflate: 4 },

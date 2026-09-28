@@ -174,7 +174,7 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
 | **The Veteran** (élite) | *In My Day…*: **Inflation**, alcune carte costano 1 in più finché non le giochi; racconti lunghi che rallentano il nastro |
 | **Micromanager** (boss) | Passiva: se stai 2 s senza giocare carte ti attacca subito; *Priority Task*, *Lockout*, *Quick Favour* |
 
-La difficoltà cresce scendendo di piano.
+La difficoltà cresce scendendo di piano. Le élite e lo Slaves CEO guadagnano 1 Forza a ogni attacco: conviene batterli in fretta.
 
 ---
 
