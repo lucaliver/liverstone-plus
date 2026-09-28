@@ -22,7 +22,7 @@
 
 - [x] Aggiungi un nuovo nemico "HR Orientation Video" (lo sprite è una TV fantasy con volto sereno), usato solo come primo nemico nella primissima run: la sua passiva è che la belt ha una sola riga, ma quando scende sotto il 50% degli hp aggiunge la seconda row (con animazione e con fumetto di dialogo "Great job. You've been assigned a second line. No raise.")
 
-- [ ] Schermata Start Game: cambiala con un contratto da firmare tenendo premuto. Al primo avvio firmi l'assunzione con un hold. Insegna il gesto "tieni premuto = ispeziona" prima del combattimento, con una battuta sui termini e condizioni.
+- [x] Schermata Start Game: cambiala con un contratto da firmare tenendo premuto. Al primo avvio firmi l'assunzione con un hold. Insegna il gesto "tieni premuto = ispeziona" prima del combattimento, con una battuta sui termini e condizioni.
 
 - [ ] Alla fine della primissima run: Nella lettera rosa, un fumetto dice qualcosa tipo "Let's hire the next one, Mr Mage it is.". La prima sconfitta (o anche fosse una vittoria) deve sembrare un passo avanti, non uno stop.
 

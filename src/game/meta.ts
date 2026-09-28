@@ -14,14 +14,23 @@ interface Meta {
   met: string[];
   /** Runs started so far (the very first one has a scripted map). */
   runs: number;
+  /** The employment contract has been signed (the start screen's first-time hold). */
+  signed: boolean;
 }
 
-const meta: Meta = load('meta', { discovered: [], heroes: [], fresh: [], met: [], runs: 0 });
+const meta: Meta = load('meta', { discovered: [], heroes: [], fresh: [], met: [], runs: 0, signed: false });
 // Saved data is untrusted: keep only known hero ids.
 for (const k of ['heroes', 'fresh'] as const) meta[k] = Array.isArray(meta[k]) ? meta[k].filter((id) => id in HEROES) : [];
 const discovered = new Set(Array.isArray(meta.discovered) ? meta.discovered : []);
 if (!Array.isArray(meta.met)) meta.met = [];
 if (typeof meta.runs !== 'number') meta.runs = 0;
+meta.signed = meta.signed === true;
+
+export const contractSigned = (): boolean => meta.signed;
+export function signContract(): void {
+  meta.signed = true;
+  store('meta', meta);
+}
 
 /** True for the very first run ever; counts the run as started. */
 export function startingFirstRun(): boolean {

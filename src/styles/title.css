@@ -235,8 +235,8 @@
 .splash .logo {
   margin: 0;
   max-width: 92%;
-  padding: 8px 14px 10px;
-  font-size: clamp(30px, 9.6vw, 50px);
+  padding: 6px 12px 8px;
+  font-size: clamp(26px, 8.4vw, 42px);
   color: var(--k);
   background: var(--paper);
   border: var(--line) solid var(--k);
@@ -245,22 +245,80 @@
   text-shadow: 3px 3px 0 var(--p);
   animation: none;
 }
-.splash-tagline {
-  margin: 0;
-  padding: 2px 10px;
+/* the employment contract: paper, numbered clauses, the terms to hold, a signature line and the HIRED stamp */
+.contract {
+  position: relative;
+  width: min(100%, 340px);
+  padding: 14px 16px 12px;
+  text-align: left;
+  color: var(--k);
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
+  rotate: 1.5deg;
+}
+.contract h2 {
+  margin: 0 0 6px;
   font-family: var(--font-display);
-  font-size: clamp(13px, 4vw, 17px);
+  font-size: 18px;
+  text-align: center;
   text-transform: uppercase;
-  color: var(--paper);
-  background: var(--k);
-  rotate: -5deg;
 }
-.splash-art {
-  width: min(52vw, 220px);
-  aspect-ratio: 1;
-  animation: bob 1.2s steps(2) infinite;
+.contract p,
+.contract li { margin: 0; font-size: 14px; line-height: 1.3; }
+.contract ol { margin: 8px 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+.contract-terms {
+  display: block;
+  margin: 2px 0 10px;
+  padding: 4px 0;
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: underline dotted 2px;
+  text-underline-offset: 3px;
 }
-.splash-art .riso { width: 100%; height: 100%; }
+.contract-line {
+  position: relative;
+  height: 50px;
+  border-bottom: 2px solid var(--k);
+}
+.contract-line > span {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--muted);
+}
+.contract-sig { position: absolute; left: 8px; bottom: 2px; width: 70%; height: 44px; clip-path: inset(0 100% 0 0); }
+.contract-sig svg { width: 100%; height: 100%; }
+.contract-sig.done { animation: sign 0.6s steps(8) forwards; }
+@keyframes sign {
+  to { clip-path: inset(0 0 0 0); }
+}
+.contract-stamp {
+  position: absolute;
+  right: 0;
+  bottom: 6px;
+  padding: 0 8px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  text-transform: uppercase;
+  color: var(--p);
+  border: 4px solid var(--p);
+  rotate: -12deg;
+  opacity: 0;
+}
+.contract-stamp.in { animation: contract-stamp 0.2s steps(2) 0.5s forwards; }
+@keyframes contract-stamp {
+  from { scale: 2.2; opacity: 0; }
+  to { scale: 1; opacity: 1; }
+}
+/* hold to sign: the button fills up in steps while held */
+.sign-btn { position: relative; overflow: hidden; touch-action: none; }
+.sign-btn .fill { position: absolute; inset: 0; background: var(--p); transform: scaleX(0); transform-origin: left; }
+.sign-btn .fill ~ * { position: relative; }
+.sign-btn.holding .fill { transition: transform 0.9s steps(9); transform: scaleX(1); }
+.sign-btn.signed .fill { transform: scaleX(1); }
 .splash .btn { width: min(100%, 300px); }
 
 /* menu buttons carry a pixel icon before the label */

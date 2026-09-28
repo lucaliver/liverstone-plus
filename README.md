@@ -189,8 +189,9 @@ La difficoltà cresce scendendo di piano. Le élite e lo Slaves CEO guadagnano 1
 
 ## 6. Schermate e interfaccia
 
-- **Avvio:** stile manifesto: una fascia gialla in diagonale, il logo su carta, lo slogan, il timbracartellino e
-  *Start game* (il primo tocco sblocca anche l'audio).
+- **Avvio:** un contratto di assunzione su carta (con la fascia gialla del manifesto): al primo avvio lo firmi
+  **tenendo premuto**, e una clausola insegna il gesto (tieni premuti i *Termini e condizioni* per leggerli); dopo è già
+  firmato e basta toccare *Start game* (il primo gesto sblocca anche l'audio).
 - **Home:** un manifesto di propaganda appeso al muro (il boss enorme stampato in due inchiostri e tagliato dal bordo,
   il logo su un blocco giallo, lo slogan timbrato *Work · Obey · Punch in*, la targa *Punchcard Inc.*); il boss è il
   primo che non hai ancora incontrato. Sotto, sulla scrivania, il **cartellino** da timbrare accanto al
