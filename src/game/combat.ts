@@ -436,6 +436,15 @@ export class Combat {
     return m;
   }
 
+  /** The enemy drops the move it is charging for `move` (e.g. it lost its train of thought); its pattern goes on after. */
+  distractEnemy(move: MoveDef): void {
+    const e = this.enemy;
+    e.timer = 0;
+    e.move = move;
+    this.events.emit({ type: 'text', target: 'enemy', key: `move.${move.id}`, tone: 'good' });
+    this.events.emit({ type: 'enemyIntent', move });
+  }
+
   /** The enemy lands its main attack right now, outside its pattern (a Micromanager cutting in). */
   enemyStrike(): void {
     if (this.enemyTimeRate() === 0) return;
@@ -744,6 +753,7 @@ export class Combat {
     const lost = Math.min(target.hp, dmg - blocked);
     target.hp -= lost;
     this.events.emit({ type: 'damage', target: to, amount: dmg - blocked, blocked, source, hitIndex, kind: opts.kind ?? 'hit' });
+    if (lost > 0) for (const [id, s] of Object.entries(target.statuses)) if (this.has(to, id)) STATUSES[id].onHurt?.(this, to, s, lost);
 
     if (source === 'enemy' && to === 'hero') {
       this.heroDef.hooks.onHeroHit?.(this, lost);

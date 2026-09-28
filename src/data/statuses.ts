@@ -1,5 +1,5 @@
 import type { Combat } from '../game/combat';
-import type { Side, StatusDef, StatusVal } from '../game/types';
+import type { MoveDef, Side, StatusDef, StatusVal } from '../game/types';
 import { cardCategory } from './cards';
 
 /** How long every card played brings the Light Sleeper's hit closer (seconds). */
@@ -12,6 +12,8 @@ const LANE_WINDOW = 4;
 const CHILL_GAP = 2;
 /** Micromanagement: seconds without playing a card before he cuts in. */
 const IDLE_LIMIT = 2;
+/** What the Overthinker does once it has lost its train of thought. */
+const WHERE_WAS_I: MoveDef = { id: 'whereWasI', intent: 'idle', windup: 4 };
 /** Spending Freeze: the hero's max mana. */
 const FROZEN_BUDGET = 3;
 
@@ -123,6 +125,25 @@ const defs: StatusDef[] = [
     canPlay: (c, side) => (side === 'enemy' && c.time - c.lastPlayedAt < CHILL_GAP ? 'combat.chillOut' : null),
   },
   { id: 'budgetFreeze', kind: 'stacks', good: true, passive: true, icon: 'calculator', manaCap: FROZEN_BUDGET },
+  // Train of thought: take `v` damage while it charges a move and it forgets what it was doing (the move is lost).
+  {
+    id: 'trainOfThought',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'thoughtBubble',
+    onHurt: (c, side, s, lost) => {
+      const e = c.enemy;
+      if (side !== 'enemy' || e.move === WHERE_WAS_I) return;
+      // Damage counts per move: `mem.focusMove` is the move it started taking damage on.
+      if (e.mem.focusMove !== e.moveCount) {
+        e.mem.focusMove = e.moveCount;
+        e.mem.focusDmg = 0;
+      }
+      e.mem.focusDmg += lost;
+      if (e.mem.focusDmg >= s.v) c.distractEnemy(WHERE_WAS_I);
+    },
+  },
   {
     id: 'micromanage',
     kind: 'stacks',

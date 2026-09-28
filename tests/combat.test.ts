@@ -815,3 +815,19 @@ describe('sleeve cards', () => {
     expect(c.stacks('enemy', 'poison')).toBe(2);
   });
 });
+
+describe('the Overthinker', () => {
+  it('loses its train of thought (and its big hit) after taking enough damage while it charges', () => {
+    const c = setup({ enemy: ENEMIES.overthinker, deck: deckOf(Array(6).fill('strike')) });
+    run(c, CONFIG.introTime + 1);
+    expect(c.enemy.move.id).toBe('bigIdea');
+    c.damage('hero', 'enemy', 14, { raw: true }, 'hero');
+    expect(c.enemy.move.id).toBe('bigIdea');
+    c.damage('hero', 'enemy', 12, { raw: true }, 'hero');
+    expect(c.enemy.move.id).toBe('whereWasI');
+    const hp = c.hero.hp;
+    run(c, 4.1);
+    expect(c.hero.hp).toBe(hp);
+    expect(c.enemy.move.id).toBe('bigIdea');
+  });
+});

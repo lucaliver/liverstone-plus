@@ -264,6 +264,18 @@ const defs: EnemyDef[] = [
     ],
   },
   {
+    // One big idea, slowly charged; hit it hard enough meanwhile and it loses its train of thought.
+    id: 'overthinker',
+    act: 2,
+    tier: 'normal',
+    hp: 70,
+    art: 'overthinker',
+    main: atk('bigIdea', 24, 12, { intent: 'charge' }),
+    every: 0,
+    specials: [],
+    start: [{ id: 'trainOfThought', v: 24 }],
+  },
+  {
     // Copies the damage it takes while scanning, then prints it back at you.
     id: 'printer',
     act: 2,
@@ -323,6 +335,7 @@ export const DIFFICULTY = [
   'happiness',
   'dave',
   'officeChair',
+  'overthinker',
   'wellness',
   'meticulous',
   'beanCounter',

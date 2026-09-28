@@ -170,7 +170,8 @@ through `progress()` in `game/meta.ts`), a card file, a sprite, `hero.<id>.*` st
 `status.<id>.d` (`{v}` = amount). Their effect is applied where it matters in `combat.ts` (damage, ticks, decay).
 Rule statuses carry their own hooks instead: `manaCap` (the hero's max mana can't grow past it),
 `canPlay` (returns the i18n key of why a card can't be played; the belt
-shows that status's icon on the card), `onCardPlayed` (cards played after the status was applied) and `tick` (every step;
+shows that status's icon on the card), `onCardPlayed` (cards played after the status was applied), `onHurt` (its side
+just lost HP; the Overthinker's Train of Thought calls `distractEnemy`), `selfIcon` (icon when it's on the hero) and `tick` (every step;
 `everySecond` in `statuses.ts` for per-second effects); `passive: true` marks a permanent enemy trait (no number on the chip).
 A stunned hero can't play cards or use the ability.
 

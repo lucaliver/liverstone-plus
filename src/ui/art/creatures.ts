@@ -331,6 +331,25 @@ ${eyes(82, 118, 52, 6, '#ff3d9a', 'oc-g')}
 <path d="M74 70h52c0 13-11 20-26 20s-26-7-26-20z" fill="#1b1830" ${OUT}/>
 <path d="M84 70v7M95 70v9M106 70v9M117 70v7" stroke="#f6f0e4" stroke-width="4"/>`;
 
+/** The Overthinker: a tall, stooped analyst in a cardigan, hand on chin, a huge furrowed head and a thought bubble full of gears. */
+const overthinker = `
+<defs>${glow('ot-g', '#ffd900')}</defs>
+${shadow}
+<path d="M62 188l6-62c2-14 14-22 32-22s30 8 32 22l6 62z" fill="#1c5fd0" ${OUT}/>
+<path d="M88 104l12 26 12-26z" fill="#f6f0e4" ${OUT}/>
+<path d="M64 150h72" stroke="#ff3d9a" stroke-width="6"/><path d="M66 166h68" stroke="#ff3d9a" stroke-width="6"/>
+<path d="M70 124c-12 8-14 22-6 34l12-6c-4-6-4-12 2-16z" fill="#1c5fd0" ${OUT}/>
+<path d="M128 126c14 4 20 16 12 30l-18-4c4-6 4-12 0-16z" fill="#1c5fd0" ${OUT}/><circle cx="118" cy="106" r="9" fill="#f6ecd2" ${OUT}/>
+<path d="M56 64c0-30 20-48 44-48s44 18 44 48c0 22-18 42-44 42S56 86 56 64z" fill="#f6ecd2" ${OUT}/>
+<path d="M68 36c10-12 22-16 32-16s24 4 32 16c-10-4-22-6-32-6s-22 2-32 6z" fill="#8a7a6a" ${OUT}/>
+<path d="M72 50l20 6M128 50l-20 6M74 42l16 2M126 42l-16 2" stroke="#1b1830" stroke-width="4" stroke-linecap="round"/>
+<g class="eye"><rect x="80" y="60" width="10" height="8" fill="#1b1830"/><rect x="110" y="60" width="10" height="8" fill="#1b1830"/></g>
+<path d="M86 88c8-4 20-4 28 0" stroke="#1b1830" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M150 20h36c6 0 10 4 10 10v16c0 6-4 10-10 10h-22l-8 8v-8h-6c-6 0-10-4-10-10V30c0-6 4-10 10-10z" fill="#f6f0e4" ${OUT}/>
+<circle cx="146" cy="72" r="5" fill="#f6f0e4" ${OUT}/><circle cx="138" cy="84" r="3" fill="#f6f0e4" ${OUT}/>
+<g fill="#ffd900" ${OUT}><circle cx="162" cy="38" r="8"/><circle cx="180" cy="36" r="6"/></g>
+<g fill="#1b1830"><circle cx="162" cy="38" r="3"/><circle cx="180" cy="36" r="2"/></g>`;
+
 /** Act 2 stage prop: an office water cooler, upside-down jug on top (CSS adds the rising bubble). */
 const waterCooler = `
 ${shadow}
@@ -617,6 +636,7 @@ export const CREATURES: Record<string, string> = {
   printer,
   happiness,
   officeChair,
+  overthinker,
   wellness,
   beanCounter,
   compliance,

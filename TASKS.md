@@ -24,7 +24,7 @@
 
 - [x] CHECK: P1 FAI Un giro di coerenza, sulle schermate cresciute di recente: icone, maiuscole, spazi, ombre, testi troppo lunghi, stati vuoti, etc.
 
-- [ ] add a new enemy: he just has one big attack X after Ysec, but it's passive is that if he receives X damages, then he forgets to attack and goes to thinking move for tot seconds
+- [x] add a new enemy (The Overthinker): he just has one big attack X after Ysec, but it's passive is that if he receives X damages, then he forgets to attack and goes to thinking move for tot seconds
 
 - [ ] controlla che runni su tutti i browser, ci sono altri accorgimenti che dovrei avere per pluging o altro? Best practice? Sito apposto con descrizione e tutto?
 
