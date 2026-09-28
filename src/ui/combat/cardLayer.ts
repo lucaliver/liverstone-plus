@@ -287,7 +287,9 @@ export function createCardLayer(v: CombatView): CardLayer {
     if (ruleId !== ce.rule) {
       ce.rule = ruleId;
       ce.ruleEl?.remove();
-      ce.ruleEl = ruleId ? ce.el.appendChild(h('div', { class: 'rule-badge', html: icon(STATUSES[ruleId].icon) })) : undefined;
+      ce.ruleEl = ruleId
+        ? ce.el.appendChild(h('div', { class: 'rule-badge', html: icon(STATUSES[ruleId].selfIcon ?? STATUSES[ruleId].icon) }))
+        : undefined;
     }
   };
 

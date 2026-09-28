@@ -40,6 +40,9 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     setText(chip.querySelector('b')!, f.block);
   };
 
+  /** A status's icon on that side (some read differently on the hero, e.g. you stunned). */
+  const iconOf = (side: Side, id: string): string => (side === 'hero' ? (STATUSES[id].selfIcon ?? STATUSES[id].icon) : STATUSES[id].icon);
+
   const showStatus = (side: Side, id: string): void => {
     const def = STATUSES[id];
     const s = combat.fighter(side).statuses[id] ?? { v: 0, t: 0 };
@@ -50,7 +53,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     const goodForPlayer = def.good === (side === 'hero');
     openInfo(
       {
-        icon: def.icon,
+        icon: iconOf(side, id),
         title: t(`status.${id}`),
         tag: t(side === 'hero' ? 'status.onYou' : 'status.onEnemy'),
         tagCls: goodForPlayer ? 'good' : 'bad',
@@ -84,7 +87,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
           const b = h('button', {
             class: `status ${def.good ? 'good' : 'bad'}`,
             'data-status': id,
-            html: `${icon(def.icon)}<span></span>`,
+            html: `${icon(iconOf(side, id))}<span></span>`,
             'aria-label': t(`status.${id}`),
           });
           onPress(b, () => showStatus(side, id));

@@ -24,6 +24,8 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   heal: { icon: 'heart', sign: '+' },
   mana: { icon: 'crystal', sign: '+' },
   stun: { icon: 'stars', unit: 's' },
+  /** You are stunned (not the enemy). */
+  selfStun: { icon: 'ko', unit: 's' },
   chill: { icon: 'snow', unit: 's' },
   rush: { icon: 'speedCards', unit: 's' },
   burn: { icon: 'flame' },

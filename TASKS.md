@@ -14,9 +14,9 @@
 
 - [x] nella mappa: sposta il bottone home dentro al menu settings; muovi il contatore di monete al posto di dov'era il bottone home; metti una icona più leggibile al contatore di monete
 
-- [ ] le carte che dicono "gain +x damage this fight" dovrebbero specificare "This gains +X..." (altrimenti si confonde con la strength)
+- [x] le carte che dicono "gain +x damage this fight" dovrebbero specificare "This gains +X..." (altrimenti si confonde con la strength)
 
-- [ ] effect that apply stun for enemy and auto- [ ]stun should have different icons!
+- [x] effect that apply stun for enemy and auto-stun should have different icons!
 
 - [ ] tutti gli effetti passivi anche quelli ancora da attivare (es. Al 50% degli hp fa questo) dovrebbero apparire negli status del nemico
 

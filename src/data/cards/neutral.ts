@@ -311,7 +311,7 @@ export const neutralCards: CardDef[] = [
   },
   {
     id: 'unlimitedPto',
-    face: '{heal:0}|{stun:1}',
+    face: '{heal:0}|{selfStun:1}',
     cls: 'neutral',
     type: 'skill',
     rarity: 'rare',
@@ -529,7 +529,7 @@ export const curseCards: CardDef[] = [
   },
   {
     id: 'quickFavour',
-    face: '{stun:0}|{?exit}{boom:1}',
+    face: '{selfStun:0}|{?exit}{boom:1}',
     cls: 'curse',
     type: 'curse',
     rarity: 'special',
@@ -542,7 +542,7 @@ export const curseCards: CardDef[] = [
   },
   {
     id: 'machineDown',
-    face: '{?exit}{stun:0}',
+    face: '{?exit}{selfStun:0}',
     cls: 'curse',
     type: 'curse',
     rarity: 'special',

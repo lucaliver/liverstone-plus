@@ -78,7 +78,7 @@ const defs: StatusDef[] = [
   { id: 'vulnerable', kind: 'timed', good: false, icon: 'crack' },
   { id: 'chill', kind: 'timed', good: false, icon: 'snow' },
   // A stunned enemy's timer stops (see enemyTimeRate); a stunned hero can't play cards.
-  { id: 'stun', kind: 'timed', good: false, icon: 'stars', canPlay: (_c, side) => (side === 'hero' ? 'combat.stunned' : null) },
+  { id: 'stun', kind: 'timed', good: false, icon: 'stars', selfIcon: 'ko', canPlay: (_c, side) => (side === 'hero' ? 'combat.stunned' : null) },
   { id: 'frozen', kind: 'timed', good: false, icon: 'hourglass' },
   { id: 'hurry', kind: 'timed', good: false, icon: 'stopwatch' },
   // Every card turns black: only the art and the cost are left to go by.

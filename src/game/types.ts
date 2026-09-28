@@ -126,6 +126,8 @@ export interface StatusDef {
   showStacks?: boolean;
   /** A permanent trait (enemy passives): shown without a number. */
   passive?: boolean;
+  /** Icon when the status is on the hero, if it must read differently there (you stunned vs the enemy stunned). */
+  selfIcon?: string;
   /** A rule while active: returns why the hero can't play this card (`uid`: belt or sleeve copy) now (an i18n key), or null. */
   canPlay?: (c: Combat, side: Side, def: CardDef, uid: number) => TKey | null;
   /** While active (on either side), the hero's max mana can't grow past this. */

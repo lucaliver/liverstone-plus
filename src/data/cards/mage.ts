@@ -371,7 +371,7 @@ export const mageCards: CardDef[] = [
   // Pop culture: IT support
   {
     id: 'turnItOff',
-    face: '{stun:0}|{addCard}',
+    face: '{selfStun:0}|{addCard}',
     cls: 'mage',
     type: 'skill',
     rarity: 'rare',

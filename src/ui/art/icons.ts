@@ -661,6 +661,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'holy',
     svg: `<rect x="8" y="44" width="48" height="14" rx="7"/><rect x="8" y="30" width="48" height="14" rx="7"/><ellipse cx="32" cy="22" rx="24" ry="12"/><g fill="#16121f"><rect x="8" y="42" width="48" height="3"/><rect x="8" y="28" width="48" height="3"/><rect x="26" y="18" width="12" height="7"/></g>`,
   },
+  ko: {
+    el: 'steel',
+    svg: `<g fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"><path d="M32 32c0-4 6-4 6 0s-6 8-12 4-6-14 4-16 18 4 18 14-10 20-22 18-20-12-18-22"/></g><path d="M50 6l3 6 6 1-5 4 1 6-5-3-5 3 1-6-5-4 6-1z"/>`,
+  },
   timer: {
     el: 'steel',
     svg: `<circle cx="32" cy="34" r="26"/><path fill="#16121f" d="M32 14a20 20 0 0 1 20 20H32z"/><rect x="26" y="2" width="12" height="6"/>`,
