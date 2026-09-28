@@ -99,10 +99,7 @@
   border: 4px solid var(--k);
   background: var(--paper);
   rotate: 5deg;
-  animation: poster-stamp 0.2s steps(2) 0.35s both;
-}
-@keyframes poster-stamp {
-  from { scale: 2.2; opacity: 0; }
+  animation: stamp-in 0.2s steps(2) 0.35s both;
 }
 .poster-plate {
   position: absolute;
@@ -306,13 +303,9 @@
   color: var(--p);
   border: 4px solid var(--p);
   rotate: -12deg;
-  opacity: 0;
+  visibility: hidden;
 }
-.contract-stamp.in { animation: contract-stamp 0.2s steps(2) 0.5s forwards; }
-@keyframes contract-stamp {
-  from { scale: 2.2; opacity: 0; }
-  to { scale: 1; opacity: 1; }
-}
+.contract-stamp.in { visibility: visible; animation: stamp-in 0.2s steps(2) 0.5s both; }
 /* hold to sign: the button fills up in steps while held */
 .sign-btn { position: relative; overflow: hidden; touch-action: none; }
 .sign-btn .fill { position: absolute; inset: 0; background: var(--p); transform: scaleX(0); transform-origin: left; }

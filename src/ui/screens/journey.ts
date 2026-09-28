@@ -1,6 +1,7 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
+import { actDef } from '../../data/acts';
 import { clockAt, currentNode, type RunNode, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h, onPress, onTapOrHold } from '../dom';
@@ -20,8 +21,6 @@ export const NODE_ICON: Record<RunNode['type'], string> = {
 /** Height of one floor on the map (px). */
 const ROW_H = 92;
 const laneX = (lane: number): number => 22 + lane * 56;
-/** Acts whose boss is shown on the map as the workday clock (the morning shift ends at noon), not by its icon. */
-const BOSS_CLOCK = new Set([1]);
 /** Footsteps per pixel of a walked link, and the delay between the steps of the newest one (ms). */
 const STEP_PX = 14;
 const STEP_MS = 70;
@@ -101,7 +100,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   };
   enterBtn.onclick = go;
 
-  // The workday clock (on the boss of the acts in BOSS_CLOCK): the time of the floor ahead. Back from a job, its hands
+  // The workday clock (on the boss of acts with `bossClock`): the time of the floor ahead. Back from a job, its hands
   // run forward from the floor just done.
   const to = clockAt(run, options.length ? run.nodes[options[0]] : cur);
   const from = run.cleared ? clockAt(run, cur) : to;
@@ -152,7 +151,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       },
       h('button', {
         class: 'dot',
-        html: past || !(n.type === 'boss' && BOSS_CLOCK.has(n.act)) ? icon(past ? 'check' : NODE_ICON[n.type]) : undefined,
+        html: past || !(n.type === 'boss' && !!actDef(n.act).bossClock) ? icon(past ? 'check' : NODE_ICON[n.type]) : undefined,
         'aria-label': `${t('common.floor', { n: n.floor })} · ${label}`,
         // Not `disabled`: every node can still be held to read what it is.
         'aria-disabled': String(!open),
@@ -160,7 +159,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       h('span', { class: 'label' }, label),
     );
     const dot = el.querySelector<HTMLElement>('.dot')!;
-    if (!past && n.type === 'boss' && BOSS_CLOCK.has(n.act)) dot.append(clockFace());
+    if (!past && n.type === 'boss' && !!actDef(n.act).bossClock) dot.append(clockFace());
     // Tap an open node to pick it (again to go in); hold any node to learn what it is.
     onTapOrHold(
       dot,

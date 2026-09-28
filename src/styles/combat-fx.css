@@ -248,12 +248,9 @@
   color: var(--p);
   border: 3px solid var(--p);
   background: var(--paper);
-  animation: tc-stamp 0.12s steps(2) 0.3s both;
+  animation: stamp-in 0.12s steps(2) 0.3s both;
 }
 .timecard.out .tc-stamp { color: var(--b); border-color: var(--b); animation-delay: 0.35s; }
-@keyframes tc-stamp {
-  from { scale: 2.2; opacity: 0; }
-}
 /* defeat: a pink slip flutters down over the fight */
 .pink-slip {
   position: absolute;

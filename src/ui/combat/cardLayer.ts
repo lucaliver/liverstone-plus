@@ -1,7 +1,7 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { CARDS } from '../../data/cards';
-import { STATUSES } from '../../data/statuses';
+import { statusIcon } from '../../data/statuses';
 import type { CombatCard } from '../../game/types';
 import { icon } from '../art/icons';
 import { cardCostLabel, cardFace, cardView } from '../components/cardView';
@@ -287,9 +287,7 @@ export function createCardLayer(v: CombatView): CardLayer {
     if (ruleId !== ce.rule) {
       ce.rule = ruleId;
       ce.ruleEl?.remove();
-      ce.ruleEl = ruleId
-        ? ce.el.appendChild(h('div', { class: 'rule-badge', html: icon(STATUSES[ruleId].selfIcon ?? STATUSES[ruleId].icon) }))
-        : undefined;
+      ce.ruleEl = ruleId ? ce.el.appendChild(h('div', { class: 'rule-badge', html: icon(statusIcon(ruleId, 'hero')) })) : undefined;
     }
   };
 

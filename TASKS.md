@@ -27,4 +27,4 @@
 - [ ] Alla fine della primissima run: Nella lettera rosa, un fumetto dice qualcosa tipo "Let's hire the next one, Mr Mage it is.". La prima sconfitta (o anche fosse una vittoria) deve sembrare un passo avanti, non uno stop.
 
 
-- [ ] controlla che non ci siano martellate brutte nel codice, no roba duplicata o hardcoded che può creare problemi in futuro crescendo le meccaniche, anche nella UI voglio componenti sensati, senza complicarsi la vita e senza complicarsi il futuro
+- [x] controlla che non ci siano martellate brutte nel codice, no roba duplicata o hardcoded che può creare problemi in futuro crescendo le meccaniche, anche nella UI voglio componenti sensati, senza complicarsi la vita e senza complicarsi il futuro

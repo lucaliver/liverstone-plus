@@ -193,3 +193,6 @@ const defs: StatusDef[] = [
 
 export const STATUSES: Record<string, StatusDef> = Object.fromEntries(defs.map((d) => [d.id, d]));
 export const STATUS_ORDER = defs.map((d) => d.id);
+
+/** A status's icon on a side: some read differently on the hero (you stunned vs the enemy stunned). */
+export const statusIcon = (id: string, side: Side): string => (side === 'hero' ? (STATUSES[id].selfIcon ?? STATUSES[id].icon) : STATUSES[id].icon);

@@ -38,11 +38,6 @@ export const CONFIG = {
   musicFollowsBelt: 1,
   /** Pay for a won fight (the run's score): a base by enemy tier, plus `perSecond` for every second under `par`. */
   pay: { normal: 10, elite: 25, boss: 50, par: 60, perSecond: 1 },
-  /** Workday clock of each act (hours), shown on the map: its first floor starts at the first, its boss floor ends at the second. */
-  shiftHours: [
-    [8, 12],
-    [13, 17],
-  ],
 } as const;
 
 /** Where cards enter (0) and expire, in belt-distance units. */

@@ -74,6 +74,10 @@
 
 .shake-small { animation: shake-s 0.2s steps(4); }
 .shake-big { animation: shake-b 0.36s steps(6); }
+/* a rubber stamp slamming onto paper (time cards, payslips, posters, contracts, TERMINATED) */
+@keyframes stamp-in {
+  from { scale: 2.2; opacity: 0; }
+}
 @keyframes shake-s {
   33% { transform: translateX(-4px); }
   66% { transform: translateX(4px); }

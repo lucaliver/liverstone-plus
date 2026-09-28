@@ -77,11 +77,14 @@ export function movePattern(e: EnemyDef, values: MoveValues = baseValues, mark?:
 }
 
 /** What an enemy does beyond its moves: passive statuses and what happens at half HP. */
+/** Icon of an enemy's half-HP trait (traits list, status row). */
+export const HALF_ICON = 'rage';
+
 export function enemyTraits(e: EnemyDef): { icon: string; name: string; desc: string }[] {
   const traits = (e.start ?? [])
     .filter((s) => STATUSES[s.id].passive)
     .map((s) => ({ icon: STATUSES[s.id].icon, name: t(`status.${s.id}`), desc: t(`status.${s.id}.d`, { v: s.v ?? 1 }) }));
-  if (e.onHalf) traits.push({ icon: 'rage', name: '', desc: t(`enemy.${e.id}.half`) });
+  if (e.onHalf) traits.push({ icon: HALF_ICON, name: '', desc: t(`enemy.${e.id}.half`) });
   return traits;
 }
 

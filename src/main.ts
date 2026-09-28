@@ -8,6 +8,7 @@ import { setLocale, t } from './core/i18n';
 import { randomSeed } from './core/rng';
 import { setSfxVolume, unlockAudio } from './audio/sfx';
 import { musicTrack, playMusic, setMusicVolume, suspendMusic } from './audio/music';
+import { actDef } from './data/acts';
 import { ENEMIES } from './data/enemies';
 import { Combat } from './game/combat';
 import {
@@ -113,8 +114,7 @@ function enterNode(to?: number): void {
     return;
   }
   // Each shift has its own fight music (by the enemy's act, so debug fights match too).
-  const act = ENEMIES[node.enemy!].act;
-  playMusic(node.type === 'boss' ? 'boss' : node.type === 'elite' ? 'elite' : act >= 2 ? 'combat2' : 'combat');
+  playMusic(node.type === 'boss' ? 'boss' : node.type === 'elite' ? 'elite' : actDef(ENEMIES[node.enemy!].act).music);
   const combat = new Combat(combatSetup(run));
   if (import.meta.env.DEV) Object.assign(window, { __combat: combat });
   saveRun(run);

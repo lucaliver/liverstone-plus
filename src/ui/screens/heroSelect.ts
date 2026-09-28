@@ -10,7 +10,7 @@ import { icon } from '../art/icons';
 import { heroFeatures } from '../components/heroSheet';
 import { motes } from '../components/decor';
 import { openDeck, openStatInfo } from '../components/modals';
-import { h, onPress } from '../dom';
+import { h, onPress, retrigger } from '../dom';
 
 const unlockText = (u: HeroUnlock): string =>
   'finishRun' in u ? t('hero.unlock.finishRun', { hero: t(`hero.${u.finishRun}.name`) }) : t('hero.unlock.reachBoss', { n: u.reachBoss });
@@ -64,9 +64,7 @@ function slide(hero: HeroDef, index: number): HTMLElement {
   lock?.addEventListener('click', () => {
     sfx('chains');
     haptic('locked');
-    lock.classList.remove('rattle');
-    void lock.offsetWidth;
-    lock.classList.add('rattle');
+    retrigger(lock, 'rattle');
   });
   return el;
 }

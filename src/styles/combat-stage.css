@@ -231,9 +231,6 @@
   text-shadow: 3px 3px 0 var(--k);
   animation: stamp-in 0.2s steps(2) both;
 }
-@keyframes stamp-in {
-  from { scale: 2.4; opacity: 0; }
-}
 /* copying the damage it takes (the Printer's scan): a green line sweeps the sprite */
 .enemy-art.absorbing::after {
   content: '';

@@ -27,7 +27,7 @@ This file is the technical guide: read it before changing code.
 
 - Do what the task asks, nothing speculative: no options, flags, abstractions or "for later" hooks without a
   current caller. Three similar lines beat a premature helper.
-- Reuse before writing: `h`, `$`, `setText`/`setHtml`/`toggle`, `onPress`/`onTapOrHold` (`ui/dom.ts`), `Rng`,
+- Reuse before writing: `h`, `$`, `setText`/`setHtml`/`toggle`, `onPress`/`onTapOrHold`, `retrigger` (`ui/dom.ts`), `statusIcon`, `Rng`,
   `Emitter`, `load`/`store` (`core/save.ts`), existing icons, sfx, modals and CSS tokens. Grep for a similar
   feature first and follow its shape.
 - No new dependencies without asking the owner. No framework, no state library, no CSS preprocessor.
@@ -89,7 +89,7 @@ npm run build    # typecheck + production build to dist/
 src/
   core/        rng (seeded), emitter, i18n (typed keys), save (safe localStorage), util
   i18n/en.ts   every player-facing string (key → text)
-  data/        config, statuses, heroes, enemies, perks, hexes, relics (empty, hooks ready), cards/<class>.ts
+  data/        config, acts (shift hours, fight music, map boss per act), statuses, heroes, enemies, perks, hexes, relics (empty, hooks ready), cards/<class>.ts
   game/        combat.ts (engine), run.ts (node graph, rewards, saves), meta.ts (discovery), settings, types
   ui/          app.ts (screens + modals), dom.ts (h, onPress, onTapOrHold, LONG_PRESS_MS)
     art/       icons.ts (64×64 vector icons), creatures.ts (200×200 vector sprites), riso.ts (pixel renderer)
@@ -113,7 +113,7 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
   Hooks (`HeroHooks`, `RelicHooks`) extend behaviour without touching the engine loop.
 - **One source of truth.** Card numbers live in `vals`/`upVals`. The face, the rules text, damage previews and
   the logic all read them. Damage indices are derived from the `{dmg:i}` glyphs of the face.
-- **Run as a graph.** `RunNode.next[]` + `lane`: each act (`ACTS`, two for now) is a shared first fight, two lanes
+- **Run as a graph.** `RunNode.next[]` + `lane`: each act (`ACT_DEFS` in `data/acts.ts`, two for now) is a shared first fight, two lanes
   (`LANES` in `run.ts`) with `LINKS` links between them (diagonal upward, or flat both ways; never on neighbouring
   floors), and the boss, which leads to the next act (full heal, elite-grade reward; the map switches act). `advance(run, to)` moves along a link; `run.path` records the nodes entered.
 - **Per-frame rendering is diff-based** (`setText`, `setHtml`, `toggle` only write on change). Status chips are
@@ -208,7 +208,8 @@ Plurals: `{n|one|other}`. New language: copy `en.ts`, register it in `core/i18n.
   Paper panels use `--line` borders and hard `--off` shadows.
 - Fonts: `--font-display` (Silkscreen) for title **words** only; anything with **numbers** uses `--font-ui`
   (Jersey 10); long text uses `--font` (Space Grotesk).
-- Motion is stepped (`steps(n)`); modals are the exception (fast, smooth). Respect `reduce-motion`.
+- Motion is stepped (`steps(n)`); modals are the exception (fast, smooth). Respect `reduce-motion`. Shared keyframes
+  (`stamp-in` for every rubber stamp, `bob`, `misprint`) live once; don't redefine near-copies.
 - Cards: `.card` sets its own `--cw`; to resize, set `--cw` on the card selector itself (e.g. `.x .card { --cw: … }`).
   `cqw` units inside a card refer to the card; the card's own border and shadow use `--cw` maths instead.
 - Never let the combat layout change height mid-fight: fixed rows, the enemy sprite size is measured once.

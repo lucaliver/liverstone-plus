@@ -3,6 +3,7 @@ import { loadRaw, remove, store } from '../core/save';
 import { nextUid, peekUid, resetUid } from '../core/util';
 import { CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../data/cards';
 import { PERKS } from '../data/perks';
+import { ACT_DEFS, actDef } from '../data/acts';
 import { CONFIG } from '../data/config';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HEROES } from '../data/heroes';
@@ -70,7 +71,7 @@ const LANES: NodeType[][] = [
 const ACT1_OPENING = 3;
 /** Links between the lanes per act: diagonal (to the other lane one floor up) or flat (across the same floor, both ways). */
 const LINKS = 2;
-export const ACTS = 2;
+export const ACTS = ACT_DEFS.length;
 
 /** Seed of the very first run: its map is always the same, with the enemies in order of difficulty. */
 export const FIRST_RUN_SEED = 1;
@@ -169,7 +170,7 @@ export function clockAt(run: RunState, node: RunNode): number {
   const floors = run.nodes.filter((n) => n.act === node.act).map((n) => n.floor);
   const first = Math.min(...floors);
   const count = Math.max(...floors) - first + 1;
-  const [from, to] = CONFIG.shiftHours[Math.min(node.act, CONFIG.shiftHours.length) - 1];
+  const [from, to] = actDef(node.act).shift;
   return Math.round((from + ((to - from) * (node.floor - first)) / count) * 60);
 }
 export const totalFloors = (run: RunState): number => Math.max(...run.nodes.map((n) => n.floor));

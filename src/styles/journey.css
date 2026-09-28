@@ -225,9 +225,6 @@
   border: var(--line) solid var(--k);
   box-shadow: var(--off) var(--off) 0 var(--p);
   rotate: -4deg;
-  animation: act-stamp 0.15s steps(2) 1.5s both;
+  animation: stamp-in 0.15s steps(2) 1.5s both;
 }
 .act-intro-clock .pico { font-size: 26px; color: var(--p); --ink2: var(--k); }
-@keyframes act-stamp {
-  from { scale: 2.2; opacity: 0; }
-}

@@ -5,7 +5,7 @@ import type { HeroId, Side } from '../../game/types';
 import { creature } from '../art/creatures';
 import { candleFlame, icon } from '../art/icons';
 import { darkEyes, motes } from '../components/decor';
-import { $, centerOf, h } from '../dom';
+import { $, centerOf, h, retrigger } from '../dom';
 import { settings } from '../../game/settings';
 
 export const ABILITY_ICON: Record<string, string> = { warrior: 'overtime', mage: 'stolenClock', necromancer: 'shutdown' };
@@ -165,18 +165,7 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
     heroId: run.hero,
     r,
     state: { paused: true, waiting: true, ended: false, frameNo: 0, beltW: 0, cardW: 0, rowH: 0, ltr: !settings.rightToLeft, stop: 0 },
-    retrigger(target, cls) {
-      target.classList.remove(cls);
-      void (target as HTMLElement).offsetWidth;
-      target.classList.add(cls);
-      // Drop the class once its own animation ends, so the element's idle animation (the enemy's bob) comes back.
-      const done = (e: Event): void => {
-        if (e.target !== target) return;
-        target.classList.remove(cls);
-        target.removeEventListener('animationend', done);
-      };
-      target.addEventListener('animationend', done);
-    },
+    retrigger,
     enemyPoint,
     heroPoint,
     pointOf: (side) => (side === 'enemy' ? enemyPoint() : heroPoint()),

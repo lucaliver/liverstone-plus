@@ -1,11 +1,12 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
-import { STATUS_ORDER, STATUSES } from '../../data/statuses';
+import { STATUS_ORDER, STATUSES, statusIcon } from '../../data/statuses';
 import type { Fighter } from '../../game/combat';
 import type { MoveDef, Side } from '../../game/types';
 import { icon, INTENT_ICON } from '../art/icons';
 import { openInfo } from '../components/modals';
+import { HALF_ICON } from '../components/moveText';
 import { h, onPress, setHtml, setText, toggle } from '../dom';
 import { type CombatView, PASSIVE_ICON } from './view';
 
@@ -40,9 +41,6 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     setText(chip.querySelector('b')!, f.block);
   };
 
-  /** A status's icon on that side (some read differently on the hero, e.g. you stunned). */
-  const iconOf = (side: Side, id: string): string => (side === 'hero' ? (STATUSES[id].selfIcon ?? STATUSES[id].icon) : STATUSES[id].icon);
-
   const showStatus = (side: Side, id: string): void => {
     const def = STATUSES[id];
     const s = combat.fighter(side).statuses[id] ?? { v: 0, t: 0 };
@@ -53,7 +51,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     const goodForPlayer = def.good === (side === 'hero');
     openInfo(
       {
-        icon: iconOf(side, id),
+        icon: statusIcon(id, side),
         title: t(`status.${id}`),
         tag: t(side === 'hero' ? 'status.onYou' : 'status.onEnemy'),
         tagCls: goodForPlayer ? 'good' : 'bad',
@@ -81,7 +79,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
         side === 'hero'
           ? h('button', { class: 'status passive', html: icon(PASSIVE_ICON[v.heroId]), 'aria-label': t(`hero.${v.heroId}.passiveName`) })
           : e.onHalf
-            ? h('button', { class: 'status passive half', html: icon('rage'), 'aria-label': t('status.half') })
+            ? h('button', { class: 'status passive half', html: icon(HALF_ICON), 'aria-label': t('status.half') })
             : null;
       if (passive && side === 'hero') onPress(passive, onPassive);
       else if (passive) {
@@ -89,7 +87,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
           sfx('tap');
           v.inspect(true);
           openInfo(
-            { icon: 'rage', title: t('status.half'), tag: t('status.onEnemy'), tagCls: 'bad', desc: t(`enemy.${e.id}.half`), ink: 'bad' },
+            { icon: HALF_ICON, title: t('status.half'), tag: t('status.onEnemy'), tagCls: 'bad', desc: t(`enemy.${e.id}.half`), ink: 'bad' },
             () => v.inspect(false),
           );
         });
@@ -101,7 +99,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
           const b = h('button', {
             class: `status ${def.good ? 'good' : 'bad'}`,
             'data-status': id,
-            html: `${icon(iconOf(side, id))}<span></span>`,
+            html: `${icon(statusIcon(id, side))}<span></span>`,
             'aria-label': t(`status.${id}`),
           });
           onPress(b, () => showStatus(side, id));

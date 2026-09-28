@@ -89,3 +89,19 @@ export function onTapOrHold(el: HTMLElement, onTap: () => void, onHold: () => vo
   });
   el.addEventListener('contextmenu', (e) => e.preventDefault());
 }
+
+/**
+ * Restarts a one-shot CSS animation class on an element (even if it's already running), and drops the class when its
+ * own animation ends, so an idle animation it replaced (the enemy's bob) comes back.
+ */
+export function retrigger(target: Element, cls: string): void {
+  target.classList.remove(cls);
+  void (target as HTMLElement).offsetWidth;
+  target.classList.add(cls);
+  const done = (e: Event): void => {
+    if (e.target !== target) return;
+    target.classList.remove(cls);
+    target.removeEventListener('animationend', done);
+  };
+  target.addEventListener('animationend', done);
+}
