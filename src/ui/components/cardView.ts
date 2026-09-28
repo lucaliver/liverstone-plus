@@ -51,6 +51,9 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   copy: { icon: 'copy' },
   addCard: { icon: 'addCard', sign: '+' },
   lane: { icon: 'lane' },
+  sudo: { icon: 'terminal', unit: 's' },
+  undo: { icon: 'undo' },
+  curse: { icon: 'skull' },
 };
 
 /** Long names get a smaller font so they fit the title band instead of being cut. */

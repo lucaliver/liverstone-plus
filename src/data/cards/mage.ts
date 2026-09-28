@@ -346,4 +346,48 @@ export const mageCards: CardDef[] = [
       c.applyStatus('enemy', 'burn', v[1]);
     },
   },
+
+  // Pop culture: IT support
+  {
+    id: 'turnItOff',
+    face: '{stun:0}|{addCard}',
+    cls: 'mage',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 1,
+    upCost: 0,
+    vals: [1],
+    keywords: ['exhaust'],
+    art: 'powerOff',
+    play: (c, v, card) => {
+      c.applyStatus('hero', 'stun', 1, v[0]);
+      c.addTempCard('turnItOn', 'draw', card.up);
+    },
+  },
+  {
+    id: 'sudo',
+    face: '{sudo:0}',
+    cls: 'mage',
+    type: 'skill',
+    rarity: 'epic',
+    cost: 2,
+    upCost: 1,
+    vals: [6],
+    upVals: [8],
+    art: 'rootKey',
+    play: (c, v) => c.applyStatus('hero', 'sudo', 1, v[0]),
+  },
+  // Generated during a fight (never offered as rewards).
+  {
+    id: 'turnItOn',
+    face: '{mana}{mana}{mana}',
+    cls: 'mage',
+    type: 'skill',
+    rarity: 'special',
+    cost: 0,
+    vals: [],
+    keywords: ['exhaust'],
+    art: 'powerOn',
+    play: (c) => c.gainMana(c.hero.maxMana),
+  },
 ];

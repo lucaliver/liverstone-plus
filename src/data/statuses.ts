@@ -42,6 +42,8 @@ const defs: StatusDef[] = [
   { id: 'parry', kind: 'timed', good: true, icon: 'crossed' },
   { id: 'haste', kind: 'timed', good: true, icon: 'gauge' },
   { id: 'rush', kind: 'timed', good: true, icon: 'speedCards' },
+  // Root access (sudo): no rule can stop the hero's cards.
+  { id: 'sudo', kind: 'timed', good: true, icon: 'terminal' },
   { id: 'weave', kind: 'timed', good: true, icon: 'bolt2', showStacks: true },
   { id: 'plague', kind: 'stacks', good: true, icon: 'wrench' },
   // Slacking off (v = amount per second), until the hero plays another card.

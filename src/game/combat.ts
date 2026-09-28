@@ -107,6 +107,8 @@ export class Combat {
   specialUsed = false;
   /** The last card the hero played this fight (rules such as "not the same type twice"). */
   lastPlayed: CardDef | null = null;
+  /** The last card that slipped off the belt unplayed (Ctrl+Z brings it back). */
+  lastExpired: CombatCard | null = null;
   lastPlayedAt = -Infinity;
   /** Belt row the last card was played from (-1: the sleeve, or nothing yet). */
   lastRow = -1;
@@ -278,6 +280,8 @@ export class Combat {
 
   /** The status whose rule forbids playing this card now (an enemy passive, a stun…) and why, or null. */
   ruleBlock(card: CardInst): { status: string; key: TKey } | null {
+    // Root access (sudo): no rule applies.
+    if (this.has('hero', 'sudo')) return null;
     const def = CARDS[card.id];
     for (const side of ['hero', 'enemy'] as const) {
       for (const id of Object.keys(this.fighter(side).statuses)) {
@@ -541,6 +545,7 @@ export class Combat {
     // A hex stays on the card through the piles until it's broken; one already cracked is gone.
     if (card.hex && card.hex.left <= 0) delete card.hex;
     card.passed = true;
+    this.lastExpired = card;
     this.events.emit({ type: 'cardExpired', card });
     this.withCard(card, def, () => def.onExpire?.(this, this.cardVals(card), card));
     this.heroDef.hooks.onCardExpired?.(this, card);
@@ -886,6 +891,29 @@ export class Combat {
       this.events.emit({ type: 'cardDiscarded', card });
     }
     return cards.length;
+  }
+
+  /** Removes every curse card from the belt and the discard pile for the rest of the fight. Returns how many. */
+  purgeCurses(): number {
+    const isCurse = (card: CombatCard): boolean => CARDS[card.id].type === 'curse';
+    const onBelt = this.belt.filter((b) => isCurse(b.card));
+    this.belt = this.belt.filter((b) => !isCurse(b.card));
+    const inDiscard = this.discard.filter(isCurse);
+    this.discard = this.discard.filter((card) => !isCurse(card));
+    for (const b of onBelt) this.events.emit({ type: 'cardDiscarded', card: b.card });
+    this.exhaust.push(...onBelt.map((b) => b.card), ...inDiscard);
+    return onBelt.length + inDiscard.length;
+  }
+
+  /** Puts the last card that slipped off the belt back at its entry (from the discard or exhaust pile). */
+  returnLastExpired(): boolean {
+    const card = this.lastExpired;
+    if (!card) return false;
+    const pile = this.discard.includes(card) ? this.discard : this.exhaust.includes(card) ? this.exhaust : null;
+    if (!pile || !this.spawnCard(0, card)) return false;
+    pile.splice(pile.indexOf(card), 1);
+    this.lastExpired = null;
+    return true;
   }
 
   /** The enemy drops the move it is charging and starts on the next one of its pattern. */

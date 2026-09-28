@@ -658,3 +658,76 @@ describe('combat engine', () => {
     });
   });
 });
+
+describe('pop culture cards', () => {
+  /** A fight past the intro with a quiet enemy and plenty of mana; `id` is put on the belt and returned. */
+  const ready = (id: string): { c: Combat; uid: number } => {
+    const c = setup({ deck: deckOf(Array(6).fill('strike')) });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.mana = c.hero.maxMana = 10;
+    c.addTempCard(id, 'belt');
+    return { c, uid: c.belt[c.belt.length - 1].card.uid };
+  };
+
+  it('Severance cuts every curse off the belt and discard pile and heals for each', () => {
+    const { c, uid } = ready('severance');
+    c.addTempCard('slime', 'belt');
+    c.addTempCard('toxin', 'discard');
+    c.addTempCard('toxin', 'discard');
+    c.hero.hp = 50;
+    expect(c.playCard(uid)).toBe(true);
+    const all = [...c.belt.map((b) => b.card), ...c.discard];
+    expect(all.some((x) => CARDS[x.id].type === 'curse')).toBe(false);
+    expect(c.hero.hp).toBe(50 + 3 * 3);
+  });
+
+  it('Ctrl+Z brings back the last card that slipped off the belt', () => {
+    const { c, uid } = ready('ctrlZ');
+    c.stash(uid, 0);
+    run(c, CONFIG.beltTime * EXPIRE_POS + 0.5);
+    const gone = c.lastExpired;
+    expect(gone).not.toBeNull();
+    expect(c.playCard(uid)).toBe(true);
+    expect(c.belt.some((b) => b.card === gone)).toBe(true);
+    expect(c.discard.includes(gone!)).toBe(false);
+  });
+
+  it('Unlimited PTO heals over time but stuns you meanwhile', () => {
+    const { c, uid } = ready('unlimitedPto');
+    c.hero.hp = 40;
+    c.playCard(uid);
+    expect(c.has('hero', 'stun')).toBe(true);
+    expect(c.playCard(c.belt[0].card.uid)).toBe(false);
+    run(c, 10);
+    expect(c.hero.hp).toBe(40 + 6 + 5 + 4 + 3 + 2 + 1);
+  });
+
+  it('Hide the Pain gains more Block the more HP you are missing', () => {
+    const { c, uid } = ready('hideThePain');
+    c.hero.hp = c.hero.maxHp - 20;
+    c.playCard(uid);
+    expect(c.hero.block).toBe(5 + 5);
+  });
+
+  it('Turn It Off stuns you and shuffles Turn It On into the deck, which fills your mana', () => {
+    const { c, uid } = ready('turnItOff');
+    c.playCard(uid);
+    expect(c.has('hero', 'stun')).toBe(true);
+    const on = c.draw.find((x) => x.id === 'turnItOn');
+    expect(on).toBeTruthy();
+    run(c, 1.1);
+    c.hero.mana = 0;
+    c.addTempCard('turnItOn', 'belt');
+    c.playCard(c.belt[c.belt.length - 1].card.uid);
+    expect(c.hero.mana).toBe(c.hero.maxMana);
+  });
+
+  it('sudo lets cards through any rule, even a stun', () => {
+    const { c, uid } = ready('sudo');
+    c.playCard(uid);
+    c.applyStatus('hero', 'stun', 1, 5);
+    expect(c.ruleBlock(c.belt[0].card)).toBeNull();
+    expect(c.playCard(c.belt[0].card.uid)).toBe(true);
+  });
+});

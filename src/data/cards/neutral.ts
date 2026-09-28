@@ -252,6 +252,52 @@ export const neutralCards: CardDef[] = [
     play: (c) => c.copyLastOntoBelt(),
   },
 
+  // Pop culture
+  {
+    id: 'severance',
+    face: '{curse}|{heal:0}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 2,
+    upCost: 1,
+    vals: [3],
+    keywords: ['exhaust'],
+    art: 'scissors',
+    play: (c, v) => {
+      const n = c.purgeCurses();
+      if (n) c.heal('hero', n * v[0]);
+    },
+  },
+  {
+    id: 'ctrlZ',
+    face: '{undo}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'common',
+    cost: 1,
+    upCost: 0,
+    vals: [],
+    art: 'ctrlZ',
+    play: (c) => void c.returnLastExpired(),
+  },
+  {
+    id: 'unlimitedPto',
+    face: '{heal:0}|{stun:1}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 1,
+    vals: [6, 3],
+    upVals: [8, 3],
+    art: 'suitcase',
+    // A generous leave: Regeneration, but you're off work (stunned) for a while.
+    play: (c, v) => {
+      c.applyStatus('hero', 'regen', v[0]);
+      c.applyStatus('hero', 'stun', 1, v[1]);
+    },
+  },
+
   // Generated during a fight (never offered as rewards).
   {
     id: 'alreadyDone',

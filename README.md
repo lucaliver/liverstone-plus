@@ -118,6 +118,9 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
   colpisce per ogni carta), *Bare Minimum*, *Out of Office* e *Grindset* (Blocco, cure o danni ogni secondo finché
   non giochi altro), *Not My Job* (il nemico salta la mossa), *Previous Email* (ripete l'ultima carta), *Follow Up*
   (tre *Already Done* nel mazzo), la catena *Q1 → Q4* e *Copy Paste* (il nastro diventa copie dell'ultima carta).
+- **Carte pop:** *Severance* (taglia via tutte le maledizioni e cura), *Ctrl+Z* (riporta sul nastro l'ultima carta
+  uscita), *Unlimited PTO* (rigenerazione, ma sei in ferie: stordito), *Hide the Pain* (Guerriero: più Blocco quanto più
+  sei ferito), *Turn It Off* / *Turn It On* e *sudo* (Mago: per qualche secondo nessuna regola ferma le tue carte).
 - **Faccia:** le carte mostrano **icone e numeri grandi**; il testo completo e il glossario si leggono tenendo
   premuto. Una condizione è tra parentesi (es. un attacco che fa più danni se hai Blocco).
 - **Potenziamento:** ogni carta ha una versione migliorata, ottenibile in sala pausa (*Training*).

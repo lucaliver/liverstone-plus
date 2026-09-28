@@ -353,4 +353,19 @@ export const warriorCards: CardDef[] = [
       c.applyStatus('hero', 'strength', v[1]);
     },
   },
+
+  // Pop culture
+  {
+    id: 'hideThePain',
+    face: '{block:0}|{?hp}',
+    cls: 'warrior',
+    type: 'skill',
+    rarity: 'common',
+    cost: 2,
+    vals: [5, 4],
+    upVals: [7, 3],
+    art: 'harold',
+    // The more it hurts, the wider the smile: +1 Block per v[1] HP missing.
+    play: (c, v) => c.gainBlock('hero', v[0] + Math.floor((c.hero.maxHp - c.hero.hp) / v[1])),
+  },
 ];

@@ -454,6 +454,35 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M4 44h56v12H4z"/><path d="M6 40l40-22c6-3 14 0 14 8v10H6z"/><rect x="10" y="47" width="30" height="4" fill="#16121f"/>`,
   },
+  // Pop culture
+  powerOff: {
+    el: 'arcane',
+    svg: `<g ${S} stroke-width="7"><path d="M20 16a22 22 0 1 0 24 0"/><path d="M32 6v24"/></g>`,
+  },
+  powerOn: {
+    el: 'arcane',
+    svg: `<g ${S} stroke-width="7"><path d="M20 20a18 18 0 1 0 24 0"/><path d="M32 12v20"/></g><g ${S} stroke-width="4"><path d="M8 8l6 6M56 8l-6 6M2 34h6M56 34h6"/></g>`,
+  },
+  rootKey: {
+    el: 'arcane',
+    svg: `<circle cx="18" cy="22" r="14"/><circle cx="18" cy="22" r="5" fill="#16121f"/><path d="M28 30l28 28-6 5-4-4-4 4-4-4 4-4-4-4-4 4-4-4 4-4-10-10z"/>`,
+  },
+  ctrlZ: {
+    el: 'steel',
+    svg: `<rect x="6" y="8" width="52" height="48" rx="6"/><rect x="6" y="46" width="52" height="10" rx="4" fill="#16121f" opacity=".35"/><path d="M20 16h24v6L28 38h16v6H20v-6l16-16H20z" fill="#16121f"/>`,
+  },
+  harold: {
+    el: 'steel',
+    svg: `<circle cx="30" cy="28" r="22"/><g fill="#16121f"><rect x="18" y="22" width="6" height="5"/><rect x="36" y="22" width="6" height="5"/><path d="M15 17l11 3v-4l-10-3zM45 17l-11 3v-4l10-3z"/><path d="M18 34h24c0 7-5 11-12 11s-12-4-12-11z"/></g><rect x="20" y="35" width="20" height="4" fill="#fff" opacity=".7"/><path d="M48 44h12v14H48z"/><path d="M60 46c4 0 4 10 0 10" stroke="currentColor" stroke-width="3" fill="none"/>`,
+  },
+  scissors: {
+    el: 'steel',
+    svg: `<circle cx="14" cy="48" r="10"/><circle cx="14" cy="48" r="4" fill="#16121f"/><circle cx="50" cy="48" r="10"/><circle cx="50" cy="48" r="4" fill="#16121f"/><path d="M20 40L50 4l4 4-26 38zM44 40L14 4l-4 4 26 38z"/><path d="M2 28h14M48 28h14" stroke="currentColor" stroke-width="4" stroke-dasharray="4 4"/>`,
+  },
+  suitcase: {
+    el: 'nature',
+    svg: `<rect x="4" y="18" width="56" height="38" rx="4"/><path d="M22 18v-8h20v8h-5v-3H27v3z"/><g fill="#16121f"><rect x="16" y="18" width="5" height="38"/><rect x="43" y="18" width="5" height="38"/></g><circle cx="52" cy="10" r="6"/>`,
+  },
   // Curses
   calendar: {
     el: 'curse',
@@ -598,6 +627,14 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<path d="M6 10h52v34H26L12 58V44H6z"/><circle cx="18" cy="27" r="4.5" fill="#16121f"/><circle cx="32" cy="27" r="4.5" fill="#16121f"/><circle cx="46" cy="27" r="4.5" fill="#16121f"/>`,
   },
   // ---- new cards (glyphs, slacking statuses, art)
+  terminal: {
+    el: 'arcane',
+    svg: `<rect x="4" y="8" width="56" height="48" rx="3"/><g fill="#16121f"><path d="M12 20l12 9-12 9v-6l5-3-5-3z"/><rect x="28" y="36" width="16" height="5"/></g>`,
+  },
+  undo: {
+    el: 'steel',
+    svg: `<g ${S} stroke-width="8"><path d="M20 22h20a16 16 0 0 1 0 32H22"/></g><path d="M4 22l18-16v32z"/>`,
+  },
   timer: {
     el: 'steel',
     svg: `<circle cx="32" cy="34" r="26"/><path fill="#16121f" d="M32 14a20 20 0 0 1 20 20H32z"/><rect x="26" y="2" width="12" height="6"/>`,
