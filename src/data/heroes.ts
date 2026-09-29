@@ -12,10 +12,10 @@ const warrior: HeroDef = {
   regen: 1.3,
   blockDecay: 1.2,
   // Starter decks: only basic cards (plus mana crystals); everything else comes from rewards.
-  startDeck: [...rep('strike', 7), ...rep('defend', 6), 'manaShard', 'manaGeode'],
+  startDeck: [...rep('strike', 7), ...rep('defend', 6), 'battleCry', 'manaGeode'],
   firstRewards: [
     ['heavyLifting', 'cleave', 'ironWall', 'bandage'],
-    ['battleCry', 'shieldBash', 'coffeeBreak', 'counterstrike'],
+    ['bash', 'shieldBash', 'coffeeBreak', 'counterstrike'],
     ['warDrums', 'rampage', 'secondWind', 'parry'],
   ],
   // The simplest class: no once-per-run special. One arm left: a single sleeve slot.
