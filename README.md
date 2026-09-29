@@ -197,6 +197,7 @@ La difficoltà cresce scendendo di piano. Le élite e lo Slaves CEO guadagnano 1
   primo che non hai ancora incontrato. Sotto, sulla scrivania, il **cartellino** da timbrare accanto al
   timbracartellino: *New run*, oppure *Back to work* con eroe, atto, piano e vita della run in corso; toccandolo entra
   nel timbracartellino (KA-CHUNK). Poi *Handbook*, *How to play* e Impostazioni (dove sta anche *Reset progress*);
+  se gli effetti sonori sono a zero, un biglietto giallo consiglia di accenderli;
   un piccolo bottone flottante temporaneo apre *Debug fight*.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
 - **Percorso:** in alto ritratto dell'eroe (toccalo o tienilo premuto per la sua scheda), vita, mazzo, paga e Impostazioni (con *Main menu*); sotto la mappa dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
@@ -207,6 +208,8 @@ La difficoltà cresce scendendo di piano. Le élite e lo Slaves CEO guadagnano 1
 - **Combattimento**, dall'alto: barra superiore (nome del nemico in grande e piano, velocità di gioco, pausa) · nemico con stati e vita ·
   barra minaccia · eroe (ritratto, vita, Blocco, stati) · **nastro a due righe** · mana · sleeve e abilità (i contatori di mazzo e scarti sono nascosti). Vita del nemico,
   mossa in arrivo e vita dell'eroe stanno tutte subito sopra il nastro, così non serve distogliere lo sguardo dalle carte.
+- **Tour del primo scontro:** la primissima volta, prima di *Clock in*, un overlay illumina una parte alla volta
+  (nemico, barra minaccia, eroe, nastro, mana, sleeve, abilità, *Clock in*) e la spiega in una nota, con *Next*.
 - **Ricompensa, sala pausa** (macchinetta del caffè steampunk, con animazione di cura), **fine turno e licenziamento** (le
   statistiche come una busta paga stampata ad aghi, timbrata *Paid* o *Void*: netto 0,00; se la run sblocca un eroe, un
   biglietto *New hire* lo presenta, e già la lettera di licenziamento dice "Let's hire the next one"), **Handbook** (carte per

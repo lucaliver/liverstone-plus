@@ -125,7 +125,15 @@ const en = {
   'howto.ability.d': 'Your big button: it costs a lot of mana. It is your character ultimate.',
   'howto.inspect.t': 'Hold to learn',
   'howto.inspect.d': 'Not sure what something does? Press and hold it: cards, statuses, moves, stats.',
-  'howto.gotIt': "Got it! Let's get to work.",
+  'howto.gotIt': 'Got it!',
+  'coach.enemy': 'Your first job: beat this enemy. Its HP bar is right below it.',
+  'coach.threat': 'Its next move and how hard it hits. When the bar fills up, the move lands. Hold the bar to see all its moves.',
+  'coach.hero': 'You. Your HP carries over from job to job: at 0 you are fired. Your statuses show under it.',
+  'coach.belt': 'Your deck rides this belt. Tap a card to play it before it slips off the edge.',
+  'coach.mana': 'Cards cost mana (the number in their corner). It refills over time.',
+  'coach.sleeve': 'Your sleeve: drag a card down here to keep it for later.',
+  'coach.ability': 'Your ability: a big move that costs a lot of mana.',
+  'coach.start': 'Hold anything to read what it does. When you are ready, clock in.',
 
   // ------------------------------------------------------------- heroes
   'hero.select': "Who's on shift?",

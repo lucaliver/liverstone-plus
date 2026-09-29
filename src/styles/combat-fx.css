@@ -391,3 +391,28 @@
   4%, 92% { scale: 1; opacity: 1; }
   100% { opacity: 0; }
 }
+
+/* coach marks (first fight, first Kamikaze): one element lit, the rest dimmed, a paper note next to it */
+.coach { position: absolute; inset: 0; z-index: 70; overflow: hidden; }
+.coach-hole {
+  position: absolute;
+  outline: 4px solid var(--y);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 200vmax #0c0818c4;
+  pointer-events: none;
+}
+.coach-note {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 12px 14px;
+  color: var(--k);
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--p);
+}
+.coach-note p { margin: 0 0 10px; font-size: 16px; font-weight: 600; line-height: 1.3; }
+.coach-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.coach-count { font-family: var(--font-ui); font-size: 18px; color: var(--muted); }

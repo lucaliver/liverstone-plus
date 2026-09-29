@@ -366,3 +366,17 @@ test('handbook: pressing a status in a move pattern explains it', async ({ page 
   await page.locator('.foe [data-status]').first().click();
   await expect(page.locator('.modal .info')).toBeVisible();
 });
+
+test('the very first fight opens on a tour of the board, one step at a time, before Clock in', async ({ page }) => {
+  const problems = await freshGame(page, { tutorial: true });
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  await page.getByRole('button', { name: /enter floor 1/i }).click();
+  await expect(page.locator('.coach-count')).toHaveText('1/8');
+  for (let i = 0; i < 7; i++) await page.locator('.coach .btn').click();
+  await page.getByRole('button', { name: 'Got it!' }).click();
+  await expect(page.locator('.coach')).toHaveCount(0);
+  await expect(page.locator('.js-start')).toBeVisible();
+  expect(await page.evaluate("JSON.parse(localStorage.getItem('cardstone+:settings')).seenTutorial")).toBe(true);
+  expect(problems).toEqual([]);
+});

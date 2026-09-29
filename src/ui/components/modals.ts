@@ -165,7 +165,7 @@ export function openSettings(extra: ModalAction[] = []): ModalHandle {
   });
 }
 
-export function openHowTo(onClose?: () => void, firstTime = false): ModalHandle {
+export function openHowTo(): ModalHandle {
   const items: [string, string][] = [
     ['cards', 'belt'],
     ['crystal', 'mana'],
@@ -190,8 +190,7 @@ export function openHowTo(onClose?: () => void, firstTime = false): ModalHandle 
   return openModal({
     title: t('howto.title'),
     body,
-    actions: [{ label: firstTime ? t('howto.gotIt') : t('common.close'), cls: firstTime ? '' : 'secondary' }],
-    onClose,
+    actions: [{ label: t('common.close'), cls: 'secondary' }],
   });
 }
 

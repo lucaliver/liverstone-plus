@@ -11,8 +11,9 @@ import { type ModalHandle, openModal, type Screen } from '../app';
 import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedRow } from '../components/modals';
 import { creature } from '../art/creatures';
 import { icon, INTENT_ICON } from '../art/icons';
+import { coach } from '../components/coach';
 import { bindMoveDetails, enemyTraits, moveEffect, movePattern } from '../components/moveText';
-import { h, onPress, onTapOrHold } from '../dom';
+import { $, h, onPress, onTapOrHold } from '../dom';
 import { burst, haptic, shake } from '../fx/fx';
 import { clockText } from '../screens/journey';
 import { createCardLayer } from './cardLayer';
@@ -46,7 +47,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
 
   // The fight runs only while no window at all is open (card detail, status info, pause menu…) and Start was pressed.
   const syncPause = (opening = false): void => {
-    state.paused = opening || state.waiting || !!document.querySelector('.modal-back');
+    state.paused = opening || state.waiting || !!document.querySelector('.modal-back, .coach');
   };
   v.inspect = syncPause;
   const cards = createCardLayer(v);
@@ -259,6 +260,26 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   };
   r.pause.addEventListener('click', openPause);
 
+  /** The very first fight: before Start, a tour of the board, one part at a time. */
+  const firstFightTour = (): void =>
+    coach(
+      el,
+      [
+        { target: r.enemyWrap, text: t('coach.enemy') },
+        { target: r.intent, text: t('coach.threat') },
+        { target: $('.hero-row', el), text: t('coach.hero') },
+        { target: r.belt, text: t('coach.belt') },
+        { target: r.manaRow, text: t('coach.mana') },
+        { target: r.sleeve, text: t('coach.sleeve') },
+        { target: r.ability, text: t('coach.ability') },
+        { target: $('.js-start', el), text: t('coach.start') },
+      ],
+      () => {
+        settings.seenTutorial = true;
+        saveSettings();
+      },
+    );
+
   const onVisibility = (): void => {
     if (document.hidden) openPause();
   };
@@ -310,7 +331,9 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         ),
       );
       door.addEventListener('animationend', (e) => {
-        if (e.target === door) door.remove();
+        if (e.target !== door) return;
+        door.remove();
+        if (!settings.seenTutorial) firstFightTour();
       });
       el.append(door);
       sfx('door');
@@ -347,16 +370,6 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       });
       // Centred on the belt: the enemy, the threat bar and the hero stay readable.
       r.belt.append(startWrap);
-      if (!settings.seenTutorial) {
-        setTimeout(
-          () =>
-            openHowTo(() => {
-              settings.seenTutorial = true;
-              saveSettings();
-            }, true),
-          350,
-        );
-      }
     },
     leave() {
       setMusicTempo(1);
