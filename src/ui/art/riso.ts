@@ -95,6 +95,8 @@ export interface Sprite {
   /** Opaque paper-coloured silhouette printed under the inks, so paper areas hide the background. */
   base: string;
   layers: Partial<Record<Ink, string>>;
+  /** Where the drawing actually is, as fractions of the sprite: left, top, right, bottom (outline included). */
+  box: [number, number, number, number];
 }
 
 const sprites = new Map<string, Sprite>();
@@ -145,6 +147,16 @@ async function buildSprite(svgBody: string, size: number): Promise<Sprite> {
     pix[i] = nearest(r, gg, b);
     on[i] = 1;
   }
+  let [x0, y0, x1, y1] = [size, size, 0, 0];
+  for (let i = 0; i < size * size; i++) {
+    if (!on[i]) continue;
+    const x = i % size;
+    const y = (i - x) / size;
+    [x0, y0, x1, y1] = [Math.min(x0, x), Math.min(y0, y), Math.max(x1, x), Math.max(y1, y)];
+  }
+  // One pixel of outline around the drawing.
+  const box: Sprite['box'] =
+    x1 < x0 ? [0, 0, 1, 1] : [Math.max(0, x0 - 1) / size, Math.max(0, y0 - 1) / size, Math.min(size, x1 + 2) / size, Math.min(size, y1 + 2) / size];
 
   const layers: Partial<Record<Ink, ImageData>> = {};
   const base = new ImageData(size, size);
@@ -185,7 +197,7 @@ async function buildSprite(svgBody: string, size: number): Promise<Sprite> {
 
   const [bc, bg] = canvas(size, size);
   bg.putImageData(base, 0, 0);
-  const out: Sprite = { w: size, h: size, base: upscale(bc, 4), layers: {} };
+  const out: Sprite = { w: size, h: size, base: upscale(bc, 4), layers: {}, box };
   for (const ink of INK_ORDER) {
     const data = layers[ink];
     if (!data) continue;
@@ -233,6 +245,9 @@ export async function preloadArt(src: { creatures: Record<string, string>; icons
   }
   await Promise.all(jobs);
 }
+
+/** Where a creature's drawing sits inside its square (see `Sprite.box`). */
+export const spriteBox = (id: string): Sprite['box'] => sprites.get(id)?.box ?? [0, 0, 1, 1];
 
 /** HTML for a creature sprite (stack of ink layers). */
 export function sprite(id: string, cls = ''): string {

@@ -11,6 +11,7 @@ import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
 import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedRow } from '../components/modals';
 import { creature } from '../art/creatures';
+import { spriteBox } from '../art/riso';
 import { icon, INTENT_ICON } from '../art/icons';
 import { coach } from '../components/coach';
 import { bindMoveDetails, enemyTraits, moveEffect, movePattern } from '../components/moveText';
@@ -36,6 +37,9 @@ export interface CombatCallbacks {
 const STEP = 1 / 60;
 /** How far along the belt (in belt widths) a card with a tip has come when the fight stops to explain it. */
 const TIP_POS = 0.25;
+/** Largest enemy sprite (px), and how far its drawing may be zoomed in to fill the room. */
+const ENEMY_MAX = 256;
+const ENEMY_ZOOM = 1.6;
 /** Pixels between the two rows of a two-row belt. */
 const BELT_ROW_GAP = 10;
 
@@ -114,11 +118,21 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     state.rowH = Math.round(cw * 1.4) + BELT_ROW_GAP;
     el.style.setProperty('--cw-belt', `${cw}px`);
     el.style.setProperty('--belt-row-h', `${state.rowH}px`);
-    // Measure the enemy's room once (with the belt size applied) and lock the sprite size.
+    // Measure the enemy's room once (with the belt size applied) and lock the sprite size. The wrapper is flex: 1 with
+    // min-height 0, so its box is the free room, independent of the sprite; the enemy stands lower, on its pixel shadow.
     requestAnimationFrame(() => {
-      // The wrapper is flex: 1 with min-height 0, so its height is the free room, independent of the sprite.
-      const size = Math.max(72, Math.min(256, r.enemyWrap.clientHeight));
+      const wrap = r.enemyWrap.getBoundingClientRect();
+      const shade = $('.shade', el).getBoundingClientRect();
+      const ground = shade.top + shade.height / 2;
+      const size = Math.max(72, Math.min(ENEMY_MAX, ground - wrap.top));
+      // The drawing, not its square, fills the room: zoomed in (a little at most), centred, its feet on the ground.
+      const [x0, y0, x1, y1] = spriteBox(combat.enemy.def.art);
+      const k = Math.min(ENEMY_ZOOM, 1 / (y1 - y0), wrap.width / size / (x1 - x0));
       el.style.setProperty('--enemy-size', `${size}px`);
+      el.style.setProperty('--enemy-drop', `${ground - wrap.bottom}px`);
+      r.enemyArt.style.setProperty('--k', String(k));
+      r.enemyArt.style.setProperty('--cx', String((x0 + x1) / 2));
+      r.enemyArt.style.setProperty('--by', String(y1));
     });
   };
 
