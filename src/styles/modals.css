@@ -69,6 +69,16 @@
   font-family: var(--font-ui);
   font-size: 18px;
 }
+.setting.wrap { flex-wrap: wrap; }
+.setting-note {
+  flex-basis: 100%;
+  margin: 0;
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--p);
+}
+.setting-note[hidden] { display: none; }
 .switch {
   position: relative;
   width: 60px;

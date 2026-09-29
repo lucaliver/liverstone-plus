@@ -42,9 +42,12 @@ function volumeRow(label: string, get: () => number, set: (v: number) => void): 
   return h('div', { class: 'setting' }, h('span', null, label), h('div', { class: 'slider-wrap' }, input, num));
 }
 
-export function speedSelector(): HTMLElement {
+/** Game speed row; above 1× a note warns that it makes the game harder. */
+export function speedRow(): HTMLElement {
   const seg = h('div', { class: 'seg', role: 'group' });
+  const note = h('p', { class: 'setting-note' }, t('settings.speedNote'));
   const render = (): void => {
+    note.hidden = settings.speed === 1;
     seg.replaceChildren(
       ...GAME_SPEEDS.map((s) =>
         h(
@@ -64,7 +67,7 @@ export function speedSelector(): HTMLElement {
     );
   };
   render();
-  return seg;
+  return h('div', { class: 'setting wrap' }, h('span', null, t('settings.speed')), seg, note);
 }
 
 /** Settings; `extra` actions go above Reset progress and Close (e.g. Main menu from the map). */
@@ -89,7 +92,7 @@ export function openSettings(extra: ModalAction[] = []): ModalHandle {
         setSfxVolume(v);
       },
     ),
-    h('div', { class: 'setting' }, h('span', null, t('settings.speed')), speedSelector()),
+    speedRow(),
     toggleRow(
       t('settings.motion'),
       () => settings.reduceMotion,

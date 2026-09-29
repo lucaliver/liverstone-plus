@@ -8,7 +8,7 @@ import { clockAt, currentNode, type RunState, totalFloors } from '../../game/run
 import { meetEnemy } from '../../game/meta';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
-import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedSelector } from '../components/modals';
+import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedRow } from '../components/modals';
 import { creature } from '../art/creatures';
 import { icon, INTENT_ICON } from '../art/icons';
 import { bindMoveDetails, enemyTraits, moveEffect, movePattern } from '../components/moveText';
@@ -199,7 +199,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     const body = h(
       'div',
       { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
-      h('div', { class: 'setting' }, h('span', null, t('settings.speed')), speedSelector()),
+      speedRow(),
     );
     pauseModal = openModal({
       title: t('combat.paused'),

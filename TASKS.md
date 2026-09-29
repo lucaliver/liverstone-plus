@@ -14,9 +14,9 @@
 
 - [x] i mazzi iniziali dovrebbero avere tutti 15 carte
 
-- [ ] add disclaimer when increasing speed from settings (it increases difficulty)
+- [x] add disclaimer when increasing speed from settings (it increases difficulty)
 
-- [ ] in home menu: if you have volume at zero, a banner tells you that sound on is reccomended
+- [x] in home menu: if you have volume at zero, a banner tells you that sound on is reccomended
 
 
 - [ ] i titoli delle carte sono troppo piccoli e non si leggono (per lo meno nell'handbook)
