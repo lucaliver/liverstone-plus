@@ -50,7 +50,9 @@ This file is the technical guide: read it before changing code.
 - Every screen undoes in `leave()` what it did in `enter()`: window/document listeners, emitter subscriptions,
   timers, temporary music. Elements inside the screen's own `el` need no cleanup.
 - Save data is untrusted: read it through `core/save.ts`, validate on load, and when its shape changes bump
-  `version` in `run.ts` (or migrate) instead of letting old saves crash the game.
+  `SAVE_VERSION` in `run.ts` (or migrate) instead of letting old saves crash the game.
+- Ids follow the English names (`punch` is Punch, `snitch` The Snitch). When a name changes, rename the id too and add
+  the old one to `game/renamed.ts`, so saved runs, discoveries and met enemies carry over.
 - Test what you change: engine rule → `combat.test.ts`; new data shape → `content.test.ts`; new flow or screen
   interaction → `smoke.spec.ts`. Fix a bug with a test that fails first when it's cheap to write.
 
@@ -91,7 +93,7 @@ src/
   core/        rng (seeded), emitter, i18n (typed keys), save (safe localStorage), util
   i18n/en.ts   every player-facing string (key → text)
   data/        config, acts (shift hours, fight music, map boss per act), statuses, heroes, enemies, perks, hexes, relics (empty, hooks ready), cards/<class>.ts
-  game/        combat.ts (engine), run.ts (node graph, rewards, saves), meta.ts (discovery, unlocks, lifetime records), settings, types
+  game/        combat.ts (engine), run.ts (node graph, rewards, saves), meta.ts (discovery, unlocks, lifetime records), renamed.ts (old → new ids for saves), settings, types
   ui/          app.ts (screens + modals), dom.ts (h, onPress, onTapOrHold, LONG_PRESS_MS)
     art/       icons.ts (64×64 vector icons), creatures.ts (200×200 vector sprites), riso.ts (pixel renderer)
     combat/    view (DOM + refs + shared state), hud, cardLayer (belt/sleeve/input), combatFx (events → FX), combatScreen
@@ -134,7 +136,7 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
   value · `|` new line · other text as is. Kinds live in `GLYPHS` (`ui/components/cardView.ts`).
 - `desc`: `{i}` values, `[kw]` keywords (need `kw.<kw>` and `kw.<kw>.d`).
 - Art colour comes from the face (attack / defense / utility / curse) unless `cat` is set. Set `dmg: []` only for
-  raw damage that ignores modifiers (e.g. `juggernaut`).
+  raw damage that ignores modifiers (e.g. `forklift`).
 - Keyword flags (`Keyword` type, change engine behaviour): exhaust, consume, fleeting, volatile, innate,
   unplayable, pending (not playable until its first full ride along the belt each fight). Glossary-only keywords (`[rush]`, `[power]`, `[x]`, statuses…) just need their `kw.*` strings.
 - `ride` makes one value change for every second the card rides the belt (`CombatCard.age`, frozen in the sleeve),

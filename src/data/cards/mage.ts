@@ -3,7 +3,7 @@ import type { CardDef } from '../../game/types';
 export const mageCards: CardDef[] = [
   // Starters
   {
-    id: 'arcaneBolt',
+    id: 'arcaneMemo',
     face: '{dmg:0}',
     cls: 'mage',
     type: 'spell',
@@ -15,7 +15,7 @@ export const mageCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0]),
   },
   {
-    id: 'ward',
+    id: 'fireDoor',
     face: '{block:0}',
     cls: 'mage',
     type: 'skill',
@@ -27,7 +27,7 @@ export const mageCards: CardDef[] = [
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {
-    id: 'frostbolt',
+    id: 'coldCall',
     face: '{dmg:0}|{chill:1}',
     cls: 'mage',
     type: 'spell',
@@ -44,7 +44,7 @@ export const mageCards: CardDef[] = [
 
   // Commons
   {
-    id: 'fireball',
+    id: 'slagBall',
     face: '{dmg:0}|{burn:1}',
     cls: 'mage',
     type: 'spell',
@@ -59,7 +59,7 @@ export const mageCards: CardDef[] = [
     },
   },
   {
-    id: 'iceLance',
+    id: 'coldShoulder',
     face: '{dmg:0}|{?snow}{dmg:1}',
     cls: 'mage',
     type: 'spell',
@@ -71,7 +71,7 @@ export const mageCards: CardDef[] = [
     play: (c, v) => void c.hit(c.has('enemy', 'chill') ? v[1] : v[0], { kind: 'ice' }),
   },
   {
-    id: 'manaSurge',
+    id: 'caffeineJolt',
     face: '{mana:0}',
     cls: 'mage',
     type: 'skill',
@@ -83,7 +83,7 @@ export const mageCards: CardDef[] = [
     play: (c, v) => c.gainMana(v[0]),
   },
   {
-    id: 'spark',
+    id: 'staticShock',
     face: '{dmg:0}',
     cls: 'mage',
     type: 'spell',
@@ -95,7 +95,7 @@ export const mageCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0], { kind: 'arcane' }),
   },
   {
-    id: 'frostArmor',
+    id: 'coldStorage',
     face: '{block:0}|{chill:1}',
     cls: 'mage',
     type: 'skill',
@@ -110,7 +110,7 @@ export const mageCards: CardDef[] = [
     },
   },
   {
-    id: 'ignite',
+    id: 'burnout',
     face: '{burn:0}',
     cls: 'mage',
     type: 'spell',
@@ -124,7 +124,7 @@ export const mageCards: CardDef[] = [
 
   // Rares
   {
-    id: 'arcaneMissiles',
+    id: 'replyAll',
     face: '{dmg:0}×{1}',
     cls: 'mage',
     type: 'spell',
@@ -136,7 +136,7 @@ export const mageCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0], { hits: v[1] }),
   },
   {
-    id: 'timeSlip',
+    id: 'modernTimes',
     face: '{rush:0}',
     cls: 'mage',
     type: 'skill',
@@ -149,7 +149,7 @@ export const mageCards: CardDef[] = [
     play: (c, v) => c.rushBelt(v[0]),
   },
   {
-    id: 'mirrorImage',
+    id: 'lookBusy',
     face: '{dodge:0}',
     cls: 'mage',
     type: 'skill',
@@ -163,7 +163,7 @@ export const mageCards: CardDef[] = [
     play: (c, v) => c.applyStatus('hero', 'dodge', 1, v[0]),
   },
   {
-    id: 'combustion',
+    id: 'meltdown',
     cat: 'attack',
     face: '{burn}×{0}',
     cls: 'mage',
@@ -183,7 +183,7 @@ export const mageCards: CardDef[] = [
 
   // Epics
   {
-    id: 'polymorph',
+    id: 'metamorphosis',
     face: '{stun:0}',
     cls: 'mage',
     type: 'spell',
@@ -197,7 +197,7 @@ export const mageCards: CardDef[] = [
     play: (c, v) => c.applyStatus('enemy', 'stun', 1, v[0]),
   },
   {
-    id: 'blizzard',
+    id: 'officeAC',
     face: '{dmg:0}|{chill:1}',
     cls: 'mage',
     type: 'spell',
@@ -212,7 +212,7 @@ export const mageCards: CardDef[] = [
     },
   },
   {
-    id: 'evocation',
+    id: 'powerNap',
     face: '{crystal:0}|{mana:1}',
     cls: 'mage',
     type: 'skill',
@@ -229,9 +229,9 @@ export const mageCards: CardDef[] = [
     },
   },
 
-  // Archetype synergy: Spellweave and Chill
+  // Archetype synergy: Multitasking and Chill
   {
-    id: 'flurry',
+    id: 'busyHands',
     face: '{dmg:0}×{1}',
     cls: 'mage',
     type: 'spell',
@@ -240,12 +240,12 @@ export const mageCards: CardDef[] = [
     vals: [2, 2],
     upVals: [3, 2],
     art: 'keyboard',
-    // Every hit gets the Spellweave bonus.
+    // Every hit gets the Multitasking bonus.
     play: (c, v) => void c.hit(v[0], { hits: v[1] }),
   },
   {
-    id: 'arcaneEcho',
-    face: '{dmg:0}|{weave:1}',
+    id: 'echoChamber',
+    face: '{dmg:0}|{multitasking:1}',
     cls: 'mage',
     type: 'spell',
     rarity: 'rare',
@@ -253,10 +253,10 @@ export const mageCards: CardDef[] = [
     vals: [4, 2],
     upVals: [6, 3],
     art: 'echo',
-    play: (c, v) => void c.hit(v[0] + v[1] * c.stacks('hero', 'weave')),
+    play: (c, v) => void c.hit(v[0] + v[1] * c.stacks('hero', 'multitasking')),
   },
   {
-    id: 'shatter',
+    id: 'blueScreen',
     face: '{dmg:0}|{?snow}{stun:1}',
     cls: 'mage',
     type: 'spell',
@@ -274,7 +274,7 @@ export const mageCards: CardDef[] = [
 
   // Legendary
   {
-    id: 'pyroblast',
+    id: 'blastFurnace',
     face: '{dmg:0}',
     cls: 'mage',
     type: 'spell',
@@ -383,7 +383,7 @@ export const mageCards: CardDef[] = [
     vals: [6],
     upVals: [8],
     art: 'rootKey',
-    play: (c, v) => c.applyStatus('hero', 'sudo', 1, v[0]),
+    play: (c, v) => c.applyStatus('hero', 'rootAccess', 1, v[0]),
   },
   // Generated during a fight (never offered as rewards).
   {

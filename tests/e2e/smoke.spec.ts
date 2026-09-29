@@ -38,7 +38,7 @@ test('a fight can be played and won, then a reward is offered', async ({ page })
   await startFight(page);
   await expect(page.locator('.belt-cards .card').first()).toBeVisible();
   const before = (await combat(page, 'return c.enemy.hp;')) as number;
-  const uid = (await combat(page, "return c.belt.find((b) => b.card.id === 'strike')?.card.uid ?? null;")) as number | null;
+  const uid = (await combat(page, "return c.belt.find((b) => b.card.id === 'punch')?.card.uid ?? null;")) as number | null;
   if (uid !== null) {
     await page.locator(`.belt-cards .card[data-uid="${uid}"]`).dispatchEvent('pointerdown', { pointerId: 1, clientX: 0, clientY: 0 });
     await page.locator('.combat').dispatchEvent('pointerup', { pointerId: 1, clientX: 0, clientY: 0 });

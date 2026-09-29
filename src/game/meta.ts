@@ -1,5 +1,6 @@
 import { load, store } from '../core/save';
 import { HERO_LIST, HEROES } from '../data/heroes';
+import { renamedCard, renamedEnemy } from './renamed';
 import type { EnemyDef, HeroId, HeroUnlock, Records } from './types';
 
 /** Progress kept across runs. */
@@ -37,8 +38,9 @@ const NO_RECORDS: Records = {
 const meta: Meta = load('meta', { discovered: [], heroes: [], fresh: [], met: [], runs: 0, signed: false, records: { ...NO_RECORDS } });
 // Saved data is untrusted: keep only known hero ids.
 for (const k of ['heroes', 'fresh'] as const) meta[k] = Array.isArray(meta[k]) ? meta[k].filter((id) => id in HEROES) : [];
-const discovered = new Set(Array.isArray(meta.discovered) ? meta.discovered : []);
-if (!Array.isArray(meta.met)) meta.met = [];
+// Ids saved before they followed the English names are mapped to the new ones.
+const discovered = new Set(Array.isArray(meta.discovered) ? meta.discovered.map(renamedCard) : []);
+meta.met = Array.isArray(meta.met) ? meta.met.map(renamedEnemy) : [];
 if (typeof meta.runs !== 'number') meta.runs = 0;
 meta.signed = meta.signed === true;
 {

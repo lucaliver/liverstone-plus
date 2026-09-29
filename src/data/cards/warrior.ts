@@ -3,7 +3,7 @@ import type { CardDef } from '../../game/types';
 export const warriorCards: CardDef[] = [
   // Starters
   {
-    id: 'strike',
+    id: 'punch',
     face: '{dmg:0}',
     cls: 'warrior',
     type: 'attack',
@@ -15,7 +15,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0]),
   },
   {
-    id: 'defend',
+    id: 'hardHat',
     face: '{block:0}',
     cls: 'warrior',
     type: 'skill',
@@ -27,7 +27,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {
-    id: 'bash',
+    id: 'wrenchWhack',
     face: '{dmg:0}|{stun:1}',
     cls: 'warrior',
     type: 'attack',
@@ -45,7 +45,7 @@ export const warriorCards: CardDef[] = [
 
   // Commons
   {
-    id: 'cleave',
+    id: 'crowbar',
     face: '{dmg:0}',
     cls: 'warrior',
     type: 'attack',
@@ -57,7 +57,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0]),
   },
   {
-    id: 'ironWall',
+    id: 'palletWall',
     face: '{block:0}',
     cls: 'warrior',
     type: 'skill',
@@ -69,7 +69,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {
-    id: 'shieldBash',
+    id: 'shoulderCheck',
     face: '{dmg}={block}',
     cls: 'warrior',
     type: 'attack',
@@ -81,7 +81,7 @@ export const warriorCards: CardDef[] = [
     play: (c) => void c.hit(c.hero.block, { kind: 'blunt' }),
   },
   {
-    id: 'battleCry',
+    id: 'unionChant',
     face: '{mana:0}|{block:1}',
     cls: 'warrior',
     type: 'skill',
@@ -96,7 +96,7 @@ export const warriorCards: CardDef[] = [
     },
   },
   {
-    id: 'heavyBlow',
+    id: 'sledgehammer',
     face: '{dmg:0}',
     cls: 'warrior',
     type: 'attack',
@@ -108,7 +108,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0], { kind: 'blunt' }),
   },
   {
-    id: 'bloodletting',
+    id: 'doubleShift',
     face: '{hp:0}|{mana:1}',
     cls: 'warrior',
     type: 'skill',
@@ -125,7 +125,7 @@ export const warriorCards: CardDef[] = [
 
   // Rares
   {
-    id: 'parry',
+    id: 'pushback',
     face: '{block:0}|{parry:1}',
     cls: 'warrior',
     type: 'skill',
@@ -141,7 +141,7 @@ export const warriorCards: CardDef[] = [
     },
   },
   {
-    id: 'warDrums',
+    id: 'picketDrums',
     face: '{str:0}',
     cls: 'warrior',
     type: 'power',
@@ -154,7 +154,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => c.applyStatus('hero', 'strength', v[0]),
   },
   {
-    id: 'whirlwind',
+    id: 'declareBankruptcy',
     face: '{dmg:0}×X',
     cls: 'warrior',
     type: 'attack',
@@ -167,7 +167,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0], { hits: v[v.length - 1] }),
   },
   {
-    id: 'secondWind',
+    id: 'lunchBreak',
     face: '{heal:0}|{block:1}',
     cls: 'warrior',
     type: 'skill',
@@ -183,7 +183,7 @@ export const warriorCards: CardDef[] = [
     },
   },
   {
-    id: 'rampage',
+    id: 'stonks',
     face: '{dmg:0}|{grow:1}',
     cls: 'warrior',
     type: 'attack',
@@ -200,7 +200,7 @@ export const warriorCards: CardDef[] = [
 
   // Epics
   {
-    id: 'unbreakable',
+    id: 'tenure',
     face: '{block:0}',
     cls: 'warrior',
     type: 'skill',
@@ -214,7 +214,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {
-    id: 'execute',
+    id: 'justCause',
     face: '{dmg:0}|{?skull}{dmg:1}',
     cls: 'warrior',
     type: 'attack',
@@ -226,7 +226,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => void c.hit(c.enemy.hp <= c.enemy.maxHp * 0.3 ? v[1] : v[0]),
   },
   {
-    id: 'bloodthirst',
+    id: 'backPay',
     face: '{dmg:0}|{heal}',
     cls: 'warrior',
     type: 'attack',
@@ -243,7 +243,7 @@ export const warriorCards: CardDef[] = [
 
   // Archetype synergy: Block
   {
-    id: 'counterstrike',
+    id: 'grievance',
     face: '{dmg:0}|{?block}{dmg:1}',
     cls: 'warrior',
     type: 'attack',
@@ -255,7 +255,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => void c.hit(c.hero.block > 0 ? v[1] : v[0]),
   },
   {
-    id: 'bulwark',
+    id: 'safetyRegs',
     face: '{block:0}|{fort:1}',
     cls: 'warrior',
     type: 'skill',
@@ -270,7 +270,7 @@ export const warriorCards: CardDef[] = [
     },
   },
   {
-    id: 'juggernaut',
+    id: 'forklift',
     face: '{?block}{dmg:0}',
     // Raw damage from the power, not modified by Strength/Weak: no live preview.
     dmg: [],
@@ -286,7 +286,7 @@ export const warriorCards: CardDef[] = [
 
   // Legendary
   {
-    id: 'earthshaker',
+    id: 'hydraulicPress',
     face: '{dmg:0}|{stun:1}',
     cls: 'warrior',
     type: 'attack',

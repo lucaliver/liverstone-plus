@@ -9,6 +9,7 @@ import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HEROES } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
 import { discover, progress, type RunRecord, recordFight, recordRun } from './meta';
+import { renamedCard, renamedEnemy, renamedPerk } from './renamed';
 import type { CardDef, CardInst, EnemyDef, HeroId, Rarity } from './types';
 
 export type NodeType = 'fight' | 'elite' | 'rest' | 'promotion' | 'boss';
@@ -33,8 +34,11 @@ export interface RunStats {
   damageTaken: number;
 }
 
+/** Shape of the saved run; older saves are migrated on load when possible, dropped otherwise. */
+const SAVE_VERSION = 3;
+
 export interface RunState {
-  version: 2;
+  version: number;
   seed: number;
   rng: number;
   hero: HeroId;
@@ -87,7 +91,7 @@ export function newRun(hero: HeroId, seed: number, scripted = false): RunState {
   const nodes = buildNodes(rng, scripted);
   discover(def.startDeck);
   return {
-    version: 2,
+    version: SAVE_VERSION,
     seed,
     rng: rng.state,
     hero,
@@ -367,7 +371,16 @@ export function saveRun(run: RunState): void {
 
 export function loadRun(): RunState | null {
   const run = loadRaw<RunState>(SAVE_KEY);
-  if (run?.version !== 2 || !HEROES[run.hero]) return null;
+  // Version 2 had the ids from before they followed the English names.
+  if (run?.version === 2) {
+    for (const c of run.deck) {
+      c.id = renamedCard(c.id);
+      if (c.perks) c.perks = c.perks.map(renamedPerk);
+    }
+    for (const n of run.nodes) if (n.enemy) n.enemy = renamedEnemy(n.enemy);
+    run.version = SAVE_VERSION;
+  }
+  if (run?.version !== SAVE_VERSION || !HEROES[run.hero]) return null;
   // Drop the save if content changed and it references cards/enemies that no longer exist.
   if (run.deck.some((c) => !CARDS[c.id] || c.perks?.some((p) => !PERKS[p])) || run.nodes.some((n) => n.enemy && !ENEMIES[n.enemy])) return null;
   // Saves from before pay existed start at zero.

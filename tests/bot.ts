@@ -27,6 +27,10 @@ export interface BotOpts {
 const DT = 1 / 30;
 
 /** A heuristic player: blocks before telegraphed hits, otherwise spends mana on damage. */
+const CRYSTALS = ['coffee', 'doubleEspresso'];
+const BLOCKISH = ['hardHat', 'fireDoor', 'solidarity', 'barricade', 'palletWall', 'coldStorage', 'tenure', 'pushback', 'lunchBreak', 'lookBusy'];
+const DEBUFFS = ['rust', 'whistleblow', 'smokestack', 'slowdown', 'blackFriday', 'walkout'];
+
 export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
   if (rnd() < opts.sloppiness) return;
   if (c.abilityReady()) c.useAbility();
@@ -58,15 +62,15 @@ export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
     switch (def.type) {
       case 'curse':
         if (card.id === 'gatekeeping') return 30;
-        return card.id === 'hex' && pos > 0.6 ? 50 : c.hero.mana >= c.hero.maxMana - 1 ? 2 : -1;
+        return card.id === 'writeUp' && pos > 0.6 ? 50 : c.hero.mana >= c.hero.maxMana - 1 ? 2 : -1;
       case 'potion':
-        if (card.id === 'healingPotion') return c.hero.hp < c.hero.maxHp * 0.5 ? 40 : -1;
+        if (card.id === 'firstAidKit') return c.hero.hp < c.hero.maxHp * 0.5 ? 40 : -1;
         return 8;
       case 'power':
         return 30;
       case 'skill': {
-        if (/manaShard|manaGeode/.test(card.id)) return 40;
-        const blockish = /defend|ward|Ward|boneWall|ironWall|frostArmor|unbreakable|parry|secondWind|mirrorImage/.test(card.id);
+        if (CRYSTALS.includes(card.id)) return 40;
+        const blockish = BLOCKISH.includes(card.id);
         if (blockish) {
           const need = incoming > c.hero.block && timeToHit < 1.6;
           return need ? 25 * urgency : c.hero.mana >= c.hero.maxMana ? 1.5 : -1;
@@ -76,9 +80,9 @@ export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
       default: {
         // Don't feed a Printer while it copies the damage it takes.
         if (c.enemy.move.absorb) return -1;
-        if (/rot|frailty|noxiousCloud|wither|blackDeath|epidemic/.test(card.id)) return 9;
-        if (card.id === 'blightBurst') return c.stacks('enemy', 'poison') * 0.8;
-        const dmg = def.dmg?.length ? c.previewHeroDamage(v[def.dmg[0]], def) * (card.id === 'arcaneMissiles' ? v[1] : 1) : 8;
+        if (DEBUFFS.includes(card.id)) return 9;
+        if (card.id === 'toxicLeak') return c.stacks('enemy', 'poison') * 0.8;
+        const dmg = def.dmg?.length ? c.previewHeroDamage(v[def.dmg[0]], def) * (card.id === 'replyAll' ? v[1] : 1) : 8;
         return (dmg / cost) * urgency;
       }
     }
@@ -128,8 +132,8 @@ export function simulateRun(hero: HeroId, seed: number, opts: BotOpts): RunOutco
     const node = currentNode(run);
     if (node.type === 'promotion') {
       // Crystals first: they grow the mana the rest of the deck needs.
-      const card = run.deck.find((c) => c.id === 'manaGeode' || c.id === 'manaShard');
-      if (card && canPerk(card, 'innate')) addPerk(run, card.uid, 'innate');
+      const card = run.deck.find((c) => c.id === 'doubleEspresso' || c.id === 'coffee');
+      if (card && canPerk(card, 'fastTrack')) addPerk(run, card.uid, 'fastTrack');
       run.cleared = true;
     } else if (node.type === 'rest') {
       if (run.hp < run.maxHp * 0.65) rest(run);

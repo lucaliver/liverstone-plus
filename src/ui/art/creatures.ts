@@ -43,7 +43,7 @@ ${eyes(84, 116, 74, 6, '#ff4a3a', 'sn-g')}
 <path d="M68 60l24 10M132 60l-24 10" stroke="#120e18" stroke-width="6" stroke-linecap="round"/>`;
 
 /** Senior Boomer: forty years on the line and still clocking in. A skeleton with a comb-over, huge glasses, a mustache, a mug and a box cutter. */
-const boomer = `
+const seniorBoomer = `
 <defs>${lg('bo-b', '#f8f2e2', '#e6dcbc')}${lg('bo-s', '#b8d0f8', '#5a8ae8')}</defs>
 ${shadow}
 <!-- high-waisted trousers and shoes -->
@@ -76,8 +76,8 @@ ${shadow}
 <path d="M84 76h32v6H84z" fill="#efe6cc" ${OUT}/><path d="M90 76v6M96 76v6M102 76v6M108 76v6" stroke="#1a1422" stroke-width="1.5"/>
 <path d="M118 14l-4 8 6 6-4 8" stroke="#1a1422" stroke-width="2.5" fill="none"/>`;
 
-/** Toxic Coworker (enemy id `slime`): a bloated toad on the phone, gossiping, badge on a lanyard, a colleague half-swallowed on its back. */
-const coworker = `
+/** Toxic Coworker: a bloated toad on the phone, gossiping, badge on a lanyard, a colleague half-swallowed on its back. */
+const toxicCoworker = `
 <defs>${lg('tc-b', '#5a9a3a', '#16402a')}${lg('tc-bn', '#fbf4df', '#e8d8a8')}</defs>
 ${shadow}
 <path d="M150 70l20-26 6 2 2-8 8 4-4 6 4 4-8 4-2-4-18 24z" fill="url(#tc-bn)" ${OUT}/>
@@ -135,7 +135,7 @@ ${eyes(86, 114, 66, 4.5, '#ff6af5', 'sc-g')}
 <path d="M60 62c2 16 8 24 18 26" stroke="#1b1830" stroke-width="4" fill="none"/><circle cx="80" cy="88" r="5" fill="#ff3d9a" ${OUT}/>`;
 
 /** Goblin Consultant: pale, a mop of curls, a big hooked nose and an evil grin, a cheap suit, a briefcase full of invoices and a knife for your back. */
-const consultant = `
+const goblinConsultant = `
 <defs>${rg('gc-b', '#a8c860', '#5a8a30')}${rg('gc-p', '#f6f0e4', '#c8c0d8')}${lg('gc-s', '#5a6ac0', '#1c2a70')}${lg('gc-c', '#b07a3a', '#6a3a1a')}${glow('gc-g', '#ffe14a')}</defs>
 ${shadow}
 <!-- briefcase -->
@@ -161,7 +161,7 @@ ${shadow}
 <g class="limb"><path d="M62 128c-14 4-22 14-20 26l12 2c0-8 4-14 12-16z" fill="url(#gc-s)" ${OUT}/><circle cx="46" cy="154" r="7" fill="url(#gc-b)" ${OUT}/><path d="M42 150l-14-30 7-3 14 30z" fill="#dfe6ee" ${OUT}/></g>`;
 
 /** Security Automaton: a brass-and-steel guard on pistons, one red eye in a visor, cap, badge, riot shield and baton. */
-const automaton = `
+const securityMonitor = `
 <defs>${lg('sa-m', '#9ab8f0', '#1c4fb0')}${lg('sa-br', '#ffe45a', '#d09a20')}${glow('sa-g', '#ff3d9a')}</defs>
 ${shadow}
 <!-- piston legs -->
@@ -192,7 +192,7 @@ ${shadow}
 <path d="M140 80v-12h8v12" fill="#3a3450" ${OUT}/><g fill="#f6f0e4" opacity=".85"><circle cx="146" cy="58" r="5"/><circle cx="152" cy="48" r="4"/></g>`;
 
 /** Slaves CEO: the boss. A skull on a riveted steel jaw, top hat, monocle and cigar, pinstripes, a gold chain and a giant stopwatch. */
-const ceo = `
+const slavesCeo = `
 <defs>${lg('ce-s', '#5a4ab8', '#241a4a')}${lg('ce-g', '#ffe45a', '#d09a20')}${lg('ce-f', '#f4ecd6', '#c9bd98')}${lg('ce-j', '#9ab8f0', '#1c4fb0')}${glow('ce-e', '#ff3d9a')}</defs>
 ${shadow}
 <!-- cane with a gold knob -->
@@ -227,7 +227,7 @@ ${shadow}
 <path d="M56 32h88c0 6-4 10-10 10H66c-6 0-10-4-10-10z" fill="#4a2a90" ${OUT}/>`;
 
 /** HR Bitch: a harpy in a pink blazer, hair in a bun (pencil stuck in it), cat-eye glasses, clipboard in one talon, red pen in the other. */
-const hr = `
+const hrBitch = `
 <defs>${lg('hr-w', '#c080e0', '#4a2090')}${lg('hr-j', '#ff8ac8', '#c02a80')}</defs>
 ${shadow}
 <g class="limb"><path d="M70 96C40 72 12 82 4 112c14-6 22-4 28 2-10 4-16 12-18 22 12-8 24-8 32-2-6 6-8 14-8 22 14-12 28-20 40-20z" fill="url(#hr-w)" ${OUT}/>
@@ -257,7 +257,7 @@ ${shadow}
 <path d="M90 74h20" stroke="#ff3d9a" stroke-width="5"/>`;
 
 /** Guy Asleep: an ogre in overalls asleep on his desk, nightcap on, drooling, mug gone cold, Zs rising. */
-const sleeper = `
+const guyAsleep = `
 <defs>${rg('gs-b', '#a8c860', '#4a7a30')}${lg('gs-o', '#6a9af8', '#1c4fb0')}</defs>
 ${shadow}
 <path d="M40 150c0-40 24-64 60-64s60 24 60 64z" fill="url(#gs-o)" ${OUT}/>
@@ -351,7 +351,7 @@ ${shadow}
 <g fill="#1b1830"><circle cx="162" cy="38" r="3"/><circle cx="180" cy="36" r="2"/></g>`;
 
 /** HR Orientation Video: a haunted wooden TV on clawed legs, antennae with orbs, a serene smiling face on the screen. */
-const hrVideo = `
+const hrOrientationVideo = `
 <defs>${glow('hv-g', '#ffd900')}</defs>
 ${shadow}
 <path d="M70 30L52 6M130 30l18-24" stroke="#1b1830" stroke-width="5" stroke-linecap="round"/>
@@ -368,7 +368,7 @@ ${shadow}
 <g fill="#1b1830"><rect x="152" y="110" width="16" height="4"/><rect x="152" y="120" width="16" height="4"/><rect x="152" y="130" width="16" height="4"/></g>`;
 
 /** The same TV at half HP, mask off: a cracked red screen, bent sparking antennae, glaring eyes and a jagged grin. */
-const hrVideoAngry = `
+const hrOrientationVideoAngry = `
 ${shadow}
 <path d="M70 30L44 12M130 30l20-24" stroke="#1b1830" stroke-width="5" stroke-linecap="round"/>
 <path d="M36 4l8 8-10 2 12 8M150 0l2 10 8-4" stroke="#ffd900" stroke-width="3" fill="none"/>
@@ -517,7 +517,7 @@ const necromancer = `
 // ------------------------------------------------------------------ Act 2: the afternoon shift
 
 /** Meticulous Colleague: a praying mantis in an argyle vest, ruler in one claw, magnifying glass in the other. */
-const mantis = `
+const meticulousColleague = `
 <defs>${lg('mc-b', '#a8e070', '#3a8a3a')}${lg('mc-v', '#ff8ac8', '#c02a80')}</defs>
 ${shadow}
 <path d="M84 150l-20 38M116 150l20 38M92 150l-4 38M108 150l4 38" stroke="#120e18" stroke-width="9" stroke-linecap="round"/>
@@ -572,7 +572,7 @@ ${shadow}
 <g class="limb"><path d="M156 128l38-10 4 22-38 10z" fill="#f6f0e4" ${OUT}/><path d="M164 132l24-6M166 140l24-6" stroke="#1b1830" stroke-width="2.5"/></g>`;
 
 /** Chief Happiness Officer: a round pink imp in a party hat, grin stretched far too wide, pizza box held high. */
-const happiness = `
+const happinessOfficer = `
 <defs>${rg('ho-b', '#ffb8dc', '#e0408a')}${glow('ho-g', '#ffd900')}</defs>
 ${shadow}
 <path d="M72 174l-4 14h22l-2-14zM116 174l-2 14h22l-4-14z" fill="#1b1830" ${OUT}/>
@@ -586,7 +586,7 @@ ${eyes(80, 120, 98, 8, '#ffd900', 'ho-g')}
 <rect x="78" y="152" width="44" height="16" fill="#f6f0e4" ${OUT}/><rect x="78" y="152" width="44" height="5" fill="#1c5fd0"/>`;
 
 /** Wellness Coach: a blue spirit floating in lotus pose over a yoga mat, sweatband on, eyes serenely shut, smoothie at hand. */
-const wellness = `
+const wellnessCoach = `
 <defs>${lg('wc-b', '#c6e6ff', '#4a82e8')}</defs>
 <ellipse cx="100" cy="188" rx="46" ry="6" fill="#000" opacity=".3"/>
 <rect x="26" y="176" width="148" height="9" fill="#8ad06a" ${OUT}/>
@@ -619,7 +619,7 @@ ${shadow}
 <path d="M58 54c10-10 24-14 42-14s32 4 42 14l12 6-12 6H58l-12-6z" fill="#8ad06a" ${OUT}/>`;
 
 /** Compliance Officer: a one-eyed ogre in a hard hat and hi-vis vest, checklist in one hand, giant rubber stamp raised in the other. */
-const compliance = `
+const complianceOfficer = `
 <defs>${lg('co-b', '#ffc080', '#c86a20')}${lg('co-v', '#ffe45a', '#e0b000')}</defs>
 ${shadow}
 <path d="M62 190l6-30h64l6 30z" fill="#1b1830" ${OUT}/>
@@ -651,7 +651,7 @@ ${shadow}
 <path d="M78 12c5 6 2 12-3 14M122 12c-5 6-2 12 3 14" stroke="#f6f0e4" stroke-width="3" fill="none"/>`;
 
 /** Night Janitor: a hooded wraith with a mop, a bucket and a ring of keys; the light bulb above him is dead. */
-const janitor = `
+const nightJanitor = `
 <defs>${lg('nj-c', '#5a3ab0', '#1b1830')}${glow('nj-g', '#ffd900')}</defs>
 ${shadow}
 <path d="M128 150h46l-6 38h-34z" fill="#9a94ac" ${OUT}/><path d="M128 150c0-12 46-12 46 0" stroke="#120e18" stroke-width="4" fill="none"/>
@@ -731,29 +731,29 @@ export const CREATURES: Record<string, string> = {
   leaver,
   workWife,
   snitch,
-  boomer,
-  coworker,
+  seniorBoomer,
+  toxicCoworker,
   teamLeader,
-  consultant,
-  automaton,
-  ceo,
-  hr,
-  sleeper,
+  goblinConsultant,
+  securityMonitor,
+  slavesCeo,
+  hrBitch,
+  guyAsleep,
   newHire,
-  mantis,
+  meticulousColleague,
   dave,
   printer,
-  happiness,
+  happinessOfficer,
   officeChair,
-  hrVideo,
-  hrVideoAngry,
+  hrOrientationVideo,
+  hrOrientationVideoAngry,
   changeManager,
   overthinker,
-  wellness,
+  wellnessCoach,
   beanCounter,
-  compliance,
+  complianceOfficer,
   veteran,
-  janitor,
+  nightJanitor,
   micromanager,
   coffeeMachine,
   timeClock,

@@ -17,7 +17,7 @@ const CATEGORIES: CardCategory[] = ['attack', 'defense', 'utility', 'curse'];
 /** What the Overthinker does once it has lost its train of thought. */
 const WHERE_WAS_I: MoveDef = { id: 'whereWasI', intent: 'idle', windup: 4 };
 /** Spending Freeze: the hero's max mana. */
-const FROZEN_BUDGET = 3;
+const SPENDING_FREEZE_CAP = 3;
 
 /** A status tick that runs `fn` once per whole second the status has been up (n = 1, 2, 3…). */
 const everySecond =
@@ -36,28 +36,28 @@ const endOnPlay =
 
 const defs: StatusDef[] = [
   { id: 'strength', kind: 'stacks', good: true, icon: 'fist' },
-  { id: 'spellpower', kind: 'stacks', good: true, icon: 'wand' },
+  { id: 'spellPower', kind: 'stacks', good: true, icon: 'wand' },
   { id: 'thorns', kind: 'stacks', good: true, icon: 'thorns' },
   { id: 'dodge', kind: 'timed', good: true, icon: 'mirror' },
   { id: 'juggernaut', kind: 'stacks', good: true, icon: 'helm' },
   { id: 'fortified', kind: 'timed', good: true, icon: 'fortress' },
   { id: 'regen', kind: 'dot', good: true, icon: 'leaf' },
-  { id: 'berserk', kind: 'timed', good: true, icon: 'overtime' },
+  { id: 'overtime', kind: 'timed', good: true, icon: 'overtime' },
   { id: 'parry', kind: 'timed', good: true, icon: 'crossed' },
   { id: 'haste', kind: 'timed', good: true, icon: 'gauge' },
   { id: 'rush', kind: 'timed', good: true, icon: 'speedCards' },
   // Work-Life Balance: every card played hits again (for v), until two cards of the same colour come one after the
   // other; `e` is the colour of the last one.
   {
-    id: 'workLife',
+    id: 'workLifeBalance',
     kind: 'stacks',
     good: true,
     icon: 'seesaw',
     onCardPlayed: (c, side, def) => {
-      const s = c.fighter(side).statuses.workLife;
+      const s = c.fighter(side).statuses.workLifeBalance;
       const cat = CATEGORIES.indexOf(cardCategory(def.id));
       if (s.e === cat) {
-        c.removeStatus(side, 'workLife');
+        c.removeStatus(side, 'workLifeBalance');
         return;
       }
       s.e = cat;
@@ -67,8 +67,8 @@ const defs: StatusDef[] = [
   // Autopilot (Severance): cards slipping off the belt play themselves when they can.
   { id: 'autopilot', kind: 'timed', good: true, icon: 'autopilot' },
   // Root access (sudo): no rule can stop the hero's cards.
-  { id: 'sudo', kind: 'timed', good: true, icon: 'terminal' },
-  { id: 'weave', kind: 'timed', good: true, icon: 'bolt2', showStacks: true },
+  { id: 'rootAccess', kind: 'timed', good: true, icon: 'terminal' },
+  { id: 'multitasking', kind: 'timed', good: true, icon: 'bolt2', showStacks: true },
   { id: 'plague', kind: 'stacks', good: true, icon: 'wrench' },
   // Slacking off (v = amount per second), until the hero plays another card.
   {
@@ -110,7 +110,7 @@ const defs: StatusDef[] = [
   { id: 'slowdown', kind: 'timed', good: false, icon: 'cone' },
   // Enemy passives (permanent traits).
   {
-    id: 'policy',
+    id: 'noRepeatsPolicy',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -146,7 +146,7 @@ const defs: StatusDef[] = [
     icon: 'lotus',
     canPlay: (c, side) => (side === 'enemy' && c.time - c.lastPlayedAt < CHILL_GAP ? 'combat.chillOut' : null),
   },
-  { id: 'budgetFreeze', kind: 'stacks', good: true, passive: true, icon: 'calculator', manaCap: FROZEN_BUDGET },
+  { id: 'spendingFreeze', kind: 'stacks', good: true, passive: true, icon: 'calculator', manaCap: SPENDING_FREEZE_CAP },
   // Train of thought: take `v` damage while it charges a move and it forgets what it was doing (the move is lost).
   {
     id: 'trainOfThought',
@@ -167,7 +167,7 @@ const defs: StatusDef[] = [
     },
   },
   {
-    id: 'micromanage',
+    id: 'micromanagement',
     kind: 'stacks',
     good: true,
     passive: true,

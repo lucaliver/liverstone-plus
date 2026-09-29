@@ -4,7 +4,7 @@ import { CONFIG, EXPIRE_POS } from '../src/data/config';
 import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
 import { CARD_LIST, CARDS } from '../src/data/cards';
-import { fightPay, newRun } from '../src/game/run';
+import { fightPay, loadRun, newRun } from '../src/game/run';
 import type { CardInst } from '../src/game/types';
 
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
@@ -17,7 +17,7 @@ function setup(over: Partial<CombatSetup> = {}): Combat {
     deck: deckOf(HEROES.warrior.startDeck),
     relics: [],
     relicFlags: {},
-    enemy: ENEMIES.skeleton,
+    enemy: ENEMIES.seniorBoomer,
     scale: { hp: 1, dmg: 1 },
     seed: 42,
     ...over,
@@ -59,7 +59,7 @@ describe('combat engine', () => {
   });
 
   it('plays a card: spends mana, deals damage, discards it', () => {
-    const c = setup({ deck: deckOf(['strike', 'strike']) });
+    const c = setup({ deck: deckOf(['punch', 'punch']) });
     run(c, CONFIG.introTime + 0.01);
     const card = c.belt[0].card;
     const hp = c.enemy.hp;
@@ -70,7 +70,7 @@ describe('combat engine', () => {
   });
 
   it('two-row belt (default): both rows fill up, each keeps its spacing, and the belt runs slower', () => {
-    const c = setup({ deck: deckOf(Array(14).fill('strike')) });
+    const c = setup({ deck: deckOf(Array(14).fill('punch')) });
     expect(c.belt.filter((b) => b.row === 1).length).toBeGreaterThan(0);
     run(c, CONFIG.introTime + 10);
     for (const row of [0, 1]) {
@@ -85,10 +85,10 @@ describe('combat engine', () => {
   });
 
   it('cards never overlap on a row, even while queued curses hold the other one back', () => {
-    const c = setup({ deck: deckOf(Array(14).fill('strike')) });
+    const c = setup({ deck: deckOf(Array(14).fill('punch')) });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
-    c.addTempCard('slime', 'belt', false, -0.3);
+    c.addTempCard('drama', 'belt', false, -0.3);
     run(c, 6);
     for (const row of [0, 1]) {
       const pos = c.belt
@@ -100,14 +100,14 @@ describe('combat engine', () => {
   });
 
   it('refuses unaffordable cards', () => {
-    const c = setup({ deck: deckOf(['earthshaker', 'earthshaker']) });
+    const c = setup({ deck: deckOf(['hydraulicPress', 'hydraulicPress']) });
     run(c, CONFIG.introTime + 0.01);
     expect(c.playCard(c.belt[0].card.uid)).toBe(false);
     expect(c.belt.length).toBe(2);
   });
 
   it('expires cards off the left edge and reshuffles the discard pile', () => {
-    const c = setup({ deck: deckOf(['strike', 'defend', 'bash']) });
+    const c = setup({ deck: deckOf(['punch', 'hardHat', 'wrenchWhack']) });
     let reshuffled = false;
     c.events.on((e) => {
       if (e.type === 'reshuffle') reshuffled = true;
@@ -168,7 +168,7 @@ describe('combat engine', () => {
   });
 
   it('Kamikaze blows up in your face if it slips off the belt, but is safe in the sleeve', () => {
-    const c = setup({ hp: 200, maxHp: 200, deck: deckOf(Array(6).fill('strike')) });
+    const c = setup({ hp: 200, maxHp: 200, deck: deckOf(Array(6).fill('punch')) });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
     c.addTempCard('kamikaze', 'belt');
@@ -182,13 +182,13 @@ describe('combat engine', () => {
   });
 
   it('enemy resolves its telegraphed move after the wind-up', () => {
-    const c = setup({ enemy: ENEMIES.rat });
-    run(c, CONFIG.introTime + ENEMIES.rat.main.windup + 0.05);
-    expect(c.hero.hp).toBe(80 - ENEMIES.rat.main.dmg!);
+    const c = setup({ enemy: ENEMIES.snitch });
+    run(c, CONFIG.introTime + ENEMIES.snitch.main.windup + 0.05);
+    expect(c.hero.hp).toBe(80 - ENEMIES.snitch.main.dmg!);
   });
 
-  it('warrior berserk doubles attack damage', () => {
-    const c = setup({ deck: deckOf(['strike', 'strike']) });
+  it('warrior Overtime doubles attack damage', () => {
+    const c = setup({ deck: deckOf(['punch', 'punch']) });
     run(c, CONFIG.introTime + 0.01);
     c.hero.maxMana = 10;
     c.hero.mana = 10;
@@ -200,16 +200,16 @@ describe('combat engine', () => {
   });
 
   it('perks: innate puts a copy first on the belt, discount lowers its cost', () => {
-    const deck = deckOf(new Array(10).fill('strike'));
-    deck[9] = { ...deck[9], id: 'heavyBlow', perks: ['innate', 'discount'] };
+    const deck = deckOf(new Array(10).fill('punch'));
+    deck[9] = { ...deck[9], id: 'sledgehammer', perks: ['fastTrack', 'budgetCut'] };
     const c = setup({ deck });
-    const card = c.belt.find((b) => b.card.id === 'heavyBlow')?.card;
+    const card = c.belt.find((b) => b.card.id === 'sledgehammer')?.card;
     expect(card).toBeDefined();
-    expect(c.cardCost(card!)).toBe(c.cardCost({ uid: 0, id: 'heavyBlow', up: false }) - 1);
+    expect(c.cardCost(card!)).toBe(c.cardCost({ uid: 0, id: 'sledgehammer', up: false }) - 1);
   });
 
   it('a hexed card needs its taps, then thaws, then plays normally', () => {
-    const c = setup({ deck: deckOf(new Array(8).fill('strike')) });
+    const c = setup({ deck: deckOf(new Array(8).fill('punch')) });
     run(c, CONFIG.introTime + 0.01);
     c.hexCards('petrify', 0.01);
     const card = c.belt.find((b) => b.card.hex)!.card;
@@ -223,13 +223,13 @@ describe('combat engine', () => {
   });
 
   it('Gatekeeping covers the cards ahead of it until paid off', () => {
-    const c = setup({ deck: deckOf(new Array(8).fill('strike')) });
+    const c = setup({ deck: deckOf(new Array(8).fill('punch')) });
     run(c, CONFIG.introTime + 1);
     c.hero.mana = 10;
     c.addTempCard('gatekeeping', 'belt');
     run(c, 1);
     const gate = c.belt.find((b) => b.card.id === 'gatekeeping')!;
-    const under = c.belt.find((b) => b.card.id === 'strike' && b.pos > gate.pos && c.isCovered(b.card.uid));
+    const under = c.belt.find((b) => b.card.id === 'punch' && b.pos > gate.pos && c.isCovered(b.card.uid));
     expect(under).toBeDefined();
     expect(c.playCard(under!.card.uid)).toBe(false);
     expect(c.playCard(gate.card.uid)).toBe(true);
@@ -237,32 +237,32 @@ describe('combat engine', () => {
   });
 
   it('HR policy goes by the card colour: two defense cards clash, defense then utility is fine', () => {
-    const c = setup({ enemy: ENEMIES.hr, deck: deckOf(['defend', 'defend', 'manaGeode', 'defend', 'manaGeode', 'defend']) });
+    const c = setup({ enemy: ENEMIES.hrBitch, deck: deckOf(['hardHat', 'hardHat', 'doubleEspresso', 'hardHat', 'doubleEspresso', 'hardHat']) });
     run(c, CONFIG.introTime + 0.01);
     c.hero.mana = c.hero.maxMana = 10;
-    c.lastPlayed = CARDS.defend;
+    c.lastPlayed = CARDS.hardHat;
     c.lastPlayedAt = c.time;
-    expect(c.ruleBlock({ uid: 0, id: 'defend', up: false })?.key).toBe('combat.policy');
-    expect(c.ruleBlock({ uid: 0, id: 'manaGeode', up: false })).toBeNull();
+    expect(c.ruleBlock({ uid: 0, id: 'hardHat', up: false })?.key).toBe('combat.policy');
+    expect(c.ruleBlock({ uid: 0, id: 'doubleEspresso', up: false })).toBeNull();
   });
 
   it('HR policy: no two cards of the same type in a row', () => {
-    const c = setup({ enemy: ENEMIES.hr, deck: deckOf(['strike', 'strike', 'strike', 'defend', 'defend', 'defend']) });
+    const c = setup({ enemy: ENEMIES.hrBitch, deck: deckOf(['punch', 'punch', 'punch', 'hardHat', 'hardHat', 'hardHat']) });
     run(c, CONFIG.introTime + 0.01);
     c.hero.mana = 10;
-    const strikes = c.belt.filter((b) => b.card.id === 'strike');
+    const strikes = c.belt.filter((b) => b.card.id === 'punch');
     expect(c.playCard(strikes[0].card.uid)).toBe(true);
     if (strikes[1]) expect(c.playCard(strikes[1].card.uid)).toBe(false);
-    const defend = c.belt.find((b) => b.card.id === 'defend');
+    const defend = c.belt.find((b) => b.card.id === 'hardHat');
     if (defend) expect(c.playCard(defend.card.uid)).toBe(true);
     // The policy only covers quick repeats: after a pause the same type is fine again.
     run(c, 3.1);
-    const again = c.belt.find((b) => b.card.id === 'defend');
+    const again = c.belt.find((b) => b.card.id === 'hardHat');
     if (again) expect(c.playCard(again.card.uid)).toBe(true);
   });
 
   it('Light Sleeper: every card played brings his hit 1s closer', () => {
-    const c = setup({ enemy: ENEMIES.sleeper, deck: deckOf(new Array(8).fill('strike')) });
+    const c = setup({ enemy: ENEMIES.guyAsleep, deck: deckOf(new Array(8).fill('punch')) });
     run(c, CONFIG.introTime + 0.01);
     const before = c.enemy.timer;
     c.playCard(c.belt[0].card.uid);
@@ -270,7 +270,7 @@ describe('combat engine', () => {
   });
 
   it("New Hire's stare petrifies half the belt and half the rest of the deck; a hex survives the piles until broken", () => {
-    const c = setup({ enemy: ENEMIES.newHire, deck: deckOf(new Array(12).fill('strike')) });
+    const c = setup({ enemy: ENEMIES.newHire, deck: deckOf(new Array(12).fill('punch')) });
     run(c, CONFIG.introTime + 0.01);
     const onBelt = c.belt.length;
     const rest = c.draw.length + c.discard.length;
@@ -289,18 +289,18 @@ describe('combat engine', () => {
   });
 
   it('mana crystals raise the cap empty', () => {
-    const c = setup({ deck: deckOf(['manaGeode', 'strike']) });
+    const c = setup({ deck: deckOf(['doubleEspresso', 'punch']) });
     run(c, CONFIG.introTime + 0.01);
     const max = c.hero.maxMana;
-    const card = c.belt.find((b) => b.card.id === 'manaGeode')!.card;
+    const card = c.belt.find((b) => b.card.id === 'doubleEspresso')!.card;
     const mana = c.hero.mana;
     c.playCard(card.uid);
     expect(c.hero.maxMana).toBe(max + 2);
     expect(c.hero.mana).toBe(mana - 2);
   });
 
-  it('mage spellweave adds damage to chained spells', () => {
-    const c = setup({ hero: HEROES.mage, hp: 70, maxHp: 70, deck: deckOf(['arcaneBolt', 'arcaneBolt']), enemy: ENEMIES.slime });
+  it('mage Multitasking adds damage to chained spells', () => {
+    const c = setup({ hero: HEROES.mage, hp: 70, maxHp: 70, deck: deckOf(['arcaneMemo', 'arcaneMemo']), enemy: ENEMIES.toxicCoworker });
     run(c, CONFIG.introTime + 0.01);
     c.hero.maxMana = c.hero.mana = 10;
     const hp = c.enemy.hp;
@@ -311,7 +311,7 @@ describe('combat engine', () => {
 
   it('played cards are never replaced in place: new cards always enter from the right', () => {
     // One row, so the spacing check below reads a single line of cards.
-    const c = setup({ beltRows: 1, deck: deckOf(['strike', 'strike', 'strike', 'strike', 'strike', 'strike']) });
+    const c = setup({ beltRows: 1, deck: deckOf(['punch', 'punch', 'punch', 'punch', 'punch', 'punch']) });
     c.hero.maxMana = 10;
     run(c, CONFIG.introTime + 3);
     const spawnPositions: number[] = [];
@@ -332,7 +332,7 @@ describe('combat engine', () => {
 
   it('draw cadence is fixed: playing fast never draws extra cards', () => {
     const spawnsWith = (spam: boolean): number => {
-      const c = setup({ deck: deckOf(new Array(12).fill('strike')), enemy: ENEMIES.skeleton });
+      const c = setup({ deck: deckOf(new Array(12).fill('punch')), enemy: ENEMIES.seniorBoomer });
       c.enemy.hp = 9999;
       c.hero.hp = 9999;
       let n = 0;
@@ -352,7 +352,7 @@ describe('combat engine', () => {
   });
 
   it('necromancer poison ticks harder at 7+ Poison (Virulence), plain below', () => {
-    const c = setup({ hero: HEROES.necromancer, hp: 50, maxHp: 50, deck: deckOf(['rot', 'rot']), enemy: ENEMIES.skeleton });
+    const c = setup({ hero: HEROES.necromancer, hp: 50, maxHp: 50, deck: deckOf(['rust', 'rust']), enemy: ENEMIES.seniorBoomer });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
     c.applyStatus('enemy', 'poison', 7);
@@ -365,24 +365,24 @@ describe('combat engine', () => {
   });
 
   it('a bomb that reaches the end of the belt explodes on the hero', () => {
-    const c = setup({ deck: deckOf(['strike']) });
+    const c = setup({ deck: deckOf(['punch']) });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
-    c.addTempCard('bomb', 'belt');
+    c.addTempCard('deadline', 'belt');
     run(c, (CONFIG.beltTime * EXPIRE_POS) / c.beltRate() + 0.5);
     expect(c.hero.hp).toBe(80 - 10);
   });
 
   it('enemies use their main attack, then a special every N attacks', () => {
-    const c = setup({ enemy: ENEMIES.skeleton, hp: 999, maxHp: 999 });
+    const c = setup({ enemy: ENEMIES.seniorBoomer, hp: 999, maxHp: 999 });
     const seen: string[] = [];
     c.events.on((e) => {
       if (e.type === 'enemyAct') seen.push(e.move.id);
     });
-    const { main, specials } = ENEMIES.skeleton;
+    const { main, specials } = ENEMIES.seniorBoomer;
     run(c, CONFIG.introTime + 4 * main.windup + specials[0].windup + specials[1].windup + 1);
     // Specials rotate: Seniority, then Gatekeep.
-    expect(seen.slice(0, 6)).toEqual(['slash', 'slash', 'boneCrush', 'slash', 'slash', 'gatekeep']);
+    expect(seen.slice(0, 6)).toEqual(['boxCutter', 'boxCutter', 'seniority', 'boxCutter', 'boxCutter', 'gatekeep']);
   });
 
   it('abilities cost mana and cannot be used without it', () => {
@@ -393,21 +393,21 @@ describe('combat engine', () => {
   });
 
   it('synergy cards: Fortified Block holds, Counterstrike reads Block, Contagion reads Poison', () => {
-    const c = setup({ deck: deckOf(['bulwark', 'counterstrike']) });
+    const c = setup({ deck: deckOf(['safetyRegs', 'grievance']) });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
     c.hero.maxMana = 10;
     c.hero.mana = 10;
-    c.playCard(c.belt.find((b) => b.card.id === 'bulwark')!.card.uid);
+    c.playCard(c.belt.find((b) => b.card.id === 'safetyRegs')!.card.uid);
     const block = c.hero.block;
     run(c, 3);
     expect(c.hero.block).toBe(block);
     const hp = c.enemy.hp;
     c.hero.mana = 10;
-    c.playCard(c.belt.find((b) => b.card.id === 'counterstrike')!.card.uid);
+    c.playCard(c.belt.find((b) => b.card.id === 'grievance')!.card.uid);
     expect(hp - c.enemy.hp).toBe(11);
 
-    const n = setup({ hero: HEROES.necromancer, hp: 62, maxHp: 62, deck: deckOf(['contagion', 'contagion']) });
+    const n = setup({ hero: HEROES.necromancer, hp: 62, maxHp: 62, deck: deckOf(['wordOfMouth', 'wordOfMouth']) });
     run(n, CONFIG.introTime + 0.01);
     n.hero.mana = 5;
     n.playCard(n.belt[0].card.uid);
@@ -417,7 +417,7 @@ describe('combat engine', () => {
 
   it('rushing the belt makes cards arrive faster', () => {
     const count = (rush: boolean): number => {
-      const c = setup({ deck: deckOf(new Array(20).fill('strike')) });
+      const c = setup({ deck: deckOf(new Array(20).fill('punch')) });
       c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
       let n = 0;
       c.events.on((e) => {
@@ -435,8 +435,8 @@ describe('combat engine', () => {
   });
 
   it('temp curses never collide with deck uids', () => {
-    const c = setup({ enemy: ENEMIES.slime });
-    c.addTempCard('slime', 'discard');
+    const c = setup({ enemy: ENEMIES.toxicCoworker });
+    c.addTempCard('drama', 'discard');
     expect(c.discard[0].uid).toBeLessThan(0);
   });
 
@@ -448,7 +448,7 @@ describe('combat engine', () => {
   });
 
   it('a Pending card can only be played after its first full ride along the belt', () => {
-    const c = setup({ beltRows: 1, deck: deckOf(['pyroblast']) });
+    const c = setup({ beltRows: 1, deck: deckOf(['blastFurnace']) });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
     c.hero.maxMana = c.hero.mana = 10;
@@ -464,7 +464,7 @@ describe('combat engine', () => {
   });
 
   it('the Snitch hurries the belt for the rest of the fight once under half HP', () => {
-    const c = setup({ enemy: ENEMIES.rat });
+    const c = setup({ enemy: ENEMIES.snitch });
     run(c, CONFIG.introTime + 0.01);
     const base = c.beltRate();
     c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 2), { raw: true }, 'hero');
@@ -491,7 +491,7 @@ describe('combat engine', () => {
     };
 
     it('a stunned hero cannot play cards or use the ability', () => {
-      const c = quiet(['strike', 'strike']);
+      const c = quiet(['punch', 'punch']);
       expect(play(c, 'quickFavour')).toBe(true);
       expect(c.has('hero', 'stun')).toBe(true);
       expect(c.playCard(c.belt[0].card.uid)).toBe(false);
@@ -501,7 +501,7 @@ describe('combat engine', () => {
     });
 
     it('Bare Minimum grows Block every second until another card is played', () => {
-      const c = quiet(['strike', 'strike']);
+      const c = quiet(['punch', 'punch']);
       play(c, 'bareMinimum');
       run(c, 3.01);
       expect(c.hero.block).toBeGreaterThanOrEqual(1 + 2 + 3 - 1);
@@ -510,7 +510,7 @@ describe('combat engine', () => {
     });
 
     it('Grindset deals damage every second for its duration', () => {
-      const c = quiet(['defend']);
+      const c = quiet(['hardHat']);
       const hp = c.enemy.hp;
       play(c, 'grindset');
       run(c, 12.5);
@@ -518,7 +518,7 @@ describe('combat engine', () => {
     });
 
     it('Priority Task holds its whole row; Lockout covers both rows ahead of it', () => {
-      const c = quiet(new Array(10).fill('strike'));
+      const c = quiet(new Array(10).fill('punch'));
       c.addTempCard('priorityTask', 'belt');
       const lock = c.belt.find((b) => b.card.id === 'priorityTask')!;
       const sameRow = c.belt.filter((b) => b !== lock && b.row === lock.row);
@@ -527,7 +527,7 @@ describe('combat engine', () => {
       expect(sameRow.every((b) => c.isCovered(b.card.uid))).toBe(true);
       expect(otherRow.some((b) => c.isCovered(b.card.uid))).toBe(false);
 
-      const d = quiet(new Array(10).fill('strike'));
+      const d = quiet(new Array(10).fill('punch'));
       d.addTempCard('lockout', 'belt');
       run(d, 3);
       const gate = d.belt.find((b) => b.card.id === 'lockout')!;
@@ -537,7 +537,7 @@ describe('combat engine', () => {
     });
 
     it('Quiet Quitting discards the belt and hits once per card', () => {
-      const c = quiet(new Array(10).fill('strike'));
+      const c = quiet(new Array(10).fill('punch'));
       // The belt it discards doesn't include Quiet Quitting itself.
       const n = c.belt.length;
       const hp = c.enemy.hp;
@@ -547,8 +547,8 @@ describe('combat engine', () => {
     });
 
     it('Previous Email repeats the last card, Copy Paste copies it over the belt', () => {
-      const c = quiet(new Array(8).fill('defend'));
-      play(c, 'strike');
+      const c = quiet(new Array(8).fill('hardHat'));
+      play(c, 'punch');
       const hp = c.enemy.hp;
       play(c, 'previousEmail');
       expect(hp - c.enemy.hp).toBe(6);
@@ -557,11 +557,11 @@ describe('combat engine', () => {
       expect(hp - c.enemy.hp).toBe(12);
       play(c, 'copyPaste');
       expect(c.belt.length).toBeGreaterThan(0);
-      expect(c.belt.every((b) => b.card.id === 'strike' && b.card.temp)).toBe(true);
+      expect(c.belt.every((b) => b.card.id === 'punch' && b.card.temp)).toBe(true);
     });
 
     it('Not My Job skips the move being charged', () => {
-      const c = setup({ enemy: ENEMIES.skeleton });
+      const c = setup({ enemy: ENEMIES.seniorBoomer });
       run(c, CONFIG.introTime + 1);
       c.hero.maxMana = c.hero.mana = 10;
       const before = c.enemy.moveCount;
@@ -572,7 +572,7 @@ describe('combat engine', () => {
     });
 
     it('Follow Up and Q1 put generated cards into the draw pile', () => {
-      const c = quiet(['defend', 'defend']);
+      const c = quiet(['hardHat', 'hardHat']);
       play(c, 'followUp');
       expect(c.draw.filter((x) => x.id === 'alreadyDone').length).toBe(3);
       play(c, 'q1');
@@ -580,7 +580,7 @@ describe('combat engine', () => {
     });
 
     it('volatile office curses bite when they leave the belt', () => {
-      const c = quiet(['defend']);
+      const c = quiet(['hardHat']);
       c.addTempCard('officePlant', 'belt');
       c.addTempCard('machineDown', 'belt');
       c.hero.mana = 8;
@@ -591,7 +591,7 @@ describe('combat engine', () => {
   });
 
   describe('act 2 enemies', () => {
-    const vs = (enemy: string, deck = new Array(12).fill('strike')): Combat => {
+    const vs = (enemy: string, deck = new Array(12).fill('punch')): Combat => {
       const c = setup({ enemy: ENEMIES[enemy], deck: deckOf(deck), hp: 999, maxHp: 999 });
       run(c, CONFIG.introTime + 0.01);
       c.hero.maxMana = Math.min(c.hero.maxMana, c.manaCap());
@@ -599,7 +599,7 @@ describe('combat engine', () => {
     };
 
     it('Meticulous Colleague: two cards in a row from the same lane are refused', () => {
-      const c = vs('meticulous');
+      const c = vs('meticulousColleague');
       c.hero.mana = c.hero.maxMana = 10;
       const first = c.belt.find((b) => b.row === 0)!;
       expect(c.playCard(first.card.uid)).toBe(true);
@@ -610,7 +610,7 @@ describe('combat engine', () => {
     });
 
     it('Wellness Coach: one card every 2 seconds', () => {
-      const c = vs('wellness');
+      const c = vs('wellnessCoach');
       c.hero.mana = c.hero.maxMana = 10;
       expect(c.playCard(c.belt[0].card.uid)).toBe(true);
       expect(c.playCard(c.belt[0].card.uid)).toBe(false);
@@ -620,7 +620,7 @@ describe('combat engine', () => {
     });
 
     it('Bean Counter: max mana is frozen at 3, crystals included', () => {
-      const c = vs('beanCounter', ['manaGeode', 'manaGeode', 'strike']);
+      const c = vs('beanCounter', ['doubleEspresso', 'doubleEspresso', 'punch']);
       expect(c.hero.maxMana).toBeLessThanOrEqual(3);
       c.hero.mana = 3;
       c.addManaCrystals(3);
@@ -696,7 +696,7 @@ describe('combat engine', () => {
 describe('pop culture cards', () => {
   /** A fight past the intro with a quiet enemy and plenty of mana; `id` is put on the belt and returned. */
   const ready = (id: string): { c: Combat; uid: number } => {
-    const c = setup({ deck: deckOf(Array(6).fill('strike')) });
+    const c = setup({ deck: deckOf(Array(6).fill('punch')) });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
     c.hero.mana = c.hero.maxMana = 10;
@@ -775,7 +775,7 @@ describe('run pay', () => {
 
 describe('cards that change on the belt', () => {
   const onBelt = (id: string): { c: Combat; uid: number } => {
-    const c = setup({ deck: deckOf(Array(6).fill('strike')) });
+    const c = setup({ deck: deckOf(Array(6).fill('punch')) });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
     c.hero.mana = c.hero.maxMana = 10;
@@ -810,7 +810,7 @@ describe('cards that change on the belt', () => {
 
 describe('sleeve cards', () => {
   const held = (id: string): Combat => {
-    const c = setup({ deck: deckOf(Array(6).fill('strike')) });
+    const c = setup({ deck: deckOf(Array(6).fill('punch')) });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
     c.hero.mana = c.hero.maxMana = 10;
@@ -831,7 +831,7 @@ describe('sleeve cards', () => {
 
   it('Cache: every spell played while it waits is cached into its damage, spent when played', () => {
     const c = held('cache');
-    c.addTempCard('arcaneBolt', 'belt');
+    c.addTempCard('arcaneMemo', 'belt');
     c.playCard(c.belt[c.belt.length - 1].card.uid);
     expect(c.cardVals(c.sleeve[0]!)[0]).toBe(4 + 2);
     const cache = c.sleeve[0]!;
@@ -850,7 +850,7 @@ describe('sleeve cards', () => {
 
 describe('the Overthinker', () => {
   it('loses its train of thought (and its big hit) after taking enough damage while it charges', () => {
-    const c = setup({ enemy: ENEMIES.overthinker, deck: deckOf(Array(6).fill('strike')) });
+    const c = setup({ enemy: ENEMIES.overthinker, deck: deckOf(Array(6).fill('punch')) });
     run(c, CONFIG.introTime + 1);
     expect(c.enemy.move.id).toBe('bigIdea');
     c.damage('hero', 'enemy', 14, { raw: true }, 'hero');
@@ -866,7 +866,7 @@ describe('the Overthinker', () => {
 
 describe('Work-Life Balance', () => {
   it('hits again with every card played until two of the same colour come in a row', () => {
-    const c = setup({ deck: deckOf(Array(6).fill('strike')) });
+    const c = setup({ deck: deckOf(Array(6).fill('punch')) });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 0.01);
     c.hero.mana = c.hero.maxMana = 10;
@@ -874,20 +874,20 @@ describe('Work-Life Balance', () => {
       c.addTempCard(id, 'belt');
       c.playCard(c.belt[c.belt.length - 1].card.uid);
     };
-    play('workLife');
+    play('workLifeBalance');
     let hp = c.enemy.hp;
-    play('defend');
+    play('hardHat');
     expect(hp - c.enemy.hp).toBe(3);
     hp = c.enemy.hp;
-    play('defend');
+    play('hardHat');
     expect(hp - c.enemy.hp).toBe(0);
-    expect(c.has('hero', 'workLife')).toBe(false);
+    expect(c.has('hero', 'workLifeBalance')).toBe(false);
   });
 });
 
 describe('Complaint Box', () => {
   it('grows by 1 for every second of overflowing mana, even in the draw pile', () => {
-    const c = setup({ deck: deckOf(['strike', 'strike', 'complaintBox']) });
+    const c = setup({ deck: deckOf(['punch', 'punch', 'complaintBox']) });
     run(c, CONFIG.introTime + 0.01);
     c.hero.mana = c.hero.maxMana;
     run(c, 3.05);
@@ -903,7 +903,38 @@ describe('the very first run', () => {
     const floors = [...new Set(fights.map((n) => n.floor))].sort((a, b) => a - b);
     const met = floors.map((f) => [...new Set(fights.filter((n) => n.floor === f).map((n) => n.enemy))]);
     expect(met.every((m) => m.length === 1)).toBe(true);
-    const order = ['hrVideo', ...enemiesFor(1, 'normal').map((e) => e.id)];
+    const order = ['hrOrientationVideo', ...enemiesFor(1, 'normal').map((e) => e.id)];
     expect(met.map((m) => m[0])).toEqual(order.slice(0, met.length));
+  });
+});
+
+describe('saves from before the ids followed the English names', () => {
+  it('load with their cards, perks and enemies renamed', () => {
+    const store = new Map<string, string>();
+    const stub = {
+      getItem: (k: string) => store.get(k) ?? null,
+      setItem: (k: string, v: string) => void store.set(k, v),
+      removeItem: (k: string) => void store.delete(k),
+    };
+    Object.defineProperty(globalThis, 'localStorage', { value: stub, configurable: true });
+    const run = newRun('warrior', 7);
+    const old = {
+      ...run,
+      version: 2,
+      deck: [
+        { uid: 1, id: 'strike', up: false },
+        { uid: 2, id: 'manaGeode', up: true, perks: ['innate', 'discount'] },
+      ],
+      nodes: run.nodes.map((n) => (n.enemy ? { ...n, enemy: 'rat' } : n)),
+    };
+    store.set('cardstone+:run', JSON.stringify(old));
+    const loaded = loadRun();
+    expect(loaded?.version).toBe(3);
+    expect(loaded?.deck).toEqual([
+      { uid: 1, id: 'punch', up: false },
+      { uid: 2, id: 'doubleEspresso', up: true, perks: ['fastTrack', 'budgetCut'] },
+    ]);
+    expect(loaded?.nodes.filter((n) => n.enemy).every((n) => n.enemy === 'snitch')).toBe(true);
+    Reflect.deleteProperty(globalThis, 'localStorage');
   });
 });

@@ -412,7 +412,7 @@ export function openDeck(
 export function openCardAnatomy(): ModalHandle {
   // A placeholder card: the layout of a real one (rare, two effects, a modifier), with dummy name, art and numbers
   // (letters, so nobody takes it for a real card).
-  const sample = cardView({ uid: -1, id: 'secondWind', up: false });
+  const sample = cardView({ uid: -1, id: 'lunchBreak', up: false });
   sample.querySelector('.c-name')!.textContent = t('anatomy.sample');
   sample.querySelector('.c-art')!.innerHTML = icon('question');
   sample.querySelector('.c-cost')!.textContent = 'X';

@@ -3,7 +3,7 @@ import type { CardDef } from '../../game/types';
 export const neutralCards: CardDef[] = [
   // Mana growth: add empty crystals (they fill up over time). Once per fight, never free.
   {
-    id: 'manaShard',
+    id: 'coffee',
     face: '{crystal:0}',
     cls: 'neutral',
     type: 'skill',
@@ -17,7 +17,7 @@ export const neutralCards: CardDef[] = [
     play: (c, v) => c.addManaCrystals(v[0]),
   },
   {
-    id: 'manaGeode',
+    id: 'doubleEspresso',
     face: '{crystal:0}',
     cls: 'neutral',
     type: 'skill',
@@ -31,7 +31,7 @@ export const neutralCards: CardDef[] = [
     play: (c, v) => c.addManaCrystals(v[0]),
   },
   {
-    id: 'healingPotion',
+    id: 'firstAidKit',
     face: '{heal:0}',
     cls: 'neutral',
     type: 'potion',
@@ -44,7 +44,7 @@ export const neutralCards: CardDef[] = [
     play: (c, v) => void c.heal('hero', v[0]),
   },
   {
-    id: 'fireFlask',
+    id: 'molotov',
     face: '{dmg:0}',
     cls: 'neutral',
     type: 'potion',
@@ -57,7 +57,7 @@ export const neutralCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0], { kind: 'fire' }),
   },
   {
-    id: 'bandage',
+    id: 'ductTape',
     face: '{heal:0}',
     cls: 'neutral',
     type: 'skill',
@@ -70,7 +70,7 @@ export const neutralCards: CardDef[] = [
     play: (c, v) => void c.heal('hero', v[0]),
   },
   {
-    id: 'daggerThrow',
+    id: 'redStapler',
     face: '{dmg:0}',
     cls: 'neutral',
     type: 'attack',
@@ -83,7 +83,7 @@ export const neutralCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0]),
   },
   {
-    id: 'smokeBomb',
+    id: 'fireDrill',
     face: '{stun:0}',
     cls: 'neutral',
     type: 'skill',
@@ -96,7 +96,7 @@ export const neutralCards: CardDef[] = [
     play: (c, v) => c.applyStatus('enemy', 'stun', 1, v[0]),
   },
   {
-    id: 'manaPotion',
+    id: 'energyDrink',
     face: '{mana:0}',
     cls: 'neutral',
     type: 'potion',
@@ -299,7 +299,7 @@ export const neutralCards: CardDef[] = [
     },
   },
   {
-    id: 'workLife',
+    id: 'workLifeBalance',
     face: '{dmg:0}|{balance}',
     cls: 'neutral',
     type: 'attack',
@@ -310,9 +310,9 @@ export const neutralCards: CardDef[] = [
     art: 'scales',
     play: (c, v) => {
       c.hit(v[0]);
-      c.applyStatus('hero', 'workLife', v[0]);
+      c.applyStatus('hero', 'workLifeBalance', v[0]);
       // The balance starts from this card: another attack right after breaks it (no status if that hit won the fight).
-      const s = c.fighter('hero').statuses.workLife;
+      const s = c.fighter('hero').statuses.workLifeBalance;
       if (s) s.e = 0;
     },
   },
@@ -458,7 +458,7 @@ export const curseCards: CardDef[] = [
     onExpire: (c, v) => void c.damage('enemy', 'hero', v[1], { raw: true, kind: 'fire' }, 'dot'),
   },
   {
-    id: 'slime',
+    id: 'drama',
     face: '{clog}',
     cls: 'curse',
     type: 'curse',
@@ -470,7 +470,7 @@ export const curseCards: CardDef[] = [
     play: () => {},
   },
   {
-    id: 'hex',
+    id: 'writeUp',
     face: '{?exit}{hp:0}',
     cls: 'curse',
     type: 'curse',
@@ -483,7 +483,7 @@ export const curseCards: CardDef[] = [
     onExpire: (c, v) => c.loseHp(v[0]),
   },
   {
-    id: 'bomb',
+    id: 'deadline',
     face: '{?exit}{boom:0}',
     cls: 'curse',
     type: 'curse',
@@ -497,7 +497,7 @@ export const curseCards: CardDef[] = [
     onExpire: (c, v) => void c.damage('enemy', 'hero', v[0], { raw: true, kind: 'fire' }, 'dot'),
   },
   {
-    id: 'leech',
+    id: 'mandatoryFun',
     face: '{?exit}{drain:0}',
     cls: 'curse',
     type: 'curse',
@@ -510,7 +510,7 @@ export const curseCards: CardDef[] = [
     onExpire: (c, v) => c.drainMana(v[0]),
   },
   {
-    id: 'toxin',
+    id: 'gossip',
     face: '{?exit}{poison:0}',
     cls: 'curse',
     type: 'curse',
@@ -537,7 +537,7 @@ export const curseCards: CardDef[] = [
     art: 'meeting',
   },
   {
-    id: 'pip',
+    id: 'improvementPlan',
     face: '{?exit}{weak:0}',
     cls: 'curse',
     type: 'curse',

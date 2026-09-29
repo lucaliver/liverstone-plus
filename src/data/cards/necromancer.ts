@@ -4,7 +4,7 @@ import type { CardDef } from '../../game/types';
 export const necromancerCards: CardDef[] = [
   // Starters
   {
-    id: 'boneSpike',
+    id: 'skeletonCrew',
     face: '{dmg:0}',
     cls: 'necromancer',
     type: 'attack',
@@ -16,7 +16,7 @@ export const necromancerCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0]),
   },
   {
-    id: 'graveWard',
+    id: 'solidarity',
     face: '{block:0}',
     cls: 'necromancer',
     type: 'skill',
@@ -28,7 +28,7 @@ export const necromancerCards: CardDef[] = [
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {
-    id: 'toxicDart',
+    id: 'toxicMemo',
     face: '{dmg:0}|{poison:1}',
     cls: 'necromancer',
     type: 'attack',
@@ -43,7 +43,7 @@ export const necromancerCards: CardDef[] = [
     },
   },
   {
-    id: 'drainLife',
+    id: 'bloodMoney',
     face: '{dmg:0}|{heal:1}',
     cls: 'necromancer',
     type: 'spell',
@@ -60,7 +60,7 @@ export const necromancerCards: CardDef[] = [
 
   // Commons
   {
-    id: 'rot',
+    id: 'rust',
     face: '{poison:0}',
     cls: 'necromancer',
     type: 'spell',
@@ -72,7 +72,7 @@ export const necromancerCards: CardDef[] = [
     play: (c, v) => c.applyStatus('enemy', 'poison', v[0]),
   },
   {
-    id: 'ghoulBite',
+    id: 'zombieShift',
     face: '{dmg:0}|{heal:1}',
     cls: 'necromancer',
     type: 'attack',
@@ -87,7 +87,7 @@ export const necromancerCards: CardDef[] = [
     },
   },
   {
-    id: 'frailty',
+    id: 'whistleblow',
     face: '{vuln:0}',
     cls: 'necromancer',
     type: 'spell',
@@ -99,7 +99,7 @@ export const necromancerCards: CardDef[] = [
     play: (c, v) => c.applyStatus('enemy', 'vulnerable', 1, v[0]),
   },
   {
-    id: 'noxiousCloud',
+    id: 'smokestack',
     face: '{poison:0}|{weak:1}',
     cls: 'necromancer',
     type: 'spell',
@@ -114,7 +114,7 @@ export const necromancerCards: CardDef[] = [
     },
   },
   {
-    id: 'boneWall',
+    id: 'barricade',
     face: '{block:0}',
     cls: 'necromancer',
     type: 'skill',
@@ -126,7 +126,7 @@ export const necromancerCards: CardDef[] = [
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {
-    id: 'blightBurst',
+    id: 'toxicLeak',
     cat: 'attack',
     face: '{poison}×{0}',
     cls: 'necromancer',
@@ -141,7 +141,7 @@ export const necromancerCards: CardDef[] = [
 
   // Rares
   {
-    id: 'deathCoil',
+    id: 'deadLetter',
     face: '{dmg:0}|{?poison}{dmg:1}',
     cls: 'necromancer',
     type: 'spell',
@@ -153,7 +153,7 @@ export const necromancerCards: CardDef[] = [
     play: (c, v) => void c.hit(c.has('enemy', 'poison') ? v[1] : v[0], { kind: 'arcane' }),
   },
   {
-    id: 'festeringStrike',
+    id: 'sickLeave',
     face: '{dmg:0}|{poison:1}',
     cls: 'necromancer',
     type: 'attack',
@@ -168,7 +168,7 @@ export const necromancerCards: CardDef[] = [
     },
   },
   {
-    id: 'plague',
+    id: 'sabotage',
     face: '{dmg}{poison:0}',
     cls: 'necromancer',
     type: 'power',
@@ -181,7 +181,7 @@ export const necromancerCards: CardDef[] = [
     play: (c, v) => c.applyStatus('hero', 'plague', v[0]),
   },
   {
-    id: 'wither',
+    id: 'slowdown',
     face: '{weak:0}',
     cls: 'necromancer',
     type: 'spell',
@@ -195,7 +195,7 @@ export const necromancerCards: CardDef[] = [
 
   // Epics
   {
-    id: 'epidemic',
+    id: 'walkout',
     face: '{poison}×2',
     cls: 'necromancer',
     type: 'spell',
@@ -208,7 +208,7 @@ export const necromancerCards: CardDef[] = [
     play: (c) => c.applyStatus('enemy', 'poison', c.stacks('enemy', 'poison')),
   },
   {
-    id: 'virulentForm',
+    id: 'classStruggle',
     face: '{poison}+{0}',
     cls: 'necromancer',
     type: 'power',
@@ -222,7 +222,7 @@ export const necromancerCards: CardDef[] = [
 
   // Archetype synergy: Poison
   {
-    id: 'contagion',
+    id: 'wordOfMouth',
     face: '{poison:0}|{?poison}{poison:1}',
     cls: 'necromancer',
     type: 'spell',
@@ -234,7 +234,7 @@ export const necromancerCards: CardDef[] = [
     play: (c, v) => c.applyStatus('enemy', 'poison', c.has('enemy', 'poison') ? v[1] : v[0]),
   },
   {
-    id: 'siphonRot',
+    id: 'mealVoucher',
     cat: 'defense',
     face: '{heal}={poison}',
     cls: 'necromancer',
@@ -250,7 +250,7 @@ export const necromancerCards: CardDef[] = [
 
   // Legendary
   {
-    id: 'blackDeath',
+    id: 'blackFriday',
     face: '{poison:0}',
     cls: 'necromancer',
     type: 'spell',

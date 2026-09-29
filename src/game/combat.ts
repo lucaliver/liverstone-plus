@@ -282,7 +282,7 @@ export class Combat {
   /** The status whose rule forbids playing this card now (an enemy passive, a stun…) and why, or null. */
   ruleBlock(card: CardInst): { status: string; key: TKey } | null {
     // Root access (sudo): no rule applies.
-    if (this.has('hero', 'sudo')) return null;
+    if (this.has('hero', 'rootAccess')) return null;
     const def = CARDS[card.id];
     for (const side of ['hero', 'enemy'] as const) {
       for (const id of Object.keys(this.fighter(side).statuses)) {
@@ -759,7 +759,7 @@ export class Combat {
     let dmg = base;
     if (from === 'hero') {
       if (def?.type === 'attack') dmg += this.stacks('hero', 'strength');
-      if (def?.type === 'spell') dmg += this.stacks('hero', 'spellpower');
+      if (def?.type === 'spell') dmg += this.stacks('hero', 'spellPower');
       dmg += this.heroDef.hooks.bonusDamage?.(this, def) ?? 0;
       for (const [held, hd] of this.held()) dmg += hd.inSleeve?.bonusDamage?.(this, this.cardVals(held), def) ?? 0;
       dmg *= this.heroDef.hooks.damageMult?.(this, def) ?? 1;
