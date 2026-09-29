@@ -410,3 +410,16 @@ test('releasing the hold that opened a card does not press Close underneath', as
   await page.getByRole('button', { name: 'Close' }).click();
   await expect(page.locator('.modal')).toHaveCount(0);
 });
+
+test('a full mana bar blinks only once the fight has started', async ({ page }) => {
+  await freshGame(page);
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  await page.getByRole('button', { name: /enter floor 1/i }).click();
+  await combat(page, 'c.hero.mana = c.hero.maxMana;');
+  await page.waitForTimeout(200);
+  await expect(page.locator('.mana-row')).not.toHaveClass(/full/);
+  await page.locator('.js-start').click();
+  await combat(page, 'c.hero.mana = c.hero.maxMana;');
+  await expect(page.locator('.mana-row')).toHaveClass(/full/);
+});

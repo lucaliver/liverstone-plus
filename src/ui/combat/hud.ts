@@ -225,8 +225,8 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
       if (full && i >= lastMana) v.retrigger(p, 'gain');
     }
     lastMana = hs.mana;
-    // Full: nothing more to gain by waiting, so the bar blinks to invite a play.
-    toggle(r.manaRow, 'full', hs.mana >= hs.maxMana);
+    // Full: nothing more to gain by waiting, so the bar blinks to invite a play (once the fight has started).
+    toggle(r.manaRow, 'full', !v.state.waiting && hs.mana >= hs.maxMana);
     r.manaNum.innerHTML = `${hs.mana}<small>/${hs.maxMana}</small>`;
   };
 
