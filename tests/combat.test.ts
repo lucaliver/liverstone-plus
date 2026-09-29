@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { Combat, type CombatSetup } from '../src/game/combat';
 import { CONFIG, EXPIRE_POS } from '../src/data/config';
-import { ENEMIES } from '../src/data/enemies';
+import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
 import { CARD_LIST, CARDS } from '../src/data/cards';
-import { fightPay } from '../src/game/run';
+import { fightPay, newRun } from '../src/game/run';
 import type { CardInst } from '../src/game/types';
 
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
@@ -893,5 +893,17 @@ describe('Complaint Box', () => {
     run(c, 3.05);
     const box = [...c.draw, ...c.discard, ...c.belt.map((b) => b.card)].find((x) => x.id === 'complaintBox')!;
     expect(c.cardVals(box)[0]).toBeGreaterThanOrEqual(2 + 3);
+  });
+});
+
+describe('the very first run', () => {
+  it('meets the normal enemies floor by floor in handbook order, whichever lane it takes', () => {
+    const run = newRun('warrior', 1, true);
+    const fights = run.nodes.filter((n) => n.type === 'fight');
+    const floors = [...new Set(fights.map((n) => n.floor))].sort((a, b) => a - b);
+    const met = floors.map((f) => [...new Set(fights.filter((n) => n.floor === f).map((n) => n.enemy))]);
+    expect(met.every((m) => m.length === 1)).toBe(true);
+    const order = ['hrVideo', ...enemiesFor(1, 'normal').map((e) => e.id)];
+    expect(met.map((m) => m[0])).toEqual(order.slice(0, met.length));
   });
 });

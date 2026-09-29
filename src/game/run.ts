@@ -112,14 +112,18 @@ function buildNodes(rng: Rng, scripted: boolean): RunNode[] {
   const nodes: RunNode[] = [];
   let last: RunNode[] = [];
   for (let act = 1; act <= (scripted ? 1 : ACTS); act++) {
-    // Deal normal enemies from a shuffled bag so the same one doesn't repeat back to back (scripted: easiest first).
+    // Deal normal enemies from a shuffled bag so the same one doesn't repeat back to back. Scripted: easiest first, one
+    // per floor (both lanes of a floor share it), so whichever way the player goes they meet them in handbook order.
     let bag: EnemyDef[] = [];
-    const add = (floor: number, lane: number, type: NodeType): RunNode => {
-      let enemy: string | undefined;
-      if (type === 'fight') {
+    const byFloor = new Map<number, string>();
+    const add = (floor: number, lane: number, type: NodeType, fixed?: string): RunNode => {
+      // A set enemy (the orientation fight) takes nobody's turn.
+      let enemy = fixed;
+      if (!enemy && type === 'fight') {
         if (!bag.length) bag = scripted ? enemiesFor(act, 'normal').reverse() : rng.shuffle(enemiesFor(act, 'normal'));
-        enemy = bag.pop()!.id;
-      } else if (type === 'elite' || type === 'boss') {
+        enemy = (scripted && byFloor.get(floor)) || bag.pop()!.id;
+        if (scripted) byFloor.set(floor, enemy);
+      } else if (!enemy && (type === 'elite' || type === 'boss')) {
         enemy = scripted ? enemiesFor(act, type)[0].id : rng.pick(enemiesFor(act, type)).id;
       }
       const node: RunNode = { id: nodes.length, act, floor, lane, type, next: [], enemy };
@@ -130,11 +134,8 @@ function buildNodes(rng: Rng, scripted: boolean): RunNode[] {
     const lanes = rng.shuffle(LANES.map((l) => l.slice(opening - 1)));
     for (let i = 0; i < lanes[0].length - 1; i++) if (rng.next() < 0.3) [lanes[0][i], lanes[1][i]] = [lanes[1][i], lanes[0][i]];
 
-    // The shared road: one fight per floor, then the two lanes.
-    let road = add(1, 0.5, 'fight');
-    // The very first run opens on its orientation fight.
-    const intro = act === 1 && scripted ? firstRunEnemy() : undefined;
-    if (intro) road.enemy = intro.id;
+    // The shared road: one fight per floor, then the two lanes. The very first run opens on its orientation fight.
+    let road = add(1, 0.5, 'fight', act === 1 && scripted ? firstRunEnemy()?.id : undefined);
     for (const n of last) n.next.push(road.id);
     for (let f = 2; f <= opening; f++) {
       const n = add(f, 0.5, 'fight');
