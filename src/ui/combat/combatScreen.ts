@@ -282,7 +282,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     coach(
       el,
       [
-        { target: r.enemyWrap, text: t('coach.enemy') },
+        { target: [r.enemyWrap, r.eHp], text: t('coach.enemy') },
         { target: r.intent, text: t('coach.threat') },
         { target: $('.hero-row', el), text: t('coach.hero') },
         { target: r.belt, text: t('coach.belt') },

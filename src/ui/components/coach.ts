@@ -3,8 +3,8 @@ import { sfx } from '../../audio/sfx';
 import { h } from '../dom';
 
 export interface CoachStep {
-  /** The element pointed at (lit, everything else dimmed). */
-  target: HTMLElement;
+  /** The element pointed at (lit, everything else dimmed); several are lit together as one box. */
+  target: HTMLElement | HTMLElement[];
   text: string;
 }
 
@@ -22,13 +22,24 @@ export function coach(root: HTMLElement, steps: CoachStep[], onDone: () => void)
   const el = h('div', { class: 'coach', role: 'dialog', 'aria-modal': 'true' }, hole, note);
   const show = (): void => {
     const box = root.getBoundingClientRect();
-    const r = steps[i].target.getBoundingClientRect();
+    const rects = [steps[i].target].flat().map((x) => x.getBoundingClientRect());
+    const r = {
+      left: Math.min(...rects.map((x) => x.left)),
+      top: Math.min(...rects.map((x) => x.top)),
+      right: Math.max(...rects.map((x) => x.right)),
+      bottom: Math.max(...rects.map((x) => x.bottom)),
+    };
     text.textContent = steps[i].text;
     count.textContent = `${i + 1}/${steps.length}`;
     next.textContent = i === steps.length - 1 ? t('howto.gotIt') : t('common.next');
-    Object.assign(hole.style, { left: `${r.left - box.left}px`, top: `${r.top - box.top}px`, width: `${r.width}px`, height: `${r.height}px` });
+    Object.assign(hole.style, {
+      left: `${r.left - box.left}px`,
+      top: `${r.top - box.top}px`,
+      width: `${r.right - r.left}px`,
+      height: `${r.bottom - r.top}px`,
+    });
     // The note goes under a target in the top half of the screen, above one in the bottom half.
-    const below = r.top + r.height / 2 < box.top + box.height / 2;
+    const below = (r.top + r.bottom) / 2 < box.top + box.height / 2;
     note.style.top = below ? `${r.bottom - box.top + 16}px` : '';
     note.style.bottom = below ? '' : `${box.bottom - r.top + 16}px`;
   };
