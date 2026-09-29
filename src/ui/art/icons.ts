@@ -641,10 +641,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'shadow',
     svg: `<path d="M10 4h34v56H10z"/><path fill="#16121f" d="M16 10h22v44H16z"/><path d="M16 10l20 6v44l-20-6z"/><path d="M40 28h10v-8l12 12-12 12v-8H40z"/>`,
   },
-  speaker: {
-    el: 'shadow',
-    svg: `<path d="M6 24h12l18-16v48L18 40H6z"/><g ${S} stroke-width="5"><path d="M44 24c4 4 4 12 0 16M52 16c9 9 9 23 0 32"/></g>`,
-  },
   bug: {
     el: 'shadow',
     svg: `<ellipse cx="32" cy="38" rx="14" ry="18"/><circle cx="32" cy="16" r="8"/><path d="M4 26h14v6H4zM46 26h14v6H46zM4 42h14v6H4zM46 42h14v6H46zM20 4l6 8-5 3-6-8zM44 4l-6 8 5 3 6-8z"/><path d="M31 22h2v34h-2z" fill="#16121f"/>`,

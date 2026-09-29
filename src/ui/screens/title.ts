@@ -2,7 +2,6 @@ import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { ENEMY_LIST } from '../../data/enemies';
 import { enemyMet, signContract } from '../../game/meta';
-import { settings } from '../../game/settings';
 import { currentNode, type RunState, totalFloors } from '../../game/run';
 import { haptic } from '../fx/fx';
 import type { Screen } from '../app';
@@ -89,15 +88,6 @@ export function titleScreen(cb: TitleCallbacks): Screen {
     timer = window.setTimeout(save ? cb.onContinue : cb.onNewRun, PUNCH_MS);
   });
 
-  // Sound carries the fight (hits are announced by ear): with it muted, a note suggests turning it on.
-  const soundTip = h('button', {
-    class: 'sound-tip',
-    html: `${icon('speaker')}<span>${t('menu.soundTip')}</span>`,
-    onclick: () => {
-      sfx('tap');
-      openSettings();
-    },
-  });
   const el = h(
     'div',
     { class: 'screen title-screen' },
@@ -111,7 +101,6 @@ export function titleScreen(cb: TitleCallbacks): Screen {
       btn('question', t('menu.howTo'), 'secondary small', () => openHowTo()),
       btn('gear', t('menu.settings'), 'secondary small', () => openSettings()),
     ),
-    soundTip,
     // Temporary: a small floating button, off the menu's layout.
     h('button', {
       class: 'icon-btn debug-fab',
@@ -125,9 +114,6 @@ export function titleScreen(cb: TitleCallbacks): Screen {
   );
   return {
     el,
-    frame() {
-      soundTip.hidden = settings.sfxVolume > 0;
-    },
     leave() {
       clearTimeout(timer);
     },

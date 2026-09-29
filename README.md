@@ -198,7 +198,6 @@ La difficoltà cresce scendendo di piano. Le élite e lo Slaves CEO guadagnano 1
   primo che non hai ancora incontrato. Sotto, sulla scrivania, il **cartellino** da timbrare accanto al
   timbracartellino: *New run*, oppure *Back to work* con eroe, atto, piano e vita della run in corso; toccandolo entra
   nel timbracartellino (KA-CHUNK). Poi *Handbook*, *How to play* e Impostazioni (dove sta anche *Reset progress*);
-  se gli effetti sonori sono a zero, un biglietto giallo consiglia di accenderli;
   un piccolo bottone flottante temporaneo apre *Debug fight*.
 - **Scelta eroe:** carosello orizzontale "da videogioco" (eroe grande sul piedistallo, frecce e indicatori).
 - **Percorso:** in alto ritratto dell'eroe (toccalo o tienilo premuto per la sua scheda), vita, mazzo, paga e Impostazioni (con *Main menu*); sotto la mappa dei piani dell'atto con icone (lavoro, sala pausa, ispezione e boss un po' più grandi) e il tasto
