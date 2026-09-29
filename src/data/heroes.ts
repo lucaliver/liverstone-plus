@@ -12,7 +12,7 @@ const warrior: HeroDef = {
   regen: 1.3,
   blockDecay: 1.2,
   // Starter decks: only basic cards (plus mana crystals); everything else comes from rewards.
-  startDeck: [...rep('punch', 7), ...rep('hardHat', 6), 'unionChant', 'doubleEspresso'],
+  startDeck: [...rep('punch', 6), ...rep('hardHat', 6), 'unionChant', 'coffee', 'coffee'],
   firstRewards: [
     ['heavyLifting', 'crowbar', 'palletWall', 'ductTape'],
     ['wrenchWhack', 'shoulderCheck', 'coffeeBreak', 'grievance'],
@@ -38,7 +38,7 @@ const mage: HeroDef = {
   maxMana: 3,
   regen: 0.8,
   blockDecay: 1.0,
-  startDeck: [...rep('arcaneMemo', 7), ...rep('fireDoor', 6), 'coffee', 'doubleEspresso'],
+  startDeck: [...rep('arcaneMemo', 7), ...rep('fireDoor', 5), 'coffee', 'doubleEspresso', 'caffeineJolt'],
   firstRewards: [
     ['coldCall', 'slagBall', 'coldStorage', 'ductTape'],
     ['caffeineJolt', 'staticShock', 'coffeeBreak', 'burnout'],
