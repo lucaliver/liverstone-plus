@@ -675,12 +675,13 @@ describe('pop culture cards', () => {
     return { c, uid: c.belt[c.belt.length - 1].card.uid };
   };
 
-  it('Severance: Strength, then cards slipping off the belt play themselves while you can pay', () => {
+  it('Severance: Strength, then cards slipping off the belt play themselves for free', () => {
     const { c, uid } = ready('severance');
     c.playCard(uid);
     expect(c.stacks('hero', 'strength')).toBe(3);
     const hp = c.enemy.hp;
     const played = c.cardsPlayed;
+    c.hero.mana = c.hero.maxMana = 0;
     run(c, 8.9);
     expect(c.cardsPlayed).toBeGreaterThan(played);
     expect(c.enemy.hp).toBeLessThan(hp);

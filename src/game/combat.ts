@@ -532,8 +532,8 @@ export class Combat {
     for (let i = this.belt.length - 1; i >= 0; i--) {
       const b = this.belt[i];
       if (b.pos < EXPIRE_POS) continue;
-      // On autopilot, a card slipping off plays itself if it can (mana, rules…); otherwise it's lost as usual.
-      if (this.has('hero', 'autopilot') && this.playCard(b.card.uid)) continue;
+      // On autopilot, a card slipping off plays itself for free if it can (rules…); otherwise it's lost as usual.
+      if (this.has('hero', 'autopilot') && this.playCard(b.card.uid, true)) continue;
       this.belt.splice(i, 1);
       this.expire(b.card);
       if (this.result) return;
@@ -602,7 +602,7 @@ export class Combat {
   // --------------------------------------------------------- player actions
 
   /** Plays a card from the belt or sleeve. Returns false if it couldn't be played. */
-  playCard(uid: number): boolean {
+  playCard(uid: number, free = false): boolean {
     if (this.result || this.intro > 0) return false;
     const beltIdx = this.belt.findIndex((b) => b.card.uid === uid);
     const sleeveIdx = this.sleeve.findIndex((c) => c?.uid === uid);
@@ -630,13 +630,14 @@ export class Combat {
       this.events.emit({ type: 'text', target: 'hero', key: rule.key, tone: 'bad' });
       return false;
     }
-    if (!this.canAfford(card)) {
+    if (!free && !this.canAfford(card)) {
       this.events.emit({ type: 'cantAfford', card });
       return false;
     }
     const cost = this.cardCost(card);
+    // X is all the mana there is; a free card still counts it, without spending it.
     const spent = cost < 0 ? this.hero.mana : cost;
-    this.hero.mana -= spent;
+    if (!free) this.hero.mana -= spent;
     const row = beltIdx >= 0 ? this.belt[beltIdx].row : -1;
     if (beltIdx >= 0) this.belt.splice(beltIdx, 1);
     else this.sleeve[sleeveIdx] = null;

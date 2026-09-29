@@ -35,6 +35,7 @@ describe('content integrity', () => {
     }
     const ids = new Set(CARD_LIST.map((c) => c.id));
     for (const h of HERO_LIST) for (const id of h.startDeck) expect(ids.has(id), id).toBe(true);
+    for (const h of HERO_LIST) expect(h.startDeck, h.id).toHaveLength(15);
     // The first run's hand-picked rewards: real cards the hero could be offered, four each time.
     for (const h of HERO_LIST)
       for (const offer of h.firstRewards ?? []) {

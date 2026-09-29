@@ -12,7 +12,7 @@ const warrior: HeroDef = {
   regen: 1.3,
   blockDecay: 1.2,
   // Starter decks: only basic cards (plus mana crystals); everything else comes from rewards.
-  startDeck: [...rep('strike', 4), ...rep('defend', 4), 'manaGeode'],
+  startDeck: [...rep('strike', 7), ...rep('defend', 7), 'manaGeode'],
   firstRewards: [
     ['heavyLifting', 'cleave', 'ironWall', 'bandage'],
     ['battleCry', 'shieldBash', 'coffeeBreak', 'counterstrike'],
@@ -38,7 +38,7 @@ const mage: HeroDef = {
   maxMana: 3,
   regen: 0.8,
   blockDecay: 1.0,
-  startDeck: [...rep('arcaneBolt', 4), ...rep('ward', 3), 'manaShard', 'manaGeode'],
+  startDeck: [...rep('arcaneBolt', 7), ...rep('ward', 6), 'manaShard', 'manaGeode'],
   firstRewards: [
     ['frostbolt', 'fireball', 'frostArmor', 'bandage'],
     ['manaSurge', 'spark', 'coffeeBreak', 'ignite'],
@@ -72,7 +72,7 @@ const necromancer: HeroDef = {
   maxMana: 2,
   regen: 1.25,
   blockDecay: 0.9,
-  startDeck: [...rep('boneSpike', 3), ...rep('graveWard', 3), 'toxicDart', 'manaShard', 'manaGeode'],
+  startDeck: [...rep('boneSpike', 6), ...rep('graveWard', 5), ...rep('toxicDart', 2), 'manaShard', 'manaGeode'],
   firstRewards: [
     ['drainLife', 'rot', 'boneWall', 'bandage'],
     ['unionDues', 'ghoulBite', 'coffeeBreak', 'frailty'],

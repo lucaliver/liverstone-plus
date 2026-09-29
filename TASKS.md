@@ -10,9 +10,9 @@
 
 - [x] rimuovi del tutto la carta speciale auto inclusa nella sleve dei personaggi
 
-- [ ] "autopilot" effect (and cards) should play cards WITHOUT paying their cost
+- [x] "autopilot" effect (and cards) should play cards WITHOUT paying their cost
 
-- [ ] i mazzi iniziali dovrebbero avere tutti 15 carte
+- [x] i mazzi iniziali dovrebbero avere tutti 15 carte
 
 - [ ] add disclaimer when increasing speed from settings (it increases difficulty)
 
