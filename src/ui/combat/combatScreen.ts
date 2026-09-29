@@ -12,9 +12,9 @@ import { type ModalHandle, openModal, type Screen } from '../app';
 import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedRow } from '../components/modals';
 import { creature } from '../art/creatures';
 import { spriteBox } from '../art/riso';
-import { icon, INTENT_ICON } from '../art/icons';
+import { icon } from '../art/icons';
 import { coach } from '../components/coach';
-import { bindMoveDetails, enemyTraits, moveEffect, movePattern } from '../components/moveText';
+import { bindMoveDetails, enemyTraits, moveEffect, moveIcon, movePattern } from '../components/moveText';
 import { $, h, onPress, onTapOrHold } from '../dom';
 import { burst, haptic, shake } from '../fx/fx';
 import { clockText } from '../screens/journey';
@@ -171,7 +171,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     const special = combat.nextSpecial();
     const upcoming = special && e.move === e.def.main ? special : null;
     const sheet = info({
-      icon: INTENT_ICON[e.move.intent] ?? 'star',
+      icon: moveIcon(e.move),
       title: t(`move.${e.move.id}`),
       tag: t(`enemy.${e.def.id}.name`),
       tagCls: 'bad',

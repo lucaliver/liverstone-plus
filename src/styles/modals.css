@@ -359,6 +359,8 @@
 .fx-bad .pico { color: var(--p); }
 .fx-good { color: var(--green); }
 .fx-good .pico { color: var(--green); }
+.fx[data-status='poison'],
+.fx[data-status='poison'] .pico { color: var(--green); --ink2: var(--y); }
 .fx-curse { color: var(--purple); }
 .fx-curse .pico { color: var(--purple); }
 .fx-steal { color: #a07000; }

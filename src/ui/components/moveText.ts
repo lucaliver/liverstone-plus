@@ -75,13 +75,20 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
 export function movePattern(e: EnemyDef, values: MoveValues = baseValues, mark?: { now: MoveDef; next: MoveDef | null }): string {
   const row = (m: MoveDef): string => {
     const cls = m === mark?.now ? 'now' : m === mark?.next ? 'next' : '';
-    return `<li class="${cls}" data-intent="${m.intent}"><span class="mi">${icon(INTENT_ICON[m.intent] ?? 'star')}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m, false, values)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`;
+    return `<li class="${cls}" data-intent="${m.intent}"><span class="mi">${icon(moveIcon(m))}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m, false, values)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`;
   };
   const every = e.specials.length ? `<li class="foe-every">${t('compendium.every', { n: e.every })}</li>` : '';
   const traits = enemyTraits(e)
     .map((x) => `<p class="foe-half">${icon(x.icon)}${x.name ? `<b>${x.name}</b><i class="sep"></i>` : ''}<span>${x.desc}</span></p>`)
     .join('');
   return `<ul class="foe-moves">${row(e.main)}${every}${e.specials.map(row).join('')}</ul>${traits}`;
+}
+
+/** A move's icon: its intent's, or the status's own when applying one status is all it does (Snark: Poison). */
+export function moveIcon(m: MoveDef): string {
+  const st = m.status?.length === 1 ? m.status[0] : undefined;
+  const only = st && !m.dmg && !m.block && !m.heal && !m.curse && !m.hex && !m.inflate && !m.drainMana;
+  return only ? STATUSES[st.id].icon : (INTENT_ICON[m.intent] ?? 'star');
 }
 
 /** Icon of an enemy's half-HP trait (traits list, status row). */

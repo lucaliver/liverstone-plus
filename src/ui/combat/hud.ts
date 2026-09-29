@@ -4,9 +4,9 @@ import { haptic } from '../fx/fx';
 import { STATUS_ORDER, STATUSES, statusIcon } from '../../data/statuses';
 import type { Fighter } from '../../game/combat';
 import type { MoveDef, Side } from '../../game/types';
-import { icon, INTENT_ICON } from '../art/icons';
+import { icon } from '../art/icons';
 import { openInfo } from '../components/modals';
-import { HALF_ICON } from '../components/moveText';
+import { HALF_ICON, moveIcon } from '../components/moveText';
 import { h, onPress, setHtml, setText, toggle } from '../dom';
 import { type CombatView, PASSIVE_ICON } from './view';
 
@@ -140,7 +140,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     if (m !== lastMove) {
       lastMove = m;
       r.intent.dataset.intent = m.intent;
-      setHtml(r.intentIco, icon(INTENT_ICON[m.intent] ?? 'star'));
+      setHtml(r.intentIco, icon(moveIcon(m)));
       setText(r.intentLbl, t(`move.${m.id}`));
       v.retrigger(r.intent, 'pop');
       if (m.intent === 'charge') {
@@ -157,7 +157,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
       r.intentNext.hidden = !isMain;
       if (isMain && special) {
         r.intentNext.dataset.intent = special.intent;
-        r.intentNext.innerHTML = `${icon(INTENT_ICON[special.intent] ?? 'star')}<b>${e.mainsLeft + 1}</b>`;
+        r.intentNext.innerHTML = `${icon(moveIcon(special))}<b>${e.mainsLeft + 1}</b>`;
         r.intentNext.title = `${t('combat.afterAttacks', { n: e.mainsLeft + 1 })} ${t(`move.${special.id}`)}`;
       }
     }
