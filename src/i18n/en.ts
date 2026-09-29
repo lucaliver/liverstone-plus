@@ -131,13 +131,13 @@ const en = {
   'howto.inspect.d': 'Not sure what something does? Press and hold it: cards, statuses, moves, stats.',
   'howto.gotIt': 'Got it!',
   'coach.enemy': 'Your first job: beat this enemy. Its HP bar is right below it.',
-  'coach.threat': 'Its next move and how hard it hits. When the bar fills up, the move lands. Hold the bar to see all its moves.',
-  'coach.hero': 'You. Your HP carries over from job to job: at 0 you are fired. Your statuses show under it.',
+  'coach.threat': 'Their next move, from left to right: the type, the damage, the name, how many normal attacks before the special one.\nWhen the bar fills up, the move lands.\nHold the bar to see all its moves.',
+  'coach.hero': 'You, your HP and your statuses/passives under it.',
   'coach.belt': 'Your deck rides this belt. Tap a card to play it before it slips off the edge.',
-  'coach.mana': 'Cards cost mana (the number in their corner). It refills over time.',
-  'coach.sleeve': 'Your sleeve: drag a card down here to keep it for later.',
+  'coach.mana': 'Your mana crystals. Cards cost mana, but luckily it refills over time.',
+  'coach.sleeve': 'Your sleeve: drag a card down here to save it for whenever you need it.',
   'coach.ability': 'Your ability: a big move that costs a lot of mana.',
-  'coach.start': 'Hold anything to read what it does. When you are ready, clock in.',
+  'coach.start': 'Remember: you can hold on anything to read what it does.\nWhen you are ready, clock in to start.',
 
   // ------------------------------------------------------------- heroes
   'hero.select': "Who's on shift?",
