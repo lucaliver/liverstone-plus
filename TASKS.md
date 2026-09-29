@@ -26,5 +26,5 @@
 - [x] i titoli delle carte sono troppo piccoli e non si leggono (per lo meno nell'handbook)
 
 - [x] add overlay tutorial during the first enemy: it has more steps and tells you how to read the board
-- [ ] add new enemy that adds a "kamikaze" curse: costs 99 deals 99 damages. Then, when it is drawn a tutorial overlay appears and tells you you should put it in your sleeve to save yourself
+- [x] add new enemy that adds a "kamikaze" curse: costs 99 deals 99 damages. Then, when it is drawn a tutorial overlay appears and tells you you should put it in your sleeve to save yourself
 

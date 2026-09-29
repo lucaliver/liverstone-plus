@@ -19,6 +19,7 @@ describe('content integrity', () => {
     for (const c of CARD_LIST) {
       expect(en[`card.${c.id}.name`], c.id).toBeTruthy();
       expect(en[`card.${c.id}.desc`], c.id).toBeTruthy();
+      if (c.tip) expect(en[`card.${c.id}.tip` as keyof typeof en], `${c.id}: tip`).toBeTruthy();
       for (const m of c.face.matchAll(/\{\??(\w+)(?::\d)?\}/g)) {
         if (/^\d$/.test(m[1])) continue;
         expect(GLYPHS[m[1]], `${c.id}: ${m[1]}`).toBeTruthy();

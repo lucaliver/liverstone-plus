@@ -9,6 +9,8 @@ export interface Settings {
   haptics: boolean;
   locale: string;
   seenTutorial: boolean;
+  /** Cards whose first-time tip (`CardDef.tip`) has been shown. */
+  seenTips: string[];
   /** Cards enter on the right and travel left (the default is left to right). Applies from the next fight. */
   rightToLeft: boolean;
 }
@@ -21,6 +23,7 @@ const defaults: Settings = {
   haptics: true,
   locale: 'en',
   seenTutorial: false,
+  seenTips: [],
   rightToLeft: false,
 };
 
@@ -30,6 +33,8 @@ for (const k of ['sfxVolume', 'musicVolume'] as const) {
   const v = settings[k];
   settings[k] = typeof v === 'number' && Number.isFinite(v) ? Math.min(1, Math.max(0, v)) : defaults[k];
 }
+
+if (!Array.isArray(settings.seenTips) || settings.seenTips.some((id) => typeof id !== 'string')) settings.seenTips = [];
 
 export function saveSettings(): void {
   store('settings', settings);

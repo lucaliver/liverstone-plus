@@ -40,7 +40,7 @@ test('a fight can be played and won, then a reward is offered', async ({ page })
   // Back on the map: act 1 starts on a single road, so the one floor ahead is open.
   await expect(page.locator('.node.open')).toHaveCount(1);
   const deck = (await page.evaluate('window.__game.run.deck.length')) as number;
-  expect(deck).toBe(9);
+  expect(deck).toBe(15);
   expect(problems).toEqual([]);
 });
 
@@ -379,4 +379,34 @@ test('the very first fight opens on a tour of the board, one step at a time, bef
   await expect(page.locator('.js-start')).toBeVisible();
   expect(await page.evaluate("JSON.parse(localStorage.getItem('cardstone+:settings')).seenTutorial")).toBe(true);
   expect(problems).toEqual([]);
+});
+
+test('the first Kamikaze on the belt stops the fight to say where it is safe', async ({ page }) => {
+  const problems = await freshGame(page);
+  await startFight(page);
+  await combat(page, "c.addTempCard('kamikaze', 'belt');");
+  await expect(page.locator('.coach')).toBeVisible();
+  const clock = () => page.evaluate('window.__combat.time');
+  const before = await clock();
+  await page.waitForTimeout(300);
+  expect(await clock()).toBe(before);
+  await page.getByRole('button', { name: 'Got it!' }).click();
+  await expect(page.locator('.coach')).toHaveCount(0);
+  expect(await page.evaluate("JSON.parse(localStorage.getItem('cardstone+:settings')).seenTips")).toEqual(['kamikaze']);
+  expect(problems).toEqual([]);
+});
+
+test('releasing the hold that opened a card does not press Close underneath', async ({ page }) => {
+  await freshGame(page);
+  await page.getByRole('button', { name: 'Handbook' }).click();
+  const card = page.locator('.comp-grid .card').first();
+  await card.hover();
+  await page.mouse.down();
+  await expect(page.locator('.modal')).toBeVisible();
+  // Phones send the release's click where the finger lifts: on the modal's button, without a press of its own there.
+  await page.getByRole('button', { name: 'Close' }).dispatchEvent('click', { detail: 1 });
+  await expect(page.locator('.modal')).toBeVisible();
+  await page.mouse.up();
+  await page.getByRole('button', { name: 'Close' }).click();
+  await expect(page.locator('.modal')).toHaveCount(0);
 });

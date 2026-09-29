@@ -1,6 +1,7 @@
 import { t } from '../../core/i18n';
 import { endTemporaryMusic, playTemporaryMusic, setMusicTempo } from '../../audio/music';
 import { sfx } from '../../audio/sfx';
+import { CARDS } from '../../data/cards';
 import { CONFIG } from '../../data/config';
 import type { Combat } from '../../game/combat';
 import type { MoveDef } from '../../game/types';
@@ -33,6 +34,8 @@ export interface CombatCallbacks {
 
 /** Fixed simulation step: the engine stays deterministic regardless of frame rate. */
 const STEP = 1 / 60;
+/** How far along the belt (in belt widths) a card with a tip has come when the fight stops to explain it. */
+const TIP_POS = 0.25;
 /** Pixels between the two rows of a two-row belt. */
 const BELT_ROW_GAP = 10;
 
@@ -280,6 +283,18 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       },
     );
 
+  /** A card with a tip, ridden far enough onto the belt to be seen: the first time ever, the fight stops to explain it. */
+  const checkTip = (): void => {
+    const b = combat.belt.find((x) => CARDS[x.card.id].tip && x.pos >= TIP_POS && !settings.seenTips.includes(x.card.id));
+    const target = b && cards.elementOf(b.card.uid);
+    if (!b || !target) return;
+    settings.seenTips.push(b.card.id);
+    saveSettings();
+    cards.cancelDrag();
+    coach(el, [{ target, text: t(`card.${b.card.id}.tip`) }], () => syncPause());
+    syncPause();
+  };
+
   const onVisibility = (): void => {
     if (document.hidden) openPause();
   };
@@ -388,6 +403,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
           steps++;
         }
         if (steps === 12) acc = 0;
+        checkTip();
       }
       render(dt);
     },

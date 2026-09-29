@@ -706,7 +706,29 @@ ${shadow}
 <path d="M82 78c10 10 26 10 36 0z" fill="#1b1830" ${OUT}/><path d="M86 79h28l-3 4H89z" fill="#f6f0e4"/>
 <circle cx="78" cy="74" r="4" fill="#ff8ac8"/><circle cx="122" cy="74" r="4" fill="#ff8ac8"/>`;
 
+/** The Leaver: a gaunt imp on its last day, badge already cut, resignation letter in one claw and a lit bomb in the other. */
+const leaver = `
+<defs>${rg('lv-b', '#ffb08a', '#c0402a')}${lg('lv-s', '#8a9ab0', '#3a4a60')}${glow('lv-g', '#ffd900')}</defs>
+${shadow}
+<path d="M78 174l-6 14h22l-2-14zM110 174l-2 14h22l-6-14z" fill="#1b1830" ${OUT}/>
+<path d="M60 178c-2-44 14-70 40-70s42 26 40 70z" fill="url(#lv-s)" ${OUT}/>
+<path d="M88 110l12 22 12-22" fill="#f6f0e4" ${OUT}/><path d="M100 132l-6 30h12z" fill="#ff3d9a" ${OUT}/>
+<!-- the badge, cut in half -->
+<rect x="116" y="138" width="16" height="22" fill="#f6f0e4" ${OUT}/><path d="M116 146l16 4" stroke="#ff3d9a" stroke-width="3"/>
+<!-- resignation letter (left) -->
+<g class="limb"><path d="M62 122c-16 2-26 12-28 26l10 2c2-8 8-14 18-16z" fill="url(#lv-s)" ${OUT}/><g transform="rotate(-12 30 140)"><rect x="12" y="122" width="34" height="42" fill="#f6f0e4" ${OUT}/><path d="M18 132h22M18 140h22M18 148h14" stroke="#1b1830" stroke-width="3"/><path d="M18 156c4-4 8 2 12-2" stroke="#1c5fd0" stroke-width="3" fill="none"/></g></g>
+<!-- lit bomb (right) -->
+<g class="limb"><path d="M138 122c16 0 26 8 28 20l-10 4c-2-6-8-10-16-10z" fill="url(#lv-s)" ${OUT}/><circle cx="166" cy="116" r="20" fill="#1b1830" ${OUT}/><path d="M172 98l6-8" stroke="#8a5a2a" stroke-width="5"/><circle cx="180" cy="86" r="9" fill="url(#lv-g)"/><circle cx="180" cy="86" r="4" fill="#ffd900"/><path d="M158 106c3-4 7-6 11-6" stroke="#f6f0e4" stroke-width="4" fill="none"/></g>
+<!-- head: horns, singed hair, hollow eyes, a grin with nothing left to lose -->
+<path d="M72 36l-8-24 20 16zM128 36l8-24-20 16z" fill="#f6f0e4" ${OUT}/>
+<path d="M68 64c0-26 14-42 32-42s32 16 32 42c0 22-14 38-32 38S68 86 68 64z" fill="url(#lv-b)" ${OUT}/>
+<path d="M72 44c6-14 18-20 28-20s22 6 28 20l-8-4-6 6-6-8-8 8-6-8-6 8-6-6z" fill="#1b1830" ${OUT}/>
+${eyes(86, 114, 60, 5, '#ffd900', 'lv-g')}
+<path d="M84 50l10 4M116 50l-10 4" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
+<path d="M80 78c10 12 30 12 40 0z" fill="#1b1830" ${OUT}/><path d="M84 79l4 5 4-5 4 5 4-5 4 5 4-5 4 5 4-5" stroke="#f6f0e4" stroke-width="2.5" fill="none"/>`;
+
 export const CREATURES: Record<string, string> = {
+  leaver,
   workWife,
   snitch,
   boomer,

@@ -443,6 +443,21 @@ export const curseCards: CardDef[] = [
     play: () => {},
   },
   {
+    // The Leaver's: nobody can pay for it, and it blows up if it slips off the belt. The sleeve keeps it safe.
+    id: 'kamikaze',
+    face: '{dmg:0}|{?exit}{boom:1}',
+    cls: 'curse',
+    type: 'curse',
+    rarity: 'special',
+    cost: 99,
+    vals: [99, 99],
+    keywords: ['exhaust', 'volatile'],
+    tip: true,
+    art: 'skullBomb',
+    play: (c, v) => void c.hit(v[0]),
+    onExpire: (c, v) => void c.damage('enemy', 'hero', v[1], { raw: true, kind: 'fire' }, 'dot'),
+  },
+  {
     id: 'slime',
     face: '{clog}',
     cls: 'curse',

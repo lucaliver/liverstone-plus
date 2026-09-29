@@ -178,6 +178,7 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
 | Compliance Officer | *Red Tape*, multe pesanti; sotto metà vita rallenta il tuo nastro per 20 s |
 | Office Chair | La sedia da gaming che nessuno reclama: *Spin to Win* (sei colpi), *Slow Sink* (il pistone cede: nastro più lento), *+10% Performance* (più Forza) |
 | The Overthinker | Una sola *Big Idea* caricata a lungo; passiva *Train of Thought*: se durante la carica incassa altrettanti danni, perde il filo (*Where Was I?*) e il colpo salta |
+| The Leaver | All'ultimo giorno, niente da perdere: *Nothing to Lose* mette sul nastro una *Kamikaze* (costa 99, se esce dal nastro esplode per 99 danni): va messa nella sleeve. La prima volta lo scontro si ferma e una nota lo spiega |
 | Night Janitor | *Lights Out*: **Blackout**, le carte diventano nere e mostrano solo illustrazione e costo; *Machine Down* |
 | **The Printer** (élite) | Fotocopiatrice maledetta: per 5 s **copia** il danno che riceve, poi te lo restituisce stampato |
 | **The Veteran** (élite) | *In My Day…*: **Inflation**, alcune carte costano 1 in più finché non le giochi; racconti lunghi che rallentano il nastro |

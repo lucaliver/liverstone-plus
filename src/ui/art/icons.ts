@@ -201,6 +201,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'holy',
     svg: `<rect x="12" y="4" width="7" height="56" rx="2"/><path d="M19 6h34l-9 12 9 12H19z"/><path fill="#fff" opacity=".35" d="M19 6h34l-3 4H19z"/>`,
   },
+  skullBomb: {
+    el: 'curse',
+    svg: `<circle cx="30" cy="38" r="22"/><rect x="38" y="10" width="10" height="10" transform="rotate(45 43 15)"/><path d="M46 10c4-6 10-6 14-2" stroke="currentColor" stroke-width="4" fill="none"/><g fill="#16121f"><path d="M18 32h9v9h-9zM33 32h9v9h-9zM27 45h6v5h-6z"/><path d="M20 52h20v3H20z"/></g>${star4(58, 6, 6)}`,
+  },
   bomb: {
     el: 'curse',
     svg: `<circle cx="28" cy="38" r="20"/><rect x="36" y="12" width="10" height="10" transform="rotate(45 41 17)"/><path d="M44 12c4-6 10-6 14-2" stroke="currentColor" stroke-width="4" fill="none"/><path ${HI} d="M16 32c2-6 7-10 12-10-2 4-2 8 0 12-5 1-9 0-12-2z"/>${star4(58, 8, 6)}`,

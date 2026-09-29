@@ -105,6 +105,8 @@ export interface CardDef {
   ride?: { i: number; by: number; to: number };
   /** Damage this card gains for every second the hero's mana is full and overflowing, wherever the card is. */
   onOverflow?: number;
+  /** The first time ever it rides onto the belt, the fight stops and a note (`card.<id>.tip`) says how to handle it. */
+  tip?: true;
   /** Index of the value its cost drops by every second of the fight, wherever the card is (Moving Box). */
   costDrop?: number;
   /** Bonus effects that only work while the card waits in the sleeve (`v` = its values, `card` = the copy held). */

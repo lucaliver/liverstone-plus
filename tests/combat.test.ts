@@ -167,6 +167,20 @@ describe('combat engine', () => {
     expect(c.sleeve[0]).toBe(null);
   });
 
+  it('Kamikaze blows up in your face if it slips off the belt, but is safe in the sleeve', () => {
+    const c = setup({ hp: 200, maxHp: 200, deck: deckOf(Array(6).fill('strike')) });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 0.01);
+    c.addTempCard('kamikaze', 'belt');
+    const kept = c.belt[c.belt.length - 1].card;
+    expect(c.playCard(kept.uid)).toBe(false);
+    expect(c.stash(kept.uid, 0)).toBe(true);
+    c.addTempCard('kamikaze', 'belt');
+    run(c, (CONFIG.beltTime * EXPIRE_POS) / c.beltRate() + 0.5);
+    expect(c.sleeve[0]?.uid).toBe(kept.uid);
+    expect(c.hero.hp).toBe(200 - 99);
+  });
+
   it('enemy resolves its telegraphed move after the wind-up', () => {
     const c = setup({ enemy: ENEMIES.rat });
     run(c, CONFIG.introTime + ENEMIES.rat.main.windup + 0.05);

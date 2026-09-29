@@ -320,6 +320,20 @@ const defs: EnemyDef[] = [
     start: [{ id: 'trainOfThought', v: 24 }],
   },
   {
+    // Last day on the job, nothing to lose: hands you a bomb nobody can afford to defuse. Keep it in your sleeve.
+    id: 'leaver',
+    act: 2,
+    tier: 'normal',
+    hp: 60,
+    art: 'leaver',
+    main: atk('clearDesk', 7, 6),
+    every: 2,
+    specials: [
+      { id: 'nothingToLose', intent: 'curse', windup: 6, curse: [{ id: 'kamikaze', n: 1, to: 'belt' }] },
+      atk('exitInterview', 16, 10, { intent: 'charge' }),
+    ],
+  },
+  {
     // Copies the damage it takes while scanning, then prints it back at you.
     id: 'printer',
     act: 2,
@@ -382,6 +396,7 @@ export const DIFFICULTY = [
   'officeChair',
   'overthinker',
   'changeManager',
+  'leaver',
   'wellness',
   'meticulous',
   'beanCounter',
