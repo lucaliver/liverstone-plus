@@ -325,7 +325,7 @@
 .info-head .ftag.good { background: var(--b); }
 .info-head .ftag.bad { background: var(--p); }
 .info-head .ftag.active { background: var(--p); }
-.info-desc { font-size: 18px; font-weight: 700; line-height: 1.35; }
+.info-desc { font-size: 18px; font-weight: 700; line-height: 1.35; white-space: pre-line; }
 .info-extra { margin-top: 10px; font-family: var(--font-ui); font-size: 18px; color: var(--muted); }
 
 .detail-meta {
