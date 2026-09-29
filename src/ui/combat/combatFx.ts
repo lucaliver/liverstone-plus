@@ -241,13 +241,14 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
       case 'enrage': {
         const p = v.enemyPoint();
         floatText(p.x, p.y - 70, t('combat.enraged'), 'status bad');
-        // Spell out what its half-HP trait just did (the belt speeds up, it hits harder…).
-        // Some enemies say it themselves, in a speech bubble; for the others, a notice spells it out.
+        // Spell out what its half-HP trait just did (the belt speeds up, it hits harder…); some enemies also
+        // have a line of their own, in a speech bubble.
         if (v.combat.enemy.def.halfSpeech) {
           const bubble = h('div', { class: 'speech' }, t(`enemy.${v.combat.enemy.def.id}.speech`));
           bubble.addEventListener('animationend', () => bubble.remove());
           r.stage.append(bubble);
-        } else v.toast(t(`enemy.${v.combat.enemy.def.id}.half`), true);
+        }
+        v.toast(t(`enemy.${v.combat.enemy.def.id}.half`), true);
         // Its true face: the sprite changes for good.
         const art = v.combat.enemy.def.halfArt;
         const riso = r.enemyArt.querySelector('.riso');

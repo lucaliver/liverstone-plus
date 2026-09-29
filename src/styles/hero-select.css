@@ -227,7 +227,6 @@
   background: var(--k);
 }
 .hero-feature .ftag.active { background: var(--p); }
-.hero-feature .ftag.special { color: var(--k); background: var(--y); border: 2px solid var(--k); }
 .hero-feature .kwline { display: none; }
 .hero-feature b.kw {
   display: inline;

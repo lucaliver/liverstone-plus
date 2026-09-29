@@ -135,9 +135,8 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
 - `desc`: `{i}` values, `[kw]` keywords (need `kw.<kw>` and `kw.<kw>.d`).
 - Art colour comes from the face (attack / defense / utility / curse) unless `cat` is set. Set `dmg: []` only for
   raw damage that ignores modifiers (e.g. `juggernaut`).
-- Keyword flags (`Keyword` type, change engine behaviour): exhaust, consume, fleeting, volatile, innate, unique,
+- Keyword flags (`Keyword` type, change engine behaviour): exhaust, consume, fleeting, volatile, innate,
   unplayable, pending (not playable until its first full ride along the belt each fight). Glossary-only keywords (`[rush]`, `[power]`, `[x]`, statuses…) just need their `kw.*` strings.
-  Rarity `unique` = hero special.
 - `ride` makes one value change for every second the card rides the belt (`CombatCard.age`, frozen in the sleeve),
   read through `cardValsOf` like everything else (Unpaid Overtime grows, Patience decays).
 - `onOverflow`: damage the card gains for every second of full, wasted mana, wherever it is (Complaint Box).
@@ -165,7 +164,7 @@ at half HP), `halfArt` (sprite after its half-HP trait triggers), `halfSecret` (
 ### Heroes
 
 `HeroDef` in `data/heroes.ts` (hp, maxMana, regen, blockDecay, `sleeve` slots, starter deck with basic cards only + crystals,
-optional `special` (the warrior has none), `ability { id, cost, use }`, hooks, optional `unlock`: finish a run with a hero, or reach an act's boss; checked
+`ability { id, cost, use }`, hooks, optional `unlock`: finish a run with a hero, or reach an act's boss; checked
 through `progress()` in `game/meta.ts`), a card file, a sprite, `hero.<id>.*` strings, and entries in
 `ABILITY_ICON` / `PASSIVE_ICON` (`ui/combat/view.ts`).
 

@@ -44,7 +44,6 @@ const mage: HeroDef = {
     ['manaSurge', 'spark', 'coffeeBreak', 'ignite'],
     ['arcaneMissiles', 'shatter', 'timeSlip', 'mirrorImage'],
   ],
-  special: 'meteor',
   sleeve: 2,
   color: '#5b8cff',
   ability: {
@@ -79,7 +78,6 @@ const necromancer: HeroDef = {
     ['unionDues', 'ghoulBite', 'coffeeBreak', 'frailty'],
     ['deathCoil', 'festeringStrike', 'plague', 'wither'],
   ],
-  special: 'deathsDoor',
   sleeve: 3,
   color: '#2a8a4a',
   ability: {

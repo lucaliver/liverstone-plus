@@ -6,9 +6,8 @@ import type { CardInst } from '../../game/types';
 import { h } from '../dom';
 import { icon } from '../art/icons';
 
-const KEYWORD_LINE = ['unique', 'innate', 'pending', 'exhaust', 'consume', 'fleeting', 'volatile', 'unplayable'];
+const KEYWORD_LINE = ['innate', 'pending', 'exhaust', 'consume', 'fleeting', 'volatile', 'unplayable'];
 export const TAG_ICON: Record<string, string> = {
-  unique: 'star',
   innate: 'flag',
   pending: 'pending',
   exhaust: 'cross',

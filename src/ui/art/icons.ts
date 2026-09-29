@@ -292,10 +292,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'fire',
     svg: `<path d="M12 6h40v28c0 6-4 4-4 12s-6 10-6 2-4-10-8-2-2 16-6 16-4-12-6-6-6 4-6-2-6-6-4-10z"/><rect x="20" y="14" width="24" height="6" fill="#16121f"/>`,
   },
-  boiler: {
-    el: 'fire',
-    svg: `<rect x="12" y="14" width="40" height="44" rx="6"/><circle cx="32" cy="34" r="10" fill="#16121f"/><circle cx="32" cy="34" r="4"/><path d="M20 14V4h8v10M52 30h10v8H52z"/><path d="M40 12l12-10 6 6-10 10z"/>`,
-  },
   fireWall: {
     el: 'fire',
     svg: `<path d="M6 34h52v24H6z"/><path d="M10 34c0-10 8-14 6-26 8 6 10 16 8 26zM28 34c0-8 6-12 4-24 10 8 10 18 8 24zM44 34c0-6 4-10 4-18 6 6 7 12 5 18z"/><g fill="#16121f"><rect x="6" y="45" width="52" height="3"/><rect x="22" y="34" width="3" height="11"/><rect x="40" y="34" width="3" height="11"/><rect x="30" y="48" width="3" height="10"/></g>`,
@@ -372,10 +368,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   envelope: {
     el: 'necro',
     svg: `<rect x="4" y="14" width="56" height="38"/><path d="M4 14l28 22 28-22" stroke="#16121f" stroke-width="4" fill="none"/><path d="M42 46l6-6 6 6-6 6z" fill="#16121f"/>`,
-  },
-  cat: {
-    el: 'necro',
-    svg: `<path d="M10 58V26L4 6l16 12h24L60 6l-6 20v32z"/><g fill="#16121f"><path d="M17 30h9l-4 7zM38 30h9l-4 7z"/><path d="M28 42h8l-4 5z"/></g>`,
   },
   walkout: {
     el: 'necro',

@@ -58,8 +58,6 @@ export interface CombatSetup {
   seed: number;
   /** Extra max mana from the run (e.g. Evocation is per-combat, events are permanent). */
   bonusMaxMana?: number;
-  /** Hero special card, placed in the first sleeve slot (omitted once used this run). */
-  special?: string;
   /** Belt rows (default `CONFIG.beltRows`). With two rows cards alternate between them and the belt runs a bit slower. */
   beltRows?: number;
 }
@@ -71,9 +69,6 @@ interface DamageOpts {
   raw?: boolean;
   ignoreBlock?: boolean;
 }
-
-/** Fixed uid of the hero special card during a fight. */
-export const SPECIAL_UID = -1000;
 
 export class Combat {
   readonly events = new Emitter<CombatEvent>();
@@ -105,8 +100,6 @@ export class Combat {
   /** Deck uids permanently removed (potions). */
   consumed: number[] = [];
   cardsPlayed = 0;
-  /** True once the hero special has been played (the run then loses it). */
-  specialUsed = false;
   /** The last card the hero played this fight (rules such as "not the same type twice"). */
   lastPlayed: CardDef | null = null;
   /** Seconds of mana overflow not yet turned into growth (see `onOverflow`). */
@@ -161,7 +154,6 @@ export class Combat {
       manaTimer: 0,
     };
     this.sleeve = new Array(sleeve).fill(null);
-    if (setup.special) this.sleeve[0] = { uid: SPECIAL_UID, id: setup.special, up: false, bonus: 0, temp: true };
 
     const e = setup.enemy;
     // Round HP to 5s: scaled numbers stay easy to read.
@@ -650,7 +642,6 @@ export class Combat {
     else this.sleeve[sleeveIdx] = null;
 
     this.cardsPlayed++;
-    if (card.uid === SPECIAL_UID) this.specialUsed = true;
     this.events.emit({ type: 'cardPlayed', card, from: beltIdx >= 0 ? 'belt' : 'sleeve' });
     const vals = this.cardVals(card);
     if (cost < 0) vals.push(spent);
@@ -679,7 +670,7 @@ export class Combat {
     if (kw.includes('consume')) {
       if (!card.temp) this.consumed.push(card.uid);
       this.exhaust.push(card);
-    } else if (kw.includes('exhaust') || kw.includes('unique') || def.type === 'power') {
+    } else if (kw.includes('exhaust') || def.type === 'power') {
       this.exhaust.push(card);
     } else {
       this.discard.push(card);
@@ -698,8 +689,6 @@ export class Combat {
     // A hexed card is stuck to the belt until freed; a covered one can't be reached; a pending one waits its turn.
     if (b.card.hex || this.isCovered(uid) || this.isPending(b.card)) return false;
     const old = this.sleeve[target];
-    // The hero special never leaves its hand.
-    if (old?.uid === SPECIAL_UID) return false;
     this.sleeve[target] = b.card;
     if (old) this.belt[beltIdx] = { card: old, pos: b.pos, row: b.row };
     else this.belt.splice(beltIdx, 1);
@@ -963,15 +952,9 @@ export class Combat {
     this.events.emit({ type: 'enemyIntent', move: e.move });
   }
 
-  /** The last card played that can be repeated or copied (a Unique special never can). */
-  private repeatable(): { card: CombatCard; def: CardDef; vals: number[] } | null {
-    const last = this.lastPlay;
-    return last && !this.keywords(last.card).includes('unique') ? last : null;
-  }
-
   /** Resolves the last card played again, with the same values. */
   replayLast(): void {
-    const last = this.repeatable();
+    const last = this.lastPlay;
     if (!last?.def.play) return;
     const play = last.def.play;
     this.replaying = true;
@@ -980,7 +963,7 @@ export class Combat {
 
   /** Every belt card becomes a temporary copy of the last card played; the originals go to the discard pile. */
   copyLastOntoBelt(): void {
-    const last = this.repeatable();
+    const last = this.lastPlay;
     if (!last) return;
     for (const b of this.belt) {
       if (b.card.hex && b.card.hex.left <= 0) delete b.card.hex;

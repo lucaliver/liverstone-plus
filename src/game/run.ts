@@ -54,8 +54,6 @@ export interface RunState {
   /** Pay earned so far: the run's score (fast wins pay more). */
   money: number;
   uid: number;
-  /** The hero special is once per run. */
-  specialUsed?: boolean;
   /** The very first run: its map is fixed and its first rewards are picked (`HeroDef.firstRewards`). */
   scripted?: boolean;
 }
@@ -87,7 +85,7 @@ export function newRun(hero: HeroId, seed: number, scripted = false): RunState {
   const rng = new Rng(seed);
   const def = HEROES[hero];
   const nodes = buildNodes(rng, scripted);
-  discover(def.special ? [...def.startDeck, def.special] : def.startDeck);
+  discover(def.startDeck);
   return {
     version: 2,
     seed,
@@ -206,7 +204,6 @@ export function combatSetup(run: RunState): CombatSetup {
     enemy: ENEMIES[node.enemy!],
     scale: enemyScale(node),
     seed,
-    special: run.specialUsed ? undefined : HEROES[run.hero].special,
   };
 }
 
@@ -228,7 +225,6 @@ export function applyCombat(run: RunState, combat: Combat): void {
     seconds: combat.time,
     cards: combat.cardsPlayed,
   });
-  if (combat.specialUsed) run.specialUsed = true;
   if (combat.consumed.length) run.deck = run.deck.filter((c) => !combat.consumed.includes(c.uid));
   if (combat.result === 'win') {
     run.stats.kills++;

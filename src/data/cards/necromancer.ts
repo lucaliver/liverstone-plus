@@ -220,24 +220,6 @@ export const necromancerCards: CardDef[] = [
     play: (c, v) => c.applyStatus('hero', 'virulence', v[0]),
   },
 
-  // Unique (hero special, once per run)
-  {
-    id: 'deathsDoor',
-    cat: 'defense',
-    face: '{heal:0}|{poison:1}',
-    cls: 'necromancer',
-    type: 'spell',
-    rarity: 'unique',
-    cost: 0,
-    vals: [10, 10],
-    keywords: ['unique'],
-    art: 'cat',
-    play: (c, v) => {
-      c.heal('hero', v[0]);
-      c.applyStatus('enemy', 'poison', v[1]);
-    },
-  },
-
   // Archetype synergy: Poison
   {
     id: 'contagion',

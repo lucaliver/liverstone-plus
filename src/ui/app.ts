@@ -104,9 +104,22 @@ export function openModal(opts: ModalOpts): ModalHandle {
   // Close on a full tap on the backdrop (press and release there). Closing on pointerdown let the release land
   // on whatever was underneath, e.g. the pause button, which reopened the modal straight away.
   let downOnBack = false;
+  // A click only counts if its press started inside the modal: releasing the long press that opened it (phones
+  // send the click where the finger lifts) would otherwise hit the button underneath, e.g. Close.
+  let pressed = false;
   back.addEventListener('pointerdown', (e) => {
+    pressed = true;
     downOnBack = e.target === back;
   });
+  back.addEventListener(
+    'click',
+    (e) => {
+      if (pressed || e.detail === 0) return;
+      e.stopPropagation();
+      e.preventDefault();
+    },
+    true,
+  );
   back.addEventListener('click', (e) => {
     if (downOnBack && e.target === back && opts.dismissable !== false) {
       e.stopPropagation();

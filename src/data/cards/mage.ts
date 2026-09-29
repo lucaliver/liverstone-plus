@@ -229,20 +229,6 @@ export const mageCards: CardDef[] = [
     },
   },
 
-  // Unique (hero special, once per run)
-  {
-    id: 'meteor',
-    face: '{burn:0}',
-    cls: 'mage',
-    type: 'spell',
-    rarity: 'unique',
-    cost: 0,
-    vals: [10],
-    keywords: ['unique'],
-    art: 'boiler',
-    play: (c, v) => c.applyStatus('enemy', 'burn', v[0]),
-  },
-
   // Archetype synergy: Spellweave and Chill
   {
     id: 'flurry',

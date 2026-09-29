@@ -2,13 +2,13 @@ import { availableLocales, getLocale, setLocale, type TKey, t } from '../../core
 import { setSfxVolume, sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
 import { setMusicVolume } from '../../audio/music';
-import { CARDS, cardCostOf } from '../../data/cards';
+import { CARDS, type CardCategory, cardCategory, cardCostOf } from '../../data/cards';
 import { GAME_SPEEDS } from '../../data/config';
 import { ENEMY_LIST } from '../../data/enemies';
 import { HERO_LIST } from '../../data/heroes';
 import { unlockAll } from '../../game/meta';
 import { saveSettings, settings } from '../../game/settings';
-import type { CardInst, CardType, HeroId } from '../../game/types';
+import type { CardInst, HeroId } from '../../game/types';
 import { confirmModal, type ModalAction, openModal, type ModalHandle } from '../app';
 import { clearAll } from '../../core/save';
 import { h, onPress, onTapOrHold } from '../dom';
@@ -268,7 +268,8 @@ export function openCardDetail(card: CardInst, onClose?: () => void): ModalHandl
   return openModal({ body: wrap, actions: [{ label: t('common.close'), cls: 'secondary' }], onClose });
 }
 
-const TYPE_ORDER: CardType[] = ['attack', 'spell', 'skill', 'power', 'potion', 'curse'];
+/** Sorting by type goes by the art's colour family, the only type the player sees. */
+const TYPE_ORDER: CardCategory[] = ['attack', 'defense', 'utility', 'curse'];
 const DECK_SORTS = ['type', 'cost', 'name'] as const;
 type DeckSort = (typeof DECK_SORTS)[number];
 /** The deck windows' and handbook's sort, kept while the game is open. */
@@ -280,9 +281,7 @@ function sortDeck(deck: CardInst[], by: DeckSort, desc: boolean): CardInst[] {
   const name = (c: CardInst): string => t(`card.${c.id}.name`);
   const sign = desc ? -1 : 1;
   return [...deck].sort((a, b) => {
-    const da = CARDS[a.id];
-    const db = CARDS[b.id];
-    const type = TYPE_ORDER.indexOf(da.type) - TYPE_ORDER.indexOf(db.type);
+    const type = TYPE_ORDER.indexOf(cardCategory(a.id)) - TYPE_ORDER.indexOf(cardCategory(b.id));
     const cost = cardCostOf(a) - cardCostOf(b);
     const byName = name(a).localeCompare(name(b));
     const first = sign * (by === 'cost' ? cost : by === 'name' ? byName : type);

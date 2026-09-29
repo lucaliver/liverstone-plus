@@ -41,6 +41,7 @@ const defs: EnemyDef[] = [
     every: 2,
     specials: [atk('frenzy', 4, 8, { hits: 4, intent: 'charge' })],
     // Tells the boss: from half HP on, your belt is rushed for the rest of the fight.
+    halfSpeech: true,
     onHalf: (c) => c.applyStatus('hero', 'hurry', 1, 9999),
   },
   {
@@ -156,6 +157,7 @@ const defs: EnemyDef[] = [
       { id: 'bombs', intent: 'curse', windup: 7, curse: [{ id: 'bomb', n: 2, to: 'belt' }] },
       atk('doom', 20, 13, { intent: 'charge' }),
     ],
+    halfSpeech: true,
     onHalf: (c) => c.applyStatus('enemy', 'haste', 1, 9999),
   },
 

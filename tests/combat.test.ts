@@ -344,18 +344,6 @@ describe('combat engine', () => {
     expect(c.hero.hp).toBe(80 - 10);
   });
 
-  it('the hero special starts in the sleeve, stays there, and is flagged once played', () => {
-    const c = setup({ special: 'meteor' });
-    run(c, CONFIG.introTime + 0.01);
-    expect(c.sleeve[0]?.id).toBe('meteor');
-    expect(c.stash(c.belt[0].card.uid, 0)).toBe(false);
-    expect(c.playCard(c.sleeve[0]!.uid)).toBe(true);
-    expect(c.specialUsed).toBe(true);
-    expect(c.has('enemy', 'burn')).toBe(true);
-    // Once per run: it never comes back on the belt.
-    expect(c.exhaust.map((x) => x.id)).toContain('meteor');
-  });
-
   it('enemies use their main attack, then a special every N attacks', () => {
     const c = setup({ enemy: ENEMIES.skeleton, hp: 999, maxHp: 999 });
     const seen: string[] = [];

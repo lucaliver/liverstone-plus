@@ -38,8 +38,8 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 | Mana che si ricarica, carte che alzano il massimo | **Cristalli**: si parte con poco mana e si cresce durante lo scontro |
 | Un nemico per piano con la sua velocità d'attacco | Attacco base lento e pesante + **mossa speciale** periodica, telegrafati |
 | Scambio di una carta dopo ogni battaglia | **Ricompensa = sempre uno scambio** (il mazzo ha dimensione fissa) |
-| "Manica" per tenere carte da parte | **Sleeve** con pochi slot, con dentro la carta speciale dell'eroe |
-| Eroi con abilità | Eroi con passiva, abilità a mana e carta speciale una volta per run |
+| "Manica" per tenere carte da parte | **Sleeve** con pochi slot |
+| Eroi con abilità | Eroi con passiva e abilità a mana |
 | Oro per sbloccare carte, timer "cibo" | Handbook (compendio) con scoperta delle carte; nessun timer di energia |
 
 ---
@@ -69,7 +69,6 @@ col tempo, il nemico telegrafa le mosse. Tra un piano e l'altro migliori il mazz
 - **Regole che bloccano le carte:** se un nemico (o uno stordimento) impedisce di giocare una carta, sopra la carta
   compare l'icona della regola. Le carte *Pending* non si giocano al primo passaggio sul nastro. Le carte esaurite,
   quando le giochi, si dissolvono sul posto invece di volare verso il bersaglio.
-- **Carta speciale:** Mago e Negromante ne hanno una, parte nella sleeve a ogni scontro, si usa **una volta per run** (il Guerriero no).
 - **Stati:** Forza, Blocco, Veleno, Bruciatura, Congelamento, Stordimento, Debole, Vulnerabile, Schivata, Parata,
   Fortificato e altri legati agli eroi. Tieni premuto uno stato per leggerlo. La passiva dell'eroe è sempre il primo
   chip nella riga dei tuoi stati. Anche l'eroe può essere **stordito**: finché dura non gioca carte né l'abilità.
@@ -114,8 +113,8 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
 
 ## 4. Carte
 
-- **Rarità:** iniziale, comune, rara, epica, leggendaria, più la speciale dell'eroe e le maledizioni.
-- **Set:** 24 carte per ogni eroe (attorno al suo archetipo, speciale inclusa), **neutrali** giocabili da tutti
+- **Rarità:** iniziale, comune, rara, epica, leggendaria, più le maledizioni.
+- **Set:** un set di carte per ogni eroe (attorno al suo archetipo), **neutrali** giocabili da tutti
   (kit di pronto soccorso, energy drink, *Coffee Break*, cristalli *Coffee* e *Double Espresso*, utilità) e le **maledizioni**.
 - **Carte "Workplace"** (per ora solo nell'Handbook, non escono come ricompensa): *Quiet Quitting* (scarta il nastro e
   colpisce per ogni carta), *Bare Minimum*, *Out of Office* e *Grindset* (Blocco, cure o danni ogni secondo finché

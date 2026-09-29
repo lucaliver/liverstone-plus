@@ -4,8 +4,8 @@ import type { Combat } from './combat';
 export type HeroId = 'warrior' | 'mage' | 'necromancer';
 export type CardClass = HeroId | 'neutral' | 'curse';
 export type CardType = 'attack' | 'spell' | 'skill' | 'power' | 'potion' | 'curse';
-export type Rarity = 'starter' | 'common' | 'rare' | 'epic' | 'legendary' | 'special' | 'unique';
-export type Keyword = 'exhaust' | 'consume' | 'fleeting' | 'unplayable' | 'volatile' | 'innate' | 'unique' | 'pending';
+export type Rarity = 'starter' | 'common' | 'rare' | 'epic' | 'legendary' | 'special';
+export type Keyword = 'exhaust' | 'consume' | 'fleeting' | 'unplayable' | 'volatile' | 'innate' | 'pending';
 export type Side = 'hero' | 'enemy';
 
 /** A card in the run deck. */
@@ -256,9 +256,7 @@ export interface HeroDef {
   startDeck: string[];
   /** The very first run's reward offers after its first fights, in order (picked to teach, not rolled). */
   firstRewards?: string[][];
-  /** Once-per-run special card, waiting in the first sleeve slot (the simplest hero has none). */
-  special?: string;
-  /** Sleeve slots (the special takes the first one while unused). */
+  /** Sleeve slots. */
   sleeve: number;
   starterRelic?: string;
   color: string;

@@ -33,7 +33,6 @@
 .sheet-head h3 { margin: 0; font-family: var(--font-display); font-size: 22px; text-transform: uppercase; }
 .sheet-head p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
 .hero-sheet .hero-stats { justify-content: flex-start; margin-bottom: 10px; }
-.hero-feature.used { opacity: 0.4; }
 .act-banner { text-align: center; margin-top: 10px; }
 /* the workday clock, drawn on the dot of an act's boss: four ticks and a pink pin; the hands run forward in steps */
 .shift-clock {

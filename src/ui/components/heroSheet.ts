@@ -8,17 +8,17 @@ import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { ABILITY_ICON, PASSIVE_ICON } from '../combat/view';
 import { h } from '../dom';
-import { cardText, UNKNOWN } from './cardView';
+import { UNKNOWN } from './cardView';
 import { openDeck } from './modals';
 
-const feature = (ic: string, name: string, kind: 'passive' | 'active' | 'special', desc: string): HTMLElement =>
+const feature = (ic: string, name: string, kind: 'passive' | 'active', desc: string): HTMLElement =>
   h('div', {
     class: 'hero-feature',
     html: `${icon(ic)}<div><b>${name} <span class="ftag ${kind}">${t(`hero.tag.${kind}`)}</span></b>${desc}</div>`,
   });
 
 /**
- * Passive, ability and once-per-run special of a hero (hero select and the in-run hero sheet). `hidden`: a locked hero
+ * Passive and ability of a hero (hero select and the in-run hero sheet). `hidden`: a locked hero
  * shows only what kind of features it has, their names and texts replaced by question marks.
  */
 export function heroFeatures(hero: HeroDef, hidden = false): HTMLElement {
@@ -34,16 +34,14 @@ export function heroFeatures(hero: HeroDef, hidden = false): HTMLElement {
       'active',
       `${say(t(`hero.${id}.abilityShort`))} <span class="fcost">${icon('crystal')}${hero.ability.cost}</span>`,
     ),
-    hero.special ? feature('star', say(t(`card.${hero.special}.name`)), 'special', say(cardText({ uid: -1, id: hero.special, up: false }))) : null,
   );
 }
 
-/** The hero's sheet during a run: portrait, current stats, deck, passive, ability and special (marked once used). */
+/** The hero's sheet during a run: portrait, current stats, deck, passive and ability. */
 export function openHeroSheet(run: RunState): void {
   const hero = HEROES[run.hero];
   sfx('tap');
   const features = heroFeatures(hero);
-  if (hero.special && run.specialUsed) features.lastElementChild?.classList.add('used');
   const body = h(
     'div',
     { class: 'hero-sheet' },

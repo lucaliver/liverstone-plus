@@ -1,16 +1,30 @@
 # TASKS
 
-- [x] Schermata "Pick your bonus": qui le carte del deck NON dovrebbero venire raggruppate
+- [x] nel employer contract: Aggiungi più padding bianco sotto a signature
 
-- [x] Animazione door pre-combattimento: il porttrait del nemico dovrebbe essere addosso alla porta stessa
+- [x] quando ordino le carte nell'handbook per type qualcosa non torna: dovrebbero combaciare i tipi e il colore dell'art
 
-- [x] Payslip condivisibile. A fine run, un bottone "Share" genera un'immagine della payslip (canvas + Web Share API). Dovrebbe includere personaggio, deck, etc
+- [x] handbook: se faccio un long press un po' breve per aprire una carta, quando lo rilascio viene per sbaglio preso il click sul tasto close.
 
-- [x] Record battuti: quando superi un record, sulla payslip di fine run compare un timbro "NEW RECORD" accanto alla riga.
+- [x] assicurati che le descrizioni delle passive dei boss siano chiare e brevi e non contengano meme: per le battute puoi fargli dire una frase a loro attraverso i fumetti
 
-- [x] Crea un nuovo nemico a tema: effetto il contrario di openBeltRows: al 50% di hp chiude una corsia (le carte vengono scartate immediatamente), un "restructuring". La saracinesca e il suono di macchinario ci sono già.
+- [x] rimuovi del tutto la carta speciale auto inclusa nella sleve dei personaggi
 
-- [x] Nella prima run scriptata, voglio scriptare anche i reward, per lo meno per i primi 3 combattimenti
+- [ ] "autopilot" effect (and cards) should play cards WITHOUT paying their cost
 
-- [x] After signing it the first time, the employment contract screen should not be shown anymore
+- [ ] i mazzi iniziali dovrebbero avere tutti 15 carte
+
+- [ ] add disclaimer when increasing speed from settings (it increases difficulty)
+
+- [ ] in home menu: if you have volume at zero, a banner tells you that sound on is reccomended
+
+
+- [ ] i titoli delle carte sono troppo piccoli e non si leggono (per lo meno nell'handbook)
+
+- [ ] add new enemy "work wife" (girl): at the beginning she fills your sleeves with boxes (they costs 20 mana but it lowers every second)
+
+- [ ] i titoli delle carte sono troppo piccoli e non si leggono (per lo meno nell'handbook)
+
+- [ ] add overlay tutorial during the first enemy: it has more steps and tells you how to read the board
+- [ ] add new enemy that adds a "kamikaze" curse: costs 99 deals 99 damages. Then, when it is drawn a tutorial overlay appears and tells you you should put it in your sleeve to save yourself
 

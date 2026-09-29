@@ -259,7 +259,7 @@
 .contract {
   position: relative;
   width: min(100%, 340px);
-  padding: 14px 16px 12px;
+  padding: 14px 16px 34px;
   text-align: left;
   color: var(--k);
   background: var(--paper);

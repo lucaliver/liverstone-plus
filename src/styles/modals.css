@@ -304,7 +304,6 @@
 .info-head .ftag.good { background: var(--b); }
 .info-head .ftag.bad { background: var(--p); }
 .info-head .ftag.active { background: var(--p); }
-.info-head .ftag.special { color: var(--k); background: var(--y); border: 2px solid var(--k); }
 .info-desc { font-size: 18px; font-weight: 700; line-height: 1.35; }
 .info-extra { margin-top: 10px; font-family: var(--font-ui); font-size: 18px; color: var(--muted); }
 
@@ -322,7 +321,6 @@
 .detail-meta .rar.rare { color: var(--paper); background: var(--b); }
 .detail-meta .rar.epic { color: var(--paper); background: var(--p); }
 .detail-meta .rar.legendary,
-.detail-meta .rar.unique { background: var(--y); }
 .detail-meta .rar.special { color: var(--y); background: var(--k); }
 
 /* colour-coded move effects (info sheet and compendium) */
