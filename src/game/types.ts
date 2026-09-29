@@ -5,7 +5,7 @@ export type HeroId = 'warrior' | 'mage' | 'necromancer';
 export type CardClass = HeroId | 'neutral' | 'curse';
 export type CardType = 'attack' | 'spell' | 'skill' | 'power' | 'potion' | 'curse';
 export type Rarity = 'starter' | 'common' | 'rare' | 'epic' | 'legendary' | 'special';
-export type Keyword = 'exhaust' | 'consume' | 'fleeting' | 'unplayable' | 'volatile' | 'innate' | 'pending';
+export type Keyword = 'exhaust' | 'consume' | 'fleeting' | 'unplayable' | 'volatile' | 'innate' | 'pending' | 'bulky';
 export type Side = 'hero' | 'enemy';
 
 /** A card in the run deck. */
@@ -53,6 +53,8 @@ export interface CombatCard extends CardInst {
   tax?: number;
   /** Seconds spent on the belt since it was drawn (cards with `ride` change with it). */
   age?: number;
+  /** Mana its cost has dropped by so far this fight (`costDrop`). */
+  cut?: number;
 }
 
 export interface BeltCard {
@@ -103,6 +105,8 @@ export interface CardDef {
   ride?: { i: number; by: number; to: number };
   /** Damage this card gains for every second the hero's mana is full and overflowing, wherever the card is. */
   onOverflow?: number;
+  /** Index of the value its cost drops by every second of the fight, wherever the card is (Moving Box). */
+  costDrop?: number;
   /** Bonus effects that only work while the card waits in the sleeve (`v` = its values, `card` = the copy held). */
   inSleeve?: {
     /** Extra damage for the hero's cards of any type (`def` = the card dealing it). */
@@ -192,6 +196,8 @@ export interface EnemyDef {
   every: number;
   /** Statuses the enemy starts with. */
   start?: { id: string; v?: number; t?: number }[];
+  /** Curse card that fills every sleeve slot at the start of the fight. */
+  fillSleeve?: string;
   /** Called once when HP drops under 50%. */
   onHalf?: (c: Combat) => void;
   /** At half HP it also says something (`enemy.<id>.speech`, shown in a speech bubble). */

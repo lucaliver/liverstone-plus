@@ -683,7 +683,31 @@ ${shadow}
 <path d="M64 80l26 10M136 80l-26 10" stroke="#120e18" stroke-width="7" stroke-linecap="round"/>
 <path d="M74 134c12 14 40 14 52 0z" fill="#1b1830" ${OUT}/><path d="M80 136l4 6 4-6 4 6 4-6 4 6 4-6 4 6 4-6 4 6 4-6" stroke="#f6f0e4" stroke-width="2.5" fill="none"/>`;
 
+/** Work Wife: a pale ghost girl in a pink cardigan, bow in her hair and a too-wide smile, moving her boxes in with you. */
+const workWife = `
+<defs>${lg('ww-c', '#ff9ad0', '#c02a80')}${rg('ww-s', '#f4ecff', '#b8a0e0')}${glow('ww-g', '#ff3d9a')}</defs>
+${shadow}
+<path d="M80 176l-4 12h18l-2-12zM108 176l-2 12h18l-4-12z" fill="#1b1830" ${OUT}/>
+<path d="M56 180c0-46 18-72 44-72s44 26 44 72z" fill="url(#ww-c)" ${OUT}/>
+<path d="M100 110v70" stroke="#120e18" stroke-width="3"/><g fill="#ffd900" ${OUT}><circle cx="94" cy="130" r="3"/><circle cx="94" cy="150" r="3"/></g>
+<!-- the #1 mug (right) -->
+<g class="limb"><path d="M142 130c12 0 20 6 22 14l-10 4c-2-4-6-6-12-6z" fill="url(#ww-c)" ${OUT}/><rect x="152" y="112" width="26" height="30" fill="#f6f0e4" ${OUT}/><path d="M178 118c10 0 10 16 0 16" stroke="#120e18" stroke-width="4" fill="none"/><path d="M165 132c-6-4-8-8-5-11 2-2 4-1 5 1 1-2 3-3 5-1 3 3 1 7-5 11z" fill="#ff3d9a"/></g>
+<!-- her boxes, moving in (left) -->
+<rect x="14" y="146" width="56" height="40" fill="#c9a060" ${OUT}/><path d="M14 158h56M38 146v12" stroke="#8a5a2a" stroke-width="4"/>
+<rect x="22" y="112" width="44" height="34" fill="#d8b070" ${OUT}/><path d="M22 122h44M44 112v10" stroke="#8a5a2a" stroke-width="4"/>
+<path d="M44 138c-6-4-8-8-5-11 2-2 4-1 5 1 1-2 3-3 5-1 3 3 1 7-5 11z" fill="#ff3d9a"/>
+<path d="M62 132c-8 4-10 12-6 18l10-2c-2-4 0-8 4-10z" fill="url(#ww-c)" ${OUT}/>
+<!-- head: long dark hair, a big bow, heart eyes, a smile a little too wide -->
+<path d="M62 64c0-30 16-48 38-48s38 18 38 48v46c-8 6-16 6-22 0V70H84v40c-6 6-14 6-22 0z" fill="#4a2090" ${OUT}/>
+<path d="M70 62c0-22 12-36 30-36s30 14 30 36c0 20-12 36-30 36S70 82 70 62z" fill="url(#ww-s)" ${OUT}/>
+<path d="M68 56c4-22 18-32 32-32s28 10 32 32c-10-10-18-12-24-12l-4 8-4-8c-10 0-20 4-32 12z" fill="#4a2090" ${OUT}/>
+<path d="M100 18l-22-12v24zM100 18l22-12v24z" fill="#ff3d9a" ${OUT}/><circle cx="100" cy="18" r="6" fill="#ffd900" ${OUT}/>
+<g class="eye" fill="#ff3d9a"><circle cx="86" cy="62" r="9" fill="url(#ww-g)"/><circle cx="114" cy="62" r="9" fill="url(#ww-g)"/><path d="M86 68c-6-4-8-8-5-11 2-2 4-1 5 1 1-2 3-3 5-1 3 3 1 7-5 11zM114 68c-6-4-8-8-5-11 2-2 4-1 5 1 1-2 3-3 5-1 3 3 1 7-5 11z" stroke="#120e18" stroke-width="1.5"/></g>
+<path d="M82 78c10 10 26 10 36 0z" fill="#1b1830" ${OUT}/><path d="M86 79h28l-3 4H89z" fill="#f6f0e4"/>
+<circle cx="78" cy="74" r="4" fill="#ff8ac8"/><circle cx="122" cy="74" r="4" fill="#ff8ac8"/>`;
+
 export const CREATURES: Record<string, string> = {
+  workWife,
   snitch,
   boomer,
   coworker,

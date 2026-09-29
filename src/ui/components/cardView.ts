@@ -59,6 +59,8 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   undo: { icon: 'undo' },
   auto: { icon: 'autopilot', unit: 's' },
   balance: { icon: 'seesaw' },
+  /** The card's own cost goes down. */
+  cheaper: { icon: 'priceTag', sign: '-' },
 };
 
 /** Long names get a smaller font (and two lines) so they fit the title band instead of being cut. */
@@ -71,7 +73,7 @@ export function cardName(card: CardInst): string {
   return t(`card.${card.id}.name`);
 }
 
-export function cardCostLabel(card: CardInst & { tax?: number }): string {
+export function cardCostLabel(card: CardInst & { tax?: number; cut?: number }): string {
   const cost = cardCostOf(card);
   return cost < 0 ? 'X' : String(cost);
 }

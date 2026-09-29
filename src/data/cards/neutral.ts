@@ -429,6 +429,20 @@ export const curseCards: CardDef[] = [
     play: () => {},
   },
   {
+    // The Work Wife's: fills the sleeve at the start of the fight and gets cheaper every second.
+    id: 'movingBox',
+    face: '{cheaper:0}/s',
+    cls: 'curse',
+    type: 'curse',
+    rarity: 'special',
+    cost: 20,
+    vals: [1],
+    keywords: ['exhaust', 'bulky'],
+    costDrop: 0,
+    art: 'movingBox',
+    play: () => {},
+  },
+  {
     id: 'slime',
     face: '{clog}',
     cls: 'curse',

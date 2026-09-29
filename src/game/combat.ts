@@ -102,6 +102,8 @@ export class Combat {
   cardsPlayed = 0;
   /** The last card the hero played this fight (rules such as "not the same type twice"). */
   lastPlayed: CardDef | null = null;
+  /** Fight time not yet counted as a whole second (see `costDrop`). */
+  private second = 0;
   /** Seconds of mana overflow not yet turned into growth (see `onOverflow`). */
   private overflow = 0;
   /** The hero's recent HP losses (fight time, amount), for effects that undo them (Ctrl+Z). */
@@ -179,6 +181,8 @@ export class Combat {
     };
     this.enemy.move = this.nextEnemyMove();
     for (const s of e.start ?? []) this.applyStatus('enemy', s.id, s.v ?? 1, s.t ?? 0, true);
+    const box = e.fillSleeve;
+    if (box) this.sleeve = this.sleeve.map(() => ({ uid: -++this.tempUid, id: box, up: false, bonus: 0, temp: true }));
     this.hero.maxMana = Math.min(this.hero.maxMana, this.manaCap());
     this.hero.mana = Math.min(this.hero.mana, this.hero.maxMana);
 
@@ -331,6 +335,14 @@ export class Combat {
       return;
     }
     this.time += dt;
+    this.second += dt;
+    if (this.second >= 1) {
+      this.second -= 1;
+      for (const card of this.allCards()) {
+        const drop = CARDS[card.id].costDrop;
+        if (drop !== undefined) card.cut = (card.cut ?? 0) + this.cardVals(card)[drop];
+      }
+    }
     this.tickHero(dt);
     this.tickFighter('hero', dt);
     this.tickFighter('enemy', dt);
@@ -690,6 +702,8 @@ export class Combat {
     // A hexed card is stuck to the belt until freed; a covered one can't be reached; a pending one waits its turn.
     if (b.card.hex || this.isCovered(uid) || this.isPending(b.card)) return false;
     const old = this.sleeve[target];
+    // A bulky card can't be swapped out of the sleeve: it has to be played.
+    if (old && this.keywords(old).includes('bulky')) return false;
     this.sleeve[target] = b.card;
     if (old) this.belt[beltIdx] = { card: old, pos: b.pos, row: b.row };
     else this.belt.splice(beltIdx, 1);

@@ -131,6 +131,21 @@ const defs: EnemyDef[] = [
     specials: [{ id: 'blankStare', intent: 'debuff', windup: 6, hex: { id: 'petrify', share: 0.5 } }],
   },
   {
+    // Moves in with you: her boxes fill your sleeve from the start, and only get cheaper to unpack with time.
+    id: 'workWife',
+    act: 1,
+    tier: 'normal',
+    hp: 45,
+    art: 'workWife',
+    main: atk('lunchTogether', 5, 6),
+    every: 2,
+    specials: [
+      { id: 'didYouHear', intent: 'curse', windup: 6, curse: [{ id: 'toxin', n: 2, to: 'draw' }] },
+      atk('stickyNote', 12, 9, { intent: 'charge' }),
+    ],
+    fillSleeve: 'movingBox',
+  },
+  {
     id: 'boneKnight',
     act: 1,
     tier: 'elite',
@@ -355,6 +370,7 @@ export const DIFFICULTY = [
   'sleeper',
   'slime',
   'newHire',
+  'workWife',
   'cultist',
   'goblin',
   'skeleton',

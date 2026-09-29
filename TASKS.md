@@ -21,7 +21,7 @@
 
 - [x] i titoli delle carte sono troppo piccoli e non si leggono (per lo meno nell'handbook)
 
-- [ ] add new enemy "work wife" (girl): at the beginning she fills your sleeves with boxes (they costs 20 mana but it lowers every second)
+- [x] add new enemy "work wife" (girl): at the beginning she fills your sleeves with boxes (they costs 20 mana but it lowers every second)
 
 - [x] i titoli delle carte sono troppo piccoli e non si leggono (per lo meno nell'handbook)
 

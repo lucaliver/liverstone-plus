@@ -140,6 +140,8 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
 - `ride` makes one value change for every second the card rides the belt (`CombatCard.age`, frozen in the sleeve),
   read through `cardValsOf` like everything else (Unpaid Overtime grows, Patience decays).
 - `onOverflow`: damage the card gains for every second of full, wasted mana, wherever it is (Complaint Box).
+- `costDrop`: index of the value its cost drops by every second, wherever it is (`CombatCard.cut`; Moving Box).
+  Keyword `bulky`: a card in the sleeve can't be swapped out, only played.
 - `inSleeve` hooks (`bonusDamage`, `onCardPlayed`, `onHeroHit`) work only while the card waits in the sleeve
   (Tool Belt, Cache, Burn Book); the face shows them after `{?sleeve}`.
 - `span` (belt widths) makes a card wide: it rides over the cards ahead of it (Gatekeeping); `tall` makes it cover both
@@ -159,7 +161,7 @@ charging and `release` it with the next hit (intents include `idle` and `absorb`
 plus `enemy.<id>.name`, `move.<id>` for every move, and `enemy.<id>.half` if it has `onHalf`.
 Optional: `startRows` (belt rows open at the start; `openBeltRows()` opens the rest, `closeBeltRows()` shuts them again and
 discards their cards), `halfSpeech` (says `enemy.<id>.speech`
-at half HP), `halfArt` (sprite after its half-HP trait triggers), `halfSecret` (that trait isn't shown until it triggers), `firstRunOnly` (only the first fight of the very first run). Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.ts` (`enemyScale`).
+at half HP), `halfArt` (sprite after its half-HP trait triggers), `halfSecret` (that trait isn't shown until it triggers), `fillSleeve` (a curse card in every sleeve slot at the start), `firstRunOnly` (only the first fight of the very first run). Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.ts` (`enemyScale`).
 
 ### Heroes
 

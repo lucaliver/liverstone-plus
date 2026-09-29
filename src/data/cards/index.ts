@@ -43,12 +43,13 @@ export function cardKeywordsOf(card: CardInst): Keyword[] {
   return extra.length ? [...new Set([...base, ...extra])] : base;
 }
 
-/** Mana cost of a card copy after its upgrade, perks and a fight's Inflation (`tax`) (-1 = X). */
-export function cardCostOf(card: CardInst & { tax?: number }): number {
+/** Mana cost of a card copy after its upgrade, perks, a fight's Inflation (`tax`) and `costDrop` (`cut`) (-1 = X). */
+export function cardCostOf(card: CardInst & { tax?: number; cut?: number }): number {
   const def = CARDS[card.id];
   const cost = card.up && def.upCost !== undefined ? def.upCost : def.cost;
   if (cost < 0) return cost;
-  return Math.max(def.minCost ?? 0, cost + (card.perks ?? []).reduce((d, p) => d + (PERKS[p]?.costDelta ?? 0), 0)) + (card.tax ?? 0);
+  const base = Math.max(def.minCost ?? 0, cost + (card.perks ?? []).reduce((d, p) => d + (PERKS[p]?.costDelta ?? 0), 0));
+  return Math.max(0, base + (card.tax ?? 0) - (card.cut ?? 0));
 }
 
 /** Values of a card copy (upgrade, per-fight bonus and time on the belt included). */

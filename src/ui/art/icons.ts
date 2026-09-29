@@ -230,6 +230,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M10 42c0-16 10-28 22-28s22 12 22 28z"/><rect x="4" y="42" width="56" height="9" rx="2"/><rect x="29" y="16" width="6" height="26" fill="#16121f"/>`,
   },
+  movingBox: {
+    el: 'curse',
+    svg: `<path d="M6 24l26-10 26 10v30L32 62 6 54z"/><g fill="#16121f"><path d="M32 30v32h-3V30zM6 24l26 8 26-8-26-8zM12 36h8v3h-8z"/></g><path d="M2 20l24-8 6 6-24 8zM62 20l-24-8-6 6 24 8z"/>`,
+  },
   crate: {
     el: 'steel',
     svg: `<rect x="8" y="12" width="48" height="44"/><g fill="#16121f"><rect x="14" y="18" width="36" height="4"/><rect x="14" y="46" width="36" height="4"/><path d="M14 26l36 16v4L14 30z"/></g>`,

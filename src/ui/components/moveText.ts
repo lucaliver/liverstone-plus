@@ -92,6 +92,7 @@ export function enemyTraits(e: EnemyDef, withHalf = true): { icon: string; name:
   const traits = (e.start ?? [])
     .filter((s) => STATUSES[s.id].passive)
     .map((s) => ({ icon: STATUSES[s.id].icon, name: t(`status.${s.id}`), desc: t(`status.${s.id}.d`, { v: s.v ?? 1 }) }));
+  if (e.fillSleeve) traits.push({ icon: 'hand', name: t(`card.${e.fillSleeve}.name`), desc: t('enemy.fillSleeve') });
   if (e.onHalf && withHalf) traits.push({ icon: HALF_ICON, name: '', desc: t(`enemy.${e.id}.half`) });
   return traits;
 }

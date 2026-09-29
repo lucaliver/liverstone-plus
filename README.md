@@ -162,6 +162,7 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
 | HR Bitch | Passiva *No Repeats Policy*: non puoi giocare due carte dello stesso colore (attacco, difesa, utilità) a meno di 3 s l'una dall'altra; *Performance Review* ti mette due *Improvement Plan* nel mazzo |
 | Guy Asleep | Un solo colpo enorme con una miccia lunghissima (*Rude Awakening*), ma ogni carta che giochi lo sveglia 1 s prima |
 | New Hire | *Blank Stare* pietrifica metà delle carte sul nastro e metà del resto del mazzo: su ognuna c'è scritto *Tap it! ×5*; restano di pietra (anche rimescolate nel mazzo) finché non le rompi |
+| Work Wife | Si trasferisce da te: a inizio scontro riempie tutta la sleeve di *Moving Box* (maledizioni *Bulky*: non si scambiano, solo si pagano), che costano tanto ma calano di 1 mana al secondo |
 | **Security Monitor** (élite) | Colpi che rendono Vulnerabile, *Lockdown* (blocco), *Clearance Check* (due *Red Tape* nel mazzo), si infuria a metà vita |
 | **Slaves CEO** (boss) | *Write-Ups*, *Deadlines* e il colpo *YOU'RE FIRED*; a metà vita accelera |
 

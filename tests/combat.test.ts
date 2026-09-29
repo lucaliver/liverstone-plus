@@ -152,6 +152,21 @@ describe('combat engine', () => {
     expect(c.belt.some((x) => x.card.uid === a.uid)).toBe(true);
   });
 
+  it('the Work Wife fills the sleeve with Moving Boxes: stuck there, cheaper every second, cleared by paying', () => {
+    const c = setup({ hero: HEROES.necromancer, enemy: ENEMIES.workWife });
+    expect(c.sleeve.every((x) => x?.id === 'movingBox')).toBe(true);
+    const box = c.sleeve[0]!;
+    expect(c.cardCost(box)).toBe(20);
+    run(c, CONFIG.introTime + 0.01);
+    expect(c.stash(c.belt[0].card.uid, 0)).toBe(false);
+    run(c, 5);
+    expect(c.cardCost(box)).toBe(15);
+    run(c, 20);
+    expect(c.cardCost(box)).toBe(0);
+    expect(c.playCard(box.uid)).toBe(true);
+    expect(c.sleeve[0]).toBe(null);
+  });
+
   it('enemy resolves its telegraphed move after the wind-up', () => {
     const c = setup({ enemy: ENEMIES.rat });
     run(c, CONFIG.introTime + ENEMIES.rat.main.windup + 0.05);
