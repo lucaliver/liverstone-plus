@@ -413,6 +413,6 @@
   border: var(--line) solid var(--k);
   box-shadow: var(--off) var(--off) 0 var(--p);
 }
-.coach-note p { margin: 0 0 10px; font-size: 16px; font-weight: 600; line-height: 1.3; }
+.coach-note p { margin: 0 0 10px; font-size: 16px; font-weight: 600; line-height: 1.3; white-space: pre-line; }
 .coach-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .coach-count { font-family: var(--font-ui); font-size: 18px; color: var(--muted); }
