@@ -196,14 +196,9 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     sfx('button');
     haptic('tap');
     playTemporaryMusic('pause');
-    const body = h(
-      'div',
-      { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
-      speedRow(),
-    );
     pauseModal = openModal({
       title: t('combat.paused'),
-      body,
+      body: speedRow(),
       actions: [
         { label: t('combat.resume'), icon: 'play' },
         {
