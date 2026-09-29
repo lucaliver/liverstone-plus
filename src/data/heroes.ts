@@ -12,7 +12,7 @@ const warrior: HeroDef = {
   regen: 1.3,
   blockDecay: 1.2,
   // Starter decks: only basic cards (plus mana crystals); everything else comes from rewards.
-  startDeck: [...rep('strike', 7), ...rep('defend', 7), 'manaGeode'],
+  startDeck: [...rep('strike', 7), ...rep('defend', 6), 'manaShard', 'manaGeode'],
   firstRewards: [
     ['heavyLifting', 'cleave', 'ironWall', 'bandage'],
     ['battleCry', 'shieldBash', 'coffeeBreak', 'counterstrike'],

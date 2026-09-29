@@ -353,7 +353,7 @@ test('tapping the hero portrait in a fight shows the deck in play and pauses', a
   await page.locator('.hero-portrait').click();
   // The warrior's 15-card deck, identical copies grouped.
   await expect(page.locator('.modal h2')).toContainText('15');
-  await expect(page.locator('.modal .deck-grid .card')).toHaveCount(3);
+  await expect(page.locator('.modal .deck-grid .card')).toHaveCount(4);
   const clock = () => page.evaluate('window.__combat.time');
   const before = await clock();
   await page.waitForTimeout(300);
