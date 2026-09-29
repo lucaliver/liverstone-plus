@@ -27,7 +27,7 @@
   flex: none;
   display: flex;
   align-items: stretch;
-  height: 25cqw;
+  height: 28cqw;
   background: var(--band);
   color: var(--band-text);
   border-bottom: var(--bw) solid var(--k);
@@ -51,16 +51,16 @@
   min-width: 0;
   display: flex;
   align-items: center;
-  padding: 0 3cqw;
+  padding: 0 2.5cqw;
   font-family: var(--font-ui);
-  font-size: 12.5cqw;
-  line-height: 1;
-  white-space: nowrap;
+  font-size: 17cqw;
+  line-height: 0.85;
   overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
 }
-.c-name.long { font-size: 10.5cqw; }
-.c-name.xlong { font-size: 9cqw; letter-spacing: -0.02em; }
+/* longer names go on two lines, a size down */
+.c-name.long { font-size: 14cqw; }
+.c-name.xlong { font-size: 12cqw; }
 .card.is-up .c-name::after {
   content: '+';
   margin-left: 1cqw;

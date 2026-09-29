@@ -61,8 +61,8 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   balance: { icon: 'seesaw' },
 };
 
-/** Long names get a smaller font so they fit the title band instead of being cut. */
-const nameFit = (name: string): string => (name.length > 14 ? 'xlong' : name.length > 10 ? 'long' : '');
+/** Long names get a smaller font (and two lines) so they fit the title band instead of being cut. */
+const nameFit = (name: string): string => (name.length > 16 ? 'xlong' : name.length > 7 ? 'long' : '');
 
 /** Stands in for the name or text of something not met or unlocked yet (handbook, hero select). */
 export const UNKNOWN = '????';
