@@ -22,7 +22,7 @@ const en = {
   'contract.terms': 'Terms & conditions apply',
   'contract.termsTitle': 'Terms & Conditions',
   'contract.termsText':
-    'By signing you accept unpaid overtime, mandatory fun and a pizza party instead of a raise. Management may change these terms at any time, retroactively. You held this to read it: well done, nobody does. You will do it a lot in here.',
+    'By signing you accept unpaid overtime, mandatory fun and a pizza party instead of a raise. \nManagement may change these terms at any time, retroactively.',
   'contract.sign': 'Hold to sign',
   'contract.signHere': 'Signature',
   'contract.hired': 'Hired',

@@ -194,7 +194,7 @@ La difficoltà cresce scendendo di piano. Le élite e lo Slaves CEO guadagnano 1
   **tenendo premuto**, e una clausola insegna il gesto (tieni premuti i *Termini e condizioni* per leggerli); dopo è già
   firmato e basta toccare *Start game* (il primo gesto sblocca anche l'audio).
 - **Home:** un manifesto di propaganda appeso al muro (il boss enorme stampato in due inchiostri e tagliato dal bordo,
-  il logo su un blocco giallo, lo slogan timbrato *Work · Obey · Punch in*, la targa *Punchcard Inc.*); il boss è il
+  il logo su un blocco giallo, la targa *Punchcard Inc.*); il boss è il
   primo che non hai ancora incontrato. Sotto, sulla scrivania, il **cartellino** da timbrare accanto al
   timbracartellino: *New run*, oppure *Back to work* con eroe, atto, piano e vita della run in corso; toccandolo entra
   nel timbracartellino (KA-CHUNK). Poi *Handbook*, *How to play* e Impostazioni (dove sta anche *Reset progress*);
