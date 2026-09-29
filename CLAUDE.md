@@ -196,6 +196,8 @@ Plurals: `{n|one|other}`. New language: copy `en.ts`, register it in `core/i18n.
 - Input: tap = act, **hold = inspect** (`onPress`, `onTapOrHold`, shared `LONG_PRESS_MS`). Inspecting pauses the fight
   through `view.inspect(open)`. Tap targets ≥ 44 px.
 - Modals close on a full tap on the backdrop (press + release), never on pointerdown.
+- An uncaught error or rejection opens the *Machine jam* window (`catchCrashes` in `main.ts`): Restart reloads, Copy
+  error copies version, browser and stack. Catch expected rejections (share sheet closed, audio resume) so they don't trip it.
 - Icons: every card has its own art; rule icons (glyphs, statuses, intents, tags, map nodes) are shared only within
   one concept. `content.test.ts` enforces the card side.
 - Dev hooks (dev server only): `window.__combat` (current `Combat`) and `window.__game` (`run`, `nextNode`,
@@ -240,7 +242,7 @@ Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unloc
 - **Balance** (`tests/balance.sim.test.ts` + `bot.ts`): heuristic bot win rates; treat them as relative.
 - **E2E** (`tests/e2e/smoke.spec.ts`): contract (first launch only) → title, hero carousel and locks, fight → reward swap or skip, layout
   stability, Start gate, pause (music, backdrop tap, main menu, open windows), break room upgrade, map lane choice,
-  compendium (cards, personnel, records) and card anatomy, debug fight, title poster and time card fit, first-fight tour, first Kamikaze tip. `freshGame` unlocks every hero unless `locked`. Use real touch
+  compendium (cards, personnel, records) and card anatomy, debug fight, title poster and time card fit, first-fight tour, first Kamikaze tip, crash window. `freshGame` unlocks every hero unless `locked`. Use real touch
   (`page.touchscreen.tap`) when the behaviour differs on phones.
 - Other engines: `npx playwright test --browser=webkit` (Safari/iOS) passes too; Firefox needs a config without
   `isMobile` (same viewport, `hasTouch`). Keep CSS to what Safari 16 supports (no `color-mix`).

@@ -28,7 +28,8 @@ import {
 import { contractSigned, startingFirstRun } from './game/meta';
 import { settings } from './game/settings';
 import type { HeroId } from './game/types';
-import { confirmModal, initApp, show } from './ui/app';
+import { confirmModal, initApp, openModal, show } from './ui/app';
+import { h } from './ui/dom';
 import { openDebugFight } from './ui/components/modals';
 import { initFx } from './ui/fx/fx';
 import { preloadArt } from './ui/art/riso';
@@ -158,6 +159,48 @@ function abandon(): void {
   goTitle();
 }
 
+/**
+ * Last resort for a bug: after an uncaught error the game's state can't be trusted (a throw in a frame even stops the
+ * loop), so the only way on is a reload; the run resumes from its save at the start of the floor.
+ */
+function catchCrashes(): void {
+  let crashed = false;
+  const crash = (err: unknown): void => {
+    if (crashed) return;
+    crashed = true;
+    suspendMusic(true);
+    const msg = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
+    const report = [`Punchcard ${__APP_VERSION__}`, navigator.userAgent, (err instanceof Error && err.stack) || msg].join('\n');
+    const modal = openModal({
+      title: t('crash.title'),
+      body: h('div', null, h('p', null, t('crash.body')), h('code', { class: 'crash-detail' }, msg)),
+      dismissable: false,
+      actions: [
+        { label: t('crash.restart'), cls: 'cta', onClick: () => location.reload() },
+        {
+          label: t('crash.copy'),
+          cls: 'secondary crash-copy',
+          onClick: () => {
+            // No clipboard outside secure contexts (e.g. the dev server on the LAN): the error stays readable on screen.
+            void navigator.clipboard?.writeText(report).then(
+              () => {
+                modal.el.querySelector('.crash-copy')!.textContent = t('crash.copied');
+              },
+              () => {},
+            );
+            return false;
+          },
+        },
+      ],
+    });
+  };
+  // Errors without an Error object ("Script error." from other origins, ResizeObserver notices) aren't ours.
+  addEventListener('error', (e) => {
+    if (e.error) crash(e.error);
+  });
+  addEventListener('unhandledrejection', (e) => crash(e.reason));
+}
+
 async function boot(): Promise<void> {
   setLocale(settings.locale);
   setSfxVolume(settings.sfxVolume);
@@ -166,6 +209,7 @@ async function boot(): Promise<void> {
   document.documentElement.classList.toggle('reduce-motion', settings.reduceMotion);
   const root = document.getElementById('app')!;
   initApp(root);
+  catchCrashes();
   initFx(root);
   // Browsers only allow audio after a user gesture.
   addEventListener('pointerdown', unlockAudio, { passive: true });

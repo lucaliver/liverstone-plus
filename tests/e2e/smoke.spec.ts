@@ -15,6 +15,24 @@ test('title, hero select and journey render without errors', async ({ page }) =>
   expect(problems).toEqual([]);
 });
 
+test('an uncaught error shows the machine jam window, and Restart reloads the game', async ({ page }) => {
+  await freshGame(page);
+  await page.evaluate(() => {
+    setTimeout(() => {
+      throw new Error('boom');
+    });
+  });
+  const jam = page.locator('.modal', { hasText: /machine jam/i });
+  await expect(jam).toBeVisible();
+  await expect(jam.locator('.crash-detail')).toHaveText('Error: boom');
+  // Not dismissable: a tap on the backdrop leaves it open.
+  await page.mouse.click(5, 5);
+  await expect(jam).toBeVisible();
+  await jam.getByRole('button', { name: 'Restart' }).click();
+  await expect(page.locator('.title-screen .logo')).toBeVisible();
+  await expect(jam).toBeHidden();
+});
+
 test('a fight can be played and won, then a reward is offered', async ({ page }) => {
   const problems = await freshGame(page);
   await startFight(page);

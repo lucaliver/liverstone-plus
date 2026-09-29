@@ -52,7 +52,7 @@ export function unlockAudio(): void {
       fn();
     });
   }
-  if (ctx.state === 'suspended') void ctx.resume();
+  resumeAudio();
 }
 
 type Wave = OscillatorType;

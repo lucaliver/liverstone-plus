@@ -56,6 +56,17 @@
   line-height: 1.4;
   font-weight: 500;
 }
+/* the error behind a crash, for a screenshot or a bug report */
+.crash-detail {
+  display: block;
+  margin-top: 12px;
+  padding: 8px 10px;
+  border: 2px dashed var(--k);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  color: var(--p);
+  overflow-wrap: anywhere;
+}
 
 .setting {
   color: var(--k);
