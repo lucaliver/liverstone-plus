@@ -10,7 +10,7 @@
 
 - [x] carta "team change": dovrebbe avere exhaust; e le carte pinnate dovrebbero rimanere DIETRO a quelle nuove che scorrono
 
-- [ ] passiva del "CEO slave": la descrizione non combacia con quello che ora fa
+- [x] passiva del "CEO slave": la descrizione non combacia con quello che ora fa
 
 - [x] nella schermata di vittoria: rimuovi tasto "Clock in again" e metti icona home al tasto "Main menu"
 

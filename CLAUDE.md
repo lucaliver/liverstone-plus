@@ -137,7 +137,7 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
 
 - `face` grammar: `{kind:i}` icon + value i · `{kind}` icon · `{?kind}` condition shown as (icon) · `{i}` bare
   value · `|` new line · other text as is. Kinds live in `GLYPHS` (`ui/components/cardView.ts`).
-- `desc`: `{i}` values, `[kw]` keywords (need `kw.<kw>` and `kw.<kw>.d`).
+- `desc`: `{i}` values, `[kw]` keywords (need `kw.<kw>` and `kw.<kw>.d`). Status, rule, glossary and half-HP texts take `[kw]` too (`keywordHtml` / `keywordText` in `cardView.ts`; colours by `.kw-<id>` in `type.css`).
 - Art colour comes from the face (attack / defense / utility / curse) unless `cat` is set. Set `dmg: []` only for
   raw damage that ignores modifiers (e.g. `forklift`).
 - Keyword flags (`Keyword` type, change engine behaviour): exhaust, consume, fleeting, volatile, innate,
@@ -151,7 +151,7 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
   Keyword `bulky`: a card in the sleeve can't be swapped out, only played.
 - `inSleeve` hooks (`bonusDamage`, `onCardPlayed`, `onHeroHit`) work only while the card waits in the sleeve
   (Tool Belt, Cache, Burn Book); the face shows them after `{?sleeve}`.
-- `anchor` stops a card at the exit: attacks that reach it pile up behind it (`BeltCard.stuck`), any other card reaching the pile sends it off; its `play` calls `playPile` (On a Roll). `Team Change` pins every belt card (`BeltCard.pinned`: it stays until played, new cards ride past). `bonusIdx` is the value `CombatCard.bonus` grows (Debt).
+- `anchor` stops a card at the exit: attacks that reach it pile up behind it (`BeltCard.stuck`), any other card reaching the pile sends it off; its `play` calls `playPile` (On a Roll). `Team Change` pins every belt card (`BeltCard.pinned`: it stays until played, new cards ride over it). `bonusIdx` is the value `CombatCard.bonus` grows (Debt).
 - `span` (belt widths) makes a card wide: it rides over the cards ahead of it (Gatekeeping); `tall` makes it cover both
   rows (Lockout). `lockRow` holds every other card of its row (Priority Task). Covered cards can't be played or stashed.
 - Cost, keywords and values of a copy come from `cardCostOf` / `cardKeywordsOf` / `cardValsOf` (`data/cards/index.ts`),
@@ -185,7 +185,7 @@ through `progress()` in `game/meta.ts`), a card file, a sprite, `hero.<id>.*` st
 Rule statuses carry their own hooks instead: `manaCap` (the hero's max mana can't grow past it),
 `canPlay` (returns the i18n key of why a card can't be played; the belt
 shows that status's icon on the card), `onCardPlayed` (cards played after the status was applied), `onHurt` (its side
-just lost HP; the Overthinker's Train of Thought calls `distractEnemy`), `selfIcon` (icon when it's on the hero) and `onExpire` (a card slipped off the belt: Paper Cuts), `strength` (its amount counts as Strength: Workaholic), `regenMul` (mana regeneration multiplier: Chill, Brown Nosing) and `tick` (every step;
+just lost HP; the Overthinker's Train of Thought calls `distractEnemy`), `onAttack` (the enemy carrying it resolved a damaging move: Burn), `selfIcon` (icon when it's on the hero) and `onExpire` (a card slipped off the belt: Paper Cuts), `strength` (its amount counts as Strength: Workaholic), `regenMul` (mana regeneration multiplier: Chill, Brown Nosing) and `tick` (every step;
 `everySecond` in `statuses.ts` for per-second effects); `passive: true` marks a permanent enemy trait (no number on the chip).
 A stunned hero can't play cards or use the ability.
 
