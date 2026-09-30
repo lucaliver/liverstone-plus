@@ -39,8 +39,8 @@ export interface CombatView {
   enemyPoint(): Point;
   heroPoint(): Point;
   pointOf(side: Side): Point;
-  /** A short notice in the middle of the fight; `alert` makes it a bad-news one that stays longer. */
-  toast(text: string, alert?: boolean): void;
+  /** A short notice in the middle of the fight; `alert` makes it a bad-news one that stays longer; `delayMs` holds it back (e.g. behind a speech bubble). */
+  toast(text: string, alert?: boolean, delayMs?: number): void;
   banner(text: string, bad?: boolean): void;
   /** Pauses the fight while something is being inspected (set by the combat screen). */
   inspect(open: boolean): void;
@@ -167,9 +167,9 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
     enemyPoint,
     heroPoint,
     pointOf: (side) => (side === 'enemy' ? enemyPoint() : heroPoint()),
-    toast(text, alert = false) {
+    toast(text, alert = false, delayMs = 0) {
       el.querySelector('.hint-toast')?.remove();
-      const tEl = h('div', { class: `hint-toast ${alert ? 'alert' : ''}` }, text);
+      const tEl = h('div', { class: `hint-toast ${alert ? 'alert' : ''}`, style: { animationDelay: `${delayMs}ms` } }, text);
       tEl.addEventListener('animationend', () => tEl.remove());
       el.append(tEl);
     },

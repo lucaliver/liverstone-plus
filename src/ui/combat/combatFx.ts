@@ -32,6 +32,9 @@ const HIT_OFFSETS: [number, number][] = [
   [40, -34],
 ];
 
+/** How long an enemy's speech bubble stays up (ms) before the note spelling out its half-HP trait (keep equal to `.speech` in CSS). */
+const SPEECH_MS = 3000;
+
 /** Hit-stop (s) by damage dealt: the fight freezes for a beat on heavy hits, longer on huge ones. */
 function hitStopFor(amount: number, target: 'hero' | 'enemy'): number {
   if (amount >= 30) return 0.14;
@@ -241,14 +244,15 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
       case 'enrage': {
         const p = v.enemyPoint();
         floatText(p.x, p.y - 70, t('combat.enraged'), 'status bad');
-        // Spell out what its half-HP trait just did (the belt speeds up, it hits harder…); some enemies also
-        // have a line of their own, in a speech bubble.
-        if (v.combat.enemy.def.halfSpeech) {
-          const bubble = h('div', { class: 'speech' }, t(`enemy.${v.combat.enemy.def.id}.speech`));
+        // The enemy speaks first (some have a line of their own, in a speech bubble), then a short note spells out
+        // what its half-HP trait just did (the belt speeds up, it hits harder…).
+        const def = v.combat.enemy.def;
+        if (def.halfSpeech) {
+          const bubble = h('div', { class: 'speech' }, t(`enemy.${def.id}.speech`));
           bubble.addEventListener('animationend', () => bubble.remove());
           r.stage.append(bubble);
         }
-        v.toast(t(`enemy.${v.combat.enemy.def.id}.half`), true);
+        v.toast(t(`enemy.${def.id}.half`), true, def.halfSpeech ? SPEECH_MS : 0);
         // Its true face: the sprite changes for good.
         const art = v.combat.enemy.def.halfArt;
         const riso = r.enemyArt.querySelector('.riso');

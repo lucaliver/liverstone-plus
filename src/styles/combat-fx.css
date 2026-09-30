@@ -67,7 +67,7 @@
   background: var(--y);
   border: var(--line) solid var(--k);
   box-shadow: 5px 5px 0 var(--p);
-  animation: alert 3.2s steps(1) forwards;
+  animation: alert 3.2s steps(1) both;
 }
 /* it slams in (big, then settled), holds, and is gone */
 @keyframes alert {
@@ -372,8 +372,8 @@
   border: var(--line) solid var(--k);
   box-shadow: 4px 4px 0 var(--shadow);
   pointer-events: none;
-  /* after the half-HP notice (.hint-toast.alert, 3.2s), which covers the same spot */
-  animation: speech 4s steps(1) 3.2s both;
+  /* first, then the half-HP notice (.hint-toast.alert) takes the same spot: `SPEECH_MS` in combatFx.ts */
+  animation: speech 3s steps(1) both;
 }
 .speech::after {
   content: '';

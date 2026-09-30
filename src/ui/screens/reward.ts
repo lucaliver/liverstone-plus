@@ -12,6 +12,9 @@ import { dropLetters } from '../components/decor';
 import { runHud } from './journey';
 import { HEAL_ANIM_MS, playHealing } from './rest';
 
+/** How long the chosen card takes to fly onto the one it replaces, and to be seen sitting there (ms). */
+const SWAP_ANIM_MS = 900;
+
 /** Tap selects; a long press opens the card detail instead (and doesn't select). */
 function selectable(el: HTMLElement, card: CardInst, onSelect: () => void): void {
   onTapOrHold(
@@ -33,6 +36,26 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
   let offer: CardDef | null = null;
 
   const swapBtn = h('button', { class: 'btn', disabled: true }, t('reward.swap'));
+  const skipBtn = h(
+    'button',
+    {
+      class: 'btn small secondary skip-btn',
+      onclick: (e: Event) => {
+        sfx('tap');
+        skipReward(run);
+        // Max HP goes up: hearts rise, the HUD shows the new total, then on to the map.
+        swapBtn.disabled = true;
+        skipBtn.disabled = true;
+        (e.currentTarget as HTMLElement).blur();
+        const hp = el.querySelector('.run-hud .chip.hp span');
+        if (hp) hp.textContent = `${run.hp}/${run.maxHp}`;
+        playHealing(el, SKIP_MAX_HP, t('reward.maxHp'));
+        setTimeout(onDone, HEAL_ANIM_MS);
+      },
+    },
+    h('span', null, t('reward.skip')),
+    h('small', { html: `${icon('heart')}${t('reward.skipHp', { n: SKIP_MAX_HP })}` }),
+  );
   const deckGrid = h('div', { class: 'swap-deck' });
   const offerRow = h('div', { class: 'swap-offer' });
   const hint = h('p', { class: 'sub swap-hint' });
@@ -81,8 +104,22 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
     if (!fromDeck || !offer) return;
     sfx('button');
     haptic('tap');
+    const old = deckEls.find((d) => d.card.uid === fromDeck?.uid)?.el;
+    const flyer = offerEls.find((o) => o.def === offer)?.el;
     swapCard(run, fromDeck.uid, offer.id);
-    onDone();
+    swapBtn.disabled = true;
+    skipBtn.disabled = true;
+    if (!old || !flyer) return onDone();
+    // The offered card flies over the old one and lands on top of it.
+    old.scrollIntoView({ block: 'nearest' });
+    const from = flyer.getBoundingClientRect();
+    const to = old.getBoundingClientRect();
+    flyer.style.setProperty('--dx', `${to.left - from.left}px`);
+    flyer.style.setProperty('--dy', `${to.top - from.top}px`);
+    flyer.style.setProperty('--fit', String(to.width / from.width));
+    flyer.classList.add('flying');
+    old.classList.add('replaced');
+    setTimeout(onDone, SWAP_ANIM_MS);
   });
 
   const el = h(
@@ -105,30 +142,7 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
       offerRow,
     ),
     hint,
-    h(
-      'div',
-      { class: 'reward-actions' },
-      swapBtn,
-      h(
-        'button',
-        {
-          class: 'btn small secondary skip-btn',
-          onclick: (e: Event) => {
-            sfx('tap');
-            skipReward(run);
-            // Max HP goes up: hearts rise, the HUD shows the new total, then on to the map.
-            for (const b of el.querySelectorAll<HTMLButtonElement>('.reward-actions button')) b.disabled = true;
-            (e.currentTarget as HTMLElement).blur();
-            const hp = el.querySelector('.run-hud .chip.hp span');
-            if (hp) hp.textContent = `${run.hp}/${run.maxHp}`;
-            playHealing(el, SKIP_MAX_HP, t('reward.maxHp'));
-            setTimeout(onDone, HEAL_ANIM_MS);
-          },
-        },
-        h('span', null, t('reward.skip')),
-        h('small', { html: `${icon('heart')}${t('reward.skipHp', { n: SKIP_MAX_HP })}` }),
-      ),
-    ),
+    h('div', { class: 'reward-actions' }, swapBtn, skipBtn),
   );
   refresh();
   return { el };

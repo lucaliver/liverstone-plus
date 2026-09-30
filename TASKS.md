@@ -1,8 +1,8 @@
 # TASKS
 
-- [ ] dopo la scelta del reward, aggiungi animazione della carta scelta che va sopra a quella vecchia
+- [x] dopo la scelta del reward, aggiungi animazione della carta scelta che va sopra a quella vecchia
 
-- [ ] quando si attiva la passiva di un nemico, dovresti mostrare prima il fumetto e poi il testo della passiva (il testo della passiva deve essere sintetico)
+- [x] quando si attiva la passiva di un nemico, dovresti mostrare prima il fumetto e poi il testo della passiva (il testo della passiva deve essere sintetico)
 
 - [ ] cambia le mosse di Slave CEO: prima di "you're fired" dovrebbe velocizzare la belt del 200% per 10s
 
@@ -41,9 +41,8 @@
 # NEXT STEPS (ignore for now):
 
 FUTURE:
-> basandoti sulle carte e meccaniche che esistono proponimene di nuove
 
-> la generica mappa da roguelike mi ha stufato, dammi delle idee alternative sia a tema o semplicemente diverse
+
 
 > aggiungere room migliori (es. room in cui elimini una carta o aggiungi una sleeve o altro, tutto a tema)
 > aggiungere uso della paga
