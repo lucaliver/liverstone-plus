@@ -987,7 +987,7 @@ describe('pop culture cards', () => {
   it('Ctrl+Z heals back the HP lost in the last few seconds', () => {
     const { c, uid } = ready('ctrlZ');
     c.damage('enemy', 'hero', 10, { raw: true }, 'enemy');
-    run(c, 4);
+    run(c, 6);
     c.damage('enemy', 'hero', 7, { raw: true }, 'enemy');
     const hp = c.hero.hp;
     c.playCard(uid);
@@ -1001,7 +1001,9 @@ describe('pop culture cards', () => {
     expect(c.has('hero', 'stun')).toBe(true);
     expect(c.playCard(c.belt[0].card.uid)).toBe(false);
     run(c, 10);
-    expect(c.hero.hp).toBe(40 + 5 + 4 + 3 + 2 + 1);
+    // Regeneration n heals n, n-1, … 1.
+    const n = CARDS.unlimitedPto.vals[0];
+    expect(c.hero.hp).toBe(40 + (n * (n + 1)) / 2);
   });
 
   it('Hide the Pain gains more Block the more HP you are missing', () => {
