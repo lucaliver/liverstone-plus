@@ -421,7 +421,7 @@ export const neutralCards: CardDef[] = [
   },
   {
     id: 'paydayLoan',
-    face: '{dmg:0}',
+    face: '{dmg:0}|{addCard}',
     cls: 'neutral',
     type: 'attack',
     rarity: 'epic',

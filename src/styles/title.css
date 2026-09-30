@@ -174,11 +174,19 @@
   color: var(--muted);
 }
 .tc-action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-family: var(--font-ui);
   font-size: 30px;
   line-height: 1;
   text-transform: uppercase;
 }
+.tc-action .pico { flex: none; width: 26px; height: 26px; color: var(--p); --ink2: var(--k); }
+/* first launch: a bolder pulse and a hand tapping the card */
+.timecard-cta.first { animation-duration: 0.9s; box-shadow: var(--off) var(--off) 0 var(--y); }
+.tc-run.tc-tap { color: var(--k); text-transform: uppercase; }
+.tc-run.tc-tap .pico { color: var(--k); animation: bob 0.8s steps(2) infinite; }
 .tc-run {
   display: flex;
   align-items: center;

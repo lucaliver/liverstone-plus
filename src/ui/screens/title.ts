@@ -1,7 +1,7 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { ENEMY_LIST } from '../../data/enemies';
-import { enemyMet, signContract } from '../../game/meta';
+import { enemyMet, neverPlayed, signContract } from '../../game/meta';
 import { currentNode, type RunState, totalFloors } from '../../game/run';
 import { haptic } from '../fx/fx';
 import type { Screen } from '../app';
@@ -66,19 +66,23 @@ export function titleScreen(cb: TitleCallbacks): Screen {
 
   // The time card: tap it and it slides into the clock (ka-chunk), then the shift starts.
   const save = cb.save;
+  const first = !save && neverPlayed();
   const node = save ? currentNode(save) : null;
   const card = h(
     'button',
-    { class: 'timecard-cta', 'aria-label': save ? t('menu.continue') : t('menu.newRun') },
+    { class: first ? 'timecard-cta first' : 'timecard-cta', 'aria-label': save ? t('menu.continue') : t('menu.newRun') },
     h('span', { class: 'tc-holes', 'aria-hidden': 'true' }),
     h('span', { class: 'tc-title' }, t('combat.timeCard')),
-    h('b', { class: 'tc-action' }, save ? t('menu.continue') : t('menu.newRun')),
+    h('b', { class: 'tc-action', html: `${icon(save ? 'play' : 'plus')}<span>${save ? t('menu.continue') : t('menu.newRun')}</span>` }),
     save && node
       ? h('span', {
           class: 'tc-run',
           html: `${creature(save.hero)}<span>${t(`hero.${save.hero}.name`)} · ${t('common.floorOf', { a: node.act, n: node.floor, total: totalFloors(save) })} · ${icon('heart')}${save.hp}/${save.maxHp}</span>`,
         })
-      : h('span', { class: 'tc-run' }, t('menu.freshDay')),
+      : first
+        ? // The very first launch: a hand taps the card so nobody wonders where to start.
+          h('span', { class: 'tc-run tc-tap', html: `${icon('hand')}<span>${t('menu.tapHint')}</span>` })
+        : h('span', { class: 'tc-run' }, t('menu.freshDay')),
   );
   card.addEventListener('click', () => {
     if (card.classList.contains('punching')) return;

@@ -59,6 +59,9 @@ export function signContract(): void {
   store('meta', meta);
 }
 
+/** No run has ever been started (the title then points at the time card). */
+export const neverPlayed = (): boolean => meta.runs === 0;
+
 /** True for the very first run ever; counts the run as started. */
 export function startingFirstRun(): boolean {
   const first = meta.runs === 0;

@@ -14,6 +14,7 @@ const en = {
   'menu.slogan': 'Arbeit macht frei',
   'menu.plate': 'Punchcard Inc. · est. 1887',
   'menu.freshDay': 'A fresh workday',
+  'menu.tapHint': 'Tap to clock in',
   'contract.title': 'Employment Contract',
   'contract.intro': 'Punchcard Inc. hereby hires the undersigned as a Hero. Overtime unpaid.',
   'contract.c1': 'Play your cards before they slip off the belt.',
