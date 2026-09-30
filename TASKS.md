@@ -12,7 +12,7 @@
 
 - [x] add new card "On a roll": it doesn't fall off at the end of the belt but it gets stuck there. All attack cards that touch it gets staked behind it.  when a non-attack card gets in touch with the stak, the stack rolls off the belt. The stack can be played just by paying the first card (on a roll)
 
-- [ ] add this passive to enemy "senior boomer": cards leaving the belt deal you 1 damage (at 50% enemy hp: they deal 3 damages)
+- [x] add this passive to enemy "senior boomer": cards leaving the belt deal you 1 damage (at 50% enemy hp: they deal 3 damages)
 
 - [x] add this passive to enemy "goblin consultant" : every 25%hp lost revert the direction of the belt
 
@@ -24,19 +24,19 @@
 
 - [x] elites and bosses should also have some initian shield (other than initial health)
 
-- [ ] i sorting possibili per le carte dovrebbero essere cost/type/rarity
+- [x] i sorting possibili per le carte dovrebbero essere cost/type/rarity
 
 - [x] nella schermata Personnel: anziché "X on the payroll" dovrebbe dire quanti ne ho sbloccati su quanti
 
-- [ ] cambia passiva del nemico "Security monitor": quando scende sotto 50% di hp la prima volta, ottiene 30 scudo
+- [x] cambia passiva del nemico "Security monitor": quando scende sotto 50% di hp la prima volta, ottiene 30 scudo
 
 - [ ] new card "Take credit": gain 3 shield + steal 50% shield from enemy
 
 - [ ] new card "Team change": all cards already in the belt get stuck where they are, they can be played normally, while other cards keep riding the belt normally
 
-- [x] add new "parkour!" card
+- [ ] add new "parkour!" card
 
-- [x] The menu and the act1 map should not have the same music.
+- [ ] The menu and the act1 map should not have the same music.
 
 - [ ] aggiungi nuova carta "Payday Loan": costo 0 e effetto molto forte, ma mette nel mazzo una maledizione "Debt" che costa 3 e se cade dalla bet fa danno+aumenta il proprio danno per la volta dopo
 
