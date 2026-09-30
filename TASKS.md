@@ -14,7 +14,7 @@
 
 - [ ] add this passive to enemy "senior boomer": cards leaving the belt deal you 1 damage (at 50% enemy hp: they deal 3 damages)
 
-- [ ] add this passive to enemy "goblin consultant" : every 25%hp lost revert the direction of the belt
+- [x] add this passive to enemy "goblin consultant" : every 25%hp lost revert the direction of the belt
 
 - [ ] new card "workaholic": add X strength for Y seconds
 
@@ -38,7 +38,7 @@
 
 - [ ] The menu and the act1 map should not have the same music.
 
-- [ ] aggiungi nuova carta "Payday Loan": costo 0 e effetto molto forte, ma mette nel mazzo una maledizione "Debt" che costa 3 e se cade dalla bet fa danno+aumenta il proprio danno della volta dopo
+- [ ] aggiungi nuova carta "Payday Loan": costo 0 e effetto molto forte, ma mette nel mazzo una maledizione "Debt" che costa 3 e se cade dalla bet fa danno+aumenta il proprio danno per la volta dopo
 
 # NEXT STEPS (ignore for now):
 

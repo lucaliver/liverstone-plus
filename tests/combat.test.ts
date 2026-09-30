@@ -254,6 +254,27 @@ describe('combat engine', () => {
     expect(lost()).toBe(3);
   });
 
+  it('the Goblin Consultant reverses the belt for every quarter of its HP you take, cards keeping their place', () => {
+    const c = setup({ enemy: ENEMIES.goblinConsultant });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 6);
+    const before = c.belt.map((b) => `${b.card.uid}:${(b.pos - CONFIG.cardWidth / 2).toFixed(2)}`);
+    const turns: string[] = [];
+    c.events.on((e) => e.type === 'beltReversed' && turns.push(e.type));
+    c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 4), { raw: true }, 'hero');
+    expect(turns).toHaveLength(1);
+    // A card's middle is mirrored about the belt's middle (unless it was pushed back from the new exit).
+    const mid = (x: number): string => (1 - x).toFixed(2);
+    for (const b of c.belt) {
+      const was = before.find((s) => s.startsWith(`${b.card.uid}:`))!;
+      if (b.pos < CONFIG.reverseMaxPos) expect((b.pos - CONFIG.cardWidth / 2).toFixed(2)).toBe(mid(Number(was.split(':')[1])));
+    }
+    c.damage('hero', 'enemy', 1, { raw: true }, 'hero');
+    expect(turns).toHaveLength(1);
+    c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 2), { raw: true }, 'hero');
+    expect(turns).toHaveLength(3);
+  });
+
   describe('On a Roll', () => {
     /** A quiet fight with On a Roll on the belt and attacks behind it, run until they've piled up at the exit. */
     const piled = (): Combat => {

@@ -813,6 +813,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'shadow',
     svg: `<rect x="4" y="26" width="14" height="14"/><rect x="25" y="26" width="14" height="14"/><rect x="46" y="26" width="14" height="14"/>`,
   },
+  uTurn: {
+    el: 'arcane',
+    svg: `<path d="M4 20l16-14v9h40v10H20v9z"/><path d="M60 44L44 58v-9H4V39h40v-9z"/>`,
+  },
   paperCut: {
     el: 'blood',
     svg: `<path d="M10 4h30l14 14v42H10z"/><path fill="#16121f" d="M40 4v14h14z"/><path d="M4 44l56-14" stroke="#16121f" stroke-width="6"/>`,

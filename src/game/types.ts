@@ -336,6 +336,7 @@ export type CombatEvent =
   | { type: 'ability'; id: string }
   | { type: 'relic'; id: string }
   | { type: 'enrage' }
+  | { type: 'beltReversed' }
   | { type: 'rowsOpen' }
   | { type: 'rowsClose' }
   | { type: 'end'; result: CombatResult };

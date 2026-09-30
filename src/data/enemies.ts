@@ -105,6 +105,7 @@ const defs: EnemyDef[] = [
       { id: 'outsource', intent: 'steal', windup: 6, dmg: 10, steal: 1 },
       { id: 'setDeadline', intent: 'curse', windup: 4, curse: [{ id: 'deadline', n: 1, to: 'belt' }] },
     ],
+    start: [{ id: 'paradigmShift' }],
   },
   {
     id: 'hrBitch',

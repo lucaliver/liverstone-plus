@@ -21,7 +21,7 @@ export interface CombatView {
   r: ReturnType<typeof queryRefs>;
   /**
    * `waiting`: before the player presses Start; things can be inspected but not played.
-   * `ltr`: the belt runs left to right (the default; read once when the fight is built).
+   * `ltr`: the belt runs left to right (the default setting; a Paradigm Shift turns it around mid-fight).
    * `stop`: seconds of hit-stop left (the fight freezes for a beat on heavy hits).
    */
   state: {

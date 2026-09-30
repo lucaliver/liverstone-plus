@@ -459,6 +459,18 @@ export class Combat {
     return m;
   }
 
+  /**
+   * Reverses the belt: the exit becomes the entry. Every card keeps its place on the belt and now heads the other way
+   * (its position is mirrored, but never closer to the new exit than `reverseMaxPos`); a pile at the exit goes on.
+   */
+  reverseBelt(): void {
+    for (const b of this.belt) {
+      b.pos = Math.min(1 + CONFIG.cardWidth - b.pos, CONFIG.reverseMaxPos);
+      b.stuck = false;
+    }
+    this.events.emit({ type: 'beltReversed' });
+  }
+
   /** Opens every belt row (the ones an enemy kept shut). */
   openBeltRows(): void {
     if (this.rowsOpen === this.beltRows) return;

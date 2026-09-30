@@ -187,6 +187,21 @@ const defs: StatusDef[] = [
       if (side === 'enemy') c.damage('enemy', 'hero', s.v, { raw: true, kind: 'slash' }, 'dot');
     },
   },
+  // Paradigm shift: every quarter of its HP lost turns the belt around (`mem.turns` counts the turns made).
+  {
+    id: 'paradigmShift',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'uTurn',
+    onHurt: (c, side) => {
+      const e = c.enemy;
+      if (side !== 'enemy' || e.hp <= 0) return;
+      const quarters = Math.floor((4 * (e.maxHp - e.hp)) / e.maxHp);
+      for (let n = e.mem.turns ?? 0; n < quarters; n++) c.reverseBelt();
+      e.mem.turns = Math.max(e.mem.turns ?? 0, quarters);
+    },
+  },
   {
     id: 'lightSleeper',
     kind: 'stacks',

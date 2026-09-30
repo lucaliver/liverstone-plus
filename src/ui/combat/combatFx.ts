@@ -264,6 +264,13 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         shake('big');
         break;
       }
+      case 'beltReversed':
+        // Every card keeps its place on screen and heads the other way (the engine mirrors the positions).
+        v.state.ltr = !v.state.ltr;
+        r.belt.classList.toggle('ltr', v.state.ltr);
+        v.toast(t('combat.beltReversed'));
+        sfx('machinery');
+        break;
       case 'rowsOpen':
       case 'rowsClose':
         r.belt.classList.remove('row-opening', 'row-closing');
