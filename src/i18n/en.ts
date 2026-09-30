@@ -722,7 +722,7 @@ const en = {
   'card.turnItOff.name': 'Turn It Off',
   'card.turnItOff.desc': 'You are [stun]ned for {0}s. Shuffle Turn It On into your deck.',
   'card.turnItOn.name': 'Turn It On',
-  'card.turnItOn.desc': 'Fill your [mana] to the max.',
+  'card.turnItOn.desc': 'Gain {0} [mana].',
   'card.sudo.name': 'sudo',
   'card.sudo.desc': 'For {0}s, no rule can stop your cards: policies, limits, even a [stun]. [rush] your belt for {1}s.',
   'card.priorityTask.name': 'Priority Task',

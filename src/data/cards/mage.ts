@@ -364,7 +364,7 @@ export const mageCards: CardDef[] = [
     rarity: 'rare',
     cost: 1,
     upCost: 0,
-    vals: [1],
+    vals: [3],
     keywords: ['exhaust'],
     art: 'powerOff',
     play: (c, v, card) => {
@@ -391,14 +391,14 @@ export const mageCards: CardDef[] = [
   // Generated during a fight (never offered as rewards).
   {
     id: 'turnItOn',
-    face: '{mana}{mana}{mana}',
+    face: '{mana:0}',
     cls: 'mage',
     type: 'skill',
     rarity: 'special',
     cost: 0,
-    vals: [],
+    vals: [4],
     keywords: ['exhaust'],
     art: 'powerOn',
-    play: (c) => c.gainMana(c.hero.maxMana),
+    play: (c, v) => c.gainMana(v[0]),
   },
 ];

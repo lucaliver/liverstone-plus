@@ -993,17 +993,19 @@ describe('pop culture cards', () => {
     expect(c.hero.block).toBe(5 + 5);
   });
 
-  it('Turn It Off stuns you and shuffles Turn It On into the deck, which fills your mana', () => {
+  it('Turn It Off stuns you for 3s and shuffles Turn It On into the deck, which gives 4 mana', () => {
     const { c, uid } = ready('turnItOff');
     c.playCard(uid);
     expect(c.has('hero', 'stun')).toBe(true);
+    expect(c.hero.statuses.stun.t).toBeCloseTo(3, 1);
     const on = c.draw.find((x) => x.id === 'turnItOn');
     expect(on).toBeTruthy();
-    run(c, 1.1);
+    run(c, 3.1);
     c.hero.mana = 0;
+    c.hero.maxMana = 10;
     c.addTempCard('turnItOn', 'belt');
     c.playCard(c.belt[c.belt.length - 1].card.uid);
-    expect(c.hero.mana).toBe(c.hero.maxMana);
+    expect(c.hero.mana).toBe(4);
   });
 
   it('sudo lets cards through any rule, even a stun', () => {
