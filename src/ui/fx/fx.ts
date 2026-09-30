@@ -55,7 +55,7 @@ const PALETTES: Record<string, string[]> = {
   burn: [Y, P],
   ice: [B, '#8fc0f0'],
   arcane: [P, B],
-  heal: [Y, '#2a8a4a'],
+  heal: [P, Y],
   block: [B, Y],
   mana: [B, P],
   blood: [P, K],

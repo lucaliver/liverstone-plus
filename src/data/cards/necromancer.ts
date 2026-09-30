@@ -326,10 +326,10 @@ export const necromancerCards: CardDef[] = [
       c.gainBlock('hero', v[1]);
     },
   },
-  // Sleeve card: while it waits there, every hit you take goes in the book (Poison on the enemy)
+  // Sleeve card: while it waits there, every hit you take goes in the book (more Poison on the card)
   {
     id: 'burnBook',
-    face: '{poison:0}|{?sleeve}{poison:1}',
+    face: '{poison:0}|{?sleeve}{grow:1}',
     cls: 'necromancer',
     type: 'skill',
     rarity: 'rare',
@@ -337,7 +337,15 @@ export const necromancerCards: CardDef[] = [
     vals: [3, 1],
     upVals: [5, 2],
     art: 'burnBook',
-    inSleeve: { onHeroHit: (c, v) => c.applyStatus('enemy', 'poison', v[1]) },
-    play: (c, v) => c.applyStatus('enemy', 'poison', v[0]),
+    bonusIdx: 0,
+    inSleeve: {
+      onHeroHit: (_c, v, card) => {
+        card.bonus += v[1];
+      },
+    },
+    play: (c, v, card) => {
+      c.applyStatus('enemy', 'poison', v[0]);
+      card.bonus = 0;
+    },
   },
 ];

@@ -710,14 +710,17 @@ describe('combat engine', () => {
       expect(ahead.every((b) => d.isCovered(b.card.uid))).toBe(true);
     });
 
-    it('Quiet Quitting discards the belt and hits once per card', () => {
+    it('Quiet Quitting exhausts the belt and hits once per card', () => {
       const c = quiet(new Array(10).fill('punch'));
-      // The belt it discards doesn't include Quiet Quitting itself.
+      // The belt it exhausts doesn't include Quiet Quitting itself.
       const n = c.belt.length;
       const hp = c.enemy.hp;
+      const discarded = c.discard.length;
       play(c, 'quietQuitting');
       expect(c.belt.length).toBe(0);
-      expect(hp - c.enemy.hp).toBe(10 * n);
+      expect(c.exhaust.length).toBeGreaterThanOrEqual(n);
+      expect(c.discard.length).toBe(discarded);
+      expect(hp - c.enemy.hp).toBe(CARDS.quietQuitting.vals[0] * n);
     });
 
     it('Previous Email repeats the last card, Copy Paste copies it over the belt', () => {
@@ -1045,25 +1048,27 @@ describe('cards that change on the belt', () => {
 
   it('Unpaid Overtime hits harder for every second it rides the belt, up to its cap', () => {
     const { c, uid } = onBelt('unpaidOvertime');
-    expect(c.cardVals(card(c, uid))[0]).toBe(1);
+    const [start, step] = CARDS.unpaidOvertime.vals;
+    expect(c.cardVals(card(c, uid))[0]).toBe(start);
     run(c, 3.05);
-    expect(c.cardVals(card(c, uid))[0]).toBe(4);
+    expect(c.cardVals(card(c, uid))[0]).toBe(start + 3 * step);
     const hp = c.enemy.hp;
     c.playCard(uid);
-    expect(hp - c.enemy.hp).toBe(4);
+    expect(hp - c.enemy.hp).toBe(start + 3 * step);
   });
 
   it('Patience gives less Block the longer it rides, never below its floor, and the sleeve freezes it', () => {
     const { c, uid } = onBelt('patience');
+    const [start, step, floor] = CARDS.patience.vals;
     run(c, 2.05);
-    expect(c.cardVals(card(c, uid))[0]).toBe(7);
+    expect(c.cardVals(card(c, uid))[0]).toBe(start - 2 * step);
     c.stash(uid, 0);
     run(c, 5);
-    expect(c.cardVals(card(c, uid))[0]).toBe(7);
+    expect(c.cardVals(card(c, uid))[0]).toBe(start - 2 * step);
     c.playCard(uid);
-    expect(c.hero.block).toBe(7);
+    expect(c.hero.block).toBe(start - 2 * step);
     const late = { uid: 999, id: 'patience', up: false, age: 60 };
-    expect(c.cardVals(late)[0]).toBe(3);
+    expect(c.cardVals(late)[0]).toBe(floor);
   });
 });
 
@@ -1101,10 +1106,16 @@ describe('sleeve cards', () => {
     expect(cache.bonus).toBe(0);
   });
 
-  it('Burn Book: every hit you take while it waits poisons the enemy', () => {
+  it('Burn Book: every hit you take while it waits adds Poison to the card, spent when played', () => {
     const c = held('burnBook');
+    const [base, grow] = CARDS.burnBook.vals;
     c.damage('enemy', 'hero', 5, {}, 'enemy');
-    expect(c.stacks('enemy', 'poison')).toBe(CARDS.burnBook.vals[1]);
+    c.damage('enemy', 'hero', 5, {}, 'enemy');
+    expect(c.cardVals(c.sleeve[0]!)[0]).toBe(base + 2 * grow);
+    const book = c.sleeve[0]!;
+    c.playCard(book.uid);
+    expect(c.stacks('enemy', 'poison')).toBe(base + 2 * grow);
+    expect(book.bonus).toBe(0);
   });
 });
 

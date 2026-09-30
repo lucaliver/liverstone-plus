@@ -653,7 +653,7 @@ const en = {
   'card.nightShift.desc': 'Apply {0} [poison]. Gain {1} [block].',
 
   'card.quietQuitting.name': 'Quiet Quitting',
-  'card.quietQuitting.desc': 'Discard every card on the belt. Deal {0} damage for each one.',
+  'card.quietQuitting.desc': '[exhaust] every card on the belt. Deal {0} damage for each one.',
   'card.bareMinimum.name': 'Bare Minimum',
   'card.bareMinimum.desc': 'For {1}s, until you play another card, gain [block] every second: {0}, then twice that, and so on.',
   'card.outOfOffice.name': 'Out of Office',
@@ -683,7 +683,8 @@ const en = {
   'card.cache.name': 'Cache',
   'card.cache.desc': 'Deal {0} damage. While it waits in your sleeve, this card gains +{1} damage for every spell you play (spent when played).',
   'card.burnBook.name': 'Burn Book',
-  'card.burnBook.desc': 'Apply {0} [poison]. While it waits in your sleeve, every hit you take applies {1} [poison] to the enemy.',
+  'card.burnBook.desc':
+    'Apply {0} [poison]. While it waits in your sleeve, this card gains +{1} [poison] for every hit you take (spent when played).',
   'card.unpaidOvertime.name': 'Unpaid Overtime',
   'card.unpaidOvertime.desc': 'Deal {0} damage. +{1} for every second it rides the belt (up to {2}). Frozen in your sleeve.',
   'card.patience.name': 'Patience',

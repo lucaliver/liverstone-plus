@@ -1068,12 +1068,12 @@ export class Combat {
     this.events.emit({ type: 'cardAdded', card, to });
   }
 
-  /** Clears the whole belt into the discard pile (no leave-the-belt effects). Returns how many cards it held. */
-  discardBelt(): number {
+  /** Exhausts the whole belt (no leave-the-belt effects). Returns how many cards it held. */
+  exhaustBelt(): number {
     const cards = this.belt.splice(0).map((b) => b.card);
     for (const card of cards) {
       if (card.hex && card.hex.left <= 0) delete card.hex;
-      this.discard.push(card);
+      this.exhaust.push(card);
       this.events.emit({ type: 'cardDiscarded', card });
     }
     return cards.length;

@@ -154,7 +154,7 @@
   100% { transform: translateY(-40px); opacity: 0; }
 }
 .floater.big { font-size: 56px; }
-.floater.heal { color: var(--green); }
+.floater.heal { color: var(--p); }
 .floater.block { color: var(--b); font-size: 28px; }
 .floater.blocked { display: flex; align-items: center; gap: 2px; color: var(--b); font-family: var(--font-ui); font-size: 26px; text-shadow: var(--ring-p); }
 .floater.blocked .pico { font-size: 22px; color: var(--b); --ink2: var(--paper); }
