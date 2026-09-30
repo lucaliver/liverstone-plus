@@ -446,11 +446,11 @@ export function openCardAnatomy(): ModalHandle {
     [
       t('anatomy.band'),
       `${t('anatomy.band.d')}<br>${inks([
-        ['var(--p)', 'compendium.tab.warrior'],
-        ['var(--b)', 'compendium.tab.mage'],
-        ['var(--green)', 'compendium.tab.necromancer'],
-        ['var(--y)', 'compendium.tab.neutral'],
-        ['var(--k)', 'compendium.tab.curse'],
+        ['var(--band-warrior)', 'compendium.tab.warrior'],
+        ['var(--band-mage)', 'compendium.tab.mage'],
+        ['var(--band-necro)', 'compendium.tab.necromancer'],
+        ['var(--band-neutral)', 'compendium.tab.neutral'],
+        ['var(--band-curse)', 'compendium.tab.curse'],
       ])}`,
     ],
     [

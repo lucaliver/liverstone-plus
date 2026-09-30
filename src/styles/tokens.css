@@ -22,6 +22,12 @@
   --red: #f63a1e;
   --green: #2a8a4a;
   --purple: #4a2aa0;
+  /* Card name bands: light enough for black text */
+  --band-warrior: #ff8cc4;
+  --band-mage: #8db3f2;
+  --band-necro: #8fd19f;
+  --band-neutral: var(--y);
+  --band-curse: #b9a9e0;
   --muted: #6d6680;
   /* Night: the dark print the paper pieces sit on */
   --bg: #241b3b;
