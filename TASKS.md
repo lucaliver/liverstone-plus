@@ -1,30 +1,65 @@
 # TASKS
 
-- [x] nel employer contract: Aggiungi più padding bianco sotto a signature
+- [ ] dopo la scelta del reward, aggiungi animazione della carta scelta che va sopra a quella vecchia
 
-- [x] quando ordino le carte nell'handbook per type qualcosa non torna: dovrebbero combaciare i tipi e il colore dell'art
+- [ ] quando si attiva la passiva di un nemico, dovresti mostrare prima il fumetto e poi il testo della passiva (il testo della passiva deve essere sintetico)
 
-- [x] handbook: se faccio un long press un po' breve per aprire una carta, quando lo rilascio viene per sbaglio preso il click sul tasto close.
+- [ ] cambia le mosse di Slave CEO: prima di "you're fired" dovrebbe velocizzare la belt del 200% per 10s
 
-- [x] assicurati che le descrizioni delle passive dei boss siano chiare e brevi e non contengano meme: per le battute puoi fargli dire una frase a loro attraverso i fumetti
+- [ ] "new hire" banner: when tapped it should bring you to the character selection screen on the new character
 
-- [x] rimuovi del tutto la carta speciale auto inclusa nella sleve dei personaggi
+- [ ] "no repeats policy" should also apply to curses
 
-- [x] "autopilot" effect (and cards) should play cards WITHOUT paying their cost
+- [ ] add new card "On a roll": it doesn't fall off at the end of the belt but it gets stuck there. All attack cards that touch it gets staked behind it.  when a non-attack card gets in touch with the stak, the stack rolls off the belt. The stack can be played just by paying the first card (on a roll)
 
-- [x] i mazzi iniziali dovrebbero avere tutti 15 carte
+- [ ] add this passive to enemy "senior boomer": cards leaving the belt deal you 1 damage (at 50% enemy hp: they deal 3 damages)
 
-- [x] add disclaimer when increasing speed from settings (it increases difficulty)
+- [ ] add this passive to enemy "goblin consultant" : every 25%hp lost revert the direction of the belt
 
-- [x] in home menu: if you have volume at zero, a banner tells you that sound on is reccomended
+- [ ] new card "workaholic": add X strength for Y seconds
 
+- [ ] new card "brown noser": double your mana regen speed for X sec
 
-- [x] i titoli delle carte sono troppo piccoli e non si leggono (per lo meno nell'handbook)
+- [ ] after enemy dies, hide their statuses
 
-- [x] add new enemy "work wife" (girl): at the beginning she fills your sleeves with boxes (they costs 20 mana but it lowers every second)
+- [ ] elites and bosses should also have some initian shield (other than initial health)
 
-- [x] i titoli delle carte sono troppo piccoli e non si leggono (per lo meno nell'handbook)
+- [ ] i sorting possibili per le carte dovrebbero essere cost/type/rarity
 
-- [x] add overlay tutorial during the first enemy: it has more steps and tells you how to read the board
-- [x] add new enemy that adds a "kamikaze" curse: costs 99 deals 99 damages. Then, when it is drawn a tutorial overlay appears and tells you you should put it in your sleeve to save yourself
+- [ ] nella schermata Personnel: anziché "X on the payroll" dovrebbe dire quanti ne ho sbloccati su quanti
 
+- [ ] cambia passiva del nemico "Security monitor": quando scende sotto 50% di hp la prima volta, ottiene 30 scudo
+
+- [ ] new card "Take credit": gain 3 shield + steal 50% shield from enemy
+
+- [ ] new card "Team change": all cards already in the belt get stuck where they are, they can be played normally, while other cards keep riding the belt normally
+
+- [ ] add new "parkour!" card
+
+- [ ] The menu and the act1 map should not have the same music.
+
+# NEXT STEPS (ignore for now):
+
+FUTURE:
+> basandoti sulle carte e meccaniche che esistono proponimene di nuove
+
+> la generica mappa da roguelike mi ha stufato, dammi delle idee alternative sia a tema o semplicemente diverse
+
+> aggiungere room migliori (es. room in cui elimini una carta o aggiungi una sleeve o altro, tutto a tema)
+> aggiungere uso della paga
+> aggiungere act3
+> aggiungere modificatori difficoltà run dopo la vittoria
+
+> rivedere icone, sprite e musica: e dare prompt su cosa non mi piace
+
+> publish old version to another branch and page "beta" if possible
+
+> to a boring enemy: add a move that grant hp regen
+
+> Desktop. Chi apre il gioco su itch.io spesso è al computer. Controlla che la colonna verticale sia centrata e con una cornice decente, che il mouse funzioni bene e magari aggiungi qualche tasto rapido (spazio = pausa).
+
+> URL. Il sito vive su liverstone-plus: per il lancio servono un nome coerente (itch.io/punchcard o un dominio) e un'immagine og aggiornata.
+
+> Feedback. Un link "Send feedback" in Impostazioni. Se vuoi dei dati, GoatCounter o Plausible non usano cookie (niente banner GDPR) e ti dicono dove la gente abbandona.
+
+> Traduzione italiana. Ti costa poco, verifica davvero la pipeline i18n (testi più lunghi, plurali) e ti apre un pubblico.
