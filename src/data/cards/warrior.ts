@@ -34,8 +34,8 @@ export const warriorCards: CardDef[] = [
     rarity: 'common',
     cost: 4,
     upCost: 3,
-    vals: [11, 4],
-    upVals: [14, 2.5],
+    vals: [12, 6],
+    upVals: [14, 10],
     art: 'hammer',
     play: (c, v) => {
       c.hit(v[0], { kind: 'blunt' });
@@ -63,8 +63,8 @@ export const warriorCards: CardDef[] = [
     type: 'skill',
     rarity: 'common',
     cost: 4,
-    vals: [18],
-    upVals: [24],
+    vals: [20],
+    upVals: [25],
     art: 'wall',
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
@@ -87,7 +87,7 @@ export const warriorCards: CardDef[] = [
     type: 'skill',
     rarity: 'common',
     cost: 0,
-    vals: [2, 3],
+    vals: [2, 2],
     upVals: [3, 5],
     art: 'megaphone',
     play: (c, v) => {
@@ -114,8 +114,8 @@ export const warriorCards: CardDef[] = [
     type: 'skill',
     rarity: 'common',
     cost: 0,
-    vals: [3, 2],
-    upVals: [3, 3],
+    vals: [2, 3],
+    upVals: [1, 4],
     art: 'doubleClock',
     play: (c, v) => {
       c.loseHp(v[0]);
@@ -132,12 +132,12 @@ export const warriorCards: CardDef[] = [
     rarity: 'rare',
     cost: 3,
     upCost: 2,
-    vals: [4, 10],
-    upVals: [6, 15],
+    vals: [4, 10, 3],
+    upVals: [6, 15, 6],
     art: 'pushback',
     play: (c, v) => {
       c.gainBlock('hero', v[0]);
-      c.applyStatus('hero', 'parry', v[1], 2.5);
+      c.applyStatus('hero', 'parry', v[1], v[2]);
     },
   },
   {
@@ -150,6 +150,7 @@ export const warriorCards: CardDef[] = [
     upCost: 2,
     vals: [2],
     upVals: [3],
+    keywords: ['exhaust'],
     art: 'drum',
     play: (c, v) => c.applyStatus('hero', 'strength', v[0]),
   },
@@ -160,8 +161,8 @@ export const warriorCards: CardDef[] = [
     type: 'attack',
     rarity: 'rare',
     cost: -1,
-    vals: [5],
-    upVals: [7],
+    vals: [4],
+    upVals: [6],
     art: 'bankrupt',
     // X cost: the engine appends the mana spent as the last value.
     play: (c, v) => void c.hit(v[0], { hits: v[v.length - 1] }),
@@ -189,8 +190,8 @@ export const warriorCards: CardDef[] = [
     type: 'attack',
     rarity: 'rare',
     cost: 2,
-    vals: [7, 4],
-    upVals: [8, 6],
+    vals: [5, 3],
+    upVals: [8, 5],
     art: 'stonks',
     play: (c, v, card) => {
       c.hit(v[0]);
@@ -278,8 +279,8 @@ export const warriorCards: CardDef[] = [
     type: 'power',
     rarity: 'epic',
     cost: 3,
-    vals: [4],
-    upVals: [6],
+    vals: [3],
+    upVals: [5],
     art: 'forklift',
     play: (c, v) => c.applyStatus('hero', 'juggernaut', v[0]),
   },
@@ -291,10 +292,10 @@ export const warriorCards: CardDef[] = [
     cls: 'warrior',
     type: 'attack',
     rarity: 'legendary',
-    cost: 6,
+    cost: 5,
     upCost: 5,
-    vals: [20, 7],
-    upVals: [30, 10],
+    vals: [20, 9],
+    upVals: [30, 15],
     keywords: ['pending'],
     art: 'quake',
     play: (c, v) => {
@@ -311,7 +312,7 @@ export const warriorCards: CardDef[] = [
     type: 'attack',
     rarity: 'common',
     cost: 3,
-    vals: [8, 6],
+    vals: [8, 5],
     upVals: [11, 8],
     art: 'crate',
     play: (c, v) => {
@@ -327,7 +328,7 @@ export const warriorCards: CardDef[] = [
     rarity: 'rare',
     cost: 1,
     vals: [5, 2],
-    upVals: [5, 3],
+    upVals: [4, 3],
     keywords: ['exhaust'],
     art: 'hazardCoin',
     play: (c, v) => {
@@ -344,8 +345,8 @@ export const warriorCards: CardDef[] = [
     type: 'skill',
     rarity: 'rare',
     cost: 1,
-    vals: [6, 2],
-    upVals: [8, 3],
+    vals: [4, 1],
+    upVals: [8, 2],
     art: 'toolBelt',
     inSleeve: { bonusDamage: (_c, v, def) => (def?.type === 'attack' ? v[1] : 0) },
     play: (c, v) => c.gainBlock('hero', v[0]),

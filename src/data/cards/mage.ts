@@ -33,8 +33,8 @@ export const mageCards: CardDef[] = [
     type: 'spell',
     rarity: 'common',
     cost: 2,
-    vals: [4, 3],
-    upVals: [6, 4],
+    vals: [4, 5],
+    upVals: [6, 10],
     art: 'coldCall',
     play: (c, v) => {
       c.hit(v[0], { kind: 'ice' });
@@ -101,8 +101,8 @@ export const mageCards: CardDef[] = [
     type: 'skill',
     rarity: 'common',
     cost: 3,
-    vals: [10, 3],
-    upVals: [13, 4],
+    vals: [10, 7],
+    upVals: [14, 12],
     art: 'coldStorage',
     play: (c, v) => {
       c.gainBlock('hero', v[0]);
@@ -116,8 +116,8 @@ export const mageCards: CardDef[] = [
     type: 'spell',
     rarity: 'common',
     cost: 2,
-    vals: [3],
-    upVals: [5],
+    vals: [2],
+    upVals: [4],
     art: 'match',
     play: (c, v) => c.applyStatus('enemy', 'burn', v[0]),
   },
@@ -190,8 +190,8 @@ export const mageCards: CardDef[] = [
     rarity: 'epic',
     cost: 4,
     upCost: 4,
-    vals: [8],
-    upVals: [10],
+    vals: [9],
+    upVals: [14],
     keywords: ['pending'],
     art: 'beetle',
     play: (c, v) => c.applyStatus('enemy', 'stun', 1, v[0]),
@@ -236,9 +236,9 @@ export const mageCards: CardDef[] = [
     cls: 'mage',
     type: 'spell',
     rarity: 'common',
-    cost: 0,
-    vals: [2, 2],
-    upVals: [3, 2],
+    cost: 1,
+    vals: [0, 3],
+    upVals: [2, 3],
     art: 'keyboard',
     // Every hit gets the Multitasking bonus.
     play: (c, v) => void c.hit(v[0], { hits: v[1] }),
@@ -262,8 +262,8 @@ export const mageCards: CardDef[] = [
     type: 'spell',
     rarity: 'rare',
     cost: 3,
-    vals: [8, 2],
-    upVals: [11, 3],
+    vals: [8, 8],
+    upVals: [13, 13],
     art: 'blueScreen',
     play: (c, v) => {
       const chilled = c.has('enemy', 'chill');
@@ -309,9 +309,9 @@ export const mageCards: CardDef[] = [
     cls: 'mage',
     type: 'skill',
     rarity: 'rare',
-    cost: 1,
+    cost: 2,
     vals: [4, 2],
-    upVals: [5, 3],
+    upVals: [7, 4],
     art: 'kanban',
     play: (c, v) => {
       c.rushBelt(v[0]);
@@ -342,8 +342,8 @@ export const mageCards: CardDef[] = [
     type: 'spell',
     rarity: 'rare',
     cost: 2,
-    vals: [4, 2],
-    upVals: [5, 3],
+    vals: [4, 1],
+    upVals: [7, 2],
     art: 'floppy',
     inSleeve: {
       onCardPlayed: (_c, v, card, played) => {

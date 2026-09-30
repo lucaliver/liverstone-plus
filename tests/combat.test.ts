@@ -993,6 +993,13 @@ describe('pop culture cards', () => {
     expect(c.hero.block).toBe(5 + 5);
   });
 
+  it('Pushback reflects damage for 3s, 6s once upgraded', () => {
+    const { c, uid } = ready('pushback');
+    c.playCard(uid);
+    expect(c.hero.statuses.parry.t).toBeCloseTo(3, 1);
+    expect(c.cardVals({ uid: 0, id: 'pushback', up: true })[2]).toBe(6);
+  });
+
   it('Turn It Off stuns you for 3s and shuffles Turn It On into the deck, which gives 4 mana', () => {
     const { c, uid } = ready('turnItOff');
     c.playCard(uid);
@@ -1076,27 +1083,28 @@ describe('sleeve cards', () => {
     const c = held('toolBelt');
     const hp = c.enemy.hp;
     c.playCard(c.belt[0].card.uid);
-    expect(hp - c.enemy.hp).toBe(6 + 2);
+    expect(hp - c.enemy.hp).toBe(6 + 1);
     c.playCard(c.sleeve[0]!.uid);
-    expect(c.hero.block).toBe(6);
+    expect(c.hero.block).toBe(4);
   });
 
   it('Cache: every spell played while it waits is cached into its damage, spent when played', () => {
     const c = held('cache');
     c.addTempCard('arcaneMemo', 'belt');
     c.playCard(c.belt[c.belt.length - 1].card.uid);
-    expect(c.cardVals(c.sleeve[0]!)[0]).toBe(4 + 2);
+    const [base, grow] = CARDS.cache.vals;
+    expect(c.cardVals(c.sleeve[0]!)[0]).toBe(base + grow);
     const cache = c.sleeve[0]!;
     const hp = c.enemy.hp;
     c.playCard(cache.uid);
-    expect(hp - c.enemy.hp).toBeGreaterThanOrEqual(6);
+    expect(hp - c.enemy.hp).toBeGreaterThanOrEqual(base + grow);
     expect(cache.bonus).toBe(0);
   });
 
   it('Burn Book: every hit you take while it waits poisons the enemy', () => {
     const c = held('burnBook');
     c.damage('enemy', 'hero', 5, {}, 'enemy');
-    expect(c.stacks('enemy', 'poison')).toBe(2);
+    expect(c.stacks('enemy', 'poison')).toBe(CARDS.burnBook.vals[1]);
   });
 });
 

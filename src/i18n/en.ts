@@ -512,7 +512,7 @@ const en = {
   'card.doubleShift.name': 'Double Shift',
   'card.doubleShift.desc': 'Lose {0} HP. Gain {1} [mana].',
   'card.pushback.name': 'Pushback',
-  'card.pushback.desc': 'Gain {0} [block]. If hit in the next 2.5s, deal {1} back.',
+  'card.pushback.desc': 'Gain {0} [block]. If hit in the next {2}s, deal {1} back.',
   'card.picketDrums.name': 'Picket Drums',
   'card.picketDrums.desc': 'Gain {0} [strength].',
   'card.declareBankruptcy.name': 'Declare Bankruptcy',
