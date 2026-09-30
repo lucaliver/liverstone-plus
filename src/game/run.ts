@@ -79,10 +79,17 @@ export const ACTS = ACT_DEFS.length;
 
 /** Seed of the very first run: its map is always the same, with the enemies in order of difficulty. */
 export const FIRST_RUN_SEED = 1;
+/** The very first run's normal enemies, one per floor from the second (both lanes of a floor meet the same one). */
+const FIRST_RUN_ENEMIES = ['snitch', 'newHire', 'workWife', 'teamLeader', 'goblinConsultant', 'seniorBoomer', 'hrBitch'];
+/** The very first run's lanes, as `LANES` but already past the opening: a rest on each side, never two in a row. */
+const FIRST_RUN_LANES: NodeType[][] = [
+  ['fight', 'rest', 'elite', 'fight', 'fight', 'rest'],
+  ['rest', 'fight', 'fight', 'promotion', 'fight', 'rest'],
+];
 
 /**
- * A new run; a `scripted` one (the very first) meets the normal enemies easiest first instead of shuffled, and ends with
- * act 1's boss.
+ * A new run; a `scripted` one (the very first) has a fixed map and enemies (`FIRST_RUN_*`) instead of shuffled ones, and ends
+ * with act 1's boss.
  */
 export function newRun(hero: HeroId, seed: number, scripted = false): RunState {
   resetUid(0);
@@ -116,17 +123,17 @@ function buildNodes(rng: Rng, scripted: boolean): RunNode[] {
   const nodes: RunNode[] = [];
   let last: RunNode[] = [];
   for (let act = 1; act <= (scripted ? 1 : ACTS); act++) {
-    // Deal normal enemies from a shuffled bag so the same one doesn't repeat back to back. Scripted: easiest first, one
-    // per floor (both lanes of a floor share it), so whichever way the player goes they meet them in handbook order.
+    // Deal normal enemies from a shuffled bag so the same one doesn't repeat back to back.
     let bag: EnemyDef[] = [];
-    const byFloor = new Map<number, string>();
     const add = (floor: number, lane: number, type: NodeType, fixed?: string): RunNode => {
       // A set enemy (the orientation fight) takes nobody's turn.
       let enemy = fixed;
       if (!enemy && type === 'fight') {
-        if (!bag.length) bag = scripted ? enemiesFor(act, 'normal').reverse() : rng.shuffle(enemiesFor(act, 'normal'));
-        enemy = (scripted && byFloor.get(floor)) || bag.pop()!.id;
-        if (scripted) byFloor.set(floor, enemy);
+        if (scripted) enemy = FIRST_RUN_ENEMIES[floor - 2];
+        else {
+          if (!bag.length) bag = rng.shuffle(enemiesFor(act, 'normal'));
+          enemy = bag.pop()!.id;
+        }
       } else if (!enemy && (type === 'elite' || type === 'boss')) {
         enemy = scripted ? enemiesFor(act, type)[0].id : rng.pick(enemiesFor(act, type)).id;
       }
@@ -135,8 +142,8 @@ function buildNodes(rng: Rng, scripted: boolean): RunNode[] {
       return node;
     };
     const opening = act === 1 ? ACT1_OPENING : 1;
-    const lanes = rng.shuffle(LANES.map((l) => l.slice(opening - 1)));
-    for (let i = 0; i < lanes[0].length - 1; i++) if (rng.next() < 0.3) [lanes[0][i], lanes[1][i]] = [lanes[1][i], lanes[0][i]];
+    const lanes = scripted ? FIRST_RUN_LANES : rng.shuffle(LANES.map((l) => l.slice(opening - 1)));
+    if (!scripted) for (let i = 0; i < lanes[0].length - 1; i++) if (rng.next() < 0.3) [lanes[0][i], lanes[1][i]] = [lanes[1][i], lanes[0][i]];
 
     // The shared road: one fight per floor, then the two lanes. The very first run opens on its orientation fight.
     let road = add(1, 0.5, 'fight', act === 1 && scripted ? firstRunEnemy()?.id : undefined);

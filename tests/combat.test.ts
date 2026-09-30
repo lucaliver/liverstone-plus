@@ -1137,14 +1137,18 @@ describe('Complaint Box', () => {
 });
 
 describe('the very first run', () => {
-  it('meets the normal enemies floor by floor in handbook order, whichever lane it takes', () => {
+  it('has one enemy per floor, whichever lane it takes, and the rests are split between the lanes', () => {
     const run = newRun('warrior', 1, true);
     const fights = run.nodes.filter((n) => n.type === 'fight');
-    const floors = [...new Set(fights.map((n) => n.floor))].sort((a, b) => a - b);
-    const met = floors.map((f) => [...new Set(fights.filter((n) => n.floor === f).map((n) => n.enemy))]);
-    expect(met.every((m) => m.length === 1)).toBe(true);
-    const order = ['hrOrientationVideo', ...enemiesFor(1, 'normal').map((e) => e.id)];
-    expect(met.map((m) => m[0])).toEqual(order.slice(0, met.length));
+    const floors = [...new Set(fights.map((n) => n.floor))];
+    for (const f of floors) expect(new Set(fights.filter((n) => n.floor === f).map((n) => n.enemy)).size).toBe(1);
+    const pool = ['hrOrientationVideo', ...enemiesFor(1, 'normal').map((e) => e.id)];
+    expect(fights.every((n) => pool.includes(n.enemy!))).toBe(true);
+    for (const lane of [0, 1]) {
+      const types = run.nodes.filter((n) => n.lane === lane).map((n) => n.type);
+      expect(types).toContain('rest');
+      expect(types.some((t, i) => t === 'rest' && types[i + 1] === 'rest')).toBe(false);
+    }
   });
 });
 

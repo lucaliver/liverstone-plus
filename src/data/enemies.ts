@@ -394,18 +394,18 @@ const defs: EnemyDef[] = [
   },
 ];
 
-/** Easiest first: the very first run meets the normal enemies in this order, and the handbook lists them so. */
+/** The handbook lists the enemies in this order: the very first run's enemies first, in the order it meets them. */
 export const DIFFICULTY = [
   'hrOrientationVideo',
   'snitch',
-  'guyAsleep',
-  'toxicCoworker',
   'newHire',
   'workWife',
   'teamLeader',
   'goblinConsultant',
   'seniorBoomer',
   'hrBitch',
+  'guyAsleep',
+  'toxicCoworker',
   'securityMonitor',
   'slavesCeo',
   'happinessOfficer',

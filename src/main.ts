@@ -82,7 +82,7 @@ function goHeroSelect(first?: HeroId): void {
 }
 
 function startRun(hero: HeroId): void {
-  // The very first run always has the same map, meeting the enemies easiest first.
+  // The very first run always has the same map and enemies.
   const first = startingFirstRun();
   run = newRun(hero, first ? FIRST_RUN_SEED : randomSeed(), first);
   goJourney();
