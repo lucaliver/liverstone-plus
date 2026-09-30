@@ -648,6 +648,9 @@ export class Combat {
     this.events.emit({ type: 'cardExpired', card });
     this.withCard(card, def, () => def.onExpire?.(this, this.cardVals(card), card));
     this.heroDef.hooks.onCardExpired?.(this, card);
+    for (const side of ['hero', 'enemy'] as const) {
+      for (const [id, s] of Object.entries(this.fighter(side).statuses)) if (this.has(side, id)) STATUSES[id].onExpire?.(this, side, s);
+    }
     if (this.keywords(card).includes('fleeting')) this.exhaust.push(card);
     else this.discard.push(card);
   }

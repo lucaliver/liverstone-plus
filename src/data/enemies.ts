@@ -56,6 +56,9 @@ const defs: EnemyDef[] = [
       atk('seniority', 17, 13, { intent: 'charge' }),
       { id: 'gatekeep', intent: 'curse', windup: 4, curse: [{ id: 'gatekeeping', n: 2, to: 'belt' }] },
     ],
+    // Paper cuts: every card you let slip off the belt hurts, and at half HP it's worse.
+    start: [{ id: 'paperCuts' }],
+    onHalf: (c) => c.applyStatus('enemy', 'paperCuts', 2),
   },
   {
     id: 'toxicCoworker',

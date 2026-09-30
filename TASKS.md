@@ -38,7 +38,7 @@
 
 - [ ] The menu and the act1 map should not have the same music.
 
-- [ ] aggiungi nuova carta "Payday Loan": costo 0 e effetto molto forte, ma mette nel mazzo una maledizione "Debt" che fa più male quanto più resta sul nastro
+- [ ] aggiungi nuova carta "Payday Loan": costo 0 e effetto molto forte, ma mette nel mazzo una maledizione "Debt" che costa 3 e se cade dalla bet fa danno+aumenta il proprio danno della volta dopo
 
 # NEXT STEPS (ignore for now):
 

@@ -176,6 +176,17 @@ const defs: StatusDef[] = [
       c.enemyStrike();
     },
   },
+  // Paper cuts: every card slipping off the belt cuts the hero for `v`.
+  {
+    id: 'paperCuts',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'paperCut',
+    onExpire: (c, side, s) => {
+      if (side === 'enemy') c.damage('enemy', 'hero', s.v, { raw: true, kind: 'slash' }, 'dot');
+    },
+  },
   {
     id: 'lightSleeper',
     kind: 'stacks',

@@ -151,6 +151,8 @@ export interface StatusDef {
   onCardPlayed?: (c: Combat, side: Side, def: CardDef) => void;
   /** The side carrying it just lost HP to a hit (`lost` > 0). */
   onHurt?: (c: Combat, side: Side, s: StatusVal, lost: number) => void;
+  /** A card of the hero's just left the belt unplayed. */
+  onExpire?: (c: Combat, side: Side, s: StatusVal) => void;
   /** Runs every simulation step while the status is active. */
   tick?: (c: Combat, side: Side, s: StatusVal, dt: number) => void;
 }

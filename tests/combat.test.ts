@@ -9,6 +9,9 @@ import type { CardInst } from '../src/game/types';
 
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
 
+/** The default opponent: a Senior Boomer without his passives, so tests count only what they set up. */
+const plainBoomer = { ...ENEMIES.seniorBoomer, start: [] };
+
 function setup(over: Partial<CombatSetup> = {}): Combat {
   return new Combat({
     hero: HEROES.warrior,
@@ -17,7 +20,7 @@ function setup(over: Partial<CombatSetup> = {}): Combat {
     deck: deckOf(HEROES.warrior.startDeck),
     relics: [],
     relicFlags: {},
-    enemy: ENEMIES.seniorBoomer,
+    enemy: plainBoomer,
     scale: { hp: 1, dmg: 1 },
     seed: 42,
     ...over,
@@ -234,6 +237,21 @@ describe('combat engine', () => {
     expect(c.playCard(under!.card.uid)).toBe(false);
     expect(c.playCard(gate.card.uid)).toBe(true);
     expect(c.playCard(under!.card.uid)).toBe(true);
+  });
+
+  it("the Senior Boomer's paper cuts hurt for every card that slips off the belt, three times as much under half HP", () => {
+    const c = setup({ enemy: ENEMIES.seniorBoomer, deck: deckOf(new Array(8).fill('punch')) });
+    run(c, CONFIG.introTime + 0.01);
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    const lost = (): number => {
+      const hp = c.hero.hp;
+      c.belt[0].pos = EXPIRE_POS;
+      run(c, 0.05);
+      return hp - c.hero.hp;
+    };
+    expect(lost()).toBe(1);
+    c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 2), { raw: true }, 'hero');
+    expect(lost()).toBe(3);
   });
 
   describe('On a Roll', () => {
