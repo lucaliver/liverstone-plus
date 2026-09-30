@@ -1,5 +1,6 @@
 /** Safe wrappers around localStorage (it can throw in private mode or when storage is blocked). */
-const PREFIX = 'cardstone+:';
+/** Beta build: its own keys, so it never reads or wipes the main game's saves (same origin on GitHub Pages). */
+const PREFIX = 'cardstone-beta:';
 
 export function load<T>(key: string, fallback: T): T {
   try {
