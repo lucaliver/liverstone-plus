@@ -262,7 +262,7 @@ const en = {
   'reward.pickOffer': 'Now pick the card to take',
   'reward.ready': 'Ready to swap',
   'rest.title': 'Break Room',
-  'rest.desc': 'The coffee machine gurgles. Fifteen minutes, unpaid.',
+  'rest.desc': 'The coffee machine gurgles. \nFifteen minutes, unpaid.',
   'rest.heal': 'Nap',
   'rest.healDesc': 'Heal {n} HP',
   'rest.smith': 'Training',

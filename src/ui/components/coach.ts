@@ -6,6 +6,8 @@ export interface CoachStep {
   /** The element pointed at (lit, everything else dimmed); several are lit together as one box. */
   target: HTMLElement | HTMLElement[];
   text: string;
+  /** Runs when the step comes up, before the target is measured. */
+  before?: () => void;
 }
 
 /**
@@ -21,6 +23,7 @@ export function coach(root: HTMLElement, steps: CoachStep[], onDone: () => void)
   const note = h('div', { class: 'coach-note' }, text, h('div', { class: 'coach-foot' }, count, next));
   const el = h('div', { class: 'coach', role: 'dialog', 'aria-modal': 'true' }, hole, note);
   const show = (): void => {
+    steps[i].before?.();
     const box = root.getBoundingClientRect();
     const rects = [steps[i].target].flat().map((x) => x.getBoundingClientRect());
     const r = {

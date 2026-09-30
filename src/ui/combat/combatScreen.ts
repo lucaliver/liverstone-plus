@@ -279,7 +279,10 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   r.pause.addEventListener('click', openPause);
 
   /** The very first fight: before Start, a tour of the board, one part at a time. */
-  const firstFightTour = (): void =>
+  const firstFightTour = (): void => {
+    // Clock in only comes up as the tour's last step.
+    const startWrap = $('.start-wrap', el);
+    startWrap.hidden = true;
     coach(
       el,
       [
@@ -290,13 +293,14 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         { target: r.manaRow, text: t('coach.mana') },
         { target: r.sleeve, text: t('coach.sleeve') },
         { target: r.ability, text: t('coach.ability') },
-        { target: $('.js-start', el), text: t('coach.start') },
+        { target: $('.js-start', el), text: t('coach.start'), before: () => (startWrap.hidden = false) },
       ],
       () => {
         settings.seenTutorial = true;
         saveSettings();
       },
     );
+  };
 
   /** A card with a tip, ridden far enough onto the belt to be seen: the first time ever, the fight stops to explain it. */
   const checkTip = (): void => {

@@ -303,7 +303,7 @@
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 4px;
   background-color: #3a2a3a;
   /* vertical planks, hard edges */
   background-image: repeating-linear-gradient(90deg, transparent 0 22px, #2a1e2a 22px 25px);
@@ -323,7 +323,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 6px;
-  padding: 10px 8px;
+  padding: 10px 2px;
   text-align: center;
   color: var(--k);
   background-color: #d8ccb4;
@@ -332,10 +332,12 @@
   border: 4px solid #d8a830;
 }
 .door-glass b {
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-size: 16px;
-  line-height: 1.15;
+  line-height: 1;
   text-transform: uppercase;
+  /* a name too long for the sign breaks inside the word rather than spill out of it */
+  overflow-wrap: anywhere;
 }
 .door-glass span {
   font-family: var(--font-ui);
