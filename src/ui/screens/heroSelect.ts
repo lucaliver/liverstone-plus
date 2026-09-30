@@ -8,9 +8,9 @@ import type { Screen } from '../app';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { heroFeatures } from '../components/heroSheet';
-import { motes } from '../components/decor';
+import { dropLetters, motes } from '../components/decor';
 import { openDeck, openStatInfo } from '../components/modals';
-import { h, onPress, retrigger } from '../dom';
+import { h, onPress, retrigger, stagger } from '../dom';
 
 const unlockText = (u: HeroUnlock): string =>
   'finishRun' in u ? t('hero.unlock.finishRun', { hero: t(`hero.${u.finishRun}.name`) }) : t('hero.unlock.reachBoss', { n: u.reachBoss });
@@ -33,20 +33,22 @@ function slide(hero: HeroDef, index: number): HTMLElement {
       class: 'hero-stage',
       html: `${motes(8)}<div class="pedestal"></div><div class="hero-sprite">${creature(id)}</div><div class="hero-num">${String(index + 1).padStart(2, '0')}</div>${badge}`,
     }),
-    h('h2', { class: 'hero-name' }, t(`hero.${id}.name`)),
+    h('h2', { class: 'hero-name', 'aria-label': t(`hero.${id}.name`), html: dropLetters(t(`hero.${id}.name`)) }),
     h('p', { class: 'hero-job' }, t(`hero.${id}.job`)),
     h(
       'div',
       { class: 'hero-stats' },
-      h('button', { class: 'stat hp', 'data-stat': 'hp', html: `${icon('heart')}${hero.hp}` }),
-      h('button', { class: 'stat mana', 'data-stat': 'mana', html: `${icon('crystal')}${hero.maxMana}` }),
-      h('button', {
-        class: 'stat sleeve',
-        'data-stat': 'sleeve',
-        'aria-label': t('hero.sleeve', { n: hero.sleeve }),
-        html: `${icon('hand')}${hero.sleeve}`,
-      }),
-      h('button', { class: 'stat deck', 'aria-label': t('hero.starterDeck'), html: `${icon('cards')}${hero.startDeck.length}` }),
+      ...stagger([
+        h('button', { class: 'stat hp', 'data-stat': 'hp', html: `${icon('heart')}${hero.hp}` }),
+        h('button', { class: 'stat mana', 'data-stat': 'mana', html: `${icon('crystal')}${hero.maxMana}` }),
+        h('button', {
+          class: 'stat sleeve',
+          'data-stat': 'sleeve',
+          'aria-label': t('hero.sleeve', { n: hero.sleeve }),
+          html: `${icon('hand')}${hero.sleeve}`,
+        }),
+        h('button', { class: 'stat deck', 'aria-label': t('hero.starterDeck'), html: `${icon('cards')}${hero.startDeck.length}` }),
+      ]),
     ),
     heroFeatures(hero, locked),
   );
