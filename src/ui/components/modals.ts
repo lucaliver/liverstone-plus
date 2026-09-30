@@ -482,9 +482,10 @@ export function openCardAnatomy(): ModalHandle {
   });
 }
 
-/** Temporary debug tool: fight any enemy with any hero (a fresh run on floor 1). */
-export function openDebugFight(onPick: (hero: HeroId, enemy: string) => void): ModalHandle {
+/** Temporary debug tool: fight any enemy with any hero (a fresh run on floor 1), with extra cards added to the deck to try them. */
+export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: string[]) => void): ModalHandle {
   let hero: HeroId = HERO_LIST[0].id;
+  const extra: string[] = [];
   // The heroes across the whole width, each with its portrait.
   const heroSeg = h('div', { class: 'seg debug-heroes', role: 'group', 'aria-label': t('debug.hero') });
   const renderHeroes = (): void => {
@@ -494,15 +495,41 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string) => void): M
           'aria-pressed': String(hd.id === hero),
           onclick: () => {
             hero = hd.id;
+            extra.length = 0;
             sfx('tap');
             renderHeroes();
+            renderCards();
           },
           html: `${creature(hd.id)}<span>${t(`compendium.tab.${hd.id}`)}</span>`,
         }),
       ),
     );
   };
+  // Cards of the hero (and the neutral ones), filtered as you type; a tap adds a copy, the count says how many.
+  const search = h('input', { class: 'debug-search', type: 'search', placeholder: t('debug.cards'), 'aria-label': t('debug.cards') });
+  const cardList = h('div', { class: 'debug-cards' });
+  const renderCards = (): void => {
+    const q = search.value.trim().toLowerCase();
+    cardList.replaceChildren(
+      ...Object.values(CARDS)
+        .filter((c) => (c.cls === hero || c.cls === 'neutral') && t(`card.${c.id}.name`).toLowerCase().includes(q))
+        .map((c) => {
+          const n = extra.filter((id) => id === c.id).length;
+          return h('button', {
+            class: 'debug-card',
+            onclick: () => {
+              extra.push(c.id);
+              sfx('tap');
+              renderCards();
+            },
+            html: `<span>${t(`card.${c.id}.name`)}</span>${n ? `<b>×${n}</b>` : ''}`,
+          });
+        }),
+    );
+  };
+  search.addEventListener('input', renderCards);
   renderHeroes();
+  renderCards();
   let handle: ModalHandle | null = null;
   const list = h(
     'div',
@@ -515,7 +542,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string) => void): M
           sfx('button');
           haptic('tap');
           handle?.close();
-          onPick(hero, e.id);
+          onPick(hero, e.id, extra);
         },
         html: `${creature(e.art)}<span>${t(`enemy.${e.id}.name`)}</span><small>${t('journey.title', { n: e.act })}${e.tier !== 'normal' ? ` · ${t(`journey.node.${e.tier}`)}` : ''}</small>`,
       }),
@@ -523,7 +550,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string) => void): M
   );
   handle = openModal({
     title: t('debug.title'),
-    body: h('div', { class: 'debug-fight' }, heroSeg, list),
+    body: h('div', { class: 'debug-fight' }, heroSeg, search, cardList, list),
     actions: [
       {
         label: t('debug.unlockAll'),

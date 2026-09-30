@@ -209,7 +209,7 @@ Plurals: `{n|one|other}`. New language: copy `en.ts`, register it in `core/i18n.
 - Dev hooks (dev server only): `window.__combat` (current `Combat`) and `window.__game` (`run`, `nextNode`,
   `goJourney`, `musicTrack`). E2E tests and screenshot scripts rely on them.
 - The belt has two rows by default (`CONFIG.beltRows`); tests that need one row pass `beltRows: 1`.
-- The title has a temporary floating "Debug fight" button (any hero against any enemy, on a fresh run; "Unlock all" hires
+- The title has a temporary floating "Debug fight" button (any hero against any enemy, on a fresh run, plus a search box that adds copies of the hero's and neutral cards to the deck; "Unlock all" hires
   every hero and reveals every card and enemy); "Reset progress"
   lives in Settings (`clearAll` in `core/save.ts`).
 - Move descriptions (`moveEffect`) tag curses, statuses, hexes and rules with `data-*`; `bindMoveDetails` makes them

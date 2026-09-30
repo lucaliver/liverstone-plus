@@ -85,6 +85,7 @@ const en = {
   'debug.button': 'Debug fight',
   'debug.title': 'Debug fight',
   'debug.hero': 'Hero',
+  'debug.cards': 'Add cards to the deck…',
   'debug.unlockAll': 'Unlock all',
   'menu.abandonConfirm': 'A new run will scrap your current workday. Continue?',
   'common.back': 'Back',

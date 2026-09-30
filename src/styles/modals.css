@@ -423,6 +423,26 @@
   padding: 6px 8px 8px;
 }
 .debug-heroes .riso { width: 44px; height: 44px; }
+.debug-search {
+  width: 100%;
+  padding: 8px 10px;
+  font: 16px var(--font);
+  color: var(--k);
+  background: var(--paper2);
+  border: 2px solid var(--k);
+}
+.debug-cards { display: flex; flex-wrap: wrap; gap: 6px; max-height: 132px; overflow-y: auto; }
+.debug-card {
+  display: flex;
+  gap: 6px;
+  padding: 6px 8px;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  color: var(--k);
+  background: var(--paper2);
+  border: 2px solid var(--k);
+}
+.debug-card b { color: var(--p); }
 .debug-foes { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
 .debug-foe {
   display: flex;

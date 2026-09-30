@@ -294,6 +294,11 @@ export function skipReward(run: RunState): void {
 }
 
 /** Cardstone's classic "swap": the new card replaces one already in the deck. */
+/** Debug: adds a copy of a card to the deck. */
+export function addCard(run: RunState, id: string): void {
+  run.deck.push(newCard(run, id));
+}
+
 export function swapCard(run: RunState, removeUid: number, id: string): void {
   const idx = run.deck.findIndex((c) => c.uid === removeUid);
   if (idx >= 0) run.deck[idx] = newCard(run, id);

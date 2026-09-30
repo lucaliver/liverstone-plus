@@ -145,6 +145,11 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<path d="M6 22c10 0 14-4 14-14h9c0 15-8 23-23 23zM58 22c-10 0-14-4-14-14h-9c0 15 8 23 23 23zM6 42c10 0 14 4 14 14h9c0-15-8-23-23-23zM58 42c-10 0-14 4-14 14h-9c0-15 8-23 23-23z"/>`,
   },
   wing: { el: 'holy', svg: wing },
+  // A Power: lasts for the rest of the fight.
+  infinity: {
+    el: 'holy',
+    svg: `<ellipse cx="19" cy="32" rx="16" ry="14"/><ellipse cx="45" cy="32" rx="16" ry="14"/><ellipse cx="19" cy="32" rx="7" ry="5" fill="#16121f"/><ellipse cx="45" cy="32" rx="7" ry="5" fill="#16121f"/>`,
+  },
   drop: { el: 'nature', svg: `<path d="M32 5c8 14 17 24 17 36a17 17 0 0 1-34 0c0-12 9-22 17-36z"/>` },
   broken: {
     el: 'shadow',

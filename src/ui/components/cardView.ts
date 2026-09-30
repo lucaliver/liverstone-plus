@@ -175,9 +175,8 @@ export function cardView(card: CardInst & { bonus?: number }, opts: CardViewOpts
     'data-uid': card.uid,
     'aria-label': cardName(card),
   });
-  const tags = cardKeywordsOf(card)
-    .filter((k) => TAG_ICON[k])
-    .map((k) => icon(TAG_ICON[k]))
+  const tags = [...(def.type === 'power' ? ['infinity'] : []), ...cardKeywordsOf(card).flatMap((k) => TAG_ICON[k] ?? [])]
+    .map((id) => icon(id))
     .join('');
   const lines = def.face.split('|').length;
   el.innerHTML = `

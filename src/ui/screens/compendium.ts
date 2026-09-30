@@ -26,7 +26,7 @@ function foeView(e: EnemyDef): HTMLElement {
     class: 'foe',
     html: `<div class="foe-head"><div class="foe-art">${creature(e.art)}</div><div class="foe-id"><h3>${enemyMet(e.id) ? t(`enemy.${e.id}.name`) : UNKNOWN}</h3><span class="tier act">${t('journey.title', { n: e.act })}</span>${
       e.tier !== 'normal' ? `<span class="tier ${e.tier}">${t(`journey.node.${e.tier}`)}</span>` : ''
-    }<span class="foe-hp">${icon('heart')}${Math.round(e.hp * CONFIG.enemyHp)}</span></div></div>${movePattern(e)}`,
+    }<span class="foe-hp">${icon('heart')}${Math.round(e.hp * CONFIG.enemyHp)}${e.block ? `<i class="foe-block">${icon('shield')}${e.block}</i>` : ''}</span></div></div>${movePattern(e)}`,
   });
   bindMoveDetails(el);
   return el;

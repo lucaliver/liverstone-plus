@@ -12,6 +12,7 @@ import { actDef } from './data/acts';
 import { ENEMIES } from './data/enemies';
 import { Combat } from './game/combat';
 import {
+  addCard,
   advance,
   applyCombat,
   clearRun,
@@ -88,8 +89,9 @@ function startRun(hero: HeroId): void {
 }
 
 /** Debug: a fresh run whose first fight is against the chosen enemy. */
-function debugFight(hero: HeroId, enemy: string): void {
+function debugFight(hero: HeroId, enemy: string, cards: string[]): void {
   run = newRun(hero, randomSeed());
+  for (const id of cards) addCard(run, id);
   run.nodes[run.current].enemy = enemy;
   enterNode();
 }

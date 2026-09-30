@@ -84,6 +84,9 @@
   font-size: 20px;
 }
 .foe-hp .pico { color: var(--p); --ink2: var(--y); }
+/* the Block it starts with (elites and bosses), next to its HP */
+.foe-block { display: flex; align-items: center; gap: 4px; margin-left: 8px; font-style: normal; }
+.foe-block .pico { color: var(--b); --ink2: var(--y); }
 .foe-moves {
   margin: 0;
   padding: 4px 8px 6px;
@@ -138,7 +141,9 @@
 }
 /* the passive's name, a tall rule, then what it does */
 /* as narrow as its words allow (wrapped text would leave dead space in a wider box), the description takes the rest */
-.foe-half b { flex: none; width: min-content; min-width: 5.5em; text-transform: uppercase; }
+.foe-half b:not(.kw) { flex: none; width: min-content; min-width: 5.5em; text-transform: uppercase; }
+/* on the pink plate the keyword colours would vanish: they turn paper-yellow */
+.foe-half .kw { color: var(--y); }
 .foe-half span { flex: 1; min-width: 0; }
 .foe-half .sep { flex: none; align-self: stretch; width: 3px; background: var(--paper); }
 .foe-moves li.foe-every {
