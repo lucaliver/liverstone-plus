@@ -1,6 +1,7 @@
 import { t } from '../../core/i18n';
 import { type SoundId, sfx } from '../../audio/sfx';
 import { CARDS } from '../../data/cards';
+import { CONFIG } from '../../data/config';
 import { HEXES } from '../../data/hexes';
 import { STATUSES } from '../../data/statuses';
 import { discover } from '../../game/meta';
@@ -34,6 +35,8 @@ const HIT_OFFSETS: [number, number][] = [
 
 /** How long an enemy's speech bubble stays up (ms) before the note spelling out its half-HP trait (keep equal to `.speech` in CSS). */
 const SPEECH_MS = 3000;
+/** A passive's bubble (Paradigm Shift) is a short quip: its note waits for it the same way. */
+const QUIP_MS = 1500;
 
 /** Hit-stop (s) by damage dealt: the fight freezes for a beat on heavy hits, longer on huge ones. */
 function hitStopFor(amount: number, target: 'hero' | 'enemy'): number {
@@ -47,6 +50,14 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
 
   /** Hexes (and Inflation) already explained this fight (one hint each). */
   const hexHinted = new Set<string>();
+
+  /** An enemy's speech bubble over the stage (one at a time); it lasts `ms`, then goes by itself. */
+  const speak = (text: string, ms = SPEECH_MS): void => {
+    r.stage.querySelector('.speech')?.remove();
+    const bubble = h('div', { class: 'speech', style: { animationDuration: `${ms}ms` } }, text);
+    bubble.addEventListener('animationend', () => bubble.remove());
+    r.stage.append(bubble);
+  };
 
   const onEvent = (e: CombatEvent): void => {
     switch (e.type) {
@@ -247,11 +258,7 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         // The enemy speaks first (some have a line of their own, in a speech bubble), then a short note spells out
         // what its half-HP trait just did (the belt speeds up, it hits harder…).
         const def = v.combat.enemy.def;
-        if (def.halfSpeech) {
-          const bubble = h('div', { class: 'speech' }, t(`enemy.${def.id}.speech`));
-          bubble.addEventListener('animationend', () => bubble.remove());
-          r.stage.append(bubble);
-        }
+        if (def.halfSpeech) speak(t(`enemy.${def.id}.speech`));
         v.toast(t(`enemy.${def.id}.half`), true, def.halfSpeech ? SPEECH_MS : 0);
         // Its true face: the sprite changes for good.
         const art = v.combat.enemy.def.halfArt;
@@ -264,6 +271,9 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         shake('big');
         break;
       }
+      case 'speech':
+        speak(t(e.key), QUIP_MS);
+        break;
       case 'beltPinned':
         sfx('stash');
         haptic('stash');
@@ -272,7 +282,8 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         // Every card keeps its place on screen and heads the other way (the engine mirrors the positions).
         v.state.ltr = !v.state.ltr;
         r.belt.classList.toggle('ltr', v.state.ltr);
-        v.toast(t('combat.beltReversed'));
+        // The turn comes half a second into the bubble; the note follows once it has gone.
+        v.toast(t('combat.beltReversed'), false, QUIP_MS - CONFIG.beltTurnPause * 1000);
         sfx('machinery');
         break;
       case 'rowsOpen':

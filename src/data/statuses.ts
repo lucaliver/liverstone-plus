@@ -99,7 +99,14 @@ const defs: StatusDef[] = [
     onCardPlayed: endOnPlay('grindset'),
   },
   { id: 'virulence', kind: 'stacks', good: true, icon: 'biohazard' },
-  { id: 'burn', kind: 'dot', good: false, icon: 'flame' },
+  // Burn: no clock and no decay; the enemy takes its stacks every time it attacks (Poison is the slow, fading one).
+  {
+    id: 'burn',
+    kind: 'stacks',
+    good: false,
+    icon: 'flame',
+    onAttack: (c, side, s) => void c.damage(side === 'enemy' ? 'hero' : 'enemy', side, s.v, { raw: true, ignoreBlock: true, kind: 'burn' }, 'dot'),
+  },
   { id: 'poison', kind: 'dot', good: false, icon: 'drop' },
   { id: 'weak', kind: 'timed', good: false, icon: 'broken' },
   { id: 'vulnerable', kind: 'timed', good: false, icon: 'crack' },
@@ -203,6 +210,7 @@ const defs: StatusDef[] = [
       const e = c.enemy;
       if (side !== 'enemy' || e.hp <= 0) return;
       const quarters = Math.floor((4 * (e.maxHp - e.hp)) / e.maxHp);
+      if (quarters > (e.mem.turns ?? 0)) c.say('status.paradigmShift.speech');
       for (let n = e.mem.turns ?? 0; n < quarters; n++) c.reverseBelt();
       e.mem.turns = Math.max(e.mem.turns ?? 0, quarters);
     },

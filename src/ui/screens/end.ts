@@ -102,20 +102,23 @@ export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: (he
     h(
       'div',
       { class: 'end-actions' },
-      h(
-        'button',
-        {
-          class: 'btn cta block',
-          onclick: () => {
-            sfx('button');
-            haptic('tap');
-            onAgain();
-          },
-        },
-        t('end.again'),
-      ),
+      // A won run ends at the main menu; a lost one offers another shift first.
+      won
+        ? null
+        : h(
+            'button',
+            {
+              class: 'btn cta block',
+              onclick: () => {
+                sfx('button');
+                haptic('tap');
+                onAgain();
+              },
+            },
+            t('end.again'),
+          ),
       h('button', {
-        class: 'btn secondary block share-btn',
+        class: 'btn secondary block act-btn',
         html: `${icon('share')}<span>${t('end.share')}</span>`,
         onclick: async () => {
           sfx('tap');
@@ -124,17 +127,14 @@ export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: (he
           if (blob) await shareImage(blob, 'punchcard-payslip.png', t('end.shareText', { url: location.href.split('#')[0] }));
         },
       }),
-      h(
-        'button',
-        {
-          class: 'btn secondary block',
-          onclick: () => {
-            sfx('tap');
-            onMenu();
-          },
+      h('button', {
+        class: `btn block act-btn ${won ? 'cta' : 'secondary'}`,
+        html: `${icon('home')}<span>${t('end.title')}</span>`,
+        onclick: () => {
+          sfx('tap');
+          onMenu();
         },
-        t('end.title'),
-      ),
+      }),
     ),
   );
   return {

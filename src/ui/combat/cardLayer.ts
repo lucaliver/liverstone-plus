@@ -332,8 +332,8 @@ export function createCardLayer(v: CombatView): CardLayer {
       // Left-to-right belt (the default): the same run mirrored, entering on the left.
       const x = Math.round(state.ltr ? state.beltW * b.pos - state.cardW : state.beltW * (1 - b.pos));
       ce.el.style.transform = `translate3d(${x}px, ${b.row * state.rowH}px, 0)`;
-      // Wide cards (Gatekeeping) and lane locks ride over everything else on the belt, pinned cards over all of it.
-      ce.el.style.zIndex = String(Math.round(b.pos * 100) + (ce.over ? 1000 : 0) + (b.pinned ? 2000 : 0));
+      // Wide cards (Gatekeeping) and lane locks ride over everything else on the belt; pinned cards stay behind the ones riding past.
+      ce.el.style.zIndex = b.pinned ? '1' : String(Math.round(b.pos * 100) + 10 + (ce.over ? 1000 : 0));
     }
     for (const [uid, ce] of beltEls) {
       if (onBelt.has(uid)) continue;

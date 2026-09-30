@@ -70,7 +70,7 @@
   from { rotate: var(--m0); }
 }
 /* the floor plan of the office: a blueprint grid inside the outer wall, rooms joined by corridors, doors on the walls,
-   fog over the rooms out of sight, padlocks on the corridors that take a badge */
+   fog over the rooms out of sight */
 .path {
   position: relative;
   margin: 8px 0 12px;
@@ -91,7 +91,6 @@
 }
 .hall.trod { stroke: #453870; }
 .hall.walked { stroke: var(--y); }
-.hall.locked { stroke: #6b1f52; }
 .hall.fog { opacity: 0.45; }
 .hall-mid {
   fill: none;
@@ -100,7 +99,6 @@
   stroke-dasharray: 5 7;
 }
 .hall-mid.walked { stroke: var(--k); }
-.hall-mid.locked { stroke: var(--p); }
 .hall-mid.fog { opacity: 0.45; }
 /* footsteps along the way walked (left, right…); the newest stretch is walked again, one step at a time */
 .path .step {
@@ -164,9 +162,10 @@
 .node.current .dot {
   background: var(--y);
   box-shadow: 5px 5px 0 var(--p);
-  animation: bob 0.8s steps(2) infinite;
   --ink2: var(--p);
 }
+/* the name plate is a sibling of the icon box: it bobs with it */
+.node.current :is(.dot, .label) { animation: bob 0.8s steps(2) infinite; }
 .node.elite .dot { color: var(--purple); }
 .node.boss .dot { color: var(--p); }
 .node.promotion .dot { color: var(--b); }
@@ -205,45 +204,6 @@
 .door.left { left: -7px; }
 .door.right { right: -7px; }
 .node.fog .door { background: var(--muted-d); }
-/* a padlock on a corridor: pink while it stays shut, yellow once a badge is in hand */
-.door-lock {
-  position: absolute;
-  z-index: 2;
-  translate: -50% -50%;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  font-size: 26px;
-  color: var(--paper);
-  background: var(--p);
-  border: var(--line) solid var(--k);
-  box-shadow: 3px 3px 0 var(--shadow);
-  --ink2: var(--k);
-}
-.door-lock.ready { color: var(--k); background: var(--y); }
-/* the badge found in a room */
-.badge-mark {
-  position: absolute;
-  z-index: 3;
-  top: -12px;
-  right: -10px;
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  font-size: 22px;
-  color: var(--b);
-  background: var(--paper);
-  border: 2px solid var(--k);
-  rotate: 8deg;
-  pointer-events: none;
-  --ink2: var(--y);
-}
-.chip.badges { position: absolute; top: 0; right: 0; min-height: 40px; }
-.chip.badges[hidden] { display: none; }
-.chip.badges .pico { color: var(--b); }
-.chip.badges.gain { animation: stamp-in 0.2s steps(2) 0.3s both; }
 
 /* a new shift: a full-screen curtain with the act's title, its name and the clock-in time; it lifts by itself or on a tap */
 .act-intro {

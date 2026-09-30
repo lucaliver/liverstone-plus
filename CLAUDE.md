@@ -122,7 +122,7 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
 - **Run as a graph, drawn as the office floor plan** (rooms, corridors, doors; rooms more than `VISION` doors ahead are in fog). `RunNode.next[]` + `lane`: each act (`ACT_DEFS` in `data/acts.ts`, two for now, each with its fight and map music) is a shared first fight, two lanes
   (`LANES` in `run.ts`) with `LINKS` links between them (diagonal upward, or flat both ways; never on neighbouring
   floors), and the boss, which leads to the next act (full heal, elite-grade reward; the map switches act). The very first run is scripted
-(`newRun(…, scripted)`): fixed seed, enemies easiest first, and it ends with act 1's boss. `advance(run, to)` moves along a link; `run.path` records the nodes entered. Outside the first run, one link between the lanes per act is a locked door (`RunNode.locked`, a shortcut only) and a job on the lane before it hides a badge (`RunNode.badge`, `run.badges`): going through the door spends one.
+(`newRun(…, scripted)`): fixed seed, enemies easiest first, and it ends with act 1's boss. `advance(run, to)` moves along a link; `run.path` records the nodes entered.
 - **Per-frame rendering is diff-based** (`setText`, `setHtml`, `toggle` only write on change). Status chips are
   rebuilt only when the set changes, so presses aren't lost.
 

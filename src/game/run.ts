@@ -25,10 +25,6 @@ export interface RunNode {
   next: number[];
   /** Enemy picked when the run is generated, so reloading can't reroll it. */
   enemy?: string;
-  /** A badge is found here: clearing the room hands it over. */
-  badge?: true;
-  /** Ids in `next` behind a locked door: going through one costs a badge. */
-  locked?: number[];
 }
 
 export interface RunStats {
@@ -61,8 +57,6 @@ export interface RunState {
   stats: RunStats;
   /** Pay earned so far: the run's score (fast wins pay more). */
   money: number;
-  /** Badges in hand: each opens one locked door on the map. */
-  badges: number;
   uid: number;
   /** The very first run: its map is fixed and its first rewards are picked (`HeroDef.firstRewards`). */
   scripted?: boolean;
@@ -112,7 +106,6 @@ export function newRun(hero: HeroId, seed: number, scripted = false): RunState {
     cleared: false,
     stats: { kills: 0, elites: 0, cardsPlayed: 0, damageTaken: 0 },
     money: 0,
-    badges: 0,
     uid: peekUid(),
     scripted,
   };
@@ -162,42 +155,20 @@ function buildNodes(rng: Rng, scripted: boolean): RunNode[] {
     const floors: number[] = [];
     for (const i of rng.shuffle([...Array(rows.length - 1).keys()]))
       if (floors.length < LINKS && floors.every((f) => Math.abs(f - i) > 1)) floors.push(i);
-    const links = floors.map((i) => {
+    for (const i of floors) {
       const side = rng.next() < 0.5 ? 0 : 1;
-      const flat = rng.next() >= 0.5;
-      if (!flat) rows[i][side].next.push(rows[i + 1][1 - side].id);
+      if (rng.next() < 0.5) rows[i][side].next.push(rows[i + 1][1 - side].id);
       else {
         // Flat: across the floor either way (a node already visited can't be entered again).
         rows[i][side].next.push(rows[i][1 - side].id);
         rows[i][1 - side].next.push(rows[i][side].id);
       }
-      return { i, side, flat };
-    });
-    if (!scripted) lockALink(rng, rows, links);
+    }
     const boss = add(lanes[0].length + opening + 1, 0.5, 'boss');
     for (const n of rows[rows.length - 1]) n.next.push(boss.id);
     last = [boss];
   }
   return nodes;
-}
-
-/**
- * Locks one of the links between the lanes (a door that costs a badge) and hides a badge in a job earlier on each lane
- * that can go through it. Links near the start, with no job before them on the lane, stay open. The lanes themselves never lock,
- * so a locked door is always an optional shortcut.
- */
-function lockALink(rng: Rng, rows: RunNode[][], links: { i: number; side: number; flat: boolean }[]): void {
-  for (const { i, side, flat } of rng.shuffle(links)) {
-    const lanes = flat ? [0, 1] : [side];
-    const jobs = lanes.map((lane) => rows.slice(0, i).flatMap((r) => (r[lane].type === 'fight' ? [r[lane]] : [])));
-    if (jobs.some((j) => !j.length)) continue;
-    for (const j of jobs) rng.pick(j).badge = true;
-    if (flat) {
-      rows[i][side].locked = [rows[i][1 - side].id];
-      rows[i][1 - side].locked = [rows[i][side].id];
-    } else rows[i][side].locked = [rows[i + 1][1 - side].id];
-    return;
-  }
 }
 
 export const currentNode = (run: RunState): RunNode => run.nodes[run.current];
@@ -264,7 +235,6 @@ export function applyCombat(run: RunState, combat: Combat): void {
     run.stats.kills++;
     if (combat.enemy.def.tier === 'elite') run.stats.elites++;
     run.money += fightPay(combat.enemy.def.tier, combat.time);
-    if (node.badge) run.badges++;
     // A new shift starts rested: beating an act boss heals fully.
     if (node.type === 'boss' && node.next.length) run.hp = run.maxHp;
   }
@@ -360,18 +330,11 @@ export function rest(run: RunState): number {
   return amount;
 }
 
-/** Whether the way from the current node to `to` is through a locked door (it costs a badge). */
-export const doorLocked = (run: RunState, to: number): boolean => !!currentNode(run).locked?.includes(to);
-
 /** Moves to a node reachable from the current one (the first by default). Returns false when the run is complete. */
 export function advance(run: RunState, to?: number): boolean {
   const next = currentNode(run).next;
-  const target = to ?? next.find((id) => !run.path.includes(id) && !doorLocked(run, id));
+  const target = to ?? next.find((id) => !run.path.includes(id));
   if (target === undefined || !next.includes(target) || run.path.includes(target)) return false;
-  if (doorLocked(run, target)) {
-    if (run.badges < 1) return false;
-    run.badges--;
-  }
   run.current = target;
   run.path.push(target);
   run.cleared = false;
@@ -420,9 +383,8 @@ export function loadRun(): RunState | null {
   if (run?.version !== SAVE_VERSION || !HEROES[run.hero]) return null;
   // Drop the save if content changed and it references cards/enemies that no longer exist.
   if (run.deck.some((c) => !CARDS[c.id] || c.perks?.some((p) => !PERKS[p])) || run.nodes.some((n) => n.enemy && !ENEMIES[n.enemy])) return null;
-  // Saves from before pay and badges existed start at zero.
+  // Saves from before pay existed start at zero.
   if (typeof run.money !== 'number') run.money = 0;
-  if (typeof run.badges !== 'number') run.badges = 0;
   return run;
 }
 

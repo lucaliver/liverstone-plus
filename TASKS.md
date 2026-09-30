@@ -6,21 +6,21 @@
 
 - [ ] in passive/status descriptions the important keywords should be bolded; also make them colored accordingly
 
-- [ ] quando si triggera l'effetto della passiva di "goblin consultant" assicurati che le carte non scattino o non cambino posto; (se è più semplice, stoppa la belt per mezzo secondo prima di invertire direzione)
+- [x] quando si triggera l'effetto della passiva di "goblin consultant" assicurati che le carte non scattino o non cambino posto; (se è più semplice, stoppa la belt per mezzo secondo prima di invertire direzione)
 
-- [ ] carta "team change": dovrebbe avere exhaust; e le carte pinnate dovrebbero rimanere DIETRO a quelle nuove che scorrono
+- [x] carta "team change": dovrebbe avere exhaust; e le carte pinnate dovrebbero rimanere DIETRO a quelle nuove che scorrono
 
 - [ ] passiva del "CEO slave": la descrizione non combacia con quello che ora fa
 
-- [ ] nella schermata di vittoria: rimuovi tasto "Clock in again" e metti icona home al tasto "Main menu"
+- [x] nella schermata di vittoria: rimuovi tasto "Clock in again" e metti icona home al tasto "Main menu"
 
-- [ ] "goblin consultant" ha un fumetto quando trigghera la passiva? se no, mettiglielo
+- [x] "goblin consultant" ha un fumetto quando trigghera la passiva? se no, mettiglielo
 
-- [ ] cambiamo il funzionemnto dello status "burn" per differenziarlo dal veleno: hitta solo quando il nemico attacca con danno, e non scala (es. il nemico ha 10 burn, attacca subisce 10 danni, attacca e subisce 10 danni)
+- [x] cambiamo il funzionemnto dello status "burn" per differenziarlo dal veleno: hitta solo quando il nemico attacca con danno, e non scala (es. il nemico ha 10 burn, attacca subisce 10 danni, attacca e subisce 10 danni)
 
-- [ ] rimuovi la funzionalità dei badge nella mappa per ora
+- [x] rimuovi la funzionalità dei badge nella mappa per ora
 
-- [ ] nella mappa quando una stanza è selezionata ha una animazione che fa su e giù, però il testo (es. "JOB") non si muove assieme all'icona, sistemalo
+- [x] nella mappa quando una stanza è selezionata ha una animazione che fa su e giù, però il testo (es. "JOB") non si muove assieme all'icona, sistemalo
 
 # NEXT STEPS (ignore for now):
 

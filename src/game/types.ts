@@ -159,6 +159,8 @@ export interface StatusDef {
   onCardPlayed?: (c: Combat, side: Side, def: CardDef) => void;
   /** The side carrying it just lost HP to a hit (`lost` > 0). */
   onHurt?: (c: Combat, side: Side, s: StatusVal, lost: number) => void;
+  /** The side carrying it just attacked: one of its moves dealt damage (Burn). */
+  onAttack?: (c: Combat, side: Side, s: StatusVal) => void;
   /** A card of the hero's just left the belt unplayed. */
   onExpire?: (c: Combat, side: Side, s: StatusVal) => void;
   /** Runs every simulation step while the status is active. */
@@ -346,6 +348,7 @@ export type CombatEvent =
   | { type: 'ability'; id: string }
   | { type: 'relic'; id: string }
   | { type: 'enrage' }
+  | { type: 'speech'; key: TKey }
   | { type: 'beltReversed' }
   | { type: 'beltPinned' }
   | { type: 'rowsOpen' }

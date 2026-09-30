@@ -4,7 +4,7 @@ import { CONFIG, EXPIRE_POS } from '../src/data/config';
 import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
 import { CARD_LIST, CARDS } from '../src/data/cards';
-import { advance, currentNode, doorLocked, fightPay, loadRun, newRun, type RunNode } from '../src/game/run';
+import { fightPay, loadRun, newRun } from '../src/game/run';
 import type { CardInst } from '../src/game/types';
 
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
@@ -254,25 +254,64 @@ describe('combat engine', () => {
     expect(lost()).toBe(3);
   });
 
-  it('the Goblin Consultant reverses the belt for every quarter of its HP you take, cards keeping their place', () => {
+  it('the Goblin Consultant stops the belt for a moment, then reverses it, for every quarter of its HP you take, cards keeping their place', () => {
     const c = setup({ enemy: ENEMIES.goblinConsultant });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
     run(c, CONFIG.introTime + 6);
-    const before = c.belt.map((b) => `${b.card.uid}:${(b.pos - CONFIG.cardWidth / 2).toFixed(2)}`);
     const turns: string[] = [];
-    c.events.on((e) => e.type === 'beltReversed' && turns.push(e.type));
+    const said: string[] = [];
+    c.events.on((e) => {
+      if (e.type === 'beltReversed') turns.push(e.type);
+      if (e.type === 'speech') said.push(e.key);
+    });
+    const posOf = (): string => c.belt.map((b) => `${b.card.uid}:${b.pos.toFixed(3)}`).join();
+    const before = c.belt.map((b) => `${b.card.uid}:${(b.pos - CONFIG.cardWidth / 2).toFixed(2)}`);
     c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 4), { raw: true }, 'hero');
-    expect(turns).toHaveLength(1);
-    // A card's middle is mirrored about the belt's middle (unless it was pushed back from the new exit).
-    const mid = (x: number): string => (1 - x).toFixed(2);
+    expect(said).toEqual(['status.paradigmShift.speech']);
+    // The belt stands still first…
+    const still = posOf();
+    run(c, CONFIG.beltTurnPause / 2);
+    expect(posOf()).toBe(still);
+    expect(turns).toHaveLength(0);
+    // …then turns around: a card's middle is mirrored about the belt's middle (unless it was still sliding in).
+    while (!turns.length) run(c, 1 / 60);
+    const mid = (x: number): number => 1 - x;
     for (const b of c.belt) {
-      const was = before.find((s) => s.startsWith(`${b.card.uid}:`))!;
-      if (b.pos < CONFIG.reverseMaxPos) expect((b.pos - CONFIG.cardWidth / 2).toFixed(2)).toBe(mid(Number(was.split(':')[1])));
+      const was = before.find((s) => s.startsWith(`${b.card.uid}:`));
+      if (was && b.pos < CONFIG.reverseMaxPos) expect(b.pos - CONFIG.cardWidth / 2).toBeCloseTo(mid(Number(was.split(':')[1])), 1);
     }
     c.damage('hero', 'enemy', 1, { raw: true }, 'hero');
+    run(c, 1);
     expect(turns).toHaveLength(1);
+    // Two quarters at once: the two turns cancel out.
     c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 2), { raw: true }, 'hero');
-    expect(turns).toHaveLength(3);
+    run(c, 1);
+    expect(turns).toHaveLength(1);
+  });
+
+  it('Burn hits only when the enemy attacks with damage, for its full stacks every time', () => {
+    const c = setup({ enemy: ENEMIES.snitch });
+    c.enemy.hp = c.enemy.maxHp = 500;
+    c.enemy.block = 50;
+    c.enemy.move = { id: 'poke', intent: 'attack', windup: 2, dmg: 1 };
+    run(c, CONFIG.introTime);
+    c.applyStatus('enemy', 'burn', 10);
+    // Idle time costs it nothing, and Block doesn't stop it.
+    c.enemy.timer = 0;
+    run(c, 1.5);
+    expect(c.enemy.hp).toBe(500);
+    run(c, 1);
+    expect(c.enemy.hp).toBe(490);
+    expect(c.stacks('enemy', 'burn')).toBe(10);
+    c.enemy.move = { id: 'poke', intent: 'attack', windup: 2, dmg: 1 };
+    c.enemy.timer = 0;
+    run(c, 2.1);
+    expect(c.enemy.hp).toBe(480);
+    // A move that deals no damage doesn't set it off.
+    c.enemy.move = { id: 'chat', intent: 'defend', windup: 1 };
+    c.enemy.timer = 0;
+    run(c, 1.1);
+    expect(c.enemy.hp).toBe(480);
   });
 
   describe('On a Roll', () => {
@@ -1106,57 +1145,6 @@ describe('the very first run', () => {
     expect(met.every((m) => m.length === 1)).toBe(true);
     const order = ['hrOrientationVideo', ...enemiesFor(1, 'normal').map((e) => e.id)];
     expect(met.map((m) => m[0])).toEqual(order.slice(0, met.length));
-  });
-});
-
-describe('locked doors and badges', () => {
-  const maps = Array.from({ length: 40 }, (_, seed) => newRun('warrior', seed + 2));
-  const locks = (nodes: RunNode[]): { from: RunNode; to: RunNode }[] =>
-    nodes.flatMap((n) => (n.locked ?? []).map((id) => ({ from: n, to: nodes[id] })));
-
-  it('the very first run has none, and the boss is always reachable without a badge', () => {
-    const first = newRun('warrior', 1, true);
-    expect(first.nodes.some((n) => n.badge || n.locked)).toBe(false);
-    for (const run of maps) {
-      const seen = new Set<number>();
-      const walk = (n: RunNode): void => {
-        if (seen.has(n.id)) return;
-        seen.add(n.id);
-        for (const id of n.next) if (!n.locked?.includes(id)) walk(run.nodes[id]);
-      };
-      walk(run.nodes[0]);
-      for (const boss of run.nodes.filter((n) => n.type === 'boss')) expect(seen.has(boss.id)).toBe(true);
-    }
-  });
-
-  it('a locked door always has a badge to find on a job earlier on the lane it leaves from', () => {
-    let found = 0;
-    for (const run of maps) {
-      for (const act of [1, 2]) {
-        const nodes = run.nodes.filter((n) => n.act === act);
-        const doors = locks(run.nodes).filter((l) => l.from.act === act);
-        expect(doors.length).toBeLessThanOrEqual(2);
-        for (const { from } of doors) {
-          found++;
-          expect(nodes.some((n) => n.badge && n.type === 'fight' && n.lane === from.lane && n.floor < from.floor)).toBe(true);
-        }
-      }
-    }
-    expect(found).toBeGreaterThan(20);
-  });
-
-  it('a locked door needs a badge, and going through spends it', () => {
-    const run = maps.find((r) => locks(r.nodes).length)!;
-    const { from, to } = locks(run.nodes)[0];
-    run.current = from.id;
-    run.path = [from.id];
-    run.cleared = true;
-    expect(doorLocked(run, to.id)).toBe(true);
-    expect(advance(run, to.id)).toBe(false);
-    run.badges = 1;
-    expect(advance(run, to.id)).toBe(true);
-    expect(run.badges).toBe(0);
-    expect(currentNode(run).id).toBe(to.id);
   });
 });
 

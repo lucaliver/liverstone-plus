@@ -461,6 +461,7 @@ export const neutralCards: CardDef[] = [
     upCost: 1,
     vals: [],
     art: 'huddle',
+    keywords: ['exhaust'],
     play: (c) => c.pinBelt(),
   },
 

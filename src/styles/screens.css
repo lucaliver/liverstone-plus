@@ -293,8 +293,8 @@
   animation: stamp-in 0.12s steps(2) backwards;
   animation-delay: calc(var(--i) * 0.09s + 0.5s);
 }
-.end .share-btn { display: flex; align-items: center; justify-content: center; gap: 10px; }
-.end .share-btn .pico { font-size: 1.2em; --ink2: var(--p); }
+.end .act-btn { display: flex; align-items: center; justify-content: center; gap: 10px; }
+.end .act-btn .pico { font-size: 1.2em; --ink2: var(--p); }
 .slip-row.slip-net {
   margin-top: 8px;
   padding-top: 6px;

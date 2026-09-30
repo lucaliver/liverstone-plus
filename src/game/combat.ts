@@ -95,6 +95,9 @@ export class Combat {
 
   /** Time accumulated towards the next regular draw onto the belt. */
   private spawnClock = 0;
+  /** Seconds the belt still stands before it turns around, and how many turns it was asked for meanwhile (two cancel out). */
+  private beltHalt = 0;
+  private beltTurns = 0;
   beltSpeed = 1;
   regenMul = 1;
   /** Deck uids permanently removed (potions). */
@@ -319,13 +322,13 @@ export class Combat {
     return this.beltSpeed * (this.beltRows > 1 ? CONFIG.twoRowSpeed : 1) * this.beltBoost();
   }
 
-  /** How much statuses speed the belt up (Rush, Hurry, Crunch), slow it down (Slowdown) or stop it (Stalled) or slow it down (Slowdown): 1 when none does. */
+  /** How much statuses speed the belt up (Rush, Hurry, Crunch), slow it down (Slowdown) or stop it (Stalled, or about to turn around): 1 when none does. */
   beltBoost(): number {
     let r = 1;
     if (this.has('hero', 'rush')) r *= CONFIG.beltRush;
     if (this.has('hero', 'hurry')) r *= CONFIG.beltHurry;
     if (this.has('hero', 'crunch')) r *= CONFIG.beltCrunch;
-    if (this.has('hero', 'stalled')) r = 0;
+    if (this.has('hero', 'stalled') || this.beltHalt > 0) r = 0;
     if (this.has('hero', 'slowdown')) r *= CONFIG.beltSlow;
     return r;
   }
@@ -353,6 +356,7 @@ export class Combat {
     if (this.result) return;
     this.tickEnemy(dt);
     if (this.result) return;
+    this.tickBeltTurn(dt);
     this.tickBelt(dt);
     for (const id of this.relics) RELICS[id]?.hooks?.tick?.(this, dt);
     this.heroDef.hooks.tick?.(this, dt);
@@ -420,7 +424,7 @@ export class Combat {
     f.dotTimer += dt;
     if (f.dotTimer < CONFIG.dotInterval) return;
     f.dotTimer -= CONFIG.dotInterval;
-    for (const id of ['burn', 'poison', 'regen']) {
+    for (const id of ['poison', 'regen']) {
       const s = f.statuses[id];
       if (!s || s.v <= 0) continue;
       if (id === 'regen') this.heal(side, s.v);
@@ -461,16 +465,35 @@ export class Combat {
     return m;
   }
 
-  /**
-   * Reverses the belt: the exit becomes the entry. Every card keeps its place on the belt and now heads the other way
-   * (its position is mirrored, but never closer to the new exit than `reverseMaxPos`); a pile at the exit goes on.
-   */
+  /** Asks for the belt to be reversed: it stops for `beltTurnPause`, then turns around (see `turnBelt`). */
   reverseBelt(): void {
+    this.beltTurns++;
+    this.beltHalt = CONFIG.beltTurnPause;
+  }
+
+  private tickBeltTurn(dt: number): void {
+    if (this.beltHalt <= 0) return;
+    this.beltHalt -= dt;
+    if (this.beltHalt > 0) return;
+    if (this.beltTurns % 2) this.turnBelt();
+    this.beltTurns = 0;
+  }
+
+  /**
+   * The exit becomes the entry. Every card keeps its place on the belt and now heads the other way
+   * (its position is mirrored, but never past the new exit, `reverseMaxPos`); a pile at the exit goes on.
+   */
+  private turnBelt(): void {
     for (const b of this.belt) {
       b.pos = Math.min(1 + CONFIG.cardWidth - b.pos, CONFIG.reverseMaxPos);
       b.stuck = false;
     }
     this.events.emit({ type: 'beltReversed' });
+  }
+
+  /** The enemy says something (a speech bubble over its sprite). */
+  say(key: TKey): void {
+    this.events.emit({ type: 'speech', key });
   }
 
   /** Pins every card on the belt where it is (Team Change): they stay until played, while new cards ride past them. */
@@ -542,6 +565,8 @@ export class Combat {
       for (let i = 0; i < hits && !this.result; i++) {
         this.damage('enemy', 'hero', Math.round((m.dmg ?? 0) * scale) + stored, { kind: 'claw' }, 'enemy', i);
       }
+      if (this.result) return;
+      for (const [id, s] of Object.entries(this.enemy.statuses)) if (this.has('enemy', id)) STATUSES[id].onAttack?.(this, 'enemy', s);
       if (this.result) return;
     }
     if (m.block) this.gainBlock('enemy', Math.round(m.block * scale));
