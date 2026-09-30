@@ -539,16 +539,16 @@ export const curseCards: CardDef[] = [
   {
     // The Work Wife's: fills the sleeve at the start of the fight and gets cheaper every second.
     id: 'movingBox',
-    face: '{cheaper:0}/s',
+    face: '{cheaper:0}/s|{rush:1}',
     cls: 'curse',
     type: 'curse',
     rarity: 'special',
     cost: 20,
-    vals: [1],
+    vals: [1, 5],
     keywords: ['exhaust', 'bulky'],
     costDrop: 0,
     art: 'movingBox',
-    play: () => {},
+    play: (c, v) => c.rushBelt(v[1]),
   },
   {
     // The Leaver's: nobody can pay for it, and it blows up if it slips off the belt. The sleeve keeps it safe.
@@ -609,13 +609,13 @@ export const curseCards: CardDef[] = [
   {
     // Payday Loan's: nobody wants to pay for it, and every time it slips off the belt it bites, harder than the last.
     id: 'debt',
-    face: '{?exit}{boom:0}',
+    face: '{?exit}{boom:0}|{grow:1}',
     cls: 'curse',
     type: 'curse',
     rarity: 'special',
     cost: 3,
     vals: [6, 4],
-    keywords: ['exhaust'],
+    keywords: ['exhaust', 'volatile'],
     bonusIdx: 0,
     art: 'unpaidBill',
     play: () => {},

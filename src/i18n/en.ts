@@ -742,7 +742,7 @@ const en = {
   'card.kamikaze.desc': 'Deal {0} damage, if you can ever pay for it. If it leaves the belt, it blows up: take {1} damage.',
   'card.kamikaze.tip': 'Kamikaze! If it slips off the belt, it blows up for 99 damage. Drag it down into your sleeve: it is safe there.',
   'card.movingBox.name': 'Moving Box',
-  'card.movingBox.desc': 'Her stuff, in your sleeve. [bulky]. Costs {0} less mana every second.',
+  'card.movingBox.desc': 'Her stuff, in your sleeve. [bulky]. Costs {0} less mana every second. When played, [rush] your belt for {1}s.',
   'card.drama.name': 'Drama',
   'card.drama.desc': 'Clogs your belt. Pay to clear it. If it leaves the belt, another Drama is shuffled into your deck.',
   'card.writeUp.name': 'Write-Up',
