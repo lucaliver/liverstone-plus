@@ -114,7 +114,7 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 50,
     art: 'hrBitch',
-    main: { id: 'performanceReview', intent: 'curse', windup: 6, curse: [{ id: 'improvementPlan', n: 2, to: 'draw' }] },
+    main: { id: 'performanceReview', intent: 'curse', windup: 6, curse: [{ id: 'tpsReport', n: 2, to: 'draw' }] },
     every: 2,
     specials: [
       atk('memo', 10, 6),
@@ -170,7 +170,7 @@ const defs: EnemyDef[] = [
     every: 2,
     specials: [
       atk('patDown', 11, 7, { intent: 'defend', block: 14, windup: 6 }),
-      { id: 'clearanceCheck', intent: 'curse', windup: 2, curse: [{ id: 'redTape', n: 2, to: 'draw' }] },
+      { id: 'clearanceCheck', intent: 'curse', windup: 2, curse: [{ id: 'papersPlease', n: 2, to: 'draw' }] },
     ],
     onHalf: (c) => c.gainBlock('enemy', 30),
   },
@@ -243,7 +243,7 @@ const defs: EnemyDef[] = [
         curse: [
           { id: 'quickFavour', n: 1, to: 'draw' },
           { id: 'officePlant', n: 1, to: 'draw' },
-          { id: 'machineDown', n: 1, to: 'draw' },
+          { id: 'pcLoadLetter', n: 1, to: 'draw' },
           { id: 'writeUp', n: 1, to: 'draw' },
         ],
       }),
@@ -300,7 +300,7 @@ const defs: EnemyDef[] = [
     main: atk('citation', 7, 7),
     every: 2,
     specials: [
-      { id: 'paperwork', intent: 'curse', windup: 7, curse: [{ id: 'redTape', n: 2, to: 'draw' }], status: [gainStrength] },
+      { id: 'paperwork', intent: 'curse', windup: 7, curse: [{ id: 'papersPlease', n: 2, to: 'draw' }], status: [gainStrength] },
       atk('violation', 15, 10, { intent: 'charge' }),
     ],
     onHalf: (c) => c.applyStatus('hero', 'slowdown', 1, 20),
@@ -330,7 +330,7 @@ const defs: EnemyDef[] = [
     every: 8,
     specials: [
       { id: 'lightsOut', intent: 'debuff', windup: 6, status: [gainStrength, { id: 'blackout', t: 8, target: 'hero' }] },
-      { id: 'fuseBox', intent: 'curse', windup: 6, curse: [{ id: 'machineDown', n: 1, to: 'belt' }], status: [gainStrength] },
+      { id: 'fuseBox', intent: 'curse', windup: 6, curse: [{ id: 'pcLoadLetter', n: 1, to: 'belt' }], status: [gainStrength] },
     ],
   },
   {

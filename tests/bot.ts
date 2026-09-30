@@ -30,7 +30,18 @@ const DT = 1 / 30;
 
 /** A heuristic player: blocks before telegraphed hits, otherwise spends mana on damage. */
 const CRYSTALS = ['coffee', 'doubleEspresso'];
-const BLOCKISH = ['hardHat', 'fireDoor', 'solidarity', 'barricade', 'palletWall', 'coldStorage', 'tenure', 'pushback', 'lunchBreak', 'lookBusy'];
+const BLOCKISH = [
+  'hardHat',
+  'fireDoor',
+  'karlMarx',
+  'barricade',
+  'palletWall',
+  'coldStorage',
+  'employeeOfTheMonth',
+  'pushback',
+  'lunchBreak',
+  'lookBusy',
+];
 const DEBUFFS = ['rust', 'whistleblow', 'smokestack', 'slowdown', 'blackFriday', 'walkout'];
 
 export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {

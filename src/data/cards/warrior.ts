@@ -201,7 +201,7 @@ export const warriorCards: CardDef[] = [
 
   // Epics
   {
-    id: 'tenure',
+    id: 'employeeOfTheMonth',
     face: '{block:0}',
     cls: 'warrior',
     type: 'skill',
@@ -211,7 +211,7 @@ export const warriorCards: CardDef[] = [
     vals: [30],
     upVals: [40],
     keywords: ['exhaust', 'pending'],
-    art: 'contract',
+    art: 'employeeOfTheMonth',
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {
@@ -353,7 +353,7 @@ export const warriorCards: CardDef[] = [
   },
   // Filling the class out: cheap Strength payoff, thorns, Block turned into damage, a Block engine and an X defence
   {
-    id: 'rivetGun',
+    id: 'releaseTheHounds',
     face: '{dmg:0}×{1}',
     cls: 'warrior',
     type: 'attack',
@@ -361,7 +361,7 @@ export const warriorCards: CardDef[] = [
     cost: 1,
     vals: [1, 4],
     upVals: [2, 4],
-    art: 'rivetGun',
+    art: 'releaseTheHounds',
     // Strength counts on every rivet.
     play: (c, v) => void c.hit(v[0], { hits: v[1] }),
   },

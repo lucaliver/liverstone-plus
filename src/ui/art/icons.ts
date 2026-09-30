@@ -76,7 +76,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<path d="M4 44h56v14H4z"/><path fill="#16121f" d="M30 44l-4 6 5 3-3 5h5l3-6-5-3 3-5z"/><path d="M12 30l7-6 6 5-4 9zM40 26l8-4 5 8-8 5zM28 14l6-4 4 6-6 4z"/>`,
   },
   // ---- mage
-  bolt: { el: 'arcane', svg: `<circle cx="32" cy="32" r="12"/><circle cx="32" cy="32" r="6" fill="#fff" opacity=".7"/>${star4(32, 32, 28)}` },
+  clippy: {
+    el: 'arcane',
+    svg: `<path d="M20 48V16a12 12 0 0 1 24 0v32a16 16 0 0 1-32 0V26" ${S} stroke-width="7"/><path d="M17 16h30v24H17z"/><circle cx="27" cy="24" r="5.5" fill="#16121f"/><circle cx="39" cy="24" r="5.5" fill="#16121f"/><circle cx="28.5" cy="25" r="2.2" fill="#fff"/><circle cx="37.5" cy="25" r="2.2" fill="#fff"/><path d="M20 15l12 4M44 15l-12 4" stroke="#16121f" stroke-width="3.5"/>`,
+  },
   ward: {
     el: 'arcane',
     svg: `<path d="M32 4l24 14v28L32 60 8 46V18z"/><path fill="#16121f" opacity=".4" d="M32 13l16 9v20l-16 9-16-9V22z"/><path d="M32 20l3 9h9l-7 6 3 9-8-5-8 5 3-9-7-6h9z"/>`,
@@ -218,9 +221,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'necro',
     svg: `<path d="M8 50l30-30-3-6a6 6 0 1 1 9-6 6 6 0 1 1 6 9l6 3-30 30 3 6a6 6 0 1 1-9 6 6 6 0 1 1-6-9z"/><path d="M52 4L40 22l4 4 18-12z"/>`,
   },
-  tomb: {
+  karlMarx: {
     el: 'necro',
-    svg: `<path d="M14 58V24c0-12 8-20 18-20s18 8 18 20v34z"/><path d="M29 16h6v8h8v6h-8v14h-6V30h-8v-6h8z" fill="#16121f"/><rect x="6" y="56" width="52" height="6"/>`,
+    svg: `<circle cx="12" cy="24" r="10"/><circle cx="20" cy="11" r="11"/><circle cx="34" cy="8" r="10"/><circle cx="47" cy="13" r="10"/><circle cx="53" cy="27" r="9"/><path d="M8 28c-2 14 2 26 10 32 4 3 9 4 14 4s10-1 14-4c8-6 12-18 10-32z"/><path d="M19 18h26v18c0 4-6 7-13 7s-13-3-13-7z" fill="#fff" stroke="#16121f" stroke-width="3"/><circle cx="26" cy="26" r="3" fill="#16121f"/><circle cx="38" cy="26" r="3" fill="#16121f"/><path d="M22 20l8 2M42 20l-8 2" stroke="#16121f" stroke-width="3"/><path d="M19 38c6-4 10-2 13 0 3-2 7-4 13 0-2 7-8 7-13 4-5 3-11 3-13-4z" stroke="#16121f" stroke-width="3"/><path d="M26 52q6 4 12 0" stroke="#16121f" stroke-width="3" fill="none"/>`,
   },
   gear: {
     el: 'steel',
@@ -260,9 +263,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'nature',
     svg: `<path d="M4 32L32 8l28 24z"/><rect x="4" y="34" width="56" height="8"/><rect x="4" y="46" width="56" height="10"/><path d="M8 42h48l-4 4H12z" fill="#16121f"/>`,
   },
-  contract: {
+  employeeOfTheMonth: {
     el: 'holy',
-    svg: `<path d="M10 4h36v44H10z"/><path d="M16 12h24M16 20h24M16 28h14" stroke="#16121f" stroke-width="4"/><circle cx="44" cy="46" r="12"/><path d="M38 54l-4 9 6-3 4 3v-7zM50 54l4 9-6-3-4 3v-7z"/><circle cx="44" cy="46" r="5" fill="#16121f"/>`,
+    svg: `<rect x="4" y="8" width="46" height="54"/><rect x="10" y="14" width="34" height="32" fill="#16121f"/><circle cx="27" cy="26" r="8.5"/><path d="M14 46c0-9 6-14 13-14s13 5 13 14z"/><rect x="11" y="51" width="32" height="6" fill="#16121f"/><path d="M16 54h6M28 54h10" stroke="#fff" stroke-width="2.5"/><path stroke="#16121f" stroke-width="4" stroke-linejoin="round" d="M50 1l4.4 9.5 10.3 1.2-7.6 7 2 10.2L50 23l-9.1 5 2-10.2-7.6-7 10.3-1.2z"/><path d="M50 1l4.4 9.5 10.3 1.2-7.6 7 2 10.2L50 23l-9.1 5 2-10.2-7.6-7 10.3-1.2z"/>`,
   },
   safetySign: {
     el: 'holy',
@@ -414,9 +417,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'necro',
     svg: `<rect x="10" y="4" width="44" height="10" rx="2"/><path d="M27 14h10v34l-5 14-5-14z"/><g fill="#16121f"><rect x="28" y="22" width="4" height="5"/><rect x="32" y="34" width="4" height="5"/></g>`,
   },
-  mealVoucher: {
+  mangioni: {
     el: 'nature',
-    svg: `<path d="M4 14h56v10a6 6 0 0 0 0 12v10H4V36a6 6 0 0 0 0-12z"/><g fill="#16121f"><path d="M14 20h3v10h2V20h3v10h2V20h3v12c0 3-2 5-5 5v11h-3V37c-3 0-5-2-5-5z"/><path d="M36 20c5 0 7 6 7 12h-3v16h-4z"/><rect x="48" y="22" width="3" height="3"/><rect x="48" y="30" width="3" height="3"/><rect x="48" y="38" width="3" height="3"/></g>`,
+    svg: `<path d="M12 42c0-19 8-30 20-30s20 11 20 30z"/><path d="M16 34q5-6 10 0t10 0t10 0M21 25q5-5 9 0t9 0M28 18q4-3 8 0" stroke="#16121f" stroke-width="4" fill="none"/><path d="M4 44h56" stroke="#16121f" stroke-width="3"/><path d="M4 46h56c-1 10-12 16-28 16S5 56 4 46z"/><path d="M16 52q16 5 32 0" stroke="#16121f" stroke-width="3" fill="none"/><g transform="rotate(30 52 18)"><rect x="49" y="0" width="6" height="22" rx="3"/><path d="M43 20h18v4c0 5-4 8-9 8s-9-3-9-8z"/><path d="M45 26v12M50 28v12M55 28v12M60 26v12" stroke="currentColor" stroke-width="3.5" fill="none"/></g>`,
   },
   toxicMemo: {
     el: 'necro',
@@ -527,17 +530,17 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'curse',
     svg: `<path d="M32 8L54 60H10z"/><circle cx="32" cy="7" r="6"/><g fill="#16121f"><path d="M25 24h14l3 8H22zM18 42h28l3 8H15z"/></g>`,
   },
-  pipChart: {
+  tpsReport: {
     el: 'curse',
-    svg: `<path d="M8 4h48v56H8z"/><path d="M14 16l12 12 10-6 14 24" stroke="#16121f" stroke-width="5" fill="none"/><path d="M42 50h12V38z" fill="#16121f"/>`,
+    svg: `<path d="M16 2h44v54H16z"/><path d="M3 8h44v54H3z" stroke="#16121f" stroke-width="4" stroke-linejoin="round"/><path d="M3 8h44v54H3z"/><rect x="8" y="13" width="34" height="11" fill="#16121f"/><path d="M12 18.5h10" stroke="#fff" stroke-width="4"/><path d="M8 32h34M8 39h34M8 46h20" stroke="#16121f" stroke-width="4"/><rect x="31" y="47" width="11" height="11" fill="#16121f"/><path d="M33 52l3 3 4-6" stroke="#fff" stroke-width="2.5" fill="none"/>`,
   },
   meeting: {
     el: 'curse',
     svg: `<ellipse cx="32" cy="38" rx="28" ry="12"/><circle cx="10" cy="18" r="7"/><circle cx="32" cy="11" r="7"/><circle cx="54" cy="18" r="7"/><rect x="28" y="48" width="8" height="14"/>`,
   },
-  tapeRoll: {
+  papersPlease: {
     el: 'curse',
-    svg: `<circle cx="26" cy="28" r="23"/><circle cx="26" cy="28" r="10" fill="#16121f"/><path d="M40 46l22 6v10H26z"/>`,
+    svg: `<circle cx="32" cy="9" r="8"/><rect x="26" y="15" width="12" height="16"/><rect x="10" y="30" width="44" height="10" rx="2"/><path d="M4 44h56v16H4z"/><path d="M12 50h40v4H12z" fill="#16121f"/><path d="M16 52h10M32 52h16" stroke="#fff" stroke-width="2"/>`,
   },
   dramaMask: {
     el: 'curse',
@@ -796,9 +799,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'curse',
     svg: `<rect x="24" y="4" width="10" height="30"/><path d="M14 30h32c4 0 6 4 6 8v8c0 10-8 16-18 16h-4c-10 0-16-6-16-16z"/><path fill="#16121f" d="M24 38v8M32 38v8M40 38v8" stroke="#16121f" stroke-width="3"/>`,
   },
-  brokenPrinter: {
+  pcLoadLetter: {
     el: 'curse',
-    svg: `<rect x="16" y="4" width="32" height="14"/><rect x="4" y="18" width="56" height="26"/><rect x="14" y="44" width="36" height="16"/><path fill="#16121f" d="M30 18l-6 10 8 4-6 12h4l6-12-8-4 6-10z"/><rect x="48" y="24" width="6" height="4" fill="#16121f"/>`,
+    svg: `<rect x="8" y="3" width="26" height="14"/><rect x="2" y="17" width="44" height="26"/><rect x="9" y="43" width="30" height="17"/><rect x="7" y="23" width="22" height="10" fill="#16121f"/><path d="M10 28h6M20 28h6" stroke="#fff" stroke-width="3.5"/><path d="M14 51h20M14 56h12" stroke="#16121f" stroke-width="3.5"/><g transform="rotate(35 50 32)"><path d="M43 0h14c2 0 3 1 3 3v22l-3 30h-10l-4-30V3c0-2 1-3 0-3z" stroke="#16121f" stroke-width="4" stroke-linejoin="round"/><path d="M43 0h14c2 0 3 1 3 3v22l-3 30h-10l-4-30V3c0-2 1-3 0-3z"/></g>`,
   },
   plant: {
     el: 'nature',
@@ -838,6 +841,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'holy',
     svg: `<path d="M16 38l-10 22 12-5 7 7 8-26zM48 38l10 22-12-5-7 7-8-26z"/><circle cx="32" cy="24" r="20"/><circle cx="32" cy="24" r="13" fill="#16121f"/>${star4(32, 24, 10)}`,
   },
+  mrBurnsEmpire: {
+    el: 'holy',
+    svg: `<path d="M2 62C10 52 14 42 14 32 14 24 12 20 10 16H42C40 20 38 24 38 32 38 42 42 52 50 62z"/><rect x="52" y="14" width="10" height="48"/><path d="M52 24h10M52 34h10" stroke="#16121f" stroke-width="3"/><path d="M33 33c-2-5-14-5-14 1 0 6 14 4 14 10 0 5-12 6-15 1M26 28v24" stroke="#16121f" stroke-width="4.5" fill="none"/><circle cx="18" cy="8" r="7"/><circle cx="30" cy="5" r="6"/><circle cx="57" cy="7" r="5"/>`,
+  },
   huddle: {
     el: 'nature',
     svg: `<circle cx="18" cy="12" r="8"/><path d="M6 32a12 12 0 0 1 24 0v12H6z"/><circle cx="46" cy="12" r="8"/><path d="M34 32a12 12 0 0 1 24 0v12H34z"/><path d="M6 52h36v-5l14 8-14 8v-5H6z"/>`,
@@ -846,9 +853,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'arcane',
     svg: `<path d="M24 14l14 16-14 34-14-34z"/><path fill="#16121f" d="M24 26l7 8-7 18-7-18z"/><path d="M50 4l12 14H54v14H46V18h-8z"/>`,
   },
-  laptopMoon: {
-    el: 'shadow',
-    svg: `<rect x="8" y="8" width="48" height="34"/><rect x="13" y="13" width="38" height="24" fill="#16121f"/><path d="M38 17a9 9 0 1 0 6 14 10 10 0 0 1-6-14z"/><path d="M2 46h60l-6 12H8z"/>`,
+  stakhanov: {
+    el: 'blood',
+    svg: `<path d="M8 38C8 18 18 6 32 6s24 12 24 32z"/><rect x="4" y="34" width="56" height="14" rx="7"/><path d="M4 46h14v8a7 7 0 0 1-14 0zM46 46h14v8a7 7 0 0 1-14 0z"/><path d="M6 37h52" stroke="#16121f" stroke-width="3"/><path d="M8 43h5M17 43h5M27 43h5M37 43h5M47 43h5" stroke="#16121f" stroke-width="3.5"/><path fill="#16121f" d="M32 9l4.5 9.5 10 1.3-7.4 7 1.9 10L32 32l-9 4.8 1.9-10-7.4-7 10-1.3z" transform="translate(0 0) scale(1 .9) translate(0 1)"/>`,
   },
   brownNose: {
     el: 'curse',
@@ -899,9 +906,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<circle cx="24" cy="38" r="20"/><path d="M20 30h10v5h-6v2h6v11H20v-5h6v-2h-6z" fill="#16121f"/><path d="M44 4h16v16l-5-5-8 8-6-6 8-8z"/>`,
   },
   // Class fillers
-  rivetGun: {
-    el: 'steel',
-    svg: `<path d="M2 12h34l14 8v12H30l-4 8v18H12V40l-4-8H2z"/><rect x="8" y="17" width="26" height="4" fill="#16121f"/><path d="M54 16h8v4h-8zM54 24h8v4h-8z"/>`,
+  releaseTheHounds: {
+    el: 'blood',
+    svg: `<path d="M2 62L6 32 2 4l22 12 14-2 12 8 11 6 2 6-6 4H34l-4 4 24 8v8l-14 2-8-4-2 10z"/><path d="M34 40h22l-4 9-14-2z" fill="#16121f"/><path d="M40 40l3 6 3-6M49 40l2 5 2-5" fill="#fff"/><circle cx="37" cy="26" r="3.5" fill="#16121f"/><path d="M29 20l12 4" stroke="#16121f" stroke-width="3.5"/><circle cx="59" cy="33" r="2.5" fill="#16121f"/><path d="M8 36C10 24 16 19 25 18" stroke="#16121f" stroke-width="3.5" fill="none"/><path d="M3 52h26" stroke="#16121f" stroke-width="4"/><path d="M8 50v-5M15 50v-5M22 50v-5" stroke="#fff" stroke-width="3"/>`,
   },
   barbedWire: {
     el: 'steel',
@@ -951,9 +958,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'holy',
     svg: `<rect x="6" y="18" width="52" height="40" rx="4"/><path d="M22 18v-8h20v8" stroke="currentColor" stroke-width="5" fill="none"/><path fill="#16121f" d="M28 26h8v8h8v8h-8v8h-8v-8h-8v-8h8z"/>`,
   },
-  badge: {
+  sisyphus: {
     el: 'necro',
-    svg: `<path d="M20 2h8l6 20h-6zM44 2h-8l-6 20h6z"/><rect x="14" y="22" width="36" height="38" rx="3"/><rect x="20" y="29" width="14" height="14" fill="#16121f"/><g fill="#16121f"><rect x="38" y="30" width="8" height="3"/><rect x="38" y="36" width="8" height="3"/><rect x="20" y="49" width="26" height="3"/></g>`,
+    svg: `<path d="M2 58L62 38" ${S} stroke-width="6"/><circle cx="46" cy="22" r="17" stroke="#16121f" stroke-width="4"/><circle cx="46" cy="22" r="17"/><path d="M38 14l6 4-2 6M52 28l4 5M40 32l6-3" stroke="#16121f" stroke-width="3" fill="none"/><g ${S} stroke-width="6"><path d="M17 27l2 15M18 31l11-1M19 42L9 52M19 42l8 7"/></g><circle cx="16" cy="19" r="6.5"/>`,
   },
   // Rooms and statuses
   shredder: {

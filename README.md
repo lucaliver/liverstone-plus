@@ -134,10 +134,10 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
   premuto. Una condizione è tra parentesi (es. un attacco che fa più danni se hai Blocco).
 - **Potenziamento:** ogni carta ha una versione migliorata, ottenibile in sala pausa (*Training*).
 - **Maledizioni:** date dai nemici, durano solo lo scontro: *Drama* intasa il nastro, *Write-Up* ti ferisce,
-  *Deadline* esplode, *Mandatory Fun* ruba mana, *Gossip* avvelena, *Improvement Plan* ti indebolisce e
-  *Red Tape* ti rende Vulnerabile se le lasci uscire; *Quick Sync* (una riunione) occupa il nastro e non si può togliere. *Gatekeeping* è larga
+  *Deadline* esplode, *Mandatory Fun* ruba mana, *Gossip* avvelena, *TPS Report* ti indebolisce e
+  *Papers, Please* ti rende Vulnerabile se le lasci uscire; *Quick Sync* (una riunione) occupa il nastro e non si può togliere. *Gatekeeping* è larga
   tre carte e copre quelle davanti; *Lockout* fa lo stesso su entrambe le righe; *Priority Task* blocca tutta la sua
-  riga finché non la paghi. *Quick Favour* ti stordisce se la giochi e ti ferisce se la lasci uscire, *Machine Down*
+  riga finché non la paghi. *Quick Favour* ti stordisce se la giochi e ti ferisce se la lasci uscire, *PC Load Letter*
   costa tanto e ti stordisce se esce, *Office Plant* costa vita e mana, *Free Pizza* intasa il nastro e cura pochissimo.
   Alcuni nemici maledicono invece le tue carte (*pietrificate*: toccale finché si rompono; *Inflation*: costano 1 in più).
 - **Parole chiave:** Innate (arriva per prima), Esaurisci (una volta per scontro), Consuma (sparisce dal mazzo),
@@ -159,11 +159,11 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
 | Toxic Coworker | Il collega tossico: non colpisce, avvelena (*Snark*); riempie il nastro di *Drama* e il mazzo di *Gossip* |
 | Team Leader | *Team Building* lo rende più forte e ti rifila *Mandatory Fun*; *Let's Sync* ti mette due riunioni sul nastro |
 | Goblin Consultant | Ruba carte (*Outsource*) e ti mette *Deadline* sul nastro |
-| HR Bitch | Passiva *No Repeats Policy*: non puoi giocare due carte dello stesso colore (attacco, difesa, utilità) a meno di 3 s l'una dall'altra; *Performance Review* ti mette due *Improvement Plan* nel mazzo |
+| HR Bitch | Passiva *No Repeats Policy*: non puoi giocare due carte dello stesso colore (attacco, difesa, utilità) a meno di 3 s l'una dall'altra; *Performance Review* ti mette due *TPS Report* nel mazzo |
 | Guy Asleep | Un solo colpo enorme con una miccia lunghissima (*Rude Awakening*), ma ogni carta che giochi lo sveglia 1 s prima |
 | New Hire | *Blank Stare* pietrifica metà delle carte sul nastro e metà del resto del mazzo: su ognuna c'è scritto *Tap it! ×5*; restano di pietra (anche rimescolate nel mazzo) finché non le rompi |
 | Work Wife | Si trasferisce da te: a inizio scontro riempie tutta la sleeve di *Moving Box* (maledizioni *Bulky*: non si scambiano, solo si pagano), che costano tanto ma calano di 1 mana al secondo |
-| **Security Monitor** (élite) | Colpi che rendono Vulnerabile, *Lockdown* (blocco), *Clearance Check* (due *Red Tape* nel mazzo), si infuria a metà vita |
+| **Security Monitor** (élite) | Colpi che rendono Vulnerabile, *Lockdown* (blocco), *Clearance Check* (due *Papers, Please* nel mazzo), si infuria a metà vita |
 | **Slaves CEO** (boss) | *Write-Ups*, *Deadlines* e il colpo *YOU'RE FIRED*; a metà vita preme il pulsante d'emergenza e ferma il tuo nastro per 5 secondi |
 
 ### Atto 2
@@ -175,11 +175,11 @@ all'inizio sono bloccati: nella scelta dell'eroe compaiono in silhouette con un 
 | Happiness Officer | Ti riempie di *Free Pizza* (al posto dell'aumento) |
 | Wellness Coach | Passiva *Chill Out*: al massimo una carta ogni 2 s |
 | Bean Counter | Passiva *Spending Freeze*: mana massimo 3; *Office Plant* e taglio del mana |
-| Compliance Officer | *Red Tape*, multe pesanti; sotto metà vita rallenta il tuo nastro per 20 s |
+| Compliance Officer | *Papers, Please*, multe pesanti; sotto metà vita rallenta il tuo nastro per 20 s |
 | Office Chair | La sedia da gaming che nessuno reclama: *Spin to Win* (sei colpi), *Slow Sink* (il pistone cede: nastro più lento), *+10% Performance* (più Forza) |
 | The Overthinker | Una sola *Big Idea* caricata a lungo; passiva *Train of Thought*: se durante la carica incassa altrettanti danni, perde il filo (*Where Was I?*) e il colpo salta |
 | The Leaver | All'ultimo giorno, niente da perdere: *Nothing to Lose* mette sul nastro una *Kamikaze* (costa 99, se esce dal nastro esplode per 99 danni): va messa nella sleeve. La prima volta lo scontro si ferma e una nota lo spiega |
-| Night Janitor | *Lights Out*: **Blackout**, le carte diventano nere e mostrano solo illustrazione e costo; *Machine Down* |
+| Night Janitor | *Lights Out*: **Blackout**, le carte diventano nere e mostrano solo illustrazione e costo; *PC Load Letter* |
 | **The Printer** (élite) | Fotocopiatrice maledetta: per 5 s **copia** il danno che riceve, poi te lo restituisce stampato |
 | **The Veteran** (élite) | *In My Day…*: **Inflation**, alcune carte costano 1 in più finché non le giochi; racconti lunghi che rallentano il nastro |
 | **Micromanager** (boss) | Passiva: se stai 2 s senza giocare carte ti attacca subito; *Priority Task*, *Lockout*, *Quick Favour* |

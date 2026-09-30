@@ -16,7 +16,7 @@ export const necromancerCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0]),
   },
   {
-    id: 'solidarity',
+    id: 'karlMarx',
     face: '{block:0}',
     cls: 'necromancer',
     type: 'skill',
@@ -24,7 +24,7 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     vals: [7],
     upVals: [10],
-    art: 'tomb',
+    art: 'karlMarx',
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {
@@ -236,7 +236,7 @@ export const necromancerCards: CardDef[] = [
     play: (c, v) => c.applyStatus('enemy', 'poison', c.has('enemy', 'poison') ? v[1] : v[0]),
   },
   {
-    id: 'mealVoucher',
+    id: 'mangioni',
     cat: 'defense',
     face: '{heal}={poison}',
     cls: 'necromancer',
@@ -246,7 +246,7 @@ export const necromancerCards: CardDef[] = [
     upCost: 2,
     vals: [],
     keywords: ['exhaust'],
-    art: 'mealVoucher',
+    art: 'mangioni',
     play: (c) => void c.heal('hero', c.stacks('enemy', 'poison')),
   },
 
@@ -424,7 +424,7 @@ export const necromancerCards: CardDef[] = [
     },
   },
   {
-    id: 'rehire',
+    id: 'sisyphus',
     face: '{cards:0}',
     cls: 'necromancer',
     type: 'spell',
@@ -433,7 +433,7 @@ export const necromancerCards: CardDef[] = [
     vals: [3],
     upVals: [5],
     keywords: ['exhaust'],
-    art: 'badge',
+    art: 'sisyphus',
     play: (c, v) => void c.recycleExhausted(v[0]),
   },
 ];

@@ -382,7 +382,7 @@ export const neutralCards: CardDef[] = [
   },
 
   {
-    id: 'workaholic',
+    id: 'stakhanov',
     face: '{str:0}|{timer:1}',
     cls: 'neutral',
     type: 'skill',
@@ -390,7 +390,7 @@ export const neutralCards: CardDef[] = [
     cost: 1,
     vals: [3, 10],
     upVals: [4, 12],
-    art: 'laptopMoon',
+    art: 'stakhanov',
     play: (c, v) => c.applyStatus('hero', 'workaholic', v[0], v[1]),
   },
   {
@@ -442,7 +442,7 @@ export const neutralCards: CardDef[] = [
     },
   },
   {
-    id: 'takeCredit',
+    id: 'mrBurnsEmpire',
     face: '{block:0}|{snatch:1}',
     cls: 'neutral',
     type: 'skill',
@@ -450,7 +450,7 @@ export const neutralCards: CardDef[] = [
     cost: 1,
     vals: [3, 50],
     upVals: [5, 75],
-    art: 'medal',
+    art: 'mrBurnsEmpire',
     // Your idea, your Block: the enemy's own is yours now.
     play: (c, v) => {
       c.gainBlock('hero', v[0]);
@@ -667,7 +667,7 @@ export const curseCards: CardDef[] = [
     art: 'meeting',
   },
   {
-    id: 'improvementPlan',
+    id: 'tpsReport',
     face: '{?exit}{weak:0}',
     cls: 'curse',
     type: 'curse',
@@ -675,12 +675,12 @@ export const curseCards: CardDef[] = [
     cost: 1,
     vals: [6],
     keywords: ['exhaust', 'volatile'],
-    art: 'pipChart',
+    art: 'tpsReport',
     play: () => {},
     onExpire: (c, v) => c.applyStatus('hero', 'weak', 1, v[0]),
   },
   {
-    id: 'redTape',
+    id: 'papersPlease',
     face: '{?exit}{vuln:0}',
     cls: 'curse',
     type: 'curse',
@@ -688,7 +688,7 @@ export const curseCards: CardDef[] = [
     cost: 1,
     vals: [6],
     keywords: ['exhaust', 'volatile'],
-    art: 'tapeRoll',
+    art: 'papersPlease',
     play: () => {},
     onExpire: (c, v) => c.applyStatus('hero', 'vulnerable', 1, v[0]),
   },
@@ -735,7 +735,7 @@ export const curseCards: CardDef[] = [
     onExpire: (c, v) => void c.damage('enemy', 'hero', v[1], { raw: true, kind: 'blunt' }, 'dot'),
   },
   {
-    id: 'machineDown',
+    id: 'pcLoadLetter',
     face: '{?exit}{selfStun:0}',
     cls: 'curse',
     type: 'curse',
@@ -743,7 +743,7 @@ export const curseCards: CardDef[] = [
     cost: 5,
     vals: [4],
     keywords: ['exhaust', 'volatile', 'fleeting'],
-    art: 'brokenPrinter',
+    art: 'pcLoadLetter',
     play: () => {},
     onExpire: (c, v) => c.applyStatus('hero', 'stun', 1, v[0]),
   },

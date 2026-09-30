@@ -433,7 +433,7 @@ describe('combat engine', () => {
   });
 
   it('mage Multitasking adds damage to chained spells', () => {
-    const c = setup({ hero: HEROES.mage, hp: 70, maxHp: 70, deck: deckOf(['arcaneMemo', 'arcaneMemo']), enemy: ENEMIES.toxicCoworker });
+    const c = setup({ hero: HEROES.mage, hp: 70, maxHp: 70, deck: deckOf(['clippy', 'clippy']), enemy: ENEMIES.toxicCoworker });
     run(c, CONFIG.introTime + 0.01);
     c.hero.maxMana = c.hero.mana = 10;
     const hp = c.enemy.hp;
@@ -774,7 +774,7 @@ describe('combat engine', () => {
     it('volatile office curses bite when they leave the belt', () => {
       const c = quiet(['hardHat']);
       c.addTempCard('officePlant', 'belt');
-      c.addTempCard('machineDown', 'belt');
+      c.addTempCard('pcLoadLetter', 'belt');
       c.hero.mana = 8;
       run(c, (CONFIG.beltTime * EXPIRE_POS) / c.beltRate() + 0.5);
       expect(c.has('hero', 'stun')).toBe(true);
@@ -898,11 +898,11 @@ describe('pop culture cards', () => {
   };
 
   it("Take Credit: Block for you, and half the enemy's Block becomes yours", () => {
-    const { c, uid } = ready('takeCredit');
+    const { c, uid } = ready('mrBurnsEmpire');
     c.enemy.block = 20;
     c.playCard(uid);
     expect(c.enemy.block).toBe(10);
-    expect(c.hero.block).toBe(CARDS.takeCredit.vals[0] + 10);
+    expect(c.hero.block).toBe(CARDS.mrBurnsEmpire.vals[0] + 10);
   });
 
   it('Team Change pins the cards on the belt where they are; new cards ride past them', () => {
@@ -948,11 +948,11 @@ describe('pop culture cards', () => {
   });
 
   it('Workaholic: Strength that lasts only for a while', () => {
-    const { c, uid } = ready('workaholic');
+    const { c, uid } = ready('stakhanov');
     const dmg = (): number => c.previewHeroDamage(10, CARDS.punch);
     c.playCard(uid);
-    expect(dmg()).toBe(10 + CARDS.workaholic.vals[0]);
-    run(c, CARDS.workaholic.vals[1] + 0.5);
+    expect(dmg()).toBe(10 + CARDS.stakhanov.vals[0]);
+    run(c, CARDS.stakhanov.vals[1] + 0.5);
     expect(dmg()).toBe(10);
   });
 
@@ -1112,7 +1112,7 @@ describe('sleeve cards', () => {
 
   it('Cache: every spell played while it waits is cached into its damage, spent when played', () => {
     const c = held('cache');
-    c.addTempCard('arcaneMemo', 'belt');
+    c.addTempCard('clippy', 'belt');
     c.playCard(c.belt[c.belt.length - 1].card.uid);
     const [base, grow] = CARDS.cache.vals;
     expect(c.cardVals(c.sleeve[0]!)[0]).toBe(base + grow);
@@ -1250,8 +1250,8 @@ describe('cards that fill the classes out', () => {
     const c = quiet();
     c.applyStatus('hero', 'strength', 2);
     const hp = c.enemy.hp;
-    cast(c, 'rivetGun');
-    const [dmg, hits] = CARDS.rivetGun.vals;
+    cast(c, 'releaseTheHounds');
+    const [dmg, hits] = CARDS.releaseTheHounds.vals;
     expect(hp - c.enemy.hp).toBe((dmg + 2) * hits);
   });
 
@@ -1355,7 +1355,7 @@ describe('cards that fill the classes out', () => {
     exhausted('walkout', 902);
     exhausted('firstAidKit', 903);
     c.consumed.push(903);
-    cast(c, 'rehire');
+    cast(c, 'sisyphus');
     // What stays exhausted: the consumed potion and Rehire itself.
     expect(c.exhaust.map((x) => x.uid).sort()).toEqual([-1, 903]);
     expect(c.draw.map((x) => x.uid)).toEqual(expect.arrayContaining([901, 902]));

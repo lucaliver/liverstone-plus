@@ -38,7 +38,7 @@ const mage: HeroDef = {
   maxMana: 3,
   regen: 1.25,
   blockDecay: 1.0,
-  startDeck: [...rep('arcaneMemo', 7), ...rep('fireDoor', 5), 'coffee', 'doubleEspresso', 'caffeineJolt'],
+  startDeck: [...rep('clippy', 7), ...rep('fireDoor', 5), 'coffee', 'doubleEspresso', 'caffeineJolt'],
   firstRewards: [
     ['coldCall', 'slagBall', 'coldStorage', 'ductTape'],
     ['caffeineJolt', 'staticShock', 'coffeeBreak', 'burnout'],
@@ -72,7 +72,7 @@ const necromancer: HeroDef = {
   maxMana: 2,
   regen: 1.25,
   blockDecay: 0.9,
-  startDeck: [...rep('skeletonCrew', 6), ...rep('solidarity', 5), ...rep('toxicMemo', 2), 'coffee', 'doubleEspresso'],
+  startDeck: [...rep('skeletonCrew', 6), ...rep('karlMarx', 5), ...rep('toxicMemo', 2), 'coffee', 'doubleEspresso'],
   firstRewards: [
     ['bloodMoney', 'rust', 'barricade', 'ductTape'],
     ['unionDues', 'zombieShift', 'coffeeBreak', 'whistleblow'],

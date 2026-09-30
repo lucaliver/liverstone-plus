@@ -3,7 +3,7 @@ import type { CardDef } from '../../game/types';
 export const mageCards: CardDef[] = [
   // Starters
   {
-    id: 'arcaneMemo',
+    id: 'clippy',
     face: '{dmg:0}',
     cls: 'mage',
     type: 'spell',
@@ -11,7 +11,7 @@ export const mageCards: CardDef[] = [
     cost: 1,
     vals: [3],
     upVals: [5],
-    art: 'bolt',
+    art: 'clippy',
     play: (c, v) => void c.hit(v[0]),
   },
   {
