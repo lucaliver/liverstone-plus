@@ -33,7 +33,7 @@
 .sheet-head h3 { margin: 0; font-family: var(--font-display); font-size: 22px; text-transform: uppercase; }
 .sheet-head p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
 .hero-sheet .hero-stats { justify-content: flex-start; margin-bottom: 10px; }
-.act-banner { text-align: center; margin-top: 10px; }
+.act-banner { position: relative; text-align: center; margin-top: 10px; }
 /* the workday clock, drawn on the dot of an act's boss: four ticks and a pink pin; the hands run forward in steps */
 .shift-clock {
   position: relative;
@@ -69,9 +69,14 @@
 @keyframes hand-m {
   from { rotate: var(--m0); }
 }
+/* the floor plan of the office: a blueprint grid inside the outer wall, rooms joined by corridors, doors on the walls,
+   fog over the rooms out of sight, padlocks on the corridors that take a badge */
 .path {
   position: relative;
   margin: 8px 0 12px;
+  background-image: linear-gradient(#ffffff10 1px, transparent 1px), linear-gradient(90deg, #ffffff10 1px, transparent 1px);
+  background-size: 23px 23px;
+  border: 3px solid #a397c466;
 }
 .path .links {
   position: absolute;
@@ -79,14 +84,24 @@
   width: 100%;
   height: 100%;
 }
-.links line {
-  stroke: var(--muted-d);
-  stroke-width: 5;
-  stroke-dasharray: 6 8;
-  opacity: 0.45;
+.hall {
+  fill: none;
+  stroke: #33294f;
+  stroke-width: 16;
 }
-.links line.walked { stroke: var(--y); opacity: 1; }
-.links line.trod { display: none; }
+.hall.trod { stroke: #453870; }
+.hall.walked { stroke: var(--y); }
+.hall.locked { stroke: #6b1f52; }
+.hall.fog { opacity: 0.45; }
+.hall-mid {
+  fill: none;
+  stroke: #6f62a0;
+  stroke-width: 2;
+  stroke-dasharray: 5 7;
+}
+.hall-mid.walked { stroke: var(--k); }
+.hall-mid.locked { stroke: var(--p); }
+.hall-mid.fog { opacity: 0.45; }
 /* footsteps along the way walked (left, right…); the newest stretch is walked again, one step at a time */
 .path .step {
   position: absolute;
@@ -105,66 +120,130 @@
 }
 .path .num {
   position: absolute;
-  left: 2px;
+  left: 4px;
   translate: 0 -50%;
   font-family: var(--font-ui);
   font-size: 20px;
   color: var(--muted-d);
 }
+/* a room: its icon on top, its name plate at the bottom */
 .node {
   position: absolute;
   z-index: 1;
   translate: -50% -50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  width: clamp(92px, 32%, 126px);
 }
 .node .dot {
+  position: relative;
   display: grid;
-  place-items: center;
-  width: 54px;
-  height: 54px;
-  font-size: 32px;
+  place-items: start center;
+  width: 100%;
+  height: 62px;
+  padding-top: 5px;
+  font-size: 30px;
   color: var(--k);
   background: var(--paper);
   border: var(--line) solid var(--k);
+  box-shadow: 4px 4px 0 var(--shadow);
   --ink2: var(--y);
 }
 .node .label {
   position: absolute;
-  top: 100%;
-  margin-top: 3px;
-  padding: 0 4px;
+  left: 0;
+  right: 0;
+  bottom: 4px;
   font-family: var(--font-ui);
   font-size: 16px;
-  color: var(--fg);
+  line-height: 1;
+  text-align: center;
+  color: var(--k);
   white-space: nowrap;
-  /* see-through: the dotted links still show under the label */
-  background: #241b3b8c; /* --bg at 55% (a plain hex: color-mix needs Safari 16.2+) */
+  pointer-events: none;
 }
-.node.done { opacity: 0.45; }
-.node.missed { opacity: 0.22; }
 .node.open .dot { box-shadow: 4px 4px 0 var(--y); }
 .node.current .dot {
-  width: 64px;
-  height: 64px;
-  font-size: 40px;
   background: var(--y);
   box-shadow: 5px 5px 0 var(--p);
   animation: bob 0.8s steps(2) infinite;
   --ink2: var(--p);
 }
-.node.current .label { font-weight: 700; color: var(--y); }
 .node.elite .dot { color: var(--purple); }
 .node.boss .dot { color: var(--p); }
 .node.promotion .dot { color: var(--b); }
-/* elite and boss floors stand out: slightly bigger than the others */
-.node.elite .dot,
-.node.boss .dot { width: 62px; height: 62px; font-size: 38px; }
-.node.current.elite .dot,
-.node.current.boss .dot { width: 72px; height: 72px; font-size: 46px; }
 .node.rest .dot { color: var(--red); }
+/* rooms already done, or out of reach, are dimmed (opaque: the footsteps on the corridors stop at their walls) */
+.node.done .dot { background: #8b84a6; box-shadow: none; }
+.node.done .label { color: #3b3355; }
+.node.missed .dot { color: #5b4f86; background: #2f2552; border-color: #5b4f86; box-shadow: none; }
+.node.missed .label { color: #6b5f96; }
+/* elite and boss floors are vaults: a second wall around the room */
+.node.elite .dot,
+.node.boss .dot { outline: 3px solid var(--muted-d); outline-offset: 3px; }
+.node.boss .shift-clock { height: 34px; }
+/* in fog: no icon, no name, a dithered floor */
+.node.fog .dot {
+  color: var(--muted-d);
+  background: repeating-conic-gradient(#2b2148 0 25%, #362a5c 0 50%) 0 0 / 8px 8px;
+  border-style: dashed;
+  border-color: var(--muted-d);
+  box-shadow: none;
+  --ink2: var(--bg);
+}
+.node.fog .label { color: var(--muted-d); }
+/* doors on the walls where corridors enter */
+.door {
+  position: absolute;
+  z-index: 2;
+  background: var(--y);
+  border: 2px solid var(--k);
+  pointer-events: none;
+}
+.door.top, .door.bottom { left: 50%; width: 22px; height: 8px; translate: -50% 0; }
+.door.left, .door.right { top: 50%; width: 8px; height: 22px; translate: 0 -50%; }
+.door.top { top: -7px; }
+.door.bottom { bottom: -7px; }
+.door.left { left: -7px; }
+.door.right { right: -7px; }
+.node.fog .door { background: var(--muted-d); }
+/* a padlock on a corridor: pink while it stays shut, yellow once a badge is in hand */
+.door-lock {
+  position: absolute;
+  z-index: 2;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  font-size: 26px;
+  color: var(--paper);
+  background: var(--p);
+  border: var(--line) solid var(--k);
+  box-shadow: 3px 3px 0 var(--shadow);
+  --ink2: var(--k);
+}
+.door-lock.ready { color: var(--k); background: var(--y); }
+/* the badge found in a room */
+.badge-mark {
+  position: absolute;
+  z-index: 3;
+  top: -12px;
+  right: -10px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  font-size: 22px;
+  color: var(--b);
+  background: var(--paper);
+  border: 2px solid var(--k);
+  rotate: 8deg;
+  pointer-events: none;
+  --ink2: var(--y);
+}
+.chip.badges { position: absolute; top: 0; right: 0; min-height: 40px; }
+.chip.badges[hidden] { display: none; }
+.chip.badges .pico { color: var(--b); }
+.chip.badges.gain { animation: stamp-in 0.2s steps(2) 0.3s both; }
 
 /* a new shift: a full-screen curtain with the act's title, its name and the clock-in time; it lifts by itself or on a tap */
 .act-intro {

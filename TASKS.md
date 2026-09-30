@@ -40,7 +40,7 @@
 
 - [x] aggiungi nuova carta "Payday Loan": costo 0 e effetto molto forte, ma mette nel mazzo una maledizione "Debt" che costa 3 e se cade dalla bet fa danno+aumenta il proprio danno per la volta dopo
 
-- [ ] voglio cambiare la generica mappa da roguelike con una più a tema e con presentazione migliore: stile Planimetria dell'ufficio. Porte, stanze, nebbia e badge che aprono porte chiuse. Vedi tu come rende meglio
+- [x] voglio cambiare la generica mappa da roguelike con una più a tema e con presentazione migliore: stile Planimetria dell'ufficio. Porte, stanze, nebbia e badge che aprono porte chiuse. Vedi tu come rende meglio
 
 - [ ] al nemico "Slave CEO" cambia passiva in "emergency button": quando arriva a 50% hp, stoppa la belt del tutto per 5sec
 

@@ -252,6 +252,30 @@ test('map: holding a node explains it, even one out of reach, without picking it
   expect(problems).toEqual([]);
 });
 
+test('map: rooms far ahead are lost in fog, and a locked door takes a badge', async ({ page }) => {
+  const problems = await freshGame(page, { veteran: true });
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  await expect(page.locator('.journey:not(.leaving) .node.fog').first()).toBeVisible();
+  // At the end of act 1's shared road, with the door to the second lane locked.
+  const door = (await page.evaluate(
+    '(() => { const g = window.__game; const r = g.run; const n = r.nodes.find((x) => x.act === 1 && x.floor === 3); n.locked = [n.next[1]]; r.current = n.id; r.path = [0, 1, 2]; r.cleared = true; r.badges = 0; g.goJourney(); return n.next[1]; })()',
+  )) as number;
+  const map = page.locator('.journey:not(.leaving)');
+  await expect(map.locator('.door-lock').first()).toBeVisible();
+  const locked = map.locator('.node.open .dot').last();
+  await locked.click();
+  await expect(page.locator('.modal')).toContainText('Locked door');
+  await page.getByRole('button', { name: 'Close' }).click();
+  await expect(map.getByRole('button', { name: /choose your path/i })).toBeDisabled();
+  // With a badge in hand the door opens, and going through spends it.
+  await page.evaluate('(() => { window.__game.run.badges = 1; window.__game.goJourney(); })()');
+  await map.locator('.node.open .dot').last().click();
+  await map.getByRole('button', { name: /use a badge: floor 4/i }).click();
+  expect(await page.evaluate('({ at: window.__game.run.current, badges: window.__game.run.badges })')).toEqual({ at: door, badges: 0 });
+  expect(problems).toEqual([]);
+});
+
 test('closing the pause menu keeps the fight paused while another window is still open', async ({ page }) => {
   await freshGame(page);
   await startFight(page);

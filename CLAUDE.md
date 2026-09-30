@@ -119,10 +119,10 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
   Hooks (`HeroHooks`, `RelicHooks`) extend behaviour without touching the engine loop.
 - **One source of truth.** Card numbers live in `vals`/`upVals`. The face, the rules text, damage previews and
   the logic all read them. Damage indices are derived from the `{dmg:i}` glyphs of the face.
-- **Run as a graph.** `RunNode.next[]` + `lane`: each act (`ACT_DEFS` in `data/acts.ts`, two for now) is a shared first fight, two lanes
+- **Run as a graph, drawn as the office floor plan** (rooms, corridors, doors; rooms more than `VISION` doors ahead are in fog). `RunNode.next[]` + `lane`: each act (`ACT_DEFS` in `data/acts.ts`, two for now, each with its fight and map music) is a shared first fight, two lanes
   (`LANES` in `run.ts`) with `LINKS` links between them (diagonal upward, or flat both ways; never on neighbouring
   floors), and the boss, which leads to the next act (full heal, elite-grade reward; the map switches act). The very first run is scripted
-(`newRun(…, scripted)`): fixed seed, enemies easiest first, and it ends with act 1's boss. `advance(run, to)` moves along a link; `run.path` records the nodes entered.
+(`newRun(…, scripted)`): fixed seed, enemies easiest first, and it ends with act 1's boss. `advance(run, to)` moves along a link; `run.path` records the nodes entered. Outside the first run, one link between the lanes per act is a locked door (`RunNode.locked`, a shortcut only) and a job on the lane before it hides a badge (`RunNode.badge`, `run.badges`): going through the door spends one.
 - **Per-frame rendering is diff-based** (`setText`, `setHtml`, `toggle` only write on change). Status chips are
   rebuilt only when the set changes, so presses aren't lost.
 
@@ -151,6 +151,7 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
   Keyword `bulky`: a card in the sleeve can't be swapped out, only played.
 - `inSleeve` hooks (`bonusDamage`, `onCardPlayed`, `onHeroHit`) work only while the card waits in the sleeve
   (Tool Belt, Cache, Burn Book); the face shows them after `{?sleeve}`.
+- `anchor` stops a card at the exit: attacks that reach it pile up behind it (`BeltCard.stuck`), any other card reaching the pile sends it off; its `play` calls `playPile` (On a Roll). `Team Change` pins every belt card (`BeltCard.pinned`: it stays until played, new cards ride past). `bonusIdx` is the value `CombatCard.bonus` grows (Debt).
 - `span` (belt widths) makes a card wide: it rides over the cards ahead of it (Gatekeeping); `tall` makes it cover both
   rows (Lockout). `lockRow` holds every other card of its row (Priority Task). Covered cards can't be played or stashed.
 - Cost, keywords and values of a copy come from `cardCostOf` / `cardKeywordsOf` / `cardValsOf` (`data/cards/index.ts`),
@@ -162,7 +163,7 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
 ### Enemies
 
 `EnemyDef` = `act`, `main` (frequent attack) + `specials[]` (rotating) + `every` (mains between specials),
-optional `onHalf`, `start` statuses. A `MoveDef` can hit, block, heal, apply statuses, add `curse` cards (a list, several
+optional `onHalf`, `start` statuses, `block` (elites and bosses start with Block). A `MoveDef` can hit, block, heal, apply statuses, add `curse` cards (a list, several
 kinds at once), steal, drain mana, `hex` a share of your cards, `inflate` card costs, or `absorb` the damage it takes while
 charging and `release` it with the next hit (intents include `idle` and `absorb`). Add a vector sprite to `creatures.ts` (pixelised automatically),
 plus `enemy.<id>.name`, `move.<id>` for every move, and `enemy.<id>.half` if it has `onHalf`.
@@ -184,7 +185,7 @@ through `progress()` in `game/meta.ts`), a card file, a sprite, `hero.<id>.*` st
 Rule statuses carry their own hooks instead: `manaCap` (the hero's max mana can't grow past it),
 `canPlay` (returns the i18n key of why a card can't be played; the belt
 shows that status's icon on the card), `onCardPlayed` (cards played after the status was applied), `onHurt` (its side
-just lost HP; the Overthinker's Train of Thought calls `distractEnemy`), `selfIcon` (icon when it's on the hero) and `tick` (every step;
+just lost HP; the Overthinker's Train of Thought calls `distractEnemy`), `selfIcon` (icon when it's on the hero) and `onExpire` (a card slipped off the belt: Paper Cuts), `strength` (its amount counts as Strength: Workaholic), `regenMul` (mana regeneration multiplier: Chill, Brown Nosing) and `tick` (every step;
 `everySecond` in `statuses.ts` for per-second effects); `passive: true` marks a permanent enemy trait (no number on the chip).
 A stunned hero can't play cards or use the ability.
 

@@ -4,7 +4,7 @@ import { CONFIG, EXPIRE_POS } from '../src/data/config';
 import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
 import { CARD_LIST, CARDS } from '../src/data/cards';
-import { fightPay, loadRun, newRun } from '../src/game/run';
+import { advance, currentNode, doorLocked, fightPay, loadRun, newRun, type RunNode } from '../src/game/run';
 import type { CardInst } from '../src/game/types';
 
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
@@ -1093,6 +1093,57 @@ describe('the very first run', () => {
     expect(met.every((m) => m.length === 1)).toBe(true);
     const order = ['hrOrientationVideo', ...enemiesFor(1, 'normal').map((e) => e.id)];
     expect(met.map((m) => m[0])).toEqual(order.slice(0, met.length));
+  });
+});
+
+describe('locked doors and badges', () => {
+  const maps = Array.from({ length: 40 }, (_, seed) => newRun('warrior', seed + 2));
+  const locks = (nodes: RunNode[]): { from: RunNode; to: RunNode }[] =>
+    nodes.flatMap((n) => (n.locked ?? []).map((id) => ({ from: n, to: nodes[id] })));
+
+  it('the very first run has none, and the boss is always reachable without a badge', () => {
+    const first = newRun('warrior', 1, true);
+    expect(first.nodes.some((n) => n.badge || n.locked)).toBe(false);
+    for (const run of maps) {
+      const seen = new Set<number>();
+      const walk = (n: RunNode): void => {
+        if (seen.has(n.id)) return;
+        seen.add(n.id);
+        for (const id of n.next) if (!n.locked?.includes(id)) walk(run.nodes[id]);
+      };
+      walk(run.nodes[0]);
+      for (const boss of run.nodes.filter((n) => n.type === 'boss')) expect(seen.has(boss.id)).toBe(true);
+    }
+  });
+
+  it('a locked door always has a badge to find on a job earlier on the lane it leaves from', () => {
+    let found = 0;
+    for (const run of maps) {
+      for (const act of [1, 2]) {
+        const nodes = run.nodes.filter((n) => n.act === act);
+        const doors = locks(run.nodes).filter((l) => l.from.act === act);
+        expect(doors.length).toBeLessThanOrEqual(2);
+        for (const { from } of doors) {
+          found++;
+          expect(nodes.some((n) => n.badge && n.type === 'fight' && n.lane === from.lane && n.floor < from.floor)).toBe(true);
+        }
+      }
+    }
+    expect(found).toBeGreaterThan(20);
+  });
+
+  it('a locked door needs a badge, and going through spends it', () => {
+    const run = maps.find((r) => locks(r.nodes).length)!;
+    const { from, to } = locks(run.nodes)[0];
+    run.current = from.id;
+    run.path = [from.id];
+    run.cleared = true;
+    expect(doorLocked(run, to.id)).toBe(true);
+    expect(advance(run, to.id)).toBe(false);
+    run.badges = 1;
+    expect(advance(run, to.id)).toBe(true);
+    expect(run.badges).toBe(0);
+    expect(currentNode(run).id).toBe(to.id);
   });
 });
 

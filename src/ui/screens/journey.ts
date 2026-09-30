@@ -2,7 +2,7 @@ import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
 import { actDef } from '../../data/acts';
-import { clockAt, currentNode, type RunNode, type RunState } from '../../game/run';
+import { clockAt, currentNode, doorLocked, type RunNode, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h, onPress, onTapOrHold } from '../dom';
 import { icon } from '../art/icons';
@@ -10,6 +10,7 @@ import { openDeck, openInfo, openSettings, openStatInfo } from '../components/mo
 import { openHeroSheet } from '../components/heroSheet';
 import { dropLetters } from '../components/decor';
 import { creature } from '../art/creatures';
+import { UNKNOWN } from '../components/cardView';
 
 export const NODE_ICON: Record<RunNode['type'], string> = {
   fight: 'toolbox',
@@ -18,12 +19,19 @@ export const NODE_ICON: Record<RunNode['type'], string> = {
   promotion: 'ladder',
   boss: 'tophat',
 };
-/** Height of one floor on the map (px). */
+/** Height of one floor on the map (px); a room takes most of it, the rest is corridor. */
 const ROW_H = 92;
 const laneX = (lane: number): number => 22 + lane * 56;
-/** Footsteps per pixel of a walked link, and the delay between the steps of the newest one (ms). */
-const STEP_PX = 14;
+/** Rooms more than this many doors ahead are lost in fog. */
+const VISION = 2;
+/** Footsteps along a walked corridor: one every so many px. The map is about this wide (px), to measure the turns. */
+const STEP_PX = 12;
+const MAP_W = 350;
+/** Delay between the steps of the newest walked stretch (ms). */
 const STEP_MS = 70;
+
+/** A point on the map: x in % of its width, y in px. */
+type Pt = [number, number];
 
 /** A workday clock time (minutes after midnight) as text, e.g. 08:27. */
 export function clockText(min: number): string {
@@ -47,8 +55,9 @@ export function runHud(run: RunState, extra?: HTMLElement): HTMLElement {
 }
 
 /**
- * The act map, bottom to top: nodes on two lanes linked by dotted lines. After a node is cleared its reachable
- * nodes light up; tap one to pick it (tap it again, or the button, to go in).
+ * The act map, bottom to top: the floor plan of the office. Rooms on two lanes joined by corridors, a few rooms ahead in
+ * sight and the rest in fog; a locked door on a corridor between the lanes needs a badge, found in a marked room. After a
+ * room is cleared its doors light up; tap a room to pick it (tap it again, or the button, to go in).
  */
 export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onHome: () => void): Screen {
   const cur = currentNode(run);
@@ -58,7 +67,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   const nodes = run.nodes.filter((n) => n.act === act);
   const floors = Math.max(...nodes.map((n) => n.floor));
   const minFloor = Math.min(...nodes.map((n) => n.floor));
-  let picked: number | null = !run.cleared ? cur.id : options.length === 1 ? options[0] : null;
+  let picked: number | null = !run.cleared ? cur.id : options.length === 1 && !doorLocked(run, options[0]) ? options[0] : null;
   const y = (n: RunNode): number => (floors - n.floor + 0.5) * ROW_H;
   // Nodes still ahead on some path from here; everything else is out of reach and dimmed.
   const reachable = new Set<number>();
@@ -68,21 +77,57 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     for (const nx of run.nodes[id].next) walk(nx);
   };
   for (const id of run.cleared ? options : cur.next) walk(id);
+  // Fog: how many doors away each room is; the ones past VISION can't be made out (the boss is always in sight).
+  const dist = new Map<number, number>();
+  const look = (id: number, d: number): void => {
+    if ((dist.get(id) ?? Infinity) <= d) return;
+    dist.set(id, d);
+    if (d < VISION) for (const nx of run.nodes[id].next) look(nx, d + 1);
+  };
+  look(cur.id, 0);
+  const foggy = (n: RunNode): boolean => n.type !== 'boss' && !run.path.includes(n.id) && !dist.has(n.id);
 
-  const lines = nodes
-    .flatMap((n) =>
-      n.next
-        .map((id) => run.nodes[id])
-        // A flat link goes both ways: draw it once.
-        .filter((m) => m.act === n.act && !(m.floor === n.floor && m.id < n.id))
-        .map((m) => {
-          // Walked links are drawn as footsteps instead; the link to the node picked next is lit.
-          const trod = run.path.includes(n.id) && run.path.includes(m.id);
-          const next = (n.id === cur.id && m.id === picked) || (m.id === cur.id && n.id === picked);
-          return `<line class="${trod ? 'trod' : next ? 'walked' : ''}" x1="${laneX(n.lane)}" y1="${y(n)}" x2="${laneX(m.lane)}" y2="${y(m)}" vector-effect="non-scaling-stroke"/>`;
-        }),
-    )
-    .join('');
+  /** The corridor between two rooms: straight along a lane or across a floor, else up, across and up again. */
+  const route = (a: RunNode, b: RunNode): Pt[] => {
+    const [xa, xb, ya, yb] = [laneX(a.lane), laneX(b.lane), y(a), y(b)];
+    if (a.floor === b.floor || xa === xb)
+      return [
+        [xa, ya],
+        [xb, yb],
+      ];
+    const mid = (ya + yb) / 2;
+    return [
+      [xa, ya],
+      [xa, mid],
+      [xb, mid],
+      [xb, yb],
+    ];
+  };
+  /** The corridors (a flat one goes both ways: drawn once), and which wall of a room each one leaves through. */
+  const halls = nodes.flatMap((n) =>
+    n.next
+      .map((id) => run.nodes[id])
+      .filter((m) => m.act === n.act && !(m.floor === n.floor && m.id < n.id))
+      .map((m) => ({ n, m, pts: route(n, m), locked: !!n.locked?.includes(m.id) || !!m.locked?.includes(n.id) })),
+  );
+  const doors = new Map<number, Set<string>>();
+  const addDoor = (n: RunNode, side: string): void => void doors.set(n.id, (doors.get(n.id) ?? new Set()).add(side));
+  for (const { n, m } of halls) {
+    const right = laneX(m.lane) > laneX(n.lane);
+    const [from, to] = m.floor > n.floor ? ['top', 'bottom'] : right ? ['right', 'left'] : ['left', 'right'];
+    addDoor(n, from);
+    addDoor(m, to);
+  }
+  const hallSvg = (cls: string): string =>
+    halls
+      .map(({ n, m, pts, locked }) => {
+        // Walked corridors carry footsteps instead; the one to the room picked next is lit.
+        const trod = run.path.includes(n.id) && run.path.includes(m.id);
+        const next = (n.id === cur.id && m.id === picked) || (m.id === cur.id && n.id === picked);
+        const state = `${trod ? 'trod' : next ? 'walked' : ''} ${locked ? 'locked' : ''} ${foggy(n) || foggy(m) ? 'fog' : ''}`;
+        return `<polyline class="${cls} ${state}" points="${pts.map((p) => p.join(',')).join(' ')}" vector-effect="non-scaling-stroke"/>`;
+      })
+      .join('');
 
   const enterBtn = h('button', { class: 'btn block' });
   const nodeEls = new Map<number, HTMLElement>();
@@ -90,7 +135,9 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     for (const [id, el] of nodeEls) el.classList.toggle('current', id === picked);
     const target = picked === null ? null : run.nodes[picked];
     enterBtn.disabled = !target;
-    enterBtn.textContent = target ? t('journey.enter', { n: target.floor }) : t('journey.choose');
+    enterBtn.textContent = target
+      ? t(run.cleared && doorLocked(run, target.id) ? 'journey.enterDoor' : 'journey.enter', { n: target.floor })
+      : t('journey.choose');
   };
   const go = (): void => {
     if (picked === null) return;
@@ -117,23 +164,46 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   };
 
   const path = h('div', { class: 'path', style: { height: `${(floors - minFloor + 1) * ROW_H}px` } });
-  path.innerHTML = `<svg class="links" viewBox="0 0 100 ${(floors - minFloor + 1) * ROW_H}" preserveAspectRatio="none" aria-hidden="true">${lines}</svg>`;
+  path.innerHTML = `<svg class="links" viewBox="0 0 100 ${(floors - minFloor + 1) * ROW_H}" preserveAspectRatio="none" aria-hidden="true">${hallSvg('hall')}${hallSvg('hall-mid')}</svg>`;
   for (let f = minFloor; f <= floors; f++) path.append(h('span', { class: 'num', style: { top: `${(floors - f + 0.5) * ROW_H}px` } }, f));
-  // The way walked so far, as footsteps; back from a job, its last stretch is walked again step by step.
+  // A locked door sits on its corridor: it takes a badge to open.
+  const lockInfo = (): void => {
+    sfx('tap');
+    openInfo({ icon: 'lock', title: t('journey.locked'), desc: t('journey.info.locked'), extra: [t('journey.info.badges', { n: run.badges })] });
+  };
+  for (const { pts, locked } of halls) {
+    if (!locked) continue;
+    const [a, b] = pts.length > 2 ? [pts[1], pts[2]] : [pts[0], pts[1]];
+    const lock = h('button', {
+      class: `door-lock ${run.badges > 0 ? 'ready' : ''}`,
+      html: icon('lock'),
+      'aria-label': t('journey.locked'),
+      style: { left: `${(a[0] + b[0]) / 2}%`, top: `${(a[1] + b[1]) / 2}px` },
+    });
+    onPress(lock, lockInfo);
+    path.append(lock);
+  }
+  // The way walked so far, as footsteps along the corridors; back from a job, its last stretch is walked again step by step.
   run.path.forEach((id, i) => {
     const a = run.nodes[run.path[i - 1]];
     const b = run.nodes[id];
     if (!a || a.act !== act || b.act !== act) return;
     const fresh = run.cleared && i === run.path.length - 1;
-    const flat = a.floor === b.floor;
-    const n = flat ? 6 : Math.max(4, Math.round((Math.abs(y(b) - y(a)) * 1.2) / STEP_PX));
+    const pts = route(a, b);
+    const px = (p: Pt): Pt => [(p[0] * MAP_W) / 100, p[1]];
+    const lens = pts.slice(1).map((p, k) => Math.hypot(px(p)[0] - px(pts[k])[0], p[1] - pts[k][1]));
+    const total = lens.reduce((sum, l) => sum + l, 0);
+    const n = Math.max(4, Math.round(total / STEP_PX));
     for (let k = 0; k < n; k++) {
-      const f = (k + 0.5) / n;
-      const x = laneX(a.lane) + (laneX(b.lane) - laneX(a.lane)) * f;
+      let d = ((k + 0.5) / n) * total;
+      let seg = 0;
+      while (seg < lens.length - 1 && d > lens[seg]) d -= lens[seg++];
+      const f = lens[seg] ? d / lens[seg] : 0;
+      const [p, q] = [pts[seg], pts[seg + 1]];
       path.append(
         h('i', {
-          class: `step ${k % 2 ? 'odd' : ''} ${flat ? 'flat' : ''} ${fresh ? 'fresh' : ''}`,
-          style: { left: `${x}%`, top: `${y(a) + (y(b) - y(a)) * f}px`, animationDelay: `${k * STEP_MS}ms` },
+          class: `step ${k % 2 ? 'odd' : ''} ${p[1] === q[1] ? 'flat' : ''} ${fresh ? 'fresh' : ''}`,
+          style: { left: `${p[0] + (q[0] - p[0]) * f}%`, top: `${p[1] + (q[1] - p[1]) * f}px`, animationDelay: `${k * STEP_MS}ms` },
         }),
       );
     }
@@ -142,29 +212,42 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     const past = run.path.includes(n.id) && (n.id !== cur.id || run.cleared);
     const open = n.id === cur.id ? !run.cleared : options.includes(n.id);
     const missed = !past && !open && n.id !== cur.id && !reachable.has(n.id);
-    const label = t(`journey.node.${n.type}`);
+    const fog = foggy(n);
+    const locked = run.cleared && open && doorLocked(run, n.id);
+    const label = fog ? UNKNOWN : t(`journey.node.${n.type}`);
+    const hasBadge = !!n.badge && !past && !fog;
     const el = h(
       'div',
       {
-        class: `node ${n.type} ${past ? 'done' : ''} ${missed ? 'missed' : ''} ${open ? 'open' : ''}`,
+        class: `node ${n.type} ${past ? 'done' : ''} ${missed ? 'missed' : ''} ${open ? 'open' : ''} ${fog ? 'fog' : ''}`,
         style: { left: `${laneX(n.lane)}%`, top: `${y(n)}px` },
       },
       h('button', {
         class: 'dot',
-        html: past || !(n.type === 'boss' && !!actDef(n.act).bossClock) ? icon(past ? 'check' : NODE_ICON[n.type]) : undefined,
+        html: fog
+          ? icon('question')
+          : past || !(n.type === 'boss' && !!actDef(n.act).bossClock)
+            ? icon(past ? 'check' : NODE_ICON[n.type])
+            : undefined,
         'aria-label': `${t('common.floor', { n: n.floor })} · ${label}`,
         // Not `disabled`: every node can still be held to read what it is.
         'aria-disabled': String(!open),
       }),
       h('span', { class: 'label' }, label),
+      ...[...(doors.get(n.id) ?? [])].map((side) => h('i', { class: `door ${side}` })),
+      hasBadge ? h('span', { class: 'badge-mark', html: icon('idBadge'), 'aria-hidden': 'true' }) : null,
     );
     const dot = el.querySelector<HTMLElement>('.dot')!;
-    if (!past && n.type === 'boss' && !!actDef(n.act).bossClock) dot.append(clockFace());
+    if (!past && !fog && n.type === 'boss' && !!actDef(n.act).bossClock) dot.append(clockFace());
     // Tap an open node to pick it (again to go in); hold any node to learn what it is.
     onTapOrHold(
       dot,
       () => {
         if (!open) return;
+        if (locked && run.badges < 1) {
+          lockInfo();
+          return;
+        }
         if (picked === n.id) {
           go();
           return;
@@ -175,13 +258,17 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       },
       () => {
         sfx('tap');
+        if (fog) {
+          openInfo({ icon: 'question', title: t('journey.fog'), tag: t('common.floor', { n: n.floor }), desc: t('journey.info.fog') });
+          return;
+        }
         const enemy = n.enemy ? t(`enemy.${n.enemy}.name`) : null;
         openInfo({
           icon: NODE_ICON[n.type],
           title: label,
           tag: t('common.floor', { n: n.floor }),
           desc: t(`journey.info.${n.type}`),
-          extra: enemy ? [t('journey.info.enemy', { name: enemy })] : undefined,
+          extra: [...(enemy ? [t('journey.info.enemy', { name: enemy })] : []), ...(hasBadge ? [t('journey.info.badgeRoom')] : [])],
         });
       },
     );
@@ -207,6 +294,17 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       },
     }),
   );
+  // Badges in hand, once the act has any to find or a door to open (a new one stamps in as you come back with it).
+  const badgeChip = h('button', {
+    class: `chip badges ${run.cleared && cur.badge ? 'gain' : ''}`,
+    hidden: !run.badges && !nodes.some((n) => n.badge || n.locked),
+    html: `${icon('idBadge')}<span>${run.badges}</span>`,
+    'aria-label': t('journey.badges'),
+  });
+  onPress(badgeChip, () => {
+    sfx('tap');
+    openInfo({ icon: 'idBadge', title: t('journey.badges'), desc: t('journey.info.badge'), extra: [t('journey.info.badges', { n: run.badges })] });
+  });
   const el = h(
     'div',
     { class: 'screen journey' },
@@ -216,6 +314,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       { class: 'act-banner' },
       h('div', { class: 'h1' }, t('journey.title', { n: act })),
       h('p', { class: 'sub' }, t(`journey.actName.${act}`)),
+      badgeChip,
     ),
     h('div', { class: 'scroll', style: { flex: '1' } }, path),
     enterBtn,
