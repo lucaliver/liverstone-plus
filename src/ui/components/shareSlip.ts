@@ -27,8 +27,16 @@ export interface ShareSlip {
 }
 
 const W = 1080;
-const H = 1350;
+/** The image is at least this tall; a big deck makes it taller so every card fits. */
+const MIN_H = 1350;
 const PAD = 60;
+
+/** Layout of the image, top to bottom (the height depends on how many rows the deck needs). */
+const TOP = 280;
+const SLIP_Y = TOP + 290;
+const DECK_COLS = 6;
+const DECK_GAP = 12;
+const TICKET_H = 100;
 
 /** Reads the design tokens so the image matches the game's inks. */
 function tokens(): Record<'paper' | 'paper2' | 'k' | 'p' | 'b' | 'y' | 'bg' | 'bg2' | 'muted' | 'mutedD' | 'shadow', string> {
@@ -88,6 +96,9 @@ function stamp(g: CanvasRenderingContext2D, text: string, x: number, y: number, 
 export async function payslipImage(s: ShareSlip): Promise<Blob | null> {
   await Promise.all(['64px Silkscreen', '40px "Pixel UI"', '600 30px "Space Grotesk"'].map((f) => document.fonts.load(f)));
   const c = tokens();
+  const slipH = 150 + s.rows.length * 40;
+  const deckY = SLIP_Y + slipH + 50;
+  const H = Math.max(MIN_H, deckY + 20 + Math.ceil(s.deck.length / DECK_COLS) * (TICKET_H + DECK_GAP) + 80);
   const cv = document.createElement('canvas');
   cv.width = W;
   cv.height = H;
@@ -127,7 +138,7 @@ export async function payslipImage(s: ShareSlip): Promise<Blob | null> {
   g.restore();
 
   // The hero in a frame, its name and how the day went.
-  const top = 280;
+  const top = TOP;
   g.fillStyle = c.shadow;
   g.fillRect(PAD + 8, top + 8, 250, 250);
   g.fillStyle = c.bg2;
@@ -149,8 +160,8 @@ export async function payslipImage(s: ShareSlip): Promise<Blob | null> {
   g.fillText(s.title.toUpperCase(), tx, top + 215);
 
   // The payslip on paper: rows with dot leaders, NEW RECORD stamps, then the big stamp.
-  const sy = top + 290;
-  const sh = 150 + s.rows.length * 40;
+  const sy = SLIP_Y;
+  const sh = slipH;
   g.fillStyle = c.shadow;
   g.fillRect(PAD + 10, sy + 10, W - 2 * PAD, sh);
   g.fillStyle = c.paper;
@@ -196,19 +207,17 @@ export async function payslipImage(s: ShareSlip): Promise<Blob | null> {
   stamp(g, s.stamp.toUpperCase(), W / 2 + 60, sy + sh - 90, 48, s.won ? c.b : c.p, -0.2);
 
   // The final deck: one ticket per card, copies counted.
-  const dy = sy + sh + 50;
+  const dy = deckY;
   g.textAlign = 'left';
   g.fillStyle = c.mutedD;
   g.font = '32px "Pixel UI"';
   g.fillText(t('common.deck').toUpperCase(), PAD, dy);
-  const cols = 6;
-  const gap = 12;
-  const tw = (W - 2 * PAD - (cols - 1) * gap) / cols;
-  const th = 100;
+  const tw = (W - 2 * PAD - (DECK_COLS - 1) * DECK_GAP) / DECK_COLS;
+  const th = TICKET_H;
   const bands = new Map<string, { band: string; text: string }>();
-  for (const [i, { card, n }] of s.deck.slice(0, cols * 2).entries()) {
-    const x = PAD + (i % cols) * (tw + gap);
-    const ty = dy + 20 + Math.floor(i / cols) * (th + gap);
+  for (const [i, { card, n }] of s.deck.entries()) {
+    const x = PAD + (i % DECK_COLS) * (tw + DECK_GAP);
+    const ty = dy + 20 + Math.floor(i / DECK_COLS) * (th + DECK_GAP);
     const def = CARDS[card.id];
     const cls = def.cls;
     if (!bands.has(cls)) bands.set(cls, bandOf(cls));
