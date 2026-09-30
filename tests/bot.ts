@@ -5,12 +5,14 @@ import {
   advance,
   applyCombat,
   canPerk,
+  canShred,
   canUpgrade,
   combatSetup,
   currentNode,
   newRun,
   rest,
   rollRewards,
+  shredCard,
   swapCard,
   upgradeCard,
   type RunState,
@@ -134,6 +136,11 @@ export function simulateRun(hero: HeroId, seed: number, opts: BotOpts): RunOutco
       // Crystals first: they grow the mana the rest of the deck needs.
       const card = run.deck.find((c) => c.id === 'doubleEspresso' || c.id === 'coffee');
       if (card && canPerk(card, 'fastTrack')) addPerk(run, card.uid, 'fastTrack');
+      run.cleared = true;
+    } else if (node.type === 'copy') {
+      // Thin the deck: shred a plain starter card (never a mana crystal).
+      const weak = run.deck.find((c) => CARDS[c.id].rarity === 'starter');
+      if (weak && canShred(run)) shredCard(run, weak.uid);
       run.cleared = true;
     } else if (node.type === 'rest') {
       if (run.hp < run.maxHp * 0.65) rest(run);

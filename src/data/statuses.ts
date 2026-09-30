@@ -14,6 +14,10 @@ const CHILL_GAP = 2;
 const IDLE_LIMIT = 2;
 /** Card colours, by index (a status's free number `e` remembers one). */
 const CATEGORIES: CardCategory[] = ['attack', 'defense', 'utility', 'curse'];
+/** Golden Parachute: the share of its max HP the enemy is back on its feet with, the Block it retires with and the Strength it gains. */
+const PARACHUTE_HP = 0.4;
+const PARACHUTE_BLOCK = 20;
+const PARACHUTE_STRENGTH = 3;
 /** What the Overthinker does once it has lost its train of thought. */
 const WHERE_WAS_I: MoveDef = { id: 'whereWasI', intent: 'idle', windup: 4 };
 /** Spending Freeze: the hero's max mana. */
@@ -99,6 +103,16 @@ const defs: StatusDef[] = [
     onCardPlayed: endOnPlay('grindset'),
   },
   { id: 'virulence', kind: 'stacks', good: true, icon: 'biohazard' },
+  // Steel Toes: every attack played gives `v` Block.
+  {
+    id: 'steelToes',
+    kind: 'stacks',
+    good: true,
+    icon: 'shield',
+    onCardPlayed: (c, side, def) => {
+      if (def.type === 'attack') c.gainBlock(side, c.stacks(side, 'steelToes'));
+    },
+  },
   // Burn: no clock and no decay; the enemy takes its stacks every time it attacks (Poison is the slow, fading one).
   {
     id: 'burn',
@@ -213,6 +227,24 @@ const defs: StatusDef[] = [
       if (quarters > (e.mem.turns ?? 0)) c.say('status.paradigmShift.speech');
       for (let n = e.mem.turns ?? 0; n < quarters; n++) c.reverseBelt();
       e.mem.turns = Math.max(e.mem.turns ?? 0, quarters);
+    },
+  },
+  // Fine print: every hit of your cards deals `v` less damage (Poison, Burn and thorns don't count as hits).
+  { id: 'finePrint', kind: 'stacks', good: true, passive: true, icon: 'magnifier', cutsHits: true },
+  // Golden parachute: the first time it would fall, it takes the severance package instead and gets back up.
+  {
+    id: 'goldenParachute',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'parachute',
+    onDeath: (c, side) => {
+      c.removeStatus(side, 'goldenParachute');
+      c.heal(side, Math.round(c.enemy.maxHp * PARACHUTE_HP));
+      c.gainBlock(side, PARACHUTE_BLOCK);
+      c.applyStatus(side, 'strength', PARACHUTE_STRENGTH);
+      c.say('status.goldenParachute.speech');
+      return true;
     },
   },
   {

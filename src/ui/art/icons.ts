@@ -898,6 +898,72 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'holy',
     svg: `<circle cx="24" cy="38" r="20"/><path d="M20 30h10v5h-6v2h6v11H20v-5h6v-2h-6z" fill="#16121f"/><path d="M44 4h16v16l-5-5-8 8-6-6 8-8z"/>`,
   },
+  // Class fillers
+  rivetGun: {
+    el: 'steel',
+    svg: `<path d="M2 12h34l14 8v12H30l-4 8v18H12V40l-4-8H2z"/><rect x="8" y="17" width="26" height="4" fill="#16121f"/><path d="M54 16h8v4h-8zM54 24h8v4h-8z"/>`,
+  },
+  barbedWire: {
+    el: 'steel',
+    svg: `<rect x="2" y="29" width="60" height="6"/><g ${S} stroke-width="5"><path d="M6 20l14 24M20 20L6 44M26 20l14 24M40 20L26 44M46 20l14 24M60 20L46 44"/></g>`,
+  },
+  blowOffSteam: {
+    el: 'steel',
+    svg: `<rect x="4" y="46" width="56" height="12"/><rect x="28" y="28" width="8" height="20"/><ellipse cx="32" cy="26" rx="20" ry="6"/><circle cx="18" cy="10" r="7"/><circle cx="32" cy="6" r="7"/><circle cx="46" cy="10" r="7"/>`,
+  },
+  steelToes: {
+    el: 'steel',
+    svg: `<path d="M12 4h24v26c0 4 6 7 12 8 8 2 14 6 14 14v2H12z"/><path d="M16 12h16M16 20h16" stroke="#16121f" stroke-width="3"/><path fill="#16121f" d="M40 38c8 2 18 4 20 10v4H40z"/><rect x="10" y="52" width="54" height="8" fill="#16121f" opacity=".6"/>`,
+  },
+  overstock: {
+    el: 'steel',
+    svg: `<rect x="4" y="54" width="56" height="8"/><rect x="6" y="32" width="24" height="20"/><rect x="34" y="32" width="24" height="20"/><rect x="18" y="8" width="28" height="22"/><path d="M18 19h28M18 41h12M34 41h24" stroke="#16121f" stroke-width="3"/>`,
+  },
+  gradCap: {
+    el: 'arcane',
+    svg: `<path d="M32 6L2 20l30 14 30-14z"/><path d="M14 30v14c0 5 8 10 18 10s18-5 18-10V30L32 38z"/><path d="M56 24v22" stroke="#16121f" stroke-width="3"/><circle cx="56" cy="50" r="5"/>`,
+  },
+  spamFilter: {
+    el: 'arcane',
+    svg: `<rect x="4" y="12" width="44" height="32"/><path d="M4 12l22 18 22-18" stroke="#16121f" stroke-width="3" fill="none"/><circle cx="46" cy="44" r="16" fill="#16121f"/><g ${S} stroke-width="5"><circle cx="46" cy="44" r="10"/><path d="M39 51l14-14"/></g>`,
+  },
+  thermalShock: {
+    el: 'ice',
+    svg: `<rect x="24" y="4" width="16" height="42" rx="8"/><circle cx="32" cy="48" r="13"/><rect x="29" y="14" width="6" height="30" fill="#16121f"/><circle cx="32" cy="48" r="7" fill="#16121f"/><path d="M46 12h10M46 22h6M46 32h10M8 12h10M12 22h6M8 32h10" stroke="currentColor" stroke-width="3"/><path d="M40 2l-6 12 6-3-2 12 8-14-6 2z" fill="#fff"/>`,
+  },
+  yogurt: {
+    el: 'necro',
+    svg: `<path d="M10 22h44l-6 36H16z"/><rect x="8" y="14" width="48" height="8"/><path d="M40 14c4-8 14-10 18-6-6 0-10 2-12 6z"/><path fill="#16121f" opacity=".45" d="M16 30h32l-2 16H18z"/><circle cx="26" cy="38" r="3" fill="#16121f"/><circle cx="36" cy="42" r="2.5" fill="#16121f"/><circle cx="40" cy="35" r="2" fill="#16121f"/>`,
+  },
+  slingshot: {
+    el: 'blood',
+    svg: `<path d="M26 62V38L8 8h12l12 20 12-20h12L38 38v24z"/><path d="M14 10Q32 34 50 10" stroke="#16121f" stroke-width="3" fill="none"/><circle cx="32" cy="27" r="5" fill="#16121f"/>`,
+  },
+  petriDish: {
+    el: 'necro',
+    svg: `<ellipse cx="32" cy="36" rx="29" ry="23"/><ellipse cx="32" cy="36" rx="22" ry="16" fill="#16121f"/><circle cx="24" cy="32" r="4"/><circle cx="39" cy="29" r="3"/><circle cx="35" cy="42" r="5"/><circle cx="22" cy="44" r="2.5"/>`,
+  },
+  gasMask: {
+    el: 'necro',
+    svg: `<path d="M12 8h40v22c0 14-8 24-20 24S12 44 12 30z"/><circle cx="22" cy="26" r="8" fill="#16121f"/><circle cx="42" cy="26" r="8" fill="#16121f"/><circle cx="20" cy="23" r="2.5"/><circle cx="40" cy="23" r="2.5"/><rect x="25" y="44" width="14" height="16" rx="3"/><path d="M27 49h10M27 54h10" stroke="#16121f" stroke-width="2"/>`,
+  },
+  healthPlan: {
+    el: 'holy',
+    svg: `<rect x="6" y="18" width="52" height="40" rx="4"/><path d="M22 18v-8h20v8" stroke="currentColor" stroke-width="5" fill="none"/><path fill="#16121f" d="M28 26h8v8h8v8h-8v8h-8v-8h-8v-8h8z"/>`,
+  },
+  badge: {
+    el: 'necro',
+    svg: `<path d="M20 2h8l6 20h-6zM44 2h-8l-6 20h6z"/><rect x="14" y="22" width="36" height="38" rx="3"/><rect x="20" y="29" width="14" height="14" fill="#16121f"/><g fill="#16121f"><rect x="38" y="30" width="8" height="3"/><rect x="38" y="36" width="8" height="3"/><rect x="20" y="49" width="26" height="3"/></g>`,
+  },
+  // Rooms and statuses
+  shredder: {
+    el: 'steel',
+    svg: `<path d="M20 2h24v14H20z"/><rect x="6" y="14" width="52" height="16"/><rect x="12" y="20" width="40" height="4" fill="#16121f"/><path d="M10 30h44v24H10z"/><path d="M14 54h4v8h-4zM22 54h4v6h-4zM30 54h4v8h-4zM38 54h4v6h-4zM46 54h4v8h-4z"/>`,
+  },
+  parachute: {
+    el: 'holy',
+    svg: `<path d="M4 30C4 14 16 4 32 4s28 10 28 26c-6-6-10-6-14 0-4-6-10-6-14 0-4-6-10-6-14 0-4-6-8-6-14 0z"/><g ${S} stroke-width="3"><path d="M10 32l20 20M54 32L34 52M32 30v22"/></g><rect x="26" y="50" width="12" height="11"/>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {

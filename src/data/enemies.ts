@@ -171,6 +171,23 @@ const defs: EnemyDef[] = [
     onHalf: (c) => c.gainBlock('enemy', 30),
   },
   {
+    // Leaving with a golden parachute: the first time he would fall, he retires instead and comes back for more.
+    id: 'outgoingVp',
+    act: 1,
+    tier: 'elite',
+    hp: 80,
+    block: 15,
+    art: 'outgoingVp',
+    main: atk('reorg', 8, 8, ramp),
+    every: 2,
+    specials: [
+      atk('goldenHandshake', 6, 6, { intent: 'steal', steal: 1 }),
+      { id: 'stockBuyback', intent: 'buff', windup: 6, block: 10, status: [{ id: 'strength', v: 2, target: 'enemy' }] },
+      { id: 'legacyProject', intent: 'curse', windup: 6, curse: [{ id: 'debt', n: 1, to: 'belt' }] },
+    ],
+    start: [{ id: 'goldenParachute' }],
+  },
+  {
     id: 'slavesCeo',
     act: 1,
     tier: 'boss',
@@ -279,6 +296,21 @@ const defs: EnemyDef[] = [
       atk('violation', 15, 10, { intent: 'charge' }),
     ],
     onHalf: (c) => c.applyStatus('hero', 'slowdown', 1, 20),
+  },
+  {
+    // Bills by the second: every hit of your cards is docked, so only Poison and Burn go through whole. Shuts you up with a gag order.
+    id: 'contractLawyer',
+    act: 2,
+    tier: 'normal',
+    hp: 60,
+    art: 'contractLawyer',
+    main: atk('objection', 7, 6),
+    every: 2,
+    specials: [
+      { id: 'ceaseAndDesist', intent: 'debuff', windup: 6, status: [{ id: 'stun', t: 3, target: 'hero' }] },
+      atk('classAction', 17, 10, { intent: 'charge' }),
+    ],
+    start: [{ id: 'finePrint', v: 2 }],
   },
   {
     id: 'nightJanitor',
@@ -407,6 +439,7 @@ export const DIFFICULTY = [
   'guyAsleep',
   'toxicCoworker',
   'securityMonitor',
+  'outgoingVp',
   'slavesCeo',
   'happinessOfficer',
   'dave',
@@ -415,6 +448,7 @@ export const DIFFICULTY = [
   'changeManager',
   'leaver',
   'wellnessCoach',
+  'contractLawyer',
   'meticulousColleague',
   'beanCounter',
   'complianceOfficer',

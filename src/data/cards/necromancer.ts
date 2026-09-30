@@ -348,4 +348,91 @@ export const necromancerCards: CardDef[] = [
       card.bonus = 0;
     },
   },
+
+  // Filling the class out: a first 1-mana card, a Weak payoff, Poison Block, regeneration, a second sleeve card and a way back
+  {
+    id: 'expiredYogurt',
+    face: '{poison:0}',
+    cls: 'necromancer',
+    type: 'spell',
+    rarity: 'common',
+    cost: 1,
+    vals: [2],
+    upVals: [3],
+    art: 'yogurt',
+    play: (c, v) => c.applyStatus('enemy', 'poison', v[0]),
+  },
+  {
+    id: 'cheapShot',
+    face: '{dmg:0}|{?weak}{dmg:1}',
+    cls: 'necromancer',
+    type: 'attack',
+    rarity: 'common',
+    cost: 2,
+    vals: [5, 13],
+    upVals: [7, 18],
+    art: 'slingshot',
+    play: (c, v) => void c.hit(c.has('enemy', 'weak') ? v[1] : v[0]),
+  },
+  {
+    id: 'healthcarePlan',
+    cat: 'defense',
+    face: '{regen:0}',
+    cls: 'necromancer',
+    type: 'skill',
+    rarity: 'common',
+    cost: 2,
+    vals: [4],
+    upVals: [5],
+    art: 'healthPlan',
+    play: (c, v) => c.applyStatus('hero', 'regen', v[0]),
+  },
+  {
+    id: 'hazmatSuit',
+    cat: 'defense',
+    face: '{block}={poison}',
+    cls: 'necromancer',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 2,
+    upCost: 1,
+    vals: [],
+    art: 'gasMask',
+    play: (c) => c.gainBlock('hero', c.stacks('enemy', 'poison')),
+  },
+  // Sleeve card: while it waits there, every card you play goes in the dish (more Poison on the card)
+  {
+    id: 'petriDish',
+    face: '{poison:0}|{?sleeve}{grow:1}',
+    cls: 'necromancer',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 3,
+    vals: [2, 1],
+    upVals: [4, 1],
+    art: 'petriDish',
+    bonusIdx: 0,
+    inSleeve: {
+      onCardPlayed: (_c, v, card) => {
+        card.bonus += v[1];
+      },
+    },
+    play: (c, v, card) => {
+      c.applyStatus('enemy', 'poison', v[0]);
+      card.bonus = 0;
+    },
+  },
+  {
+    id: 'rehire',
+    face: '{cards:0}',
+    cls: 'necromancer',
+    type: 'spell',
+    rarity: 'epic',
+    cost: 3,
+    vals: [3],
+    upVals: [5],
+    keywords: ['exhaust'],
+    art: 'badge',
+    play: (c, v) => void c.recycleExhausted(v[0]),
+  },
 ];

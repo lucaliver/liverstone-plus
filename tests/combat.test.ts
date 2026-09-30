@@ -4,7 +4,7 @@ import { CONFIG, EXPIRE_POS } from '../src/data/config';
 import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
 import { CARD_LIST, CARDS } from '../src/data/cards';
-import { fightPay, loadRun, newRun } from '../src/game/run';
+import { canCopy, canShred, COPY_HP_COST, fightPay, loadRun, newRun, photocopyCard, SHRED_MIN_DECK, shredCard } from '../src/game/run';
 import type { CardInst } from '../src/game/types';
 
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
@@ -1226,5 +1226,211 @@ describe('saves from before the ids followed the English names', () => {
     ]);
     expect(loaded?.nodes.filter((n) => n.enemy).every((n) => n.enemy === 'snitch')).toBe(true);
     Reflect.deleteProperty(globalThis, 'localStorage');
+  });
+});
+
+describe('cards that fill the classes out', () => {
+  /** A fight where nothing happens by itself, the hero rich in mana. */
+  const quiet = (over: Partial<CombatSetup> = {}): Combat => {
+    const c = setup({ deck: deckOf(Array(6).fill('punch')), ...over });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.mana = c.hero.maxMana = 10;
+    return c;
+  };
+  /** Puts a card on the belt and plays it, free. */
+  const cast = (c: Combat, id: string, up = false): void => {
+    c.addTempCard(id, 'belt', up);
+    expect(c.playCard(c.belt[c.belt.length - 1].card.uid, true)).toBe(true);
+  };
+
+  it('Rivet Gun: Strength counts on every rivet', () => {
+    const c = quiet();
+    c.applyStatus('hero', 'strength', 2);
+    const hp = c.enemy.hp;
+    cast(c, 'rivetGun');
+    const [dmg, hits] = CARDS.rivetGun.vals;
+    expect(hp - c.enemy.hp).toBe((dmg + 2) * hits);
+  });
+
+  it('Barbed Wire: gives Block and Thorns, which hit back every enemy hit', () => {
+    const c = quiet();
+    cast(c, 'barbedWire');
+    const [block, thorns] = CARDS.barbedWire.vals;
+    expect(c.hero.block).toBe(block);
+    expect(c.stacks('hero', 'thorns')).toBe(thorns);
+    const hp = c.enemy.hp;
+    c.damage('enemy', 'hero', 3, {}, 'enemy');
+    c.damage('enemy', 'hero', 3, {}, 'enemy');
+    expect(hp - c.enemy.hp).toBe(2 * thorns);
+  });
+
+  it('Blow Off Steam: all the Block goes, for damage times its value', () => {
+    const c = quiet();
+    c.gainBlock('hero', 10);
+    const hp = c.enemy.hp;
+    cast(c, 'blowOffSteam');
+    expect(c.hero.block).toBe(0);
+    expect(hp - c.enemy.hp).toBe(10 * CARDS.blowOffSteam.vals[0]);
+  });
+
+  it('Steel Toes: attacks give Block, other cards do not', () => {
+    const c = quiet();
+    cast(c, 'steelToes');
+    const per = CARDS.steelToes.vals[0];
+    expect(c.hero.block).toBe(0);
+    cast(c, 'punch');
+    expect(c.hero.block).toBe(per);
+    cast(c, 'hardHat');
+    expect(c.hero.block).toBe(per + CARDS.hardHat.vals[0]);
+  });
+
+  it('Overstock: Block for every mana spent', () => {
+    const c = quiet();
+    c.hero.mana = 4;
+    cast(c, 'overstock');
+    expect(c.hero.block).toBe(CARDS.overstock.vals[0] * 4);
+  });
+
+  it('Continuing Education: spells hit harder for good', () => {
+    const c = quiet({ hero: HEROES.mage });
+    cast(c, 'continuingEducation');
+    const hp = c.enemy.hp;
+    cast(c, 'staticShock');
+    expect(hp - c.enemy.hp).toBe(CARDS.staticShock.vals[0] + CARDS.continuingEducation.vals[0]);
+  });
+
+  it('Thermal Shock: only a Chilled and Burning enemy takes the big hit, and the Chill is spent', () => {
+    const c = quiet({ hero: HEROES.mage });
+    const [small, big] = CARDS.thermalShock.vals;
+    c.applyStatus('enemy', 'chill', 1, 20);
+    let hp = c.enemy.hp;
+    cast(c, 'thermalShock');
+    expect(hp - c.enemy.hp).toBeLessThan(big);
+    expect(c.has('enemy', 'chill')).toBe(true);
+    c.applyStatus('enemy', 'burn', 1);
+    hp = c.enemy.hp;
+    cast(c, 'thermalShock');
+    expect(hp - c.enemy.hp).toBeGreaterThanOrEqual(big);
+    expect(hp - c.enemy.hp).toBeGreaterThan(small + 10);
+    expect(c.has('enemy', 'chill')).toBe(false);
+  });
+
+  it('Cheap Shot hits harder on a Weak enemy, Hazmat Suit turns Poison into Block, Healthcare Plan regenerates', () => {
+    const c = quiet({ hero: HEROES.necromancer });
+    let hp = c.enemy.hp;
+    cast(c, 'cheapShot');
+    expect(hp - c.enemy.hp).toBe(CARDS.cheapShot.vals[0]);
+    c.applyStatus('enemy', 'weak', 1, 20);
+    hp = c.enemy.hp;
+    cast(c, 'cheapShot');
+    expect(hp - c.enemy.hp).toBe(CARDS.cheapShot.vals[1]);
+    c.applyStatus('enemy', 'poison', 9);
+    cast(c, 'hazmatSuit');
+    expect(c.hero.block).toBe(9);
+    cast(c, 'healthcarePlan');
+    expect(c.stacks('hero', 'regen')).toBe(CARDS.healthcarePlan.vals[0]);
+  });
+
+  it('Petri Dish: every card played while it waits in the sleeve grows its Poison, spent when played', () => {
+    const c = quiet({ hero: HEROES.necromancer });
+    c.addTempCard('petriDish', 'belt');
+    c.stash(c.belt[c.belt.length - 1].card.uid, 0);
+    const [base, grow] = CARDS.petriDish.vals;
+    cast(c, 'skeletonCrew');
+    cast(c, 'skeletonCrew');
+    const dish = c.sleeve[0]!;
+    expect(c.cardVals(dish)[0]).toBe(base + 2 * grow);
+    c.playCard(dish.uid);
+    expect(c.stacks('enemy', 'poison')).toBe(base + 2 * grow);
+    expect(dish.bonus).toBe(0);
+  });
+
+  it('Rehire: brings exhausted cards back to the draw pile, never consumed ones', () => {
+    const c = quiet({ hero: HEROES.necromancer });
+    const exhausted = (id: string, uid: number): void => void c.exhaust.push({ uid, id, up: false, bonus: 0, temp: false });
+    exhausted('coffee', 901);
+    exhausted('walkout', 902);
+    exhausted('firstAidKit', 903);
+    c.consumed.push(903);
+    cast(c, 'rehire');
+    // What stays exhausted: the consumed potion and Rehire itself.
+    expect(c.exhaust.map((x) => x.uid).sort()).toEqual([-1, 903]);
+    expect(c.draw.map((x) => x.uid)).toEqual(expect.arrayContaining([901, 902]));
+  });
+});
+
+describe('Fine Print and the Golden Parachute', () => {
+  const vs = (enemy: string): Combat => {
+    const c = setup({ enemy: ENEMIES[enemy], deck: deckOf(Array(6).fill('punch')), hp: 999, maxHp: 999 });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 0.01);
+    return c;
+  };
+
+  it('Contract Lawyer: every hit of a card loses the Fine Print, Poison and Burn go through whole', () => {
+    const c = vs('contractLawyer');
+    const cut = c.stacks('enemy', 'finePrint');
+    expect(cut).toBeGreaterThan(0);
+    expect(c.previewHeroDamage(6, CARDS.punch)).toBe(6 - cut);
+    const hp = c.enemy.hp;
+    c.hit(6, { hits: 3 });
+    expect(hp - c.enemy.hp).toBe(3 * (6 - cut));
+    c.applyStatus('enemy', 'poison', 4);
+    const before = c.enemy.hp;
+    run(c, CONFIG.dotInterval + 0.05);
+    expect(before - c.enemy.hp).toBe(4);
+    // A hit smaller than the cut deals nothing, never heals.
+    const now = c.enemy.hp;
+    c.hit(1);
+    expect(c.enemy.hp).toBe(now);
+  });
+
+  it('Outgoing VP: the first lethal hit only retires him, the second one wins', () => {
+    const c = vs('outgoingVp');
+    expect(c.has('enemy', 'goldenParachute')).toBe(true);
+    c.enemy.block = 0;
+    c.damage('hero', 'enemy', 999, { raw: true }, 'hero');
+    expect(c.result).toBeNull();
+    expect(c.has('enemy', 'goldenParachute')).toBe(false);
+    expect(c.enemy.hp).toBe(Math.round(c.enemy.maxHp * 0.4));
+    expect(c.enemy.block).toBeGreaterThan(0);
+    expect(c.stacks('enemy', 'strength')).toBeGreaterThan(0);
+    c.enemy.block = 0;
+    c.damage('hero', 'enemy', 999, { raw: true }, 'hero');
+    expect(c.result).toBe('win');
+  });
+});
+
+describe('the Copy Room', () => {
+  it('shreds a card for good, but never below the smallest deck', () => {
+    const r = newRun('warrior', 5);
+    expect(canShred(r)).toBe(true);
+    const gone = r.deck[0];
+    shredCard(r, gone.uid);
+    expect(r.deck.some((c) => c.uid === gone.uid)).toBe(false);
+    while (r.deck.length > SHRED_MIN_DECK) shredCard(r, r.deck[0].uid);
+    expect(canShred(r)).toBe(false);
+  });
+
+  it('photocopies a card with its upgrade and perks, for HP', () => {
+    const r = newRun('warrior', 5);
+    Object.assign(r.deck[0], { up: true, perks: ['fastTrack'] });
+    const before = r.deck.length;
+    const hp = r.hp;
+    photocopyCard(r, r.deck[0].uid);
+    const copy = r.deck[r.deck.length - 1];
+    expect(r.deck).toHaveLength(before + 1);
+    expect(copy).toMatchObject({ id: r.deck[0].id, up: true, perks: ['fastTrack'] });
+    expect(copy.uid).not.toBe(r.deck[0].uid);
+    expect(r.hp).toBe(hp - COPY_HP_COST);
+    r.hp = COPY_HP_COST;
+    expect(canCopy(r)).toBe(false);
+  });
+
+  it('shows up once per act on a random map, never in the very first run', () => {
+    const r = newRun('warrior', 5);
+    for (const act of [1, 2]) expect(r.nodes.filter((n) => n.act === act && n.type === 'copy')).toHaveLength(1);
+    expect(newRun('warrior', 1, true).nodes.some((n) => n.type === 'copy')).toBe(false);
   });
 });

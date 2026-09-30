@@ -727,6 +727,48 @@ ${eyes(86, 114, 60, 5, '#ffd900', 'lv-g')}
 <path d="M84 50l10 4M116 50l-10 4" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
 <path d="M80 78c10 12 30 12 40 0z" fill="#1b1830" ${OUT}/><path d="M84 79l4 5 4-5 4 5 4-5 4 5 4-5 4 5 4-5" stroke="#f6f0e4" stroke-width="2.5" fill="none"/>`;
 
+/** Contract Lawyer: a crocodile in a pinstripe suit, briefcase in one claw and a contract (fine print and all) in the other, grinning with far too many teeth. */
+const contractLawyer = `
+<defs>${rg('cl-g', '#5ac078', '#1f6a3c')}${lg('cl-s', '#3a4075', '#1c2046')}</defs>
+${shadow}
+<path class="limb" d="M146 176c30 2 46-10 44-26-2-8-10-6-10 0 0 10-14 14-36 12" fill="url(#cl-g)" ${OUT}/>
+<path d="M72 176l-4 12h28l-2-12zM108 176l-2 12h28l-4-12z" fill="#1b1830" ${OUT}/>
+<path d="M52 184c-4-50 14-84 48-84s52 34 48 84z" fill="url(#cl-s)" ${OUT}/>
+<path d="M72 118v62M86 110v70M114 110v70M128 118v62" stroke="#8a90c0" stroke-width="2" opacity=".7"/>
+<path d="M86 104l14 30 14-30z" fill="#f6f0e4" ${OUT}/><path d="M100 118l-6 10 6 40 6-40z" fill="#ff3d9a" ${OUT}/>
+<path d="M86 104l-14 32 24 6zM114 104l14 32-24 6z" fill="#2a3060" ${OUT}/>
+<g class="limb"><path d="M138 126c14 2 24 10 26 22l-10 4c-2-8-8-12-16-14z" fill="url(#cl-s)" ${OUT}/><rect x="140" y="146" width="48" height="34" rx="4" fill="#c9a060" ${OUT}/><path d="M154 146v-8h20v8" stroke="#120e18" stroke-width="5" fill="none"/><rect x="160" y="158" width="10" height="8" fill="#ffd900" ${OUT}/></g>
+<path d="M62 124c-14 2-22 10-24 22l10 4c2-8 8-12 16-14z" fill="url(#cl-s)" ${OUT}/>
+<g transform="rotate(-8 36 140)"><rect x="14" y="112" width="42" height="56" fill="#f6f0e4" ${OUT}/><path d="M20 124h30M20 132h30M20 140h22" stroke="#1b1830" stroke-width="2"/><path d="M20 150h30M20 155h30M20 160h30" stroke="#6d6680" stroke-width="1.5"/><path d="M22 118l10 4" stroke="#ff3d9a" stroke-width="4"/></g>
+<circle cx="76" cy="40" r="14" fill="url(#cl-g)" ${OUT}/><circle cx="124" cy="40" r="14" fill="url(#cl-g)" ${OUT}/>
+<path d="M60 70c0-22 14-38 40-38s40 16 40 38c0 12-6 20-14 26H74c-8-6-14-14-14-26z" fill="url(#cl-g)" ${OUT}/>
+<path d="M68 80c0-10 14-14 32-14s32 4 32 14v20c0 8-14 12-32 12s-32-4-32-12z" fill="#b8f0b8" ${OUT}/>
+<circle cx="90" cy="76" r="3" fill="#120e18"/><circle cx="110" cy="76" r="3" fill="#120e18"/>
+<g class="eye"><circle cx="76" cy="40" r="6" fill="#ffd900"/><rect x="74.5" y="34" width="3" height="12" fill="#120e18"/><circle cx="124" cy="40" r="6" fill="#ffd900"/><rect x="122.5" y="34" width="3" height="12" fill="#120e18"/></g>
+<path d="M62 30l20 6M138 30l-20 6" stroke="#120e18" stroke-width="5" stroke-linecap="round"/>
+<path d="M72 93h56" stroke="#120e18" stroke-width="4"/>
+<path d="M76 93l4 9 4-8 4 9 4-8 4 9 4-8 4 9 4-8 4 9 4-8 4 9 4-8z" fill="#f6f0e4" stroke="#120e18" stroke-width="2" stroke-linejoin="round"/>`;
+
+/** Outgoing VP: a heavy ogre in a burgundy suit, gold chain and cigar, a golden parachute pack on his back and a bag of severance in his fist. */
+const outgoingVp = `
+<defs>${rg('vp-b', '#ffc8a0', '#c0704a')}${lg('vp-s', '#8a2a4a', '#4a1028')}${lg('vp-g', '#fff080', '#e0a000')}${glow('vp-e', '#ff3b3b')}</defs>
+${shadow}
+<path d="M34 120c-8-26 4-48 22-52l10 40z" fill="url(#vp-g)" ${OUT}/><path d="M166 120c8-26-4-48-22-52l-10 40z" fill="url(#vp-g)" ${OUT}/>
+<path d="M44 92l14 18M156 92l-14 18" stroke="#b07000" stroke-width="3"/>
+<path d="M70 174l-6 14h30l-2-14zM108 174l-2 14h30l-6-14z" fill="#1b1830" ${OUT}/>
+<path d="M40 184c-8-50 10-88 60-88s68 38 60 88z" fill="url(#vp-s)" ${OUT}/>
+<path d="M70 100l8 70M130 100l-8 70" stroke="#ffd900" stroke-width="6"/>
+<path d="M84 98l16 34 16-34z" fill="#f6f0e4" ${OUT}/><path d="M100 112l-6 10 6 44 6-44z" fill="url(#vp-g)" ${OUT}/>
+<path d="M72 112c6 22 50 22 56 0" fill="none" stroke="#ffd900" stroke-width="4"/><circle cx="100" cy="133" r="7" fill="url(#vp-g)" ${OUT}/>
+<path d="M62 122c-14 0-22 8-24 20l10 4c2-8 8-10 14-10z" fill="url(#vp-s)" ${OUT}/>
+<g class="limb"><path d="M140 122c14 0 24 8 26 20l-10 4c-2-8-8-10-16-10z" fill="url(#vp-s)" ${OUT}/><path d="M152 142c-18 0-22 20-18 30 4 10 40 10 44 0 4-10 0-30-18-30z" fill="#e8d8a0" ${OUT}/><path d="M148 142l-4-10 12 4 12-4-4 10z" fill="#e8d8a0" ${OUT}/><path d="M156 152c-8 0-8 7 0 8s8 8 0 8" stroke="#2a8a4a" stroke-width="4" fill="none"/><path d="M156 148v24" stroke="#2a8a4a" stroke-width="3"/></g>
+<path d="M56 62c0-28 18-46 44-46s44 18 44 46c0 26-18 44-44 44S56 88 56 62z" fill="url(#vp-b)" ${OUT}/>
+<path d="M62 34c-8-10-6-20 2-22 0 10 4 16 10 20zM138 34c8-10 6-20-2-22 0 10-4 16-10 20z" fill="#f6f0e4" ${OUT}/>
+${eyes(82, 118, 58, 6, '#ff3b3b', 'vp-e')}
+<path d="M68 48h28M132 48h-28" stroke="#120e18" stroke-width="6" stroke-linecap="round"/>
+<path d="M70 82c10-8 22-6 30 0 8-6 20-8 30 0-6 10-20 8-30 4-10 4-24 6-30-4z" fill="#3a2a2a" ${OUT}/>
+<rect x="104" y="92" width="34" height="8" fill="#8a5a2a" ${OUT}/><circle cx="140" cy="96" r="4" fill="#ff8a00"/><path d="M142 88c4-6 10-6 10-14" stroke="#b8b0cc" stroke-width="3" fill="none"/>`;
+
 export const CREATURES: Record<string, string> = {
   leaver,
   workWife,
@@ -755,6 +797,8 @@ export const CREATURES: Record<string, string> = {
   veteran,
   nightJanitor,
   micromanager,
+  contractLawyer,
+  outgoingVp,
   coffeeMachine,
   timeClock,
   waterCooler,

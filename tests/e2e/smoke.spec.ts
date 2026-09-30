@@ -199,6 +199,32 @@ test('campfire upgrade: tapping selects, the Upgrade button confirms', async ({ 
   expect(upgraded).toBe(1);
 });
 
+test('copy room: photocopy costs HP and adds the card, shred removes one', async ({ page }) => {
+  await freshGame(page, { veteran: true });
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  const floor = await page.evaluate(
+    '(() => { const g = window.__game; const n = g.run.nodes.find((x) => x.type === "copy"); g.run.current = n.id; g.run.cleared = false; g.goJourney(); return n.floor; })()',
+  );
+  await page.getByRole('button', { name: new RegExp(`enter floor ${floor}`, 'i') }).click();
+  await expect(page.locator('.promo-badge')).toBeVisible();
+  const deck = (): Promise<number> => page.evaluate('window.__game.run.deck.length') as Promise<number>;
+  const before = await deck();
+  await page.getByRole('button', { name: /photocopy/i }).click();
+  await page.locator('.deck-grid .card').first().click();
+  await page.getByRole('button', { name: 'Copy', exact: true }).click();
+  await expect(page.locator('.node.open').first()).toBeVisible();
+  expect(await deck()).toBe(before + 1);
+  // Back in the room (as if revisited): shredding takes one away.
+  await page.evaluate('(() => { const g = window.__game; g.run.cleared = false; g.goJourney(); })()');
+  await page.getByRole('button', { name: new RegExp(`enter floor ${floor}`, 'i') }).click();
+  await page.getByRole('button', { name: /shred/i }).first().click();
+  await page.locator('.deck-grid .card').first().click();
+  await page.getByRole('button', { name: 'Shred', exact: true }).click();
+  await expect(page.locator('.node.open').first()).toBeVisible();
+  expect(await deck()).toBe(before);
+});
+
 test('coming back from the background while paused keeps the pause → fight music hand-off', async ({ page }) => {
   await freshGame(page);
   await startFight(page);

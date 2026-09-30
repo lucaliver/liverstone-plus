@@ -893,7 +893,15 @@ export class Combat {
     }
     if (this.has(from, 'weak')) dmg *= 0.75;
     if (this.has(to, 'vulnerable')) dmg *= 1.5;
+    if (from === 'hero') dmg -= this.hitCut();
     return Math.max(0, Math.floor(dmg));
+  }
+
+  /** Damage every hit of the hero's cards loses to the enemy's plating (Fine Print). */
+  private hitCut(): number {
+    let n = 0;
+    for (const [id, s] of Object.entries(this.enemy.statuses)) if (STATUSES[id].cutsHits && this.has('enemy', id)) n += s.v;
+    return n;
   }
 
   /** Core damage routine. Returns HP actually lost. */
@@ -946,7 +954,7 @@ export class Combat {
   private checkDeaths(): void {
     if (this.result) return;
     const e = this.enemy;
-    if (e.hp <= 0) {
+    if (e.hp <= 0 && !this.reprieve()) {
       this.end('win');
       return;
     }
@@ -968,6 +976,12 @@ export class Combat {
     }
   }
 
+  /** True when a status on the enemy lets it survive a lethal hit (Golden Parachute). */
+  private reprieve(): boolean {
+    for (const [id, s] of Object.entries(this.enemy.statuses)) if (this.has('enemy', id) && STATUSES[id].onDeath?.(this, 'enemy', s)) return true;
+    return false;
+  }
+
   private end(result: CombatResult): void {
     if (this.result) return;
     this.result = result;
@@ -985,6 +999,13 @@ export class Combat {
       const jug = this.stacks('hero', 'juggernaut');
       if (jug > 0) this.damage('hero', 'enemy', jug, { raw: true, kind: 'blunt' }, 'hero');
     }
+  }
+
+  /** The hero gives up all its Block (Blow Off Steam) and gets back how much it was. */
+  spendBlock(): number {
+    const n = this.hero.block;
+    this.hero.block = 0;
+    return n;
   }
 
   heal(side: Side, n: number): number {
@@ -1077,6 +1098,17 @@ export class Combat {
       this.events.emit({ type: 'cardDiscarded', card });
     }
     return cards.length;
+  }
+
+  /** Shuffles up to `n` random cards exhausted this fight back into the draw pile (never consumed or temporary ones). Returns how many. */
+  recycleExhausted(n: number): number {
+    const back = this.rng.shuffle(this.exhaust.filter((c) => !c.temp && !this.consumed.includes(c.uid))).slice(0, n);
+    for (const card of back) {
+      this.exhaust.splice(this.exhaust.indexOf(card), 1);
+      this.draw.splice(this.rng.int(0, this.draw.length), 0, card);
+    }
+    if (back.length) this.events.emit({ type: 'reshuffle' });
+    return back.length;
   }
 
   /** HP the hero lost in the last `seconds` of the fight. */

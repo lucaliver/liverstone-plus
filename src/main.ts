@@ -22,6 +22,7 @@ import {
   finishRun,
   loadRun,
   newRun,
+  type NodeType,
   rollRewards,
   saveRun,
   type RunState,
@@ -29,7 +30,7 @@ import {
 import { contractSigned, startingFirstRun } from './game/meta';
 import { settings } from './game/settings';
 import type { HeroId } from './game/types';
-import { confirmModal, initApp, openModal, show } from './ui/app';
+import { confirmModal, initApp, openModal, type Screen, show } from './ui/app';
 import { h } from './ui/dom';
 import { openDebugFight } from './ui/components/modals';
 import { initFx } from './ui/fx/fx';
@@ -42,11 +43,19 @@ import { heroSelectScreen } from './ui/screens/heroSelect';
 import { journeyScreen } from './ui/screens/journey';
 import { restScreen } from './ui/screens/rest';
 import { promotionScreen } from './ui/screens/promotion';
+import { copyRoomScreen } from './ui/screens/copyRoom';
 import { rewardScreen } from './ui/screens/reward';
 import { splashScreen, titleScreen } from './ui/screens/title';
 import { compendiumScreen } from './ui/screens/compendium';
 
 let run: RunState | null = null;
+
+/** The rooms that aren't fights: each one is a screen that calls back when the player is done. */
+const ROOMS: Partial<Record<NodeType, (run: RunState, onDone: () => void) => Screen>> = {
+  rest: restScreen,
+  promotion: promotionScreen,
+  copy: copyRoomScreen,
+};
 
 function goTitle(): void {
   playMusic('menu');
@@ -111,9 +120,10 @@ function enterNode(to?: number): void {
   if (!run) return;
   if (run.cleared && !advance(run, to)) return;
   const node = currentNode(run);
-  if (node.type === 'rest' || node.type === 'promotion') {
+  const room = ROOMS[node.type];
+  if (room) {
     playMusic('rest');
-    show(node.type === 'rest' ? restScreen(run, nextNode) : promotionScreen(run, nextNode));
+    show(room(run, nextNode));
     return;
   }
   // Each shift has its own fight music (by the enemy's act, so debug fights match too).

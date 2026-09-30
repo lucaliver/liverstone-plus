@@ -149,6 +149,8 @@ export interface StatusDef {
   selfIcon?: string;
   /** While active, its amount (`v`) counts as Strength: extra damage for attack cards (a timed one is a temporary boost). */
   strength?: true;
+  /** While active on the enemy, its amount (`v`) is taken off every hit of the hero's cards (Fine Print); Poison, Burn and thorns slip through. */
+  cutsHits?: true;
   /** While active on the hero, multiplies its mana regeneration (a chill slows it, Brown Nosing speeds it up). */
   regenMul?: number;
   /** A rule while active: returns why the hero can't play this card (`uid`: belt or sleeve copy) now (an i18n key), or null. */
@@ -161,6 +163,8 @@ export interface StatusDef {
   onHurt?: (c: Combat, side: Side, s: StatusVal, lost: number) => void;
   /** The side carrying it just attacked: one of its moves dealt damage (Burn). */
   onAttack?: (c: Combat, side: Side, s: StatusVal) => void;
+  /** The enemy carrying it just took a lethal hit: return true to survive it (the status removes itself if it was a one-off). */
+  onDeath?: (c: Combat, side: Side, s: StatusVal) => boolean;
   /** A card of the hero's just left the belt unplayed. */
   onExpire?: (c: Combat, side: Side, s: StatusVal) => void;
   /** Runs every simulation step while the status is active. */

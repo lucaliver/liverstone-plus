@@ -388,6 +388,48 @@ export const mageCards: CardDef[] = [
       c.rushBelt(v[1]);
     },
   },
+  // Filling the class out: Spell Power, a cheap ward, and a Burn + Chill payoff
+  {
+    id: 'continuingEducation',
+    face: '{spell:0}',
+    cls: 'mage',
+    type: 'power',
+    rarity: 'epic',
+    cost: 3,
+    vals: [2],
+    upVals: [3],
+    art: 'gradCap',
+    play: (c, v) => c.applyStatus('hero', 'spellPower', v[0]),
+  },
+  {
+    id: 'spamFilter',
+    face: '{block:0}',
+    cls: 'mage',
+    type: 'skill',
+    rarity: 'common',
+    cost: 1,
+    vals: [5],
+    upVals: [8],
+    art: 'spamFilter',
+    play: (c, v) => c.gainBlock('hero', v[0]),
+  },
+  {
+    id: 'thermalShock',
+    face: '{dmg:0}|{?snow}{?burn}{dmg:1}',
+    cls: 'mage',
+    type: 'spell',
+    rarity: 'epic',
+    cost: 3,
+    vals: [8, 26],
+    upVals: [11, 34],
+    art: 'thermalShock',
+    play: (c, v) => {
+      const shock = c.has('enemy', 'chill') && c.has('enemy', 'burn');
+      c.hit(shock ? v[1] : v[0]);
+      // The glass cracks: the Chill is spent.
+      if (shock) c.removeStatus('enemy', 'chill');
+    },
+  },
   // Generated during a fight (never offered as rewards).
   {
     id: 'turnItOn',

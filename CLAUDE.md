@@ -104,7 +104,7 @@ src/
                moveText (moves, enemy
                pattern and traits), heroSheet (hero features and in-run sheet), decor
     fx/        particles, floating text, shake, haptics
-    screens/   title (+ splash), heroSelect, journey, reward, rest, promotion, end, compendium
+    screens/   title (+ splash), heroSelect, journey, reward, rest, promotion, copyRoom, end, compendium
   audio/       sfx.ts (synth), music.ts (sequencer + tracks)
   styles/      index.css imports ordered partials; responsive.css must stay last
 tests/         combat, content, balance.sim (+ bot.ts), e2e/
@@ -123,6 +123,7 @@ tests/         combat, content, balance.sim (+ bot.ts), e2e/
   (`LANES` in `run.ts`) with `LINKS` links between them (diagonal upward, or flat both ways; never on neighbouring
   floors), and the boss, which leads to the next act (full heal, elite-grade reward; the map switches act). The very first run is scripted
 (`newRun(…, scripted)`): fixed seed, lanes and enemies (`FIRST_RUN_LANES`, `FIRST_RUN_ENEMIES` in `run.ts`), and it ends with act 1's boss. `advance(run, to)` moves along a link; `run.path` records the nodes entered.
+  Room types (`NodeType`): fight, elite, boss, and the rooms without an enemy, each a screen in `ROOMS` (`main.ts`): `rest` (Break Room: heal or upgrade), `promotion` (a perk), `copy` (Copy Room: shred a card, never below `SHRED_MIN_DECK`, or photocopy one for `COPY_HP_COST` HP; one per act, never in the scripted first run). A new room is a `NodeType`, an entry in `LANES`, a screen in `ROOMS`, `NODE_ICON` and the `journey.node.*`/`journey.info.*` strings.
 - **Per-frame rendering is diff-based** (`setText`, `setHtml`, `toggle` only write on change). Status chips are
   rebuilt only when the set changes, so presses aren't lost.
 
@@ -186,7 +187,7 @@ Rule statuses carry their own hooks instead: `manaCap` (the hero's max mana can'
 `canPlay` (returns the i18n key of why a card can't be played; the belt
 shows that status's icon on the card), `onCardPlayed` (cards played after the status was applied), `onHurt` (its side
 just lost HP; the Overthinker's Train of Thought calls `distractEnemy`), `onAttack` (the enemy carrying it resolved a damaging move: Burn), `selfIcon` (icon when it's on the hero) and `onExpire` (a card slipped off the belt: Paper Cuts), `strength` (its amount counts as Strength: Workaholic), `regenMul` (mana regeneration multiplier: Chill, Brown Nosing) and `tick` (every step;
-`everySecond` in `statuses.ts` for per-second effects); `passive: true` marks a permanent enemy trait (no number on the chip).
+`everySecond` in `statuses.ts` for per-second effects); `cutsHits` (its amount comes off every hit of the hero's cards, Poison and Burn excepted: Fine Print) and `onDeath` (the enemy carrying it took a lethal hit: return true to survive it: Golden Parachute); `passive: true` marks a permanent enemy trait (no number on the chip).
 A stunned hero can't play cards or use the ability.
 
 ### i18n
@@ -248,7 +249,7 @@ Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unloc
 - **Balance** (`tests/balance.sim.test.ts` + `bot.ts`): heuristic bot win rates; treat them as relative.
 - **E2E** (`tests/e2e/smoke.spec.ts`): contract (first launch only) → title, hero carousel and locks, fight → reward swap or skip, layout
   stability, Start gate, pause (music, backdrop tap, main menu, open windows), break room upgrade, map lane choice,
-  compendium (cards, personnel, records) and card anatomy, debug fight, title poster and time card fit, first-fight tour, first Kamikaze tip, crash window. `freshGame` unlocks every hero unless `locked`. Use real touch
+  compendium (cards, personnel, records) and card anatomy, copy room, debug fight, title poster and time card fit, first-fight tour, first Kamikaze tip, crash window. `freshGame` unlocks every hero unless `locked`. Use real touch
   (`page.touchscreen.tap`) when the behaviour differs on phones.
 - Other engines: `npx playwright test --browser=webkit` (Safari/iOS) passes too; Firefox needs a config without
   `isMobile` (same viewport, `hasTouch`). Keep CSS to what Safari 16 supports (no `color-mix`).

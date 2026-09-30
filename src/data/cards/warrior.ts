@@ -351,6 +351,72 @@ export const warriorCards: CardDef[] = [
     inSleeve: { bonusDamage: (_c, v, def) => (def?.type === 'attack' ? v[1] : 0) },
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
+  // Filling the class out: cheap Strength payoff, thorns, Block turned into damage, a Block engine and an X defence
+  {
+    id: 'rivetGun',
+    face: '{dmg:0}×{1}',
+    cls: 'warrior',
+    type: 'attack',
+    rarity: 'common',
+    cost: 1,
+    vals: [1, 4],
+    upVals: [2, 4],
+    art: 'rivetGun',
+    // Strength counts on every rivet.
+    play: (c, v) => void c.hit(v[0], { hits: v[1] }),
+  },
+  {
+    id: 'barbedWire',
+    face: '{block:0}|{thorns:1}',
+    cls: 'warrior',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 3,
+    vals: [8, 2],
+    upVals: [12, 3],
+    art: 'barbedWire',
+    play: (c, v) => {
+      c.gainBlock('hero', v[0]);
+      c.applyStatus('hero', 'thorns', v[1]);
+    },
+  },
+  {
+    id: 'blowOffSteam',
+    face: '{dmg}={block}×{0}',
+    cls: 'warrior',
+    type: 'attack',
+    rarity: 'rare',
+    cost: 3,
+    vals: [2],
+    upVals: [3],
+    art: 'blowOffSteam',
+    play: (c, v) => void c.hit(c.spendBlock() * v[0], { kind: 'blunt' }),
+  },
+  {
+    id: 'steelToes',
+    face: '{?dmg}{block:0}',
+    cls: 'warrior',
+    type: 'power',
+    rarity: 'epic',
+    cost: 3,
+    vals: [2],
+    upVals: [3],
+    art: 'steelToes',
+    play: (c, v) => c.applyStatus('hero', 'steelToes', v[0]),
+  },
+  {
+    id: 'overstock',
+    face: '{block:0}×X',
+    cls: 'warrior',
+    type: 'skill',
+    rarity: 'rare',
+    cost: -1,
+    vals: [4],
+    upVals: [6],
+    art: 'overstock',
+    // X cost: the engine appends the mana spent as the last value.
+    play: (c, v) => c.gainBlock('hero', v[0] * v[v.length - 1]),
+  },
   // Pop culture
   {
     id: 'hideThePain',

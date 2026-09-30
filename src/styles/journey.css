@@ -170,6 +170,7 @@
 .node.boss .dot { color: var(--p); }
 .node.promotion .dot { color: var(--b); }
 .node.rest .dot { color: var(--red); }
+.node.copy .dot { color: var(--green); }
 /* rooms already done, or out of reach, are dimmed (opaque: the footsteps on the corridors stop at their walls) */
 .node.done .dot { background: #8b84a6; box-shadow: none; }
 .node.done .label { color: #3b3355; }

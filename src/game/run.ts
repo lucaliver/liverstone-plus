@@ -12,7 +12,7 @@ import { discover, progress, type RunRecord, recordFight, recordRun } from './me
 import { renamedCard, renamedEnemy, renamedPerk } from './renamed';
 import type { CardDef, CardInst, EnemyDef, HeroId, Rarity } from './types';
 
-export type NodeType = 'fight' | 'elite' | 'rest' | 'promotion' | 'boss';
+export type NodeType = 'fight' | 'elite' | 'rest' | 'promotion' | 'copy' | 'boss';
 
 /** One step of the run. `next` holds the reachable node ids (the player picks one when there are two). */
 export interface RunNode {
@@ -68,7 +68,7 @@ const SAVE_KEY = 'run';
  * floors swap their two nodes, so each run's map differs while both lanes keep a fair mix.
  */
 const LANES: NodeType[][] = [
-  ['fight', 'fight', 'rest', 'fight', 'elite', 'fight', 'fight', 'rest'],
+  ['fight', 'fight', 'rest', 'fight', 'elite', 'copy', 'fight', 'rest'],
   ['fight', 'promotion', 'fight', 'rest', 'fight', 'promotion', 'fight', 'rest'],
 ];
 /** Floors on a single road at the start of act 1, before the map splits in two (then the lanes skip as many floors). */
@@ -330,6 +330,30 @@ export function canPerk(card: CardInst, perk: string): boolean {
 export function addPerk(run: RunState, uid: number, perk: string): void {
   const card = run.deck.find((c) => c.uid === uid);
   if (card) card.perks = [...(card.perks ?? []), perk];
+  run.cleared = true;
+}
+
+/** Copy Room: a card can't be shredded below this many cards in the deck, and a photocopy costs this much HP (and needs more left). */
+export const SHRED_MIN_DECK = 10;
+export const COPY_HP_COST = 8;
+
+export const canShred = (run: RunState): boolean => run.deck.length > SHRED_MIN_DECK;
+export const canCopy = (run: RunState): boolean => run.hp > COPY_HP_COST;
+
+export function shredCard(run: RunState, uid: number): void {
+  run.deck = run.deck.filter((c) => c.uid !== uid);
+  run.cleared = true;
+}
+
+/** A second copy of a deck card, upgrade and perks included, for some HP. */
+export function photocopyCard(run: RunState, uid: number): void {
+  const src = run.deck.find((c) => c.uid === uid);
+  if (!src) return;
+  const copy = newCard(run, src.id);
+  copy.up = src.up;
+  if (src.perks) copy.perks = [...src.perks];
+  run.deck.push(copy);
+  run.hp -= COPY_HP_COST;
   run.cleared = true;
 }
 
