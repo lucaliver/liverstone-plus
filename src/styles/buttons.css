@@ -46,8 +46,16 @@
   border: var(--line) solid var(--k);
   box-shadow: 3px 3px 0 var(--shadow);
 }
-.icon-btn:active {
+.icon-btn:active,
+button.chip:active,
+button.stat:active,
+.hero-arrow:active:not(:disabled) {
   transform: translate(3px, 3px);
+  box-shadow: none;
+}
+/* a room on the map sinks into its shadow when pressed (the current one is bobbing instead) */
+.node.open:not(.current) .dot:active {
+  transform: translate(4px, 4px);
   box-shadow: none;
 }
 
