@@ -10,7 +10,7 @@
 
 - [x] "no repeats policy" should also apply to curses
 
-- [ ] add new card "On a roll": it doesn't fall off at the end of the belt but it gets stuck there. All attack cards that touch it gets staked behind it.  when a non-attack card gets in touch with the stak, the stack rolls off the belt. The stack can be played just by paying the first card (on a roll)
+- [x] add new card "On a roll": it doesn't fall off at the end of the belt but it gets stuck there. All attack cards that touch it gets staked behind it.  when a non-attack card gets in touch with the stak, the stack rolls off the belt. The stack can be played just by paying the first card (on a roll)
 
 - [ ] add this passive to enemy "senior boomer": cards leaving the belt deal you 1 damage (at 50% enemy hp: they deal 3 damages)
 
@@ -38,6 +38,8 @@
 
 - [ ] The menu and the act1 map should not have the same music.
 
+- [ ] aggiungi nuova carta "Payday Loan": costo 0 e effetto molto forte, ma mette nel mazzo una maledizione "Debt" che fa più male quanto più resta sul nastro
+
 # NEXT STEPS (ignore for now):
 
 FUTURE:
@@ -62,3 +64,5 @@ FUTURE:
 > Feedback. Un link "Send feedback" in Impostazioni. Se vuoi dei dati, GoatCounter o Plausible non usano cookie (niente banner GDPR) e ti dicono dove la gente abbandona.
 
 > Traduzione italiana. Ti costa poco, verifica davvero la pipeline i18n (testi più lunghi, plurali) e ti apre un pubblico.
+
++ passiva "energency button" per nemico X: stoppa la belt del tutto per 5sec

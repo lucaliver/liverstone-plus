@@ -59,6 +59,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   undo: { icon: 'undo' },
   auto: { icon: 'autopilot', unit: 's' },
   balance: { icon: 'seesaw' },
+  pile: { icon: 'pile' },
   /** The card's own cost goes down. */
   cheaper: { icon: 'priceTag', sign: '-' },
 };

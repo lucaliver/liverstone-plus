@@ -813,6 +813,14 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'shadow',
     svg: `<rect x="4" y="26" width="14" height="14"/><rect x="25" y="26" width="14" height="14"/><rect x="46" y="26" width="14" height="14"/>`,
   },
+  pile: {
+    el: 'holy',
+    svg: `<rect x="4" y="32" width="28" height="28"/><rect x="11" y="20" width="31" height="33" fill="#16121f"/><rect x="14" y="23" width="25" height="27"/><rect x="22" y="5" width="35" height="38" fill="#16121f"/><rect x="25" y="8" width="29" height="32"/>`,
+  },
+  paperRoll: {
+    el: 'holy',
+    svg: `<circle cx="30" cy="26" r="22"/><circle cx="30" cy="26" r="9" fill="#16121f"/><path ${HI} d="M12 18c3-6 8-9 14-10-5 3-8 7-9 13z"/><path d="M44 44h16v18l-4-3-4 3-4-3-4 3z"/>`,
+  },
   scanner: {
     el: 'arcane',
     svg: `<rect x="4" y="30" width="56" height="26"/><rect x="10" y="36" width="44" height="6" fill="#16121f"/><path d="M4 26l8-18h40l8 18z"/><rect x="2" y="44" width="60" height="4"/>`,

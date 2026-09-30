@@ -236,6 +236,50 @@ describe('combat engine', () => {
     expect(c.playCard(under!.card.uid)).toBe(true);
   });
 
+  describe('On a Roll', () => {
+    /** A quiet fight with On a Roll on the belt and attacks behind it, run until they've piled up at the exit. */
+    const piled = (): Combat => {
+      const c = setup({ deck: deckOf(new Array(8).fill('punch')) });
+      c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+      c.enemy.hp = c.enemy.maxHp = 500;
+      c.hero.maxMana = c.hero.mana = 10;
+      run(c, CONFIG.introTime + 0.01);
+      c.belt.length = 0;
+      c.addTempCard('onARoll', 'belt');
+      run(c, 14);
+      return c;
+    };
+
+    it('stops at the exit, and the attacks that reach it pile up behind it, out of reach', () => {
+      const c = piled();
+      const roll = c.belt.find((b) => b.card.id === 'onARoll')!;
+      expect(roll.stuck).toBe(true);
+      expect(roll.pos).toBeCloseTo(CONFIG.anchorPos);
+      const pile = c.belt.filter((b) => b.stuck && b !== roll);
+      expect(pile.length).toBeGreaterThan(1);
+      expect(pile.every((b) => b.pos < roll.pos && c.isCovered(b.card.uid))).toBe(true);
+      expect(c.playCard(pile[0].card.uid)).toBe(false);
+    });
+
+    it('playing it plays the whole pile for free', () => {
+      const c = piled();
+      const pile = c.belt.filter((b) => b.stuck && b.card.id === 'punch').length;
+      const mana = c.hero.mana;
+      expect(c.playCard(c.belt.find((b) => b.card.id === 'onARoll')!.card.uid)).toBe(true);
+      expect(mana - c.hero.mana).toBe(CARDS.onARoll.cost);
+      expect(500 - c.enemy.hp).toBe(pile * CARDS.punch.vals[0]);
+      expect(c.belt.some((b) => b.stuck)).toBe(false);
+    });
+
+    it('any other card reaching the pile sends it all off the belt', () => {
+      const c = piled();
+      c.addTempCard('hardHat', 'belt');
+      run(c, 10);
+      expect(c.belt.some((b) => b.stuck || b.card.id === 'onARoll')).toBe(false);
+      expect([...c.draw, ...c.discard].some((x) => x.id === 'onARoll')).toBe(true);
+    });
+  });
+
   it('HR policy goes by the card colour: two defense cards clash, defense then utility is fine', () => {
     const c = setup({ enemy: ENEMIES.hrBitch, deck: deckOf(['hardHat', 'hardHat', 'doubleEspresso', 'hardHat', 'doubleEspresso', 'hardHat']) });
     run(c, CONFIG.introTime + 0.01);

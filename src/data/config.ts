@@ -9,6 +9,10 @@ export const CONFIG = {
   /** Never spawn a card closer than this to the previous one of its row (more than a card width, so cards never overlap,
    * e.g. when curses queued on one row send every draw to the other). */
   minGap: 0.26,
+  /** Where a card that stops at the exit (`anchor`) stays: its leading edge at the belt's end. */
+  anchorPos: 1,
+  /** How far each attack card piled behind it sits from the one ahead (belt widths; less than a card, so the pile overlaps). */
+  pileStep: 0.05,
   /** A card expires once its left edge is this far past the belt's left edge (fraction of card width). */
   expireOverhang: 0.45,
   /** Belt speed multiplier while rushed (Time Slip, Time Warp). */

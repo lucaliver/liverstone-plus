@@ -2,7 +2,7 @@ import { Emitter } from '../core/emitter';
 import { Rng } from '../core/rng';
 import { CONFIG, EXPIRE_POS } from '../data/config';
 import { STATUSES } from '../data/statuses';
-import { CARDS, cardCostOf, cardKeywordsOf, cardValsOf } from '../data/cards';
+import { CARDS, cardCategory, cardCostOf, cardKeywordsOf, cardValsOf } from '../data/cards';
 import { HEXES } from '../data/hexes';
 import { RELICS } from '../data/relics';
 import type { TKey } from '../core/i18n';
@@ -115,7 +115,7 @@ export class Combat {
   private lastPlay: { card: CombatCard; def: CardDef; vals: number[] } | null = null;
   private replaying = false;
   /** Card currently resolving, so effect helpers know its type. */
-  private current: { card: CombatCard; def: CardDef } | null = null;
+  private current: { card: CombatCard; def: CardDef; row: number } | null = null;
   /** Free-form per-combat state for relics and powers. */
   mem: Record<string, number> = {};
   private tempUid = 0;
@@ -263,12 +263,14 @@ export class Combat {
   }
 
   /**
-   * True when a curse bars this belt card: a wide card (Gatekeeping) stretches left of its face over the cards ahead
-   * of it (on both rows if it's tall), and a row lock (Priority Task) holds its whole row, until paid off.
+   * True when this belt card is out of reach: piled behind an anchor card (only playing that plays the pile), or barred
+   * by a curse: a wide card (Gatekeeping) stretches left of its face over the cards ahead of it (on both rows if it's
+   * tall), and a row lock (Priority Task) holds its whole row, until paid off.
    */
   isCovered(uid: number): boolean {
     const b = this.belt.find((x) => x.card.uid === uid);
     if (!b) return false;
+    if (b.stuck && !CARDS[b.card.id].anchor) return true;
     return this.belt.some((w) => {
       if (w === b) return false;
       const def = CARDS[w.card.id];
@@ -530,8 +532,8 @@ export class Combat {
   private tickBelt(dt: number): void {
     const rate = this.beltRate();
     const move = (dt / CONFIG.beltTime) * rate;
+    for (let row = 0; row < this.beltRows; row++) this.moveRow(row, move);
     for (const b of this.belt) {
-      b.pos += move;
       b.card.age = (b.card.age ?? 0) + dt;
       const hex = b.card.hex;
       if (!hex || hex.left > 0) continue;
@@ -560,6 +562,44 @@ export class Combat {
     if (row < 0 || this.spawnClock < every || this.rowGap(row) < CONFIG.minGap) return;
     this.spawnClock -= every;
     this.spawnCard(0, undefined, row);
+  }
+
+  /**
+   * Moves a row's cards forward, the one nearest the exit first. An `anchor` card stops at the exit and attack cards
+   * pile up behind it; any other card reaching the pile sends it off the belt (they all start moving again).
+   */
+  private moveRow(row: number, move: number): void {
+    const cards = this.belt.filter((b) => b.row === row).sort((a, b) => b.pos - a.pos);
+    /** The last card of the pile stopped at the exit, if any. */
+    let tail: BeltCard | null = null;
+    for (const b of cards) {
+      const def = CARDS[b.card.id];
+      if (b.stuck) {
+        // A pile needs its anchor: without one (played, stolen, stashed) the cards go on.
+        if (tail || def.anchor) {
+          tail = b;
+          continue;
+        }
+        b.stuck = false;
+      }
+      const next = b.pos + move;
+      const attack = cardCategory(b.card.id) === 'attack';
+      if (tail && !attack && next >= tail.pos - CONFIG.cardWidth) {
+        for (const c of cards) c.stuck = false;
+        tail = null;
+      }
+      const stop = tail ? (attack ? tail.pos - CONFIG.pileStep : Infinity) : def.anchor ? CONFIG.anchorPos : Infinity;
+      // (An anchor sent off the belt is already past its stop: it leaves.)
+      if (next < stop || (def.anchor && b.pos >= stop)) {
+        b.pos = next;
+        continue;
+      }
+      b.pos = stop;
+      b.stuck = true;
+      // Having reached the end, it has ridden the whole belt.
+      b.card.passed = true;
+      tail = b;
+    }
   }
 
   /** Distance from the entry to the newest card of a row (Infinity if the row is empty). */
@@ -621,7 +661,6 @@ export class Combat {
     const sleeveIdx = this.sleeve.findIndex((c) => c?.uid === uid);
     const card = beltIdx >= 0 ? this.belt[beltIdx].card : sleeveIdx >= 0 ? this.sleeve[sleeveIdx] : null;
     if (!card) return false;
-    const def = CARDS[card.id];
     if (beltIdx >= 0 && this.isCovered(uid)) {
       this.events.emit({ type: 'text', target: 'hero', key: 'combat.covered', tone: 'neutral' });
       return false;
@@ -647,6 +686,15 @@ export class Combat {
       this.events.emit({ type: 'cantAfford', card });
       return false;
     }
+    this.resolvePlay(card, free);
+    return true;
+  }
+
+  /** Pays for a card and plays it from wherever it is (belt or sleeve): the checks are already done. */
+  private resolvePlay(card: CombatCard, free: boolean): void {
+    const def = CARDS[card.id];
+    const beltIdx = this.belt.findIndex((b) => b.card.uid === card.uid);
+    const sleeveIdx = this.sleeve.findIndex((c) => c?.uid === card.uid);
     const cost = this.cardCost(card);
     // X is all the mana there is; a free card still counts it, without spending it.
     const spent = cost < 0 ? this.hero.mana : cost;
@@ -666,8 +714,8 @@ export class Combat {
         .map((id) => [side, id] as const),
     );
     this.replaying = false;
-    this.withCard(card, def, () => def.play!(this, vals, card));
-    if (this.result === 'lose') return true;
+    this.withCard(card, def, () => def.play!(this, vals, card), row);
+    if (this.result === 'lose') return;
 
     this.lastPlayed = def;
     this.lastPlayedAt = this.time;
@@ -689,7 +737,17 @@ export class Combat {
     } else {
       this.discard.push(card);
     }
-    return true;
+  }
+
+  /** Plays, for free, every card piled behind the `anchor` card being played (skipping any that can't be played). The rest move on. */
+  playPile(): void {
+    const row = this.current?.row ?? -1;
+    const pile = this.belt.filter((b) => b.row === row && b.stuck).sort((a, b) => b.pos - a.pos);
+    for (const b of pile) b.stuck = false;
+    for (const b of pile) {
+      if (this.result) return;
+      if (!b.card.hex && this.isPlayable(b.card)) this.resolvePlay(b.card, true);
+    }
   }
 
   /** Moves a belt card into the sleeve. If the slot is taken, the two cards swap places. */
@@ -730,9 +788,9 @@ export class Combat {
 
   // ----------------------------------------------------- effect helpers API
 
-  private withCard(card: CombatCard, def: CardDef, fn: () => void): void {
+  private withCard(card: CombatCard, def: CardDef, fn: () => void, row = -1): void {
     const prev = this.current;
-    this.current = { card, def };
+    this.current = { card, def, row };
     try {
       fn();
     } finally {

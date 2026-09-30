@@ -361,6 +361,22 @@ export const neutralCards: CardDef[] = [
     },
   },
 
+  {
+    // Stops at the exit: the attacks that reach it pile up behind it, and playing it plays the whole pile.
+    id: 'onARoll',
+    face: '{pile}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 2,
+    upCost: 1,
+    vals: [],
+    anchor: true,
+    tip: true,
+    art: 'paperRoll',
+    play: (c) => c.playPile(),
+  },
+
   // Generated during a fight (never offered as rewards).
   {
     id: 'alreadyDone',
