@@ -85,6 +85,10 @@
   90% { opacity: 0.9; }
   100% { transform: translate(var(--dx, 10px), -140px); opacity: 0; }
 }
+.combat .debug-fab {
+  top: calc(var(--safe-t) + 12px);
+  right: 64px;
+}
 .dark-eyes {
   position: absolute;
   display: flex;

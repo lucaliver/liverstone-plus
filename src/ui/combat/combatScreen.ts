@@ -9,7 +9,7 @@ import { clockAt, currentNode, type RunState, totalFloors } from '../../game/run
 import { meetEnemy } from '../../game/meta';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
-import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedRow } from '../components/modals';
+import { debugButton, type InfoOpts, openDebugMenu, openDeck, openHowTo, openInfo, openSettings, speedRow } from '../components/modals';
 import { creature } from '../art/creatures';
 import { spriteBox } from '../art/riso';
 import { icon } from '../art/icons';
@@ -277,6 +277,35 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     });
   };
   r.pause.addEventListener('click', openPause);
+
+  /** Temporary debug tool: cheats for the fight. The fight waits while the window is open. */
+  const openDebug = (): void => {
+    if (state.ended) return;
+    cards.cancelDrag();
+    v.inspect(true);
+    const kill = (amount: number): void => void combat.damage('hero', 'enemy', amount, { raw: true, ignoreBlock: true }, 'hero');
+    openDebugMenu(
+      t('debug.fightMenu'),
+      [
+        {
+          label: t('debug.kill'),
+          icon: 'skull',
+          // Some enemies get up again (Golden Parachute): hit until it stays down.
+          run: () => {
+            for (let i = 0; i < 3 && !combat.result; i++) kill(combat.enemy.hp + combat.enemy.block);
+          },
+        },
+        { label: t('debug.half'), icon: 'crack', run: () => kill(combat.enemy.hp - Math.floor(combat.enemy.maxHp / 2)) },
+        { label: t('debug.stun'), icon: 'stars', run: () => combat.applyStatus('enemy', 'stun', 1, 10) },
+        { label: t('debug.heal'), icon: 'heart', run: () => void combat.heal('hero', combat.hero.maxHp) },
+        { label: t('debug.mana'), icon: 'crystal', run: () => combat.gainMana(combat.hero.maxMana) },
+        { label: t('debug.crystals'), icon: 'crystalSlot', run: () => combat.addManaCrystals(2) },
+        { label: t('debug.lose'), icon: 'ko', run: () => combat.loseHp(combat.hero.hp) },
+      ],
+      () => v.inspect(false),
+    );
+  };
+  el.append(debugButton(t('debug.menu'), openDebug));
 
   /** The very first fight: before Start, a tour of the board, one part at a time. */
   const firstFightTour = (): void => {

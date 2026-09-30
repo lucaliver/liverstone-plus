@@ -166,6 +166,10 @@
 }
 /* the name plate is a sibling of the icon box: it bobs with it */
 .node.current :is(.dot, .label) { animation: bob 0.8s steps(2) infinite; }
+.journey .debug-fab {
+  top: calc(var(--safe-t) + 70px);
+  right: 6px;
+}
 .node.elite .dot { color: var(--purple); }
 .node.boss .dot { color: var(--p); }
 .node.promotion .dot { color: var(--b); }

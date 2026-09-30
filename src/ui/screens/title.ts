@@ -8,7 +8,7 @@ import type { Screen } from '../app';
 import { h, onPress, retrigger } from '../dom';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
-import { openHowTo, openInfo, openSettings } from '../components/modals';
+import { debugButton, openHowTo, openInfo, openSettings } from '../components/modals';
 
 export interface TitleCallbacks {
   /** The run in progress, if any: the time card shows it and clocks back in. */
@@ -106,15 +106,7 @@ export function titleScreen(cb: TitleCallbacks): Screen {
       btn('gear', t('menu.settings'), 'secondary small', () => openSettings()),
     ),
     // Temporary: a small floating button, off the menu's layout.
-    h('button', {
-      class: 'icon-btn debug-fab',
-      'aria-label': t('debug.button'),
-      html: icon('bug'),
-      onclick: () => {
-        sfx('tap');
-        cb.onDebugFight();
-      },
-    }),
+    debugButton(t('debug.button'), cb.onDebugFight),
   );
   return {
     el,

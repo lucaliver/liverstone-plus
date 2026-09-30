@@ -225,6 +225,26 @@ test('copy room: photocopy costs HP and adds the card, shred removes one', async
   expect(await deck()).toBe(before);
 });
 
+test('debug menus: the fight menu kills the enemy, the map menu opens rooms and rewards and keeps the progress', async ({ page }) => {
+  await freshGame(page);
+  await startFight(page);
+  await page.locator('.combat .debug-fab').click();
+  await page.getByRole('button', { name: 'Restore my HP' }).click();
+  await page.locator('.combat .debug-fab').click();
+  await page.getByRole('button', { name: 'Kill enemy' }).click();
+  await expect(page.getByRole('button', { name: /^swap$/i })).toBeVisible({ timeout: 8000 });
+  await page.getByRole('button', { name: /skip/i }).click();
+  await expect(page.locator('.node.open').first()).toBeVisible();
+  // Rooms from the map menu leave the current room's state alone.
+  await page.evaluate('window.__game.run.hp = 30');
+  await page.locator('.journey .debug-fab').click();
+  await page.getByRole('button', { name: 'Break Room' }).click();
+  await expect(page.getByRole('button', { name: /nap/i })).toBeVisible();
+  await page.getByRole('button', { name: /nap/i }).click();
+  await expect(page.locator('.node.open').first()).toBeVisible({ timeout: 6000 });
+  expect(await page.evaluate('window.__game.run.cleared')).toBe(true);
+});
+
 test('coming back from the background while paused keeps the pause → fight music hand-off', async ({ page }) => {
   await freshGame(page);
   await startFight(page);

@@ -6,7 +6,7 @@ import { clockAt, currentNode, type RunNode, type RunState } from '../../game/ru
 import type { Screen } from '../app';
 import { h, onPress, onTapOrHold } from '../dom';
 import { icon } from '../art/icons';
-import { openDeck, openInfo, openSettings, openStatInfo } from '../components/modals';
+import { debugButton, openDeck, openInfo, openSettings, openStatInfo } from '../components/modals';
 import { openHeroSheet } from '../components/heroSheet';
 import { dropLetters } from '../components/decor';
 import { creature } from '../art/creatures';
@@ -59,7 +59,7 @@ export function runHud(run: RunState, extra?: HTMLElement): HTMLElement {
  * The act map, bottom to top: the floor plan of the office. Rooms on two lanes joined by corridors, a few rooms ahead in
  * sight and the rest in fog. After a room is cleared its doors light up; tap a room to pick it (tap it again, or the button, to go in).
  */
-export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onHome: () => void): Screen {
+export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onHome: () => void, onDebug: () => void): Screen {
   const cur = currentNode(run);
   const options = run.cleared ? cur.next.filter((id) => !run.path.includes(id)) : [];
   // After an act boss the map turns to the next act.
@@ -280,6 +280,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     ),
     h('div', { class: 'scroll', style: { flex: '1' } }, path),
     enterBtn,
+    debugButton(t('debug.menu'), onDebug),
   );
 
   // A new shift begins (the act boss is down): a curtain with the act's title, its clock-in time and the factory whistle.

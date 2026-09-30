@@ -411,6 +411,9 @@
 }
 .ink-chip i { width: 14px; height: 14px; border: 2px solid var(--k); }
 
+/* debug menus (fight, map) */
+.debug-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.debug-menu .btn { min-height: 52px; padding: 6px 8px; font-size: 15px; }
 /* debug fight picker */
 .debug-fight { display: flex; flex-direction: column; gap: 10px; }
 .debug-heroes button {

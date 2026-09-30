@@ -32,7 +32,7 @@ import { settings } from './game/settings';
 import type { HeroId } from './game/types';
 import { confirmModal, initApp, openModal, type Screen, show } from './ui/app';
 import { h } from './ui/dom';
-import { openDebugFight } from './ui/components/modals';
+import { openDebugFight, openDebugMenu } from './ui/components/modals';
 import { initFx } from './ui/fx/fx';
 import { preloadArt } from './ui/art/riso';
 import { CREATURES } from './ui/art/creatures';
@@ -40,7 +40,7 @@ import { ICONS } from './ui/art/icons';
 import { combatScreen } from './ui/combat/combatScreen';
 import { endScreen } from './ui/screens/end';
 import { heroSelectScreen } from './ui/screens/heroSelect';
-import { journeyScreen } from './ui/screens/journey';
+import { journeyScreen, NODE_ICON } from './ui/screens/journey';
 import { restScreen } from './ui/screens/rest';
 import { promotionScreen } from './ui/screens/promotion';
 import { copyRoomScreen } from './ui/screens/copyRoom';
@@ -112,7 +112,41 @@ function goJourney(): void {
   }
   playMusic(actDef(currentNode(run).act).mapMusic);
   saveRun(run);
-  show(journeyScreen(run, enterNode, goTitle));
+  show(journeyScreen(run, enterNode, goTitle, debugMap));
+}
+
+/** Debug: the map's cheat menu. Rewards and rooms on demand, then back to the map with the current room as it was. */
+function debugMap(): void {
+  if (!run) return;
+  const r = run;
+  const cleared = r.cleared;
+  const back = (): void => {
+    r.cleared = cleared;
+    goJourney();
+  };
+  const reward = (kind: 'fight' | 'elite') => (): void => show(rewardScreen(r, rollRewards(r, kind), back));
+  const rooms = Object.entries(ROOMS).map(([type, screen]) => ({
+    label: t(`journey.node.${type as NodeType}`),
+    icon: NODE_ICON[type as NodeType],
+    run: () => {
+      playMusic('rest');
+      show(screen(r, back));
+    },
+  }));
+  openDebugMenu(t('debug.mapMenu'), [
+    { label: t('debug.rewardFight'), icon: 'cards', run: reward('fight') },
+    { label: t('debug.rewardElite'), icon: 'medal', run: reward('elite') },
+    ...rooms,
+    {
+      label: t('debug.heal'),
+      icon: 'heart',
+      run: () => {
+        r.hp = r.maxHp;
+        goJourney();
+      },
+    },
+    { label: t('debug.skipRoom'), icon: 'check', run: nextNode },
+  ]);
 }
 
 /** Enters the current node, or first moves to `to` when the current one is already cleared. */

@@ -482,6 +482,48 @@ export function openCardAnatomy(): ModalHandle {
   });
 }
 
+/** Temporary debug tool: the small floating bug button that opens a debug menu (placed per screen by `.debug-fab`). */
+export function debugButton(label: string, onClick: () => void): HTMLButtonElement {
+  return h('button', {
+    class: 'icon-btn debug-fab',
+    'aria-label': label,
+    html: icon('bug'),
+    onclick: () => {
+      sfx('tap');
+      onClick();
+    },
+  });
+}
+
+/** Temporary debug tool: a window of cheat buttons; a tap closes the window, then does it. */
+export function openDebugMenu(title: string, items: { label: string; icon: string; run: () => void }[], onClose?: () => void): ModalHandle {
+  const handle = openModal({
+    title,
+    body: h(
+      'div',
+      { class: 'debug-menu' },
+      ...items.map((it) =>
+        h(
+          'button',
+          {
+            class: 'btn small secondary',
+            html: icon(it.icon),
+            onclick: () => {
+              sfx('button');
+              handle.close();
+              it.run();
+            },
+          },
+          h('span', null, it.label),
+        ),
+      ),
+    ),
+    actions: [{ label: t('common.close'), cls: 'secondary' }],
+    onClose,
+  });
+  return handle;
+}
+
 /** Temporary debug tool: fight any enemy with any hero (a fresh run on floor 1), with extra cards added to the deck to try them. */
 export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: string[]) => void): ModalHandle {
   let hero: HeroId = HERO_LIST[0].id;
