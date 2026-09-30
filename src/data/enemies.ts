@@ -37,7 +37,7 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 40,
     art: 'snitch',
-    main: atk('tattle', 4, 6),
+    main: atk('tattle', 7, 5),
     every: 2,
     specials: [atk('ratOut', 4, 8, { hits: 4, intent: 'charge' })],
     // Tells the boss: from half HP on, your belt is rushed for the rest of the fight.
@@ -186,7 +186,8 @@ const defs: EnemyDef[] = [
       atk('youreFired', 20, 13, { intent: 'charge' }),
     ],
     halfSpeech: true,
-    onHalf: (c) => c.applyStatus('enemy', 'haste', 1, 9999),
+    // The emergency button: at half HP everything stops for a moment.
+    onHalf: (c) => c.applyStatus('hero', 'stalled', 1, 5),
   },
 
   // ------------------------------------------------------------- Act 2
@@ -236,7 +237,7 @@ const defs: EnemyDef[] = [
     every: 2,
     specials: [
       { id: 'pizzaParty', intent: 'curse', windup: 7, curse: [{ id: 'freePizza', n: 4, to: 'draw' }] },
-      { id: 'teamLunch', intent: 'curse', windup: 5, curse: [{ id: 'freePizza', n: 3, to: 'belt' }] },
+      { id: 'positiveVibes', intent: 'buff', windup: 5, status: [{ id: 'regen', v: 5, target: 'enemy' }] },
     ],
   },
   {

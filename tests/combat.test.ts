@@ -572,6 +572,19 @@ describe('combat engine', () => {
     expect(c.has('hero', 'hurry')).toBe(true);
   });
 
+  it("the CEO's emergency button stops the belt dead for 5s once he is under half HP", () => {
+    const c = setup({ enemy: ENEMIES.slavesCeo });
+    run(c, CONFIG.introTime + 0.01);
+    c.enemy.block = 0;
+    c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 2), { raw: true }, 'hero');
+    expect(c.beltRate()).toBe(0);
+    const pos = c.belt.map((b) => b.pos);
+    run(c, 4);
+    expect(c.belt.map((b) => b.pos)).toEqual(pos);
+    run(c, 1.5);
+    expect(c.beltRate()).toBeGreaterThan(0);
+  });
+
   it('Crunch doubles the belt speed, then it wears off; the CEO casts it just before firing you', () => {
     const { specials } = ENEMIES.slavesCeo;
     expect(specials.at(-1)?.id).toBe('youreFired');

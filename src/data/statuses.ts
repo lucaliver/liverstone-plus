@@ -108,6 +108,8 @@ const defs: StatusDef[] = [
   { id: 'stun', kind: 'timed', good: false, icon: 'stars', selfIcon: 'ko', canPlay: (_c, side) => (side === 'hero' ? 'combat.stunned' : null) },
   { id: 'frozen', kind: 'timed', good: false, icon: 'hourglass' },
   { id: 'hurry', kind: 'timed', good: false, icon: 'stopwatch' },
+  // Emergency button: the belt stops dead.
+  { id: 'stalled', kind: 'timed', good: false, icon: 'pause' },
   { id: 'crunch', kind: 'timed', good: false, icon: 'siren' },
   // Every card turns black: only the art and the cost are left to go by.
   { id: 'blackout', kind: 'timed', good: false, icon: 'bulbOff' },

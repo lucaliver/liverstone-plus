@@ -42,13 +42,15 @@
 
 - [x] voglio cambiare la generica mappa da roguelike con una più a tema e con presentazione migliore: stile Planimetria dell'ufficio. Porte, stanze, nebbia e badge che aprono porte chiuse. Vedi tu come rende meglio
 
-- [ ] al nemico "Slave CEO" cambia passiva in "emergency button": quando arriva a 50% hp, stoppa la belt del tutto per 5sec
+- [x] al nemico "Slave CEO" cambia passiva in "emergency button": quando arriva a 50% hp, stoppa la belt del tutto per 5sec
 
-- [ ] enemy "happiness officer": change one of the curse move to a move that grants him hp regen
+- [x] enemy "happiness officer": change one of the curse move to a move that grants him hp regen
 
 # NEXT STEPS (ignore for now):
 
 FUTURE:
+
+- rendi l'animazione di quando scegli il reward (e la nuova carta va a sovrapporre quella vecchia) più veloce
 
 > aggiungere room migliori (es. room in cui elimini una carta o aggiungi una sleeve o altro, tutto a tema)
 > aggiungere uso della paga

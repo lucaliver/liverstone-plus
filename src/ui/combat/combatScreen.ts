@@ -319,7 +319,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   const render = (dt: number): void => {
     state.frameNo++;
     // The music follows the belt a little: faster while it rushes, slower while it drags.
-    const tempo = 1 + (combat.beltBoost() - 1) * CONFIG.musicFollowsBelt;
+    const tempo = Math.max(CONFIG.beltSlow, 1 + (combat.beltBoost() - 1) * CONFIG.musicFollowsBelt);
     if (tempo !== lastTempo) {
       lastTempo = tempo;
       setMusicTempo(tempo);
