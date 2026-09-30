@@ -45,7 +45,6 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   vuln: { icon: 'crack', unit: 's' },
   weak: { icon: 'broken', unit: 's' },
   fort: { icon: 'fortress', unit: 's' },
-  multitasking: { icon: 'bolt2', sign: '+' },
   cards: { icon: 'cards' },
   timer: { icon: 'timer', unit: 's' },
   skip: { icon: 'skip' },

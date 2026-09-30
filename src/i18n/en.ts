@@ -608,7 +608,7 @@ const en = {
   'card.busyHands.name': 'Busy Hands',
   'card.busyHands.desc': 'Deal {0} damage {1} times. [multitasking] boosts every hit.',
   'card.echoChamber.name': 'Echo Chamber',
-  'card.echoChamber.desc': 'Deal {0} damage, +{1} per [multitasking] stack.',
+  'card.echoChamber.desc': 'Deal {0} damage {1} times.',
   'card.blueScreen.name': 'Blue Screen',
   'card.blueScreen.desc': 'Deal {0} damage. If the enemy is [chill]ed, [stun] for {1}s.',
   'card.wordOfMouth.name': 'Word of Mouth',
