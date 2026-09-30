@@ -121,6 +121,16 @@ export function cardFace(card: CardInst & { bonus?: number }, combat?: Combat | 
   return lines.join('');
 }
 
+/** Rules text with its `[keyword]` marks as bold names in the keyword's colour (`.kw-<id>`). */
+export function keywordHtml(text: string): string {
+  return text.replace(/\[(\w+)\]/g, (_, kw: string) => `<b class="kw kw-${kw}">${t(`kw.${kw}`)}</b>`);
+}
+
+/** The same text for places that show no markup (toasts): the keywords as plain names. */
+export function keywordText(text: string): string {
+  return text.replace(/\[(\w+)\]/g, (_, kw: string) => t(`kw.${kw}`));
+}
+
 /** Full rules text as HTML (detail view). */
 export function cardText(card: CardInst & { bonus?: number }): string {
   const def = CARDS[card.id];
@@ -130,7 +140,7 @@ export function cardText(card: CardInst & { bonus?: number }): string {
     const upgraded = card.up && def.upVals && def.upVals[idx] !== def.vals[idx];
     return `<span class="num ${upgraded ? 'upg' : ''}">${vals[idx]}</span>`;
   });
-  s = s.replace(/\[(\w+)\]/g, (_, kw: string) => `<b class="kw">${t(`kw.${kw}`)}</b>`);
+  s = keywordHtml(s);
   const kws = cardKeywordsOf(card).filter((k) => KEYWORD_LINE.includes(k));
   const extra = kws.map((k) => `<b class="kw">${t(`kw.${k}`)}</b>`);
   if (def.type === 'power') extra.unshift(`<b class="kw">${t('kw.power')}</b>`);

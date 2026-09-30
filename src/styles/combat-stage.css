@@ -539,3 +539,4 @@
 .trait .pico { flex: none; font-size: 26px; color: var(--p); --ink2: var(--y); }
 .trait p { margin: 0; font-family: var(--font); font-size: 14px; line-height: 1.25; }
 .trait b { display: block; font-family: var(--font-ui); font-size: 17px; text-transform: uppercase; }
+.trait b.kw { display: inline; font-family: inherit; font-size: inherit; text-transform: none; }

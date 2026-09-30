@@ -138,7 +138,12 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
       h('div', { class: 'swap-head' }, h('div', { class: 'swap-label' }, t('reward.yourDeck')), sorter),
       h('div', { class: 'swap-deck-wrap scroll' }, deckGrid),
       // The offers sit in a tray under the deck, so the deck keeps every pixel that is left.
-      h('div', { class: 'swap-tray' }, h('div', { class: 'swap-head' }, h('div', { class: 'swap-label' }, t('reward.offer')), h('span', { class: 'swap-icon', html: icon('swap') })), offerRow),
+      h(
+        'div',
+        { class: 'swap-tray' },
+        h('div', { class: 'swap-head' }, h('div', { class: 'swap-label' }, t('reward.offer')), h('span', { class: 'swap-icon', html: icon('swap') })),
+        offerRow,
+      ),
     ),
     hint,
     h('div', { class: 'reward-actions' }, swapBtn, skipBtn),

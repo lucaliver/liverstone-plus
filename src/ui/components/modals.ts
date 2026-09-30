@@ -14,7 +14,7 @@ import { clearAll } from '../../core/save';
 import { h, onPress, onTapOrHold } from '../dom';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
-import { cardKeywords, cardText, cardView } from './cardView';
+import { cardKeywords, cardText, cardView, keywordHtml } from './cardView';
 
 function toggleRow(label: string, get: () => boolean, set: (v: boolean) => void): HTMLElement {
   const sw = h('button', { class: 'switch', role: 'switch', 'aria-checked': String(get()), 'aria-label': label });
@@ -241,7 +241,7 @@ export function openCardDetail(card: CardInst, onClose?: () => void): ModalHandl
   const canToggle = !card.up && (!!def.upVals || def.upCost !== undefined || !!def.upKeywords);
   const render = (): void => {
     const shown = { ...card, up: showUp };
-    const gloss = cardKeywords(shown).map((k) => h('div', { html: `<b class="kw">${t(`kw.${k}`)}</b> — ${t(`kw.${k}.d`)}` }));
+    const gloss = cardKeywords(shown).map((k) => h('div', { html: `<b class="kw">${t(`kw.${k}`)}</b> — ${keywordHtml(t(`kw.${k}.d`))}` }));
     wrap.replaceChildren(
       cardView(shown),
       h('div', {

@@ -4,7 +4,7 @@
 
 - [x] nella schermata di "PICK YOUR BONUS" c'è poco spazio verticalemnte per la sezione del deck; e il separatore tra deck e rewards sotto è brutto; fai un po' di restyle per usabilità
 
-- [ ] in passive/status descriptions the important keywords should be bolded; also make them colored accordingly
+- [x] in passive/status descriptions the important keywords should be bolded; also make them colored accordingly
 
 - [x] quando si triggera l'effetto della passiva di "goblin consultant" assicurati che le carte non scattino o non cambino posto; (se è più semplice, stoppa la belt per mezzo secondo prima di invertire direzione)
 

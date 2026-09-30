@@ -6,6 +6,7 @@ import { sfx } from '../../audio/sfx';
 import type { EnemyDef, MoveDef } from '../../game/types';
 import { icon, INTENT_ICON } from '../art/icons';
 import { onPress } from '../dom';
+import { keywordHtml } from './cardView';
 import { openCardDetail, openInfo } from './modals';
 
 /**
@@ -98,9 +99,9 @@ export const HALF_ICON = 'rage';
 export function enemyTraits(e: EnemyDef, withHalf = true): { icon: string; name: string; desc: string }[] {
   const traits = (e.start ?? [])
     .filter((s) => STATUSES[s.id].passive)
-    .map((s) => ({ icon: STATUSES[s.id].icon, name: t(`status.${s.id}`), desc: t(`status.${s.id}.d`, { v: s.v ?? 1 }) }));
+    .map((s) => ({ icon: STATUSES[s.id].icon, name: t(`status.${s.id}`), desc: keywordHtml(t(`status.${s.id}.d`, { v: s.v ?? 1 })) }));
   if (e.fillSleeve) traits.push({ icon: 'hand', name: t(`card.${e.fillSleeve}.name`), desc: t('enemy.fillSleeve') });
-  if (e.onHalf && withHalf) traits.push({ icon: HALF_ICON, name: t('status.half'), desc: t(`enemy.${e.id}.half`) });
+  if (e.onHalf && withHalf) traits.push({ icon: HALF_ICON, name: t('status.half'), desc: keywordHtml(t(`enemy.${e.id}.half`)) });
   return traits;
 }
 
@@ -123,11 +124,12 @@ export function bindMoveDetails(root: HTMLElement): void {
         openInfo({
           icon: def.icon,
           title: t(`status.${status}`),
-          desc: t(`status.${status}.d`, { v: Number(v ?? 1) }),
+          desc: keywordHtml(t(`status.${status}.d`, { v: Number(v ?? 1) })),
           ink: def.good ? 'good' : 'bad',
         });
       } else if (hex) openInfo({ icon: HEXES[hex].icon, title: t(`hex.${hex}`), desc: t(`hex.${hex}.d`, { n: HEXES[hex].taps }), ink: 'bad' });
-      else if (rule && RULES[rule]) openInfo({ icon: RULES[rule].icon, title: t(RULES[rule].title), desc: t(RULES[rule].desc), ink: 'bad' });
+      else if (rule && RULES[rule])
+        openInfo({ icon: RULES[rule].icon, title: t(RULES[rule].title), desc: keywordHtml(t(RULES[rule].desc)), ink: 'bad' });
     });
   }
 }

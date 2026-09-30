@@ -21,3 +21,7 @@
   font-weight: 700;
   color: var(--b);
 }
+/* keywords keep the colour of what they are: poison green, fire and force red, control purple, the rest blue */
+.kw-poison, .kw-virulence { color: var(--green); }
+.kw-burn, .kw-strength, .kw-vulnerable { color: var(--red); }
+.kw-stun, .kw-weak, .kw-multitasking { color: var(--purple); }

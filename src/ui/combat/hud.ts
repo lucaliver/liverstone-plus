@@ -5,6 +5,7 @@ import { STATUS_ORDER, STATUSES, statusIcon } from '../../data/statuses';
 import type { Fighter } from '../../game/combat';
 import type { MoveDef, Side } from '../../game/types';
 import { icon } from '../art/icons';
+import { keywordHtml } from '../components/cardView';
 import { openInfo } from '../components/modals';
 import { HALF_ICON, moveIcon } from '../components/moveText';
 import { h, onPress, setHtml, setText, toggle } from '../dom';
@@ -55,7 +56,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
         title: t(`status.${id}`),
         tag: t(side === 'hero' ? 'status.onYou' : 'status.onEnemy'),
         tagCls: goodForPlayer ? 'good' : 'bad',
-        desc: t(`status.${id}.d`, { v: s.v }),
+        desc: keywordHtml(t(`status.${id}.d`, { v: s.v })),
         extra: [
           def.passive ? '' : timed ? t('status.timeLeft', { s: Math.ceil(s.t) }) : def.kind !== 'timed' ? t('status.stacks', { v: s.v }) : '',
         ].filter(Boolean),
@@ -89,7 +90,14 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
           sfx('tap');
           v.inspect(true);
           openInfo(
-            { icon: HALF_ICON, title: t('status.half'), tag: t('status.onEnemy'), tagCls: 'bad', desc: t(`enemy.${e.id}.half`), ink: 'bad' },
+            {
+              icon: HALF_ICON,
+              title: t('status.half'),
+              tag: t('status.onEnemy'),
+              tagCls: 'bad',
+              desc: keywordHtml(t(`enemy.${e.id}.half`)),
+              ink: 'bad',
+            },
             () => v.inspect(false),
           );
         });

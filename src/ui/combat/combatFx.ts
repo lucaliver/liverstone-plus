@@ -11,6 +11,7 @@ import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { centerOf, h } from '../dom';
 import { burst, floatText, haptic, shake } from '../fx/fx';
+import { keywordText } from '../components/cardView';
 import type { CardLayer } from './cardLayer';
 import type { CombatView } from './view';
 
@@ -259,7 +260,7 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         // what its half-HP trait just did (the belt speeds up, it hits harder…).
         const def = v.combat.enemy.def;
         if (def.halfSpeech) speak(t(`enemy.${def.id}.speech`));
-        v.toast(t(`enemy.${def.id}.half`), true, def.halfSpeech ? SPEECH_MS : 0);
+        v.toast(keywordText(t(`enemy.${def.id}.half`)), true, def.halfSpeech ? SPEECH_MS : 0);
         // Its true face: the sprite changes for good.
         const art = v.combat.enemy.def.halfArt;
         const riso = r.enemyArt.querySelector('.riso');
