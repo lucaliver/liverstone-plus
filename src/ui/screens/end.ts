@@ -22,7 +22,7 @@ const ROW_RECORD: Partial<Record<TKey, RunRecord>> = {
 };
 
 /** The end of a run: the heroes it unlocked (shown as the next hire, so the end is a step forward), the payslip with the records it beat, and a shareable copy. */
-export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: (hero?: HeroId) => void, onMenu: () => void): Screen {
+export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: (hero: HeroId) => void, onMenu: () => void): Screen {
   const node = currentNode(run);
   const title = won ? t('end.victory') : t('end.defeat');
   let confetti = 0;
@@ -102,21 +102,6 @@ export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: (he
     h(
       'div',
       { class: 'end-actions' },
-      // A won run ends at the main menu; a lost one offers another shift first.
-      won
-        ? null
-        : h(
-            'button',
-            {
-              class: 'btn cta block',
-              onclick: () => {
-                sfx('button');
-                haptic('tap');
-                onAgain();
-              },
-            },
-            t('end.again'),
-          ),
       h('button', {
         class: 'btn secondary block act-btn',
         html: `${icon('share')}<span>${t('end.share')}</span>`,
@@ -128,7 +113,7 @@ export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: (he
         },
       }),
       h('button', {
-        class: `btn block act-btn ${won ? 'cta' : 'secondary'}`,
+        class: 'btn cta block act-btn',
         html: `${icon('home')}<span>${t('end.title')}</span>`,
         onclick: () => {
           sfx('tap');

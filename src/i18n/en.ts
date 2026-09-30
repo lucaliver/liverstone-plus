@@ -334,7 +334,6 @@ const en = {
   'end.slip.netValue': '0.00',
   'end.slip.paid': 'Paid',
   'end.slip.void': 'Void',
-  'end.again': 'Clock in again',
   'end.newHire': 'New hire',
   'end.nextHire': "We'll hire the next one! Tap to play as {hero}.",
   'end.title': 'Main menu',
