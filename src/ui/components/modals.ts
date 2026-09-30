@@ -11,7 +11,7 @@ import { saveSettings, settings } from '../../game/settings';
 import type { CardInst, HeroId, Rarity } from '../../game/types';
 import { confirmModal, type ModalAction, openModal, type ModalHandle } from '../app';
 import { clearAll } from '../../core/save';
-import { h, onPress, onTapOrHold } from '../dom';
+import { h, onPress, onTapOrHold, stagger } from '../dom';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { cardKeywords, cardText, cardView, keywordHtml } from './cardView';
@@ -392,12 +392,14 @@ export function openDeck(
     return el;
   };
   const grid = h('div', { class: `deck-grid ${opts.onPick ? 'pick' : ''}` });
-  const sorter = sortControl(() => render());
-  function render(): void {
-    grid.replaceChildren(...groupCopies(sortCards(cards)).map((g) => makeEl(g.card, g.n)));
+  const sorter = sortControl(() => render(true));
+  /** `print`: the cards are dealt in (opening, sorting), not on a selection change. */
+  function render(print = false): void {
+    grid.replaceChildren(...stagger(groupCopies(sortCards(cards)).map((g) => makeEl(g.card, g.n))));
     grid.classList.toggle('has-sel', !!selected);
+    grid.classList.toggle('print', print);
   }
-  render();
+  render(true);
 
   const handle = openModal({
     title: opts.onPick ? (opts.title ?? t('deck.title')) : `${opts.title ?? t('deck.title')} (${cards.length})`,

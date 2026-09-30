@@ -8,7 +8,7 @@ import { HERO_LIST } from '../../data/heroes';
 import { enemyMet, isDiscovered, records } from '../../game/meta';
 import type { CardClass } from '../../game/types';
 import type { Screen } from '../app';
-import { h, onPress } from '../dom';
+import { h, onPress, stagger } from '../dom';
 import { icon } from '../art/icons';
 import { creature } from '../art/creatures';
 import { cardView, UNKNOWN } from '../components/cardView';
@@ -65,7 +65,7 @@ export function compendiumScreen(onBack: () => void): Screen {
   const met = ENEMY_LIST.filter((e) => enemyMet(e.id)).length;
 
   const tabs = h('div', { class: 'tabs', role: 'tablist' });
-  const grid = h('div', { class: 'deck-grid comp-grid' });
+  const grid = h('div', { class: 'deck-grid comp-grid print' });
 
   const sectionSwitch = h('div', { class: 'seg section-switch', role: 'tablist' });
   const foes = h(
@@ -125,18 +125,20 @@ export function compendiumScreen(onBack: () => void): Screen {
     );
     const cards = sortCards(CARD_LIST.filter((c) => c.cls === tab).map((c) => ({ uid: -1, id: c.id, up: false })));
     grid.replaceChildren(
-      ...cards.map((card) => {
-        // Every card can be inspected; undiscovered ones hide their name behind question marks.
-        const known = isDiscovered(card.id);
-        const el = cardView(card, { cls: known ? '' : 'undiscovered' });
-        const name = el.querySelector<HTMLElement>('.c-name');
-        if (!known && name) name.textContent = UNKNOWN;
-        onPress(el, () => {
-          sfx('tap');
-          openCardDetail(card);
-        });
-        return el;
-      }),
+      ...stagger(
+        cards.map((card) => {
+          // Every card can be inspected; undiscovered ones hide their name behind question marks.
+          const known = isDiscovered(card.id);
+          const el = cardView(card, { cls: known ? '' : 'undiscovered' });
+          const name = el.querySelector<HTMLElement>('.c-name');
+          if (!known && name) name.textContent = UNKNOWN;
+          onPress(el, () => {
+            sfx('tap');
+            openCardDetail(card);
+          });
+          return el;
+        }),
+      ),
     );
     grid.scrollTop = 0;
   };

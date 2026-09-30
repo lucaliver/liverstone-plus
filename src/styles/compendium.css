@@ -19,6 +19,8 @@
 .tabs button + button { border-left: 2px solid var(--void); }
 .tabs button[aria-selected='true'] { background: var(--y); }
 .comp-grid .card { cursor: pointer; }
+/* a section prints in whenever it is brought back from hidden */
+.foes, .payslip.records { animation: screen-in 0.24s steps(4) both; }
 .comp-grid .card.undiscovered .c-art,
 .comp-grid .card.undiscovered .c-face { filter: grayscale(0.7); }
 

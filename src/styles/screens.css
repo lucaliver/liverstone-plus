@@ -62,7 +62,7 @@
 }
 .swap-offer .card { animation: deal 0.24s steps(3); }
 @keyframes deal {
-  from { transform: translateY(40px); }
+  from { transform: translateY(40px); opacity: 0; }
 }
 /* the chosen card crosses over to the old one's place and settles on it, which drops away underneath */
 .swap-offer .card.sel.flying {

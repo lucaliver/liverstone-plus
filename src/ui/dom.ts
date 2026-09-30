@@ -105,3 +105,11 @@ export function retrigger(target: Element, cls: string): void {
   };
   target.addEventListener('animationend', done);
 }
+
+/** Numbers a list of elements in `--i`, so a CSS animation delay can stagger them (the `.print` grids). */
+export function stagger<T extends HTMLElement>(els: T[]): T[] {
+  els.forEach((e, i) => {
+    e.style.setProperty('--i', String(i));
+  });
+  return els;
+}

@@ -248,6 +248,8 @@
 .deck-grid .card {
   --cw: calc((min(100vw, 520px) - 32px - 32px - 20px - 22px) / 3);
 }
+/* a grid that is (re)built on purpose deals its cards in, the first dozen one after the other */
+.deck-grid.print .card { animation: deal 0.24s steps(3) calc(min(var(--i, 0), 11) * 0.03s) backwards; }
 /* how many identical copies a card stands for */
 .card .copies {
   position: absolute;
