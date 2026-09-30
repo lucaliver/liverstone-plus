@@ -63,6 +63,8 @@ export interface BeltCard {
   pos: number;
   /** Belt row (0 = top); always 0 on a one-row belt. */
   row: number;
+  /** Pinned where it is (Team Change): it doesn't move or leave until played or stashed; other cards ride past it. */
+  pinned?: boolean;
   /** Stopped at the exit as part of a pile (an `anchor` card and the attacks behind it). */
   stuck?: boolean;
 }
@@ -343,6 +345,7 @@ export type CombatEvent =
   | { type: 'relic'; id: string }
   | { type: 'enrage' }
   | { type: 'beltReversed' }
+  | { type: 'beltPinned' }
   | { type: 'rowsOpen' }
   | { type: 'rowsClose' }
   | { type: 'end'; result: CombatResult };

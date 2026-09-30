@@ -472,6 +472,23 @@ export class Combat {
     this.events.emit({ type: 'beltReversed' });
   }
 
+  /** Pins every card on the belt where it is (Team Change): they stay until played, while new cards ride past them. */
+  pinBelt(): void {
+    for (const b of this.belt) {
+      b.pinned = true;
+      b.stuck = false;
+    }
+    this.events.emit({ type: 'beltPinned' });
+  }
+
+  /** Takes a `share` (0–1) of the enemy's Block and adds it to the hero's. */
+  stealBlock(share: number): void {
+    const n = Math.floor(this.enemy.block * share);
+    if (n <= 0) return;
+    this.enemy.block -= n;
+    this.gainBlock('hero', n);
+  }
+
   /** Opens every belt row (the ones an enemy kept shut). */
   openBeltRows(): void {
     if (this.rowsOpen === this.beltRows) return;
@@ -582,7 +599,7 @@ export class Combat {
    * pile up behind it; any other card reaching the pile sends it off the belt (they all start moving again).
    */
   private moveRow(row: number, move: number): void {
-    const cards = this.belt.filter((b) => b.row === row).sort((a, b) => b.pos - a.pos);
+    const cards = this.belt.filter((b) => b.row === row && !b.pinned).sort((a, b) => b.pos - a.pos);
     /** The last card of the pile stopped at the exit, if any. */
     let tail: BeltCard | null = null;
     for (const b of cards) {
@@ -618,7 +635,7 @@ export class Combat {
   /** Distance from the entry to the newest card of a row (Infinity if the row is empty). */
   private rowGap(row: number): number {
     let gap = Infinity;
-    for (const b of this.belt) if (b.row === row && b.pos < gap) gap = b.pos;
+    for (const b of this.belt) if (b.row === row && !b.pinned && b.pos < gap) gap = b.pos;
     return gap;
   }
 

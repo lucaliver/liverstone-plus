@@ -813,6 +813,18 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'shadow',
     svg: `<rect x="4" y="26" width="14" height="14"/><rect x="25" y="26" width="14" height="14"/><rect x="46" y="26" width="14" height="14"/>`,
   },
+  pushpin: {
+    el: 'steel',
+    svg: `<path d="M20 4h24l-5 5v13l11 13H14l11-13V9z"/><rect x="30" y="36" width="4" height="24"/>`,
+  },
+  medal: {
+    el: 'holy',
+    svg: `<path d="M16 38l-10 22 12-5 7 7 8-26zM48 38l10 22-12-5-7 7-8-26z"/><circle cx="32" cy="24" r="20"/><circle cx="32" cy="24" r="13" fill="#16121f"/>${star4(32, 24, 10)}`,
+  },
+  huddle: {
+    el: 'nature',
+    svg: `<circle cx="18" cy="12" r="8"/><path d="M6 32a12 12 0 0 1 24 0v12H6z"/><circle cx="46" cy="12" r="8"/><path d="M34 32a12 12 0 0 1 24 0v12H34z"/><path d="M6 52h36v-5l14 8-14 8v-5H6z"/>`,
+  },
   crystalUp: {
     el: 'arcane',
     svg: `<path d="M24 14l14 16-14 34-14-34z"/><path fill="#16121f" d="M24 26l7 8-7 18-7-18z"/><path d="M50 4l12 14H54v14H46V18h-8z"/>`,

@@ -24,6 +24,8 @@ interface CardEl {
   over: boolean;
   /** Stone cover with the taps left, while the card is petrified. */
   hexEl?: HTMLElement;
+  /** The pushpin on a card pinned where it is (Team Change). */
+  pinEl?: HTMLElement;
   /** Icon of the rule (enemy passive, stun…) that blocks the card, while one does. */
   ruleEl?: HTMLElement;
   rule?: string;
@@ -313,6 +315,7 @@ export function createCardLayer(v: CombatView): CardLayer {
       toggle(ce.el, 'hexed', !!hex && hex.left > 0);
       toggle(ce.el, 'covered', combat.isCovered(b.card.uid));
       toggle(ce.el, 'thawing', !!hex && hex.left <= 0);
+      if (b.pinned && !ce.pinEl) ce.pinEl = ce.el.appendChild(h('div', { class: 'pin-badge', html: icon('pushpin') }));
       if (hex && hex.left > 0) {
         ce.el.dataset.hexLeft = String(hex.left);
         ce.hexEl ??= ce.el.appendChild(h('div', { class: 'hex-cover' }));
@@ -322,15 +325,15 @@ export function createCardLayer(v: CombatView): CardLayer {
         ce.hexEl = undefined;
       }
       // Blink on the way out only when leaving the belt does something (curses that explode, drain…).
-      toggle(ce.el, 'leaving', b.pos > 0.86 && !!CARDS[b.card.id].onExpire);
+      toggle(ce.el, 'leaving', !b.pinned && b.pos > 0.86 && !!CARDS[b.card.id].onExpire);
       if (refreshFaces) setHtml(ce.face, cardFace(b.card, combat));
       if (drag?.uid === b.card.uid && drag.moved) continue;
       // Snap to whole pixels: crisp pixel art and a slightly stepped, printed feel.
       // Left-to-right belt (the default): the same run mirrored, entering on the left.
       const x = Math.round(state.ltr ? state.beltW * b.pos - state.cardW : state.beltW * (1 - b.pos));
       ce.el.style.transform = `translate3d(${x}px, ${b.row * state.rowH}px, 0)`;
-      // Wide cards (Gatekeeping) and lane locks ride over everything else on the belt.
-      ce.el.style.zIndex = String(Math.round(b.pos * 100) + (ce.over ? 1000 : 0));
+      // Wide cards (Gatekeeping) and lane locks ride over everything else on the belt, pinned cards over all of it.
+      ce.el.style.zIndex = String(Math.round(b.pos * 100) + (ce.over ? 1000 : 0) + (b.pinned ? 2000 : 0));
     }
     for (const [uid, ce] of beltEls) {
       if (onBelt.has(uid)) continue;

@@ -121,6 +121,16 @@
 .card[data-cat='defense'] { --rule-ink: var(--b); }
 .card[data-cat='utility'] { --rule-ink: #c08a00; }
 .card[data-cat='curse'] { --rule-ink: var(--green); }
+.pin-badge {
+  position: absolute;
+  right: -8cqw;
+  top: -12cqw;
+  z-index: 2;
+  font-size: 28cqw;
+  color: var(--p);
+  --ink2: var(--k);
+  rotate: 18deg;
+}
 .rule-badge {
   position: absolute;
   left: 50%;

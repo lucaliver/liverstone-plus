@@ -30,9 +30,9 @@
 
 - [x] cambia passiva del nemico "Security monitor": quando scende sotto 50% di hp la prima volta, ottiene 30 scudo
 
-- [ ] new card "Take credit": gain 3 shield + steal 50% shield from enemy
+- [x] new card "Take credit": gain 3 shield + steal 50% shield from enemy
 
-- [ ] new card "Team change": all cards already in the belt get stuck where they are, they can be played normally, while other cards keep riding the belt normally
+- [x] new card "Team change": all cards already in the belt get stuck where they are, they can be played normally, while other cards keep riding the belt normally
 
 - [ ] add new "parkour!" card
 

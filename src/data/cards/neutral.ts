@@ -403,6 +403,35 @@ export const neutralCards: CardDef[] = [
     play: (c, v) => c.applyStatus('hero', 'brownNosing', 1, v[0]),
   },
 
+  {
+    id: 'takeCredit',
+    face: '{block:0}|{snatch:1}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'common',
+    cost: 1,
+    vals: [3, 50],
+    upVals: [5, 75],
+    art: 'medal',
+    // Your idea, your Block: the enemy's own is yours now.
+    play: (c, v) => {
+      c.gainBlock('hero', v[0]);
+      c.stealBlock(v[1] / 100);
+    },
+  },
+  {
+    id: 'teamChange',
+    face: '{pin}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 2,
+    upCost: 1,
+    vals: [],
+    art: 'huddle',
+    play: (c) => c.pinBelt(),
+  },
+
   // Generated during a fight (never offered as rewards).
   {
     id: 'alreadyDone',

@@ -264,6 +264,10 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         shake('big');
         break;
       }
+      case 'beltPinned':
+        sfx('stash');
+        haptic('stash');
+        break;
       case 'beltReversed':
         // Every card keeps its place on screen and heads the other way (the engine mirrors the positions).
         v.state.ltr = !v.state.ltr;

@@ -817,6 +817,27 @@ describe('pop culture cards', () => {
     return { c, uid: c.belt[c.belt.length - 1].card.uid };
   };
 
+  it("Take Credit: Block for you, and half the enemy's Block becomes yours", () => {
+    const { c, uid } = ready('takeCredit');
+    c.enemy.block = 20;
+    c.playCard(uid);
+    expect(c.enemy.block).toBe(10);
+    expect(c.hero.block).toBe(CARDS.takeCredit.vals[0] + 10);
+  });
+
+  it('Team Change pins the cards on the belt where they are; new cards ride past them', () => {
+    const { c, uid } = ready('teamChange');
+    run(c, 4);
+    const pinned = c.belt.filter((b) => b.card.uid !== uid).map((b) => ({ uid: b.card.uid, pos: b.pos }));
+    expect(pinned.length).toBeGreaterThan(1);
+    c.playCard(uid);
+    run(c, 30);
+    for (const p of pinned) expect(c.belt.find((b) => b.card.uid === p.uid)?.pos).toBe(p.pos);
+    // Cards kept arriving meanwhile, and a pinned one can still be played.
+    expect(c.belt.some((b) => !b.pinned)).toBe(true);
+    expect(c.playCard(pinned[0].uid)).toBe(true);
+  });
+
   it('Workaholic: Strength that lasts only for a while', () => {
     const { c, uid } = ready('workaholic');
     const dmg = (): number => c.previewHeroDamage(10, CARDS.punch);
