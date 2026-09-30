@@ -71,8 +71,11 @@ function slide(hero: HeroDef, index: number): HTMLElement {
 }
 
 /** Game-style hero select: one hero per screen, swipe or use the arrows; the hero in view is the one chosen. */
-export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => void): Screen {
-  let index = 0;
+export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => void, first?: HeroId): Screen {
+  let index = Math.max(
+    0,
+    HERO_LIST.findIndex((hd) => hd.id === first),
+  );
   const slides = HERO_LIST.map(slide);
   const track = h('div', { class: 'hero-track', role: 'region', 'aria-label': t('hero.select') }, ...slides);
   const dots = HERO_LIST.map((hd, i) =>
@@ -157,5 +160,10 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
     startBtn,
   );
   sync();
-  return { el };
+  return {
+    el,
+    enter() {
+      track.scrollTo({ left: index * track.clientWidth, behavior: 'instant' });
+    },
+  };
 }

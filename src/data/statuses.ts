@@ -116,13 +116,9 @@ const defs: StatusDef[] = [
     good: true,
     passive: true,
     icon: 'rulebook',
-    // Same colour as the card before (attack, defense, utility): the card's art tells. Curses are exempt.
+    // Same colour as the card before (attack, defense, utility, curse): the card's art tells.
     canPlay: (c, side, def) =>
-      side === 'enemy' &&
-      def.type !== 'curse' &&
-      c.lastPlayed &&
-      cardCategory(c.lastPlayed.id) === cardCategory(def.id) &&
-      c.time - c.lastPlayedAt < POLICY_WINDOW
+      side === 'enemy' && c.lastPlayed && cardCategory(c.lastPlayed.id) === cardCategory(def.id) && c.time - c.lastPlayedAt < POLICY_WINDOW
         ? 'combat.policy'
         : null,
   },

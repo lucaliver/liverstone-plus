@@ -1,5 +1,6 @@
 import { type TKey, t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
+import type { HeroId } from '../../game/types';
 import type { RunRecord } from '../../game/meta';
 import { ACTS, currentNode, type RunEnd, type RunState } from '../../game/run';
 import type { Screen } from '../app';
@@ -21,7 +22,7 @@ const ROW_RECORD: Partial<Record<TKey, RunRecord>> = {
 };
 
 /** The end of a run: the heroes it unlocked (shown as the next hire, so the end is a step forward), the payslip with the records it beat, and a shareable copy. */
-export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: () => void, onMenu: () => void): Screen {
+export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: (hero?: HeroId) => void, onMenu: () => void): Screen {
   const node = currentNode(run);
   const title = won ? t('end.victory') : t('end.defeat');
   let confetti = 0;
@@ -67,9 +68,15 @@ export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: () 
       h('h1', { class: 'h1 end-title', 'aria-label': title, html: dropLetters(title) }),
       h('div', { class: 'portrait-lg', html: `${motes(10)}${creature(run.hero)}` }),
       ...end.hired.map((id) =>
-        h('div', {
+        // Tapping the new hire opens the hero select right on them.
+        h('button', {
           class: 'new-hire',
           html: `${creature(id)}<div><b>${t('end.newHire')}</b><span>${t('end.nextHire', { hero: t(`hero.${id}.name`) })}</span></div>`,
+          onclick: () => {
+            sfx('button');
+            haptic('tap');
+            onAgain(id);
+          },
         }),
       ),
       h('p', { class: 'sub' }, won ? t(node.act < ACTS ? 'end.firstShiftDesc' : 'end.victoryDesc') : t('end.defeatDesc', { n: node.floor })),

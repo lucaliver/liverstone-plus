@@ -6,9 +6,9 @@
 
 - [x] cambia le mosse di Slave CEO: prima di "you're fired" dovrebbe velocizzare la belt del 200% per 10s
 
-- [ ] "new hire" banner: when tapped it should bring you to the character selection screen on the new character
+- [x] "new hire" banner: when tapped it should bring you to the character selection screen on the new character
 
-- [ ] "no repeats policy" should also apply to curses
+- [x] "no repeats policy" should also apply to curses
 
 - [ ] add new card "On a roll": it doesn't fall off at the end of the belt but it gets stuck there. All attack cards that touch it gets staked behind it.  when a non-attack card gets in touch with the stak, the stack rolls off the belt. The stack can be played just by paying the first card (on a roll)
 

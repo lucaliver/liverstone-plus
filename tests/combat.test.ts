@@ -246,6 +246,14 @@ describe('combat engine', () => {
     expect(c.ruleBlock({ uid: 0, id: 'doubleEspresso', up: false })).toBeNull();
   });
 
+  it('HR policy covers curses too: paying off two curses back to back is refused', () => {
+    const c = setup({ enemy: ENEMIES.hrBitch });
+    run(c, CONFIG.introTime + 0.01);
+    c.lastPlayed = CARDS.writeUp;
+    c.lastPlayedAt = c.time;
+    expect(c.ruleBlock({ uid: 0, id: 'writeUp', up: false })?.key).toBe('combat.policy');
+  });
+
   it('HR policy: no two cards of the same type in a row', () => {
     const c = setup({ enemy: ENEMIES.hrBitch, deck: deckOf(['punch', 'punch', 'punch', 'hardHat', 'hardHat', 'hardHat']) });
     run(c, CONFIG.introTime + 0.01);
