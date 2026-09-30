@@ -349,6 +349,15 @@ test('skipping a reward adds max HP', async ({ page }) => {
   expect(await page.evaluate('window.__game.run.maxHp')).toBe(max + 3);
 });
 
+test('debug menus are off by default, and the Settings switch shows them at once', async ({ page }) => {
+  await freshGame(page, { debug: false });
+  await expect(page.locator('.debug-fab')).toBeHidden();
+  await page.getByRole('button', { name: /settings/i }).click();
+  await page.getByRole('switch', { name: 'Debug menus' }).click();
+  await page.getByRole('button', { name: 'Close' }).click();
+  await expect(page.locator('.debug-fab')).toBeVisible();
+});
+
 test('debug button: pick a hero and an enemy, the fight starts against it', async ({ page }) => {
   const problems = await freshGame(page);
   await page.getByRole('button', { name: /debug/i }).click();

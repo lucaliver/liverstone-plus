@@ -218,6 +218,7 @@
 }
 /* an odd one out spans the whole row */
 .menu .btn:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.debug-fab[hidden] { display: none; }
 .debug-fab {
   position: absolute;
   top: calc(var(--safe-t) + 6px);

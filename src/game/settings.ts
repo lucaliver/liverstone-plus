@@ -13,6 +13,8 @@ export interface Settings {
   seenTips: string[];
   /** Cards enter on the right and travel left (the default is left to right). Applies from the next fight. */
   rightToLeft: boolean;
+  /** Shows the floating debug buttons (title, fight, map). */
+  debugMenus: boolean;
 }
 
 const defaults: Settings = {
@@ -25,6 +27,7 @@ const defaults: Settings = {
   seenTutorial: false,
   seenTips: [],
   rightToLeft: false,
+  debugMenus: false,
 };
 
 export const settings: Settings = load('settings', defaults);
@@ -34,6 +37,7 @@ for (const k of ['sfxVolume', 'musicVolume'] as const) {
   settings[k] = typeof v === 'number' && Number.isFinite(v) ? Math.min(1, Math.max(0, v)) : defaults[k];
 }
 
+settings.debugMenus = settings.debugMenus === true;
 if (!Array.isArray(settings.seenTips) || settings.seenTips.some((id) => typeof id !== 'string')) settings.seenTips = [];
 
 export function saveSettings(): void {

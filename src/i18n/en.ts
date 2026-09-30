@@ -126,6 +126,7 @@ const en = {
   'settings.motion': 'Reduce motion',
   'settings.haptics': 'Vibration',
   'settings.rightToLeft': 'Belt runs right to left',
+  'settings.debugMenus': 'Debug menus',
   'settings.language': 'Language',
 
   // ------------------------------------------------------------- how to

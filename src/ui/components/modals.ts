@@ -113,6 +113,15 @@ export function openSettings(extra: ModalAction[] = []): ModalHandle {
       () => settings.rightToLeft,
       (v) => (settings.rightToLeft = v),
     ),
+    toggleRow(
+      t('settings.debugMenus'),
+      () => settings.debugMenus,
+      (v) => {
+        settings.debugMenus = v;
+        // The screens behind this window are already built: show or hide their debug buttons now.
+        for (const b of document.querySelectorAll<HTMLElement>('.debug-fab')) b.hidden = !v;
+      },
+    ),
     locales.length > 1
       ? h(
           'div',
@@ -487,6 +496,7 @@ export function debugButton(label: string, onClick: () => void): HTMLButtonEleme
   return h('button', {
     class: 'icon-btn debug-fab',
     'aria-label': label,
+    hidden: !settings.debugMenus,
     html: icon('bug'),
     onclick: () => {
       sfx('tap');
