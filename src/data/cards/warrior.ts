@@ -189,9 +189,9 @@ export const warriorCards: CardDef[] = [
     cls: 'warrior',
     type: 'attack',
     rarity: 'rare',
-    cost: 2,
-    vals: [5, 3],
-    upVals: [8, 5],
+    cost: 3,
+    vals: [6, 2],
+    upVals: [8, 3],
     art: 'stonks',
     play: (c, v, card) => {
       c.hit(v[0]);

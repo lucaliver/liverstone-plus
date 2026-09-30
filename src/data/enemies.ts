@@ -208,7 +208,7 @@ const defs: EnemyDef[] = [
     ],
     halfSpeech: true,
     // The emergency button: at half HP everything stops for a moment.
-    onHalf: (c) => c.applyStatus('hero', 'stalled', 1, 5),
+    onHalf: (c) => c.applyStatus('hero', 'stalled', 1, 8),
   },
 
   // ------------------------------------------------------------- Act 2
