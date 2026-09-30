@@ -37,6 +37,12 @@
   border: var(--line) solid var(--k);
   box-shadow: var(--off) var(--off) 0 var(--shadow);
   rotate: -1.5deg;
+  /* a draft from the crypt: it sways on its tape */
+  transform-origin: 50% 0;
+  animation: sway 6s steps(6) infinite;
+}
+@keyframes sway {
+  50% { rotate: -0.6deg; }
 }
 /* two strips of tape hold it up */
 .poster::before,
@@ -64,8 +70,27 @@
   bottom: -14%;
   height: 92%;
   aspect-ratio: 1;
+  animation: bob 2s steps(2) infinite;
 }
 .poster-boss .riso { width: 100%; height: 100%; }
+/* now and then the pink pass slips out of register, like the logo print */
+.poster-boss .ink-P { animation: ink-slip 5s steps(1) infinite; }
+@keyframes ink-slip {
+  90% { translate: 6px -3px; }
+  94% { translate: -5px 2px; }
+  97% { translate: 3px 1px; }
+  100% { translate: 0 0; }
+}
+/* a dying tube light: the poster dims in flickers (same flicker as the afternoon stage) */
+.poster-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: var(--void);
+  opacity: 0;
+  pointer-events: none;
+  animation: neon-dim 7s steps(1) infinite;
+}
 /* printed in two inks only: pink and black (plus the paper) */
 .poster-boss .ink-Y,
 .poster-boss .ink-B { display: none; }
@@ -83,6 +108,7 @@
   rotate: -6deg;
   text-shadow: 3px 3px 0 var(--p);
   animation: none;
+  overflow: hidden;
 }
 /* tapped: it jolts under the punch and keeps a hole (a secret) */
 .poster .logo.punched { animation: shake-s 0.2s steps(4); }
@@ -112,7 +138,12 @@
   border: 4px solid var(--k);
   background: var(--paper);
   rotate: 5deg;
-  animation: stamp-in 0.2s steps(2) 0.35s both;
+  /* stamped on, then slammed again every few seconds */
+  animation: stamp-in 0.2s steps(2) 0.35s both, thump 6s steps(1) 2.5s infinite;
+}
+@keyframes thump {
+  96% { scale: 1.18; }
+  98% { scale: 0.96; }
 }
 .poster-plate {
   position: absolute;
@@ -207,6 +238,11 @@
   flex: none;
   width: 92px;
   height: 92px;
+  /* tick, tock */
+  animation: tick 2s steps(1) infinite;
+}
+@keyframes tick {
+  50% { rotate: 2deg; }
 }
 .desk-clock .riso { width: 100%; height: 100%; }
 

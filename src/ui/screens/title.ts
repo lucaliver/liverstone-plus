@@ -51,7 +51,7 @@ export function titleScreen(cb: TitleCallbacks): Screen {
 
   const poster = h('div', {
     class: 'poster',
-    html: `<div class="poster-band"></div><div class="poster-boss">${creature(posterBoss())}</div><h1 class="logo">${t('app.title')}</h1><div class="poster-slogan">${t('menu.slogan')}</div><div class="poster-plate">${t('menu.plate')}</div>`,
+    html: `<div class="poster-band"></div><div class="poster-boss">${creature(posterBoss())}</div><div class="poster-dim"></div><h1 class="logo">${t('app.title')}</h1><div class="poster-slogan">${t('menu.slogan')}</div><div class="poster-plate">${t('menu.plate')}</div>`,
   });
   // A little secret: tapping the logo punches a hole in it (a few at most, then the plate is fresh again).
   const logo = poster.querySelector<HTMLElement>('.logo')!;
