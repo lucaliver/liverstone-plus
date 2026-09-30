@@ -262,3 +262,5 @@
   overflow: hidden;
 }
 .enemy-info .statuses { height: 32px; }
+/* a dead enemy's statuses are gone (hidden, so the row keeps its height) */
+.enemy-info .statuses.gone { visibility: hidden; }

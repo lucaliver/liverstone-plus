@@ -554,6 +554,14 @@ describe('combat engine', () => {
     expect(c.playCard(card.uid)).toBe(true);
   });
 
+  it('the Security Monitor raises 30 Block the first time it falls under half HP', () => {
+    const c = setup({ enemy: ENEMIES.securityMonitor });
+    run(c, CONFIG.introTime + 0.01);
+    c.enemy.block = 0;
+    c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 2), { raw: true }, 'hero');
+    expect(c.enemy.block).toBe(30);
+  });
+
   it('the Snitch hurries the belt for the rest of the fight once under half HP', () => {
     const c = setup({ enemy: ENEMIES.snitch });
     run(c, CONFIG.introTime + 0.01);
@@ -749,6 +757,7 @@ describe('combat engine', () => {
 
     it('The Printer stores the damage it takes while scanning and prints it back', () => {
       const c = vs('printer');
+      c.enemy.block = 0;
       expect(c.enemy.move.absorb).toBe(true);
       c.hero.mana = c.hero.maxMana = 10;
       const hp = c.enemy.hp;

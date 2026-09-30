@@ -20,13 +20,13 @@
 
 - [x] new card "brown noser": double your mana regen speed for X sec
 
-- [ ] after enemy dies, hide their statuses
+- [x] after enemy dies, hide their statuses
 
-- [ ] elites and bosses should also have some initian shield (other than initial health)
+- [x] elites and bosses should also have some initian shield (other than initial health)
 
 - [ ] i sorting possibili per le carte dovrebbero essere cost/type/rarity
 
-- [ ] nella schermata Personnel: anziché "X on the payroll" dovrebbe dire quanti ne ho sbloccati su quanti
+- [x] nella schermata Personnel: anziché "X on the payroll" dovrebbe dire quanti ne ho sbloccati su quanti
 
 - [ ] cambia passiva del nemico "Security monitor": quando scende sotto 50% di hp la prima volta, ottiene 30 scudo
 
@@ -34,26 +34,25 @@
 
 - [ ] new card "Team change": all cards already in the belt get stuck where they are, they can be played normally, while other cards keep riding the belt normally
 
-- [ ] add new "parkour!" card
+- [x] add new "parkour!" card
 
-- [ ] The menu and the act1 map should not have the same music.
+- [x] The menu and the act1 map should not have the same music.
 
 - [ ] aggiungi nuova carta "Payday Loan": costo 0 e effetto molto forte, ma mette nel mazzo una maledizione "Debt" che costa 3 e se cade dalla bet fa danno+aumenta il proprio danno per la volta dopo
+
+- [ ] voglio cambiare la generica mappa da roguelike con una più a tema e con presentazione migliore: stile Planimetria dell'ufficio. Porte, stanze, nebbia e badge che aprono porte chiuse. Vedi tu come rende meglio
 
 # NEXT STEPS (ignore for now):
 
 FUTURE:
 
-
-
 > aggiungere room migliori (es. room in cui elimini una carta o aggiungi una sleeve o altro, tutto a tema)
 > aggiungere uso della paga
+
 > aggiungere act3
 > aggiungere modificatori difficoltà run dopo la vittoria
 
 > rivedere icone, sprite e musica: e dare prompt su cosa non mi piace
-
-> publish old version to another branch and page "beta" if possible
 
 > to a boring enemy: add a move that grant hp regen
 

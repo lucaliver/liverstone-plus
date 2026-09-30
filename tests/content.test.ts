@@ -63,6 +63,10 @@ describe('content integrity', () => {
       }
   });
 
+  it('elites and bosses start the fight with Block, normal enemies without', () => {
+    for (const e of ENEMY_LIST) expect(!!e.block, e.id).toBe(e.tier !== 'normal');
+  });
+
   it('every card has its own art, never shared with another card or a rule icon', () => {
     const rules = new Set([
       ...Object.values(GLYPHS).map((g) => g.icon),

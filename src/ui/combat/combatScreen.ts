@@ -84,6 +84,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     if (result === 'win') {
       // Death throes (it shakes, bleeds and sinks), then the print comes apart ink by ink. A boss gets stamped first.
       r.enemyArt.classList.add('dead');
+      r.eStatus.classList.add('gone');
       const p = v.enemyPoint();
       burst('blood', p.x, p.y, 36, 1.4);
       for (let i = 1; i <= (boss ? 5 : 3); i++) setTimeout(() => burst('blood', p.x + (i % 2 ? -30 : 30), p.y + i * 6, 14), i * 200);

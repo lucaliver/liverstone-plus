@@ -8,7 +8,7 @@ import { ENEMY_LIST } from '../../data/enemies';
 import { HERO_LIST } from '../../data/heroes';
 import { unlockAll } from '../../game/meta';
 import { saveSettings, settings } from '../../game/settings';
-import type { CardInst, HeroId } from '../../game/types';
+import type { CardInst, HeroId, Rarity } from '../../game/types';
 import { confirmModal, type ModalAction, openModal, type ModalHandle } from '../app';
 import { clearAll } from '../../core/save';
 import { h, onPress, onTapOrHold } from '../dom';
@@ -272,27 +272,32 @@ export function openCardDetail(card: CardInst, onClose?: () => void): ModalHandl
 
 /** Sorting by type goes by the art's colour family, the only type the player sees. */
 const TYPE_ORDER: CardCategory[] = ['attack', 'defense', 'utility', 'curse'];
-const DECK_SORTS = ['type', 'cost', 'name'] as const;
+const RARITY_ORDER: Rarity[] = ['starter', 'common', 'rare', 'epic', 'legendary', 'special'];
+const SORT_KEYS = {
+  cost: (c: CardInst): number => cardCostOf(c),
+  type: (c: CardInst): number => TYPE_ORDER.indexOf(cardCategory(c.id)),
+  rarity: (c: CardInst): number => RARITY_ORDER.indexOf(CARDS[c.id].rarity),
+};
+const DECK_SORTS = ['cost', 'type', 'rarity'] as const;
 type DeckSort = (typeof DECK_SORTS)[number];
 /** The deck windows' and handbook's sort, kept while the game is open. */
 let deckSort: DeckSort = 'type';
 /** Descending on the sort's main key (tapping the active sort again flips it). */
 let deckDesc = false;
 
+/** Sorted by `by` (flipped when `desc`); ties fall back on the other keys (type, cost, rarity), then the name. */
 function sortDeck(deck: CardInst[], by: DeckSort, desc: boolean): CardInst[] {
   const name = (c: CardInst): string => t(`card.${c.id}.name`);
   const sign = desc ? -1 : 1;
+  const ties = (['type', 'cost', 'rarity'] as const).filter((k) => k !== by);
   return [...deck].sort((a, b) => {
-    const type = TYPE_ORDER.indexOf(cardCategory(a.id)) - TYPE_ORDER.indexOf(cardCategory(b.id));
-    const cost = cardCostOf(a) - cardCostOf(b);
-    const byName = name(a).localeCompare(name(b));
-    const first = sign * (by === 'cost' ? cost : by === 'name' ? byName : type);
-    return first || (by === 'type' ? cost : type) || byName || Number(b.up) - Number(a.up);
+    const first = sign * (SORT_KEYS[by](a) - SORT_KEYS[by](b));
+    return first || ties.map((k) => SORT_KEYS[k](a) - SORT_KEYS[k](b)).find(Boolean) || name(a).localeCompare(name(b)) || Number(b.up) - Number(a.up);
   });
 }
 
 /**
- * A slim line of text links: "Sort by  Type · Cost · Name", the active one marked with the sort arrow; tapping it
+ * A slim line of text links: "Sort by  Cost · Type · Rarity", the active one marked with the sort arrow; tapping it
  * again flips the order. `onChange` re-renders the list, sorted with `sortCards`.
  */
 export function sortControl(onChange: () => void): HTMLElement {

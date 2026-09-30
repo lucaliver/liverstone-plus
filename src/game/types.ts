@@ -209,6 +209,8 @@ export interface EnemyDef {
   /** Special moves, used in turn: one after every `every` main attacks. */
   specials: MoveDef[];
   every: number;
+  /** Block it starts the fight with (elites and bosses come armoured). */
+  block?: number;
   /** Statuses the enemy starts with. */
   start?: { id: string; v?: number; t?: number }[];
   /** Curse card that fills every sleeve slot at the start of the fight. */

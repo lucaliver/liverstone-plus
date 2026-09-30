@@ -62,6 +62,7 @@ export function compendiumScreen(onBack: () => void): Screen {
   let section: 'cards' | 'enemies' | 'records' = 'cards';
   const total = CARD_LIST.length;
   const found = CARD_LIST.filter((c) => isDiscovered(c.id)).length;
+  const met = ENEMY_LIST.filter((e) => enemyMet(e.id)).length;
 
   const tabs = h('div', { class: 'tabs', role: 'tablist' });
   const grid = h('div', { class: 'deck-grid comp-grid' });
@@ -99,7 +100,7 @@ export function compendiumScreen(onBack: () => void): Screen {
       section === 'cards'
         ? t('compendium.progress', { n: found, total })
         : section === 'enemies'
-          ? t('compendium.foes', { n: ENEMY_LIST.length })
+          ? t('compendium.foes', { n: met, total: ENEMY_LIST.length })
           : '';
     sub.hidden = section === 'records';
     cardsWrap.hidden = section !== 'cards';

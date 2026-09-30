@@ -164,7 +164,7 @@ export class Combat {
       def: e,
       hp: maxHp,
       maxHp,
-      block: 0,
+      block: e.block ?? 0,
       statuses: {},
       blockTimer: 0,
       dotTimer: 0,
