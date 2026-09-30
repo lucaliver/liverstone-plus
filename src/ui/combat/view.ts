@@ -170,6 +170,8 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
     toast(text, alert = false, delayMs = 0) {
       el.querySelector('.hint-toast')?.remove();
       const tEl = h('div', { class: `hint-toast ${alert ? 'alert' : ''}`, style: { animationDelay: `${delayMs}ms` } }, text);
+      // A held-back note sits at rest size while it waits (the fill shows its first keyframe): it slams in only when it's not delayed.
+      if (delayMs > 0) tEl.style.setProperty('--slam', '1');
       tEl.addEventListener('animationend', () => tEl.remove());
       el.append(tEl);
     },
