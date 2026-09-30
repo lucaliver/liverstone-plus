@@ -62,9 +62,6 @@ export interface CombatSetup {
   beltRows?: number;
 }
 
-/** What a Vulnerable target takes on top. */
-const VULNERABLE_MULT = 1.5;
-
 interface DamageOpts {
   hits?: number;
   kind?: string;
@@ -895,7 +892,7 @@ export class Combat {
       dmg += this.strengthOf('enemy');
     }
     if (this.has(from, 'weak')) dmg *= 0.75;
-    if (this.has(to, 'vulnerable')) dmg *= VULNERABLE_MULT;
+    if (this.has(to, 'vulnerable')) dmg *= 1.5;
     return Math.max(0, Math.floor(dmg));
   }
 
@@ -903,13 +900,7 @@ export class Combat {
   damage(from: Side, to: Side, base: number, opts: DamageOpts, source: Side | 'dot', hitIndex = 0): number {
     if (this.result) return 0;
     const target = this.fighter(to);
-    // A raw hit skips every modifier, except that Vulnerable also opens up Poison and Burn.
-    const dot = opts.kind === 'poison' || opts.kind === 'burn';
-    const dmg = opts.raw
-      ? dot && this.has(to, 'vulnerable')
-        ? Math.floor(base * VULNERABLE_MULT)
-        : base
-      : this.computeDamage(from, to, base, this.current?.def ?? null);
+    const dmg = opts.raw ? base : this.computeDamage(from, to, base, this.current?.def ?? null);
 
     // Dodge: immune to every kind of damage while it lasts.
     if (to === 'hero' && this.has('hero', 'dodge')) {

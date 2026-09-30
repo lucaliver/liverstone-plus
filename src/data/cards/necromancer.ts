@@ -88,15 +88,16 @@ export const necromancerCards: CardDef[] = [
   },
   {
     id: 'whistleblow',
-    face: '{vuln:0}',
+    face: '{stun:0}',
     cls: 'necromancer',
     type: 'spell',
     rarity: 'common',
     cost: 2,
-    vals: [5],
-    upVals: [8],
+    vals: [3],
+    upVals: [5],
     art: 'whistle',
-    play: (c, v) => c.applyStatus('enemy', 'vulnerable', 1, v[0]),
+    // Buys time: the enemy stands still while the Poison keeps ticking.
+    play: (c, v) => c.applyStatus('enemy', 'stun', 1, v[0]),
   },
   {
     id: 'smokestack',

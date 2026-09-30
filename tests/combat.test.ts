@@ -494,17 +494,6 @@ describe('combat engine', () => {
     expect(hp - c.enemy.hp).toBe(6);
   });
 
-  it('a Vulnerable enemy takes 50% more from Poison and Burn, which skip every other modifier', () => {
-    const c = setup({ hero: HEROES.necromancer, hp: 50, maxHp: 50, deck: deckOf(['rust']), enemy: ENEMIES.seniorBoomer });
-    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
-    run(c, CONFIG.introTime + 0.01);
-    c.applyStatus('enemy', 'poison', 4);
-    c.applyStatus('enemy', 'vulnerable', 1, 99);
-    const hp = c.enemy.hp;
-    run(c, CONFIG.dotInterval + 0.02);
-    expect(hp - c.enemy.hp).toBe(Math.floor(4 * 1.5));
-  });
-
   it('sudo lifts every rule and rushes the belt for the time shown on the card', () => {
     const c = setup({ hero: HEROES.mage, deck: deckOf(['sudo', 'sudo']) });
     run(c, CONFIG.introTime + 0.01);
