@@ -1,8 +1,9 @@
 import type { EnemyDef, MoveDef } from '../game/types';
 
 const atk = (id: string, dmg: number, windup: number, extra: Partial<MoveDef> = {}): MoveDef => ({ id, intent: 'attack', dmg, windup, ...extra });
-/** Elites and some bosses get stronger with every attack (+1 Strength), so a long fight costs more. */
-const ramp: Partial<MoveDef> = { status: [{ id: 'strength', v: 1, target: 'enemy' }] };
+/** +1 Strength for the enemy: elites and some bosses get it with every attack (`ramp`), so a long fight costs more. */
+const gainStrength = { id: 'strength', v: 1, target: 'enemy' } as const;
+const ramp: Partial<MoveDef> = { status: [gainStrength] };
 
 /**
  * Every enemy has one steady main attack and, every `every` main attacks, a special move
@@ -54,7 +55,7 @@ const defs: EnemyDef[] = [
     every: 2,
     specials: [
       atk('seniority', 17, 13, { intent: 'charge' }),
-      { id: 'gatekeep', intent: 'curse', windup: 4, curse: [{ id: 'gatekeeping', n: 2, to: 'belt' }] },
+      { id: 'gatekeep', intent: 'curse', windup: 4, curse: [{ id: 'gatekeeping', n: 2, to: 'belt' }], status: [gainStrength] },
     ],
     // Paper cuts: every card you let slip off the belt hurts, and at half HP it's worse.
     start: [{ id: 'paperCuts' }],
@@ -102,7 +103,7 @@ const defs: EnemyDef[] = [
     main: atk('invoice', 6, 6),
     every: 2,
     specials: [
-      { id: 'outsource', intent: 'steal', windup: 4, steal: 1 },
+      { id: 'outsource', intent: 'steal', windup: 4, steal: 1, status: [gainStrength] },
       { id: 'setDeadline', intent: 'curse', windup: 4, curse: [{ id: 'deadline', n: 1, to: 'belt' }] },
     ],
     start: [{ id: 'paradigmShift' }],
@@ -115,7 +116,10 @@ const defs: EnemyDef[] = [
     art: 'hrBitch',
     main: { id: 'performanceReview', intent: 'curse', windup: 6, curse: [{ id: 'improvementPlan', n: 2, to: 'draw' }] },
     every: 2,
-    specials: [atk('memo', 10, 6), { id: 'writeYouUp', intent: 'curse', windup: 4, curse: [{ id: 'writeUp', n: 2, to: 'draw' }] }],
+    specials: [
+      atk('memo', 10, 6),
+      { id: 'writeYouUp', intent: 'curse', windup: 4, curse: [{ id: 'writeUp', n: 2, to: 'draw' }], status: [gainStrength] },
+    ],
     start: [{ id: 'noRepeatsPolicy' }],
   },
   {
@@ -150,7 +154,7 @@ const defs: EnemyDef[] = [
     main: atk('lunchTogether', 5, 6),
     every: 2,
     specials: [
-      { id: 'didYouHear', intent: 'curse', windup: 6, curse: [{ id: 'gossip', n: 2, to: 'draw' }] },
+      { id: 'didYouHear', intent: 'curse', windup: 6, curse: [{ id: 'gossip', n: 2, to: 'draw' }], status: [gainStrength] },
       atk('passiveAggressiveNote', 12, 9, { intent: 'charge' }),
     ],
     fillSleeve: 'movingBox',
@@ -218,7 +222,7 @@ const defs: EnemyDef[] = [
     main: atk('nitpick', 6, 6),
     every: 2,
     specials: [
-      { id: 'reprioritize', intent: 'curse', windup: 7, curse: [{ id: 'priorityTask', n: 1, to: 'belt' }] },
+      { id: 'reprioritize', intent: 'curse', windup: 7, curse: [{ id: 'priorityTask', n: 1, to: 'belt' }], status: [gainStrength] },
       atk('redPen', 19, 9, { intent: 'charge' }),
     ],
     start: [{ id: 'meticulous' }],
@@ -235,6 +239,7 @@ const defs: EnemyDef[] = [
     specials: [
       atk('lastMinute', 14, 2, {
         intent: 'charge',
+        status: [gainStrength],
         curse: [
           { id: 'quickFavour', n: 1, to: 'draw' },
           { id: 'officePlant', n: 1, to: 'draw' },
@@ -254,7 +259,7 @@ const defs: EnemyDef[] = [
     every: 2,
     specials: [
       { id: 'pizzaParty', intent: 'curse', windup: 7, curse: [{ id: 'freePizza', n: 4, to: 'draw' }] },
-      { id: 'positiveVibes', intent: 'buff', windup: 5, status: [{ id: 'regen', v: 5, target: 'enemy' }] },
+      { id: 'positiveVibes', intent: 'buff', windup: 5, status: [gainStrength, { id: 'regen', v: 5, target: 'enemy' }] },
     ],
   },
   {
@@ -265,7 +270,10 @@ const defs: EnemyDef[] = [
     art: 'wellnessCoach',
     main: atk('stretch', 6, 6),
     every: 2,
-    specials: [{ id: 'mindfulness', intent: 'heal', windup: 6, heal: 8 }, atk('burpees', 10, 2, { hits: 3, intent: 'charge' })],
+    specials: [
+      { id: 'mindfulness', intent: 'heal', windup: 6, heal: 8, status: [gainStrength] },
+      atk('burpees', 10, 2, { hits: 3, intent: 'charge' }),
+    ],
     start: [{ id: 'chillOut' }],
   },
   {
@@ -278,7 +286,7 @@ const defs: EnemyDef[] = [
     every: 2,
     specials: [
       { id: 'expenseReport', intent: 'curse', windup: 6, curse: [{ id: 'officePlant', n: 2, to: 'draw' }] },
-      { id: 'costCutting', intent: 'drain', windup: 6, drainMana: 3 },
+      { id: 'costCutting', intent: 'drain', windup: 6, drainMana: 3, status: [gainStrength] },
     ],
     start: [{ id: 'spendingFreeze' }],
   },
@@ -292,7 +300,7 @@ const defs: EnemyDef[] = [
     main: atk('citation', 7, 7),
     every: 2,
     specials: [
-      { id: 'paperwork', intent: 'curse', windup: 7, curse: [{ id: 'redTape', n: 2, to: 'draw' }] },
+      { id: 'paperwork', intent: 'curse', windup: 7, curse: [{ id: 'redTape', n: 2, to: 'draw' }], status: [gainStrength] },
       atk('violation', 15, 10, { intent: 'charge' }),
     ],
     onHalf: (c) => c.applyStatus('hero', 'slowdown', 1, 20),
@@ -307,7 +315,7 @@ const defs: EnemyDef[] = [
     main: atk('objection', 7, 6),
     every: 2,
     specials: [
-      { id: 'ceaseAndDesist', intent: 'debuff', windup: 6, status: [{ id: 'stun', t: 3, target: 'hero' }] },
+      { id: 'ceaseAndDesist', intent: 'debuff', windup: 6, status: [gainStrength, { id: 'stun', t: 3, target: 'hero' }] },
       atk('classAction', 17, 10, { intent: 'charge' }),
     ],
     start: [{ id: 'finePrint', v: 2 }],
@@ -321,8 +329,8 @@ const defs: EnemyDef[] = [
     main: atk('wetMop', 2, 2),
     every: 8,
     specials: [
-      { id: 'lightsOut', intent: 'debuff', windup: 6, status: [{ id: 'blackout', t: 8, target: 'hero' }] },
-      { id: 'fuseBox', intent: 'curse', windup: 6, curse: [{ id: 'machineDown', n: 1, to: 'belt' }] },
+      { id: 'lightsOut', intent: 'debuff', windup: 6, status: [gainStrength, { id: 'blackout', t: 8, target: 'hero' }] },
+      { id: 'fuseBox', intent: 'curse', windup: 6, curse: [{ id: 'machineDown', n: 1, to: 'belt' }], status: [gainStrength] },
     ],
   },
   {
@@ -349,7 +357,7 @@ const defs: EnemyDef[] = [
     art: 'changeManager',
     main: atk('bestPractice', 6, 6),
     every: 2,
-    specials: [{ id: 'synergies', intent: 'defend', windup: 6, block: 10 }, atk('rightsizing', 15, 10, { intent: 'charge' })],
+    specials: [{ id: 'synergies', intent: 'defend', windup: 6, block: 10, status: [gainStrength] }, atk('rightsizing', 15, 10, { intent: 'charge' })],
     halfSpeech: true,
     onHalf: (c) => c.closeBeltRows(1),
   },
@@ -375,7 +383,7 @@ const defs: EnemyDef[] = [
     main: atk('clearTheDesk', 7, 6),
     every: 2,
     specials: [
-      { id: 'nothingToLose', intent: 'curse', windup: 6, curse: [{ id: 'kamikaze', n: 1, to: 'belt' }] },
+      { id: 'nothingToLose', intent: 'curse', windup: 6, curse: [{ id: 'kamikaze', n: 1, to: 'belt' }], status: [gainStrength] },
       atk('exitInterview', 16, 10, { intent: 'charge' }),
     ],
   },
@@ -417,9 +425,9 @@ const defs: EnemyDef[] = [
     main: atk('anyUpdates', 8, 5),
     every: 2,
     specials: [
-      { id: 'topPriority', intent: 'curse', windup: 6, curse: [{ id: 'priorityTask', n: 1, to: 'belt' }] },
-      { id: 'quickQuestion', intent: 'curse', windup: 6, curse: [{ id: 'quickFavour', n: 1, to: 'draw' }] },
-      { id: 'allHands', intent: 'curse', windup: 6, curse: [{ id: 'lockout', n: 1, to: 'belt' }] },
+      { id: 'topPriority', intent: 'curse', windup: 6, curse: [{ id: 'priorityTask', n: 1, to: 'belt' }], status: [gainStrength] },
+      { id: 'quickQuestion', intent: 'curse', windup: 6, curse: [{ id: 'quickFavour', n: 1, to: 'draw' }], status: [gainStrength] },
+      { id: 'allHands', intent: 'curse', windup: 6, curse: [{ id: 'lockout', n: 1, to: 'belt' }], status: [gainStrength] },
       atk('annualReview', 22, 8, { intent: 'charge' }),
     ],
     start: [{ id: 'micromanagement' }],

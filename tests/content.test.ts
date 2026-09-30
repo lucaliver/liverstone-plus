@@ -63,6 +63,14 @@ describe('content integrity', () => {
       }
   });
 
+  it('every enemy past the first three can grow stronger, except the ones with nothing to hit with or a single move', () => {
+    const exempt = ['toxicCoworker', 'guyAsleep', 'overthinker'];
+    for (const e of ENEMY_LIST.slice(3)) {
+      const grows = enemyMoves(e).some((m) => m.status?.some((s) => s.id === 'strength' && s.target === 'enemy'));
+      expect(grows, e.id).toBe(!exempt.includes(e.id));
+    }
+  });
+
   it('elites and bosses start the fight with Block, normal enemies without', () => {
     for (const e of ENEMY_LIST) expect(!!e.block, e.id).toBe(e.tier !== 'normal');
   });
