@@ -35,11 +35,11 @@ const defs: EnemyDef[] = [
     id: 'snitch',
     act: 1,
     tier: 'normal',
-    hp: 40,
+    hp: 50,
     art: 'snitch',
     main: atk('tattle', 7, 5),
     every: 2,
-    specials: [atk('ratOut', 4, 8, { hits: 4, intent: 'charge' })],
+    specials: [atk('ratOut', 14, 10, { intent: 'charge' })],
     // Tells the boss: from half HP on, your belt is rushed for the rest of the fight.
     halfSpeech: true,
     onHalf: (c) => c.applyStatus('hero', 'hurry', 1, 9999),

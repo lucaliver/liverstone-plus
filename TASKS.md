@@ -1,56 +1,30 @@
 # TASKS
 
-- [x] dopo la scelta del reward, aggiungi animazione della carta scelta che va sopra a quella vecchia
+- [ ] rendi l'animazione di quando scegli il reward (e la nuova carta va a sovrapporre quella vecchia) più veloce
 
-- [x] quando si attiva la passiva di un nemico, dovresti mostrare prima il fumetto e poi il testo della passiva (il testo della passiva deve essere sintetico)
+- [ ] nella schermata di "PICK YOUR BONUS" c'è poco spazio verticalemnte per la sezione del deck; e il separatore tra deck e rewards sotto è brutto; fai un po' di restyle per usabilità
 
-- [x] cambia le mosse di Slave CEO: prima di "you're fired" dovrebbe velocizzare la belt del 200% per 10s
+- [ ] in passive/status descriptions the important keywords should be bolded; also make them colored accordingly
 
-- [x] "new hire" banner: when tapped it should bring you to the character selection screen on the new character
+- [ ] quando si triggera l'effetto della passiva di "goblin consultant" assicurati che le carte non scattino o non cambino posto; (se è più semplice, stoppa la belt per mezzo secondo prima di invertire direzione)
 
-- [x] "no repeats policy" should also apply to curses
+- [ ] carta "team change": dovrebbe avere exhaust; e le carte pinnate dovrebbero rimanere DIETRO a quelle nuove che scorrono
 
-- [x] add new card "On a roll": it doesn't fall off at the end of the belt but it gets stuck there. All attack cards that touch it gets staked behind it.  when a non-attack card gets in touch with the stak, the stack rolls off the belt. The stack can be played just by paying the first card (on a roll)
+- [ ] passiva del "CEO slave": la descrizione non combacia con quello che ora fa
 
-- [x] add this passive to enemy "senior boomer": cards leaving the belt deal you 1 damage (at 50% enemy hp: they deal 3 damages)
+- [ ] nella schermata di vittoria: rimuovi tasto "Clock in again" e metti icona home al tasto "Main menu"
 
-- [x] add this passive to enemy "goblin consultant" : every 25%hp lost revert the direction of the belt
+- [ ] "goblin consultant" ha un fumetto quando trigghera la passiva? se no, mettiglielo
 
-- [x] new card "workaholic": add X strength for Y seconds
+- [ ] cambiamo il funzionemnto dello status "burn" per differenziarlo dal veleno: hitta solo quando il nemico attacca con danno, e non scala (es. il nemico ha 10 burn, attacca subisce 10 danni, attacca e subisce 10 danni)
 
-- [x] new card "brown noser": double your mana regen speed for X sec
+- [ ] rimuovi la funzionalità dei badge nella mappa per ora
 
-- [x] after enemy dies, hide their statuses
-
-- [x] elites and bosses should also have some initian shield (other than initial health)
-
-- [x] i sorting possibili per le carte dovrebbero essere cost/type/rarity
-
-- [x] nella schermata Personnel: anziché "X on the payroll" dovrebbe dire quanti ne ho sbloccati su quanti
-
-- [x] cambia passiva del nemico "Security monitor": quando scende sotto 50% di hp la prima volta, ottiene 30 scudo
-
-- [x] new card "Take credit": gain 3 shield + steal 50% shield from enemy
-
-- [x] new card "Team change": all cards already in the belt get stuck where they are, they can be played normally, while other cards keep riding the belt normally
-
-- [x] add new "parkour!" card
-
-- [x] The menu and the act1 map should not have the same music.
-
-- [x] aggiungi nuova carta "Payday Loan": costo 0 e effetto molto forte, ma mette nel mazzo una maledizione "Debt" che costa 3 e se cade dalla bet fa danno+aumenta il proprio danno per la volta dopo
-
-- [x] voglio cambiare la generica mappa da roguelike con una più a tema e con presentazione migliore: stile Planimetria dell'ufficio. Porte, stanze, nebbia e badge che aprono porte chiuse. Vedi tu come rende meglio
-
-- [x] al nemico "Slave CEO" cambia passiva in "emergency button": quando arriva a 50% hp, stoppa la belt del tutto per 5sec
-
-- [x] enemy "happiness officer": change one of the curse move to a move that grants him hp regen
+- [ ] nella mappa quando una stanza è selezionata ha una animazione che fa su e giù, però il testo (es. "JOB") non si muove assieme all'icona, sistemalo
 
 # NEXT STEPS (ignore for now):
 
 FUTURE:
-
-- rendi l'animazione di quando scegli il reward (e la nuova carta va a sovrapporre quella vecchia) più veloce
 
 > aggiungere room migliori (es. room in cui elimini una carta o aggiungi una sleeve o altro, tutto a tema)
 > aggiungere uso della paga
