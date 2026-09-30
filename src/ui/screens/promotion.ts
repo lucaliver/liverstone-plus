@@ -5,6 +5,7 @@ import { addPerk, canPerk, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h } from '../dom';
 import { icon } from '../art/icons';
+import { CARD_SHOW_MS, playCardChange } from '../components/cardShow';
 import { openDeck } from '../components/modals';
 import { motes } from '../components/decor';
 import { runHud } from './journey';
@@ -35,9 +36,13 @@ export function promotionScreen(run: RunState, onDone: () => void): Screen {
               filter: (c) => canPerk(c, p.id),
               previewSelected: (c) => ({ ...c, perks: [...(c.perks ?? []), p.id] }),
               onPick: (c) => {
-                sfx('block');
+                const before = { ...c };
                 addPerk(run, c.uid, p.id);
-                onDone();
+                el.querySelectorAll('button').forEach((b) => {
+                  b.disabled = true;
+                });
+                playCardChange(el, before, { ...c }, t(`perk.${p.id}`));
+                setTimeout(onDone, CARD_SHOW_MS);
               },
             });
           },

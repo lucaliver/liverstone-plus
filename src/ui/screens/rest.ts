@@ -5,15 +5,12 @@ import type { Screen } from '../app';
 import { h } from '../dom';
 import { icon } from '../art/icons';
 import { creature } from '../art/creatures';
-import type { CardInst } from '../../game/types';
-import { cardView } from '../components/cardView';
+import { CARD_SHOW_MS, playCardChange } from '../components/cardShow';
 import { openDeck } from '../components/modals';
-import { burst, haptic } from '../fx/fx';
 import { motes } from '../components/decor';
 import { runHud } from './journey';
 
 export const HEAL_ANIM_MS = 1900;
-const UPGRADE_ANIM_MS = 1700;
 
 /** Pixel hearts float up from the bottom of the screen, then "+N" pops in the middle (with a `note` under it, e.g. "max HP"). */
 export function playHealing(screen: HTMLElement, amount: number, note?: string): void {
@@ -30,27 +27,6 @@ export function playHealing(screen: HTMLElement, amount: number, note?: string):
   layer.append(h('div', { class: 'heal-total' }, `+${amount}`, note ? h('small', null, note) : null));
   screen.append(layer);
   setTimeout(() => sfx('heal'), 700);
-}
-
-/** The card takes a hammer blow, then comes back upgraded with a flash and a stamp. */
-function playUpgrade(screen: HTMLElement, card: CardInst): void {
-  const old = cardView(card, { cls: 'up-old' });
-  const fresh = cardView({ ...card, up: true }, { cls: 'up-new' });
-  const layer = h(
-    'div',
-    { class: 'upgrade-show', 'aria-hidden': 'true' },
-    h('div', { class: 'up-stage' }, old, h('i', { class: 'up-flash' }), fresh),
-    h('div', { class: 'up-stamp' }, t('rest.upgraded')),
-  );
-  screen.append(layer);
-  sfx('block');
-  haptic('tap');
-  setTimeout(() => {
-    const r = fresh.getBoundingClientRect();
-    burst('gold', r.left + r.width / 2, r.top + r.height / 2, 34, 1.3);
-    sfx('ability');
-    haptic('ability');
-  }, 480);
 }
 
 export function restScreen(run: RunState, onDone: () => void): Screen {
@@ -89,13 +65,15 @@ export function restScreen(run: RunState, onDone: () => void): Screen {
           filter: canUpgrade,
           previewSelected: (c) => ({ ...c, up: true }),
           onPick: (c) => {
+            // The picked card is the deck's own, so the "before" face is kept ahead of the change.
+            const before = { ...c };
             upgradeCard(run, c.uid);
             run.cleared = true;
             el.querySelectorAll('button').forEach((b) => {
               b.disabled = true;
             });
-            playUpgrade(el, c);
-            setTimeout(onDone, UPGRADE_ANIM_MS);
+            playCardChange(el, before, { ...c }, t('rest.upgraded'));
+            setTimeout(onDone, CARD_SHOW_MS);
           },
         });
       }),

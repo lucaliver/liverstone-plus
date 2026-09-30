@@ -372,8 +372,8 @@
   85% { opacity: 1; }
   100% { transform: translateY(-30px); opacity: 0; }
 }
-/* an upgraded card: the old one takes a blow and shakes, a flash, the new one stamps in, and the word */
-.upgrade-show {
+/* a card show (upgrade, promotion, shredding, photocopy): a veil over the room, the card on a stage, and the word stamped last */
+.card-show {
   position: absolute;
   inset: 0;
   z-index: 40;
@@ -384,32 +384,12 @@
   gap: 18px;
   background: #0c0818cc;
   pointer-events: none;
-  animation: up-out 0.2s steps(2) 1.5s forwards;
+  animation: show-out 0.2s steps(2) 1.5s forwards;
 }
-@keyframes up-out { to { opacity: 0; } }
-.up-stage { position: relative; width: min(46vw, 190px); aspect-ratio: 1 / 1.4; }
-.up-stage .card { --cw: min(46vw, 190px); position: absolute; inset: 0; }
-.up-old { animation: up-hit 0.48s steps(1) forwards; }
-@keyframes up-hit {
-  0% { transform: scale(1.1); }
-  25% { transform: scale(0.9) rotate(-4deg); }
-  50% { transform: scale(1) rotate(4deg) translateX(6px); }
-  75% { transform: scale(0.95) rotate(-3deg); }
-  100% { transform: scale(1); opacity: 0; }
-}
-.up-new { animation: stamp-in 0.3s steps(3) 0.48s backwards; }
-.up-flash {
-  position: absolute;
-  inset: -14%;
-  z-index: 2;
-  border: 8px solid var(--y);
-  animation: up-flash 0.3s steps(3) 0.48s both;
-}
-@keyframes up-flash {
-  0% { opacity: 1; scale: 0.6; }
-  100% { opacity: 0; scale: 1.5; }
-}
-.up-stamp {
+@keyframes show-out { to { opacity: 0; } }
+.show-stage { position: relative; width: min(46vw, 190px); aspect-ratio: 1 / 1.4; }
+.show-stage .card { --cw: min(46vw, 190px); position: absolute; inset: 0; }
+.show-stamp {
   font-family: var(--font-display);
   font-size: 28px;
   color: var(--y);
@@ -417,6 +397,71 @@
   text-shadow: 3px 3px 0 var(--p);
   animation: stamp-in 0.2s steps(2) 0.75s backwards;
 }
+/* upgrade and promotion: the old card takes a blow and shakes, a flash, the new one stamps in */
+.show-old { animation: show-hit 0.48s steps(1) forwards; }
+@keyframes show-hit {
+  0% { transform: scale(1.1); }
+  25% { transform: scale(0.9) rotate(-4deg); }
+  50% { transform: scale(1) rotate(4deg) translateX(6px); }
+  75% { transform: scale(0.95) rotate(-3deg); }
+  100% { transform: scale(1); opacity: 0; }
+}
+.show-new { animation: stamp-in 0.3s steps(3) 0.48s backwards; }
+.show-flash {
+  position: absolute;
+  inset: -14%;
+  z-index: 2;
+  border: 8px solid var(--y);
+  animation: show-flash 0.3s steps(3) 0.48s both;
+}
+@keyframes show-flash {
+  0% { opacity: 1; scale: 0.6; }
+  100% { opacity: 0; scale: 1.5; }
+}
+/* shredding: the card shakes, then its strips drop away one after the other while the shredder rattles */
+.shred-strip { animation: shred-fall 0.9s steps(9) calc(0.25s + var(--i) * 0.05s) both; }
+@keyframes shred-fall {
+  0% { transform: none; }
+  25% { transform: translateY(-4px); }
+  100% { transform: translateY(150%) rotate(var(--r)); opacity: 0; }
+}
+.shred-machine {
+  font-size: 84px;
+  color: var(--b);
+  --ink2: var(--y);
+  animation: shred-shake 0.9s steps(9) 0.25s both;
+}
+@keyframes shred-shake {
+  20%, 60% { translate: -3px 0; }
+  40%, 80% { translate: 3px 0; }
+  100% { translate: 0 0; }
+}
+.card-show.shred .show-stamp { animation-delay: 0.9s; }
+/* photocopy: a green line sweeps the card, then the copy slides out from behind it */
+.copy-src { animation: copy-src 0.3s steps(3) 0.55s both; }
+@keyframes copy-src { to { translate: -16% 0; } }
+.copy-scan {
+  position: absolute;
+  left: -6%;
+  right: -6%;
+  top: 0;
+  height: 8px;
+  z-index: 3;
+  background: #1cffc0;
+  box-shadow: 0 0 0 2px var(--k);
+  animation: copy-scan 0.5s steps(6) both;
+}
+@keyframes copy-scan {
+  0% { top: 0; opacity: 1; }
+  99% { top: 97%; opacity: 1; }
+  100% { top: 97%; opacity: 0; }
+}
+.copy-new { animation: copy-out 0.3s steps(3) 0.55s both; }
+@keyframes copy-out {
+  from { translate: 0 0; rotate: 0deg; opacity: 0; }
+  to { translate: 16% 3%; rotate: 4deg; opacity: 1; }
+}
+.card-show.photocopy .show-stamp { animation-delay: 0.9s; }
 .promo-badge {
   display: grid;
   place-items: center;

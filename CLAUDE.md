@@ -100,7 +100,7 @@ src/
   ui/          app.ts (screens + modals), dom.ts (h, onPress, onTapOrHold, LONG_PRESS_MS)
     art/       icons.ts (64×64 vector icons), creatures.ts (200×200 vector sprites), riso.ts (pixel renderer)
     combat/    view (DOM + refs + shared state), hud, cardLayer (belt/sleeve/input), combatFx (events → FX), combatScreen
-    components/cardView (card DOM, face glyphs), coach (coach-mark overlay: first-fight tour, card tips), modals (settings, deck, card detail, info, card anatomy, debug fight),
+    components/cardView (card DOM, face glyphs), cardShow (a room's card animation: upgrade, promotion, shred, photocopy), coach (coach-mark overlay: first-fight tour, card tips), modals (settings, deck, card detail, info, card anatomy, debug fight),
                moveText (moves, enemy
                pattern and traits), heroSheet (hero features and in-run sheet), decor
     fx/        particles, floating text, shake, haptics
