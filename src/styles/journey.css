@@ -124,6 +124,8 @@
   font-size: 20px;
   color: var(--muted-d);
 }
+/* a room that just came out of the fog is stamped on the map when the walk reaches it */
+.node.revealed { animation: stamp-in 0.2s steps(2) var(--reveal, 0s) backwards; }
 /* a room: its icon on top, its name plate at the bottom */
 .node {
   position: absolute;

@@ -78,13 +78,21 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   };
   for (const id of run.cleared ? options : cur.next) walk(id);
   // Fog: how many doors away each room is; the ones past VISION can't be made out (the boss is always in sight).
-  const dist = new Map<number, number>();
-  const look = (id: number, d: number): void => {
-    if ((dist.get(id) ?? Infinity) <= d) return;
-    dist.set(id, d);
-    if (d < VISION) for (const nx of run.nodes[id].next) look(nx, d + 1);
+  const seenFrom = (start: number): Map<number, number> => {
+    const dist = new Map<number, number>();
+    const look = (id: number, d: number): void => {
+      if ((dist.get(id) ?? Infinity) <= d) return;
+      dist.set(id, d);
+      if (d < VISION) for (const nx of run.nodes[id].next) look(nx, d + 1);
+    };
+    look(start, 0);
+    return dist;
   };
-  look(cur.id, 0);
+  const dist = seenFrom(cur.id);
+  // Back from a job in the same act: the rooms that came out of the fog with this step stamp in once the walk ends.
+  const before =
+    run.cleared && run.path.length > 1 && run.nodes[run.path[run.path.length - 2]].act === cur.act ? seenFrom(run.path[run.path.length - 2]) : null;
+  let walkMs = 0;
   const foggy = (n: RunNode): boolean => n.type !== 'boss' && !run.path.includes(n.id) && !dist.has(n.id);
 
   /** The corridor between two rooms: straight along a lane or across a floor, else up, across and up again. */
@@ -175,6 +183,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     const lens = pts.slice(1).map((p, k) => Math.hypot(px(p)[0] - px(pts[k])[0], p[1] - pts[k][1]));
     const total = lens.reduce((sum, l) => sum + l, 0);
     const n = Math.max(4, Math.round(total / STEP_PX));
+    if (fresh) walkMs = n * STEP_MS;
     for (let k = 0; k < n; k++) {
       let d = ((k + 0.5) / n) * total;
       let seg = 0;
@@ -194,11 +203,12 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     const open = n.id === cur.id ? !run.cleared : options.includes(n.id);
     const missed = !past && !open && n.id !== cur.id && !reachable.has(n.id);
     const fog = foggy(n);
+    const revealed = !!before && !before.has(n.id) && dist.has(n.id) && !past;
     const label = fog ? UNKNOWN : t(`journey.node.${n.type}`);
     const el = h(
       'div',
       {
-        class: `node ${n.type} ${past ? 'done' : ''} ${missed ? 'missed' : ''} ${open ? 'open' : ''} ${fog ? 'fog' : ''}`,
+        class: `node ${n.type} ${past ? 'done' : ''} ${missed ? 'missed' : ''} ${open ? 'open' : ''} ${fog ? 'fog' : ''} ${revealed ? 'revealed' : ''}`,
         style: { left: `${laneX(n.lane)}%`, top: `${y(n)}px` },
       },
       h('button', {
@@ -215,6 +225,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       h('span', { class: 'label' }, label),
       ...[...(doors.get(n.id) ?? [])].map((side) => h('i', { class: `door ${side}` })),
     );
+    if (revealed) el.style.setProperty('--reveal', `${walkMs}ms`);
     const dot = el.querySelector<HTMLElement>('.dot')!;
     if (!past && !fog && n.type === 'boss' && actDef(n.act).bossClock) dot.append(clockFace());
     // Tap an open node to pick it (again to go in); hold any node to learn what it is.
