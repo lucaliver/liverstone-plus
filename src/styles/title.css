@@ -37,12 +37,6 @@
   border: var(--line) solid var(--k);
   box-shadow: var(--off) var(--off) 0 var(--shadow);
   rotate: -1.5deg;
-  /* a draft from the crypt: it sways on its tape */
-  transform-origin: 50% 0;
-  animation: sway 6s steps(6) infinite;
-}
-@keyframes sway {
-  50% { rotate: -0.6deg; }
 }
 /* two strips of tape hold it up */
 .poster::before,
