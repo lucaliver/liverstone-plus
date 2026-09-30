@@ -10,7 +10,7 @@ import type { CardInst } from '../src/game/types';
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
 
 /** The default opponent: a Senior Boomer without his passives, so tests count only what they set up. */
-const plainBoomer = { ...ENEMIES.seniorBoomer, start: [] };
+const plainBoomer = { ...ENEMIES.seniorBoomer, start: [], onHalf: undefined };
 
 function setup(over: Partial<CombatSetup> = {}): Combat {
   return new Combat({
@@ -836,6 +836,35 @@ describe('pop culture cards', () => {
     // Cards kept arriving meanwhile, and a pinned one can still be played.
     expect(c.belt.some((b) => !b.pinned)).toBe(true);
     expect(c.playCard(pinned[0].uid)).toBe(true);
+  });
+
+  it('Parkour!: dodge and a rushed belt, both wearing off', () => {
+    const { c, uid } = ready('parkour');
+    const base = c.beltRate();
+    c.playCard(uid);
+    expect(c.has('hero', 'dodge')).toBe(true);
+    expect(c.beltRate()).toBeCloseTo(base * CONFIG.beltRush);
+    run(c, CARDS.parkour.vals[1] + 0.5);
+    expect(c.has('hero', 'dodge')).toBe(false);
+    expect(c.beltRate()).toBeCloseTo(base);
+  });
+
+  it('Payday Loan hits hard and shuffles a Debt in; the Debt bites harder every time it slips off the belt', () => {
+    const { c, uid } = ready('paydayLoan');
+    c.hero.hp = c.hero.maxHp = 500;
+    c.playCard(uid);
+    expect(c.enemy.maxHp - c.enemy.hp).toBe(CARDS.paydayLoan.vals[0]);
+    const debt = c.draw.find((x) => x.id === 'debt')!;
+    expect(debt).toBeDefined();
+    const [bite, more] = CARDS.debt.vals;
+    c.belt.length = 0;
+    c.belt.push({ card: debt, pos: EXPIRE_POS, row: 0 });
+    run(c, 0.05);
+    expect(500 - c.hero.hp).toBe(bite);
+    expect(c.cardVals(debt)[0]).toBe(bite + more);
+    c.belt.push({ card: debt, pos: EXPIRE_POS, row: 0 });
+    run(c, 0.05);
+    expect(500 - c.hero.hp).toBe(bite + bite + more);
   });
 
   it('Workaholic: Strength that lasts only for a while', () => {

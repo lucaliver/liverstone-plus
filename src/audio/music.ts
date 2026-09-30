@@ -7,7 +7,7 @@
  */
 import { audioGraph, onAudioUnlock, resumeAudio } from './sfx';
 
-export type TrackId = 'menu' | 'combat' | 'combat2' | 'elite' | 'boss' | 'rest' | 'pause' | 'victory';
+export type TrackId = 'menu' | 'map' | 'combat' | 'combat2' | 'elite' | 'boss' | 'rest' | 'pause' | 'victory';
 
 /** [step (0-15), midi note, length in 16th steps] */
 type NoteEv = [number, number, number];
@@ -103,6 +103,49 @@ const TRACKS: Record<TrackId, Track> = {
     drums: ['k.k.............'],
     pad: true,
     gain: 0.9,
+  },
+  // The morning corridors: a steady walking pulse, a thin tune, the cold hum of the fluorescent lights.
+  map: {
+    bpm: 96,
+    chords: [
+      { root: 40, tones: MIN }, // Em
+      { root: 36, tones: MAJ7 }, // Cmaj7
+      { root: 43, tones: MAJ }, // G
+      { root: 47, tones: DOM7 }, // B7 (harmonic minor)
+    ],
+    bass: [0, _, _, _, 7, _, _, _, 0, _, _, _, 7, _, 12, _],
+    bassWave: 'triangle',
+    arp: [0, _, 1, 2, _, 1, 2, _, 0, _, 1, 2, _, 3, 2, _],
+    arpOctave: 4,
+    lead: [
+      [
+        [0, B4, 4],
+        [4, E5, 4],
+        [8, G5, 6],
+        [14, Fs5, 2],
+      ],
+      [
+        [0, E5, 4],
+        [4, D5, 4],
+        [8, C5, 8],
+      ],
+      [
+        [0, D5, 4],
+        [4, G5, 4],
+        [8, B5, 4],
+        [12, A5, 4],
+      ],
+      [
+        [0, Fs5, 6],
+        [6, Ds5, 2],
+        [8, B4, 8],
+      ],
+    ],
+    leadOn: (p) => p % 2 === 1,
+    leadVoice: 'pulse',
+    drums: ['k.......k.......', '..h...h...h...h.'],
+    pad: true,
+    gain: 0.75,
   },
   // Driving D minor: running bass, 16th arps, a hooky pulse lead.
   combat: {

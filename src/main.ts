@@ -99,7 +99,7 @@ function goJourney(): void {
     goTitle();
     return;
   }
-  playMusic('menu');
+  playMusic(actDef(currentNode(run).act).mapMusic);
   saveRun(run);
   show(journeyScreen(run, enterNode, goTitle));
 }

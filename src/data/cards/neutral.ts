@@ -404,6 +404,38 @@ export const neutralCards: CardDef[] = [
   },
 
   {
+    id: 'parkour',
+    face: '{dodge:0}|{rush:1}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 1,
+    vals: [3, 8],
+    upVals: [4, 10],
+    art: 'runner',
+    // Over the desks and out of reach, but the belt keeps up with you.
+    play: (c, v) => {
+      c.applyStatus('hero', 'dodge', 1, v[0]);
+      c.rushBelt(v[1]);
+    },
+  },
+  {
+    id: 'paydayLoan',
+    face: '{dmg:0}',
+    cls: 'neutral',
+    type: 'attack',
+    rarity: 'epic',
+    cost: 0,
+    vals: [35],
+    upVals: [45],
+    art: 'coinStack',
+    // Money now, and the bill comes due: a Debt goes into your draw pile.
+    play: (c, v) => {
+      c.hit(v[0]);
+      c.addTempCard('debt', 'draw');
+    },
+  },
+  {
     id: 'takeCredit',
     face: '{block:0}|{snatch:1}',
     cls: 'neutral',
@@ -566,6 +598,24 @@ export const curseCards: CardDef[] = [
     play: () => {},
     // Explodes at the end of the belt. Block absorbs it.
     onExpire: (c, v) => void c.damage('enemy', 'hero', v[0], { raw: true, kind: 'fire' }, 'dot'),
+  },
+  {
+    // Payday Loan's: nobody wants to pay for it, and every time it slips off the belt it bites, harder than the last.
+    id: 'debt',
+    face: '{?exit}{boom:0}',
+    cls: 'curse',
+    type: 'curse',
+    rarity: 'special',
+    cost: 3,
+    vals: [6, 4],
+    keywords: ['exhaust'],
+    bonusIdx: 0,
+    art: 'unpaidBill',
+    play: () => {},
+    onExpire: (c, v, card) => {
+      c.damage('enemy', 'hero', v[0], { raw: true, kind: 'fire' }, 'dot');
+      card.bonus += v[1];
+    },
   },
   {
     id: 'mandatoryFun',

@@ -34,11 +34,11 @@
 
 - [x] new card "Team change": all cards already in the belt get stuck where they are, they can be played normally, while other cards keep riding the belt normally
 
-- [ ] add new "parkour!" card
+- [x] add new "parkour!" card
 
-- [ ] The menu and the act1 map should not have the same music.
+- [x] The menu and the act1 map should not have the same music.
 
-- [ ] aggiungi nuova carta "Payday Loan": costo 0 e effetto molto forte, ma mette nel mazzo una maledizione "Debt" che costa 3 e se cade dalla bet fa danno+aumenta il proprio danno per la volta dopo
+- [x] aggiungi nuova carta "Payday Loan": costo 0 e effetto molto forte, ma mette nel mazzo una maledizione "Debt" che costa 3 e se cade dalla bet fa danno+aumenta il proprio danno per la volta dopo
 
 - [ ] voglio cambiare la generica mappa da roguelike con una più a tema e con presentazione migliore: stile Planimetria dell'ufficio. Porte, stanze, nebbia e badge che aprono porte chiuse. Vedi tu come rende meglio
 

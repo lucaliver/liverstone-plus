@@ -813,6 +813,18 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'shadow',
     svg: `<rect x="4" y="26" width="14" height="14"/><rect x="25" y="26" width="14" height="14"/><rect x="46" y="26" width="14" height="14"/>`,
   },
+  runner: {
+    el: 'nature',
+    svg: `<circle cx="44" cy="9" r="7"/><path d="M30 18h12l10 12-6 5-7-7-4 7 10 8-2 15h-9l2-11-10-8-6 12-6-4 10-19z"/><path d="M2 58h22v4H2z"/>`,
+  },
+  coinStack: {
+    el: 'holy',
+    svg: `<path d="M8 44v8c0 5 11 8 24 8s24-3 24-8v-8z"/><ellipse cx="32" cy="44" rx="24" ry="8"/><path d="M8 32v8c0 5 11 8 24 8s24-3 24-8v-8z"/><ellipse cx="32" cy="32" rx="24" ry="8"/><path d="M8 20v8c0 5 11 8 24 8s24-3 24-8v-8z"/><ellipse cx="32" cy="20" rx="24" ry="8"/><path d="M8 44c0 4 11 8 24 8s24-4 24-8M8 32c0 4 11 8 24 8s24-4 24-8M8 20c0 4 11 8 24 8s24-4 24-8" stroke="#16121f" stroke-width="3" fill="none"/>`,
+  },
+  unpaidBill: {
+    el: 'curse',
+    svg: `<path d="M10 4h44v56l-7-5-7 5-8-5-8 5-7-5-7 5z"/><path fill="#16121f" d="M18 14h28v4H18zM18 24h28v4H18zM18 34h16v4H18z"/><path fill="#16121f" d="M38 34h8v8h-8z"/>`,
+  },
   pushpin: {
     el: 'steel',
     svg: `<path d="M20 4h24l-5 5v13l11 13H14l11-13V9z"/><rect x="30" y="36" width="4" height="24"/>`,

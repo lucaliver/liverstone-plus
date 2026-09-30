@@ -81,6 +81,8 @@ export interface CardDef {
   minCost?: number;
   vals: number[];
   upVals?: number[];
+  /** The value `CombatCard.bonus` adds to (default: the first damage value): a curse that hits harder every time. */
+  bonusIdx?: number;
   /** Indexes of `vals` that are damage (live previews). Derived from the `{dmg:N}` glyphs of `face` unless set. */
   dmg?: number[];
   keywords?: Keyword[];
