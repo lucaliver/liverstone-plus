@@ -143,6 +143,8 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     for (const [id, el] of nodeEls) el.classList.toggle('current', id === picked);
     const target = picked === null ? null : run.nodes[picked];
     enterBtn.disabled = !target;
+    // With a room picked, going in is the one thing the screen wants: the button pulses like the other calls to action.
+    enterBtn.classList.toggle('cta', !!target);
     enterBtn.textContent = target ? t('journey.enter', { n: target.floor }) : t('journey.choose');
   };
   const go = (): void => {
