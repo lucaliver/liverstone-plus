@@ -122,7 +122,7 @@ const en = {
   'settings.sound': 'Sound effects',
   'settings.music': 'Music',
   'settings.speed': 'Game speed',
-  'settings.speedNote': 'Careful: this makes the game harder!',
+  'settings.speedNote': 'Careful: this is not recommended, it makes the game harder!',
   'settings.motion': 'Reduce motion',
   'settings.haptics': 'Vibration',
   'settings.rightToLeft': 'Belt runs right to left',
@@ -152,7 +152,7 @@ const en = {
   'coach.belt': "You don't draw. Your deck comes through this belt.\nTap a card to play it.",
   'coach.mana': 'Your mana crystals. \nCards cost mana, but luckily it refills over time.',
   'coach.sleeve': 'Your sleeve: drag a card down here to save it for whenever you need it.',
-  'coach.ability': 'Your ability (a big move that costs a lot of mana).',
+  'coach.ability': 'Your ability. It is a big move that costs a lot of mana.',
   'coach.start': 'Remember: you can hold on anything to read what it does.\nWhen you are ready, clock in to start.',
 
   // ------------------------------------------------------------- heroes
