@@ -39,7 +39,7 @@ export function copyRoomScreen(run: RunState, onDone: () => void): Screen {
     h('p', { class: 'sub' }, t('copy.desc')),
     h('div', {
       class: 'rest-fire',
-      html: `${motes(14, ['var(--paper)', 'var(--paper)', 'var(--y)'])}<div class="promo-badge">${icon('shredder')}</div>`,
+      html: `${motes(14, ['var(--paper)', 'var(--paper)', 'var(--y)'])}<div class="promo-badge chew">${icon('shredder')}</div>`,
     }),
     h(
       'div',

@@ -18,7 +18,7 @@ export function promotionScreen(run: RunState, onDone: () => void): Screen {
     runHud(run),
     h('h1', { class: 'h1', style: { marginTop: '12px' } }, t('promo.title')),
     h('p', { class: 'sub' }, t('promo.desc')),
-    h('div', { class: 'rest-fire', html: `${motes(14, ['var(--y)', 'var(--b)'])}<div class="promo-badge">${icon('ladder')}</div>` }),
+    h('div', { class: 'rest-fire', html: `${motes(14, ['var(--y)', 'var(--b)'])}<div class="promo-badge climb">${icon('ladder')}</div>` }),
     h(
       'div',
       { class: 'rest-options' },
