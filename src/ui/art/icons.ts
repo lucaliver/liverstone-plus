@@ -863,7 +863,7 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   },
   paperRoll: {
     el: 'holy',
-    svg: `<circle cx="30" cy="26" r="22"/><circle cx="30" cy="26" r="9" fill="#16121f"/><path ${HI} d="M12 18c3-6 8-9 14-10-5 3-8 7-9 13z"/><path d="M44 44h16v18l-4-3-4 3-4-3-4 3z"/>`,
+    svg: `<circle cx="30" cy="26" r="22"/><circle cx="30" cy="26" r="9" fill="#16121f"/><path ${HI} d="M12 18c3-6 8-9 14-10-5 3-8 7-9 13z"/><path d="M22 44h40v10H26z"/>`,
   },
   scanner: {
     el: 'arcane',

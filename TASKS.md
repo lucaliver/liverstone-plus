@@ -42,6 +42,10 @@
 
 - [ ] voglio cambiare la generica mappa da roguelike con una più a tema e con presentazione migliore: stile Planimetria dell'ufficio. Porte, stanze, nebbia e badge che aprono porte chiuse. Vedi tu come rende meglio
 
+- [ ] al nemico "Slave CEO" cambia passiva in "emergency button": quando arriva a 50% hp, stoppa la belt del tutto per 5sec
+
+- [ ] enemy "happiness officer": change one of the curse move to a move that grants him hp regen
+
 # NEXT STEPS (ignore for now):
 
 FUTURE:
@@ -54,8 +58,6 @@ FUTURE:
 
 > rivedere icone, sprite e musica: e dare prompt su cosa non mi piace
 
-> to a boring enemy: add a move that grant hp regen
-
 > Desktop. Chi apre il gioco su itch.io spesso è al computer. Controlla che la colonna verticale sia centrata e con una cornice decente, che il mouse funzioni bene e magari aggiungi qualche tasto rapido (spazio = pausa).
 
 > URL. Il sito vive su liverstone-plus: per il lancio servono un nome coerente (itch.io/punchcard o un dominio) e un'immagine og aggiornata.
@@ -63,5 +65,3 @@ FUTURE:
 > Feedback. Un link "Send feedback" in Impostazioni. Se vuoi dei dati, GoatCounter o Plausible non usano cookie (niente banner GDPR) e ti dicono dove la gente abbandona.
 
 > Traduzione italiana. Ti costa poco, verifica davvero la pipeline i18n (testi più lunghi, plurali) e ti apre un pubblico.
-
-+ passiva "energency button" per nemico X: stoppa la belt del tutto per 5sec
