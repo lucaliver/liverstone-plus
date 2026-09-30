@@ -360,7 +360,8 @@ export class Combat {
   private tickHero(dt: number): void {
     const h = this.hero;
     if (h.mana < h.maxMana) {
-      const rate = this.regenMul * (this.has('hero', 'chill') ? 0.5 : 1);
+      let rate = this.regenMul;
+      for (const id of Object.keys(h.statuses)) if (this.has('hero', id)) rate *= STATUSES[id].regenMul ?? 1;
       h.manaTimer += dt * rate;
       while (h.manaTimer >= h.regen && h.mana < h.maxMana) {
         h.manaTimer -= h.regen;
@@ -829,16 +830,23 @@ export class Combat {
     return this.sleeve.filter((c) => c !== null).map((c) => [c, CARDS[c.id]]);
   }
 
+  /** Strength of a side: the stacks of every status that counts as Strength while active. */
+  private strengthOf(side: Side): number {
+    let n = 0;
+    for (const [id, s] of Object.entries(this.fighter(side).statuses)) if (STATUSES[id].strength && this.has(side, id)) n += s.v;
+    return n;
+  }
+
   private computeDamage(from: Side, to: Side, base: number, def: CardDef | null): number {
     let dmg = base;
     if (from === 'hero') {
-      if (def?.type === 'attack') dmg += this.stacks('hero', 'strength');
+      if (def?.type === 'attack') dmg += this.strengthOf('hero');
       if (def?.type === 'spell') dmg += this.stacks('hero', 'spellPower');
       dmg += this.heroDef.hooks.bonusDamage?.(this, def) ?? 0;
       for (const [held, hd] of this.held()) dmg += hd.inSleeve?.bonusDamage?.(this, this.cardVals(held), def) ?? 0;
       dmg *= this.heroDef.hooks.damageMult?.(this, def) ?? 1;
     } else {
-      dmg += this.stacks('enemy', 'strength');
+      dmg += this.strengthOf('enemy');
     }
     if (this.has(from, 'weak')) dmg *= 0.75;
     if (this.has(to, 'vulnerable')) dmg *= 1.5;

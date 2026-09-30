@@ -35,7 +35,10 @@ const endOnPlay =
     c.removeStatus(side, id);
 
 const defs: StatusDef[] = [
-  { id: 'strength', kind: 'stacks', good: true, icon: 'fist' },
+  { id: 'strength', kind: 'stacks', good: true, icon: 'fist', strength: true },
+  // Workaholic: `v` Strength, for a while only.
+  { id: 'workaholic', kind: 'timed', good: true, icon: 'fist', strength: true },
+  { id: 'brownNosing', kind: 'timed', good: true, icon: 'crystalUp', regenMul: 2 },
   { id: 'spellPower', kind: 'stacks', good: true, icon: 'wand' },
   { id: 'thorns', kind: 'stacks', good: true, icon: 'thorns' },
   { id: 'dodge', kind: 'timed', good: true, icon: 'mirror' },
@@ -100,7 +103,7 @@ const defs: StatusDef[] = [
   { id: 'poison', kind: 'dot', good: false, icon: 'drop' },
   { id: 'weak', kind: 'timed', good: false, icon: 'broken' },
   { id: 'vulnerable', kind: 'timed', good: false, icon: 'crack' },
-  { id: 'chill', kind: 'timed', good: false, icon: 'snow' },
+  { id: 'chill', kind: 'timed', good: false, icon: 'snow', regenMul: 0.5 },
   // A stunned enemy's timer stops (see enemyTimeRate); a stunned hero can't play cards.
   { id: 'stun', kind: 'timed', good: false, icon: 'stars', selfIcon: 'ko', canPlay: (_c, side) => (side === 'hero' ? 'combat.stunned' : null) },
   { id: 'frozen', kind: 'timed', good: false, icon: 'hourglass' },

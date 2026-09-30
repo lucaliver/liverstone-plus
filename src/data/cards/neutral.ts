@@ -377,6 +377,32 @@ export const neutralCards: CardDef[] = [
     play: (c) => c.playPile(),
   },
 
+  {
+    id: 'workaholic',
+    face: '{str:0}|{timer:1}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'common',
+    cost: 1,
+    vals: [3, 10],
+    upVals: [4, 12],
+    art: 'laptopMoon',
+    play: (c, v) => c.applyStatus('hero', 'workaholic', v[0], v[1]),
+  },
+  {
+    id: 'brownNoser',
+    face: '{manaRegen:0}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 1,
+    vals: [10],
+    upVals: [15],
+    keywords: ['exhaust'],
+    art: 'brownNose',
+    play: (c, v) => c.applyStatus('hero', 'brownNosing', 1, v[0]),
+  },
+
   // Generated during a fight (never offered as rewards).
   {
     id: 'alreadyDone',

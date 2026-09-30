@@ -60,6 +60,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   auto: { icon: 'autopilot', unit: 's' },
   balance: { icon: 'seesaw' },
   pile: { icon: 'pile' },
+  manaRegen: { icon: 'crystalUp', unit: 's' },
   /** The card's own cost goes down. */
   cheaper: { icon: 'priceTag', sign: '-' },
 };

@@ -143,6 +143,10 @@ export interface StatusDef {
   passive?: boolean;
   /** Icon when the status is on the hero, if it must read differently there (you stunned vs the enemy stunned). */
   selfIcon?: string;
+  /** While active, its amount (`v`) counts as Strength: extra damage for attack cards (a timed one is a temporary boost). */
+  strength?: true;
+  /** While active on the hero, multiplies its mana regeneration (a chill slows it, Brown Nosing speeds it up). */
+  regenMul?: number;
   /** A rule while active: returns why the hero can't play this card (`uid`: belt or sleeve copy) now (an i18n key), or null. */
   canPlay?: (c: Combat, side: Side, def: CardDef, uid: number) => TKey | null;
   /** While active (on either side), the hero's max mana can't grow past this. */

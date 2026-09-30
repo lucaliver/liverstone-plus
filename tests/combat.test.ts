@@ -808,6 +808,31 @@ describe('pop culture cards', () => {
     return { c, uid: c.belt[c.belt.length - 1].card.uid };
   };
 
+  it('Workaholic: Strength that lasts only for a while', () => {
+    const { c, uid } = ready('workaholic');
+    const dmg = (): number => c.previewHeroDamage(10, CARDS.punch);
+    c.playCard(uid);
+    expect(dmg()).toBe(10 + CARDS.workaholic.vals[0]);
+    run(c, CARDS.workaholic.vals[1] + 0.5);
+    expect(dmg()).toBe(10);
+  });
+
+  it('Brown Noser: mana refills twice as fast for a while', () => {
+    const { c, uid } = ready('brownNoser');
+    const gained = (seconds: number): number => {
+      c.hero.mana = 0;
+      c.hero.manaTimer = 0;
+      run(c, seconds);
+      return c.hero.mana;
+    };
+    const normal = gained(6);
+    c.playCard(uid);
+    c.hero.mana = 0;
+    expect(gained(6)).toBeGreaterThan(normal * 1.8);
+    run(c, CARDS.brownNoser.vals[0]);
+    expect(gained(6)).toBe(normal);
+  });
+
   it('Severance: Strength, then cards slipping off the belt play themselves for free', () => {
     const { c, uid } = ready('severance');
     c.playCard(uid);

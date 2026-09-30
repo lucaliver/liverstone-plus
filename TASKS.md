@@ -16,9 +16,9 @@
 
 - [x] add this passive to enemy "goblin consultant" : every 25%hp lost revert the direction of the belt
 
-- [ ] new card "workaholic": add X strength for Y seconds
+- [x] new card "workaholic": add X strength for Y seconds
 
-- [ ] new card "brown noser": double your mana regen speed for X sec
+- [x] new card "brown noser": double your mana regen speed for X sec
 
 - [ ] after enemy dies, hide their statuses
 

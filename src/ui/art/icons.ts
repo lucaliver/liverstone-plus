@@ -813,6 +813,18 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'shadow',
     svg: `<rect x="4" y="26" width="14" height="14"/><rect x="25" y="26" width="14" height="14"/><rect x="46" y="26" width="14" height="14"/>`,
   },
+  crystalUp: {
+    el: 'arcane',
+    svg: `<path d="M24 14l14 16-14 34-14-34z"/><path fill="#16121f" d="M24 26l7 8-7 18-7-18z"/><path d="M50 4l12 14H54v14H46V18h-8z"/>`,
+  },
+  laptopMoon: {
+    el: 'shadow',
+    svg: `<rect x="8" y="8" width="48" height="34"/><rect x="13" y="13" width="38" height="24" fill="#16121f"/><path d="M38 17a9 9 0 1 0 6 14 10 10 0 0 1-6-14z"/><path d="M2 46h60l-6 12H8z"/>`,
+  },
+  brownNose: {
+    el: 'curse',
+    svg: `<path d="M26 4h12v26c10 2 18 8 18 18 0 6-6 10-12 10-5 0-8-3-12-3s-7 3-12 3c-6 0-12-4-12-10 0-10 8-16 18-18z"/><ellipse cx="22" cy="48" rx="4" ry="5" fill="#16121f"/><ellipse cx="42" cy="48" rx="4" ry="5" fill="#16121f"/><path ${HI} d="M29 8h3v20h-3z"/>`,
+  },
   uTurn: {
     el: 'arcane',
     svg: `<path d="M4 20l16-14v9h40v10H20v9z"/><path d="M60 44L44 58v-9H4V39h40v-9z"/>`,
