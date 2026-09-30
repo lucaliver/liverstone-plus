@@ -74,6 +74,9 @@ This file is the technical guide: read it before changing code.
 - **Biome** for lint and format (typescript-eslint doesn't support TS 7 yet). Width 150, single quotes.
 - Fonts via `@fontsource` (Silkscreen, Jersey 10, Space Grotesk). Audio is pure WebAudio (no assets).
 - Static build, no backend; storage is `localStorage` (prefix `cardstone+:`, legacy name: keep it or migrate).
+- Deploy: a push to `master` publishes the game to GitHub Pages (`.github/workflows/pages.yml`). The same workflow also builds the `beta`
+  branch (an old frozen build, own save prefix `cardstone-beta:`) and serves it under `/beta/`. Never give a prefix that starts with
+  `cardstone+:` to another build: `clearAll` would wipe it. To refresh the beta, commit on `beta`, then re-run the workflow (Actions → Run workflow).
 
 ## Commands
 
