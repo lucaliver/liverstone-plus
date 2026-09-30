@@ -9,7 +9,7 @@ const warrior: HeroDef = {
   id: 'warrior',
   hp: 60,
   maxMana: 3,
-  regen: 1.3,
+  regen: 1.25,
   blockDecay: 1.2,
   // Starter decks: only basic cards (plus mana crystals); everything else comes from rewards.
   startDeck: [...rep('punch', 6), ...rep('hardHat', 6), 'unionChant', 'coffee', 'coffee'],
@@ -36,7 +36,7 @@ const mage: HeroDef = {
   unlock: { finishRun: 'warrior' },
   hp: 70,
   maxMana: 3,
-  regen: 0.8,
+  regen: 1.25,
   blockDecay: 1.0,
   startDeck: [...rep('arcaneMemo', 7), ...rep('fireDoor', 5), 'coffee', 'doubleEspresso', 'caffeineJolt'],
   firstRewards: [
