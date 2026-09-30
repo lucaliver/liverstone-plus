@@ -547,7 +547,7 @@
   align-items: center;
   gap: 10px;
   width: min(100%, 340px);
-  margin: 14px 0 4px;
+  margin: 2px 0 8px;
   padding: 6px 12px 6px 6px;
   text-align: left;
   color: var(--k);
@@ -555,8 +555,8 @@
   border: var(--line) solid var(--k);
   box-shadow: 6px 6px 0 var(--p);
   rotate: -1.5deg;
-  /* it is stamped on once the payslip has printed, then keeps beckoning: it pulses like a call to action */
-  animation: stamp-in 0.2s steps(2) 1.6s both, cta-pulse 0.9s steps(2) 1.8s infinite;
+  /* it is stamped on once the title has landed, then keeps beckoning: it pulses like a call to action */
+  animation: stamp-in 0.2s steps(2) 1.2s both, cta-pulse 0.9s steps(2) 1.4s infinite;
   font: inherit;
   cursor: pointer;
 }
