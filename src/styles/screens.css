@@ -176,6 +176,12 @@
   box-shadow: var(--off) var(--off) 0 var(--shadow);
 }
 .option:active:not(:disabled) { transform: translate(var(--off), var(--off)); box-shadow: none; }
+/* the choices are dealt onto the desk one after the other, once the room has printed in */
+.option { animation: option-in 0.24s steps(3) 0.3s backwards; }
+.option:nth-child(2) { animation-delay: 0.45s; }
+@keyframes option-in {
+  from { transform: translateY(32px); opacity: 0; }
+}
 .option:disabled { opacity: 0.4; box-shadow: none; }
 .option .pico { font-size: 52px; color: var(--p); --ink2: var(--y); }
 .option:last-child .pico { color: var(--b); }
