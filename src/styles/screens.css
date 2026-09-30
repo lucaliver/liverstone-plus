@@ -13,8 +13,8 @@
 .reward-title .word { display: inline-block; white-space: nowrap; }
 .reward-title .word span {
   display: inline-block;
-  animation: letter-drop 0.42s steps(6) both;
-  animation-delay: calc(var(--i) * 0.06s);
+  animation: letter-drop 0.24s steps(6) both;
+  animation-delay: calc(var(--i) * 0.02s);
 }
 @keyframes letter-drop {
   0% { transform: translateY(-60px) scale(1.4); opacity: 0; }
