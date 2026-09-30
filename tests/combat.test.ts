@@ -674,11 +674,14 @@ describe('combat engine', () => {
       expect(c.playCard(c.belt[0].card.uid)).toBe(true);
     });
 
-    it('Bare Minimum grows Block every second until another card is played', () => {
+    it('Bare Minimum gains its Block every second, 1 more each second, until another card is played', () => {
       const c = quiet(['punch', 'punch']);
       play(c, 'bareMinimum');
+      const start = CARDS.bareMinimum.vals[0];
       run(c, 3.01);
-      expect(c.hero.block).toBeGreaterThanOrEqual(1 + 2 + 3 - 1);
+      // start + (start + 1) + (start + 2), less what the decay has taken meanwhile.
+      expect(c.hero.block).toBeGreaterThanOrEqual(3 * start + 3 - 1);
+      expect(c.hero.block).toBeLessThanOrEqual(3 * start + 3);
       c.playCard(c.belt[0].card.uid);
       expect(c.has('hero', 'bareMinimum')).toBe(false);
     });
@@ -754,6 +757,15 @@ describe('combat engine', () => {
       expect(c.draw.filter((x) => x.id === 'alreadyDone').length).toBe(3);
       play(c, 'q1');
       expect(c.draw.some((x) => x.id === 'q2')).toBe(true);
+    });
+
+    it('a Drama that leaves the belt shuffles another one into the deck', () => {
+      const c = quiet(['hardHat']);
+      c.addTempCard('drama', 'belt');
+      const dramas = (): number => [...c.draw, ...c.discard, ...c.belt.map((b) => b.card)].filter((x) => x.id === 'drama').length;
+      expect(dramas()).toBe(1);
+      run(c, (CONFIG.beltTime * EXPIRE_POS) / c.beltRate() + 0.5);
+      expect(dramas()).toBe(2);
     });
 
     it('volatile office curses bite when they leave the belt', () => {

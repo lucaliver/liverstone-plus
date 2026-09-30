@@ -79,7 +79,7 @@ const defs: StatusDef[] = [
     kind: 'timed',
     good: true,
     icon: 'battery',
-    tick: everySecond((c, side, n, s) => c.gainBlock(side, n * s.v)),
+    tick: everySecond((c, side, n, s) => c.gainBlock(side, s.v + n - 1)),
     onCardPlayed: endOnPlay('bareMinimum'),
   },
   {
