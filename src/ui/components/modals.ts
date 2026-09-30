@@ -150,27 +150,10 @@ export function openSettings(extra: ModalAction[] = []): ModalHandle {
       : null,
     h('div', { class: 'version' }, t('settings.version', { v: __APP_VERSION__ })),
   );
-  const reset: ModalAction = {
-    label: t('menu.reset'),
-    icon: 'trash',
-    cls: 'danger',
-    onClick: () => {
-      confirmModal(
-        t('menu.resetConfirm'),
-        t('common.confirm'),
-        () => {
-          clearAll();
-          location.reload();
-        },
-        t('common.cancel'),
-      );
-      return false;
-    },
-  };
   return openModal({
     title: t('settings.title'),
     body,
-    actions: [...extra, reset, { label: t('common.close'), cls: 'secondary' }],
+    actions: [...extra, { label: t('common.close'), cls: 'secondary' }],
   });
 }
 
@@ -616,6 +599,23 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
           );
           sfx('ability');
           haptic('ability');
+        },
+      },
+      {
+        label: t('menu.reset'),
+        icon: 'trash',
+        cls: 'danger',
+        onClick: () => {
+          confirmModal(
+            t('menu.resetConfirm'),
+            t('common.confirm'),
+            () => {
+              clearAll();
+              location.reload();
+            },
+            t('common.cancel'),
+          );
+          return false;
         },
       },
       { label: t('common.close'), cls: 'secondary' },

@@ -211,8 +211,7 @@ Plurals: `{n|one|other}`. New language: copy `en.ts`, register it in `core/i18n.
   `goJourney`, `musicTrack`). E2E tests and screenshot scripts rely on them.
 - The belt has two rows by default (`CONFIG.beltRows`); tests that need one row pass `beltRows: 1`.
 - Temporary debug menus (the title's too), off unless the Settings switch `debugMenus` is on, each behind a small floating bug button (`debugButton` / `openDebugMenu` in `modals.ts`): in a fight (kill enemy, restore HP and mana, stun, lose…) and on the map (card rewards and every room in `ROOMS` on demand, restore HP, clear the room; rooms opened this way leave the current room's cleared state alone). The title has a temporary "Debug fight" button (any hero against any enemy, on a fresh run, plus a search box that adds copies of the hero's and neutral cards to the deck; "Unlock all" hires
-  every hero and reveals every card and enemy); "Reset progress"
-  lives in Settings (`clearAll` in `core/save.ts`).
+  every hero and reveals every card and enemy; "Reset progress" wipes every save, `clearAll` in `core/save.ts`).
 - Move descriptions (`moveEffect`) tag curses, statuses, hexes and rules with `data-*`; `bindMoveDetails` makes them
   pressable (explained in a popup) wherever a pattern is shown.
 

@@ -433,7 +433,7 @@ test('once signed, the contract is never shown again: the game opens on the titl
 test('reset progress wipes saves after a confirmation', async ({ page }) => {
   await freshGame(page);
   page.on('dialog', (d) => d.accept());
-  await page.getByRole('button', { name: /settings/i }).click();
+  await page.getByRole('button', { name: /debug/i }).click();
   await page.getByRole('button', { name: /reset progress/i }).click();
   await page.getByRole('button', { name: 'Confirm' }).click();
   await expect(page.locator('.splash')).toBeVisible();
