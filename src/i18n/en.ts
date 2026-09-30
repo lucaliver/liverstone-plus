@@ -269,6 +269,7 @@ const en = {
   'rest.smithDesc': 'Upgrade a card',
   'rest.smithHint': 'Choose a card to upgrade',
   'rest.upgrade': 'Upgrade',
+  'rest.upgraded': 'Promoted!',
   'rest.full': 'Already at full health',
   'promo.title': 'Promotion',
   'promo.desc': 'Management noticed you. Or someone above you quit. Either way: a perk, no raise.',

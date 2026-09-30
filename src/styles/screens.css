@@ -372,6 +372,51 @@
   85% { opacity: 1; }
   100% { transform: translateY(-30px); opacity: 0; }
 }
+/* an upgraded card: the old one takes a blow and shakes, a flash, the new one stamps in, and the word */
+.upgrade-show {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: #0c0818cc;
+  pointer-events: none;
+  animation: up-out 0.2s steps(2) 1.5s forwards;
+}
+@keyframes up-out { to { opacity: 0; } }
+.up-stage { position: relative; width: min(46vw, 190px); aspect-ratio: 1 / 1.4; }
+.up-stage .card { --cw: min(46vw, 190px); position: absolute; inset: 0; }
+.up-old { animation: up-hit 0.48s steps(1) forwards; }
+@keyframes up-hit {
+  0% { transform: scale(1.1); }
+  25% { transform: scale(0.9) rotate(-4deg); }
+  50% { transform: scale(1) rotate(4deg) translateX(6px); }
+  75% { transform: scale(0.95) rotate(-3deg); }
+  100% { transform: scale(1); opacity: 0; }
+}
+.up-new { animation: stamp-in 0.3s steps(3) 0.48s backwards; }
+.up-flash {
+  position: absolute;
+  inset: -14%;
+  z-index: 2;
+  border: 8px solid var(--y);
+  animation: up-flash 0.3s steps(3) 0.48s both;
+}
+@keyframes up-flash {
+  0% { opacity: 1; scale: 0.6; }
+  100% { opacity: 0; scale: 1.5; }
+}
+.up-stamp {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--y);
+  text-transform: uppercase;
+  text-shadow: 3px 3px 0 var(--p);
+  animation: stamp-in 0.2s steps(2) 0.75s backwards;
+}
 .promo-badge {
   display: grid;
   place-items: center;
