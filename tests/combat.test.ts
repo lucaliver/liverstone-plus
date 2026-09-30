@@ -494,6 +494,27 @@ describe('combat engine', () => {
     expect(hp - c.enemy.hp).toBe(6);
   });
 
+  it('a Vulnerable enemy takes 50% more from Poison and Burn, which skip every other modifier', () => {
+    const c = setup({ hero: HEROES.necromancer, hp: 50, maxHp: 50, deck: deckOf(['rust']), enemy: ENEMIES.seniorBoomer });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    run(c, CONFIG.introTime + 0.01);
+    c.applyStatus('enemy', 'poison', 4);
+    c.applyStatus('enemy', 'vulnerable', 1, 99);
+    const hp = c.enemy.hp;
+    run(c, CONFIG.dotInterval + 0.02);
+    expect(hp - c.enemy.hp).toBe(Math.floor(4 * 1.5));
+  });
+
+  it('sudo lifts every rule and rushes the belt for the time shown on the card', () => {
+    const c = setup({ hero: HEROES.mage, deck: deckOf(['sudo', 'sudo']) });
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.mana = 3;
+    c.playCard(c.belt.find((b) => b.card.id === 'sudo')!.card.uid);
+    expect(c.has('hero', 'rootAccess')).toBe(true);
+    expect(c.has('hero', 'rush')).toBe(true);
+    expect(c.hero.statuses.rush.t).toBeCloseTo(c.cardVals({ uid: 0, id: 'sudo', up: false })[1], 1);
+  });
+
   it('a bomb that reaches the end of the belt explodes on the hero', () => {
     const c = setup({ deck: deckOf(['punch']) });
     c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
@@ -539,10 +560,10 @@ describe('combat engine', () => {
 
     const n = setup({ hero: HEROES.necromancer, hp: 62, maxHp: 62, deck: deckOf(['wordOfMouth', 'wordOfMouth']) });
     run(n, CONFIG.introTime + 0.01);
-    n.hero.mana = 5;
+    n.hero.mana = 6;
     n.playCard(n.belt[0].card.uid);
     n.playCard(n.belt[0].card.uid);
-    expect(n.stacks('enemy', 'poison')).toBe(3 + 7);
+    expect(n.stacks('enemy', 'poison')).toBe(2 + 5);
   });
 
   it('rushing the belt makes cards arrive faster', () => {
@@ -973,7 +994,7 @@ describe('pop culture cards', () => {
     expect(c.has('hero', 'stun')).toBe(true);
     expect(c.playCard(c.belt[0].card.uid)).toBe(false);
     run(c, 10);
-    expect(c.hero.hp).toBe(40 + 6 + 5 + 4 + 3 + 2 + 1);
+    expect(c.hero.hp).toBe(40 + 5 + 4 + 3 + 2 + 1);
   });
 
   it('Hide the Pain gains more Block the more HP you are missing', () => {
@@ -1026,23 +1047,23 @@ describe('cards that change on the belt', () => {
 
   it('Unpaid Overtime hits harder for every second it rides the belt, up to its cap', () => {
     const { c, uid } = onBelt('unpaidOvertime');
-    expect(c.cardVals(card(c, uid))[0]).toBe(3);
+    expect(c.cardVals(card(c, uid))[0]).toBe(1);
     run(c, 3.05);
-    expect(c.cardVals(card(c, uid))[0]).toBe(6);
+    expect(c.cardVals(card(c, uid))[0]).toBe(4);
     const hp = c.enemy.hp;
     c.playCard(uid);
-    expect(hp - c.enemy.hp).toBe(6);
+    expect(hp - c.enemy.hp).toBe(4);
   });
 
   it('Patience gives less Block the longer it rides, never below its floor, and the sleeve freezes it', () => {
     const { c, uid } = onBelt('patience');
     run(c, 2.05);
-    expect(c.cardVals(card(c, uid))[0]).toBe(12);
+    expect(c.cardVals(card(c, uid))[0]).toBe(7);
     c.stash(uid, 0);
     run(c, 5);
-    expect(c.cardVals(card(c, uid))[0]).toBe(12);
+    expect(c.cardVals(card(c, uid))[0]).toBe(7);
     c.playCard(uid);
-    expect(c.hero.block).toBe(12);
+    expect(c.hero.block).toBe(7);
     const late = { uid: 999, id: 'patience', up: false, age: 60 };
     expect(c.cardVals(late)[0]).toBe(3);
   });
@@ -1132,7 +1153,7 @@ describe('Complaint Box', () => {
     c.hero.mana = c.hero.maxMana;
     run(c, 3.05);
     const box = [...c.draw, ...c.discard, ...c.belt.map((b) => b.card)].find((x) => x.id === 'complaintBox')!;
-    expect(c.cardVals(box)[0]).toBeGreaterThanOrEqual(2 + 3);
+    expect(c.cardVals(box)[0]).toBeGreaterThanOrEqual(1 + 3);
   });
 });
 
