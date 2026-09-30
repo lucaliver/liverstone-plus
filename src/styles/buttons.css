@@ -65,7 +65,8 @@ button.stat:active,
   box-shadow: 6px 6px 0 var(--p);
   animation: cta-pulse 0.9s steps(2) infinite;
 }
-.btn.cta::after {
+.btn.cta::after,
+.new-hire::after {
   /* a pixel glint sweeps across now and then */
   content: '';
   position: absolute;

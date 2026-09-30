@@ -67,18 +67,6 @@ export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: (he
       { class: 'end-body' },
       h('h1', { class: 'h1 end-title', 'aria-label': title, html: dropLetters(title) }),
       h('div', { class: 'portrait-lg', html: `${motes(10)}${creature(run.hero)}` }),
-      ...end.hired.map((id) =>
-        // Tapping the new hire opens the hero select right on them.
-        h('button', {
-          class: 'new-hire',
-          html: `${creature(id)}<div><b>${t('end.newHire')}</b><span>${t('end.nextHire', { hero: t(`hero.${id}.name`) })}</span></div>`,
-          onclick: () => {
-            sfx('button');
-            haptic('tap');
-            onAgain(id);
-          },
-        }),
-      ),
       h('p', { class: 'sub' }, won ? t(node.act < ACTS ? 'end.firstShiftDesc' : 'end.victoryDesc') : t('end.defeatDesc', { n: node.floor })),
       // The run's stats as a dot-matrix payslip: all that work, and the net pay is still zero.
       h(
@@ -97,6 +85,18 @@ export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: (he
           ),
         ),
         staggered(h('div', { class: 'slip-stamp' }, slip.stamp)),
+      ),
+      ...end.hired.map((id) =>
+        // Tapping the new hire opens the hero select right on them.
+        h('button', {
+          class: 'new-hire',
+          html: `${creature(id)}<div><b>${t('end.newHire')}</b><span>${t('end.nextHire', { hero: t(`hero.${id}.name`) })}</span></div><i class="go">${icon('left')}</i>`,
+          onclick: () => {
+            sfx('button');
+            haptic('tap');
+            onAgain(id);
+          },
+        }),
       ),
     ),
     h(

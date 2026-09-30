@@ -540,23 +540,37 @@
 
 /* the next hire this run unlocked: a note with the new hero, so the end is a step forward */
 .new-hire {
+  position: relative;
+  flex: none;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: 10px;
   width: min(100%, 340px);
-  margin: 2px 0 8px;
+  margin: 14px 0 4px;
   padding: 6px 12px 6px 6px;
   text-align: left;
   color: var(--k);
   background: var(--y);
   border: var(--line) solid var(--k);
-  box-shadow: var(--off) var(--off) 0 var(--p);
+  box-shadow: 6px 6px 0 var(--p);
   rotate: -1.5deg;
-  animation: stamp-in 0.2s steps(2) 1.2s both;
+  /* it is stamped on once the payslip has printed, then keeps beckoning: it pulses like a call to action */
+  animation: stamp-in 0.2s steps(2) 1.6s both, cta-pulse 0.9s steps(2) 1.8s infinite;
   font: inherit;
   cursor: pointer;
 }
-.new-hire:active { translate: 2px 2px; box-shadow: 2px 2px 0 var(--p); }
-.new-hire .riso { flex: none; width: 52px; height: 52px; }
+.new-hire:active { animation: none; translate: 2px 2px; box-shadow: 2px 2px 0 var(--p); }
+/* the arrow nudges toward the next hire (the same glint and nudge as the other calls to action) */
+.new-hire .go {
+  flex: none;
+  margin-left: auto;
+  font-size: 30px;
+  --dir: -1;
+  --ink2: var(--p);
+  animation: nudge 0.8s steps(2) infinite;
+}
+.new-hire .go .pico { transform: scaleX(-1); }
+.new-hire .riso { flex: none; width: 52px; height: 52px; animation: bob 0.8s steps(2) infinite; }
 .new-hire b { display: block; font-family: var(--font-display); font-size: 14px; text-transform: uppercase; }
 .new-hire span { font-size: 15px; font-weight: 600; }
