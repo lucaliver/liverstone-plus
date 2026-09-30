@@ -1,8 +1,8 @@
 # TASKS
 
-- [ ] rendi l'animazione di quando scegli il reward (e la nuova carta va a sovrapporre quella vecchia) più veloce
+- [x] rendi l'animazione di quando scegli il reward (e la nuova carta va a sovrapporre quella vecchia) più veloce
 
-- [ ] nella schermata di "PICK YOUR BONUS" c'è poco spazio verticalemnte per la sezione del deck; e il separatore tra deck e rewards sotto è brutto; fai un po' di restyle per usabilità
+- [x] nella schermata di "PICK YOUR BONUS" c'è poco spazio verticalemnte per la sezione del deck; e il separatore tra deck e rewards sotto è brutto; fai un po' di restyle per usabilità
 
 - [ ] in passive/status descriptions the important keywords should be bolded; also make them colored accordingly
 

@@ -4,8 +4,8 @@
   padding-bottom: calc(var(--safe-b) + 12px);
 }
 .reward-title {
-  margin: 6px 0 2px;
-  font-size: clamp(30px, 10vw, 48px);
+  margin: 2px 0;
+  font-size: clamp(22px, 7.4vw, 34px);
   line-height: 1.05;
   text-shadow: 4px 4px 0 var(--p), -3px 2px 0 var(--b);
   animation: misprint 2.6s steps(1) 0.9s infinite;
@@ -53,7 +53,7 @@
 }
 /* 10-card deck = 5 × 2; the four offered cards are a bit bigger */
 .swap-deck { --swap-cw: calc((min(100vw, 520px) - 32px - 4 * 8px - 10px) / 5); grid-template-columns: repeat(5, var(--swap-cw)); }
-.swap-offer { --swap-cw: calc((min(100vw, 520px) - 32px - 3 * 8px - 10px) / 4); grid-template-columns: repeat(4, var(--swap-cw)); }
+.swap-offer { --swap-cw: calc((min(100vw, 520px) - 32px - 2 * 10px - 2 * var(--line) - 3 * 8px) / 4); grid-template-columns: repeat(4, var(--swap-cw)); }
 .swap-deck .card,
 .swap-offer .card {
   --cw: var(--swap-cw);
@@ -70,7 +70,7 @@
   z-index: 5;
   opacity: 1;
   outline: none;
-  animation: swap-fly 0.6s steps(8) forwards;
+  animation: swap-fly 0.35s steps(6) forwards;
 }
 @keyframes swap-fly {
   0% { transform: none; }
@@ -78,7 +78,7 @@
   80% { transform: translate(var(--dx), var(--dy)) scale(var(--fit)); }
   100% { transform: translate(var(--dx), var(--dy)) scale(var(--fit)); }
 }
-.swap-deck .card.sel.replaced { outline: none; animation: swap-gone 0.3s steps(3) 0.45s forwards; }
+.swap-deck .card.sel.replaced { outline: none; animation: swap-gone 0.2s steps(2) 0.25s forwards; }
 @keyframes swap-gone {
   to { transform: scale(0.85) rotate(-6deg); opacity: 0; }
 }
@@ -91,23 +91,15 @@
   outline-offset: 3px;
 }
 .swap-deck .card.sel { outline-color: var(--p); }
-.swap-divider {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--y);
-  font-size: 26px;
-  --ink2: var(--p);
+/* the offers: a dark tray with a border, apart from the deck above it */
+.swap-tray {
+  padding: 6px 10px 10px;
+  background: var(--bg2);
+  border: var(--line) solid var(--muted-d);
 }
-.swap-divider::before,
-.swap-divider::after {
-  content: '';
-  flex: 1;
-  height: 3px;
-  background: repeating-linear-gradient(90deg, var(--muted-d) 0 6px, transparent 6px 12px);
-}
-.swap-offer { padding: 6px 2px 4px; }
-.swap-hint { margin: 2px 0; min-height: 22px; }
+.swap-icon { color: var(--y); font-size: 24px; --ink2: var(--p); }
+.swap-offer { padding-top: 4px; }
+.swap-hint { margin: 0; min-height: 22px; font-size: 15px; }
 .reward-actions {
   display: grid;
   grid-template-columns: 2fr 1fr;

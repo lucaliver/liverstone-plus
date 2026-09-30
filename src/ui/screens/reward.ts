@@ -13,7 +13,7 @@ import { runHud } from './journey';
 import { HEAL_ANIM_MS, playHealing } from './rest';
 
 /** How long the chosen card takes to fly onto the one it replaces, and to be seen sitting there (ms). */
-const SWAP_ANIM_MS = 900;
+const SWAP_ANIM_MS = 550;
 
 /** Tap selects; a long press opens the card detail instead (and doesn't select). */
 function selectable(el: HTMLElement, card: CardInst, onSelect: () => void): void {
@@ -137,9 +137,8 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
       { class: 'swap-area' },
       h('div', { class: 'swap-head' }, h('div', { class: 'swap-label' }, t('reward.yourDeck')), sorter),
       h('div', { class: 'swap-deck-wrap scroll' }, deckGrid),
-      h('div', { class: 'swap-divider', html: icon('swap') }),
-      h('div', { class: 'swap-label' }, t('reward.offer')),
-      offerRow,
+      // The offers sit in a tray under the deck, so the deck keeps every pixel that is left.
+      h('div', { class: 'swap-tray' }, h('div', { class: 'swap-head' }, h('div', { class: 'swap-label' }, t('reward.offer')), h('span', { class: 'swap-icon', html: icon('swap') })), offerRow),
     ),
     hint,
     h('div', { class: 'reward-actions' }, swapBtn, skipBtn),
