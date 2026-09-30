@@ -620,7 +620,7 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   },
   exitSlot: {
     el: 'shadow',
-    svg: `<path d="M22 4h20v18h14L32 46 8 22h14z"/><path d="M2 50h60v12H2z"/><rect x="16" y="50" width="32" height="5" fill="#16121f"/>`,
+    svg: `<path d="M2 14h28v36H2z"/><path d="M7 20h18v12H7z" fill="#16121f"/><path d="M7 38h12v5H7z" fill="#16121f"/><path d="M34 26h12v-10l16 16-16 16V38H34z"/>`,
   },
   growth: {
     el: 'holy',
