@@ -174,8 +174,8 @@ export const warriorCards: CardDef[] = [
     type: 'skill',
     rarity: 'rare',
     cost: 3,
-    vals: [8, 8],
-    upVals: [11, 11],
+    vals: [12, 8],
+    upVals: [16, 11],
     keywords: ['exhaust'],
     art: 'sandwich',
     play: (c, v) => {
