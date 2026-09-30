@@ -101,7 +101,7 @@
 .hero-slide.current .hero-sprite {
   transform: none;
   /* the hero in view drops onto the plinth, then goes back to bobbing */
-  animation: hero-land 0.24s steps(3) backwards, bob 1s steps(2) 0.24s infinite;
+  animation: hero-land 0.15s steps(3) backwards, bob 1s steps(2) 0.15s infinite;
 }
 @keyframes hero-land {
   0% { transform: translateY(-28px); }
@@ -110,9 +110,9 @@
 .hero-name .word { display: inline-block; white-space: nowrap; }
 .hero-name .word span { display: inline-block; }
 .hero-slide.current .hero-name .word span {
-  animation: letter-drop 0.42s steps(6) calc(0.1s + var(--i) * 0.04s) backwards;
+  animation: letter-drop 0.24s steps(6) calc(0.03s + var(--i) * 0.02s) backwards;
 }
-.hero-slide.current .stat { animation: deal 0.24s steps(3) calc(0.3s + var(--i) * 0.06s) backwards; }
+.hero-slide.current .stat { animation: deal 0.15s steps(3) calc(0.1s + var(--i) * 0.03s) backwards; }
 .hero-num {
   position: absolute;
   top: 4px;
