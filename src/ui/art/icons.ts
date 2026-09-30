@@ -650,6 +650,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<circle cx="34" cy="36" r="22"/><rect x="28" y="4" width="12" height="8"/><path d="M34 36V22" stroke="#16121f" stroke-width="6"/><path d="M34 36l9 7" stroke="#16121f" stroke-width="6"/><path d="M2 26h8v5H2zM0 38h8v5H0zM4 50h8v5H4z"/>`,
   },
+  siren: {
+    el: 'fire',
+    svg: `<path d="M16 44a16 16 0 0 1 32 0z"/><rect x="8" y="46" width="48" height="10"/><path d="M29 4h6v10h-6zM8 14l5-4 7 8-5 4zM56 14l-5-4-7 8 5 4z"/><path fill="#16121f" d="M23 38a9 9 0 0 1 6-8v4a5 5 0 0 0-2 4z"/>`,
+  },
   cone: {
     el: 'steel',
     svg: `<path d="M26 6h12l16 46H10z"/><path fill="#16121f" d="M22 20h20l3 9H19zM17 36h30l3 9H14z"/><rect x="4" y="52" width="56" height="8"/>`,

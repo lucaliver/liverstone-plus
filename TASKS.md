@@ -4,7 +4,7 @@
 
 - [x] quando si attiva la passiva di un nemico, dovresti mostrare prima il fumetto e poi il testo della passiva (il testo della passiva deve essere sintetico)
 
-- [ ] cambia le mosse di Slave CEO: prima di "you're fired" dovrebbe velocizzare la belt del 200% per 10s
+- [x] cambia le mosse di Slave CEO: prima di "you're fired" dovrebbe velocizzare la belt del 200% per 10s
 
 - [ ] "new hire" banner: when tapped it should bring you to the character selection screen on the new character
 

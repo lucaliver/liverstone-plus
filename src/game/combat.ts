@@ -317,11 +317,12 @@ export class Combat {
     return this.beltSpeed * (this.beltRows > 1 ? CONFIG.twoRowSpeed : 1) * this.beltBoost();
   }
 
-  /** How much statuses speed the belt up (Rush, Hurry) or slow it down (Slowdown): 1 when none does. */
+  /** How much statuses speed the belt up (Rush, Hurry, Crunch) or slow it down (Slowdown): 1 when none does. */
   beltBoost(): number {
     let r = 1;
     if (this.has('hero', 'rush')) r *= CONFIG.beltRush;
     if (this.has('hero', 'hurry')) r *= CONFIG.beltHurry;
+    if (this.has('hero', 'crunch')) r *= CONFIG.beltCrunch;
     if (this.has('hero', 'slowdown')) r *= CONFIG.beltSlow;
     return r;
   }

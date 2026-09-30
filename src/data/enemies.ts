@@ -176,6 +176,7 @@ const defs: EnemyDef[] = [
     specials: [
       { id: 'writeUps', intent: 'curse', windup: 7, curse: [{ id: 'writeUp', n: 2, to: 'draw' }] },
       { id: 'deadlines', intent: 'curse', windup: 7, curse: [{ id: 'deadline', n: 2, to: 'belt' }] },
+      { id: 'crunchTime', intent: 'debuff', windup: 5, status: [{ id: 'crunch', t: 10, target: 'hero' }] },
       atk('youreFired', 20, 13, { intent: 'charge' }),
     ],
     halfSpeech: true,

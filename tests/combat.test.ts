@@ -473,6 +473,19 @@ describe('combat engine', () => {
     expect(c.has('hero', 'hurry')).toBe(true);
   });
 
+  it('Crunch doubles the belt speed, then it wears off; the CEO casts it just before firing you', () => {
+    const { specials } = ENEMIES.slavesCeo;
+    expect(specials.at(-1)?.id).toBe('youreFired');
+    expect(specials.at(-2)?.status?.[0]).toMatchObject({ id: 'crunch', t: 10 });
+    const c = setup({ enemy: ENEMIES.slavesCeo });
+    run(c, CONFIG.introTime + 0.01);
+    const base = c.beltRate();
+    c.applyStatus('hero', 'crunch', 1, 10);
+    expect(c.beltRate()).toBeCloseTo(base * CONFIG.beltCrunch);
+    run(c, 10.5);
+    expect(c.beltRate()).toBeCloseTo(base);
+  });
+
   describe('workplace cards', () => {
     /** A quiet fight: the enemy never acts, lots of mana, the belt as the test sets it. */
     const quiet = (deck: string[], over: Partial<CombatSetup> = {}): Combat => {

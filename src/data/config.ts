@@ -16,6 +16,8 @@ export const CONFIG = {
   /** Belt speed multipliers imposed by enemies: Hurry (faster) and Slowdown. */
   beltHurry: 1.5,
   beltSlow: 0.6,
+  /** Crunch (the CEO's Crunch Time): the belt runs at twice the speed. */
+  beltCrunch: 2,
   /** Global difficulty knobs applied to every enemy (the records hold the real numbers, so keep them at 1 unless testing). */
   enemyHp: 1,
   enemyDmg: 1,
