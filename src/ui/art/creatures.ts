@@ -1024,6 +1024,82 @@ ${eyes(86, 114, 52, 5, '#7aa7ff', 'pt-g')}
 <g transform="rotate(20 174 36)"><path d="M158 40c0-12 6-18 16-18s16 6 16 18c-4-2-8-2-10 2-2-6-8-6-12 0-2-4-6-4-10-2z" fill="#ffd900" ${OUT}/></g>
 <g transform="rotate(-30 84 6)"><path d="M70 12c0-10 6-14 14-14s14 4 14 14c-4-2-6-2-8 2-2-5-6-5-10 0-2-4-6-4-10-2z" fill="#1c5fd0" ${OUT}/></g>`;
 
+/** The Cobot: a factory robot arm on a hazard-striped base, a camera lens for a head and a welding torch that never stops. */
+const cobot = `
+<defs>${glow('cb-g', '#ff3b3b')}${lg('cb-b', '#ffe45a', '#e0a800')}</defs>
+${shadow}
+<g transform="translate(8 18) scale(.9)">
+<rect x="22" y="160" width="156" height="26" rx="4" fill="#1b1830" ${OUT}/>
+<path d="M30 160l16 26M54 160l16 26M78 160l16 26M102 160l16 26M126 160l16 26M150 160l16 26" stroke="#ffd900" stroke-width="9"/>
+<rect x="22" y="160" width="156" height="26" rx="4" fill="none" ${OUT}/>
+<path d="M70 164v-22h36v22z" fill="#3a3450" ${OUT}/>
+<path d="M76 142V92c0-8 6-12 14-12h12c8 0 14 4 14 12v50z" fill="url(#cb-b)" ${OUT}/>
+<circle cx="96" cy="96" r="18" fill="#3a3450" ${OUT}/><circle cx="96" cy="96" r="8" fill="#ffd900" ${OUT}/>
+<g class="limb"><path d="M84 92L50 56c-6-6-4-14 4-16l22-6 6 18-18 4 28 30z" fill="url(#cb-b)" ${OUT}/>
+<circle cx="64" cy="40" r="14" fill="#3a3450" ${OUT}/><circle cx="64" cy="40" r="6" fill="#ffd900" ${OUT}/></g>
+<path d="M44 20c-8-4-12-12-8-18h40c4 6 0 14-8 18z" fill="#c9c4d6" ${OUT}/>
+<rect x="30" y="16" width="40" height="30" rx="8" fill="#f6f0e4" ${OUT}/>
+<circle cx="50" cy="31" r="12" fill="#120e18" ${OUT}/>
+<g class="eye"><circle cx="50" cy="31" r="16" fill="url(#cb-g)"/><circle cx="50" cy="31" r="7" fill="#ff3b3b"/><circle cx="47" cy="28" r="2.5" fill="#fff"/></g>
+<path d="M36 18l14 6 14-6" stroke="#120e18" stroke-width="5" fill="none" stroke-linecap="round"/>
+<path d="M70 46l22 18c4 4 12 4 16 0l12-12" stroke="#1b1830" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="#ffd900" ${OUT}><path d="M108 52l22 8-4 10-22-6z"/></g>
+<g fill="none" stroke="#ffd900" stroke-width="4" stroke-linecap="round"><path d="M132 60l14-8M134 68l16 2M130 74l12 10M138 56l6-14"/></g>
+<path d="M136 64l10-4-2 8z" fill="#fff"/>
+<path d="M104 94h36c8 0 10 8 6 14l-10 14h-32z" fill="#3a3450" ${OUT}/><path d="M112 102v12M122 102v12M132 102v12" stroke="#ff3d9a" stroke-width="4"/>
+</g>`;
+
+/** The Old Boiler: a riveted steam boiler on iron legs, brass bands, a pressure gauge and a furnace door that grins. */
+const oldBoiler = `
+<defs>${glow('ob-g', '#ffd900')}${lg('ob-b', '#6a6486', '#3a3450', 1, 0)}</defs>
+${shadow}
+<g transform="translate(8 18) scale(.9)">
+<path d="M142 40V12h18v28" fill="#3a3450" ${OUT}/><path d="M138 12h26" stroke="#120e18" stroke-width="5"/>
+<g fill="#f6f0e4" opacity=".85" ${OUT}><circle cx="150" cy="-2" r="12"/><circle cx="166" cy="-12" r="9"/></g>
+<path d="M50 188l-6-26h20l4 26zM136 188l4-26h20l-6 26z" fill="#1b1830" ${OUT}/>
+<rect x="24" y="46" width="152" height="120" rx="48" fill="url(#ob-b)" ${OUT}/>
+<g fill="#e0a800" ${OUT}><rect x="52" y="46" width="14" height="120"/><rect x="134" y="46" width="14" height="120"/></g>
+<g fill="#120e18"><circle cx="59" cy="62" r="3"/><circle cx="59" cy="90" r="3"/><circle cx="59" cy="118" r="3"/><circle cx="59" cy="146" r="3"/><circle cx="141" cy="62" r="3"/><circle cx="141" cy="90" r="3"/><circle cx="141" cy="118" r="3"/><circle cx="141" cy="146" r="3"/></g>
+<circle cx="100" cy="76" r="22" fill="#f6f0e4" ${OUT}/><circle cx="100" cy="76" r="16" fill="none" stroke="#1b1830" stroke-width="2.5"/>
+<path d="M100 76l10-10" stroke="#ff3d9a" stroke-width="4" stroke-linecap="round"/><path d="M86 84l-4 4M114 84l4 4M100 58v4" stroke="#1b1830" stroke-width="3"/>
+<path d="M76 112h48c8 0 14 6 14 14v22c0 6-4 10-10 10H72c-6 0-10-4-10-10v-22c0-8 6-14 14-14z" fill="#120e18" ${OUT}/>
+<circle cx="100" cy="132" r="26" fill="url(#ob-g)" opacity=".55"/>
+${eyes(84, 116, 128, 5, '#ffd900', 'ob-g')}
+<path d="M72 144l8-8 8 8 8-8 8 8 8-8 8 8 8-8 4 6v6H72z" fill="#ff3d9a" ${OUT}/>
+<path d="M72 118l14 6M128 118l-14 6" stroke="#ffd900" stroke-width="5" stroke-linecap="round"/>
+<g class="limb"><path d="M24 100c-14 2-20 12-18 26" stroke="#e0a800" stroke-width="9" fill="none" stroke-linecap="round"/><circle cx="6" cy="128" r="9" fill="#ffd900" ${OUT}/></g>
+<path d="M176 100c14 4 18 14 14 26" stroke="#e0a800" stroke-width="9" fill="none" stroke-linecap="round"/><circle cx="190" cy="128" r="9" fill="#ffd900" ${OUT}/>
+</g>`;
+
+/** The Board: three porcelain-masked directors on one brass-and-steel chassis, ticker tape pouring from its chest. */
+const theBoard = `
+<defs>${glow('tb-g', '#ffd900')}${glow('tb-r', '#ff3d9a')}${rg('tb-s', '#4a64c8', '#1b2a70')}</defs>
+${shadow}
+<g transform="translate(8 18) scale(.9)">
+<g fill="#e0a800" ${OUT}><circle cx="42" cy="120" r="22"/><circle cx="160" cy="124" r="26"/></g>
+<g fill="#3a3450"><circle cx="42" cy="120" r="8"/><circle cx="160" cy="124" r="9"/></g>
+<path d="M48 186c-4-46 4-84 20-92h64c16 8 24 46 20 92z" fill="url(#tb-s)" ${OUT}/>
+<path d="M88 94l12 24 12-24" fill="#f6f0e4" ${OUT}/><path d="M100 118v56" stroke="#ff3d9a" stroke-width="7"/>
+<circle cx="100" cy="146" r="14" fill="#e0a800" ${OUT}/><circle cx="100" cy="146" r="5" fill="#3a3450"/><path d="M100 130v6M100 156v6M84 146h6M110 146h6" stroke="#3a3450" stroke-width="4"/>
+<path d="M64 112c-18 6-26 28-14 46l20-8c-6-10-4-20 6-26zM136 112c18 6 26 28 14 46l-20-8c6-10 4-20-6-26z" fill="#1c5fd0" ${OUT}/>
+<g class="limb"><rect x="146" y="152" width="40" height="14" rx="3" fill="#8a5a2a" ${OUT}/><rect x="138" y="140" width="22" height="38" rx="3" fill="#8a5a2a" ${OUT}/><circle cx="148" cy="160" r="9" fill="#f6f0e4" ${OUT}/></g>
+<path d="M44 168c-6 8-4 14 2 18M30 176c-8 4-8 12-2 14" fill="none" stroke="#f6f0e4" stroke-width="5" stroke-linecap="round" stroke-dasharray="6 4"/>
+<path d="M72 86L50 66M128 86l22-20M100 92V66" stroke="#3a3450" stroke-width="12" stroke-linecap="round"/>
+<g ${OUT}>
+<path d="M22 56c0-20 12-32 28-32s28 12 28 32c0 16-12 30-28 34-16-4-28-18-28-34z" fill="#f6f0e4"/>
+<path d="M122 56c0-20 12-32 28-32s28 12 28 32c0 16-12 30-28 34-16-4-28-18-28-34z" fill="#f6f0e4"/>
+<path d="M66 44c0-24 14-38 34-38s34 14 34 38c0 20-14 38-34 42-20-4-34-22-34-42z" fill="#f6f0e4"/>
+<rect x="76" y="-2" width="48" height="12" rx="2" fill="#1b1830"/><rect x="84" y="-14" width="32" height="20" fill="#1b1830"/><path d="M84 -6h32" stroke="#ff3d9a" stroke-width="5"/>
+</g>
+${eyes(88, 112, 40, 4, '#ffd900', 'tb-g')}
+<path d="M86 64q14 8 28 0" fill="none" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
+${eyes(38, 62, 52, 3, '#ff3d9a', 'tb-r')}
+<path d="M38 70h24" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
+${eyes(138, 162, 52, 3, '#ff3d9a', 'tb-r')}
+<path d="M138 74q12-8 24 0" fill="none" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
+<path d="M30 40l16 4M70 40l-16 4M130 40l16 4M170 40l-16 4" stroke="#120e18" stroke-width="3" stroke-linecap="round"/>
+</g>`;
+
 export const CREATURES: Record<string, string> = {
   leaver,
   workWife,
@@ -1055,6 +1131,9 @@ export const CREATURES: Record<string, string> = {
   veteran,
   nightJanitor,
   micromanager,
+  cobot,
+  oldBoiler,
+  theBoard,
   punchClock,
   smokeDetector,
   microwave,

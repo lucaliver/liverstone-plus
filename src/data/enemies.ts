@@ -635,6 +635,58 @@ const defs: EnemyDef[] = [
       atk('pressZero', 15, 9, { intent: 'charge' }),
     ],
   },
+  {
+    // Collaborates with your replacement: at half HP it recalibrates and works half as fast again.
+    id: 'cobot',
+    act: 3,
+    tier: 'elite',
+    hp: 150,
+    block: 20,
+    art: 'cobot',
+    main: atk('weld', 9, 7, ramp),
+    every: 2,
+    specials: [
+      atk('pickAndPlace', 5, 7, { hits: 3 }),
+      { id: 'safetyInterlock', intent: 'curse', windup: 6, curse: [{ id: 'lockout', n: 1, to: 'belt' }] },
+      atk('crush', 20, 11, { intent: 'charge' }),
+    ],
+    halfSpeech: true,
+    onHalf: (c) => c.applyStatus('enemy', 'haste', 1, 9999),
+  },
+  {
+    // Pressure builds up in its Block: chew through it before it bursts.
+    id: 'oldBoiler',
+    act: 3,
+    tier: 'elite',
+    hp: 160,
+    block: 30,
+    art: 'oldBoiler',
+    main: atk('steamBlast', 10, 8, ramp),
+    every: 2,
+    specials: [
+      { id: 'stokeTheFire', intent: 'buff', windup: 6, block: 15, status: [{ id: 'strength', v: 2, target: 'enemy' }] },
+      atk('overpressure', 22, 12, { intent: 'charge' }),
+    ],
+    start: [{ id: 'pressure' }],
+  },
+  {
+    // Three directors in one chassis: each third of its HP you take, one more loses patience.
+    id: 'theBoard',
+    act: 3,
+    tier: 'boss',
+    hp: 260,
+    block: 40,
+    art: 'theBoard',
+    main: atk('gavel', 9, 6, ramp),
+    every: 2,
+    specials: [
+      { id: 'motionToCut', intent: 'curse', windup: 6, curse: [{ id: 'debt', n: 1, to: 'belt' }], status: [gainStrength] },
+      { id: 'hostileTakeover', intent: 'steal', windup: 5, steal: 2, status: [gainStrength] },
+      { id: 'quarterlyTargets', intent: 'curse', windup: 7, curse: [{ id: 'deadline', n: 2, to: 'belt' }] },
+      atk('liquidation', 26, 12, { intent: 'charge' }),
+    ],
+    start: [{ id: 'boardroom' }],
+  },
 ];
 
 /** The handbook lists the enemies in this order: the very first run's enemies first, in the order it meets them. */
@@ -680,6 +732,9 @@ export const DIFFICULTY = [
   'microwave',
   'witheredFicus',
   'phoneTree',
+  'cobot',
+  'oldBoiler',
+  'theBoard',
 ];
 
 export const ENEMIES: Record<string, EnemyDef> = Object.fromEntries(defs.map((e) => [e.id, e]));

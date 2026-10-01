@@ -1780,3 +1780,27 @@ describe('act 3 rules, second batch', () => {
     expect(c.stacks('enemy', 'thorns')).toBe(2);
   });
 });
+
+describe('act 3 elites and boss', () => {
+  it('the Old Boiler bursts when its Block reaches the limit, and the Block is gone', () => {
+    const c = setup({ enemy: { ...ENEMIES.oldBoiler, main: { ...ENEMIES.oldBoiler.main, windup: 999 } } });
+    c.enemy.block = 200;
+    const hp = c.hero.hp;
+    run(c, CONFIG.introTime + 1);
+    expect(c.enemy.block).toBeLessThan(40);
+    expect(c.hero.hp).toBeLessThan(hp);
+  });
+
+  it('every third of its HP the Board loses, a director loses patience', () => {
+    const c = setup({ enemy: { ...ENEMIES.theBoard, main: { ...ENEMIES.theBoard.main, windup: 999 } } });
+    run(c, CONFIG.introTime);
+    c.enemy.block = 0;
+    const strength = c.stacks('enemy', 'strength');
+    c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 3) + 5, { raw: true }, 'hero');
+    expect(c.stacks('enemy', 'strength')).toBeGreaterThan(strength);
+    expect(c.has('enemy', 'haste')).toBe(false);
+    c.enemy.block = 0;
+    c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 3), { raw: true }, 'hero');
+    expect(c.has('enemy', 'haste')).toBe(true);
+  });
+});
