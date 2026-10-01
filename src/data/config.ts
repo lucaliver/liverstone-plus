@@ -35,7 +35,7 @@ export const CONFIG = {
   /** Damage multiplier of a critical attack (Critical status). */
   critMult: 2,
   /** Seconds a virus card rides the belt before it infects the card behind it. */
-  virusDelay: 1,
+  virusDelay: 4,
   startMana: 3,
   dotInterval: 1.5,
   multitaskingWindow: 2.5,
@@ -67,6 +67,8 @@ export const CONFIG = {
   /** Break Room: the share of max HP a rest heals. Skipping a card reward: the max HP it pays. */
   restHeal: 0.35,
   skipMaxHp: 3,
+  /** Each time a card reward is skipped for max HP, the next skip pays this much more. */
+  skipMaxHpStep: 2,
   /** Copy Room: a card can't be shredded below this many deck cards; a photocopy costs this much HP (and needs more left). */
   shredMinDeck: 10,
   copyHpCost: 8,

@@ -426,7 +426,7 @@ test("the Sick Coworker's virus shows on the cards it infects and goes away when
   await combat(page, 'c.infectCards(1);');
   await expect(page.locator('.belt-cards .card.sick')).toHaveCount(1);
   // It spreads along the belt by itself.
-  await expect(async () => expect(await page.locator('.belt-cards .card.sick').count()).toBeGreaterThan(1)).toPass({ timeout: 5000 });
+  await expect(async () => expect(await page.locator('.belt-cards .card.sick').count()).toBeGreaterThan(1)).toPass({ timeout: 12000 });
   await page.waitForTimeout(800);
   const uid = (await combat(
     page,
@@ -459,6 +459,11 @@ test("the Facilities Manager's rust spots slow the belt, and only dragging the m
   const head = (await mop.boundingBox())!;
   expect(Math.abs(head.x + head.width * 0.3 - x)).toBeLessThan(2);
   expect(Math.abs(head.y + head.height * 0.85 - y)).toBeLessThan(2);
+  // Another finger can play a card meanwhile without dropping the mop.
+  const cardUid = (await combat(page, 'c.hero.mana = c.hero.maxMana = 10; return c.belt[0].card.uid;')) as number;
+  await page.locator(`.belt-cards .card[data-uid="${cardUid}"]`).dispatchEvent('pointerdown', { pointerId: 2, clientX: 5, clientY: 5 });
+  await page.locator('.combat').dispatchEvent('pointerup', { pointerId: 2, clientX: 5, clientY: 5 });
+  await expect(page.locator('.mop.dragging')).toHaveCount(1);
   // Scrubbing back and forth over the spot takes it off; the other one, never touched, stays.
   for (let i = 0; i < 6; i++) {
     await page.mouse.move(x - 12, y, { steps: 4 });

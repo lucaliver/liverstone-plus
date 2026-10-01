@@ -17,7 +17,9 @@ export function bindMop(v: CombatView): void {
   const HEAD_Y = 0.85;
   let drag: { pointerId: number; homeX: number; homeY: number; x: number; y: number } | null = null;
 
-  const drop = (): void => {
+  const drop = (ev: PointerEvent): void => {
+    // Another finger (playing a card) lifting must not drop the mop.
+    if (!drag || ev.pointerId !== drag.pointerId) return;
     drag = null;
     r.mop.classList.remove('dragging');
     r.mop.style.transform = '';

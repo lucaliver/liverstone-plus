@@ -37,8 +37,7 @@
   .bar { height: 24px; }
   /* no room for the cooler on very short screens */
   .stage .cooler { display: none; }
-  /* the mop shrinks to the smallest tap target, so it stays under the pause button */
-  .mop { min-width: 44px; min-height: 44px; font-size: 44px; }
+  .mop { min-width: 64px; min-height: 64px; font-size: 64px; }
   /* the sleeve slot is too small for its label here: the hand says it */
   .sleeve-slot > span { display: none; }
   .hint-toast.alert { top: 7%; padding: 6px 12px; font-size: 19px; }

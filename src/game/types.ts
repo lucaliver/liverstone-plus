@@ -199,8 +199,8 @@ export interface StatusDef {
   onDeath?: (c: Combat, side: Side, s: StatusVal) => boolean;
   /** A card of the hero's just left the belt unplayed. */
   onExpire?: (c: Combat, side: Side, s: StatusVal) => void;
-  /** While active on the enemy, a rust spot lands on the belt every `every` seconds, and each one slows the belt by `slow` (0–1; enough spots stop it). The hero scrubs them off with the mop. */
-  rust?: { every: number; slow: number };
+  /** While active on the enemy, a rust spot lands on the belt every `every` seconds, and the belt's speed drops with the square of their number (`max` spots stop it dead: little at first, a lot later). The hero scrubs them off with the mop. */
+  rust?: { every: number; max: number };
   /** Runs every simulation step while the status is active. */
   tick?: (c: Combat, side: Side, s: StatusVal, dt: number) => void;
 }

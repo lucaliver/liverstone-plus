@@ -12,11 +12,13 @@ import { motes } from '../components/decor';
 import { runHud } from './journey';
 
 export const HEAL_ANIM_MS = 1900;
+/** The quick version (`fast`), for a small bonus on the way to the map. */
+export const HEAL_FAST_MS = 900;
 
 /** Pixel hearts float up from the bottom of the screen, then "+N" pops in the middle (with a `note` under it, e.g. "max HP"). */
-export function playHealing(screen: HTMLElement, amount: number, note?: string): void {
+export function playHealing(screen: HTMLElement, amount: number, note?: string, fast = false): void {
   sfx('heal');
-  const layer = h('div', { class: 'heal-rise', 'aria-hidden': 'true' });
+  const layer = h('div', { class: `heal-rise ${fast ? 'fast' : ''}`, 'aria-hidden': 'true' });
   for (let i = 0; i < 18; i++) {
     const heart = h('i', { html: icon('heart') });
     heart.style.left = `${5 + Math.random() * 90}%`;
@@ -27,7 +29,7 @@ export function playHealing(screen: HTMLElement, amount: number, note?: string):
   }
   layer.append(h('div', { class: 'heal-total' }, `+${amount}`, note ? h('small', null, note) : null));
   screen.append(layer);
-  setTimeout(() => sfx('heal'), 700);
+  setTimeout(() => sfx('heal'), fast ? 350 : 700);
 }
 
 export function restScreen(run: RunState, onDone: () => void): Screen {

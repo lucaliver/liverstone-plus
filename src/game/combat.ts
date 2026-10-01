@@ -368,7 +368,7 @@ export class Combat {
   /** How much statuses speed the belt up (Rush, Hurry, Crunch), slow it down (Slowdown, rust) or stop it (Stalled, full rust, or about to turn around): 1 when none does. */
   beltBoost(): number {
     let r = this.mul('hero', 'beltMul');
-    r *= Math.max(0, 1 - this.rustSpots.length * this.rustSlow());
+    r *= this.rustSpeed();
     if (this.beltHalt > 0) r = 0;
     return r;
   }
@@ -1216,9 +1216,10 @@ export class Combat {
     return !!this.rustDef();
   }
 
-  /** How much of the belt's speed each rust spot takes. */
-  private rustSlow(): number {
-    return this.rustDef()?.slow ?? 0;
+  /** Share of the belt's speed the rust leaves: it drops with the square of the spots, so a few are nothing and many stop the belt. */
+  private rustSpeed(): number {
+    const max = this.rustDef()?.max;
+    return max ? Math.max(0, 1 - (this.rustSpots.length / max) ** 2) : 1;
   }
 
   private tickRust(dt: number): void {
@@ -1228,7 +1229,7 @@ export class Combat {
     if (this.rustClock < rust.every) return;
     this.rustClock -= rust.every;
     // Past the point where the belt is already stopped, more rust changes nothing.
-    if (this.rustSpots.length * rust.slow >= 1) return;
+    if (this.rustSpots.length >= rust.max) return;
     if (this.rustSpots.length === 0) this.events.emit({ type: 'rust' });
     this.rustSpots.push({ id: ++this.rustId, x: 0.06 + this.rng.next() * 0.8, y: 0.12 + this.rng.next() * 0.7, grime: 1 });
   }

@@ -139,12 +139,13 @@
 .mop {
   display: none;
   position: absolute;
-  right: 2%;
-  bottom: 10px;
+  /* standing on the floor beside the enemy's feet (--enemy-drop is how far below the wrapper they are) */
+  right: 3%;
+  bottom: calc(-1 * var(--enemy-drop, 0px));
   z-index: 5;
-  min-width: 64px;
-  min-height: 64px;
-  font-size: 64px;
+  min-width: 96px;
+  min-height: 96px;
+  font-size: 96px;
   color: var(--paper);
   --ink2: var(--b);
   touch-action: none;

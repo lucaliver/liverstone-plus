@@ -53,6 +53,8 @@ export interface RunState {
   current: number;
   /** Nodes entered so far, in order (the path drawn on the map). */
   path: number[];
+  /** Card rewards skipped for max HP so far: each one raises the next skip's pay. */
+  skips: number;
   /** True once the current node has been completed. */
   cleared: boolean;
   stats: RunStats;
@@ -114,6 +116,7 @@ export function newRun(hero: HeroId, seed: number, scripted = false): RunState {
     cleared: false,
     stats: { kills: 0, elites: 0, cardsPlayed: 0, damageTaken: 0 },
     money: 0,
+    skips: 0,
     uid: peekUid(),
     scripted,
   };
@@ -279,10 +282,14 @@ function newCard(run: RunState, id: string): CardInst {
   return card;
 }
 
-/** Skipping a card reward pays max HP (so passing on a weak offer still pays). */
+/** Skipping a card reward pays max HP (so passing on a weak offer still pays), a little more every time. */
+export const skipPay = (run: RunState): number => CONFIG.skipMaxHp + CONFIG.skipMaxHpStep * run.skips;
+
 export function skipReward(run: RunState): void {
-  run.maxHp += CONFIG.skipMaxHp;
-  run.hp += CONFIG.skipMaxHp;
+  const pay = skipPay(run);
+  run.maxHp += pay;
+  run.hp += pay;
+  run.skips++;
 }
 
 /** Debug: adds a copy of a card to the deck. */
@@ -414,7 +421,7 @@ const isNode = (n: unknown, i: number, len: number): n is RunNode => {
 /** Saved data is untrusted: a run that doesn't have the exact shape (or names content that no longer exists) is dropped. */
 function parseRun(raw: unknown): RunState | null {
   if (!isObj(raw) || raw.version !== SAVE_VERSION) return null;
-  const { hero, hp, maxHp, seed, rng, uid, current, cleared, deck, relics, relicFlags, nodes, path, stats, money, scripted } = raw;
+  const { hero, hp, maxHp, seed, rng, uid, current, cleared, deck, relics, relicFlags, nodes, path, stats, money, skips, scripted } = raw;
   const heroId = HERO_LIST.find((hd) => hd.id === hero)?.id;
   if (!heroId || !isNum(hp) || !isNum(maxHp) || !isNum(seed) || !isNum(rng) || !isNum(uid) || typeof cleared !== 'boolean') return null;
   if (!Array.isArray(deck) || !deck.every(isCard) || !isStrings(relics)) return null;
@@ -440,6 +447,7 @@ function parseRun(raw: unknown): RunState | null {
     stats: { kills, elites, cardsPlayed, damageTaken },
     // Saves from before pay existed start at zero.
     money: isNum(money) ? money : 0,
+    skips: isNum(skips) ? skips : 0,
     uid,
     scripted: scripted === true,
   };

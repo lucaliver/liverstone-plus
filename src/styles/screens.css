@@ -391,6 +391,9 @@
   text-shadow: 4px 4px 0 var(--y), -3px 2px 0 var(--k);
   animation: heal-pop 1.6s steps(8) 0.35s both;
 }
+/* the quick version (a max HP bonus): twice as fast */
+.heal-rise.fast i { animation-duration: calc(var(--d, 1.4s) * 0.45); animation-delay: calc(var(--dl, 0s) * 0.45); }
+.heal-rise.fast .heal-total { animation-duration: 0.8s; animation-delay: 0.05s; }
 .heal-total small { font-size: 30px; text-transform: uppercase; }
 @keyframes heal-pop {
   0% { transform: scale(0.3); opacity: 0; }

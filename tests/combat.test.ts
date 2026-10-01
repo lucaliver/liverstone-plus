@@ -5,7 +5,7 @@ import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
 import { STATUSES } from '../src/data/statuses';
 import { CARD_LIST, CARDS } from '../src/data/cards';
-import { canCopy, canShred, fightPay, loadRun, newRun, photocopyCard, shredCard } from '../src/game/run';
+import { canCopy, canShred, fightPay, loadRun, newRun, photocopyCard, shredCard, skipPay, skipReward } from '../src/game/run';
 import type { CardInst } from '../src/game/types';
 
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
@@ -462,16 +462,16 @@ describe('combat engine', () => {
     expect(c.cardCost(front.card)).toBe(CARDS.punch.cost);
   });
 
-  it('rust spots land on the belt, each slows it a little, enough stop it, and scrubbing a spot takes it off', () => {
+  it('rust spots land on the belt, the belt slows down with their square until they stop it, and scrubbing a spot takes it off', () => {
     const c = setup({ enemy: ENEMIES.facilitiesManager, hp: 900, maxHp: 900 });
-    const { every, slow } = STATUSES.deferredMaintenance.rust!;
+    const { every, max } = STATUSES.deferredMaintenance.rust!;
     expect(c.rustsBelt).toBe(true);
     expect(setup().rustsBelt).toBe(false);
     run(c, CONFIG.introTime + 0.01);
     const base = c.beltRate();
     run(c, every + 0.1);
     expect(c.rustSpots).toHaveLength(1);
-    expect(c.beltRate()).toBeCloseTo(base * (1 - slow));
+    expect(c.beltRate()).toBeCloseTo(base * (1 - 1 / max ** 2));
     const [spot] = c.rustSpots;
     c.scrubRust(spot.id, 0.6);
     expect(c.rustSpots).toHaveLength(1);
@@ -479,9 +479,11 @@ describe('combat engine', () => {
     c.scrubRust(spot.id, 0.5);
     expect(c.rustSpots).toHaveLength(0);
     expect(c.beltRate()).toBeCloseTo(base);
-    // Left alone, the spots pile up until the belt stops dead.
-    run(c, every * (1 / slow + 2));
-    expect(c.rustSpots.length).toBe(Math.ceil(1 / slow));
+    // Left alone, the spots pile up, slowing the belt more and more, until it stops dead.
+    run(c, every * (max / 2 + 0.5));
+    expect(c.beltRate() / base).toBeCloseTo(1 - 0.25, 1);
+    run(c, every * (max + 2));
+    expect(c.rustSpots.length).toBe(max);
     expect(c.beltRate()).toBe(0);
   });
 
@@ -1627,6 +1629,16 @@ describe('the Copy Room', () => {
     expect(r.hp).toBe(hp - CONFIG.copyHpCost);
     r.hp = CONFIG.copyHpCost;
     expect(canCopy(r)).toBe(false);
+  });
+
+  it('skipping a card reward pays max HP, and every skip pays more than the one before', () => {
+    const r = newRun('warrior', 5);
+    const hp = r.maxHp;
+    expect(skipPay(r)).toBe(CONFIG.skipMaxHp);
+    skipReward(r);
+    expect(skipPay(r)).toBe(CONFIG.skipMaxHp + CONFIG.skipMaxHpStep);
+    skipReward(r);
+    expect(r.maxHp).toBe(hp + 2 * CONFIG.skipMaxHp + CONFIG.skipMaxHpStep);
   });
 
   it('shows up once per act on a random map, never in the very first run', () => {

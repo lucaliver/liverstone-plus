@@ -24,9 +24,9 @@ const WHERE_WAS_I: MoveDef = { id: 'whereWasI', intent: 'idle', windup: 4 };
 /** Weak Spot: how long its target stays up, and the random wait (s) between the end of one and the next. */
 const WEAK_SPOT_TIME = 2;
 const WEAK_SPOT_GAP = [5, 9];
-/** Deferred Maintenance: a rust spot lands on the belt this often (s), and each takes this much of the belt's speed (1 = stopped). */
+/** Deferred Maintenance: a rust spot lands on the belt this often (s); this many stop the belt, and the slowdown grows with their square. */
 const RUST_EVERY = 2.5;
-const RUST_SLOW = 0.04;
+const RUST_MAX = 20;
 /** Spending Freeze: the hero's max mana. */
 const SPENDING_FREEZE_CAP = 3;
 
@@ -218,7 +218,7 @@ const defs: StatusDef[] = [
     },
   },
   // Deferred maintenance: rust builds up on the belt, slowing it down; the hero scrubs it off with the mop.
-  { id: 'deferredMaintenance', kind: 'stacks', good: true, passive: true, icon: 'rust', rust: { every: RUST_EVERY, slow: RUST_SLOW } },
+  { id: 'deferredMaintenance', kind: 'stacks', good: true, passive: true, icon: 'rust', rust: { every: RUST_EVERY, max: RUST_MAX } },
   // Weak spot: now and then a target shows on his sprite; `e` counts down to the next one.
   {
     id: 'weakSpot',

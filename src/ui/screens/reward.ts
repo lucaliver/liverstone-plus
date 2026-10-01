@@ -1,8 +1,7 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
-import { CONFIG } from '../../data/config';
 import { haptic } from '../fx/fx';
-import { type RunState, skipReward, swapCard } from '../../game/run';
+import { type RunState, skipPay, skipReward, swapCard } from '../../game/run';
 import type { CardDef, CardInst } from '../../game/types';
 import type { Screen } from '../app';
 import { icon } from '../art/icons';
@@ -11,7 +10,7 @@ import { openCardDetail, sortCards, sortControl } from '../components/modals';
 import { h, onTapOrHold } from '../dom';
 import { dropLetters } from '../components/decor';
 import { runHud } from './journey';
-import { HEAL_ANIM_MS, playHealing } from './rest';
+import { HEAL_FAST_MS, playHealing } from './rest';
 
 /** How long the chosen card takes to fly onto the one it replaces, and to be seen sitting there (ms). */
 const SWAP_ANIM_MS = 550;
@@ -43,6 +42,7 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
       class: 'btn small secondary skip-btn',
       onclick: (e: Event) => {
         sfx('tap');
+        const pay = skipPay(run);
         skipReward(run);
         // Max HP goes up: hearts rise, the HUD shows the new total, then on to the map.
         swapBtn.disabled = true;
@@ -50,12 +50,12 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
         (e.currentTarget as HTMLElement).blur();
         const hp = el.querySelector('.run-hud .chip.hp span');
         if (hp) hp.textContent = `${run.hp}/${run.maxHp}`;
-        playHealing(el, CONFIG.skipMaxHp, t('reward.maxHp'));
-        setTimeout(onDone, HEAL_ANIM_MS);
+        playHealing(el, pay, t('reward.maxHp'), true);
+        setTimeout(onDone, HEAL_FAST_MS);
       },
     },
     h('span', null, t('reward.skip')),
-    h('small', { html: `${icon('heart')}${t('reward.skipHp', { n: CONFIG.skipMaxHp })}` }),
+    h('small', { html: `${icon('heart')}${t('reward.skipHp', { n: skipPay(run) })}` }),
   );
   const deckGrid = h('div', { class: 'swap-deck' });
   const offerRow = h('div', { class: 'swap-offer' });
