@@ -21,6 +21,10 @@ import {
   PRESSURE_STEP,
   SPENDING_FREEZE_CAP,
   STATUSES,
+  UPDATE_EVERY,
+  UPDATE_PATCH,
+  UPDATE_POSTPONE,
+  UPDATE_TIME,
   WAKE_PER_CARD,
   WEAK_SPOT_TIME,
 } from './statuses';
@@ -58,6 +62,11 @@ export const VALUES = {
   pressureLimit: PRESSURE_LIMIT,
   paradigmPct: pct(1 / PARADIGM_TURNS),
   weakSpotTime: WEAK_SPOT_TIME,
+  updateEvery: UPDATE_EVERY,
+  updateSecs: UPDATE_TIME * 2,
+  updatePatch: UPDATE_PATCH,
+  postponeMin: UPDATE_POSTPONE[0],
+  postponeMax: UPDATE_POSTPONE[1],
   wakePerCard: WAKE_PER_CARD,
   // Rules on cards
   virusDelay: CONFIG.virusDelay,

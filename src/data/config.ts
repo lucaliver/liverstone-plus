@@ -62,6 +62,8 @@ export const CONFIG = {
   /** Mana more a card costs for each Inflation it carries, and while it is infected with a Virus. */
   inflationCost: 1,
   virusCost: 1,
+  /** An update window's buttons answer only after it has been up this long (s), so a tap meant for a card doesn't answer it. */
+  popupArm: 0.4,
   /** The Weak Spot target shows at least this far (share of the sprite) from every edge. */
   weakSpotMargin: 0.25,
   /** Each floor of an act makes normal enemies this much tougher (HP, damage). */

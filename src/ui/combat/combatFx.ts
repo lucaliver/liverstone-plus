@@ -308,6 +308,14 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         v.retrigger(r.weakSpot, 'appear');
         sfx('weakSpot');
         break;
+      case 'popup':
+        // A card held in a finger when the window opens is let go.
+        if (e.phase === 'open') {
+          cards.cancelDrag();
+          sfx('popup');
+          haptic('alarm');
+        } else if (e.phase === 'close') sfx('status');
+        break;
       case 'beltPinned':
         sfx('stash');
         haptic('stash');

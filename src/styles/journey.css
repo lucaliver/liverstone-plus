@@ -279,7 +279,8 @@
   background-color: var(--bg2);
   background-image: radial-gradient(circle, var(--bg-dot) 30%, transparent 34%);
   background-size: 6px 6px;
-  animation: act-in calc(0.3s * var(--pace)) steps(3) both, act-out calc(0.4s * var(--pace)) steps(4) calc(3.2s * var(--pace)) forwards;
+  /* opaque from the first frame: the map under it must never show */
+  animation: act-out calc(0.4s * var(--pace)) steps(4) calc(3.2s * var(--pace)) forwards;
 }
 .act-intro.out { animation: act-out 0.3s steps(3) forwards; }
 /* the act's scene with its sky, as wide as the screen and centred between the title and the clock; the ground runs on to both edges */

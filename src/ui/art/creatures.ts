@@ -668,6 +668,51 @@ ${shadow}
 <g class="eye"><circle cx="100" cy="58" r="22" fill="url(#pr-g)"/><circle cx="100" cy="58" r="8" fill="#1cffc0"/><circle cx="97" cy="55" r="3" fill="#fff"/></g>
 <g class="limb"><path d="M156 128l38-10 4 22-38 10z" fill="#f6f0e4" ${OUT}/><path d="M164 132l24-6M166 140l24-6" stroke="#1b1830" stroke-width="2.5"/></g>`;
 
+/** The Nerd: the IT guy. Round, pimply, in a shirt with a code bracket and pocket pens, taped glasses, braces; a laptop on a blue screen in one hand, a "well, actually" finger up in the other. */
+const theNerd = `
+<defs>${rg('ne-s', '#5a6ae8', '#22308c')}${rg('ne-k', '#f8e2c8', '#d9a888')}</defs>
+${shadow}
+<!-- cargo shorts and sneakers -->
+<path d="M62 160h76l4 22h-34l-8-10-8 10H58z" fill="#8a7a58" ${OUT}/>
+<path d="M100 164v14" stroke="#120e18" stroke-width="3"/>
+<path d="M54 190c-2-8 2-14 12-14h24l2 14zM146 190c2-8-2-14-12-14h-24l-2 14z" fill="#f6f0e4" ${OUT}/>
+<path d="M58 185h36M142 185h-36" stroke="#ff3d9a" stroke-width="4"/>
+<!-- torso: a big round belly under the shirt -->
+<path d="M40 120c0-20 16-30 60-30s60 10 60 30c4 22 0 40-12 52-14 6-32 8-48 8s-34-2-48-8c-12-12-16-30-12-52z" fill="url(#ne-s)" ${OUT}/>
+<path d="M62 162c12 10 64 10 76 0l-2 14c-14 6-58 6-72 0z" fill="url(#ne-k)" ${OUT}/>
+<circle cx="100" cy="172" r="2.5" fill="#120e18"/>
+<!-- code bracket on the chest, pocket with pens, lanyard and badge, a pizza stain -->
+<path d="M62 124l-8 7 8 7M88 124l8 7-8 7M80 120l-6 22" stroke="#f6f0e4" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M124 104v12M130 102v14M136 105v11" stroke-width="3.5" stroke="#ff3d9a"/><path d="M130 102v6" stroke="#ffd900" stroke-width="3.5"/>
+<rect x="118" y="114" width="24" height="22" fill="#f6f0e4" ${OUT}/>
+<path d="M82 98l18 40 18-40" stroke="#ffd900" stroke-width="4" fill="none"/>
+<rect x="90" y="136" width="20" height="16" fill="#f6f0e4" ${OUT}/><circle cx="100" cy="142" r="3" fill="#1c5fd0"/><path d="M95 149h10" stroke="#1b1830" stroke-width="2"/>
+<path d="M112 150l12-6 10 8-6 10-14-2z" fill="#ffd900" opacity=".9"/><circle cx="130" cy="158" r="2.5" fill="#ff3d9a"/>
+<!-- left arm and the laptop (it has crashed) -->
+<path d="M52 108c-16 4-26 16-28 32l18 6z" fill="url(#ne-s)" ${OUT}/>
+<g transform="rotate(-8 44 140)"><rect x="16" y="106" width="58" height="40" rx="3" fill="#2a2a38" ${OUT}/><rect x="22" y="112" width="46" height="28" fill="#1c5fd0"/><rect x="32" y="118" width="4" height="5" fill="#f6f0e4"/><rect x="48" y="118" width="4" height="5" fill="#f6f0e4"/><path d="M34 134q9-8 18 0" stroke="#f6f0e4" stroke-width="3" fill="none"/><rect x="10" y="146" width="70" height="8" rx="2" fill="#aaa4b8" ${OUT}/></g>
+<circle cx="22" cy="146" r="9" fill="url(#ne-k)" ${OUT}/><circle cx="76" cy="142" r="9" fill="url(#ne-k)" ${OUT}/>
+<!-- right arm: the "well, actually" finger -->
+<g class="limb"><path d="M148 106c16-2 28 8 28 24l-16 4c0-8-4-12-12-10z" fill="url(#ne-s)" ${OUT}/>
+<path d="M168 130L172 84" stroke="#120e18" stroke-width="18" stroke-linecap="round"/><path d="M168 130L172 84" stroke="#f8e2c8" stroke-width="12" stroke-linecap="round"/>
+<path d="M172 84L173 60" stroke="#120e18" stroke-width="11" stroke-linecap="round"/><path d="M172 84L173 60" stroke="#f8e2c8" stroke-width="6" stroke-linecap="round"/></g>
+<!-- head: ears, messy hair, taped glasses, pimples, braces -->
+<circle cx="54" cy="66" r="9" fill="url(#ne-k)" ${OUT}/><circle cx="146" cy="66" r="9" fill="url(#ne-k)" ${OUT}/>
+<ellipse cx="100" cy="62" rx="47" ry="42" fill="url(#ne-k)" ${OUT}/>
+<path d="M68 96c10 14 54 14 64 0" fill="none" stroke="#120e18" stroke-width="3"/>
+<path d="M54 50c-4-28 20-40 46-38 28-2 50 10 46 38-8-12-18-16-30-16-12-6-22-6-32 0-12 0-22 4-30 16z" fill="#3a2418" ${OUT}/>
+<path d="M100 14l-8-12 14 6z" fill="#3a2418" ${OUT}/>
+<path d="M62 44q16-9 28 0M110 44q12-9 28 0" stroke="#3a2418" stroke-width="5" fill="none" stroke-linecap="round"/>
+<circle cx="80" cy="66" r="18" fill="#e8f4ff" ${OUT}/><circle cx="120" cy="66" r="18" fill="#e8f4ff" ${OUT}/>
+<path d="M96 64h8" stroke="#120e18" stroke-width="5"/><rect x="95" y="59" width="10" height="9" fill="#f6f0e4" ${OUT}/>
+<g class="eye"><circle cx="82" cy="68" r="7" fill="#120e18"/><circle cx="118" cy="68" r="7" fill="#120e18"/><circle cx="84.5" cy="65" r="2.5" fill="#fff"/><circle cx="120.5" cy="65" r="2.5" fill="#fff"/></g>
+<path d="M69 57l8-4M109 57l8-4" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+<path d="M98 74q-4 8 2 10 6-2 2-10" fill="#e0a888" ${OUT}/>
+<g fill="#e0408a" stroke="#120e18" stroke-width="1.5"><circle cx="62" cy="84" r="3.5"/><circle cx="138" cy="82" r="4"/><circle cx="124" cy="42" r="3"/><circle cx="76" cy="44" r="3"/><circle cx="108" cy="86" r="3"/><circle cx="90" cy="88" r="2.5"/></g>
+<g fill="#fff"><circle cx="138" cy="81" r="1.5"/><circle cx="62" cy="83" r="1.2"/></g>
+<path d="M80 92c6 8 34 8 40 0z" fill="#1a1422" ${OUT}/><path d="M82 92h36" stroke="#dfe6ee" stroke-width="3"/><path d="M88 91v5M96 91v6M104 91v6M112 91v5" stroke="#aaa4b8" stroke-width="2"/>
+<path d="M150 38c5 9 7 13 0 15-7-2-5-6 0-15z" fill="#8ad0ff" ${OUT}/>`;
+
 /** Chief Happiness Officer: a round pink imp in a party hat, grin stretched far too wide, pizza box held high. */
 const happinessOfficer = `
 <defs>${rg('ho-b', '#ffb8dc', '#e0408a')}${glow('ho-g', '#ffd900')}</defs>
@@ -1137,6 +1182,7 @@ export const CREATURES: Record<string, string> = {
   meticulousColleague,
   dave,
   printer,
+  theNerd,
   happinessOfficer,
   officeChair,
   hrOrientationVideo,

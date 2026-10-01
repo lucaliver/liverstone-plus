@@ -236,6 +236,23 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     alarmed = lethal ? e.moveCount : -1;
   };
 
+  /** The update window: its question, then the fake progress bar (whole percents up to 90, then the decimals show). */
+  const renderPopup = (): void => {
+    const p = combat.isOver ? null : combat.popup;
+    toggle(r.popup, 'on', !!p);
+    if (!p) return;
+    const installing = p.phase === 'install';
+    toggle(r.popup, 'installing', installing);
+    setText(r.popupText, t(installing ? 'combat.update.installing' : 'combat.update.body'));
+    const ready = combat.canAnswerUpdate();
+    r.popupUpdate.disabled = !ready;
+    r.popupPostpone.disabled = !ready;
+    if (!installing) return;
+    const pct = combat.updateProgress();
+    r.popupFill.style.transform = `scaleX(${(pct / 100).toFixed(3)})`;
+    setText(r.popupPct, pct < 90 ? `${Math.floor(pct)}%` : `${(Math.floor(pct * 100) / 100).toFixed(2)}%`);
+  };
+
   const renderEnemyState = (): void => {
     const alarm = combat.isOver ? 0 : Math.floor(combat.enemyWarning() * BELT_ALARM_STEPS) / BELT_ALARM_STEPS;
     if (alarm !== beltAlarm) {
@@ -243,6 +260,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
       r.beltAlarm.style.setProperty('--alarm', String(alarm));
     }
     toggle(r.weakSpot, 'on', !!combat.weakSpot && !combat.isOver);
+    renderPopup();
     toggle(r.mop, 'on', combat.rustsBelt && !combat.isOver);
     toggle(r.mop, 'alarm', combat.rustAlarm && !combat.isOver);
     for (const spot of combat.rustSpots) {

@@ -162,6 +162,11 @@ const SOUNDS = {
   scrub: () => noise(0.12, { freq: 1800, to: 900, vol: 0.12 }),
   ratchet: () => tone(900, 0.03, { type: 'square', vol: 0.06, to: 600 }),
   weakSpot: () => tone(1200, 0.07, { type: 'square', vol: 0.07, to: 1600 }),
+  /** A system warning chime: two falling square beeps. */
+  popup: () => {
+    tone(880, 0.09, { type: 'square', vol: 0.07 });
+    tone(587, 0.16, { type: 'square', vol: 0.07, delay: 0.1 });
+  },
   status: () => tone(300, 0.2, { type: 'triangle', vol: 0.12, to: 520 }),
   debuff: () => tone(400, 0.25, { type: 'sawtooth', vol: 0.06, to: 200 }),
   windup: () => tone(200, 0.4, { type: 'sawtooth', vol: 0.05, to: 400, attack: 0.1 }),

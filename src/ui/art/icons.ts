@@ -1023,6 +1023,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M4 44h56v10H4z"/><g fill="#16121f"><circle cx="12" cy="49" r="3"/><circle cx="26" cy="49" r="3"/><circle cx="40" cy="49" r="3"/><circle cx="54" cy="49" r="3"/></g><rect x="6" y="24" width="16" height="18"/><rect x="28" y="30" width="14" height="12"/><path d="M46 20h8v-6l10 10-10 10v-6h-8z"/>`,
   },
+  update: {
+    el: 'arcane',
+    svg: `<path d="M4 8h56v48H4z"/><path fill="#16121f" opacity=".45" d="M4 8h56v10H4z"/><circle cx="11" cy="13" r="2.2" fill="#fff"/><circle cx="18" cy="13" r="2.2" fill="#fff"/><path fill="#fff" d="M28 24h8v12h8L32 50 20 36h8z"/>`,
+  },
   creepClock: {
     el: 'shadow',
     svg: `<circle cx="28" cy="38" r="24"/><circle cx="28" cy="38" r="17" fill="#16121f" opacity=".5"/><path d="M28 26v13l9 5" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 4l10 12h-6v12h-8V16h-6z"/>`,

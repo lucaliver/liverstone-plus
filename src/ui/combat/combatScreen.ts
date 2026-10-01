@@ -226,6 +226,14 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     if (state.paused || state.waiting || state.ended || !combat.hitWeakSpot()) return;
     haptic('hit');
   });
+  // The update window's buttons: a full tap (a finger already down on a card doesn't answer it), and only once the window can be answered.
+  const answerUpdate = (answer: () => boolean): void => {
+    if (state.paused || state.waiting || state.ended || !answer()) return;
+    sfx('button');
+    haptic('tap');
+  };
+  r.popupUpdate.addEventListener('click', () => answerUpdate(() => combat.startUpdate()));
+  r.popupPostpone.addEventListener('click', () => answerUpdate(() => combat.postponeUpdate()));
   // The mana bar explains itself only on a hold (it's right under the thumb while playing).
   onTapOrHold(r.manaRow, () => {}, manaInfo);
 

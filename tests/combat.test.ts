@@ -540,6 +540,61 @@ describe('combat engine', () => {
     expect(c.beltRate()).toBe(0);
   });
 
+  it("the Nerd's update window covers the belt; Postpone brings it back in a few seconds, Update runs the fake bar and patches him", () => {
+    // His own attacks off, so the only Strength he can gain is the patch.
+    const c = setup({ enemy: { ...ENEMIES.theNerd, main: { id: 'scan', intent: 'idle', windup: 9999 } }, hp: 900, maxHp: 900 });
+    const def = STATUSES.updateNeeded.popup!;
+    const phases: string[] = [];
+    const said: string[] = [];
+    c.events.on((e) => {
+      if (e.type === 'popup') phases.push(e.phase);
+      if (e.type === 'speech') said.push(e.key);
+    });
+    run(c, CONFIG.introTime + def.first - 0.1);
+    expect(c.popup).toBeNull();
+    run(c, 0.2);
+    expect(c.popup?.phase).toBe('ask');
+    // The window is over the whole belt; its buttons wake up a moment later.
+    const card = c.belt[0].card;
+    c.hero.mana = c.hero.maxMana = 10;
+    expect(c.isCovered(card.uid)).toBe(true);
+    expect(c.playCard(card.uid)).toBe(false);
+    expect(c.postponeUpdate()).toBe(false);
+    expect(c.startUpdate()).toBe(false);
+    run(c, CONFIG.popupArm);
+    expect(c.canAnswerUpdate()).toBe(true);
+    // Postpone: gone, and back after a random wait inside the range.
+    expect(c.postponeUpdate()).toBe(true);
+    expect(c.popup).toBeNull();
+    expect(c.isCovered(card.uid)).toBe(false);
+    run(c, def.postpone[0] - 0.1);
+    expect(c.popup).toBeNull();
+    run(c, def.postpone[1] - def.postpone[0] + 0.2);
+    expect(c.popup?.phase).toBe('ask');
+    // Update: 90% after `install` seconds, the rest as many seconds later, then the enemy is patched and the window stays away for a while.
+    run(c, CONFIG.popupArm);
+    expect(c.startUpdate()).toBe(true);
+    expect(c.updateProgress()).toBe(0);
+    run(c, def.install / 2);
+    expect(c.updateProgress()).toBeCloseTo(45, 0);
+    run(c, def.install / 2);
+    expect(c.updateProgress()).toBeCloseTo(90, 0);
+    run(c, def.install / 2);
+    expect(c.updateProgress()).toBeCloseTo(95, 0);
+    expect(c.popup?.phase).toBe('install');
+    expect(c.isCovered(c.belt[0].card.uid)).toBe(true);
+    expect(c.enemy.statuses.strength).toBeUndefined();
+    run(c, def.install / 2 + 0.1);
+    expect(c.popup).toBeNull();
+    expect(c.enemy.statuses.strength?.v).toBe(def.patch.v);
+    expect(said).toEqual(['status.updateNeeded.speech']);
+    run(c, def.every - 0.4);
+    expect(c.popup).toBeNull();
+    run(c, 0.5);
+    expect(c.popup?.phase).toBe('ask');
+    expect(phases).toEqual(['open', 'close', 'open', 'install', 'close', 'open']);
+  });
+
   it('sleeve slots come from the hero', () => {
     expect(setup({ hero: HEROES.warrior }).sleeve.length).toBe(1);
     expect(setup({ hero: HEROES.necromancer }).sleeve.length).toBe(3);

@@ -51,6 +51,11 @@ const DEBUFFS = ['rust', 'snowden', 'chainSmoking', 'slowdown', 'blackFriday', '
 export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
   if (rnd() < opts.sloppiness) return;
   if (c.abilityReady()) c.useAbility();
+  // The IT guy's window: it postpones it, and plays in the seconds that leaves.
+  if (c.popup) {
+    c.postponeUpdate();
+    return;
+  }
 
   const cards: { card: CombatCard; pos: number }[] = [
     ...c.belt.map((b) => ({ card: b.card, pos: b.pos })),

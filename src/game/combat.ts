@@ -144,6 +144,9 @@ export class Combat {
   rustSpots: RustSpot[] = [];
   private rustClock = 0;
   private rustId = 0;
+  /** The enemy's window over the belt: `ask` waits for a tap, `install` is the fake progress bar (`t` seconds in). Seconds until the next one while none is up (null: not yet counted). */
+  popup: { phase: 'ask' | 'install'; t: number } | null = null;
+  private popupWait: number | null = null;
   /** Free-form per-combat state for relics and powers. */
   mem: Record<string, number> = {};
   private tempUid = 0;
@@ -332,11 +335,13 @@ export class Combat {
   /**
    * True when this belt card is out of reach: piled behind an anchor card (only playing that plays the pile), or barred
    * by a curse: a wide card (Gatekeeping) stretches left of its face over the cards ahead of it (on both rows if it's
-   * tall), and a row lock (Priority Task) holds its whole row, until paid off.
+   * tall), and a row lock (Priority Task) holds its whole row, until paid off. An enemy's window over the belt (`popup`) covers every card.
    */
   isCovered(uid: number): boolean {
     const b = this.belt[this.beltIndex(uid)];
     if (!b) return false;
+    // The enemy's window is over the whole belt.
+    if (this.popup) return true;
     if (b.stuck && !CARDS[b.card.id].anchor) return true;
     return this.belt.some((w) => {
       if (w === b) return false;
@@ -411,6 +416,7 @@ export class Combat {
     this.tickFighter('hero', dt);
     this.tickFighter('enemy', dt);
     this.tickRust(dt);
+    this.tickPopup(dt);
     if (this.weakSpot) {
       this.weakSpot.t -= dt;
       if (this.weakSpot.t <= 0) this.weakSpot = null;
@@ -1267,6 +1273,66 @@ export class Combat {
     this.syncRustStatus();
     // The belt has just stopped dead: he hands the job over.
     if (this.rustSpots.length === rust.max) this.say('status.deferredMaintenance.speech');
+  }
+
+  /** The window the enemy's status brings, if any. */
+  private popupDef(): NonNullable<StatusDef['popup']> | undefined {
+    for (const id of Object.keys(this.enemy.statuses)) if (this.has('enemy', id) && STATUSES[id].popup) return STATUSES[id].popup;
+    return undefined;
+  }
+
+  /** How far the fake update has got, in percent: 0 to 90 in the first `install` seconds, then the last 10 in as many again (the decimals show). */
+  updateProgress(): number {
+    const def = this.popupDef();
+    if (!def || this.popup?.phase !== 'install') return 0;
+    const u = this.popup.t / def.install;
+    return Math.min(100, u < 1 ? 90 * u : 90 + 10 * (u - 1));
+  }
+
+  private tickPopup(dt: number): void {
+    const def = this.popupDef();
+    if (!def) {
+      this.popup = null;
+      return;
+    }
+    if (!this.popup) {
+      this.popupWait ??= def.first;
+      this.popupWait -= dt;
+      if (this.popupWait > 0) return;
+      this.popup = { phase: 'ask', t: 0 };
+      this.events.emit({ type: 'popup', phase: 'open' });
+      return;
+    }
+    this.popup.t += dt;
+    if (this.popup.phase !== 'install' || this.popup.t < def.install * 2) return;
+    this.popup = null;
+    this.popupWait = def.every;
+    this.applyStatus('enemy', def.patch.id, def.patch.v);
+    this.events.emit({ type: 'popup', phase: 'close' });
+    this.say('status.updateNeeded.speech');
+  }
+
+  /** Whether the window's question can be answered: it's up and has been long enough to be read (`CONFIG.popupArm`). */
+  canAnswerUpdate(): boolean {
+    return this.popup?.phase === 'ask' && this.popup.t >= CONFIG.popupArm && !this.result;
+  }
+
+  /** The hero taps Postpone: the window goes away and comes back in a few seconds. False when there's no question to answer. */
+  postponeUpdate(): boolean {
+    const def = this.popupDef();
+    if (!def || !this.canAnswerUpdate()) return false;
+    this.popup = null;
+    this.popupWait = def.postpone[0] + this.rng.next() * (def.postpone[1] - def.postpone[0]);
+    this.events.emit({ type: 'popup', phase: 'close' });
+    return true;
+  }
+
+  /** The hero taps Update: the progress bar starts and the belt stays covered until it's done. False when there's no question to answer. */
+  startUpdate(): boolean {
+    if (!this.canAnswerUpdate()) return false;
+    this.popup = { phase: 'install', t: 0 };
+    this.events.emit({ type: 'popup', phase: 'install' });
+    return true;
   }
 
   /** The hero scrubs a rust spot with the mop: `amount` of its grime comes off, and it's gone at 0. */

@@ -101,6 +101,21 @@ function markup(run: RunState, combat: Combat): string {
       <div class="belt-rust"></div>
       <div class="maw-eyes" aria-hidden="true"><i></i><i></i></div>
       <div class="belt-cards"></div>
+      <!-- the IT guy's window: it covers the whole belt (shown by the HUD while the engine has one up) -->
+      <div class="update-popup">
+        <div class="up-bar"><span>${t('combat.update.title')}</span></div>
+        <div class="up-body">
+          <div class="up-ico">${icon('update')}</div>
+          <div class="up-main">
+            <p class="up-text"></p>
+            <div class="up-btns">
+              <button class="btn small js-update">${t('combat.update.update')}</button>
+              <button class="btn small secondary js-postpone">${t('combat.update.postpone')}</button>
+            </div>
+            <div class="up-progress"><div class="up-track"><div class="up-fill"></div></div><b class="up-pct"></b></div>
+          </div>
+        </div>
+      </div>
     </section>
     <section class="mana-row">${icon('crystal')}<div class="mana-pips"></div><div class="mana-num"></div></section>
     <section class="action-row">
@@ -144,6 +159,12 @@ function queryRefs(el: HTMLElement) {
     belt: $('.belt', el),
     track: $('.belt-track', el),
     beltCards: $('.belt-cards', el),
+    popup: $('.update-popup', el),
+    popupText: $('.up-text', el),
+    popupUpdate: $<HTMLButtonElement>('.js-update', el),
+    popupPostpone: $<HTMLButtonElement>('.js-postpone', el),
+    popupFill: $('.up-fill', el),
+    popupPct: $('.up-pct', el),
   };
 }
 

@@ -213,6 +213,12 @@ export interface StatusDef {
   onExpire?: (c: Combat, side: Side, s: StatusVal) => void;
   /** While active on the enemy, a rust spot lands on the belt every `every` seconds, and the belt's speed drops along an ease-in-out sine of their share of `max` (`max` spots stop it dead: little at first, most of it in the middle, then it creeps to a halt; from the `warn` share of `max` on, the mop shakes and blinks). The hero scrubs them off with the mop. */
   rust?: { every: number; max: number; warn: number };
+  /**
+   * While active on the enemy, an "UPDATE NEEDED" window covers the belt (no belt card can be played): the first one after `first` seconds, then one every `every` seconds
+   * after each update. Postpone brings it back after a random `postpone` ([min, max]) seconds; Update runs a fake progress bar (`install` seconds up to 90%, as many
+   * more for the rest), and when it's done the enemy gets the `patch` status.
+   */
+  popup?: { first: number; every: number; postpone: [number, number]; install: number; patch: { id: string; v: number } };
   /** Runs every simulation step while the status is active. */
   tick?: (c: Combat, side: Side, s: StatusVal, dt: number) => void;
   /** The particles that burst when the status lands (`kind` is a palette of `ui/fx/fx.ts`). */
@@ -445,6 +451,8 @@ export type CombatEvent =
   | { type: 'rowsClose' }
   | { type: 'weakSpot'; x: number; y: number }
   | { type: 'rust' }
+  /** The enemy's window over the belt: it `open`s, goes `install`ing, or `close`s (postponed, or the update is done). */
+  | { type: 'popup'; phase: 'open' | 'install' | 'close' }
   | { type: 'end'; result: CombatResult };
 
 export type CombatResult = 'win' | 'lose';

@@ -441,6 +441,22 @@ const defs: EnemyDef[] = [
     specials: [atk('printOut', 5, 8, { intent: 'charge', release: true, ...ramp })],
   },
   {
+    // The IT guy: every so often an UPDATE NEEDED window covers your belt. Postponing it only buys a few seconds; sitting through the update costs a long one.
+    id: 'theNerd',
+    act: 2,
+    tier: 'elite',
+    hp: 100,
+    block: 15,
+    art: 'theNerd',
+    main: atk('ctrlAltDel', 7, 7, ramp),
+    every: 2,
+    specials: [
+      { id: 'blueScreen', intent: 'debuff', windup: 5, status: [{ id: 'blackout', t: 8, target: 'hero' }] },
+      atk('formatC', 16, 11, { intent: 'charge' }),
+    ],
+    start: [{ id: 'updateNeeded' }],
+  },
+  {
     id: 'veteran',
     act: 2,
     tier: 'elite',
@@ -720,6 +736,7 @@ export const DIFFICULTY = [
   'complianceOfficer',
   'nightJanitor',
   'printer',
+  'theNerd',
   'veteran',
   'micromanager',
   'graveyardIntern',

@@ -571,6 +571,41 @@ test("the Facilities Manager's rust spots slow the belt, and only dragging the m
   expect(problems).toEqual([]);
 });
 
+test("the Nerd's update window covers the belt: Postpone sends it away for a few seconds, Update runs a progress bar and then patches him", async ({
+  page,
+}) => {
+  const problems = await freshGame(page);
+  await page.getByRole('button', { name: /debug/i }).click();
+  await page.locator('.debug-foe[data-enemy="theNerd"]').click();
+  await expect(page.locator('.combat')).toBeVisible();
+  const start = page.locator('.js-start');
+  if (await start.count()) await start.click();
+  const popup = page.locator('.update-popup.on');
+  await expect(popup).toBeVisible({ timeout: 15000 });
+  // It covers the whole belt.
+  const belt = (await page.locator('.belt').boundingBox())!;
+  const win = (await popup.boundingBox())!;
+  expect(win.width).toBeGreaterThanOrEqual(belt.width - 1);
+  expect(win.height).toBeGreaterThanOrEqual(belt.height - 1);
+  // The buttons wake up a moment after the window shows.
+  await expect(page.locator('.js-postpone')).toBeEnabled();
+  await page.locator('.js-postpone').tap();
+  await expect(popup).toBeHidden();
+  // It's back within a few seconds; this time, update.
+  await expect(popup).toBeVisible({ timeout: 6000 });
+  await expect(page.locator('.js-update')).toBeEnabled();
+  await page.locator('.js-update').tap();
+  await expect(page.locator('.update-popup.installing')).toBeVisible();
+  await expect(page.locator('.up-pct')).toHaveText(/^\d+%$/);
+  // Past 90% the decimals show.
+  await combat(page, 'c.popup.t = 4.5;');
+  await expect(page.locator('.up-pct')).toHaveText(/^\d+\.\d{2}%$/);
+  await combat(page, 'c.popup.t = 7.95;');
+  await expect(popup).toBeHidden();
+  expect(await combat(page, 'return c.enemy.statuses.strength?.v ?? 0;')).toBeGreaterThanOrEqual(1);
+  expect(problems).toEqual([]);
+});
+
 test('debug: Unlock all hires every hero and reveals every card and enemy in the handbook', async ({ page }) => {
   await freshGame(page, { locked: true });
   await page.getByRole('button', { name: /debug/i }).click();
