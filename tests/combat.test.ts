@@ -5,7 +5,7 @@ import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
 import { STATUSES } from '../src/data/statuses';
 import { CARD_LIST, CARDS } from '../src/data/cards';
-import { canCopy, canShred, COPY_HP_COST, fightPay, loadRun, newRun, photocopyCard, SHRED_MIN_DECK, shredCard } from '../src/game/run';
+import { canCopy, canShred, fightPay, loadRun, newRun, photocopyCard, shredCard } from '../src/game/run';
 import type { CardInst } from '../src/game/types';
 
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
@@ -1126,6 +1126,94 @@ describe('pop culture cards', () => {
   });
 });
 
+describe('statuses that work through their data', () => {
+  const fight = (): Combat => {
+    const c = setup();
+    run(c, CONFIG.introTime + 0.1);
+    return c;
+  };
+
+  it('Dodge makes its carrier immune to damage', () => {
+    const c = fight();
+    c.applyStatus('hero', 'dodge', 1, 5);
+    const hp = c.hero.hp;
+    c.damage('enemy', 'hero', 20, {}, 'enemy');
+    expect(c.hero.hp).toBe(hp);
+    c.removeStatus('hero', 'dodge');
+    c.damage('enemy', 'hero', 20, {}, 'enemy');
+    expect(c.hero.hp).toBe(hp - 20);
+  });
+
+  it('Weak lowers the damage dealt and Vulnerable raises the damage taken', () => {
+    const c = fight();
+    const base = c.previewHeroDamage(20, null);
+    c.applyStatus('hero', 'weak', 1, 5);
+    expect(c.previewHeroDamage(20, null)).toBe(Math.floor(base * 0.75));
+    c.applyStatus('enemy', 'vulnerable', 1, 5);
+    expect(c.previewHeroDamage(20, null)).toBe(Math.floor(base * 0.75 * 1.5));
+  });
+
+  it('a stunned, chilled or hasty enemy runs its clock slower, at a halt or faster', () => {
+    const c = fight();
+    expect(c.enemyTimeRate()).toBe(1);
+    c.applyStatus('enemy', 'chill', 1, 5);
+    expect(c.enemyTimeRate()).toBe(0.5);
+    c.applyStatus('enemy', 'haste', 1, 5);
+    expect(c.enemyTimeRate()).toBe(0.75);
+    c.applyStatus('enemy', 'stun', 1, 5);
+    expect(c.enemyTimeRate()).toBe(0);
+  });
+
+  it('belt statuses multiply its speed, and Stalled stops it', () => {
+    const c = fight();
+    const base = c.beltBoost();
+    c.applyStatus('hero', 'rush', 1, 5);
+    c.applyStatus('hero', 'slowdown', 1, 5);
+    expect(c.beltBoost()).toBeCloseTo(base * CONFIG.beltRush * CONFIG.beltSlow);
+    c.applyStatus('hero', 'stalled', 1, 5);
+    expect(c.beltBoost()).toBe(0);
+  });
+
+  it('Fortified holds the Block that would decay', () => {
+    const c = fight();
+    c.gainBlock('hero', 30);
+    c.applyStatus('hero', 'fortified', 1, 30);
+    run(c, 10);
+    expect(c.hero.block).toBe(30);
+  });
+
+  it('Autopilot plays, for free, a card slipping off the belt', () => {
+    const c = fight();
+    c.applyStatus('hero', 'autopilot', 1, 60);
+    c.hero.mana = 0;
+    run(c, 20);
+    expect(c.cardsPlayed).toBeGreaterThan(0);
+  });
+
+  it('Root Access ignores the card rules an enemy sets', () => {
+    const c = setup({ enemy: { ...plainBoomer, start: [{ id: 'chillOut' }] } });
+    run(c, CONFIG.introTime + 0.1);
+    c.hero.mana = c.hero.maxMana = 10;
+    expect(c.playCard(c.belt[0].card.uid)).toBe(true);
+    expect(c.playCard(c.belt[0].card.uid)).toBe(false);
+    c.applyStatus('hero', 'rootAccess', 1, 10);
+    expect(c.playCard(c.belt[0].card.uid)).toBe(true);
+  });
+
+  it('Regen heals and Poison hurts, a stack less each time', () => {
+    const c = fight();
+    c.hero.hp = 50;
+    c.applyStatus('hero', 'regen', 3);
+    c.applyStatus('enemy', 'poison', 3);
+    const hp = c.enemy.hp;
+    run(c, CONFIG.dotInterval + 0.1);
+    expect(c.hero.hp).toBe(53);
+    expect(c.enemy.hp).toBe(hp - 3);
+    expect(c.stacks('hero', 'regen')).toBe(2);
+    expect(c.stacks('enemy', 'poison')).toBe(2);
+  });
+});
+
 describe('run pay', () => {
   it('pays a base by tier plus a bonus for every second under par', () => {
     expect(fightPay('normal', CONFIG.pay.par + 20)).toBe(CONFIG.pay.normal);
@@ -1522,7 +1610,7 @@ describe('the Copy Room', () => {
     const gone = r.deck[0];
     shredCard(r, gone.uid);
     expect(r.deck.some((c) => c.uid === gone.uid)).toBe(false);
-    while (r.deck.length > SHRED_MIN_DECK) shredCard(r, r.deck[0].uid);
+    while (r.deck.length > CONFIG.shredMinDeck) shredCard(r, r.deck[0].uid);
     expect(canShred(r)).toBe(false);
   });
 
@@ -1536,8 +1624,8 @@ describe('the Copy Room', () => {
     expect(r.deck).toHaveLength(before + 1);
     expect(copy).toMatchObject({ id: r.deck[0].id, up: true, perks: ['fastTrack'] });
     expect(copy.uid).not.toBe(r.deck[0].uid);
-    expect(r.hp).toBe(hp - COPY_HP_COST);
-    r.hp = COPY_HP_COST;
+    expect(r.hp).toBe(hp - CONFIG.copyHpCost);
+    r.hp = CONFIG.copyHpCost;
     expect(canCopy(r)).toBe(false);
   });
 

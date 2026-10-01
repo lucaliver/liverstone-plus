@@ -7,6 +7,7 @@ import { h } from '../dom';
 import { icon } from '../art/icons';
 import { CARD_SHOW_MS, playCardChange } from '../components/cardShow';
 import { openDeck } from '../components/modals';
+import { closeRoom, roomOption } from '../components/room';
 import { motes } from '../components/decor';
 import { runHud } from './journey';
 
@@ -24,28 +25,20 @@ export function promotionScreen(run: RunState, onDone: () => void): Screen {
       { class: 'rest-options' },
       ...PERK_LIST.map((p) => {
         const fits = run.deck.filter((c) => canPerk(c, p.id));
-        return h('button', {
-          class: 'option',
-          disabled: fits.length === 0,
-          html: `${icon(p.icon)}<b>${t(`perk.${p.id}`)}</b><span>${t(`perk.${p.id}.d`)}</span>`,
-          onclick: () => {
-            sfx('tap');
-            openDeck(run.deck, {
-              title: t('promo.hint'),
-              confirmLabel: t('promo.confirm'),
-              filter: (c) => canPerk(c, p.id),
-              previewSelected: (c) => ({ ...c, perks: [...(c.perks ?? []), p.id] }),
-              onPick: (c) => {
-                const before = { ...c };
-                addPerk(run, c.uid, p.id);
-                el.querySelectorAll('button').forEach((b) => {
-                  b.disabled = true;
-                });
-                playCardChange(el, before, { ...c }, t(`perk.${p.id}`));
-                setTimeout(onDone, CARD_SHOW_MS);
-              },
-            });
-          },
+        return roomOption(p.icon, t(`perk.${p.id}`), t(`perk.${p.id}.d`), fits.length === 0, () => {
+          sfx('tap');
+          openDeck(run.deck, {
+            title: t('promo.hint'),
+            confirmLabel: t('promo.confirm'),
+            filter: (c) => canPerk(c, p.id),
+            previewSelected: (c) => ({ ...c, perks: [...(c.perks ?? []), p.id] }),
+            onPick: (c) => {
+              const before = { ...c };
+              addPerk(run, c.uid, p.id);
+              playCardChange(el, before, { ...c }, t(`perk.${p.id}`));
+              closeRoom(el, onDone, CARD_SHOW_MS);
+            },
+          });
         });
       }),
     ),

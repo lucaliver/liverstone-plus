@@ -19,8 +19,11 @@ import type {
   RustSpot,
   Side,
   StatusDef,
+  Keyword,
   Statuses,
 } from './types';
+
+const isCurse = (c: CardInst): boolean => CARDS[c.id].type === 'curse';
 
 export interface Fighter {
   hp: number;
@@ -112,8 +115,8 @@ export class Combat {
   /** Seconds the belt still stands before it turns around, and how many turns it was asked for meanwhile (two cancel out). */
   private beltHalt = 0;
   private beltTurns = 0;
-  beltSpeed = 1;
-  regenMul = 1;
+  private beltSpeed = 1;
+  private regenMul = 1;
   /** Deck uids permanently removed (potions). */
   consumed: number[] = [];
   cardsPlayed = 0;
@@ -191,7 +194,7 @@ export class Combat {
       statuses: {},
       blockTimer: 0,
       dotTimer: 0,
-      blockDecay: 0.6,
+      blockDecay: CONFIG.enemyBlockDecay,
       move: e.main,
       timer: 0,
       moveCount: 0,
@@ -238,6 +241,21 @@ export class Combat {
     return !!s && (STATUSES[id].kind === 'timed' ? s.t > 0 : s.v > 0);
   }
 
+  /** The product of a speed or damage factor over the side's active statuses (1 when none has it). */
+  private mul(side: Side, key: 'timeMul' | 'beltMul' | 'dealtMul' | 'takenMul' | 'regenMul'): number {
+    let r = 1;
+    for (const id of Object.keys(this.fighter(side).statuses)) {
+      const m = STATUSES[id][key];
+      if (m !== undefined && this.has(side, id)) r *= m;
+    }
+    return r;
+  }
+
+  /** Whether any active status of the side carries this rule flag. */
+  private flag(side: Side, key: 'holdsBlock' | 'immune' | 'ignoresRules' | 'autoplay'): boolean {
+    return Object.keys(this.fighter(side).statuses).some((id) => STATUSES[id][key] && this.has(side, id));
+  }
+
   stacks(side: Side, id: string): number {
     return this.fighter(side).statuses[id]?.v ?? 0;
   }
@@ -260,13 +278,21 @@ export class Combat {
     return !this.keywords(card).includes('unplayable') && !!def.play;
   }
 
-  keywords(card: CardInst): string[] {
+  keywords(card: CardInst): Keyword[] {
     return cardKeywordsOf(card);
+  }
+
+  private beltIndex(uid: number): number {
+    return this.belt.findIndex((b) => b.card.uid === uid);
+  }
+
+  private sleeveIndex(uid: number): number {
+    return this.sleeve.findIndex((c) => c?.uid === uid);
   }
 
   /** Belt row of a card, or -1 when it's not on the belt (sleeve). */
   rowOf(uid: number): number {
-    return this.belt.find((b) => b.card.uid === uid)?.row ?? -1;
+    return this.belt[this.beltIndex(uid)]?.row ?? -1;
   }
 
   /** The highest max mana allowed right now (statuses such as a Spending Freeze lower it). */
@@ -292,7 +318,7 @@ export class Combat {
    * tall), and a row lock (Priority Task) holds its whole row, until paid off.
    */
   isCovered(uid: number): boolean {
-    const b = this.belt.find((x) => x.card.uid === uid);
+    const b = this.belt[this.beltIndex(uid)];
     if (!b) return false;
     if (b.stuck && !CARDS[b.card.id].anchor) return true;
     return this.belt.some((w) => {
@@ -308,7 +334,7 @@ export class Combat {
   /** The status whose rule forbids playing this card now (an enemy passive, a stun…) and why, or null. */
   ruleBlock(card: CardInst): { status: string; key: TKey } | null {
     // Root access (sudo): no rule applies.
-    if (this.has('hero', 'rootAccess')) return null;
+    if (this.flag('hero', 'ignoresRules')) return null;
     const def = CARDS[card.id];
     for (const side of ['hero', 'enemy'] as const) {
       for (const id of Object.keys(this.fighter(side).statuses)) {
@@ -332,11 +358,7 @@ export class Combat {
   }
 
   enemyTimeRate(): number {
-    if (this.has('enemy', 'stun') || this.has('enemy', 'frozen')) return 0;
-    let r = 1;
-    if (this.has('enemy', 'chill')) r *= 0.5;
-    if (this.has('enemy', 'haste')) r *= 1.5;
-    return r;
+    return this.mul('enemy', 'timeMul');
   }
 
   beltRate(): number {
@@ -345,13 +367,9 @@ export class Combat {
 
   /** How much statuses speed the belt up (Rush, Hurry, Crunch), slow it down (Slowdown, rust) or stop it (Stalled, full rust, or about to turn around): 1 when none does. */
   beltBoost(): number {
-    let r = 1;
-    if (this.has('hero', 'rush')) r *= CONFIG.beltRush;
-    if (this.has('hero', 'hurry')) r *= CONFIG.beltHurry;
-    if (this.has('hero', 'crunch')) r *= CONFIG.beltCrunch;
+    let r = this.mul('hero', 'beltMul');
     r *= Math.max(0, 1 - this.rustSpots.length * this.rustSlow());
-    if (this.has('hero', 'stalled') || this.beltHalt > 0) r = 0;
-    if (this.has('hero', 'slowdown')) r *= CONFIG.beltSlow;
+    if (this.beltHalt > 0) r = 0;
     return r;
   }
 
@@ -392,8 +410,7 @@ export class Combat {
   private tickHero(dt: number): void {
     const h = this.hero;
     if (h.mana < h.maxMana) {
-      let rate = this.regenMul;
-      for (const id of Object.keys(h.statuses)) if (this.has('hero', id)) rate *= STATUSES[id].regenMul ?? 1;
+      const rate = this.regenMul * this.mul('hero', 'regenMul');
       h.manaTimer += dt * rate;
       while (h.manaTimer >= h.regen && h.mana < h.maxMana) {
         h.manaTimer -= h.regen;
@@ -411,6 +428,18 @@ export class Combat {
     }
   }
 
+  /** A hex already cracked is gone once its card leaves the belt (an uncracked one stays on it through the piles). */
+  private shedHex(card: CombatCard): void {
+    if (card.hex && card.hex.left <= 0) delete card.hex;
+  }
+
+  /** `n` random cards that fit: the belt's first, then the rest of the deck (draw and discard piles). */
+  private pickCards(fits: (c: CombatCard) => boolean, n: number): CombatCard[] {
+    const onBelt = this.rng.shuffle(this.belt.map((b) => b.card).filter(fits));
+    const rest = this.rng.shuffle([...this.draw, ...this.discard].filter(fits));
+    return [...onBelt, ...rest].slice(0, n);
+  }
+
   /** Every card of the fight, wherever it is: piles, belt and sleeve. */
   private allCards(): CombatCard[] {
     return [...this.draw, ...this.discard, ...this.exhaust, ...this.belt.map((b) => b.card), ...this.sleeve.filter((c) => c !== null)];
@@ -418,12 +447,12 @@ export class Combat {
 
   private tickFighter(side: Side, dt: number): void {
     const f = this.fighter(side);
-    // Block decays in steps: 10% of current block (at least 1) per interval. Fortified Block holds.
-    if (f.block > 0 && !this.has(side, 'fortified')) {
+    // Block decays in steps: a share of the current block (at least 1) per interval, unless a status holds it.
+    if (f.block > 0 && !this.flag(side, 'holdsBlock')) {
       f.blockTimer += dt;
       while (f.blockTimer >= f.blockDecay && f.block > 0) {
         f.blockTimer -= f.blockDecay;
-        f.block = Math.max(0, f.block - Math.max(1, Math.ceil(f.block * 0.1)));
+        f.block = Math.max(0, f.block - Math.max(1, Math.ceil(f.block * CONFIG.blockDecayShare)));
       }
     } else {
       f.blockTimer = 0;
@@ -451,10 +480,9 @@ export class Combat {
     f.dotTimer += dt;
     if (f.dotTimer < CONFIG.dotInterval) return;
     f.dotTimer -= CONFIG.dotInterval;
-    for (const id of ['poison', 'regen']) {
-      const s = f.statuses[id];
-      if (!s || s.v <= 0) continue;
-      if (id === 'regen') this.heal(side, s.v);
+    for (const [id, s] of Object.entries(f.statuses)) {
+      if (f.statuses[id] !== s || STATUSES[id].kind !== 'dot' || s.v <= 0) continue;
+      if (STATUSES[id].heals) this.heal(side, s.v);
       else {
         const bonus = side === 'enemy' ? (this.heroDef.hooks.enemyDotBonus?.(this, id) ?? 0) : 0;
         this.damage(side === 'hero' ? 'enemy' : 'hero', side, s.v + bonus, { raw: true, ignoreBlock: true, kind: id }, 'dot');
@@ -552,7 +580,7 @@ export class Combat {
     if (this.rowsOpen <= rows) return;
     this.rowsOpen = rows;
     for (const b of this.belt.filter((x) => x.row >= rows)) {
-      if (b.card.hex && b.card.hex.left <= 0) delete b.card.hex;
+      this.shedHex(b.card);
       this.discard.push(b.card);
       this.events.emit({ type: 'cardDiscarded', card: b.card });
     }
@@ -633,7 +661,7 @@ export class Combat {
       const b = this.belt[i];
       if (b.pos < EXPIRE_POS) continue;
       // On autopilot, a card slipping off plays itself for free if it can (rules…); otherwise it's lost as usual.
-      if (this.has('hero', 'autopilot') && this.playCard(b.card.uid, true)) continue;
+      if (this.flag('hero', 'autoplay') && this.playCard(b.card.uid, true)) continue;
       this.belt.splice(i, 1);
       this.expire(b.card);
       if (this.result) return;
@@ -728,7 +756,7 @@ export class Combat {
   private expire(card: CombatCard): void {
     const def = CARDS[card.id];
     // A hex stays on the card through the piles until it's broken; one already cracked is gone.
-    if (card.hex && card.hex.left <= 0) delete card.hex;
+    this.shedHex(card);
     card.passed = true;
     this.events.emit({ type: 'cardExpired', card });
     this.withCard(card, def, () => def.onExpire?.(this, this.cardVals(card), card));
@@ -745,8 +773,8 @@ export class Combat {
   /** Plays a card from the belt or sleeve. Returns false if it couldn't be played. */
   playCard(uid: number, free = false): boolean {
     if (this.result || this.intro > 0) return false;
-    const beltIdx = this.belt.findIndex((b) => b.card.uid === uid);
-    const sleeveIdx = this.sleeve.findIndex((c) => c?.uid === uid);
+    const beltIdx = this.beltIndex(uid);
+    const sleeveIdx = this.sleeveIndex(uid);
     const card = beltIdx >= 0 ? this.belt[beltIdx].card : sleeveIdx >= 0 ? this.sleeve[sleeveIdx] : null;
     if (!card) return false;
     if (beltIdx >= 0 && this.isCovered(uid)) {
@@ -781,8 +809,8 @@ export class Combat {
   /** Pays for a card and plays it from wherever it is (belt or sleeve): the checks are already done. */
   private resolvePlay(card: CombatCard, free: boolean): void {
     const def = CARDS[card.id];
-    const beltIdx = this.belt.findIndex((b) => b.card.uid === card.uid);
-    const sleeveIdx = this.sleeve.findIndex((c) => c?.uid === card.uid);
+    const beltIdx = this.beltIndex(card.uid);
+    const sleeveIdx = this.sleeveIndex(card.uid);
     const cost = this.cardCost(card);
     // X is all the mana there is; a free card still counts it, without spending it.
     const spent = cost < 0 ? this.hero.mana : cost;
@@ -843,7 +871,7 @@ export class Combat {
   /** Moves a belt card into the sleeve. If the slot is taken, the two cards swap places. */
   stash(uid: number, slot?: number): boolean {
     if (this.result || this.intro > 0) return false;
-    const beltIdx = this.belt.findIndex((b) => b.card.uid === uid);
+    const beltIdx = this.beltIndex(uid);
     if (beltIdx < 0) return false;
     const target = slot ?? this.sleeve.indexOf(null);
     if (target < 0 || target >= this.sleeve.length) return false;
@@ -923,8 +951,7 @@ export class Combat {
     } else {
       dmg += this.strengthOf('enemy');
     }
-    if (this.has(from, 'weak')) dmg *= 0.75;
-    if (this.has(to, 'vulnerable')) dmg *= 1.5;
+    dmg *= this.mul(from, 'dealtMul') * this.mul(to, 'takenMul');
     if (from === 'hero') dmg -= this.hitCut();
     return Math.max(0, Math.floor(dmg));
   }
@@ -943,8 +970,8 @@ export class Combat {
     const dmg = opts.raw ? base : this.computeDamage(from, to, base, this.current?.def ?? null);
 
     // Dodge: immune to every kind of damage while it lasts.
-    if (to === 'hero' && this.has('hero', 'dodge')) {
-      if (source === 'enemy') this.events.emit({ type: 'text', target: 'hero', key: 'combat.dodged', tone: 'good' });
+    if (this.flag(to, 'immune')) {
+      if (to === 'hero' && source === 'enemy') this.events.emit({ type: 'text', target: 'hero', key: 'combat.dodged', tone: 'good' });
       return 0;
     }
 
@@ -1125,7 +1152,7 @@ export class Combat {
   exhaustBelt(): number {
     const cards = this.belt.splice(0).map((b) => b.card);
     for (const card of cards) {
-      if (card.hex && card.hex.left <= 0) delete card.hex;
+      this.shedHex(card);
       this.exhaust.push(card);
       this.events.emit({ type: 'cardDiscarded', card });
     }
@@ -1170,7 +1197,7 @@ export class Combat {
     const last = this.lastPlay;
     if (!last) return;
     for (const b of this.belt) {
-      if (b.card.hex && b.card.hex.left <= 0) delete b.card.hex;
+      this.shedHex(b.card);
       this.discard.push(b.card);
       this.events.emit({ type: 'cardDiscarded', card: b.card });
       b.card = { uid: -++this.tempUid, id: last.card.id, up: last.card.up, bonus: 0, temp: true };
@@ -1216,7 +1243,7 @@ export class Combat {
 
   /** The hero dragged a card one more swipe around the screen: a card with `wind` grows. False when there's nothing (more) to wind. */
   windCard(uid: number): boolean {
-    const card = this.belt.find((b) => b.card.uid === uid)?.card ?? this.sleeve.find((c) => c?.uid === uid);
+    const card = this.belt[this.beltIndex(uid)]?.card ?? this.sleeve[this.sleeveIndex(uid)];
     const wind = card && CARDS[card.id].wind;
     if (!card || !wind || this.result) return false;
     const vals = this.cardVals(card);
@@ -1227,7 +1254,8 @@ export class Combat {
 
   /** Shows a target somewhere on the enemy's sprite for `time` seconds. */
   openWeakSpot(time: number): void {
-    this.weakSpot = { x: 0.25 + this.rng.next() * 0.5, y: 0.25 + this.rng.next() * 0.5, t: time };
+    const m = CONFIG.weakSpotMargin;
+    this.weakSpot = { x: m + this.rng.next() * (1 - 2 * m), y: m + this.rng.next() * (1 - 2 * m), t: time };
     this.events.emit({ type: 'weakSpot', x: this.weakSpot.x, y: this.weakSpot.y });
   }
 
@@ -1242,7 +1270,7 @@ export class Combat {
   /** Hexes a random `share` (0–1, rounded up) of the belt cards and of the rest of the deck (draw and discard piles), never curses. */
   hexCards(id: string, share: number): void {
     const hex = HEXES[id];
-    const fits = (c: CombatCard): boolean => !c.hex && CARDS[c.id].type !== 'curse';
+    const fits = (c: CombatCard): boolean => !c.hex && !isCurse(c);
     const some = (cards: CombatCard[]): CombatCard[] => {
       const ok = cards.filter(fits);
       return this.rng.shuffle(ok).slice(0, Math.ceil(ok.length * share));
@@ -1255,10 +1283,7 @@ export class Combat {
 
   /** Inflation: `n` random cards (belt first, then the rest of the deck) cost 1 more mana until they're next played. */
   inflateCards(n: number): void {
-    const fits = (c: CombatCard): boolean => CARDS[c.id].type !== 'curse' && this.cardCost(c) >= 0;
-    const onBelt = this.rng.shuffle(this.belt.map((b) => b.card).filter(fits));
-    const rest = this.rng.shuffle([...this.draw, ...this.discard].filter(fits));
-    for (const card of [...onBelt, ...rest].slice(0, n)) {
+    for (const card of this.pickCards((c) => !isCurse(c) && this.cardCost(c) >= 0, n)) {
       card.tax = (card.tax ?? 0) + 1;
       this.events.emit({ type: 'inflated', card });
     }
@@ -1266,10 +1291,7 @@ export class Combat {
 
   /** Virus: `n` random cards (belt first, then the rest of the deck) are infected until they're next played. */
   infectCards(n: number): void {
-    const fits = (c: CombatCard): boolean => CARDS[c.id].type !== 'curse' && !c.virus && this.cardCost(c) >= 0;
-    const onBelt = this.rng.shuffle(this.belt.map((b) => b.card).filter(fits));
-    const rest = this.rng.shuffle([...this.draw, ...this.discard].filter(fits));
-    for (const card of [...onBelt, ...rest].slice(0, n)) this.infect(card);
+    for (const card of this.pickCards((c) => !isCurse(c) && !c.virus && this.cardCost(c) >= 0, n)) this.infect(card);
   }
 
   private infect(card: CombatCard): void {
@@ -1283,7 +1305,7 @@ export class Combat {
     if (!virus || virus.spread) return;
     virus.t += dt;
     if (virus.t < CONFIG.virusDelay) return;
-    const behind = this.belt.filter((x) => x.pos < b.pos && !x.card.virus && CARDS[x.card.id].type !== 'curse').sort((p, q) => q.pos - p.pos)[0];
+    const behind = this.belt.filter((x) => x.pos < b.pos && !x.card.virus && !isCurse(x.card)).sort((p, q) => q.pos - p.pos)[0];
     if (!behind) return;
     virus.spread = true;
     this.infect(behind.card);

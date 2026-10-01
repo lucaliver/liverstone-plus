@@ -1,6 +1,7 @@
 import type { Combat } from '../game/combat';
 import type { MoveDef, Side, StatusDef, StatusVal } from '../game/types';
 import { type CardCategory, cardCategory } from './cards';
+import { CONFIG } from './config';
 
 /** How long every card played brings the Light Sleeper's hit closer (seconds). */
 const WAKE_PER_CARD = 1;
@@ -51,14 +52,14 @@ const defs: StatusDef[] = [
   { id: 'brownNosing', kind: 'timed', good: true, icon: 'crystalUp', regenMul: 2 },
   { id: 'spellPower', kind: 'stacks', good: true, icon: 'wand' },
   { id: 'thorns', kind: 'stacks', good: true, icon: 'thorns' },
-  { id: 'dodge', kind: 'timed', good: true, icon: 'mirror' },
+  { id: 'dodge', kind: 'timed', good: true, icon: 'mirror', immune: true },
   { id: 'juggernaut', kind: 'stacks', good: true, icon: 'helm' },
-  { id: 'fortified', kind: 'timed', good: true, icon: 'fortress' },
-  { id: 'regen', kind: 'dot', good: true, icon: 'leaf' },
+  { id: 'fortified', kind: 'timed', good: true, icon: 'fortress', holdsBlock: true },
+  { id: 'regen', kind: 'dot', good: true, icon: 'leaf', heals: true },
   { id: 'overtime', kind: 'timed', good: true, icon: 'overtime' },
   { id: 'parry', kind: 'timed', good: true, icon: 'crossed' },
-  { id: 'haste', kind: 'timed', good: true, icon: 'gauge' },
-  { id: 'rush', kind: 'timed', good: true, icon: 'speedCards' },
+  { id: 'haste', kind: 'timed', good: true, icon: 'gauge', timeMul: 1.5 },
+  { id: 'rush', kind: 'timed', good: true, icon: 'speedCards', beltMul: CONFIG.beltRush },
   // Work-Life Balance: every card played hits again (for v), until two cards of the same colour come one after the
   // other; `e` is the colour of the last one.
   {
@@ -78,9 +79,9 @@ const defs: StatusDef[] = [
     },
   },
   // Autopilot (Severance): cards slipping off the belt play themselves when they can.
-  { id: 'autopilot', kind: 'timed', good: true, icon: 'autopilot' },
+  { id: 'autopilot', kind: 'timed', good: true, icon: 'autopilot', autoplay: true },
   // Root access (sudo): no rule can stop the hero's cards.
-  { id: 'rootAccess', kind: 'timed', good: true, icon: 'terminal' },
+  { id: 'rootAccess', kind: 'timed', good: true, icon: 'terminal', ignoresRules: true },
   { id: 'multitasking', kind: 'timed', good: true, icon: 'bolt2', showStacks: true },
   { id: 'plague', kind: 'stacks', good: true, icon: 'wrench' },
   // Slacking off (v = amount per second), until the hero plays another card.
@@ -128,19 +129,27 @@ const defs: StatusDef[] = [
     onAttack: (c, side, s) => void c.damage(side === 'enemy' ? 'hero' : 'enemy', side, s.v, { raw: true, ignoreBlock: true, kind: 'burn' }, 'dot'),
   },
   { id: 'poison', kind: 'dot', good: false, icon: 'drop' },
-  { id: 'weak', kind: 'timed', good: false, icon: 'broken' },
-  { id: 'vulnerable', kind: 'timed', good: false, icon: 'crack' },
-  { id: 'chill', kind: 'timed', good: false, icon: 'snow', regenMul: 0.5 },
+  { id: 'weak', kind: 'timed', good: false, icon: 'broken', dealtMul: 0.75 },
+  { id: 'vulnerable', kind: 'timed', good: false, icon: 'crack', takenMul: 1.5 },
+  { id: 'chill', kind: 'timed', good: false, icon: 'snow', regenMul: 0.5, timeMul: 0.5 },
   // A stunned enemy's timer stops (see enemyTimeRate); a stunned hero can't play cards.
-  { id: 'stun', kind: 'timed', good: false, icon: 'stars', selfIcon: 'ko', canPlay: (_c, side) => (side === 'hero' ? 'combat.stunned' : null) },
-  { id: 'frozen', kind: 'timed', good: false, icon: 'hourglass' },
-  { id: 'hurry', kind: 'timed', good: false, icon: 'stopwatch' },
+  {
+    id: 'stun',
+    kind: 'timed',
+    good: false,
+    icon: 'stars',
+    selfIcon: 'ko',
+    timeMul: 0,
+    canPlay: (_c, side) => (side === 'hero' ? 'combat.stunned' : null),
+  },
+  { id: 'frozen', kind: 'timed', good: false, icon: 'hourglass', timeMul: 0 },
+  { id: 'hurry', kind: 'timed', good: false, icon: 'stopwatch', beltMul: CONFIG.beltHurry },
   // Emergency button: the belt stops dead.
-  { id: 'stalled', kind: 'timed', good: false, icon: 'pause' },
-  { id: 'crunch', kind: 'timed', good: false, icon: 'siren' },
+  { id: 'stalled', kind: 'timed', good: false, icon: 'pause', beltMul: 0 },
+  { id: 'crunch', kind: 'timed', good: false, icon: 'siren', beltMul: CONFIG.beltCrunch },
   // Every card turns black: only the art and the cost are left to go by.
   { id: 'blackout', kind: 'timed', good: false, icon: 'bulbOff' },
-  { id: 'slowdown', kind: 'timed', good: false, icon: 'cone' },
+  { id: 'slowdown', kind: 'timed', good: false, icon: 'cone', beltMul: CONFIG.beltSlow },
   // Enemy passives (permanent traits).
   {
     id: 'noRepeatsPolicy',

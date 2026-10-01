@@ -4,13 +4,13 @@ import { nextUid, peekUid, resetUid } from '../core/util';
 import { CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../data/cards';
 import { PERKS } from '../data/perks';
 import { ACT_DEFS, actDef } from '../data/acts';
-import { CONFIG } from '../data/config';
+import { CONFIG, REWARD_ODDS } from '../data/config';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HERO_LIST, HEROES } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
 import { discover, progress, type RunRecord, recordFight, recordRun } from './meta';
 import { renamedCard, renamedEnemy, renamedPerk } from './renamed';
-import type { CardDef, CardInst, EnemyDef, HeroId, Rarity } from './types';
+import type { CardDef, CardInst, EnemyDef, HeroId } from './types';
 
 export const NODE_TYPES = ['fight', 'elite', 'rest', 'promotion', 'copy', 'boss'] as const;
 export type NodeType = (typeof NODE_TYPES)[number];
@@ -144,7 +144,8 @@ function buildNodes(rng: Rng, scripted: boolean): RunNode[] {
     };
     const opening = act === 1 ? ACT1_OPENING : 1;
     const lanes = scripted ? FIRST_RUN_LANES : rng.shuffle(LANES.map((l) => l.slice(opening - 1)));
-    if (!scripted) for (let i = 0; i < lanes[0].length - 1; i++) if (rng.next() < 0.3) [lanes[0][i], lanes[1][i]] = [lanes[1][i], lanes[0][i]];
+    if (!scripted)
+      for (let i = 0; i < lanes[0].length - 1; i++) if (rng.next() < CONFIG.laneSwap) [lanes[0][i], lanes[1][i]] = [lanes[1][i], lanes[0][i]];
 
     // The shared road: one fight per floor, then the two lanes. The very first run opens on its orientation fight.
     let road = add(1, 0.5, 'fight', act === 1 && scripted ? firstRunEnemy()?.id : undefined);
@@ -199,7 +200,7 @@ function rngOf(run: RunState): Rng {
 /** Enemy scaling: normal enemies get tougher as the act goes on. */
 export function enemyScale(node: RunNode): { hp: number; dmg: number } {
   const f = node.type === 'fight' ? node.floor - 1 : 0;
-  return { hp: (1 + 0.06 * f) * CONFIG.enemyHp, dmg: (1 + 0.04 * f) * CONFIG.enemyDmg };
+  return { hp: (1 + CONFIG.floorHp * f) * CONFIG.enemyHp, dmg: (1 + CONFIG.floorDmg * f) * CONFIG.enemyDmg };
 }
 
 export function combatSetup(run: RunState): CombatSetup {
@@ -249,21 +250,6 @@ export function applyCombat(run: RunState, combat: Combat): void {
   run.cleared = true;
 }
 
-const REWARD_ODDS: Record<'fight' | 'elite', [Rarity, number][]> = {
-  fight: [
-    ['common', 64],
-    ['rare', 29],
-    ['epic', 6],
-    ['legendary', 1],
-  ],
-  elite: [
-    ['common', 30],
-    ['rare', 45],
-    ['epic', 20],
-    ['legendary', 5],
-  ],
-};
-
 /** Four distinct reward cards for the current node (the player swaps one into the deck). */
 export const REWARD_CHOICES = 4;
 
@@ -293,12 +279,10 @@ function newCard(run: RunState, id: string): CardInst {
   return card;
 }
 
-/** Max HP gained by skipping a card reward (so passing on a weak offer still pays). */
-export const SKIP_MAX_HP = 3;
-
+/** Skipping a card reward pays max HP (so passing on a weak offer still pays). */
 export function skipReward(run: RunState): void {
-  run.maxHp += SKIP_MAX_HP;
-  run.hp += SKIP_MAX_HP;
+  run.maxHp += CONFIG.skipMaxHp;
+  run.hp += CONFIG.skipMaxHp;
 }
 
 /** Debug: adds a copy of a card to the deck. */
@@ -334,12 +318,8 @@ export function addPerk(run: RunState, uid: number, perk: string): void {
   run.cleared = true;
 }
 
-/** Copy Room: a card can't be shredded below this many cards in the deck, and a photocopy costs this much HP (and needs more left). */
-export const SHRED_MIN_DECK = 10;
-export const COPY_HP_COST = 8;
-
-export const canShred = (run: RunState): boolean => run.deck.length > SHRED_MIN_DECK;
-export const canCopy = (run: RunState): boolean => run.hp > COPY_HP_COST;
+export const canShred = (run: RunState): boolean => run.deck.length > CONFIG.shredMinDeck;
+export const canCopy = (run: RunState): boolean => run.hp > CONFIG.copyHpCost;
 
 export function shredCard(run: RunState, uid: number): void {
   run.deck = run.deck.filter((c) => c.uid !== uid);
@@ -354,14 +334,15 @@ export function photocopyCard(run: RunState, uid: number): void {
   copy.up = src.up;
   if (src.perks) copy.perks = [...src.perks];
   run.deck.push(copy);
-  run.hp -= COPY_HP_COST;
+  run.hp -= CONFIG.copyHpCost;
   run.cleared = true;
 }
 
-export const REST_HEAL = 0.35;
+/** HP a Break Room rest would heal now. */
+export const restHeal = (run: RunState): number => Math.min(run.maxHp - run.hp, Math.round(run.maxHp * CONFIG.restHeal));
 
 export function rest(run: RunState): number {
-  const amount = Math.min(run.maxHp - run.hp, Math.round(run.maxHp * REST_HEAL));
+  const amount = restHeal(run);
   run.hp += amount;
   run.cleared = true;
   return amount;

@@ -1,12 +1,13 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
-import { canUpgrade, REST_HEAL, rest, upgradeCard, type RunState } from '../../game/run';
+import { canUpgrade, rest, restHeal, upgradeCard, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h } from '../dom';
 import { icon } from '../art/icons';
 import { creature } from '../art/creatures';
 import { CARD_SHOW_MS, playCardChange } from '../components/cardShow';
 import { openDeck } from '../components/modals';
+import { closeRoom, roomOption } from '../components/room';
 import { motes } from '../components/decor';
 import { runHud } from './journey';
 
@@ -30,10 +31,8 @@ export function playHealing(screen: HTMLElement, amount: number, note?: string):
 }
 
 export function restScreen(run: RunState, onDone: () => void): Screen {
-  const heal = Math.min(run.maxHp - run.hp, Math.round(run.maxHp * REST_HEAL));
+  const heal = restHeal(run);
   const upgradable = run.deck.filter(canUpgrade);
-  const opt = (ic: string, title: string, desc: string, disabled: boolean, fn: () => void): HTMLButtonElement =>
-    h('button', { class: 'option', disabled, onclick: fn, html: `${icon(ic)}<b>${title}</b><span>${desc}</span>` });
 
   const el = h(
     'div',
@@ -49,15 +48,12 @@ export function restScreen(run: RunState, onDone: () => void): Screen {
     h(
       'div',
       { class: 'rest-options' },
-      opt('heart', t('rest.heal'), heal > 0 ? t('rest.healDesc', { n: heal }) : t('rest.full'), heal <= 0, () => {
+      roomOption('heart', t('rest.heal'), heal > 0 ? t('rest.healDesc', { n: heal }) : t('rest.full'), heal <= 0, () => {
         const healed = rest(run);
-        el.querySelectorAll('button').forEach((b) => {
-          b.disabled = true;
-        });
         playHealing(el, healed);
-        setTimeout(onDone, HEAL_ANIM_MS);
+        closeRoom(el, onDone, HEAL_ANIM_MS);
       }),
-      opt('hammer', t('rest.smith'), t('rest.smithDesc'), upgradable.length === 0, () => {
+      roomOption('hammer', t('rest.smith'), t('rest.smithDesc'), upgradable.length === 0, () => {
         sfx('tap');
         openDeck(run.deck, {
           title: t('rest.smithHint'),
@@ -69,11 +65,8 @@ export function restScreen(run: RunState, onDone: () => void): Screen {
             const before = { ...c };
             upgradeCard(run, c.uid);
             run.cleared = true;
-            el.querySelectorAll('button').forEach((b) => {
-              b.disabled = true;
-            });
             playCardChange(el, before, { ...c }, t('rest.upgraded'));
-            setTimeout(onDone, CARD_SHOW_MS);
+            closeRoom(el, onDone, CARD_SHOW_MS);
           },
         });
       }),

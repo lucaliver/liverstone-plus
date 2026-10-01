@@ -1,3 +1,5 @@
+import type { Rarity } from '../game/types';
+
 /** Global tuning constants. Times are in seconds at 1× speed. */
 export const CONFIG = {
   /** Seconds for a card to cross one full belt width. */
@@ -52,7 +54,39 @@ export const CONFIG = {
   musicFollowsBelt: 1,
   /** Pay for a won fight (the run's score): a base by enemy tier, plus `perSecond` for every second under `par`. */
   pay: { normal: 10, elite: 25, boss: 50, par: 60, perSecond: 1 },
+  /** Share of a fighter's current Block lost per decay step (at least 1), and the seconds between steps for an enemy (the hero's is on its `HeroDef`). */
+  blockDecayShare: 0.1,
+  enemyBlockDecay: 0.6,
+  /** The Weak Spot target shows at least this far (share of the sprite) from every edge. */
+  weakSpotMargin: 0.25,
+  /** Each floor of an act makes normal enemies this much tougher (HP, damage). */
+  floorHp: 0.06,
+  floorDmg: 0.04,
+  /** Chance that a floor of the map swaps its two rooms between the lanes. */
+  laneSwap: 0.3,
+  /** Break Room: the share of max HP a rest heals. Skipping a card reward: the max HP it pays. */
+  restHeal: 0.35,
+  skipMaxHp: 3,
+  /** Copy Room: a card can't be shredded below this many deck cards; a photocopy costs this much HP (and needs more left). */
+  shredMinDeck: 10,
+  copyHpCost: 8,
 } as const;
+
+/** Rarity odds (weights) of each card offered after a fight or an elite. */
+export const REWARD_ODDS: Record<'fight' | 'elite', [Rarity, number][]> = {
+  fight: [
+    ['common', 64],
+    ['rare', 29],
+    ['epic', 6],
+    ['legendary', 1],
+  ],
+  elite: [
+    ['common', 30],
+    ['rare', 45],
+    ['epic', 20],
+    ['legendary', 5],
+  ],
+};
 
 /** Where cards enter (0) and expire, in belt-distance units. */
 export const EXPIRE_POS = 1 + CONFIG.cardWidth * CONFIG.expireOverhang;

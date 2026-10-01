@@ -167,6 +167,24 @@ export interface StatusDef {
   cutsHits?: true;
   /** While active on the hero, multiplies its mana regeneration (a chill slows it, Brown Nosing speeds it up). */
   regenMul?: number;
+  /** While active on the enemy, multiplies the speed of its clock (0 stops it). */
+  timeMul?: number;
+  /** While active on the hero, multiplies the belt's speed (0 stops it). */
+  beltMul?: number;
+  /** A `dot` status that heals its carrier every interval instead of hurting it (Regen). */
+  heals?: true;
+  /** While active, the carrier deals this much of its normal damage (Weak). */
+  dealtMul?: number;
+  /** While active, the carrier takes this much of the normal damage (Vulnerable). */
+  takenMul?: number;
+  /** While active, the carrier's Block doesn't decay (Fortified). */
+  holdsBlock?: true;
+  /** While active, the carrier takes no damage at all (Dodge). */
+  immune?: true;
+  /** While active on the hero, no card rule (`canPlay`) applies (Root access). */
+  ignoresRules?: true;
+  /** While active on the hero, a card slipping off the belt plays itself for free if it can (Autopilot). */
+  autoplay?: true;
   /** A rule while active: returns why the hero can't play this card (`uid`: belt or sleeve copy) now (an i18n key), or null. */
   canPlay?: (c: Combat, side: Side, def: CardDef, uid: number) => TKey | null;
   /** While active (on either side), the hero's max mana can't grow past this. */

@@ -1,7 +1,8 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
+import { CONFIG } from '../../data/config';
 import { haptic } from '../fx/fx';
-import { type RunState, SKIP_MAX_HP, skipReward, swapCard } from '../../game/run';
+import { type RunState, skipReward, swapCard } from '../../game/run';
 import type { CardDef, CardInst } from '../../game/types';
 import type { Screen } from '../app';
 import { icon } from '../art/icons';
@@ -49,12 +50,12 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
         (e.currentTarget as HTMLElement).blur();
         const hp = el.querySelector('.run-hud .chip.hp span');
         if (hp) hp.textContent = `${run.hp}/${run.maxHp}`;
-        playHealing(el, SKIP_MAX_HP, t('reward.maxHp'));
+        playHealing(el, CONFIG.skipMaxHp, t('reward.maxHp'));
         setTimeout(onDone, HEAL_ANIM_MS);
       },
     },
     h('span', null, t('reward.skip')),
-    h('small', { html: `${icon('heart')}${t('reward.skipHp', { n: SKIP_MAX_HP })}` }),
+    h('small', { html: `${icon('heart')}${t('reward.skipHp', { n: CONFIG.skipMaxHp })}` }),
   );
   const deckGrid = h('div', { class: 'swap-deck' });
   const offerRow = h('div', { class: 'swap-offer' });
