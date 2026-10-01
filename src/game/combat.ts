@@ -1281,12 +1281,13 @@ export class Combat {
     return undefined;
   }
 
-  /** How far the fake update has got, in percent: 0 to 90 in the first `install` seconds, then the last 10 in as many again (the decimals show). */
+  /** How far the fake update has got, in percent: 0 to 90 in the first `install` seconds, then the last 10 in as many again (the decimals show); each leg eases out (cubic), so it crawls at the end of both. */
   updateProgress(): number {
     const def = this.popupDef();
     if (!def || this.popup?.phase !== 'install') return 0;
     const u = this.popup.t / def.install;
-    return Math.min(100, u < 1 ? 90 * u : 90 + 10 * (u - 1));
+    const easeOut = (x: number): number => 1 - (1 - Math.min(1, x)) ** 3;
+    return u < 1 ? 90 * easeOut(u) : 90 + 10 * easeOut(u - 1);
   }
 
   private tickPopup(dt: number): void {

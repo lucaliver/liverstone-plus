@@ -684,6 +684,20 @@ export const curseCards: CardDef[] = [
     art: 'meeting',
   },
   {
+    // The Nerd's: a link nobody should click. Let it ride off the belt and the virus gets in.
+    id: 'phishing',
+    face: '{?exit}{virus:0}',
+    cls: 'curse',
+    type: 'curse',
+    rarity: 'rare',
+    cost: 1,
+    vals: [2],
+    keywords: ['exhaust', 'volatile'],
+    art: 'phishingEmail',
+    play: () => {},
+    onExpire: (c, v) => c.infectCards(v[0]),
+  },
+  {
     id: 'tpsReport',
     face: '{?exit}{weak:0}',
     cls: 'curse',

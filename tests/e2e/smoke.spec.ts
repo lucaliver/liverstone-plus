@@ -604,9 +604,9 @@ test("the Nerd's update window covers the belt: Postpone sends it away for a few
   await expect(page.locator('.update-popup.installing')).toBeVisible();
   await expect(page.locator('.up-pct')).toHaveText(/^\d+%$/);
   // Past 90% the decimals show.
-  await combat(page, 'c.popup.t = 4.5;');
+  await combat(page, 'c.popup.t = 6.5;');
   await expect(page.locator('.up-pct')).toHaveText(/^\d+\.\d{2}%$/);
-  await combat(page, 'c.popup.t = 7.95;');
+  await combat(page, 'c.popup.t = 11.95;');
   await expect(popup).toBeHidden();
   expect(await combat(page, 'return c.enemy.statuses.strength?.v ?? 0;')).toBeGreaterThanOrEqual(1);
   expect(problems).toEqual([]);

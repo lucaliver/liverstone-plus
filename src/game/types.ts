@@ -218,7 +218,7 @@ export interface StatusDef {
   /**
    * While active on the enemy, an "UPDATE NEEDED" window covers the belt (no belt card can be played): the first one after `first` seconds, then one every `every` seconds
    * after each update. Postpone brings it back after a random `postpone` ([min, max]) seconds; Update runs a fake progress bar (`install` seconds up to 90%, as many
-   * more for the rest), and when it's done the enemy gets the `patch` status.
+   * more for the rest, easing out), and when it's done the enemy gets the `patch` status.
    */
   popup?: { first: number; every: number; postpone: [number, number]; install: number; patch: { id: string; v: number } };
   /** Runs every simulation step while the status is active. */

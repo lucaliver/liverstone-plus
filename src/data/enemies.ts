@@ -451,7 +451,7 @@ const defs: EnemyDef[] = [
     main: atk('ctrlAltDel', 7, 7, ramp),
     every: 2,
     specials: [
-      { id: 'blueScreen', intent: 'debuff', windup: 5, status: [{ id: 'blackout', t: 8, target: 'hero' }] },
+      { id: 'phishingTest', intent: 'curse', windup: 5, curse: [{ id: 'phishing', n: 2, to: 'belt' }] },
       atk('formatC', 16, 11, { intent: 'charge' }),
     ],
     start: [{ id: 'updateNeeded' }],

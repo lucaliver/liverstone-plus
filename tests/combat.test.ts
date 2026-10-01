@@ -575,12 +575,13 @@ describe('combat engine', () => {
     run(c, CONFIG.popupArm);
     expect(c.startUpdate()).toBe(true);
     expect(c.updateProgress()).toBe(0);
+    // Each leg eases out (cubic): most of it comes early.
     run(c, def.install / 2);
-    expect(c.updateProgress()).toBeCloseTo(45, 0);
+    expect(c.updateProgress()).toBeCloseTo(90 * (1 - 0.5 ** 3), 0);
     run(c, def.install / 2);
     expect(c.updateProgress()).toBeCloseTo(90, 0);
     run(c, def.install / 2);
-    expect(c.updateProgress()).toBeCloseTo(95, 0);
+    expect(c.updateProgress()).toBeCloseTo(90 + 10 * (1 - 0.5 ** 3), 0);
     expect(c.popup?.phase).toBe('install');
     expect(c.isCovered(c.belt[0].card.uid)).toBe(true);
     expect(c.enemy.statuses.strength).toBeUndefined();

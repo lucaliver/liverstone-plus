@@ -552,6 +552,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'curse',
     svg: `<path d="M32 8L54 60H10z"/><circle cx="32" cy="7" r="6"/><g fill="#16121f"><path d="M25 24h14l3 8H22zM18 42h28l3 8H15z"/></g>`,
   },
+  phishingEmail: {
+    el: 'curse',
+    svg: `<path d="M4 12h56v34H4z"/><path d="M4 14l28 22 28-22" fill="none" stroke="#16121f" stroke-width="4" stroke-linejoin="round"/><path d="M50 46v8a6 6 0 0 1-12 0v-3" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><circle cx="38" cy="50" r="2.5"/>`,
+  },
   tpsReport: {
     el: 'curse',
     svg: `<path d="M16 2h44v54H16z"/><path d="M3 8h44v54H3z" stroke="#16121f" stroke-width="4" stroke-linejoin="round"/><path d="M3 8h44v54H3z"/><rect x="8" y="13" width="34" height="11" fill="#16121f"/><path d="M12 18.5h10" stroke="#fff" stroke-width="4"/><path d="M8 32h34M8 39h34M8 46h20" stroke="#16121f" stroke-width="4"/><rect x="31" y="47" width="11" height="11" fill="#16121f"/><path d="M33 52l3 3 4-6" stroke="#fff" stroke-width="2.5" fill="none"/>`,

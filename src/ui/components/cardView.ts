@@ -38,6 +38,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   skull: { icon: 'heartbreak' },
   exit: { icon: 'exitSlot' },
   clog: { icon: 'slime' },
+  virus: { icon: 'virus' },
   gate: { icon: 'gate' },
   boom: { icon: 'bomb' },
   drain: { icon: 'crystal', sign: '-' },

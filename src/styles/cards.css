@@ -135,7 +135,8 @@
 .gk-str .pico,
 .gk-burn .pico { color: var(--p); --ink2: var(--y); }
 .gk-crystal .pico { color: var(--b); --ink2: var(--y); }
-.gk-poison .pico { color: var(--green); --ink2: var(--y); }
+.gk-poison .pico,
+.gk-virus .pico { color: var(--green); --ink2: var(--y); }
 .gk-weak .pico { color: var(--purple); --ink2: var(--y); }
 .gk-vuln .pico { color: var(--p); --ink2: var(--k); }
 .gk-stun .pico,
