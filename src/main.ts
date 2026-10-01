@@ -55,6 +55,12 @@ import { compendiumScreen } from './ui/screens/compendium';
 
 let run: RunState | null = null;
 
+/** A room or reward screen wears the colours of the act it is in (the map and the fights do it themselves). */
+function inAct(screen: Screen, r: RunState): Screen {
+  screen.el.dataset.act = String(currentNode(r).act);
+  return screen;
+}
+
 /** The rooms that aren't fights: each one is a screen that calls back when the player is done. */
 const ROOMS: Partial<Record<NodeType, (run: RunState, onDone: () => void) => Screen>> = {
   rest: restScreen,
@@ -133,13 +139,13 @@ function debugMap(): void {
     r.cleared = cleared;
     goJourney();
   };
-  const reward = (kind: RewardKind) => (): void => show(rewardScreen(r, rollRewards(r, kind), back));
+  const reward = (kind: RewardKind) => (): void => show(inAct(rewardScreen(r, rollRewards(r, kind), back), r));
   const rooms = Object.entries(ROOMS).map(([type, screen]) => ({
     label: t(`journey.node.${type as NodeType}`),
     icon: NODE_ICON[type as NodeType],
     run: () => {
       playMusic('rest');
-      show(screen(r, back));
+      show(inAct(screen(r, back), r));
     },
   }));
   // As if the boss of the act on the map had just fallen: a new shift starts rested (the last act has nothing after it).
@@ -185,7 +191,7 @@ function enterNode(to?: number): void {
   const room = ROOMS[node.type];
   if (room) {
     playMusic('rest');
-    show(room(run, nextNode));
+    show(inAct(room(run, nextNode), run));
     return;
   }
   // Each shift has its own fight music (by the enemy's act, so debug fights match too).
@@ -213,7 +219,7 @@ function afterCombat(combat: Combat): void {
   // Elites and act bosses pay better (bosses in legendary cards only).
   const picks = rollRewards(r, node.type === 'fight' ? 'fight' : node.type === 'boss' ? 'boss' : 'elite');
   saveRun(r);
-  show(rewardScreen(r, picks, nextNode));
+  show(inAct(rewardScreen(r, picks, nextNode), r));
 }
 
 /** After a node: back to the map to choose the next one, or the victory screen at the end of the run. */

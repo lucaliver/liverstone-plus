@@ -160,9 +160,9 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 ### CSS
 
 - Partials in cascade order via `styles/index.css`; **`responsive.css` stays last**. Shared decor in `decor.css`.
-- Tokens in `tokens.css` (inks `--p --b --y --k`, `--paper`, night `--bg --bg2 --void`, brass/paper helpers). Use a token,
+- Tokens in `tokens.css`, act themes in `acts.css` (inks `--p --b --y --k`, `--paper`, night `--bg --bg2 --void`, brass/paper helpers). Use a token,
   not a raw hex. Paper panels: `--line` borders, hard `--off` shadows.
-- The map has a colour theme per act: `--map-*` tokens on `.journey`, overridden by `.journey[data-act='N']` in `journey.css` (a new act needs its block and an `actArt` scene).
+- Every act has a colour theme (`styles/acts.css`): the night tokens (`--bg`, `--bg2`, `--bg-dot`, `--night-dot`, the belt stream `--belt`) and the map's (`--map-*`) are re-set under `[data-act='N']`. A screen opts in with `data-act`: the map and the fight set it themselves (the fight by its enemy's act), rooms and rewards get it from `inAct` in `main.ts`; a new act needs its block there, an `actArt` scene and, if wanted, ambient decor (`decor.css`). Bosses add a brass frame to the fight (`data-tier`).
 - Fonts: `--font-display` (Silkscreen) for title words only; numbers use `--font-ui` (Jersey 10); long text `--font`.
 - Motion is stepped (`steps(n)`); modals are the exception. Respect `reduce-motion`. Shared keyframes live once.
 - `.card` sets its own `--cw`; resize by setting `--cw` on the card selector. Never let the combat layout change height

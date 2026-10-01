@@ -1,4 +1,62 @@
 /* Shared ambient decor. */
+/* act 1, the morning shift (a factory in a crypt): a candle on each side of the enemy's feet, the flames flickering out of step */
+.candles,
+.beacon { display: none; }
+[data-act='1'] .candles,
+[data-act='3'] .beacon { display: block; }
+.candles i {
+  position: absolute;
+  z-index: 1;
+  bottom: 100px;
+  left: 7%;
+  width: 8px;
+  height: 20px;
+  background: var(--paper-dim);
+  border: 2px solid var(--k);
+  pointer-events: none;
+}
+.candles i:last-child { left: auto; right: 7%; }
+.candles i::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  width: 4px;
+  height: 6px;
+  margin-bottom: 2px;
+  background: var(--y);
+  animation: flame 0.8s steps(1) infinite;
+}
+.candles i:last-child::after { animation-delay: -0.4s; }
+@keyframes flame {
+  33% { height: 8px; }
+  66% { height: 5px; transform: translateX(2px); }
+}
+/* act 3, the night shift: a warning beacon on a post that blinks red */
+.beacon i {
+  position: absolute;
+  z-index: 1;
+  bottom: 100px;
+  left: 5%;
+  width: 6px;
+  height: 32px;
+  background: var(--k);
+  pointer-events: none;
+}
+.beacon i::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  bottom: 100%;
+  width: 16px;
+  height: 10px;
+  background: var(--red);
+  border: 2px solid var(--k);
+  animation: beacon 1.6s steps(1) infinite;
+}
+@keyframes beacon {
+  50% { background: #6b1a14; }
+}
 /* act 2, the afternoon shift: a tube light that flickers (the stage dims with it) and a water cooler that glugs */
 .neon,
 .neon-dim,

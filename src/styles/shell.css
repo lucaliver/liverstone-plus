@@ -8,7 +8,7 @@
   overflow: clip;
   background-color: var(--bg);
   /* faint violet halftone: the night is printed too */
-  background-image: radial-gradient(circle, #2f2450 30%, transparent 34%);
+  background-image: radial-gradient(circle, var(--bg-dot) 30%, transparent 34%);
   background-size: 6px 6px;
 }
 

@@ -1,0 +1,67 @@
+/* ------------------------------------------------------------------ act themes */
+/* Each act has its own colours: the crypt's violet, the afternoon office's brown, the night shift's blue. A screen takes them with
+   `data-act` (the map, the fight by its enemy's act, rooms and rewards by the act they are in); without it the first act's show.
+   They re-set the night tokens (`--bg`, `--bg2`, the halftone dots, the belt stream) and the map's own (`--map-*`). */
+:root {
+  --bg-dot: #2f2450;
+  --belt: #2c2345;
+  --belt-dot: #362b54;
+  --map-wall: #a397c466;
+  --map-hall: #33294f;
+  --map-trod: #453870;
+  --map-mid: #6f62a0;
+  --map-warm: var(--p);
+  --map-fog-a: #2b2148;
+  --map-fog-b: #362a5c;
+  --map-done: #8b84a6;
+  --map-done-ink: #3b3355;
+  --map-missed: #2f2552;
+  --map-missed-line: #5b4f86;
+  --map-missed-ink: #6b5f96;
+}
+[data-act='2'] {
+  --bg: #2c2014;
+  --bg2: #1f160c;
+  --bg-dot: #38291a;
+  --night-dot: #4a3520;
+  --belt: #3a2a18;
+  --belt-dot: #46331e;
+  --map-wall: #d8a83066;
+  --map-hall: #473320;
+  --map-trod: #5e4428;
+  --map-mid: #a07a48;
+  --map-warm: var(--rust);
+  --map-fog-a: #35261a;
+  --map-fog-b: #43301f;
+  --map-done: #a69478;
+  --map-done-ink: #4a3a22;
+  --map-missed: #3a2a1b;
+  --map-missed-line: #8a6a40;
+  --map-missed-ink: #98764a;
+}
+[data-act='3'] {
+  --bg: #0e1a38;
+  --bg2: #09122a;
+  --bg-dot: #162650;
+  --night-dot: #1f3470;
+  --belt: #172a55;
+  --belt-dot: #20386e;
+  --map-wall: #7f9bef66;
+  --map-hall: #1a2b5a;
+  --map-trod: #263c80;
+  --map-mid: #5873c8;
+  --map-warm: var(--red);
+  --map-fog-a: #14224a;
+  --map-fog-b: #1c2e60;
+  --map-done: #8493c0;
+  --map-done-ink: #1e2a50;
+  --map-missed: #16244d;
+  --map-missed-line: #4a62b0;
+  --map-missed-ink: #5f78c4;
+}
+/* the screen paints the night itself, over the app's, so the act's colours replace it */
+.screen[data-act] {
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, var(--bg-dot) 30%, transparent 34%);
+  background-size: 6px 6px;
+}

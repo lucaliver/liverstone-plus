@@ -1,5 +1,6 @@
 /* Punchcard styles. Order matters: later files override earlier ones (responsive rules stay last). */
 @import './tokens.css';
+@import './acts.css';
 @import './shell.css';
 @import './pixel.css';
 @import './type.css';

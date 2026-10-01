@@ -62,8 +62,10 @@ function markup(run: RunState, combat: Combat): string {
         { x: '6%', y: '14%' },
         { x: '84%', y: '44%' },
       ])}
-      <!-- act decor (CSS shows the one for the enemy's act, so debug fights match too): the afternoon's flickering tube light and water cooler -->
+      <!-- act decor (CSS shows the one for the enemy's act, so debug fights match too): the crypt's candles, the afternoon's flickering tube light and water cooler, the night's warning beacon -->
+      <div class="candles"><i></i><i></i></div>
       <div class="neon"></div><div class="cooler">${creature('waterCooler')}</div><div class="neon-dim"></div>
+      <div class="beacon"><i></i></div>
       <div class="shade"></div>
       <div class="enemy-wrap">
         <div class="enemy-art">${creature(enemyDef.art)}<button class="weak-spot" aria-label="${t('status.weakSpot')}">${icon('target')}</button></div>
@@ -152,6 +154,7 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
     class: 'screen combat',
     'data-hero': run.hero,
     'data-act': String(combat.enemy.def.act),
+    'data-tier': combat.enemy.def.tier,
     style: { '--hero-color': combat.heroDef.color } as never,
   });
   el.innerHTML = markup(run, combat);

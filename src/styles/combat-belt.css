@@ -10,8 +10,8 @@
   /* The spectral stream: a violet current of drifting ink dots between pixel-toothed banks. */
   position: absolute;
   inset: 0;
-  background-color: #2c2345;
-  background-image: radial-gradient(circle, #362b54 30%, transparent 34%);
+  background-color: var(--belt);
+  background-image: radial-gradient(circle, var(--belt-dot) 30%, transparent 34%);
   background-size: 10px 10px;
   background-position: var(--belt-x, 0) 0;
   border-top: var(--line) solid var(--void);
