@@ -185,6 +185,8 @@
 .option:disabled { opacity: 0.4; box-shadow: none; }
 .option .pico { font-size: 52px; color: var(--p); --ink2: var(--y); }
 .option:last-child .pico { color: var(--b); }
+/* an odd option out takes the whole last row (Lost & Found: three relics) */
+.option:nth-child(2n + 1):last-child { grid-column: 1 / -1; }
 .option b {
   font-family: var(--font-display);
   font-size: 20px;

@@ -1033,6 +1033,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'holy',
     svg: `<path d="M24 11c0 4 4 7 8 7s8-3 8-7l14 7 4 15-10 3v22H16V36L6 33l4-15z"/><path fill="#16121f" opacity=".35" d="M29 18h6v38h-6z"/><rect x="29" y="56" width="6" height="6"/><path d="M32 2v6" stroke="currentColor" stroke-width="4"/>`,
   },
+  lostBox: {
+    el: 'holy',
+    svg: `<path d="M2 22h60v38H2z"/><path d="M2 22l8-14h44l8 14z"/><path fill="#16121f" opacity=".35" d="M26 8h12v14H26z"/><rect x="18" y="32" width="28" height="16" fill="#16121f"/><path d="M26 36h12v3h-12zM26 42h8v3h-8z" fill="#fff" opacity=".7"/>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {

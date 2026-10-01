@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
 import { combat, freshGame, startFight } from './helpers';
 
 test('title, hero select and journey render without errors', async ({ page }) => {
@@ -200,13 +200,17 @@ test('campfire upgrade: tapping selects, the Upgrade button confirms', async ({ 
   expect(upgraded).toBe(3); // the starter's upgraded attack and defense, plus the new one
 });
 
+/** Turns the run's first fight past the opening into a room of this type (rooms are dealt at random) and returns its floor. */
+const roomFloor = (page: Page, type: string): Promise<number> =>
+  page.evaluate(
+    `(() => { const g = window.__game; const n = g.run.nodes.find((x) => x.type === "fight" && x.floor > 3); n.type = "${type}"; n.enemy = undefined; g.run.current = n.id; g.run.cleared = false; g.goJourney(); return n.floor; })()`,
+  ) as Promise<number>;
+
 test('copy room: photocopy costs HP and adds the card, shred removes one', async ({ page }) => {
   await freshGame(page, { veteran: true });
   await page.getByRole('button', { name: /new run/i }).click();
   await page.getByRole('button', { name: /start shift/i }).click();
-  const floor = await page.evaluate(
-    '(() => { const g = window.__game; const n = g.run.nodes.find((x) => x.type === "copy"); g.run.current = n.id; g.run.cleared = false; g.goJourney(); return n.floor; })()',
-  );
+  const floor = await roomFloor(page, 'copy');
   await page.getByRole('button', { name: new RegExp(`enter floor ${floor}`, 'i') }).click();
   await expect(page.locator('.promo-badge')).toBeVisible();
   const deck = (): Promise<number> => page.evaluate('window.__game.run.deck.length') as Promise<number>;
@@ -230,9 +234,7 @@ test('tailor: cargo pants add a sleeve slot to the hero sheet and the fight', as
   await freshGame(page, { veteran: true });
   await page.getByRole('button', { name: /new run/i }).click();
   await page.getByRole('button', { name: /start shift/i }).click();
-  const floor = await page.evaluate(
-    '(() => { const g = window.__game; const n = g.run.nodes.find((x) => x.type === "tailor"); g.run.current = n.id; g.run.cleared = false; g.goJourney(); return n.floor; })()',
-  );
+  const floor = await roomFloor(page, 'tailor');
   await page.getByRole('button', { name: new RegExp(`enter floor ${floor}`, 'i') }).click();
   await page.getByRole('button', { name: /cargo pants/i }).click();
   await expect(page.locator('.node.open').first()).toBeVisible();
@@ -623,4 +625,16 @@ test('a full mana bar blinks only once the fight has started', async ({ page }) 
   await page.locator('.js-start').click();
   await combat(page, 'c.hero.mana = c.hero.maxMana;');
   await expect(page.locator('.mana-row')).toHaveClass(/full/);
+});
+
+test('lost and found: three relics, keeping one', async ({ page }) => {
+  await freshGame(page, { veteran: true });
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  const floor = await roomFloor(page, 'lostFound');
+  await page.getByRole('button', { name: new RegExp(`enter floor ${floor}`, 'i') }).click();
+  await expect(page.locator('.rest-options .option')).toHaveCount(3);
+  await page.locator('.rest-options .option').nth(1).click();
+  await expect(page.locator('.node.open').first()).toBeVisible();
+  expect(await page.evaluate('window.__game.run.relics.length')).toBe(1);
 });

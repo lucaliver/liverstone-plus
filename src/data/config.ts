@@ -74,6 +74,8 @@ export const CONFIG = {
   copyHpCost: 8,
   /** Tailor: the max HP the let-out uniform gives. */
   tailorMaxHp: 10,
+  /** Lost & Found: how many relics lie in the box. */
+  lostFoundChoices: 3,
 } as const;
 
 /** Rarity odds (weights) of each card offered after a fight or an elite. */

@@ -3,7 +3,7 @@ import { loadRaw, remove, store } from '../core/save';
 import { nextUid, peekUid, resetUid } from '../core/util';
 import { CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../data/cards';
 import { PERKS } from '../data/perks';
-import { RELICS } from '../data/relics';
+import { RELIC_LIST, RELICS } from '../data/relics';
 import { ACT_DEFS, actDef } from '../data/acts';
 import { CONFIG, REWARD_ODDS } from '../data/config';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
@@ -13,7 +13,7 @@ import { discover, progress, type RunRecord, recordFight, recordRun } from './me
 import { renamedCard, renamedEnemy, renamedPerk } from './renamed';
 import type { CardDef, CardInst, EnemyDef, HeroId } from './types';
 
-export const NODE_TYPES = ['fight', 'elite', 'rest', 'promotion', 'copy', 'tailor', 'boss'] as const;
+export const NODE_TYPES = ['fight', 'elite', 'rest', 'promotion', 'copy', 'tailor', 'lostFound', 'boss'] as const;
 export type NodeType = (typeof NODE_TYPES)[number];
 
 /** A room of a lane as written in `LANES`: a real room type or a slot still to be dealt. */
@@ -79,7 +79,7 @@ const LANES: Slot[][] = [
   ['fight', 'promotion', 'fight', 'rest', 'fight', 'special', 'fight', 'rest'],
 ];
 /** A `special` slot of a lane becomes one of these when the act is built; one act never deals the same room twice. */
-const SPECIALS: NodeType[] = ['copy', 'tailor'];
+const SPECIALS: NodeType[] = ['copy', 'tailor', 'lostFound'];
 /** Floors on a single road at the start of act 1, before the map splits in two (then the lanes skip as many floors). */
 const ACT1_OPENING = 3;
 /** Links between the lanes per act: diagonal (to the other lane one floor up) or flat (across the same floor, both ways). */
@@ -343,6 +343,17 @@ export function gainRelic(run: RunState, id: string): void {
     RELICS[id].onGain?.(run);
   }
   run.cleared = true;
+}
+
+/** The relics the Lost & Found offers: random ones the run doesn't hold yet. */
+export function rollRelics(run: RunState): string[] {
+  const rng = rngOf(run);
+  const picks = rng
+    .shuffle(RELIC_LIST.filter((r) => r.rarity !== 'special' && !hasRelic(run, r.id)))
+    .slice(0, CONFIG.lostFoundChoices)
+    .map((r) => r.id);
+  run.rng = rng.state;
+  return picks;
 }
 
 /** Tailor: the uniform is let out, for good: more max HP, filled up. */

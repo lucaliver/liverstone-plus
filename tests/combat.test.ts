@@ -6,7 +6,20 @@ import { HEROES } from '../src/data/heroes';
 import { STATUSES } from '../src/data/statuses';
 import { CARD_LIST, CARDS } from '../src/data/cards';
 import { RELICS } from '../src/data/relics';
-import { canCopy, canShred, fightPay, gainRelic, hasRelic, loadRun, newRun, photocopyCard, shredCard, skipPay, skipReward } from '../src/game/run';
+import {
+  canCopy,
+  canShred,
+  fightPay,
+  gainRelic,
+  hasRelic,
+  loadRun,
+  newRun,
+  photocopyCard,
+  rollRelics,
+  shredCard,
+  skipPay,
+  skipReward,
+} from '../src/game/run';
 import type { CardInst } from '../src/game/types';
 
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
@@ -1644,10 +1657,23 @@ describe('the Copy Room', () => {
     expect(r.maxHp).toBe(hp + 2 * CONFIG.skipMaxHp + CONFIG.skipMaxHpStep);
   });
 
-  it('shows up once per act on a random map, never in the very first run', () => {
+  it('deals two different special rooms per act on a random map, none in the very first run', () => {
     const r = newRun('warrior', 5);
-    for (const act of [1, 2]) expect(r.nodes.filter((n) => n.act === act && n.type === 'copy')).toHaveLength(1);
-    expect(newRun('warrior', 1, true).nodes.some((n) => n.type === 'copy')).toBe(false);
+    for (const act of [1, 2]) {
+      const specials = r.nodes.filter((n) => n.act === act && ['copy', 'tailor', 'lostFound'].includes(n.type)).map((n) => n.type);
+      expect(specials).toHaveLength(2);
+      expect(new Set(specials).size).toBe(2);
+    }
+    expect(newRun('warrior', 1, true).nodes.some((n) => ['copy', 'tailor', 'lostFound'].includes(n.type))).toBe(false);
+  });
+
+  it('the Lost & Found offers relics the run does not hold yet', () => {
+    const r = newRun('warrior', 5);
+    gainRelic(r, 'thermos');
+    const offer = rollRelics(r);
+    expect(offer).toHaveLength(CONFIG.lostFoundChoices);
+    expect(offer).not.toContain('thermos');
+    expect(offer).not.toContain('cargoPants');
   });
 });
 

@@ -10,6 +10,7 @@ import {
   combatSetup,
   currentNode,
   gainRelic,
+  rollRelics,
   newRun,
   rest,
   rollRewards,
@@ -154,6 +155,10 @@ export function simulateRun(hero: HeroId, seed: number, opts: BotOpts): RunOutco
       run.cleared = true;
     } else if (node.type === 'tailor') {
       gainRelic(run, 'cargoPants');
+      run.cleared = true;
+    } else if (node.type === 'lostFound') {
+      const [pick] = rollRelics(run);
+      if (pick) gainRelic(run, pick);
       run.cleared = true;
     } else if (node.type === 'copy') {
       // Thin the deck: shred a plain starter card (never a mana crystal).
