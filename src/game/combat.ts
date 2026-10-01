@@ -1232,6 +1232,7 @@ export class Combat {
     if (this.rustSpots.length >= rust.max) return;
     if (this.rustSpots.length === 0) this.events.emit({ type: 'rust' });
     this.rustSpots.push({ id: ++this.rustId, x: 0.06 + this.rng.next() * 0.8, y: 0.12 + this.rng.next() * 0.7, grime: 1 });
+    this.syncRustStatus();
   }
 
   /** The hero scrubs a rust spot with the mop: `amount` of its grime comes off, and it's gone at 0. */
@@ -1239,7 +1240,16 @@ export class Combat {
     const spot = this.rustSpots.find((x) => x.id === id);
     if (!spot) return;
     spot.grime -= amount;
-    if (spot.grime <= 0) this.rustSpots = this.rustSpots.filter((x) => x !== spot);
+    if (spot.grime <= 0) {
+      this.rustSpots = this.rustSpots.filter((x) => x !== spot);
+      this.syncRustStatus();
+    }
+  }
+
+  /** The hero's Rusty Belt chip counts the spots (set silently: it changes all the time). */
+  private syncRustStatus(): void {
+    if (this.rustSpots.length) this.hero.statuses.rustedBelt = { v: this.rustSpots.length, t: 0 };
+    else delete this.hero.statuses.rustedBelt;
   }
 
   /** The hero dragged a card one more swipe around the screen: a card with `wind` grows. False when there's nothing (more) to wind. */

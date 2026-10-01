@@ -5,7 +5,7 @@ import { CONFIG } from '../../data/config';
 import { HEXES } from '../../data/hexes';
 import { STATUSES } from '../../data/statuses';
 import { discover } from '../../game/meta';
-import { settings } from '../../game/settings';
+import { saveSettings, settings } from '../../game/settings';
 import type { CombatEvent } from '../../game/types';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
@@ -286,7 +286,12 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         speak(t(e.key), QUIP_MS);
         break;
       case 'rust':
-        v.toast(t('combat.rust'));
+        // Said once, ever: the Rusty Belt chip carries the rest.
+        if (!settings.seenTips.includes('rust')) {
+          settings.seenTips.push('rust');
+          saveSettings();
+          v.toast(t('combat.rust'));
+        }
         break;
       case 'weakSpot':
         r.weakSpot.style.setProperty('--u', String(e.x));

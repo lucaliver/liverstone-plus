@@ -217,6 +217,8 @@ const defs: StatusDef[] = [
       c.enemyStrike();
     },
   },
+  // Rusty belt: on the hero, one per rust spot on the belt (`Combat.syncRustStatus` keeps the count).
+  { id: 'rustedBelt', kind: 'stacks', good: false, icon: 'rust' },
   // Deferred maintenance: rust builds up on the belt, slowing it down; the hero scrubs it off with the mop.
   { id: 'deferredMaintenance', kind: 'stacks', good: true, passive: true, icon: 'rust', rust: { every: RUST_EVERY, max: RUST_MAX } },
   // Weak spot: now and then a target shows on his sprite; `e` counts down to the next one.

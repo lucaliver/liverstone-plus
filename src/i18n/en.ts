@@ -515,6 +515,8 @@ const en = {
   'status.paradigmShift.speech': "Let's pivot!",
   'status.paperCuts': 'Paper Cuts',
   'status.paperCuts.d': 'Every card that slips off your belt cuts you for {v} damage.',
+  'status.rustedBelt': 'Rusty Belt',
+  'status.rustedBelt.d': 'Rust spots on the belt slow it down: a few hardly matter, many stop it. Drag the mop over them to scrub them off.',
   'status.deferredMaintenance': 'Deferred Maintenance',
   'status.deferredMaintenance.d':
     'Rust spots keep landing on the belt: a few are harmless, but the more there are, the slower it gets, until it stops. Drag the mop over the spots to scrub them off.',

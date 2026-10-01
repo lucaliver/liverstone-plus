@@ -472,6 +472,7 @@ describe('combat engine', () => {
     run(c, every + 0.1);
     expect(c.rustSpots).toHaveLength(1);
     expect(c.beltRate()).toBeCloseTo(base * (1 - 1 / max ** 2));
+    expect(c.hero.statuses.rustedBelt?.v).toBe(1);
     const [spot] = c.rustSpots;
     c.scrubRust(spot.id, 0.6);
     expect(c.rustSpots).toHaveLength(1);
@@ -479,6 +480,7 @@ describe('combat engine', () => {
     c.scrubRust(spot.id, 0.5);
     expect(c.rustSpots).toHaveLength(0);
     expect(c.beltRate()).toBeCloseTo(base);
+    expect(c.hero.statuses.rustedBelt).toBeUndefined();
     // Left alone, the spots pile up, slowing the belt more and more, until it stops dead.
     run(c, every * (max / 2 + 0.5));
     expect(c.beltRate() / base).toBeCloseTo(1 - 0.25, 1);
