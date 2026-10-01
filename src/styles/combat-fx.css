@@ -158,6 +158,8 @@
 .floater.block { color: var(--shield); font-size: 28px; }
 .floater.blocked { display: flex; align-items: center; gap: 2px; color: var(--shield); font-family: var(--font-ui); font-size: 26px; text-shadow: var(--ring-p); }
 .floater.blocked .pico { font-size: 22px; color: var(--shield); --ink2: var(--paper); }
+.floater.deck { display: flex; align-items: center; gap: 3px; padding: 2px 8px 2px 4px; color: var(--k); background: var(--y); border: 3px solid var(--k); font-family: var(--font-ui); font-size: 24px; }
+.floater.deck .pico { font-size: 26px; color: var(--k); --ink2: var(--p); }
 .floater.status,
 .floater.text {
   padding: 3px 8px;

@@ -181,6 +181,7 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
           const p = v.heroPoint();
           burst('mana', p.x, p.y, 10);
           v.retrigger(r.portrait, 'gain');
+          floatText(p.x, p.y - 34, `${icon('addCard')}+1`, 'deck', 0, true);
           sfx('deckAdd');
         }
         break;

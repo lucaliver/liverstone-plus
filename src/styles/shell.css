@@ -58,8 +58,9 @@
 .fx-canvas {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
+  /* the size of the visible viewport, like the canvas pixels (innerWidth x innerHeight): 100vh is taller on phones with a browser bar, which stretched every burst downwards */
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: var(--z-fx);
   image-rendering: pixelated;
