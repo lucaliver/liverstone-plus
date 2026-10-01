@@ -142,6 +142,23 @@ function debugMap(): void {
       show(screen(r, back));
     },
   }));
+  // As if the boss of the act on the map had just fallen: a new shift starts rested (the last act has nothing after it).
+  const cur = currentNode(r);
+  const mapAct = r.cleared && cur.type === 'boss' && cur.next.length ? r.nodes[cur.next[0]].act : cur.act;
+  const boss = r.nodes.find((n) => n.act === mapAct && n.type === 'boss');
+  const nextAct = boss?.next.length
+    ? {
+        label: t('debug.nextAct'),
+        icon: NODE_ICON.boss,
+        run: () => {
+          r.current = boss.id;
+          r.path.push(boss.id);
+          r.cleared = true;
+          r.hp = r.maxHp;
+          goJourney();
+        },
+      }
+    : null;
   openDebugMenu(t('debug.mapMenu'), [
     { label: t('debug.rewardFight'), icon: 'cards', run: reward('fight') },
     { label: t('debug.rewardElite'), icon: 'medal', run: reward('elite') },
@@ -156,6 +173,7 @@ function debugMap(): void {
       },
     },
     { label: t('debug.skipRoom'), icon: 'check', run: nextNode },
+    ...(nextAct ? [nextAct] : []),
   ]);
 }
 

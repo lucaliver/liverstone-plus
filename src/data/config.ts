@@ -135,13 +135,6 @@ export const rewardOdds = (kind: RewardKind, act: number): [Rarity, number][] =>
 /** Legendary cards an offer always holds (the rest of it follows `rewardOdds`). */
 export const REWARD_MIN_LEGENDARY: Record<RewardKind, number> = { fight: 0, elite: 2, boss: 0 };
 
-/** Rarity odds (weights) of the cards on offer in Cross-Training (like an elite's, without Legendary). */
-export const CROSS_TRAINING_ODDS: [Rarity, number][] = [
-  ['common', 30],
-  ['rare', 50],
-  ['epic', 20],
-];
-
 /** Where cards enter (0) and expire, in belt-distance units. */
 export const EXPIRE_POS = 1 + CONFIG.cardWidth * CONFIG.expireOverhang;
 

@@ -5,7 +5,7 @@ import { CARD_LIST, CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../dat
 import { PERKS } from '../data/perks';
 import { RELIC_LIST, RELICS } from '../data/relics';
 import { ACT_DEFS, actDef } from '../data/acts';
-import { CONFIG, CROSS_TRAINING_ODDS, REWARD_MIN_LEGENDARY, type RewardKind, rewardOdds } from '../data/config';
+import { CONFIG, REWARD_MIN_LEGENDARY, type RewardKind, rewardOdds } from '../data/config';
 import { MODIFIERS, resolveMods } from '../data/modifiers';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HERO_LIST, HEROES, starterCards } from '../data/heroes';
@@ -393,15 +393,16 @@ export function vend(run: RunState, rarity: keyof typeof CONFIG.vendingHp): Card
   return card;
 }
 
-/** Cross-Training: `crossTrainPerClass` cards from each class but the hero's own, to take one of. */
+/** Cross-Training: `crossTrainPerClass` cards from each class but the hero's own, to take one of (rarities as after a normal fight of the act). */
 export function rollCrossTraining(run: RunState): CardDef[] {
   const rng = rngOf(run);
+  const odds = rewardOdds('fight', currentNode(run).act);
   const offer: CardDef[] = [];
   for (const hero of HERO_LIST) {
     if (hero.id === run.hero) continue;
     const own: CardDef[] = [];
     for (let tries = 0; own.length < CONFIG.crossTrainPerClass && tries < 80; tries++) {
-      const rarity = rng.weighted(CROSS_TRAINING_ODDS, ([, w]) => w)[0];
+      const rarity = rng.weighted(odds, ([, w]) => w)[0];
       const pool = CARD_LIST.filter((c) => c.cls === hero.id && c.rarity === rarity && !c.pack && !own.includes(c));
       if (pool.length) own.push(rng.pick(pool));
     }

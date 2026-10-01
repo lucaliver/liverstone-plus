@@ -287,6 +287,19 @@ test('debug menus: the fight menu kills the enemy, the map menu opens rooms and 
   await page.getByRole('button', { name: /nap/i }).click();
   await expect(page.locator('.node.open').first()).toBeVisible({ timeout: 6000 });
   expect(await page.evaluate('window.__game.run.cleared')).toBe(true);
+  // Skipping to the next act lands on its map, rested, and can be repeated.
+  const map = page.locator('.journey:not(.leaving)');
+  for (const act of ['2', '3']) {
+    await page.evaluate('window.__game.run.hp = 30');
+    await map.locator('.debug-fab').click();
+    await page.getByRole('button', { name: 'Skip to next act' }).click();
+    await expect(map).toHaveAttribute('data-act', act);
+    expect(await page.evaluate('window.__game.run.hp === window.__game.run.maxHp')).toBe(true);
+    await page.locator('.act-intro').click();
+    await expect(page.locator('.act-intro')).toBeHidden();
+  }
+  await map.locator('.debug-fab').click();
+  await expect(page.getByRole('button', { name: 'Skip to next act' })).toBeHidden();
 });
 
 test('coming back from the background while paused keeps the pause → fight music hand-off', async ({ page }) => {
