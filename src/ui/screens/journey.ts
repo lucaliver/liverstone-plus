@@ -1,7 +1,7 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
-import { actDef } from '../../data/acts';
+import { actDef, isFinalAct } from '../../data/acts';
 import { clockAt, currentNode, type RunNode, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h, onPress, onTapOrHold } from '../dom';
@@ -26,6 +26,8 @@ export const NODE_ICON: Record<RunNode['type'], string> = {
   crossTraining: 'whiteboard',
   boss: 'tophat',
 };
+/** What a room is called on the map and in its info (the last act's boss is the final one). */
+const nodeKind = (n: RunNode): 'finalBoss' | RunNode['type'] => (n.type === 'boss' && isFinalAct(n.act) ? 'finalBoss' : n.type);
 /** The icon of a room on the map: a boss wears the one of its act. */
 export const nodeIcon = (n: RunNode): string => (n.type === 'boss' ? (actDef(n.act).bossIcon ?? NODE_ICON.boss) : NODE_ICON[n.type]);
 /** Height of one floor on the map (px); a room takes most of it, the rest is corridor. */
@@ -214,7 +216,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     const missed = !past && !open && n.id !== cur.id && !reachable.has(n.id);
     const fog = foggy(n);
     const revealed = !!before && !before.has(n.id) && dist.has(n.id) && !past;
-    const label = fog ? UNKNOWN : t(`journey.node.${n.type}`);
+    const label = fog ? UNKNOWN : t(`journey.node.${nodeKind(n)}`);
     const el = h(
       'div',
       {
@@ -258,7 +260,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
           icon: nodeIcon(n),
           title: label,
           tag: t('common.floor', { n: n.floor }),
-          desc: t(`journey.info.${n.type}`),
+          desc: t(`journey.info.${nodeKind(n)}`),
           extra: enemy ? [t('journey.info.enemy', { name: enemy })] : undefined,
         });
       },
@@ -325,7 +327,8 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     el,
     enter() {
       el.querySelector('.node.current, .node.open')?.scrollIntoView({ block: 'center' });
-      if (act !== cur.act) actIntro();
+      // A new shift: after an act's boss, or on the first floor of the run.
+      if (act !== cur.act || (run.path.length === 1 && !run.cleared)) actIntro();
     },
   };
 }

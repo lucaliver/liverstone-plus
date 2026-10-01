@@ -26,3 +26,6 @@ export const ACT_DEFS: readonly ActDef[] = [
 
 /** The definition of an act (1-based; later acts fall back to the last one). */
 export const actDef = (act: number): ActDef => ACT_DEFS[Math.min(act, ACT_DEFS.length) - 1];
+
+/** Whether the act is the last one: its boss is the final boss. */
+export const isFinalAct = (act: number): boolean => act >= ACT_DEFS.length;
