@@ -1756,3 +1756,27 @@ describe('act 3 rules', () => {
     expect(c.stacks('enemy', 'strength')).toBeGreaterThan(0);
   });
 });
+
+describe('act 3 rules, second batch', () => {
+  it('Overtime Creep makes the enemy a little stronger every ten seconds', () => {
+    const c = setup({ enemy: { ...ENEMIES.punchClock, main: { ...ENEMIES.punchClock.main, windup: 999 } } });
+    run(c, CONFIG.introTime + 9);
+    expect(c.stacks('enemy', 'strength')).toBe(0);
+    run(c, 2);
+    expect(c.stacks('enemy', 'strength')).toBe(1);
+  });
+
+  it('Low Battery: a chirp drains the hero a mana', () => {
+    const c = setup({ enemy: { ...ENEMIES.smokeDetector, main: { ...ENEMIES.smokeDetector.main, windup: 999 } } });
+    c.hero.mana = c.hero.maxMana = 5;
+    run(c, CONFIG.introTime + 5);
+    expect(c.hero.mana).toBe(5);
+    run(c, 2);
+    expect(c.hero.mana).toBeLessThan(5);
+  });
+
+  it('the Withered Ficus stings back when an attack card hits it', () => {
+    const c = setup({ enemy: ENEMIES.witheredFicus });
+    expect(c.stacks('enemy', 'thorns')).toBe(2);
+  });
+});

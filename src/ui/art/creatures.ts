@@ -941,6 +941,89 @@ ${eyes(80, 120, 80, 7, '#7aa7ff', 'hc-g')}
 <path d="M44 40c0-18 24-28 56-28s56 10 56 28" fill="none" stroke="#1b1830" stroke-width="6"/><path d="M156 110c0 14-10 22-30 24" fill="none" stroke="#1b1830" stroke-width="5" stroke-linecap="round"/><circle cx="124" cy="134" r="6" fill="#ffd900" ${OUT}/>
 <path d="M100 44V22" stroke="#1b1830" stroke-width="5"/><circle cx="100" cy="16" r="8" fill="#ff3d9a" ${OUT}/>`;
 
+/** The Punch Clock: a wall clock-in machine with a dial for a forehead, a time-card slot for a mouth and a lever for an arm. */
+const punchClock = `
+<defs>${glow('pc-g', '#ff3d9a')}${lg('pc-b', '#c9c4d6', '#8a84a0')}</defs>
+${shadow}
+<path d="M62 186l4-14h20l4 14zM110 186l4-14h20l4 14z" fill="#1b1830" ${OUT}/>
+<rect x="40" y="36" width="120" height="140" rx="12" fill="url(#pc-b)" ${OUT}/>
+<circle cx="100" cy="62" r="30" fill="#f6f0e4" ${OUT}/><circle cx="100" cy="62" r="23" fill="none" stroke="#1b1830" stroke-width="2.5"/>
+<path d="M100 62V44M100 62l14 8" stroke="#1b1830" stroke-width="5" stroke-linecap="round"/><circle cx="100" cy="62" r="4" fill="#ff3d9a"/>
+<path d="M100 34v5M100 85v5M72 62h5M123 62h5" stroke="#1b1830" stroke-width="3"/>
+<rect x="56" y="102" width="88" height="26" rx="4" fill="#120e18" ${OUT}/>
+${eyes(80, 120, 115, 6, '#ff3d9a', 'pc-g')}
+<path d="M72 104l16 8M128 104l-16 8" stroke="#8a84a0" stroke-width="5" stroke-linecap="round"/>
+<rect x="60" y="140" width="80" height="14" rx="3" fill="#120e18" ${OUT}/>
+<path d="M66 140v8M78 140v10M90 140v8M110 140v8M122 140v10M134 140v8" stroke="#f6f0e4" stroke-width="4"/>
+<rect x="76" y="132" width="48" height="30" fill="#f6f0e4" ${OUT}/><path d="M82 142h36M82 150h36M82 156h20" stroke="#1c5fd0" stroke-width="3"/>
+<g class="limb"><path d="M160 100h20v-26" stroke="#1b1830" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="180" cy="68" r="10" fill="#ffd900" ${OUT}/></g>
+<path d="M40 112H24v44h16" fill="#3a3450" ${OUT}/><path d="M28 120h8M28 130h8M28 140h8M28 150h8" stroke="#f6f0e4" stroke-width="3"/>`;
+
+/** The Smoke Detector: a ceiling disc dangling by its wires, one big red eye, a nine-volt battery swinging from a lead. */
+const smokeDetector = `
+<defs>${glow('sd-g', '#ff3b3b')}${rg('sd-b', '#ffffff', '#c8c4d8')}</defs>
+<rect x="0" y="0" width="200" height="22" fill="#3a3450" ${OUT}/><path d="M20 22v-4M60 22v-4M100 22v-4M140 22v-4M180 22v-4" stroke="#120e18" stroke-width="2"/>
+<path d="M76 22c-6 20 10 26 6 40M124 22c6 20-10 26-6 40" fill="none" stroke="#1b1830" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="100" cy="176" rx="50" ry="8" fill="#000" opacity=".3"/>
+<ellipse cx="100" cy="104" rx="72" ry="62" fill="url(#sd-b)" ${OUT}/>
+<ellipse cx="100" cy="104" rx="58" ry="48" fill="none" stroke="#9a94ac" stroke-width="3"/>
+<path d="M54 84c10-8 24-12 46-12s36 4 46 12M48 100h104M54 118c10 8 24 12 46 12s36-4 46-12" fill="none" stroke="#9a94ac" stroke-width="4" stroke-dasharray="10 6"/>
+<circle cx="100" cy="100" r="26" fill="#120e18" ${OUT}/>
+<g class="eye"><circle cx="100" cy="100" r="30" fill="url(#sd-g)"/><circle cx="100" cy="100" r="14" fill="#ff3b3b"/><circle cx="95" cy="95" r="5" fill="#fff"/></g>
+<path d="M70 70l22 14M130 70l-22 14" stroke="#120e18" stroke-width="7" stroke-linecap="round"/>
+<path d="M40 140c-10 6-14 14-12 24M160 140c10 6 14 14 12 24" fill="none" stroke="#1b1830" stroke-width="6" stroke-linecap="round"/>
+<g class="limb"><path d="M168 128c14 6 18 18 14 32" fill="none" stroke="#1b1830" stroke-width="5"/><rect x="170" y="156" width="22" height="30" rx="3" fill="#1c5fd0" ${OUT}/><rect x="174" y="150" width="14" height="8" fill="#ffd900" ${OUT}/><path d="M176 166h10M176 174h6" stroke="#f6f0e4" stroke-width="3"/></g>
+<g fill="none" stroke="#ff3d9a" stroke-width="4" stroke-linecap="round"><path d="M24 64q-8 10 0 20M12 56q-14 18 0 36"/><path d="M176 64q8 10 0 20M188 56q14 18 0 36"/></g>`;
+
+/** The Microwave: an old break-room microwave, its window a dark mouth with hungry eyes, sparks in the corners. */
+const microwave = `
+<defs>${glow('mw-g', '#ffd900')}${lg('mw-b', '#f6f0e4', '#b8b0c8')}</defs>
+${shadow}
+<path d="M42 186v-10h20v10zM138 186v-10h20v10z" fill="#1b1830" ${OUT}/>
+<rect x="20" y="52" width="160" height="126" rx="10" fill="url(#mw-b)" ${OUT}/>
+<rect x="32" y="64" width="100" height="100" rx="6" fill="#120e18" ${OUT}/>
+<circle cx="82" cy="116" r="40" fill="url(#mw-g)" opacity=".5"/>
+${eyes(66, 98, 96, 6, '#ffd900', 'mw-g')}
+<path d="M44 124h76l-6 14-8-8-8 10-8-10-8 10-8-10-8 10-8-10-8 8z" fill="#f6f0e4" ${OUT}/>
+<path d="M52 72l22 14M112 72L90 86" stroke="#ff3d9a" stroke-width="6" stroke-linecap="round"/>
+<rect x="142" y="64" width="30" height="22" rx="3" fill="#120e18" ${OUT}/><path d="M148 70h6v10h-6zM158 70h8v4h-8zM158 77h8v3h-8z" fill="#ff3d9a"/>
+<g ${OUT}><rect x="146" y="94" width="22" height="12" rx="3" fill="#ffd900"/><rect x="146" y="112" width="22" height="12" rx="3" fill="#1c5fd0"/><rect x="146" y="130" width="22" height="12" rx="3" fill="#ff3d9a"/></g>
+<rect x="136" y="64" width="4" height="100" fill="#8a84a0" ${OUT}/>
+<g class="limb" fill="none" stroke="#ffd900" stroke-width="4" stroke-linecap="round"><path d="M10 46l10 8-6 8 10 6M188 46l-8 10 8 6-6 8"/></g>
+<path d="M178 150c14 4 16 16 10 26" fill="none" stroke="#1b1830" stroke-width="6" stroke-linecap="round"/>`;
+
+/** The Withered Ficus: a big dried-out office plant in a pink pot, drooping brown leaves, spikes and a sour face. */
+const witheredFicus = `
+<defs>${glow('wf-g', '#ff3d9a')}${rg('wf-p', '#ff8ac8', '#d4287a')}</defs>
+${shadow}
+<path d="M100 120C80 90 50 80 24 92c8 6 12 14 12 24-8-2-14 2-18 8 22 6 52 4 82-4zM100 120c20-30 50-40 76-28-8 6-12 14-12 24 8-2 14 2 18 8-22 6-52 4-82-4z" fill="#8a6a2a" ${OUT}/>
+<path d="M100 120C86 84 72 54 76 22c14 18 22 38 24 98zM100 120c14-36 28-66 24-98-14 18-22 38-24 98z" fill="#5a8a3a" ${OUT}/>
+<path d="M100 120c-4-30-2-60 0-88 2 28 4 58 0 88z" fill="#8aaa4a" ${OUT}/>
+<g class="limb" fill="#8a6a2a" ${OUT}><path d="M22 150l24-10-4 14zM178 150l-24-10 4 14zM62 100l-8-14 12 4zM138 100l8-14-12 4z"/></g>
+<path d="M54 126h92l-10 54c-1 6-6 8-12 8H76c-6 0-11-2-12-8z" fill="url(#wf-p)" ${OUT}/>
+<rect x="48" y="118" width="104" height="16" rx="3" fill="#ff3d9a" ${OUT}/>
+<path d="M76 138l-4 40M124 138l4 40" stroke="#d4287a" stroke-width="3" opacity=".6"/>
+<path d="M76 146l20 8M124 146l-20 8" stroke="#120e18" stroke-width="7" stroke-linecap="round"/>
+${eyes(82, 118, 160, 6, '#ffd900', 'wf-g')}
+<path d="M84 176c10-8 22-8 32 0" fill="none" stroke="#120e18" stroke-width="5" stroke-linecap="round"/>
+<g fill="none" stroke="#120e18" stroke-width="3" stroke-linecap="round"><path d="M30 92l-8-6M170 92l8-6M84 52l-6-8M116 52l6-8"/></g>`;
+
+/** The Phone Tree: a trunk made of a desk-phone keypad with a screen face, its branches ending in swinging handsets. */
+const phoneTree = `
+<defs>${glow('pt-g', '#1c5fd0')}</defs>
+${shadow}
+<path d="M72 188c-8-16-4-26 6-30M128 188c8-16 4-26-6-30" fill="none" stroke="#1b1830" stroke-width="7" stroke-linecap="round"/>
+<path d="M62 188c-14-4-18-14-8-22M138 188c14-4 18-14 8-22" fill="none" stroke="#1b1830" stroke-width="5" stroke-linecap="round" stroke-dasharray="3 5"/>
+<path d="M60 176l14-100h52l14 100z" fill="#3a3450" ${OUT}/>
+<rect x="68" y="30" width="64" height="52" rx="6" fill="#120e18" ${OUT}/>
+${eyes(86, 114, 52, 5, '#7aa7ff', 'pt-g')}
+<path d="M84 68c8 6 24 6 32 0" fill="none" stroke="#f6f0e4" stroke-width="4" stroke-linecap="round"/>
+<g ${OUT}><rect x="76" y="94" width="14" height="12" rx="2" fill="#f6f0e4"/><rect x="93" y="94" width="14" height="12" rx="2" fill="#f6f0e4"/><rect x="110" y="94" width="14" height="12" rx="2" fill="#f6f0e4"/><rect x="74" y="112" width="14" height="12" rx="2" fill="#f6f0e4"/><rect x="93" y="112" width="14" height="12" rx="2" fill="#ffd900"/><rect x="112" y="112" width="14" height="12" rx="2" fill="#f6f0e4"/><rect x="72" y="130" width="14" height="12" rx="2" fill="#f6f0e4"/><rect x="93" y="130" width="14" height="12" rx="2" fill="#ff3d9a"/><rect x="114" y="130" width="14" height="12" rx="2" fill="#f6f0e4"/></g>
+<path d="M68 70C44 70 30 56 26 40M132 70c24 0 38-14 42-30M100 30c0-12-6-20-14-26" fill="none" stroke="#3a3450" stroke-width="9" stroke-linecap="round"/>
+<g class="limb"><g transform="rotate(-20 26 36)"><path d="M10 40c0-12 6-18 16-18s16 6 16 18c-4-2-8-2-10 2-2-6-8-6-12 0-2-4-6-4-10-2z" fill="#ff3d9a" ${OUT}/></g></g>
+<g transform="rotate(20 174 36)"><path d="M158 40c0-12 6-18 16-18s16 6 16 18c-4-2-8-2-10 2-2-6-8-6-12 0-2-4-6-4-10-2z" fill="#ffd900" ${OUT}/></g>
+<g transform="rotate(-30 84 6)"><path d="M70 12c0-10 6-14 14-14s14 4 14 14c-4-2-6-2-8 2-2-5-6-5-10 0-2-4-6-4-10-2z" fill="#1c5fd0" ${OUT}/></g>`;
+
 export const CREATURES: Record<string, string> = {
   leaver,
   workWife,
@@ -972,6 +1055,11 @@ export const CREATURES: Record<string, string> = {
   veteran,
   nightJanitor,
   micromanager,
+  punchClock,
+  smokeDetector,
+  microwave,
+  witheredFicus,
+  phoneTree,
   graveyardIntern,
   rateLimiter,
   lineLead,

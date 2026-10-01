@@ -565,6 +565,76 @@ const defs: EnemyDef[] = [
     ],
     start: [{ id: 'machineLearning' }],
   },
+  {
+    // Stronger every few seconds whatever you do: the longer the fight, the more overtime it demands.
+    id: 'punchClock',
+    act: 3,
+    tier: 'normal',
+    hp: 80,
+    art: 'punchClock',
+    main: atk('kaChunk', 7, 5),
+    every: 2,
+    specials: [
+      { id: 'overtimeDemand', intent: 'debuff', windup: 5, status: [gainStrength, { id: 'crunch', t: 8, target: 'hero' }] },
+      atk('lateFee', 14, 9, { intent: 'charge' }),
+    ],
+    start: [{ id: 'overtimeCreep' }],
+  },
+  {
+    // Chirps at 3 a.m., and every chirp takes a mana.
+    id: 'smokeDetector',
+    act: 3,
+    tier: 'normal',
+    hp: 65,
+    art: 'smokeDetector',
+    main: atk('shriek', 6, 5),
+    every: 2,
+    specials: [
+      { id: 'sprinklers', intent: 'debuff', windup: 6, status: [gainStrength, { id: 'chill', t: 8, target: 'hero' }] },
+      atk('testButton', 12, 8, { intent: 'charge' }),
+    ],
+    start: [{ id: 'lowBattery' }],
+  },
+  {
+    id: 'microwave',
+    act: 3,
+    tier: 'normal',
+    hp: 80,
+    art: 'microwave',
+    main: atk('reheat', 8, 7),
+    every: 3,
+    specials: [
+      atk('beepBeepBeep', 4, 9, { hits: 3 }),
+      { id: 'leftoverFish', intent: 'debuff', windup: 6, status: [gainStrength, { id: 'poison', v: 4, target: 'hero' }] },
+      atk('doNotPutMetal', 22, 14, { intent: 'charge' }),
+    ],
+  },
+  {
+    // Nobody watered it since spring: every attack you land with a card stings back.
+    id: 'witheredFicus',
+    act: 3,
+    tier: 'normal',
+    hp: 85,
+    art: 'witheredFicus',
+    main: atk('droppedLeaf', 6, 6),
+    every: 2,
+    specials: [{ id: 'photosynthesis', intent: 'heal', windup: 6, heal: 10, status: [gainStrength] }, atk('overgrowth', 15, 9, { intent: 'charge' })],
+    start: [{ id: 'thorns', v: 2 }],
+  },
+  {
+    // Press 1 to be transferred: its calls turn some of your cards to stone.
+    id: 'phoneTree',
+    act: 3,
+    tier: 'normal',
+    hp: 75,
+    art: 'phoneTree',
+    main: atk('pleaseHold', 7, 6),
+    every: 2,
+    specials: [
+      { id: 'transferCall', intent: 'curse', windup: 6, hex: { id: 'petrify', share: 0.35 }, status: [gainStrength] },
+      atk('pressZero', 15, 9, { intent: 'charge' }),
+    ],
+  },
 ];
 
 /** The handbook lists the enemies in this order: the very first run's enemies first, in the order it meets them. */
@@ -605,6 +675,11 @@ export const DIFFICULTY = [
   'lineLead',
   'miningRig',
   'helpdeskChatbot',
+  'punchClock',
+  'smokeDetector',
+  'microwave',
+  'witheredFicus',
+  'phoneTree',
 ];
 
 export const ENEMIES: Record<string, EnemyDef> = Object.fromEntries(defs.map((e) => [e.id, e]));
