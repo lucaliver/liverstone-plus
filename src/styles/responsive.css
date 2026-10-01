@@ -21,6 +21,10 @@
   .end.lose .portrait-lg .riso { transform: rotate(90deg); }
   .end .sub { margin: 0; font-size: 15px; }
   .payslip { padding-top: 6px; padding-bottom: 8px; font-size: 15px; line-height: 1.1; }
+  /* the belt is short here: the update window drops its message line and shrinks its icon so the buttons keep their room */
+  .up-text { display: none; }
+  .up-ico { font-size: 32px; }
+  .up-body { padding: 2px 12px 12px; }
   .slip-row.slip-section { display: none; }
 }
 @media (max-height: 700px) {

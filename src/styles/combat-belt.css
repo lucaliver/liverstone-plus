@@ -93,7 +93,7 @@
   display: none;
   position: absolute;
   /* a little smaller than the belt: its edges stay in view, so the stream is seen running on, but the cards (from 11px down) are all covered */
-  inset: 6px 8px 8px;
+  inset: 4px 8px 6px;
   z-index: var(--z-belt-window);
   flex-direction: column;
   color: var(--k);
@@ -104,9 +104,9 @@
 .update-popup.on { display: flex; }
 .up-bar {
   flex: none;
-  padding: 2px 8px;
+  padding: 3px 8px;
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 15px;
   letter-spacing: 0.04em;
   color: var(--paper);
   background: var(--b);
@@ -118,12 +118,12 @@
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 3px 8px 5px;
+  padding: 4px 12px 16px;
   text-align: center;
 }
 .up-ico {
   flex: none;
-  font-size: 26px;
+  font-size: 44px;
   color: var(--b);
   --ink2: var(--paper);
 }
@@ -142,7 +142,11 @@
   font-size: 13px;
   line-height: 1.15;
 }
-.up-btns { display: flex; gap: 8px; }
+.up-btns {
+  display: flex;
+  gap: 16px;
+  margin-top: auto;
+}
 .up-btns .btn {
   flex: 1;
   min-height: 44px;
@@ -153,6 +157,7 @@
   align-items: center;
   gap: 8px;
   min-height: 44px;
+  margin-top: auto;
 }
 .up-track {
   flex: 1;
