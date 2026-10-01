@@ -27,7 +27,7 @@ const WHERE_WAS_I: MoveDef = { id: 'thePreviousSlide', intent: 'idle', windup: 4
 export const WEAK_SPOT_TIME = 2;
 const WEAK_SPOT_GAP = [5, 9];
 /** Deferred Maintenance: a rust spot lands on the belt this often (s); this many stop the belt, and the slowdown grows with their square (the mop warns from `RUST_WARN` of them). */
-const RUST_EVERY = 2.5;
+const RUST_EVERY = 2;
 const RUST_MAX = 20;
 const RUST_WARN = 0.75;
 /** Spending Freeze: the hero's max mana. */

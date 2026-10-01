@@ -508,6 +508,10 @@ describe('combat engine', () => {
   it('rust spots land on the belt, the belt slows down with their square until they stop it, and scrubbing a spot takes it off', () => {
     const c = setup({ enemy: ENEMIES.facilitiesManager, hp: 900, maxHp: 900 });
     const { every, max, warn } = STATUSES.deferredMaintenance.rust!;
+    const said: string[] = [];
+    c.events.on((e) => {
+      if (e.type === 'speech') said.push(e.key);
+    });
     expect(c.rustsBelt).toBe(true);
     expect(setup().rustsBelt).toBe(false);
     run(c, CONFIG.introTime + 0.01);
@@ -532,6 +536,7 @@ describe('combat engine', () => {
     expect(c.rustAlarm).toBe(true);
     run(c, every * (max + 2));
     expect(c.rustSpots.length).toBe(max);
+    expect(said).toEqual(['status.deferredMaintenance.speech']);
     expect(c.beltRate()).toBe(0);
   });
 

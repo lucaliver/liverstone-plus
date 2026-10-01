@@ -587,6 +587,7 @@ const en = {
   'status.workaholic.d': '+{v} [strength] while it lasts.',
   'status.brownNosing': 'Brown Nosing',
   'status.brownNosing.d': 'Your [mana] refills {$brownPct}% faster.',
+  'status.deferredMaintenance.speech': 'You clean it! Take the mop.',
   'status.microsleep': 'Microsleep',
   'status.microsleep.d': 'Every {$sleepCycle}s it takes a break for {$asleep}s and is more vulnerable to damage.',
   'status.microsleep.speech': 'Zzz… huh? I was awake!',

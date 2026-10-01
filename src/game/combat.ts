@@ -1263,6 +1263,8 @@ export class Combat {
     if (this.rustSpots.length === 0) this.events.emit({ type: 'rust' });
     this.rustSpots.push({ id: ++this.rustId, x: 0.06 + this.rng.next() * 0.8, y: 0.12 + this.rng.next() * 0.7, grime: 1 });
     this.syncRustStatus();
+    // The belt has just stopped dead: he hands the job over.
+    if (this.rustSpots.length === rust.max) this.say('status.deferredMaintenance.speech');
   }
 
   /** The hero scrubs a rust spot with the mop: `amount` of its grime comes off, and it's gone at 0. */
