@@ -301,36 +301,47 @@ ${shadow}
 ${eyes(86, 114, 62, 6, '#ffd900', 'nh-g')}
 <path d="M82 80c10 9 26 9 36 0z" fill="#f6f0e4" stroke="#1b1830" stroke-width="3.5"/>`;
 
-/** The Boss's Son: a pink-suited heir with slicked gold hair and shades pushed up, a golf club, a gold watch and a visitor badge that says nobody dares to ask. */
+/** The Boss's Son: a pampered prep-school boy in a navy blazer and bow tie, cashmere sweater knotted over his shoulders, a gold watch and a phone to CC Dad on, nose in the air. */
 const bossSon = `
-<defs>${lg('bs-s', '#ffa8d8', '#e0509a')}${lg('bs-k', '#ffd8b8', '#e8a07c')}</defs>
+<defs>${glow('bs-g', '#ffd900')}</defs>
 ${shadow}
-<!-- golf club -->
-<path class="limb" d="M154 92L170 184" stroke="#b8b0cc" stroke-width="6" stroke-linecap="round"/>
-<path d="M162 180l26 4-2 10-30-2z" fill="#ffd900" ${OUT}/>
-<!-- legs and white loafers -->
-<path d="M74 150h20v34H70zM106 150h20l4 34h-26z" fill="#2a2640" ${OUT}/>
-<path d="M60 184h38v10H60zM104 184h38v10h-38z" fill="#f6f0e4" ${OUT}/>
-<!-- pink suit, a size too big -->
-<path d="M50 188c-6-44 4-82 34-88h32c30 6 40 44 34 88z" fill="url(#bs-s)" ${OUT}/>
-<path d="M84 100l16 44 16-44z" fill="#f6f0e4" ${OUT}/>
-<path d="M97 106h6l3 36-6 8-6-8z" fill="#ffd900" ${OUT}/>
-<path d="M84 100l-12 34 16 10zM116 100l12 34-16 10z" fill="#e0509a" ${OUT}/>
-<!-- visitor badge -->
-<rect x="122" y="128" width="20" height="26" fill="#f6f0e4" ${OUT}/><path d="M127 138h10M127 144h10" stroke="#1c5fd0" stroke-width="3"/><circle cx="132" cy="132" r="2" fill="#ff3d9a"/>
-<!-- right arm on the club -->
-<path d="M136 108c16 6 26 18 26 34l-12 2c0-10-6-18-16-22z" fill="url(#bs-s)" ${OUT}/><circle cx="162" cy="140" r="9" fill="url(#bs-k)" ${OUT}/>
-<!-- left arm, gold watch -->
-<g class="limb"><path d="M64 108c-14 8-18 26-16 40l13 0c0-12 2-22 11-28z" fill="url(#bs-s)" ${OUT}/><circle cx="53" cy="154" r="9" fill="url(#bs-k)" ${OUT}/><rect x="44" y="144" width="18" height="7" fill="#ffd900" ${OUT}/></g>
-<!-- head, slick hair, shades pushed up -->
-<path d="M70 62c0-24 14-40 30-40s30 16 30 40c0 22-12 40-30 40S70 84 70 62z" fill="url(#bs-k)" ${OUT}/>
-<path d="M66 58c-4-28 14-46 36-46 24 0 38 14 32 42-8-12-22-18-40-16-12 2-22 8-28 20z" fill="#ffd900" ${OUT}/>
-<path d="M84 22c10-4 22-2 32 4" stroke="#fff4a0" stroke-width="3" fill="none"/>
-<path d="M76 22h20v9H76zM104 22h20v9h-20zM96 24h8" fill="#1b1830" ${OUT}/>
-<path d="M76 58l18 5M124 58l-18 5" stroke="#1b1830" stroke-width="4" stroke-linecap="round"/>
-<g ${OUT}><ellipse cx="86" cy="70" rx="9" ry="7" fill="#f6f0e4"/><ellipse cx="114" cy="70" rx="9" ry="7" fill="#f6f0e4"/></g><g class="eye" fill="#1b1830"><circle cx="89" cy="71" r="4"/><circle cx="117" cy="71" r="4"/></g><path d="M75 64h22M103 64h22" stroke="#1b1830" stroke-width="5" stroke-linecap="round"/>
-<path d="M82 88c10 8 26 6 34-6" stroke="#1b1830" stroke-width="4" fill="none" stroke-linecap="round"/>
-<path d="M116 82l5-3" stroke="#1b1830" stroke-width="3" stroke-linecap="round"/>`;
+<!-- socks and loafers -->
+<path d="M78 158h16v24H78zM106 158h16v24h-16z" fill="#f6f0e4" ${OUT}/>
+<path d="M82 164h8M110 164h8" stroke="#1b2a70" stroke-width="3"/>
+<path d="M70 180h30v10H70zM100 180h30v10h-30z" fill="#6a3a1a" ${OUT}/><path d="M74 183h8M108 183h8" stroke="#ffd900" stroke-width="3"/>
+<!-- khaki shorts -->
+<path d="M72 140h56l4 24h-32l-4-10-4 10H68z" fill="#d8c48a" ${OUT}/>
+<!-- blazer -->
+<path d="M64 108c0-10 10-14 36-14s36 4 36 14l4 36H60z" fill="#1b2a70" ${OUT}/>
+<path d="M88 96l12 28 12-28z" fill="#f6f0e4" ${OUT}/>
+<path d="M100 124v20" stroke="#120e18" stroke-width="3"/><circle cx="100" cy="132" r="2.5" fill="#ffd900"/>
+<path d="M120 122h10v6h-10z" fill="#ff3d9a" ${OUT}/>
+<!-- sweater knotted over the shoulders -->
+<path d="M70 108c12 8 20 12 30 12s18-4 30-12" fill="none" stroke="#120e18" stroke-width="13" stroke-linecap="round"/>
+<path d="M70 108c12 8 20 12 30 12s18-4 30-12" fill="none" stroke="#ff8ac8" stroke-width="7" stroke-linecap="round"/>
+<circle cx="100" cy="120" r="7" fill="#ff8ac8" ${OUT}/><path d="M96 124l-6 14M104 124l6 14" stroke="#120e18" stroke-width="3" stroke-linecap="round"/>
+<!-- bow tie -->
+<path d="M100 100l-12-7v14zM100 100l12-7v14z" fill="#ff3d9a" ${OUT}/><circle cx="100" cy="100" r="3.5" fill="#c81a70" ${OUT}/>
+<!-- left arm on the hip, gold watch -->
+<path d="M66 110c-10 8-12 22-6 34l10-4c-4-8-2-14 4-18z" fill="#1b2a70" ${OUT}/><circle cx="64" cy="144" r="7" fill="#ffd8b8" ${OUT}/><rect x="58" y="136" width="13" height="6" fill="#ffd900" ${OUT}/>
+<!-- right arm holding the phone up -->
+<g class="limb"><path d="M134 110c12 2 20 12 20 24l-10 2c0-8-4-12-12-14z" fill="#1b2a70" ${OUT}/><circle cx="150" cy="134" r="7" fill="#ffd8b8" ${OUT}/>
+<rect x="146" y="102" width="20" height="32" rx="3" fill="#120e18" ${OUT}/><rect x="149" y="106" width="14" height="22" fill="#ffd900"/><path d="M152 112h8M152 118h6" stroke="#120e18" stroke-width="2.5"/></g>
+<!-- head -->
+<path d="M64 56c0-24 16-40 36-40s36 16 36 40c0 24-14 40-36 40S64 80 64 56z" fill="#ffd8b8" ${OUT}/>
+<ellipse cx="64" cy="60" rx="5" ry="8" fill="#ffd8b8" ${OUT}/><ellipse cx="136" cy="60" rx="5" ry="8" fill="#ffd8b8" ${OUT}/>
+<!-- neat side-parted hair -->
+<path d="M62 54c-4-26 14-42 38-42 22 0 38 14 38 40-6-12-16-18-30-18-18 0-28 8-46 20z" fill="#e0a800" ${OUT}/>
+<path d="M86 22c8-4 18-4 28 0" stroke="#fff4a0" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M92 20l-6 12" stroke="#120e18" stroke-width="3" stroke-linecap="round"/>
+<!-- haughty half-lidded eyes, raised brows, flushed cheeks, pout -->
+<path d="M76 56l16-4M124 56l-16-4" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
+<g ${OUT}><ellipse cx="86" cy="66" rx="9" ry="7" fill="#f6f0e4"/><ellipse cx="114" cy="66" rx="9" ry="7" fill="#f6f0e4"/></g>
+<g class="eye" fill="#120e18"><circle cx="89" cy="67" r="4"/><circle cx="117" cy="67" r="4"/></g>
+<path d="M76 62h20M104 62h20" stroke="#120e18" stroke-width="5" stroke-linecap="round"/>
+<g fill="#ff3d9a" opacity=".5"><circle cx="78" cy="80" r="6"/><circle cx="122" cy="80" r="6"/></g>
+<path d="M98 72l-3 8h6" stroke="#120e18" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M90 90c6-5 14-5 20 0" stroke="#120e18" stroke-width="4" fill="none" stroke-linecap="round"/>`;
 
 /** The Sick Coworker: pale green, red nose, a thermometer in his mouth, a tissue box under one arm and a cloud of germs he refuses to take home. */
 const sickCoworker = `
@@ -420,24 +431,38 @@ ${eyes(82, 118, 52, 6, '#ff3d9a', 'oc-g')}
 <path d="M74 70h52c0 13-11 20-26 20s-26-7-26-20z" fill="#1b1830" ${OUT}/>
 <path d="M84 70v7M95 70v9M106 70v9M117 70v7" stroke="#f6f0e4" stroke-width="4"/>`;
 
-/** The Overthinker: a tall, stooped analyst in a cardigan, hand on chin, a huge furrowed head and a thought bubble full of gears. */
+/** The Overthinker: a pale, bald, wide-eyed meme face with worried brows and a hand on its chin, question marks, equations and tangled arrows orbiting a huge forehead. */
 const overthinker = `
 <defs>${glow('ot-g', '#ffd900')}</defs>
 ${shadow}
-<path d="M62 188l6-62c2-14 14-22 32-22s30 8 32 22l6 62z" fill="#1c5fd0" ${OUT}/>
-<path d="M88 104l12 26 12-26z" fill="#f6f0e4" ${OUT}/>
-<path d="M64 150h72" stroke="#ff3d9a" stroke-width="6"/><path d="M66 166h68" stroke="#ff3d9a" stroke-width="6"/>
-<path d="M70 124c-12 8-14 22-6 34l12-6c-4-6-4-12 2-16z" fill="#1c5fd0" ${OUT}/>
-<path d="M128 126c14 4 20 16 12 30l-18-4c4-6 4-12 0-16z" fill="#1c5fd0" ${OUT}/><circle cx="118" cy="106" r="9" fill="#f6ecd2" ${OUT}/>
-<path d="M56 64c0-30 20-48 44-48s44 18 44 48c0 22-18 42-44 42S56 86 56 64z" fill="#f6ecd2" ${OUT}/>
-<path d="M68 36c10-12 22-16 32-16s24 4 32 16c-10-4-22-6-32-6s-22 2-32 6z" fill="#8a7a6a" ${OUT}/>
-<path d="M72 50l20 6M128 50l-20 6M74 42l16 2M126 42l-16 2" stroke="#1b1830" stroke-width="4" stroke-linecap="round"/>
-<g class="eye"><rect x="80" y="60" width="10" height="8" fill="#1b1830"/><rect x="110" y="60" width="10" height="8" fill="#1b1830"/></g>
-<path d="M86 88c8-4 20-4 28 0" stroke="#1b1830" stroke-width="4" fill="none" stroke-linecap="round"/>
-<path d="M150 20h36c6 0 10 4 10 10v16c0 6-4 10-10 10h-22l-8 8v-8h-6c-6 0-10-4-10-10V30c0-6 4-10 10-10z" fill="#f6f0e4" ${OUT}/>
-<circle cx="146" cy="72" r="5" fill="#f6f0e4" ${OUT}/><circle cx="138" cy="84" r="3" fill="#f6f0e4" ${OUT}/>
-<g fill="#ffd900" ${OUT}><circle cx="162" cy="38" r="8"/><circle cx="180" cy="36" r="6"/></g>
-<g fill="#1b1830"><circle cx="162" cy="38" r="3"/><circle cx="180" cy="36" r="2"/></g>`;
+<!-- hunched shoulders in a grey hoodie -->
+<path d="M44 188c0-40 16-62 56-62s56 22 56 62z" fill="#1c5fd0" ${OUT}/>
+<path d="M76 130c8 12 40 12 48 0" fill="none" stroke="#120e18" stroke-width="4"/><path d="M92 146v20M108 146v20" stroke="#f6f0e4" stroke-width="4" stroke-linecap="round"/>
+<!-- hand on chin -->
+<path d="M70 188c-6-24 0-44 22-52l6 8c-10 6-14 18-12 30z" fill="#1c5fd0" ${OUT}/>
+<path d="M82 118c-10 2-14 10-10 18 4 6 14 4 22-2l-4-12z" fill="#f6ecd2" ${OUT}/>
+<g fill="none" stroke="#120e18" stroke-width="2.5" stroke-linecap="round"><path d="M80 124l8-2M78 130l9-1"/></g>
+<!-- the face: a big pale head, few thick lines -->
+<path d="M52 66c0-34 20-54 48-54s48 20 48 54c0 28-18 52-48 52S52 94 52 66z" fill="#f6ecd2" ${OUT}/>
+<path d="M76 32h48M82 44h36" stroke="#120e18" stroke-width="5" stroke-linecap="round"/>
+<path d="M66 62l28-14M134 62l-28-14" stroke="#120e18" stroke-width="6" stroke-linecap="round"/>
+<g fill="#fff" stroke="#120e18" stroke-width="5"><circle cx="80" cy="76" r="14"/><circle cx="120" cy="76" r="14"/></g>
+<g class="eye" fill="#120e18"><circle cx="86" cy="72" r="6"/><circle cx="114" cy="72" r="6"/></g>
+<path d="M68 96c8 6 18 6 24 0M108 96c6 6 16 6 24 0" fill="none" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
+<path d="M100 82l-5 12h10" fill="none" stroke="#120e18" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M78 110c8-8 14-4 22-4s14-4 22 4" fill="none" stroke="#120e18" stroke-width="6" stroke-linecap="round"/>
+<path d="M62 62c-8 0-8 12 0 12M138 62c8 0 8 12 0 12" fill="#f6ecd2" ${OUT}/>
+<!-- orbiting doubts: question marks, an equation, tangled arrows -->
+<g class="limb">
+<g fill="none" stroke="#120e18" stroke-width="5" stroke-linecap="round"><path d="M148 20c0-12 20-12 20 0 0 8-10 8-10 18"/><path d="M26 28c0-10 16-10 16 0 0 7-8 7-8 14"/></g>
+<g fill="#120e18"><circle cx="158" cy="48" r="3.5"/><circle cx="34" cy="50" r="3"/></g>
+</g>
+<g fill="#ffd900" ${OUT}><rect x="152" y="70" width="40" height="22" rx="3"/></g>
+<path d="M158 76h12M158 84h14M176 78v10M172 83h10" stroke="#120e18" stroke-width="3" stroke-linecap="round"/>
+<g fill="#ff3d9a" ${OUT}><rect x="8" y="76" width="36" height="20" rx="3"/></g>
+<path d="M14 86h24M30 80l8 6-8 6" fill="none" stroke="#120e18" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M156 108c14 0 22 8 14 16s-26 0-14-12 16-4 10 2" fill="none" stroke="#120e18" stroke-width="3" stroke-linecap="round"/>
+<g fill="#ffd900" ${OUT}><circle cx="30" cy="112" r="9"/></g><circle cx="30" cy="112" r="3.5" fill="#120e18"/><path d="M30 100v-4M30 128v-4M18 112h-4M46 112h-4" stroke="#120e18" stroke-width="3" stroke-linecap="round"/>`;
 
 /** HR Orientation Video: a haunted wooden TV on clawed legs, antennae with orbs, a serene smiling face on the screen. */
 const hrOrientationVideo = `
