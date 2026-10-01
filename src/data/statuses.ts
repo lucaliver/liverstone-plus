@@ -4,15 +4,15 @@ import { type CardCategory, cardCategory } from './cards';
 import { CONFIG } from './config';
 
 /** How long every card played brings the Light Sleeper's hit closer (seconds). */
-const WAKE_PER_CARD = 1;
+export const WAKE_PER_CARD = 1;
 /** The No Repeats Policy only covers cards played this close together (s), so a one-type deck is slowed, never locked. */
-const POLICY_WINDOW = 3;
+export const POLICY_WINDOW = 3;
 /** Meticulous: two cards from the same belt row can't be played this close together (s), so an empty row never locks you. */
-const LANE_WINDOW = 4;
+export const LANE_WINDOW = 4;
 /** Chill Out: seconds between two cards. */
-const CHILL_GAP = 2;
+export const CHILL_GAP = 2;
 /** Micromanagement: seconds without playing a card before he cuts in. */
-const IDLE_LIMIT = 3;
+export const IDLE_LIMIT = 3;
 /** Seconds since a card was last played or he last cut in. */
 const idleFor = (c: Combat, s: StatusVal): number => c.time - Math.max(c.lastPlayedAt, s.e ?? 0);
 /** Card colours, by index (a status's free number `e` remembers one). */
@@ -24,28 +24,30 @@ const PARACHUTE_STRENGTH = 3;
 /** What the Overthinker does once it has lost its train of thought. */
 const WHERE_WAS_I: MoveDef = { id: 'whereWasI', intent: 'idle', windup: 4 };
 /** Weak Spot: how long its target stays up, and the random wait (s) between the end of one and the next. */
-const WEAK_SPOT_TIME = 2;
+export const WEAK_SPOT_TIME = 2;
 const WEAK_SPOT_GAP = [5, 9];
 /** Deferred Maintenance: a rust spot lands on the belt this often (s); this many stop the belt, and the slowdown grows with their square. */
 const RUST_EVERY = 2.5;
 const RUST_MAX = 20;
 /** Spending Freeze: the hero's max mana. */
-const SPENDING_FREEZE_CAP = 3;
+export const SPENDING_FREEZE_CAP = 3;
 
 /** Microsleep: awake this long (s), then asleep this long: its clock stops and it takes more damage. */
-const AWAKE = 7;
-const ASLEEP = 3;
+export const AWAKE = 7;
+export const ASLEEP = 3;
 /** Overtime Creep: +1 Strength this often (s). */
-const CREEP_EVERY = 10;
+export const CREEP_EVERY = 10;
 /** Low Battery: chirps this often (s). */
-const CHIRP_EVERY = 6;
+export const CHIRP_EVERY = 6;
 /** Machine Learning: every this many cards slipping off the belt teach it +1 Strength. */
-const LEARN_EVERY = 3;
+export const LEARN_EVERY = 3;
 /** Pressure: gains this much Block every so many seconds; at the limit it bursts (the Block is gone, the hero takes the blast). */
-const PRESSURE_EVERY = 5;
-const PRESSURE_STEP = 6;
-const PRESSURE_LIMIT = 30;
+export const PRESSURE_EVERY = 5;
+export const PRESSURE_STEP = 6;
+export const PRESSURE_LIMIT = 30;
 const PRESSURE_BLAST = 12;
+/** Paradigm Shift: the belt turns around each time the enemy loses another 1/this of its max HP. */
+export const PARADIGM_TURNS = 4;
 /** The Board: what the first director to leave brings (Block, Strength); the second one speeds the whole board up. */
 const BOARD_BLOCK = 30;
 const BOARD_STRENGTH = 2;
@@ -286,7 +288,7 @@ const defs: StatusDef[] = [
     onHurt: (c, side) => {
       const e = c.enemy;
       if (side !== 'enemy' || e.hp <= 0) return;
-      const quarters = Math.floor((4 * (e.maxHp - e.hp)) / e.maxHp);
+      const quarters = Math.floor((PARADIGM_TURNS * (e.maxHp - e.hp)) / e.maxHp);
       if (quarters > (e.mem.turns ?? 0)) c.say('status.paradigmShift.speech');
       for (let n = e.mem.turns ?? 0; n < quarters; n++) c.reverseBelt();
       e.mem.turns = Math.max(e.mem.turns ?? 0, quarters);

@@ -7,12 +7,12 @@ const proc = (c: Combat, id: string): void => c.events.emit({ type: 'relic', id 
 const STRESS_BALL_BLOCK = 8;
 const THERMOS_HEAL = 5;
 const STAPLER_EVERY = 6;
-const STAPLER_DAMAGE = 6;
+export const STAPLER_DAMAGE = 6;
 const BOOT_MANA = 2;
 const MUG_EVERY = 5;
-const MUG_MANA = 1;
+export const MUG_MANA = 1;
 const CLOCK_EVERY = 10;
-const CLOCK_BLOCK = 4;
+export const CLOCK_BLOCK = 4;
 /** Share of max HP the Emergency Exit gets you back on your feet with. */
 const EXIT_HP = 0.35;
 

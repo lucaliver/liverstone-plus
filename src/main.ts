@@ -4,13 +4,14 @@ import '@fontsource/space-grotesk/500.css';
 import '@fontsource/space-grotesk/700.css';
 import './styles/index.css';
 
-import { setLocale, t } from './core/i18n';
+import { setLocale, setStringValues, t } from './core/i18n';
 import { randomSeed } from './core/rng';
 import { setSfxVolume, unlockAudio } from './audio/sfx';
 import { musicTrack, playMusic, setMusicVolume, suspendMusic } from './audio/music';
 import { actDef } from './data/acts';
 import type { RewardKind } from './data/config';
 import { ENEMIES } from './data/enemies';
+import { VALUES } from './data/values';
 import { Combat } from './game/combat';
 import {
   addCard,
@@ -283,6 +284,7 @@ function catchCrashes(): void {
 
 async function boot(): Promise<void> {
   setLocale(settings.locale);
+  setStringValues(VALUES);
   setSfxVolume(settings.sfxVolume);
   setMusicVolume(settings.musicVolume);
   document.addEventListener('visibilitychange', () => suspendMusic(document.hidden));

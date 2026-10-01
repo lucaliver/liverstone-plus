@@ -1,5 +1,8 @@
 import type { CardDef } from '../../game/types';
 
+/** Just Cause hits harder once the enemy is at or under this share of its max HP. */
+export const JUST_CAUSE_HP = 0.3;
+
 export const warriorCards: CardDef[] = [
   // Starters
   {
@@ -223,7 +226,7 @@ export const warriorCards: CardDef[] = [
     vals: [15, 30],
     upVals: [20, 40],
     art: 'picketSign',
-    play: (c, v) => void c.hit(c.enemy.hp <= c.enemy.maxHp * 0.3 ? v[1] : v[0]),
+    play: (c, v) => void c.hit(c.enemy.hp <= c.enemy.maxHp * JUST_CAUSE_HP ? v[1] : v[0]),
   },
   {
     id: 'backPay',

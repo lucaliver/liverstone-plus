@@ -9,6 +9,7 @@ import { ACT_DEFS } from '../src/data/acts';
 import { rewardOdds, rewardUpgradeChance } from '../src/data/config';
 import { DIFFICULTY, ENEMY_LIST, enemyMoves } from '../src/data/enemies';
 import { HERO_LIST, starterCards } from '../src/data/heroes';
+import { VALUES } from '../src/data/values';
 import { PERK_LIST } from '../src/data/perks';
 import { STATUS_ORDER, STATUSES } from '../src/data/statuses';
 import { GLYPHS, TAG_ICON } from '../src/ui/components/cardView';
@@ -174,5 +175,18 @@ describe('colours', () => {
 
   it('the pixel renderer prints with the inks of the stylesheet', () => {
     expect(INK_HEX).toEqual({ Y: token('--y'), P: token('--p'), B: token('--b'), K: token('--k') });
+  });
+});
+
+describe('numbers in rules text', () => {
+  const used = new Set(Object.values(en).flatMap((text) => [...text.matchAll(/\{\$(\w+)\}/g)].map((m) => m[1])));
+
+  it('every {$name} in a string is a value the game provides, and every value is used', () => {
+    for (const name of used) expect(name in VALUES, `{$${name}} is not in VALUES`).toBe(true);
+    for (const name of Object.keys(VALUES)) expect(used.has(name), `${name} is in VALUES but no string uses it`).toBe(true);
+  });
+
+  it('every value is a plain number', () => {
+    for (const [name, v] of Object.entries(VALUES)) expect(Number.isFinite(v), name).toBe(true);
   });
 });

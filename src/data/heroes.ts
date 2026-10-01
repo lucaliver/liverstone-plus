@@ -8,8 +8,14 @@ export function starterCards(hero: HeroDef): { id: string; up: boolean }[] {
   const pending = new Set(hero.startUpgraded);
   return hero.startDeck.map((id) => ({ id, up: pending.delete(id) }));
 }
-/** Virulence (Necromancer passive) only kicks in once the enemy carries this much Poison. */
-const VIRULENCE_AT = 7;
+/** Virulence (Necromancer passive) only kicks in once the enemy carries this much Poison, and then adds this much per tick. */
+export const VIRULENCE_AT = 7;
+export const VIRULENCE_BONUS = 1;
+/** Overtime (Warrior ability): attacks deal this many times as much, for this long (s). */
+export const OVERTIME_MULT = 2;
+export const OVERTIME_TIME = 10;
+/** Time Theft (Mage ability): the enemy is stunned and the belt rushed for this long (s). */
+export const TIME_THEFT = 5;
 
 const warrior: HeroDef = {
   id: 'warrior',
@@ -31,10 +37,10 @@ const warrior: HeroDef = {
   ability: {
     id: 'overtime',
     cost: 6,
-    use: (c) => c.applyStatus('hero', 'overtime', 1, 10),
+    use: (c) => c.applyStatus('hero', 'overtime', 1, OVERTIME_TIME),
   },
   hooks: {
-    damageMult: (c, def) => (def?.type === 'attack' && c.has('hero', 'overtime') ? 2 : 1),
+    damageMult: (c, def) => (def?.type === 'attack' && c.has('hero', 'overtime') ? OVERTIME_MULT : 1),
   },
 };
 
@@ -58,8 +64,8 @@ const mage: HeroDef = {
     id: 'timeTheft',
     cost: 6,
     use: (c) => {
-      c.applyStatus('enemy', 'stun', 1, 5);
-      c.rushBelt(5);
+      c.applyStatus('enemy', 'stun', 1, TIME_THEFT);
+      c.rushBelt(TIME_THEFT);
     },
   },
   hooks: {
@@ -97,7 +103,8 @@ const necromancer: HeroDef = {
   },
   hooks: {
     // Virulence: heavy Poison (7+) deals +1 per tick; Virulent Form adds its bonus on top, always.
-    enemyDotBonus: (c, id) => (id === 'poison' ? (c.stacks('enemy', 'poison') >= VIRULENCE_AT ? 1 : 0) + c.stacks('hero', 'virulence') : 0),
+    enemyDotBonus: (c, id) =>
+      id === 'poison' ? (c.stacks('enemy', 'poison') >= VIRULENCE_AT ? VIRULENCE_BONUS : 0) + c.stacks('hero', 'virulence') : 0,
     // Plague: Attacks also apply Poison.
     onCardPlayed: (c, _card, def) => {
       const plague = c.stacks('hero', 'plague');

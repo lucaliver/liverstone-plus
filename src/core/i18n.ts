@@ -46,8 +46,14 @@ export function setLocale(code: string): void {
 
 export const getLocale = (): string => current;
 
+/** Numbers that rules text quotes as `{$name}` (see `data/values.ts`): the game registers them once at boot. */
+let values: Params = {};
+export const setStringValues = (v: Params): void => {
+  values = v;
+};
+
 /**
- * Translates `key`, interpolating `{name}` params.
+ * Translates `key`, interpolating `{name}` params and the game's named `{$value}`s.
  * Plurals: `{n|card|cards}` picks a form through Intl.PluralRules for the param `n`.
  */
 export function t(key: TKey, params?: Params): string {
@@ -56,6 +62,11 @@ export function t(key: TKey, params?: Params): string {
     if (import.meta.env?.DEV) console.warn(`[i18n] missing key: ${key}`);
     return key;
   }
+  s = s.replace(/\{\$(\w+)\}/g, (m, name: string) => {
+    if (name in values) return String(values[name]);
+    if (import.meta.env?.DEV) console.warn(`[i18n] unknown value ${m} in ${key}`);
+    return m;
+  });
   if (!params) return s;
   const rules = new Intl.PluralRules(current);
   s = s.replace(/\{(\w+)\|([^|}]*)\|([^}]*)\}/g, (_, p: string, one: string, other: string) =>

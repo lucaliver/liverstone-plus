@@ -5,6 +5,9 @@ const atk = (id: string, dmg: number, windup: number, extra: Partial<MoveDef> = 
 const gainStrength = { id: 'strength', v: 1, target: 'enemy' } as const;
 const ramp: Partial<MoveDef> = { status: [gainStrength] };
 
+/** What the half-HP moves bring (their texts quote these, see `data/values.ts`). */
+export const HALF = { paperCuts: 2, securityBlock: 30, slavesStall: 8, complianceSlow: 20 } as const;
+
 /**
  * Every enemy has one steady main attack and, every `every` main attacks, a special move
  * (slow heavy hits, curses, theft…). Specials rotate when there are several.
@@ -59,7 +62,7 @@ const defs: EnemyDef[] = [
     ],
     // Paper cuts: every card you let slip off the belt hurts, and at half HP it's worse.
     start: [{ id: 'paperCuts' }],
-    onHalf: (c) => c.applyStatus('enemy', 'paperCuts', 2),
+    onHalf: (c) => c.applyStatus('enemy', 'paperCuts', HALF.paperCuts),
   },
   {
     id: 'toxicCoworker',
@@ -199,7 +202,7 @@ const defs: EnemyDef[] = [
       atk('patDown', 11, 7, { intent: 'defend', block: 14, windup: 6 }),
       { id: 'clearanceCheck', intent: 'curse', windup: 2, curse: [{ id: 'papersPlease', n: 2, to: 'draw' }] },
     ],
-    onHalf: (c) => c.gainBlock('enemy', 30),
+    onHalf: (c) => c.gainBlock('enemy', HALF.securityBlock),
   },
   {
     // Leaving with a golden parachute: the first time he would fall, he retires instead and comes back for more.
@@ -235,7 +238,7 @@ const defs: EnemyDef[] = [
     ],
     halfSpeech: true,
     // The emergency button: at half HP everything stops for a moment.
-    onHalf: (c) => c.applyStatus('hero', 'stalled', 1, 8),
+    onHalf: (c) => c.applyStatus('hero', 'stalled', 1, HALF.slavesStall),
   },
 
   // ------------------------------------------------------------- Act 2
@@ -342,7 +345,7 @@ const defs: EnemyDef[] = [
       { id: 'paperwork', intent: 'curse', windup: 7, curse: [{ id: 'papersPlease', n: 2, to: 'draw' }], status: [gainStrength] },
       atk('violation', 15, 10, { intent: 'charge' }),
     ],
-    onHalf: (c) => c.applyStatus('hero', 'slowdown', 1, 20),
+    onHalf: (c) => c.applyStatus('hero', 'slowdown', 1, HALF.complianceSlow),
   },
   {
     // Bills by the second: every hit of your cards is docked, so only Poison and Burn go through whole. Shuts you up with a gag order.
