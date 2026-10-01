@@ -194,7 +194,7 @@
 }
 .tc-title {
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 13px;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -217,7 +217,7 @@
   align-items: center;
   gap: 6px;
   font-family: var(--font-ui);
-  font-size: 16px;
+  font-size: 15px;
   color: var(--muted);
 }
 .tc-run .riso { flex: none; width: 26px; height: 26px; }
@@ -261,7 +261,7 @@
 }
 .version {
   font-family: var(--font-ui);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--muted-d);
 }
 
@@ -314,7 +314,7 @@
   text-transform: uppercase;
 }
 .contract p,
-.contract li { margin: 0; font-size: 14px; line-height: 1.3; }
+.contract li { margin: 0; font-size: 15px; line-height: 1.3; }
 .contract ol { margin: 8px 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
 .contract-terms {
   display: flex;

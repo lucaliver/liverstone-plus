@@ -20,14 +20,14 @@
   .end .portrait-lg .riso { width: 132px; height: 132px; }
   .end.lose .portrait-lg .riso { transform: rotate(90deg); }
   .end .sub { margin: 0; font-size: 15px; }
-  .payslip { padding-top: 6px; padding-bottom: 8px; font-size: 16px; line-height: 1.1; }
+  .payslip { padding-top: 6px; padding-bottom: 8px; font-size: 15px; line-height: 1.1; }
   .slip-row.slip-section { display: none; }
 }
 @media (max-height: 700px) {
   .enemy-info { gap: 4px; }
   .enemy-info .statuses,
   .hero-info .statuses { height: 26px; }
-  .status { height: 26px; font-size: 16px; }
+  .status { height: 26px; font-size: 15px; }
   .status .pico { font-size: 20px; }
   .hero-info { gap: 3px; }
   .combat { --portrait: 67px; }
@@ -40,7 +40,7 @@
   .mop { min-width: 64px; min-height: 64px; font-size: 64px; }
   /* the sleeve slot is too small for its label here: the hand says it */
   .sleeve-slot > span { display: none; }
-  .hint-toast.alert { top: 7%; padding: 6px 12px; font-size: 19px; }
+  .hint-toast.alert { top: 7%; padding: 6px 12px; font-size: 18px; }
 }
 /* narrow phones: the map header (portrait, HP, deck, pay, settings) must fit in one line */
 @media (max-width: 400px) {

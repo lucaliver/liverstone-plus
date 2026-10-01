@@ -10,7 +10,7 @@
   min-height: 44px;
   padding: 0 2px;
   font-family: var(--font-ui);
-  font-size: 16px;
+  font-size: 15px;
   color: var(--k);
   white-space: nowrap;
   overflow: hidden;
@@ -75,7 +75,7 @@
   width: 100%;
   margin: 0;
   font-family: var(--font-display);
-  font-size: 19px;
+  font-size: 18px;
   text-transform: uppercase;
 }
 .foe-hp {
@@ -102,7 +102,7 @@
   gap: 2px 6px;
   min-height: 34px;
   font-family: var(--font-ui);
-  font-size: 17px;
+  font-size: 18px;
   border-bottom: 1px dashed #1b183033;
 }
 .foe-moves li:last-child { border-bottom: 0; }
@@ -137,7 +137,7 @@
   margin: 0;
   padding: 6px 10px 8px;
   font-family: var(--font-ui);
-  font-size: 16px;
+  font-size: 15px;
   color: var(--paper);
   background: var(--p);
 }
@@ -152,7 +152,7 @@
   display: block;
   min-height: 0;
   padding: 4px 0 2px;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--muted);
   text-transform: uppercase;
   border-bottom: 0;
@@ -161,7 +161,7 @@
 .foe-moves li.now { background: var(--y); }
 .foe-moves li.next .mn { text-decoration: underline 3px var(--p); }
 .info .foe-moves { margin: 6px 0 0; padding: 4px 0; }
-.info .foe-moves li { font-size: 16px; color: var(--k); }
+.info .foe-moves li { font-size: 15px; color: var(--k); }
 
 
 .relics {
@@ -179,7 +179,7 @@
   background: var(--paper);
   border: 2px solid var(--void);
   box-shadow: 3px 3px 0 var(--shadow);
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 1.25;
 }
@@ -187,7 +187,7 @@
 .relic-line b {
   display: block;
   font-family: var(--font-ui);
-  font-size: 17px;
+  font-size: 18px;
   text-transform: uppercase;
 }
 .relic-line.undiscovered .pico { filter: grayscale(0.7); }
@@ -208,6 +208,6 @@
 }
 .stamp:nth-child(even) { rotate: 3deg; }
 .stamp b { font-size: 13px; font-weight: 700; }
-.stamp span { font-size: 10px; }
+.stamp span { font-size: 13px; }
 .stamp.act2 { color: var(--b); border-color: var(--b); }
 .stamp.act3 { color: var(--k); border-color: var(--k); }

@@ -52,7 +52,7 @@
 }
 .modal p {
   margin: 0;
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1.4;
   font-weight: 500;
 }
@@ -63,7 +63,7 @@
   padding: 8px 10px;
   border: 2px dashed var(--k);
   font-family: var(--font-ui);
-  font-size: 16px;
+  font-size: 15px;
   color: var(--p);
   overflow-wrap: anywhere;
 }
@@ -85,7 +85,7 @@
   flex-basis: 100%;
   margin: 0;
   font-family: var(--font);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.3;
   color: var(--p);
 }
@@ -167,7 +167,7 @@
   min-width: 50px;
   min-height: 42px;
   font-family: var(--font-ui);
-  font-size: 17px;
+  font-size: 18px;
 }
 .seg button + button { border-left: var(--line) solid var(--k); }
 .seg button[aria-pressed='true'] { background: var(--y); }
@@ -272,7 +272,7 @@
   gap: 4px;
   margin: -4px 0 10px;
   font-family: var(--font-ui);
-  font-size: 17px;
+  font-size: 18px;
   color: var(--muted);
 }
 .deck-sort span { margin-right: 4px; }
@@ -320,7 +320,7 @@
 .info-head .ftag {
   padding: 1px 6px 2px;
   font-family: var(--font-ui);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--paper);
   background: var(--k);
 }
@@ -334,7 +334,7 @@
   display: flex;
   gap: 8px;
   font-family: var(--font-ui);
-  font-size: 17px;
+  font-size: 18px;
   text-transform: uppercase;
 }
 .detail-meta span {
@@ -408,7 +408,7 @@
   line-height: 1.35;
 }
 .anatomy-legend li::marker { font-family: var(--font-ui); color: var(--p); }
-.anatomy-legend b { font-family: var(--font-ui); font-size: 17px; font-weight: 400; text-transform: uppercase; }
+.anatomy-legend b { font-family: var(--font-ui); font-size: 18px; font-weight: 400; text-transform: uppercase; }
 .ink-chip {
   display: inline-flex;
   align-items: center;
@@ -469,7 +469,7 @@
   border: 2px solid var(--k);
 }
 .debug-foe .riso { width: 56px; height: 56px; }
-.debug-foe small { font-size: 12px; color: var(--muted); }
+.debug-foe small { font-size: 13px; color: var(--muted); }
 /* the build, at the foot of Settings */
 .modal .version { margin-top: 12px; text-align: center; color: var(--muted); }
 
@@ -478,5 +478,5 @@
 .memo-ico { flex: none; font-size: 30px; --ink2: var(--p); }
 .memo-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .memo-text b { font-weight: 400; }
-.memo-text small { font-family: var(--font); font-size: 14px; line-height: 1.25; }
+.memo-text small { font-family: var(--font); font-size: 15px; line-height: 1.25; }
 .setting.memo .switch { flex: none; }

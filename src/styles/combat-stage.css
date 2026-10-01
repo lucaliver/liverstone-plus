@@ -28,7 +28,7 @@
 }
 .floor-chip small {
   display: block;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--muted-d);
 }
 
@@ -365,7 +365,7 @@
   display: flex;
   align-items: center;
   padding: 0 8px;
-  font-size: 19px;
+  font-size: 18px;
   white-space: nowrap;
   text-shadow: 2px 0 0 var(--paper), -2px 0 0 var(--paper), 0 2px 0 var(--paper), 0 -2px 0 var(--paper);
 }
@@ -516,7 +516,7 @@
   display: grid;
   place-items: center;
   font-family: var(--font-ui);
-  font-size: 19px;
+  font-size: 18px;
   line-height: 1;
   color: var(--k);
   text-shadow: 2px 0 0 var(--paper), -2px 0 0 var(--paper), 0 2px 0 var(--paper), 0 -2px 0 var(--paper);
@@ -543,7 +543,7 @@
   position: relative;
   margin-top: -3px;
   font-family: var(--font-ui);
-  font-size: 17px;
+  font-size: 18px;
   color: var(--paper);
 }
 .block-chip.off { visibility: hidden; }
@@ -563,7 +563,7 @@
   height: 32px;
   padding: 0 7px 0 3px;
   font-family: var(--font-ui);
-  font-size: 19px;
+  font-size: 18px;
   background: var(--paper);
   border: 2px solid var(--k);
 }
@@ -600,6 +600,6 @@
   box-shadow: var(--off) var(--off) 0 var(--p);
 }
 .trait .pico { flex: none; font-size: 26px; color: var(--p); --ink2: var(--y); }
-.trait p { margin: 0; font-family: var(--font); font-size: 14px; line-height: 1.25; }
-.trait b { display: block; font-family: var(--font-ui); font-size: 17px; text-transform: uppercase; }
+.trait p { margin: 0; font-family: var(--font); font-size: 15px; line-height: 1.25; }
+.trait b { display: block; font-family: var(--font-ui); font-size: 18px; text-transform: uppercase; }
 .trait b.kw { display: inline; font-family: inherit; font-size: inherit; text-transform: none; }

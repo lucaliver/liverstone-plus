@@ -221,7 +221,7 @@
   background: var(--paper);
   border: 2px solid var(--void);
   box-shadow: 3px 3px 0 var(--shadow);
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 1.25;
 }
@@ -233,7 +233,7 @@
 .hero-feature .ftag {
   margin-left: 4px;
   padding: 0 4px 1px;
-  font-size: 11px;
+  font-size: 13px;
   vertical-align: 2px;
   color: var(--paper);
   background: var(--k);
@@ -249,7 +249,7 @@
 .hero-feature b {
   display: block;
   font-family: var(--font-ui);
-  font-size: 17px;
+  font-size: 18px;
   text-transform: uppercase;
 }
 .fcost {
@@ -358,7 +358,7 @@
   min-width: 22px;
   padding: 0 4px;
   font-family: var(--font-ui);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 20px;
   text-align: center;
   color: var(--paper);
