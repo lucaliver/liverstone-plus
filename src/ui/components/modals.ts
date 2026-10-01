@@ -86,7 +86,6 @@ export function openSettings(extra: ModalAction[] = []): ModalHandle {
         setSfxVolume(v);
       },
     ),
-    speedRow(),
     toggleRow(
       t('settings.motion'),
       () => settings.reduceMotion,
