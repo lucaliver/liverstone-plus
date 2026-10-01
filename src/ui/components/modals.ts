@@ -52,19 +52,21 @@ export function openResetConfirm(): void {
   );
 }
 
-/** Settings; `extra` actions go above Reset progress and Close (e.g. Main menu from the map). */
-export function openSettings(extra: ModalAction[] = []): ModalHandle {
+/** Settings; `extra` actions go above Close (e.g. Main menu from the map). The version line (and the hidden reset under it) is only for the home screen's. */
+export function openSettings(extra: ModalAction[] = [], home = false): ModalHandle {
   const locales = availableLocales();
   // A hidden way to wipe everything: hold the version line.
-  const version = h(
-    'div',
-    { class: 'version' },
-    t('settings.version', {
-      v: __APP_VERSION__,
-      d: new Date(__BUILD_TIME__).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }),
-    }),
-  );
-  onTapOrHold(version, () => {}, openResetConfirm, cssMs('--dur-hold'));
+  const version = home
+    ? h(
+        'div',
+        { class: 'version' },
+        t('settings.version', {
+          v: __APP_VERSION__,
+          d: new Date(__BUILD_TIME__).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }),
+        }),
+      )
+    : null;
+  if (version) onTapOrHold(version, () => {}, openResetConfirm, cssMs('--dur-hold'));
   const body = h(
     'div',
     null,

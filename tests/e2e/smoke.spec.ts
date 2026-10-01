@@ -672,6 +672,28 @@ test('tapping the version in Settings, or pressing it shorter than the hold, doe
   await expect(page.getByText(/erase everything/i)).toBeHidden();
 });
 
+test('the version shows in Settings from the home screen only', async ({ page }) => {
+  await freshGame(page);
+  await page.getByRole('button', { name: /settings/i }).click();
+  await expect(page.locator('.modal .version')).toBeVisible();
+  await page.getByRole('button', { name: 'Close' }).click();
+  // The map's settings (the run is on the journey once the hero is picked) and the pause menu's have none.
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  await page.getByRole('button', { name: /settings/i }).click();
+  await expect(page.locator('.modal .setting').first()).toBeVisible();
+  await expect(page.locator('.modal .version')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Close' }).click();
+  await page.getByRole('button', { name: /enter floor 1/i }).click();
+  await expect(page.locator('.combat')).toBeVisible();
+  const start = page.locator('.js-start');
+  if (await start.count()) await start.click();
+  await page.locator('.js-pause').click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Settings' }).click();
+  await expect(page.locator('.modal .setting').first()).toBeVisible();
+  await expect(page.locator('.modal .version')).toHaveCount(0);
+});
+
 test('holding the version in Settings opens the reset confirmation', async ({ page }) => {
   await freshGame(page);
   await page.getByRole('button', { name: /settings/i }).click();

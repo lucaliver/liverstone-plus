@@ -113,7 +113,7 @@ export function titleScreen(cb: TitleCallbacks): Screen {
       save ? btn('plus', t('menu.newRun'), 'secondary small', cb.onNewRun) : null,
       btn('book', t('menu.compendium'), 'secondary small', cb.onCompendium),
       btn('question', t('menu.howTo'), 'secondary small', () => openHowTo()),
-      btn('gear', t('menu.settings'), 'secondary small', () => openSettings()),
+      btn('gear', t('menu.settings'), 'secondary small', () => openSettings([], true)),
     ),
     // Temporary: a small floating button, off the menu's layout.
     debugButton(t('debug.button'), cb.onDebugFight),
