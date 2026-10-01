@@ -119,7 +119,7 @@ test('compendium shows cards, enemies and relics in separate sections', async ({
   await page.getByRole('tab', { name: /act 3/i }).click();
   await expect(page.getByRole('tab', { name: /act 3/i })).toHaveAttribute('aria-selected', 'true');
   await expect(page.locator('.comp-grid')).toBeHidden();
-  await page.getByRole('tab', { name: /relics/i }).click();
+  await page.getByRole('tab', { name: /stationaries/i }).click();
   await expect(page.locator('.relic-line').first()).toBeVisible();
   await expect(page.locator('.foe').first()).toBeHidden();
   expect(problems).toEqual([]);
