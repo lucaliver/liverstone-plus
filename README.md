@@ -62,7 +62,7 @@ mosse. Tra uno scontro e l'altro migliori il mazzo.
   per una carta), **sala fotocopie** (distruggi o duplica una carta), **sartoria** (una cancelleria che
   aggiunge uno slot manica, oppure più vita massima), **oggetti smarriti** (scegli una tra tre cancellerie),
   **distributore automatico** (una carta rara o epica a caso, pagata in vita), **formazione incrociata** (scegli una tra quattro
-  carte delle altre classi, due per classe). Le **cancellerie** (stationaries) sono oggetti con un effetto permanente per la run.
+  carte delle altre classi, due per classe). Le **cancellerie** (stationery) sono oggetti con un effetto permanente per la run.
 - **Ricompensa:** scegli una carta e **scambiala** con una del mazzo, oppure **salta** per un po' di vita massima. Élite e boss
   danno carte più rare.
 - **Paga:** ogni scontro vinto paga, di più se in fretta. È il punteggio della run, mostrato nella busta paga finale.
