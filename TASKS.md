@@ -10,12 +10,9 @@
 
 FUTURE:
 
-
-> aggiungere room migliori (es. room in cui elimini una carta o aggiungi una sleeve o altro, tutto a tema)
-> aggiungere uso della paga
-
-> aggiungere act3
 > aggiungere modificatori difficoltà run dopo la vittoria
+
+> aggiungere uso della paga
 
 > rivedere icone, sprite e musica: e dare prompt su cosa non mi piace
 
