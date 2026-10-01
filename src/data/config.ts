@@ -85,23 +85,54 @@ export const CONFIG = {
 
 export type RewardKind = 'fight' | 'elite' | 'boss';
 
-/** Rarity odds (weights) of each card offered after a fight, an elite or an act boss. Legendary cards only drop from elites and bosses. */
-export const REWARD_ODDS: Record<RewardKind, [Rarity, number][]> = {
+/**
+ * Rarity odds (weights) of each card offered after a fight, an elite or an act boss, one entry per act (later acts use the last):
+ * the deeper the shift, the better the cards. Legendary cards only drop from elites and bosses.
+ */
+const REWARD_ODDS: Record<RewardKind, [Rarity, number][][]> = {
   fight: [
-    ['common', 64],
-    ['rare', 29],
-    ['epic', 7],
+    [
+      ['common', 64],
+      ['rare', 29],
+      ['epic', 7],
+    ],
+    [
+      ['common', 50],
+      ['rare', 38],
+      ['epic', 12],
+    ],
+    [
+      ['common', 38],
+      ['rare', 44],
+      ['epic', 18],
+    ],
   ],
   elite: [
-    ['common', 30],
-    ['rare', 45],
-    ['epic', 20],
-    ['legendary', 5],
+    [
+      ['common', 30],
+      ['rare', 45],
+      ['epic', 20],
+      ['legendary', 5],
+    ],
+    [
+      ['common', 20],
+      ['rare', 45],
+      ['epic', 28],
+      ['legendary', 7],
+    ],
+    [
+      ['common', 10],
+      ['rare', 40],
+      ['epic', 38],
+      ['legendary', 12],
+    ],
   ],
-  boss: [['legendary', 1]],
+  boss: [[['legendary', 1]]],
 };
 
-/** Legendary cards an offer always holds (the rest of it follows `REWARD_ODDS`). */
+export const rewardOdds = (kind: RewardKind, act: number): [Rarity, number][] => REWARD_ODDS[kind][Math.min(act, REWARD_ODDS[kind].length) - 1];
+
+/** Legendary cards an offer always holds (the rest of it follows `rewardOdds`). */
 export const REWARD_MIN_LEGENDARY: Record<RewardKind, number> = { fight: 0, elite: 2, boss: 0 };
 
 /** Rarity odds (weights) of the cards on offer in Cross-Training (like an elite's, without Legendary). */

@@ -5,7 +5,7 @@ import { CARD_LIST, CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../dat
 import { PERKS } from '../data/perks';
 import { RELIC_LIST, RELICS } from '../data/relics';
 import { ACT_DEFS, actDef } from '../data/acts';
-import { CONFIG, CROSS_TRAINING_ODDS, REWARD_MIN_LEGENDARY, REWARD_ODDS, type RewardKind } from '../data/config';
+import { CONFIG, CROSS_TRAINING_ODDS, REWARD_MIN_LEGENDARY, type RewardKind, rewardOdds } from '../data/config';
 import { MODIFIERS, resolveMods } from '../data/modifiers';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HERO_LIST, HEROES, starterCards } from '../data/heroes';
@@ -288,8 +288,9 @@ export function rollRewards(run: RunState, kind: RewardKind): CardDef[] {
   }
   const rng = rngOf(run);
   const picks: CardDef[] = [];
+  const odds = rewardOdds(kind, currentNode(run).act);
   for (let tries = 0; picks.length < rewardChoices(run) && tries < 80; tries++) {
-    const rarity = picks.length < REWARD_MIN_LEGENDARY[kind] ? 'legendary' : rng.weighted(REWARD_ODDS[kind], ([, w]) => w)[0];
+    const rarity = picks.length < REWARD_MIN_LEGENDARY[kind] ? 'legendary' : rng.weighted(odds, ([, w]) => w)[0];
     const pool = rewardPool(run.hero, rarity).filter((c) => !picks.includes(c));
     if (pool.length) picks.push(rng.pick(pool));
   }
