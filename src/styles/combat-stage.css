@@ -375,12 +375,12 @@
 .threat[data-intent='charge'] { --t-ink: var(--red); --t-ink2: #ff8a2a; }
 .threat[data-intent='attack'] .t-ico,
 .threat[data-intent='charge'] .t-ico { color: var(--red); }
-.threat[data-intent='defend'] .t-ico { color: var(--b); }
+.threat[data-intent='defend'] .t-ico { color: var(--steel); }
 .threat[data-intent='buff'] .t-ico,
 .threat[data-intent='curse'] .t-ico { color: var(--purple); }
 .threat[data-intent='curse'],
 .threat[data-intent='buff'] { --t-ink: #9a7ae0; --t-ink2: #b89af0; }
-.threat[data-intent='defend'] { --t-ink: var(--b); --t-ink2: #4a82e8; }
+.threat[data-intent='defend'] { --t-ink: var(--steel); --t-ink2: #a3adc4; }
 .threat[data-intent='steal'] { --t-ink: #d09000; --t-ink2: var(--y); }
 .threat[data-intent='idle'] { --t-ink: var(--muted); --t-ink2: #9a94ac; }
 .threat[data-intent='absorb'] { --t-ink: #1cc0a0; --t-ink2: #8ae8d0; }
@@ -500,7 +500,7 @@
   color: var(--k);
   text-shadow: 2px 0 0 var(--paper), -2px 0 0 var(--paper), 0 2px 0 var(--paper), 0 -2px 0 var(--paper);
 }
-.bar.has-block { border-color: var(--b); box-shadow: 3px 3px 0 var(--b); }
+.bar.has-block { border-color: var(--steel); box-shadow: 3px 3px 0 var(--steel); }
 
 .block-chip {
   flex: none;
@@ -509,7 +509,7 @@
   height: 38px;
   display: grid;
   place-items: center;
-  color: var(--b);
+  color: var(--steel);
 }
 .block-chip .pico {
   position: absolute;

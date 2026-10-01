@@ -351,8 +351,10 @@
 .fx .pico { font-size: 1.05em; --ink2: var(--y); }
 .fx-dmg { color: var(--red); }
 .fx-dmg .pico { color: var(--red); }
-.fx-block, .fx-mana { color: var(--b); }
-.fx-block .pico, .fx-mana .pico { color: var(--b); }
+.fx-mana { color: var(--b); }
+.fx-mana .pico { color: var(--b); }
+.fx-block { color: var(--steel); }
+.fx-block .pico { color: var(--steel); }
 .fx[data-card],
 .fx[data-status],
 .fx[data-hex],

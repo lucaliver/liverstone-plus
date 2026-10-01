@@ -88,7 +88,7 @@
 .foe-hp .pico { color: var(--p); --ink2: var(--y); }
 /* the Block it starts with (elites and bosses), next to its HP */
 .foe-block { display: flex; align-items: center; gap: 4px; margin-left: 8px; font-style: normal; }
-.foe-block .pico { color: var(--b); --ink2: var(--y); }
+.foe-block .pico { color: var(--steel); --ink2: var(--y); }
 .foe-moves {
   margin: 0;
   padding: 4px 8px 6px;

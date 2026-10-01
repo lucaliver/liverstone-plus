@@ -124,7 +124,7 @@
 .gl .cond .pico { font-size: 1.1em; color: var(--k); --ink2: var(--y); }
 .gk { display: contents; }
 .gk-dmg .pico { color: var(--p); --ink2: var(--y); }
-.gk-block .pico,
+.gk-block .pico { color: var(--steel); --ink2: var(--p); }
 .gk-mana .pico,
 .gk-chill .pico,
 .gk-snow .pico,

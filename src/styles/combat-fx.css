@@ -155,9 +155,9 @@
 }
 .floater.big { font-size: 56px; }
 .floater.heal { color: var(--p); }
-.floater.block { color: var(--b); font-size: 28px; }
-.floater.blocked { display: flex; align-items: center; gap: 2px; color: var(--b); font-family: var(--font-ui); font-size: 26px; text-shadow: var(--ring-p); }
-.floater.blocked .pico { font-size: 22px; color: var(--b); --ink2: var(--paper); }
+.floater.block { color: var(--steel); font-size: 28px; }
+.floater.blocked { display: flex; align-items: center; gap: 2px; color: var(--steel); font-family: var(--font-ui); font-size: 26px; text-shadow: var(--ring-p); }
+.floater.blocked .pico { font-size: 22px; color: var(--steel); --ink2: var(--paper); }
 .floater.status,
 .floater.text {
   padding: 3px 8px;

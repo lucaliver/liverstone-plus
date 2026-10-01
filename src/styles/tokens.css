@@ -23,6 +23,8 @@
   --rust: #c25a1c;
   --green: #2a8a4a;
   --purple: #4a2aa0;
+  /* Block and shields (mana keeps the blue ink) */
+  --steel: #7b86a3;
   /* Card name bands: light enough for black text */
   --band-warrior: #ff8cc4;
   --band-mage: #8db3f2;
