@@ -160,6 +160,13 @@ export function splashScreen(onStart: () => void): Screen {
     line,
     h('div', { class: 'contract-hand', 'aria-hidden': 'true', html: propArt('hand') }),
   );
+  /** The contract has landed: the sign button fades in. */
+  const landed = (e: Event): void => {
+    if (e.target !== contract) return;
+    contract.removeEventListener('animationend', landed);
+    action.classList.add('ready');
+  };
+  contract.addEventListener('animationend', landed);
   const cancel = (): void => {
     clearTimeout(timer);
     action.classList.remove('holding');

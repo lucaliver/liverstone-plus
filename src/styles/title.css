@@ -465,11 +465,9 @@
   to { opacity: 0; }
 }
 .splash .btn { width: min(100%, 300px); }
-/* the button fades in once the contract has landed (0.5 s delay + 0.7 s slide), then pulses as a CTA does */
-.splash .sign-btn { animation: sign-in 0.3s steps(3) 1.2s backwards, cta-pulse 0.9s steps(2) infinite; }
-@keyframes sign-in {
-  from { opacity: 0; }
-}
+/* the button fades in (a transition, not an animation: pressing a CTA drops its animations, which would replay a fade-in) once the contract has landed */
+.splash .sign-btn { opacity: 0; transition: opacity 0.3s steps(3); }
+.splash .sign-btn.ready { opacity: 1; }
 
 /* menu buttons carry a pixel icon before the label */
 .menu .btn,
