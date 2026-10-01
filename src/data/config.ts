@@ -22,7 +22,7 @@ export const CONFIG = {
   /** A card expires once its left edge is this far past the belt's left edge (fraction of card width). */
   expireOverhang: 0.45,
   /** Belt speed multiplier while rushed (Time Slip, Time Warp). */
-  beltRush: 1.8,
+  beltRush: 1.5,
   /** Belt speed multipliers imposed by enemies: Hurry (faster) and Slowdown. */
   beltHurry: 1.5,
   beltSlow: 0.6,
@@ -50,7 +50,7 @@ export const CONFIG = {
   beltRows: 2,
   /** With two rows each row runs at this fraction of the one-row speed. */
   twoRowSpeed: 0.8,
-  /** Share of the belt's speed-up (Rush, Hurry, Slowdown) the music follows: 1 = the same change (a 1.8× rush, 1.8× music). */
+  /** Share of the belt's speed-up (Rush, Hurry, Slowdown) the music follows: 1 = the same change (a 1.5× rush, 1.5× music). */
   musicFollowsBelt: 1,
   /** Pay for a won fight (the run's score): a base by enemy tier, plus `perSecond` for every second under `par`. */
   pay: { normal: 10, elite: 25, boss: 50, par: 60, perSecond: 1 },

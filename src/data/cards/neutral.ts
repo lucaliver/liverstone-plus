@@ -428,10 +428,10 @@ export const neutralCards: CardDef[] = [
     face: '{dodge:0}|{rush:1}',
     cls: 'neutral',
     type: 'skill',
-    rarity: 'epic',
+    rarity: 'legendary',
     cost: 2,
-    vals: [2, 6],
-    upVals: [3, 10],
+    vals: [2, 4],
+    upVals: [3, 8],
     keywords: ['exhaust'],
     art: 'runner',
     // Over the desks and out of reach, but the belt keeps up with you.
