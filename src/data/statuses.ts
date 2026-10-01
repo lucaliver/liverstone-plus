@@ -38,7 +38,7 @@ export const ASLEEP = 3;
 /** Overtime Creep: +1 Strength this often (s). */
 export const CREEP_EVERY = 10;
 /** Low Battery: chirps this often (s). */
-export const CHIRP_EVERY = 6;
+export const CHIRP_EVERY = 5;
 /** Machine Learning: every this many cards slipping off the belt teach it +1 Strength. */
 export const LEARN_EVERY = 3;
 /** Pressure: gains this much Block every so many seconds; at the limit it bursts (the Block is gone, the hero takes the blast). */
@@ -72,7 +72,7 @@ const buildPressure = everySecond((c, side, n) => {
 });
 
 const defs: StatusDef[] = [
-  { id: 'strength', kind: 'stacks', good: true, tone: 'red', icon: 'muscle', strength: true },
+  { id: 'strength', kind: 'stacks', good: true, tone: 'red', chip: 'icon', icon: 'muscle', strength: true },
   // Workaholic: `v` Strength, for a while only.
   { id: 'workaholic', kind: 'timed', good: true, tone: 'red', icon: 'muscle', strength: true },
   { id: 'brownNosing', kind: 'timed', good: true, icon: 'crystalUp', regenMul: 2 },
@@ -81,7 +81,7 @@ const defs: StatusDef[] = [
   { id: 'dodge', kind: 'timed', good: true, icon: 'dodge', immune: true },
   { id: 'juggernaut', kind: 'stacks', good: true, icon: 'helm' },
   { id: 'fortified', kind: 'timed', good: true, icon: 'fortress', holdsBlock: true },
-  { id: 'regen', kind: 'dot', good: true, tone: 'green', icon: 'leaf', heals: true },
+  { id: 'regen', kind: 'dot', good: true, tone: 'green', chip: 'short', icon: 'leaf', heals: true },
   { id: 'overtime', kind: 'timed', good: true, icon: 'overtime' },
   { id: 'parry', kind: 'timed', good: true, icon: 'crossed' },
   { id: 'haste', kind: 'timed', good: true, icon: 'gauge', timeMul: 1.5, look: 'enraged' },

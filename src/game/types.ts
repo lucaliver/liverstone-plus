@@ -160,6 +160,8 @@ export interface StatusDef {
   icon: string;
   /** Ink of its name in texts and move chips; without one a keyword is blue and a chip follows `good`. */
   tone?: Tone;
+  /** How an enemy move's chip names it: `icon` = just the icon, `short` = the `status.<id>.short` string; by default the full name. */
+  chip?: 'icon' | 'short';
   /** Timed statuses that also stack show their stacks instead of the seconds left. */
   showStacks?: boolean;
   /** Seconds its chip's bar empties over: the chip is drawn as a coloured bar that drains with the timer (for a counter that runs out, like chained spells). */

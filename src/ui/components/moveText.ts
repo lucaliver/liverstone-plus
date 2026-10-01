@@ -47,9 +47,10 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
   for (const st of m.status ?? []) {
     // Tone from the player's point of view: an enemy buff or a debuff on the hero is bad news.
     const bad = st.target === 'hero' ? !STATUSES[st.id].good : STATUSES[st.id].good;
-    const tone = STATUSES[st.id].tone;
+    const { tone, chip, icon: ico } = STATUSES[st.id];
+    const name = chip === 'icon' ? '' : `${t(`status.${st.id}${chip === 'short' ? '.short' : ''}`)} `;
     parts.push(
-      `<span class="fx ${bad ? 'fx-bad' : 'fx-good'}"${tone ? ` data-tone="${tone}"` : ''} data-status="${st.id}" data-v="${st.v ?? 1}">${icon(STATUSES[st.id].icon)}${t(`status.${st.id}`)} <b>${st.t ? `${st.t}s` : `+${st.v ?? 1}`}</b></span>`,
+      `<span class="fx ${bad ? 'fx-bad' : 'fx-good'}"${tone ? ` data-tone="${tone}"` : ''} data-status="${st.id}" data-v="${st.v ?? 1}">${icon(ico)}${name}<b>${st.t ? `${st.t}s` : `+${st.v ?? 1}`}</b></span>`,
     );
   }
   // Each curse names its card, so the handbook can open it on a press.
@@ -59,7 +60,8 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
     parts.push(`<span class="fx fx-curse" data-card="${cu.id}">${icon('skull')}${verbose ? t('move.fx.adds', { card }) : card}<b>${n}</b></span>`);
   }
   if (m.inflate) parts.push(`<span class="fx fx-bad" data-rule="inflation">${icon('inflation')}${t('move.fx.inflate', { n: m.inflate })}</span>`);
-  if (m.infect) parts.push(`<span class="fx fx-bad" data-rule="virus">${icon('virus')}${t('move.fx.infect', { n: m.infect })}</span>`);
+  if (m.infect)
+    parts.push(`<span class="fx fx-bad" data-tone="green" data-rule="virus">${icon('virus')}${t('move.fx.infect', { n: m.infect })}</span>`);
   if (m.absorb) parts.push(`<span class="fx fx-block" data-rule="copy">${icon('scanner')}${t('move.fx.absorb')}</span>`);
   if (m.release) parts.push(`<span class="fx fx-dmg" data-rule="copy">${icon('copy')}${t('move.fx.release')}</span>`);
   if (m.intent === 'idle') parts.push(`<span class="fx">${t('move.fx.idle')}</span>`);

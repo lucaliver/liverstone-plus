@@ -18,6 +18,10 @@
   --map-missed: #2f2552;
   --map-missed-line: #5b4f86;
   --map-missed-ink: #6b5f96;
+  /* the home's time card: its paper, a dark ink for the small text and an accent (shadow, icons), all legible on that paper */
+  --tc-paper: #ddd5f0;
+  --tc-muted: #52497a;
+  --tc-accent: var(--p);
 }
 [data-act='2'] {
   --bg: #35101f;
@@ -38,6 +42,9 @@
   --map-missed: #3f1628;
   --map-missed-line: #92506a;
   --map-missed-ink: #a45f7a;
+  --tc-paper: #f4cdd9;
+  --tc-muted: #7a2a47;
+  --tc-accent: #a3243f;
 }
 [data-act='3'] {
   --bg: #082a33;
@@ -58,6 +65,9 @@
   --map-missed: #0e3340;
   --map-missed-line: #3a8396;
   --map-missed-ink: #4f9fb2;
+  --tc-paper: #bfe6ea;
+  --tc-muted: #1f5560;
+  --tc-accent: #0f7f8f;
 }
 /* the screen paints the night itself, over the app's, so the act's colours replace it */
 .screen[data-act] {

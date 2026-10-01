@@ -177,9 +177,10 @@
   padding: 8px 12px 10px 24px;
   text-align: left;
   color: var(--k);
-  background: var(--paper);
+  background: var(--tc-paper);
   border: var(--line) solid var(--k);
-  box-shadow: var(--off) var(--off) 0 var(--p);
+  box-shadow: var(--off) var(--off) 0 var(--tc-accent);
+  --pulse: var(--tc-accent);
   rotate: -2deg;
   animation: cta-pulse 1.6s steps(2) infinite;
 }
@@ -196,7 +197,7 @@
   font-family: var(--font-display);
   font-size: 13px;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--tc-muted);
 }
 .tc-action {
   display: flex;
@@ -207,7 +208,7 @@
   line-height: 1;
   text-transform: uppercase;
 }
-.tc-action .pico { flex: none; width: 26px; height: 26px; color: var(--p); --ink2: var(--k); }
+.tc-action .pico { flex: none; width: 26px; height: 26px; color: var(--tc-accent); --ink2: var(--k); }
 /* first launch: a bolder pulse and a hand tapping the card */
 .timecard-cta.first { animation-duration: 0.9s; box-shadow: var(--off) var(--off) 0 var(--y); }
 .tc-run.tc-tap { color: var(--k); text-transform: uppercase; }
@@ -218,10 +219,10 @@
   gap: 6px;
   font-family: var(--font-ui);
   font-size: 15px;
-  color: var(--muted);
+  color: var(--tc-muted);
 }
 .tc-run .riso { flex: none; width: 26px; height: 26px; }
-.tc-run .pico { color: var(--p); --ink2: var(--k); }
+.tc-run .pico { color: var(--tc-accent); --ink2: var(--k); }
 /* punched: the card slides right into the clock */
 .timecard-cta.punching { animation: tc-punch 0.38s steps(4) forwards; }
 @keyframes tc-punch {

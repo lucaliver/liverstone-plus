@@ -52,7 +52,7 @@ const defs: EnemyDef[] = [
     id: 'seniorBoomer',
     act: 1,
     tier: 'normal',
-    hp: 60,
+    hp: 80,
     art: 'seniorBoomer',
     main: atk('boxCutter', 13, 11),
     every: 2,
@@ -101,7 +101,7 @@ const defs: EnemyDef[] = [
     id: 'goblinConsultant',
     act: 1,
     tier: 'normal',
-    hp: 60,
+    hp: 80,
     art: 'goblinConsultant',
     main: atk('invoice', 6, 6),
     every: 2,
@@ -413,7 +413,7 @@ const defs: EnemyDef[] = [
     main: atk('bigIdea', 28, 14, { intent: 'charge' }),
     every: 0,
     specials: [],
-    start: [{ id: 'trainOfThought', v: 24 }],
+    start: [{ id: 'trainOfThought', v: 28 }],
   },
   {
     // Last day on the job, nothing to lose: hands you a bomb nobody can afford to defuse. Keep it in your sleeve.

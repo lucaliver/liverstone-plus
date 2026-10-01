@@ -1391,7 +1391,7 @@ describe('the Overthinker', () => {
     expect(c.enemy.move.id).toBe('bigIdea');
     c.damage('hero', 'enemy', 14, { raw: true }, 'hero');
     expect(c.enemy.move.id).toBe('bigIdea');
-    c.damage('hero', 'enemy', 12, { raw: true }, 'hero');
+    c.damage('hero', 'enemy', 14, { raw: true }, 'hero');
     expect(c.enemy.move.id).toBe('whereWasI');
     const hp = c.hero.hp;
     run(c, 4.1);
@@ -1949,7 +1949,7 @@ describe('act 3 rules, second batch', () => {
   it('Low Battery: a chirp drains the hero a mana', () => {
     const c = setup({ enemy: { ...ENEMIES.smokeDetector, main: { ...ENEMIES.smokeDetector.main, windup: 999 } } });
     c.hero.mana = c.hero.maxMana = 5;
-    run(c, CONFIG.introTime + 5);
+    run(c, CONFIG.introTime + 4);
     expect(c.hero.mana).toBe(5);
     run(c, 2);
     expect(c.hero.mana).toBeLessThan(5);

@@ -71,7 +71,11 @@ export function titleScreen(cb: TitleCallbacks): Screen {
   const node = save ? currentNode(save) : null;
   const card = h(
     'button',
-    { class: first ? 'timecard-cta first' : 'timecard-cta', 'aria-label': save ? t('menu.continue') : t('menu.newRun') },
+    {
+      class: first ? 'timecard-cta first' : 'timecard-cta',
+      'data-act': node ? String(node.act) : undefined,
+      'aria-label': save ? t('menu.continue') : t('menu.newRun'),
+    },
     h('span', { class: 'tc-holes', 'aria-hidden': 'true' }),
     h('span', { class: 'tc-title' }, t('combat.timeCard')),
     h('b', { class: 'tc-action', html: `${icon(save ? 'play' : 'plus')}<span>${save ? t('menu.continue') : t('menu.newRun')}</span>` }),

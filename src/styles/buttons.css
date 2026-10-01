@@ -81,7 +81,7 @@ button.stat:active,
   pointer-events: none;
 }
 @keyframes cta-pulse {
-  50% { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--p); }
+  50% { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--pulse, var(--p)); }
 }
 @keyframes cta-glint {
   0%, 60% { left: -30%; }
