@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Combat, type CombatSetup } from '../src/game/combat';
-import { CONFIG, EXPIRE_POS } from '../src/data/config';
+import { CONFIG, EXPIRE_POS, rewardUpgradeChance } from '../src/data/config';
 import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
 import { STATUSES } from '../src/data/statuses';
@@ -17,6 +17,7 @@ import {
   restHeal,
   rewardChoices,
   rollRewards,
+  swapCard,
   canShred,
   fightPay,
   gainRelic,
@@ -1267,12 +1268,25 @@ describe('run pay and rewards', () => {
   it('an elite offers at least two Legendary cards and a boss only Legendary ones', () => {
     const run = newRun('warrior', 7);
     for (let i = 0; i < 20; i++) {
-      expect(rollRewards(run, 'elite').filter((c) => c.rarity === 'legendary').length).toBeGreaterThanOrEqual(2);
+      expect(rollRewards(run, 'elite').filter((o) => o.def.rarity === 'legendary').length).toBeGreaterThanOrEqual(2);
       const boss = rollRewards(run, 'boss');
       expect(boss).toHaveLength(4);
-      expect(boss.every((c) => c.rarity === 'legendary')).toBe(true);
-      expect(new Set(boss).size).toBe(4);
+      expect(boss.every((o) => o.def.rarity === 'legendary')).toBe(true);
+      expect(new Set(boss.map((o) => o.def)).size).toBe(4);
     }
+  });
+
+  it('at most one offered card comes upgraded, and a swap keeps it so', () => {
+    const run = newRun('warrior', 7);
+    for (const act of [1, 3]) {
+      run.current = run.nodes.find((n) => n.act === act)!.id;
+      const rolls = Array.from({ length: 300 }, () => rollRewards(run, 'fight'));
+      expect(rolls.every((offer) => offer.filter((o) => o.up).length <= 1)).toBe(true);
+      expect(rolls.filter((offer) => offer.some((o) => o.up)).length / rolls.length).toBeCloseTo(rewardUpgradeChance(act), 1);
+    }
+    const [first] = rollRewards(run, 'elite');
+    swapCard(run, run.deck[0].uid, first.def.id, true);
+    expect(run.deck[0]).toMatchObject({ id: first.def.id, up: true });
   });
 });
 

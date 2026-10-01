@@ -1,8 +1,8 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
-import { type RunState, skipPay, skipReward, swapCard } from '../../game/run';
-import type { CardDef, CardInst } from '../../game/types';
+import { type RewardOffer, type RunState, skipPay, skipReward, swapCard } from '../../game/run';
+import type { CardInst } from '../../game/types';
 import type { Screen } from '../app';
 import { icon } from '../art/icons';
 import { cardView } from '../components/cardView';
@@ -31,9 +31,9 @@ function selectable(el: HTMLElement, card: CardInst, onSelect: () => void): void
  * Post-fight reward, Cardstone style: the deck never grows. Pick a card of your deck (top) and one of the
  * offered cards (bottom), then Swap them, or Skip.
  */
-export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void): Screen {
+export function rewardScreen(run: RunState, picks: RewardOffer[], onDone: () => void): Screen {
   let fromDeck: CardInst | null = null;
-  let offer: CardDef | null = null;
+  let offer: RewardOffer | null = null;
 
   const swapBtn = h('button', { class: 'btn', disabled: true }, t('reward.swap'));
   const skipBtn = h(
@@ -80,20 +80,20 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
   });
   renderDeck();
 
-  const offerEls = picks.map((def, i) => {
-    const card: CardInst = { uid: -100 - i, id: def.id, up: false };
+  const offerEls = picks.map((pick, i) => {
+    const card: CardInst = { uid: -100 - i, id: pick.def.id, up: pick.up };
     const el = cardView(card);
     selectable(el, card, () => {
-      offer = offer === def ? null : def;
+      offer = offer === pick ? null : pick;
       refresh();
     });
-    return { el, def };
+    return { el, pick };
   });
   offerRow.append(...offerEls.map((o) => o.el));
 
   function refresh(): void {
     for (const d of deckEls) d.el.classList.toggle('sel', d.card.uid === fromDeck?.uid);
-    for (const o of offerEls) o.el.classList.toggle('sel', o.def === offer);
+    for (const o of offerEls) o.el.classList.toggle('sel', o.pick === offer);
     deckGrid.classList.toggle('has-sel', !!fromDeck);
     offerRow.classList.toggle('has-sel', !!offer);
     swapBtn.disabled = !(fromDeck && offer);
@@ -106,8 +106,8 @@ export function rewardScreen(run: RunState, picks: CardDef[], onDone: () => void
     sfx('button');
     haptic('tap');
     const old = deckEls.find((d) => d.card.uid === fromDeck?.uid)?.el;
-    const flyer = offerEls.find((o) => o.def === offer)?.el;
-    swapCard(run, fromDeck.uid, offer.id);
+    const flyer = offerEls.find((o) => o.pick === offer)?.el;
+    swapCard(run, fromDeck.uid, offer.def.id, offer.up);
     swapBtn.disabled = true;
     skipBtn.disabled = true;
     if (!old || !flyer) return onDone();

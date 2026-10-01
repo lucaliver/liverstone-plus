@@ -189,9 +189,9 @@ export function simulateRun(hero: HeroId, seed: number, opts: BotOpts): RunOutco
       if (c.result === 'win' && node.type !== 'boss') {
         const picks = rollRewards(run, node.type === 'elite' ? 'elite' : 'fight');
         // Swap the best offer in for a plain starter card (never a mana crystal).
-        const pick = picks.find((p) => p.rarity !== 'common') ?? picks[0];
+        const pick = picks.find((p) => p.def.rarity !== 'common') ?? picks[0];
         const out = run.deck.find((d) => CARDS[d.id].rarity === 'starter');
-        if (pick && out) swapCard(run, out.uid, pick.id);
+        if (pick && out) swapCard(run, out.uid, pick.def.id, pick.up);
       }
     }
     if (!advance(run)) return { won: true, act: node.act, floor: node.floor, hp: run.hp, combatTimes };

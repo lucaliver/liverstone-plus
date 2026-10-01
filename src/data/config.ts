@@ -132,6 +132,11 @@ const REWARD_ODDS: Record<RewardKind, [Rarity, number][][]> = {
 
 export const rewardOdds = (kind: RewardKind, act: number): [Rarity, number][] => REWARD_ODDS[kind][Math.min(act, REWARD_ODDS[kind].length) - 1];
 
+/** Chance, per act (later acts use the last), that one card of a reward offer comes already upgraded. */
+const REWARD_UPGRADE_CHANCE = [0.1, 0.25, 0.4];
+
+export const rewardUpgradeChance = (act: number): number => REWARD_UPGRADE_CHANCE[Math.min(act, REWARD_UPGRADE_CHANCE.length) - 1];
+
 /** Legendary cards an offer always holds (the rest of it follows `rewardOdds`). */
 export const REWARD_MIN_LEGENDARY: Record<RewardKind, number> = { fight: 0, elite: 2, boss: 0 };
 

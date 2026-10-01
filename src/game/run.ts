@@ -5,7 +5,7 @@ import { CARD_LIST, CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../dat
 import { PERKS } from '../data/perks';
 import { RELIC_LIST, RELICS } from '../data/relics';
 import { ACT_DEFS, actDef } from '../data/acts';
-import { CONFIG, REWARD_MIN_LEGENDARY, type RewardKind, rewardOdds } from '../data/config';
+import { CONFIG, REWARD_MIN_LEGENDARY, type RewardKind, rewardOdds, rewardUpgradeChance } from '../data/config';
 import { MODIFIERS, resolveMods } from '../data/modifiers';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HERO_LIST, HEROES, starterCards } from '../data/heroes';
@@ -279,12 +279,18 @@ export function applyCombat(run: RunState, combat: Combat): void {
 export const REWARD_CHOICES = 4;
 export const rewardChoices = (run: RunState): number => Math.max(1, REWARD_CHOICES + resolveMods(run.mods).rewardCards);
 
-export function rollRewards(run: RunState, kind: RewardKind): CardDef[] {
+/** A card on offer: one of the offered cards may come already upgraded. */
+export interface RewardOffer {
+  def: CardDef;
+  up: boolean;
+}
+
+export function rollRewards(run: RunState, kind: RewardKind): RewardOffer[] {
   // The very first run teaches with hand-picked offers after its first fights (the win just counted is `kills`).
   const firsts = run.scripted ? HEROES[run.hero].firstRewards?.[run.stats.kills - 1] : undefined;
   if (firsts) {
     discover(firsts);
-    return firsts.map((id) => CARDS[id]);
+    return firsts.map((id) => ({ def: CARDS[id], up: false }));
   }
   const rng = rngOf(run);
   const picks: CardDef[] = [];
@@ -294,9 +300,10 @@ export function rollRewards(run: RunState, kind: RewardKind): CardDef[] {
     const pool = rewardPool(run.hero, rarity).filter((c) => !picks.includes(c));
     if (pool.length) picks.push(rng.pick(pool));
   }
+  const upgraded = picks.length && rng.next() < rewardUpgradeChance(currentNode(run).act) ? rng.int(0, picks.length - 1) : -1;
   run.rng = rng.state;
   discover(picks.map((p) => p.id));
-  return picks;
+  return picks.map((def, i) => ({ def, up: i === upgraded }));
 }
 
 function newCard(run: RunState, id: string): CardInst {
@@ -322,9 +329,9 @@ export function addCard(run: RunState, id: string): void {
 }
 
 /** The new card replaces one already in the deck (a reward). */
-export function swapCard(run: RunState, removeUid: number, id: string): void {
+export function swapCard(run: RunState, removeUid: number, id: string, up = false): void {
   const idx = run.deck.findIndex((c) => c.uid === removeUid);
-  if (idx >= 0) run.deck[idx] = newCard(run, id);
+  if (idx >= 0) run.deck[idx] = { ...newCard(run, id), up };
 }
 
 export function upgradeCard(run: RunState, uid: number): void {

@@ -5,7 +5,7 @@ import enStrings from '../src/i18n/en';
 const en: Record<string, string> = enStrings;
 import { CARD_LIST, CARDS } from '../src/data/cards';
 import { ACT_DEFS } from '../src/data/acts';
-import { rewardOdds } from '../src/data/config';
+import { rewardOdds, rewardUpgradeChance } from '../src/data/config';
 import { DIFFICULTY, ENEMY_LIST, enemyMoves } from '../src/data/enemies';
 import { HERO_LIST, starterCards } from '../src/data/heroes';
 import { PERK_LIST } from '../src/data/perks';
@@ -87,6 +87,7 @@ describe('content integrity', () => {
       expect(rewardOdds('elite', act).some(([r]) => r === 'legendary')).toBe(true);
       expect(rewardOdds('boss', act).every(([r]) => r === 'legendary')).toBe(true);
       if (act > 1) {
+        expect(rewardUpgradeChance(act)).toBeGreaterThan(rewardUpgradeChance(act - 1));
         expect(share('fight', act)).toBeGreaterThan(share('fight', act - 1));
         expect(share('elite', act)).toBeGreaterThan(share('elite', act - 1));
       }
