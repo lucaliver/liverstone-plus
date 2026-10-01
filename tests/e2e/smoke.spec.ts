@@ -321,22 +321,22 @@ test('map: where the road splits, the player picks one of the two lanes and ente
   const problems = await freshGame(page);
   await page.getByRole('button', { name: /new run/i }).click();
   await page.getByRole('button', { name: /start shift/i }).click();
-  // The end of act 1's shared road (floor 3): two lanes ahead.
+  // The end of the very first run's shared road (floor 4): two lanes ahead.
   await page.evaluate(
-    '(() => { const g = window.__game; const n = g.run.nodes.find((x) => x.act === 1 && x.floor === 3); g.run.current = n.id; g.run.path = [0, 1, 2]; g.run.cleared = true; g.goJourney(); })()',
+    '(() => { const g = window.__game; const n = g.run.nodes.find((x) => x.act === 1 && x.floor === 4); g.run.current = n.id; g.run.path = [0, 1, 2, 3]; g.run.cleared = true; g.goJourney(); })()',
   );
   const enter = page.locator('.journey:not(.leaving)').getByRole('button', { name: /choose your path/i });
   await expect(enter).toBeDisabled();
   await page.locator('.journey:not(.leaving) .node.open .dot').last().click();
   await page
     .locator('.journey:not(.leaving)')
-    .getByRole('button', { name: /enter floor 4/i })
+    .getByRole('button', { name: /enter floor 5/i })
     .click();
   const at = (await page.evaluate('({ floor: window.__game.run.nodes[window.__game.run.current].floor, path: window.__game.run.path.length })')) as {
     floor: number;
     path: number;
   };
-  expect(at).toEqual({ floor: 4, path: 4 });
+  expect(at).toEqual({ floor: 5, path: 5 });
   expect(problems).toEqual([]);
 });
 
