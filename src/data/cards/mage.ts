@@ -231,7 +231,7 @@ export const mageCards: CardDef[] = [
 
   // Archetype synergy: Multitasking and Chill
   {
-    id: 'busyHands',
+    id: 'spaghettiCode',
     face: '{dmg:0}×{1}',
     cls: 'mage',
     type: 'spell',
@@ -239,7 +239,7 @@ export const mageCards: CardDef[] = [
     cost: 1,
     vals: [0, 3],
     upVals: [2, 3],
-    art: 'keyboard',
+    art: 'spaghetti',
     // Every hit gets the Multitasking bonus.
     play: (c, v) => void c.hit(v[0], { hits: v[1] }),
   },
@@ -336,7 +336,7 @@ export const mageCards: CardDef[] = [
 
   // Sleeve card: every spell played while it waits there is cached into it
   {
-    id: 'cache',
+    id: 'clearCache',
     face: '{dmg:0}|{?sleeve}{grow:1}',
     cls: 'mage',
     type: 'spell',
@@ -402,7 +402,7 @@ export const mageCards: CardDef[] = [
     play: (c, v) => c.applyStatus('hero', 'spellPower', v[0]),
   },
   {
-    id: 'spamFilter',
+    id: 'nigerianPrince',
     face: '{block:0}',
     cls: 'mage',
     type: 'skill',
@@ -410,7 +410,7 @@ export const mageCards: CardDef[] = [
     cost: 1,
     vals: [5],
     upVals: [8],
-    art: 'spamFilter',
+    art: 'nigerianPrince',
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {

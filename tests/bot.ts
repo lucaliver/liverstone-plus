@@ -33,20 +33,20 @@ export interface BotOpts {
 const DT = 1 / 30;
 
 /** A heuristic player: blocks before telegraphed hits, otherwise spends mana on damage. */
-const CRYSTALS = ['coffee', 'doubleEspresso'];
+const CRYSTALS = ['coffee', 'italianEspresso'];
 const BLOCKISH = [
-  'hardHat',
+  'bobTheBuilder',
   'fireDoor',
   'karlMarx',
   'barricade',
-  'palletWall',
+  'wallStreet',
   'coldStorage',
   'employeeOfTheMonth',
-  'pushback',
-  'lunchBreak',
+  'youShallNotPass',
+  'secondBreakfast',
   'lookBusy',
 ];
-const DEBUFFS = ['rust', 'whistleblow', 'chainSmoking', 'slowdown', 'blackFriday', 'walkout'];
+const DEBUFFS = ['rust', 'snowden', 'chainSmoking', 'slowdown', 'blackFriday', 'walkout'];
 
 export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
   if (rnd() < opts.sloppiness) return;
@@ -152,7 +152,7 @@ export function simulateRun(hero: HeroId, seed: number, opts: BotOpts): RunOutco
     const node = currentNode(run);
     if (node.type === 'promotion') {
       // Crystals first: they grow the mana the rest of the deck needs.
-      const card = run.deck.find((c) => c.id === 'doubleEspresso' || c.id === 'coffee');
+      const card = run.deck.find((c) => c.id === 'italianEspresso' || c.id === 'coffee');
       if (card && canPerk(card, 'fastTrack')) addPerk(run, card.uid, 'fastTrack');
       run.cleared = true;
     } else if (node.type === 'tailor') {

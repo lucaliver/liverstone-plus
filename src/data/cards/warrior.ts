@@ -18,7 +18,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0]),
   },
   {
-    id: 'hardHat',
+    id: 'bobTheBuilder',
     face: '{block:0}',
     cls: 'warrior',
     type: 'skill',
@@ -26,7 +26,7 @@ export const warriorCards: CardDef[] = [
     cost: 2,
     vals: [6],
     upVals: [9],
-    art: 'hardHat',
+    art: 'bobTheBuilder',
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {
@@ -59,7 +59,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0]),
   },
   {
-    id: 'palletWall',
+    id: 'wallStreet',
     face: '{block:0}',
     cls: 'warrior',
     type: 'skill',
@@ -83,7 +83,7 @@ export const warriorCards: CardDef[] = [
     play: (c) => void c.hit(c.hero.block, { kind: 'blunt' }),
   },
   {
-    id: 'unionChant',
+    id: 'bellaCiao',
     face: '{mana:0}|{block:1}',
     cls: 'warrior',
     type: 'skill',
@@ -127,7 +127,7 @@ export const warriorCards: CardDef[] = [
 
   // Rares
   {
-    id: 'pushback',
+    id: 'youShallNotPass',
     face: '{block:0}|{parry:1}',
     cls: 'warrior',
     type: 'skill',
@@ -136,7 +136,7 @@ export const warriorCards: CardDef[] = [
     upCost: 2,
     vals: [4, 10, 3],
     upVals: [6, 15, 6],
-    art: 'pushback',
+    art: 'youShallNotPass',
     play: (c, v) => {
       c.gainBlock('hero', v[0]);
       c.applyStatus('hero', 'parry', v[1], v[2]);
@@ -170,7 +170,7 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0], { hits: v[v.length - 1] }),
   },
   {
-    id: 'lunchBreak',
+    id: 'secondBreakfast',
     face: '{heal:0}|{block:1}',
     cls: 'warrior',
     type: 'skill',

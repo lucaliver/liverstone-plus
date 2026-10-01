@@ -240,11 +240,11 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M10 6h36l10 10v42H10z"/><g fill="#16121f"><rect x="18" y="16" width="6" height="10"/><rect x="30" y="24" width="6" height="10"/><rect x="42" y="18" width="6" height="10"/><rect x="18" y="38" width="6" height="10"/><rect x="36" y="42" width="6" height="10"/></g>`,
   },
-  hardHat: {
+  bobTheBuilder: {
     el: 'steel',
     svg: `<path d="M10 42c0-16 10-28 22-28s22 12 22 28z"/><rect x="4" y="42" width="56" height="9" rx="2"/><rect x="29" y="16" width="6" height="26" fill="#16121f"/>`,
   },
-  movingBox: {
+  dunderMifflinBox: {
     el: 'curse',
     svg: `<path d="M6 24l26-10 26 10v30L32 62 6 54z"/><g fill="#16121f"><path d="M32 30v32h-3V30zM6 24l26 8 26-8-26-8zM12 36h8v3h-8z"/></g><path d="M2 20l24-8 6 6-24 8zM62 20l-24-8-6 6 24 8z"/>`,
   },
@@ -260,7 +260,7 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M12 4h30l10 10v46H12z"/><rect x="28" y="16" width="8" height="22" fill="#16121f"/><rect x="28" y="44" width="8" height="8" fill="#16121f"/>`,
   },
-  pushback: { el: 'steel', svg: `<path d="M6 10l22 22L6 54V40l8-8-8-8zM32 10l22 22-22 22V40l8-8-8-8z"/>` },
+  youShallNotPass: { el: 'steel', svg: `<path d="M6 10l22 22L6 54V40l8-8-8-8zM32 10l22 22-22 22V40l8-8-8-8z"/>` },
   virus: {
     el: 'nature',
     svg: `<circle cx="32" cy="32" r="16"/><g ${S} stroke-width="5"><path d="M32 4v12M32 48v12M4 32h12M48 32h12M12 12l9 9M43 43l9 9M52 12l-9 9M21 43l-9 9"/></g><g fill="#16121f"><rect x="25" y="26" width="5" height="5"/><rect x="35" y="35" width="5" height="5"/><rect x="34" y="24" width="4" height="4"/></g>`,
@@ -322,9 +322,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'arcane',
     svg: `<circle cx="14" cy="32" r="9"/><g ${S} stroke-width="5"><path d="M28 18c8 8 8 20 0 28M38 10c13 12 13 32 0 44M48 4c17 16 17 40 0 56"/></g>`,
   },
-  keyboard: {
+  spaghetti: {
     el: 'arcane',
-    svg: `<rect x="4" y="16" width="56" height="32" rx="3"/><g fill="#16121f"><rect x="10" y="22" width="8" height="7"/><rect x="22" y="22" width="8" height="7"/><rect x="34" y="22" width="8" height="7"/><rect x="46" y="22" width="8" height="7"/><rect x="10" y="33" width="8" height="7"/><rect x="46" y="33" width="8" height="7"/><rect x="22" y="36" width="20" height="5"/></g>`,
+    svg: `<rect x="4" y="54" width="56" height="6" rx="3"/><path d="M8 48C8 30 18 18 32 18s24 12 24 30z"/><g stroke="#16121f" stroke-width="5" stroke-linecap="round" fill="none"><path d="M12 42q5-8 10 0t10 0 10 0 8-3"/><path d="M16 31q5-7 10 0t10 0 8-2"/></g><path d="M48 2h6L42 24h-5z"/>`,
   },
   meltdown: {
     el: 'fire',
@@ -956,9 +956,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'arcane',
     svg: `<path d="M32 6L2 20l30 14 30-14z"/><path d="M14 30v14c0 5 8 10 18 10s18-5 18-10V30L32 38z"/><path d="M56 24v22" stroke="#16121f" stroke-width="3"/><circle cx="56" cy="50" r="5"/>`,
   },
-  spamFilter: {
+  nigerianPrince: {
     el: 'arcane',
-    svg: `<rect x="4" y="12" width="44" height="32"/><path d="M4 12l22 18 22-18" stroke="#16121f" stroke-width="3" fill="none"/><circle cx="46" cy="44" r="16" fill="#16121f"/><g ${S} stroke-width="5"><circle cx="46" cy="44" r="10"/><path d="M39 51l14-14"/></g>`,
+    svg: `<path d="M12 24L8 6l14 10L32 2l10 14L56 6l-4 18z"/><circle cx="32" cy="14" r="3" fill="#16121f"/><rect x="4" y="30" width="56" height="30"/><path d="M4 31l28 20 28-20" stroke="#16121f" stroke-width="4.5" fill="none"/>`,
   },
   thermalShock: {
     el: 'ice',

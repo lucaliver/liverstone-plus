@@ -17,7 +17,7 @@ export const neutralCards: CardDef[] = [
     play: (c, v) => c.addManaCrystals(v[0]),
   },
   {
-    id: 'doubleEspresso',
+    id: 'italianEspresso',
     face: '{crystal:0}',
     cls: 'neutral',
     type: 'skill',
@@ -57,7 +57,7 @@ export const neutralCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0], { kind: 'fire' }),
   },
   {
-    id: 'ductTape',
+    id: 'macGyver',
     face: '{heal:0}',
     cls: 'neutral',
     type: 'skill',
@@ -111,7 +111,7 @@ export const neutralCards: CardDef[] = [
   },
 
   {
-    id: 'coffeeBreak',
+    id: 'fika',
     face: '{heal:0}|{mana:1}',
     cls: 'neutral',
     type: 'skill',
@@ -198,7 +198,7 @@ export const neutralCards: CardDef[] = [
     play: (c) => c.skipEnemyMove(),
   },
   {
-    id: 'previousEmail',
+    id: 'asPerMyLastEmail',
     face: '{copy}',
     cls: 'neutral',
     type: 'skill',
@@ -240,7 +240,7 @@ export const neutralCards: CardDef[] = [
     play: (c) => c.addTempCard('q2', 'draw'),
   },
   {
-    id: 'copyPaste',
+    id: 'ctrlCCtrlV',
     face: '{copy}{cards}',
     cls: 'neutral',
     type: 'skill',
@@ -383,7 +383,7 @@ export const neutralCards: CardDef[] = [
 
   {
     // Hold it and drag it around the screen: every swipe winds it up, then let go above the belt to play it.
-    id: 'windUpIntern',
+    id: 'mrRoboto',
     face: '{dmg:0}|{wind:1}',
     cls: 'neutral',
     type: 'attack',
@@ -557,7 +557,7 @@ export const curseCards: CardDef[] = [
   },
   {
     // The Work Wife's: fills the sleeve at the start of the fight and gets cheaper every second.
-    id: 'movingBox',
+    id: 'dunderMifflinBox',
     face: '{cheaper:0}/s|{rush:1}',
     cls: 'curse',
     type: 'curse',
@@ -566,7 +566,7 @@ export const curseCards: CardDef[] = [
     vals: [1, 5],
     keywords: ['exhaust', 'bulky'],
     costDrop: 0,
-    art: 'movingBox',
+    art: 'dunderMifflinBox',
     play: (c, v) => c.rushBelt(v[1]),
   },
   {
@@ -739,7 +739,7 @@ export const curseCards: CardDef[] = [
     play: () => {},
   },
   {
-    id: 'quickFavour',
+    id: 'godfathersFavour',
     face: '{selfStun:0}|{?exit}{boom:1}',
     cls: 'curse',
     type: 'curse',

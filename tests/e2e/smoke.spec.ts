@@ -444,12 +444,12 @@ test("the Boss's Son's weak spot: a touch on the target makes your next attack c
   expect(problems).toEqual([]);
 });
 
-test('Wind-Up Intern: dragging it around the screen winds it up, letting go above the belt plays it', async ({ page }) => {
+test('Mr. Roboto: dragging it around the screen winds it up, letting go above the belt plays it', async ({ page }) => {
   const problems = await freshGame(page);
   await startFight(page);
   const uid = (await combat(
     page,
-    "c.hero.mana = c.hero.maxMana = 10; c.addTempCard('windUpIntern', 'belt'); return c.belt[c.belt.length - 1].card.uid;",
+    "c.hero.mana = c.hero.maxMana = 10; c.addTempCard('mrRoboto', 'belt'); return c.belt[c.belt.length - 1].card.uid;",
   )) as number;
   // The first time it rides in, a coach mark explains it.
   await page.getByRole('button', { name: 'Got it!' }).click();

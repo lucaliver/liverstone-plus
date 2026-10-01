@@ -24,7 +24,7 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 50,
     art: 'hrOrientationVideo',
-    main: atk('safetyFirst', 6, 6),
+    main: atk('safetyThird', 6, 6),
     every: 2,
     specials: [{ id: 'coreValues', intent: 'defend', windup: 5, block: 3 }],
     startRows: 1,
@@ -41,7 +41,7 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 50,
     art: 'snitch',
-    main: atk('tattle', 7, 5),
+    main: atk('snitchesGetStitches', 7, 5),
     every: 2,
     specials: [atk('ratOut', 14, 10, { intent: 'charge' })],
     // Tells the boss: from half HP on, your belt is rushed for the rest of the fight.
@@ -132,7 +132,7 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 70,
     art: 'guyAsleep',
-    main: atk('rudeAwakening', 25, 30, { intent: 'charge' }),
+    main: atk('theMatrix', 25, 30, { intent: 'charge' }),
     every: 0,
     specials: [],
     start: [{ id: 'lightSleeper' }],
@@ -157,7 +157,7 @@ const defs: EnemyDef[] = [
     art: 'bossSon',
     main: atk('tantrum', 6, 6),
     every: 2,
-    specials: [atk('hideBehindDad', 8, 8, { intent: 'defend', block: 12 }), { id: 'ccDad', intent: 'buff', windup: 4, status: [gainStrength] }],
+    specials: [atk('nepoBaby', 8, 8, { intent: 'defend', block: 12 }), { id: 'ccDad', intent: 'buff', windup: 4, status: [gainStrength] }],
     start: [{ id: 'weakSpot' }],
   },
   {
@@ -187,7 +187,7 @@ const defs: EnemyDef[] = [
       { id: 'didYouHear', intent: 'curse', windup: 6, curse: [{ id: 'gossip', n: 2, to: 'draw' }], status: [gainStrength] },
       atk('passiveAggressiveNote', 12, 9, { intent: 'charge' }),
     ],
-    fillSleeve: 'movingBox',
+    fillSleeve: 'dunderMifflinBox',
   },
   {
     id: 'securityMonitor',
@@ -200,7 +200,7 @@ const defs: EnemyDef[] = [
     every: 2,
     specials: [
       atk('patDown', 11, 7, { intent: 'defend', block: 14, windup: 6 }),
-      { id: 'clearanceCheck', intent: 'curse', windup: 2, curse: [{ id: 'papersPlease', n: 2, to: 'draw' }] },
+      { id: 'needToKnow', intent: 'curse', windup: 2, curse: [{ id: 'papersPlease', n: 2, to: 'draw' }] },
     ],
     onHalf: (c) => c.gainBlock('enemy', HALF.securityBlock),
   },
@@ -228,7 +228,7 @@ const defs: EnemyDef[] = [
     hp: 222,
     block: 25,
     art: 'slavesCeo',
-    main: atk('stopwatch', 8, 6, ramp),
+    main: atk('taylorsStopwatch', 8, 6, ramp),
     every: 2,
     specials: [
       { id: 'writeUps', intent: 'curse', windup: 7, curse: [{ id: 'writeUp', n: 2, to: 'draw' }] },
@@ -283,7 +283,7 @@ const defs: EnemyDef[] = [
         intent: 'charge',
         status: [gainStrength],
         curse: [
-          { id: 'quickFavour', n: 1, to: 'draw' },
+          { id: 'godfathersFavour', n: 1, to: 'draw' },
           { id: 'officePlant', n: 1, to: 'draw' },
           { id: 'pcLoadLetter', n: 1, to: 'draw' },
           { id: 'writeUp', n: 1, to: 'draw' },
@@ -297,7 +297,7 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 90,
     art: 'happinessOfficer',
-    main: atk('highFive', 12, 8),
+    main: atk('leftHanging', 12, 8),
     every: 2,
     specials: [
       { id: 'pizzaParty', intent: 'curse', windup: 5, curse: [{ id: 'freePizza', n: 4, to: 'draw' }] },
@@ -385,9 +385,9 @@ const defs: EnemyDef[] = [
     main: atk('swivel', 6, 6),
     every: 2,
     specials: [
-      atk('spinToWin', 3, 9, { hits: 6, intent: 'charge' }),
+      atk('beybladeChair', 3, 9, { hits: 6, intent: 'charge' }),
       { id: 'slowSink', intent: 'debuff', windup: 4, status: [{ id: 'slowdown', t: 8, target: 'hero' }] },
-      { id: 'ergonomics', intent: 'buff', windup: 4, status: [{ id: 'strength', v: 2, target: 'enemy' }] },
+      { id: 'postureCheck', intent: 'buff', windup: 4, status: [{ id: 'strength', v: 2, target: 'enemy' }] },
     ],
   },
   {
@@ -451,7 +451,7 @@ const defs: EnemyDef[] = [
     main: atk('grumble', 9, 7, ramp),
     every: 2,
     specials: [
-      { id: 'inMyDay', intent: 'debuff', windup: 7, inflate: 4 },
+      { id: 'backInMyDay', intent: 'debuff', windup: 7, inflate: 4 },
       atk('oldSchool', 18, 11, { intent: 'charge' }),
       { id: 'longStory', intent: 'debuff', windup: 6, status: [{ id: 'slowdown', t: 8, target: 'hero' }] },
     ],
@@ -467,7 +467,7 @@ const defs: EnemyDef[] = [
     main: atk('anyUpdates', 7, 5),
     every: 2,
     specials: [
-      { id: 'quickQuestion', intent: 'curse', windup: 6, curse: [{ id: 'quickFavour', n: 1, to: 'draw' }], status: [gainStrength] },
+      { id: 'quickQuestion', intent: 'curse', windup: 6, curse: [{ id: 'godfathersFavour', n: 1, to: 'draw' }], status: [gainStrength] },
       atk('annualReview', 20, 8, { intent: 'charge' }),
     ],
     start: [{ id: 'micromanagement' }],
@@ -499,7 +499,7 @@ const defs: EnemyDef[] = [
     main: atk('timeout', 7, 6),
     every: 2,
     specials: [
-      { id: 'tooManyRequests', intent: 'debuff', windup: 6, status: [gainStrength, { id: 'slowdown', t: 6, target: 'hero' }] },
+      { id: 'http429', intent: 'debuff', windup: 6, status: [gainStrength, { id: 'slowdown', t: 6, target: 'hero' }] },
       atk('banHammer', 16, 9, { intent: 'charge' }),
     ],
     start: [{ id: 'rateLimit', v: 4 }],
@@ -538,7 +538,7 @@ const defs: EnemyDef[] = [
           { id: 'haste', t: 6, target: 'enemy' },
         ],
       },
-      atk('thermalSpike', 14, 5, { intent: 'charge' }),
+      atk('thermalThrottling', 14, 5, { intent: 'charge' }),
     ],
     start: [{ id: 'burn', v: 2 }],
   },
@@ -558,7 +558,7 @@ const defs: EnemyDef[] = [
         windup: 6,
         curse: [
           { id: 'pcLoadLetter', n: 1, to: 'draw' },
-          { id: 'quickFavour', n: 1, to: 'draw' },
+          { id: 'godfathersFavour', n: 1, to: 'draw' },
         ],
         status: [gainStrength],
       },
@@ -607,7 +607,7 @@ const defs: EnemyDef[] = [
     specials: [
       atk('beepBeepBeep', 4, 9, { hits: 3 }),
       { id: 'leftoverFish', intent: 'debuff', windup: 6, status: [gainStrength, { id: 'poison', v: 4, target: 'hero' }] },
-      atk('doNotPutMetal', 22, 14, { intent: 'charge' }),
+      atk('metalForkIncident', 22, 14, { intent: 'charge' }),
     ],
   },
   {

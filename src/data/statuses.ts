@@ -22,7 +22,7 @@ const PARACHUTE_HP = 0.4;
 const PARACHUTE_BLOCK = 20;
 const PARACHUTE_STRENGTH = 3;
 /** What the Overthinker does once it has lost its train of thought. */
-const WHERE_WAS_I: MoveDef = { id: 'whereWasI', intent: 'idle', windup: 4 };
+const WHERE_WAS_I: MoveDef = { id: 'thePreviousSlide', intent: 'idle', windup: 4 };
 /** Weak Spot: how long its target stays up, and the random wait (s) between the end of one and the next. */
 export const WEAK_SPOT_TIME = 2;
 const WEAK_SPOT_GAP = [5, 9];

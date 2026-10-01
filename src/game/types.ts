@@ -132,7 +132,7 @@ export interface CardDef {
   onOverflow?: number;
   /** The first time ever it rides onto the belt, the fight stops and a note (`card.<id>.tip`) says how to handle it. */
   tip?: true;
-  /** Index of the value its cost drops by every second of the fight, wherever the card is (Moving Box). */
+  /** Index of the value its cost drops by every second of the fight, wherever the card is (Dunder Mifflin Box). */
   costDrop?: number;
   /** Bonus effects that only work while the card waits in the sleeve (`v` = its values, `card` = the copy held). */
   inSleeve?: {

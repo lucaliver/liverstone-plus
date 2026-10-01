@@ -141,7 +141,7 @@ describe('combat engine', () => {
   });
 
   it('expires cards off the left edge and reshuffles the discard pile', () => {
-    const c = setup({ deck: deckOf(['punch', 'hardHat', 'wrenchWhack']) });
+    const c = setup({ deck: deckOf(['punch', 'bobTheBuilder', 'wrenchWhack']) });
     let reshuffled = false;
     c.events.on((e) => {
       if (e.type === 'reshuffle') reshuffled = true;
@@ -186,9 +186,9 @@ describe('combat engine', () => {
     expect(c.belt.some((x) => x.card.uid === a.uid)).toBe(true);
   });
 
-  it('the Work Wife fills the sleeve with Moving Boxes: stuck there, cheaper every second, cleared by paying', () => {
+  it('the Work Wife fills the sleeve with Dunder Mifflin Boxes: stuck there, cheaper every second, cleared by paying', () => {
     const c = setup({ hero: HEROES.necromancer, enemy: ENEMIES.workWife });
-    expect(c.sleeve.every((x) => x?.id === 'movingBox')).toBe(true);
+    expect(c.sleeve.every((x) => x?.id === 'dunderMifflinBox')).toBe(true);
     const box = c.sleeve[0]!;
     expect(c.cardCost(box)).toBe(20);
     run(c, CONFIG.introTime + 0.01);
@@ -201,7 +201,7 @@ describe('combat engine', () => {
     expect(c.sleeve[0]).toBe(null);
     // Unpacking it speeds the belt up.
     expect(c.has('hero', 'rush')).toBe(true);
-    expect(c.hero.statuses.rush.t).toBeCloseTo(CARDS.movingBox.vals[1], 1);
+    expect(c.hero.statuses.rush.t).toBeCloseTo(CARDS.dunderMifflinBox.vals[1], 1);
   });
 
   it('Kamikaze blows up in your face if it slips off the belt, but is safe in the sleeve', () => {
@@ -395,7 +395,7 @@ describe('combat engine', () => {
 
     it('any other card reaching the pile sends it all off the belt', () => {
       const c = piled();
-      c.addTempCard('hardHat', 'belt');
+      c.addTempCard('bobTheBuilder', 'belt');
       run(c, 10);
       expect(c.belt.some((b) => b.stuck || b.card.id === 'onARoll')).toBe(false);
       expect([...c.draw, ...c.discard].some((x) => x.id === 'onARoll')).toBe(true);
@@ -403,13 +403,16 @@ describe('combat engine', () => {
   });
 
   it('HR policy goes by the card colour: two defense cards clash, defense then utility is fine', () => {
-    const c = setup({ enemy: ENEMIES.hrBitch, deck: deckOf(['hardHat', 'hardHat', 'doubleEspresso', 'hardHat', 'doubleEspresso', 'hardHat']) });
+    const c = setup({
+      enemy: ENEMIES.hrBitch,
+      deck: deckOf(['bobTheBuilder', 'bobTheBuilder', 'italianEspresso', 'bobTheBuilder', 'italianEspresso', 'bobTheBuilder']),
+    });
     run(c, CONFIG.introTime + 0.01);
     c.hero.mana = c.hero.maxMana = 10;
-    c.lastPlayed = CARDS.hardHat;
+    c.lastPlayed = CARDS.bobTheBuilder;
     c.lastPlayedAt = c.time;
-    expect(c.ruleBlock({ uid: 0, id: 'hardHat', up: false })?.key).toBe('combat.policy');
-    expect(c.ruleBlock({ uid: 0, id: 'doubleEspresso', up: false })).toBeNull();
+    expect(c.ruleBlock({ uid: 0, id: 'bobTheBuilder', up: false })?.key).toBe('combat.policy');
+    expect(c.ruleBlock({ uid: 0, id: 'italianEspresso', up: false })).toBeNull();
   });
 
   it('HR policy covers curses too: paying off two curses back to back is refused', () => {
@@ -421,17 +424,17 @@ describe('combat engine', () => {
   });
 
   it('HR policy: no two cards of the same type in a row', () => {
-    const c = setup({ enemy: ENEMIES.hrBitch, deck: deckOf(['punch', 'punch', 'punch', 'hardHat', 'hardHat', 'hardHat']) });
+    const c = setup({ enemy: ENEMIES.hrBitch, deck: deckOf(['punch', 'punch', 'punch', 'bobTheBuilder', 'bobTheBuilder', 'bobTheBuilder']) });
     run(c, CONFIG.introTime + 0.01);
     c.hero.mana = 10;
     const strikes = c.belt.filter((b) => b.card.id === 'punch');
     expect(c.playCard(strikes[0].card.uid)).toBe(true);
     if (strikes[1]) expect(c.playCard(strikes[1].card.uid)).toBe(false);
-    const defend = c.belt.find((b) => b.card.id === 'hardHat');
+    const defend = c.belt.find((b) => b.card.id === 'bobTheBuilder');
     if (defend) expect(c.playCard(defend.card.uid)).toBe(true);
     // The policy only covers quick repeats: after a pause the same type is fine again.
     run(c, 3.1);
-    const again = c.belt.find((b) => b.card.id === 'hardHat');
+    const again = c.belt.find((b) => b.card.id === 'bobTheBuilder');
     if (again) expect(c.playCard(again.card.uid)).toBe(true);
   });
 
@@ -535,10 +538,10 @@ describe('combat engine', () => {
   });
 
   it('mana crystals raise the cap empty', () => {
-    const c = setup({ deck: deckOf(['doubleEspresso', 'punch']) });
+    const c = setup({ deck: deckOf(['italianEspresso', 'punch']) });
     run(c, CONFIG.introTime + 0.01);
     const max = c.hero.maxMana;
-    const card = c.belt.find((b) => b.card.id === 'doubleEspresso')!.card;
+    const card = c.belt.find((b) => b.card.id === 'italianEspresso')!.card;
     const mana = c.hero.mana;
     c.playCard(card.uid);
     expect(c.hero.maxMana).toBe(max + 2);
@@ -782,7 +785,7 @@ describe('combat engine', () => {
 
     it('a stunned hero cannot play cards or use the ability', () => {
       const c = quiet(['punch', 'punch']);
-      expect(play(c, 'quickFavour')).toBe(true);
+      expect(play(c, 'godfathersFavour')).toBe(true);
       expect(c.has('hero', 'stun')).toBe(true);
       expect(c.playCard(c.belt[0].card.uid)).toBe(false);
       expect(c.abilityReady()).toBe(false);
@@ -803,7 +806,7 @@ describe('combat engine', () => {
     });
 
     it('Grindset deals damage every second for its duration', () => {
-      const c = quiet(['hardHat']);
+      const c = quiet(['bobTheBuilder']);
       const hp = c.enemy.hp;
       play(c, 'grindset');
       run(c, 12.5);
@@ -842,16 +845,16 @@ describe('combat engine', () => {
       expect(hp - c.enemy.hp).toBe(CARDS.quietQuitting.vals[0] * n);
     });
 
-    it('Previous Email repeats the last card, Copy Paste copies it over the belt', () => {
-      const c = quiet(new Array(8).fill('hardHat'));
+    it('As Per My Last Email repeats the last card, Ctrl+C Ctrl+V copies it over the belt', () => {
+      const c = quiet(new Array(8).fill('bobTheBuilder'));
       play(c, 'punch');
       const hp = c.enemy.hp;
-      play(c, 'previousEmail');
+      play(c, 'asPerMyLastEmail');
       expect(hp - c.enemy.hp).toBe(6);
       // A repeat doesn't count as the last card: a second one repeats the same Punch.
-      play(c, 'previousEmail');
+      play(c, 'asPerMyLastEmail');
       expect(hp - c.enemy.hp).toBe(12);
-      play(c, 'copyPaste');
+      play(c, 'ctrlCCtrlV');
       expect(c.belt.length).toBeGreaterThan(0);
       expect(c.belt.every((b) => b.card.id === 'punch' && b.card.temp)).toBe(true);
     });
@@ -868,7 +871,7 @@ describe('combat engine', () => {
     });
 
     it('Follow Up and Q1 put generated cards into the draw pile', () => {
-      const c = quiet(['hardHat', 'hardHat']);
+      const c = quiet(['bobTheBuilder', 'bobTheBuilder']);
       play(c, 'followUp');
       expect(c.draw.filter((x) => x.id === 'alreadyDone').length).toBe(3);
       play(c, 'q1');
@@ -876,7 +879,7 @@ describe('combat engine', () => {
     });
 
     it('a Drama that leaves the belt shuffles another one into the deck', () => {
-      const c = quiet(['hardHat']);
+      const c = quiet(['bobTheBuilder']);
       c.addTempCard('drama', 'belt');
       const dramas = (): number => [...c.draw, ...c.discard, ...c.belt.map((b) => b.card)].filter((x) => x.id === 'drama').length;
       expect(dramas()).toBe(1);
@@ -885,7 +888,7 @@ describe('combat engine', () => {
     });
 
     it('volatile office curses bite when they leave the belt', () => {
-      const c = quiet(['hardHat']);
+      const c = quiet(['bobTheBuilder']);
       c.addTempCard('officePlant', 'belt');
       c.addTempCard('pcLoadLetter', 'belt');
       c.hero.mana = 8;
@@ -925,7 +928,7 @@ describe('combat engine', () => {
     });
 
     it('Bean Counter: max mana is frozen at 3, crystals included', () => {
-      const c = vs('beanCounter', ['doubleEspresso', 'doubleEspresso', 'punch']);
+      const c = vs('beanCounter', ['italianEspresso', 'italianEspresso', 'punch']);
       expect(c.hero.maxMana).toBeLessThanOrEqual(3);
       c.hero.mana = 3;
       c.addManaCrystals(3);
@@ -1045,9 +1048,9 @@ describe('pop culture cards', () => {
     expect(c.beltRate()).toBeCloseTo(base);
   });
 
-  it('Wind-Up Intern grows by a step for every swipe, up to its cap, and hits for what it has wound up to', () => {
-    const { c, uid } = ready('windUpIntern');
-    const { vals } = CARDS.windUpIntern;
+  it('Mr. Roboto grows by a step for every swipe, up to its cap, and hits for what it has wound up to', () => {
+    const { c, uid } = ready('mrRoboto');
+    const { vals } = CARDS.mrRoboto;
     const [base, by, max] = vals;
     for (let i = 0; i < 20; i++) c.windCard(uid);
     expect(c.windCard(uid)).toBe(false);
@@ -1149,11 +1152,11 @@ describe('pop culture cards', () => {
     expect(c.hero.block).toBe(5 + 5);
   });
 
-  it('Pushback reflects damage for 3s, 6s once upgraded', () => {
-    const { c, uid } = ready('pushback');
+  it('You Shall Not Pass reflects damage for 3s, 6s once upgraded', () => {
+    const { c, uid } = ready('youShallNotPass');
     c.playCard(uid);
     expect(c.hero.statuses.parry.t).toBeCloseTo(3, 1);
-    expect(c.cardVals({ uid: 0, id: 'pushback', up: true })[2]).toBe(6);
+    expect(c.cardVals({ uid: 0, id: 'youShallNotPass', up: true })[2]).toBe(6);
   });
 
   it('Turn It Off stuns you for 3s and shuffles Turn It On into the deck, which gives 4 mana', () => {
@@ -1359,10 +1362,10 @@ describe('sleeve cards', () => {
   });
 
   it('Cache: every spell played while it waits is cached into its damage, spent when played', () => {
-    const c = held('cache');
+    const c = held('clearCache');
     c.addTempCard('clippy', 'belt');
     c.playCard(c.belt[c.belt.length - 1].card.uid);
-    const [base, grow] = CARDS.cache.vals;
+    const [base, grow] = CARDS.clearCache.vals;
     expect(c.cardVals(c.sleeve[0]!)[0]).toBe(base + grow);
     const cache = c.sleeve[0]!;
     const hp = c.enemy.hp;
@@ -1392,7 +1395,7 @@ describe('the Overthinker', () => {
     c.damage('hero', 'enemy', 14, { raw: true }, 'hero');
     expect(c.enemy.move.id).toBe('bigIdea');
     c.damage('hero', 'enemy', 14, { raw: true }, 'hero');
-    expect(c.enemy.move.id).toBe('whereWasI');
+    expect(c.enemy.move.id).toBe('thePreviousSlide');
     const hp = c.hero.hp;
     run(c, 4.1);
     expect(c.hero.hp).toBe(hp);
@@ -1412,10 +1415,10 @@ describe('Work-Life Balance', () => {
     };
     play('workLifeBalance');
     let hp = c.enemy.hp;
-    play('hardHat');
+    play('bobTheBuilder');
     expect(hp - c.enemy.hp).toBe(3);
     hp = c.enemy.hp;
-    play('hardHat');
+    play('bobTheBuilder');
     expect(hp - c.enemy.hp).toBe(0);
     expect(c.has('hero', 'workLifeBalance')).toBe(false);
   });
@@ -1478,7 +1481,7 @@ describe('saves from before the ids followed the English names', () => {
     expect(loaded?.version).toBe(3);
     expect(loaded?.deck).toEqual([
       { uid: 1, id: 'punch', up: false },
-      { uid: 2, id: 'doubleEspresso', up: true, perks: ['fastTrack', 'budgetCut'] },
+      { uid: 2, id: 'italianEspresso', up: true, perks: ['fastTrack', 'budgetCut'] },
     ]);
     expect(loaded?.nodes.filter((n) => n.enemy).every((n) => n.enemy === 'snitch')).toBe(true);
     Reflect.deleteProperty(globalThis, 'localStorage');
@@ -1587,8 +1590,8 @@ describe('cards that fill the classes out', () => {
     expect(c.hero.block).toBe(0);
     cast(c, 'punch');
     expect(c.hero.block).toBe(per);
-    cast(c, 'hardHat');
-    expect(c.hero.block).toBe(per + CARDS.hardHat.vals[0]);
+    cast(c, 'bobTheBuilder');
+    expect(c.hero.block).toBe(per + CARDS.bobTheBuilder.vals[0]);
   });
 
   it('Overstock: Block for every mana spent', () => {

@@ -87,7 +87,7 @@ export const necromancerCards: CardDef[] = [
     },
   },
   {
-    id: 'whistleblow',
+    id: 'snowden',
     face: '{stun:0}',
     cls: 'necromancer',
     type: 'spell',
