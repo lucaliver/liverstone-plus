@@ -580,8 +580,14 @@ test("the Nerd's update window covers the belt: Postpone sends it away for a few
   await expect(page.locator('.combat')).toBeVisible();
   const start = page.locator('.js-start');
   if (await start.count()) await start.click();
+  // Nobody tells you about it: no status chip, and no trait line before the fight.
+  await expect(page.locator('.foe-traits')).toHaveCount(0);
   const popup = page.locator('.update-popup.on');
   await expect(popup).toBeVisible({ timeout: 15000 });
+  await expect(page.locator('.js-estatus .status', { hasText: /update/i })).toHaveCount(0);
+  expect(await page.locator('.js-estatus .status').count()).toBe(
+    await combat(page, "return Object.keys(c.enemy.statuses).filter((id) => id !== 'updateNeeded').length;"),
+  );
   // It covers the whole belt.
   const belt = (await page.locator('.belt').boundingBox())!;
   const win = (await popup.boundingBox())!;

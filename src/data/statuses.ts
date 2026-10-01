@@ -293,6 +293,7 @@ const defs: StatusDef[] = [
     kind: 'stacks',
     good: true,
     passive: true,
+    hidden: true,
     icon: 'update',
     popup: { first: UPDATE_FIRST, every: UPDATE_EVERY, postpone: UPDATE_POSTPONE, install: UPDATE_TIME, patch: { id: 'strength', v: UPDATE_PATCH } },
   },

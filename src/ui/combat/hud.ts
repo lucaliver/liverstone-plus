@@ -85,7 +85,10 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     const lead = side === 'hero' ? combat.heroDef.passiveStatus : undefined;
     const list = [
       ...(lead ? [lead] : []),
-      ...STATUS_ORDER.filter((id) => id !== lead && f.statuses[id] && (STATUSES[id].kind === 'timed' ? f.statuses[id].t > 0 : f.statuses[id].v > 0)),
+      ...STATUS_ORDER.filter(
+        (id) =>
+          id !== lead && !STATUSES[id].hidden && f.statuses[id] && (STATUSES[id].kind === 'timed' ? f.statuses[id].t > 0 : f.statuses[id].v > 0),
+      ),
     ];
     const e = combat.enemy.def;
     // A secret half-HP trait only shows once it has kicked in.

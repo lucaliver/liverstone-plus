@@ -125,7 +125,7 @@ export const HALF_ICON = 'rage';
 /** What an enemy does beyond its moves: passive statuses and (unless `withHalf` is false) what happens at half HP. */
 export function enemyTraits(e: EnemyDef, withHalf = true): { icon: string; name: string; desc: string }[] {
   const traits = (e.start ?? [])
-    .filter((s) => STATUSES[s.id].passive)
+    .filter((s) => STATUSES[s.id].passive && !STATUSES[s.id].hidden)
     .map((s) => ({ icon: STATUSES[s.id].icon, name: t(`status.${s.id}`), desc: keywordHtml(t(`status.${s.id}.d`, { v: s.v ?? 1 })) }));
   if (e.fillSleeve) traits.push({ icon: 'hand', name: t(`card.${e.fillSleeve}.name`), desc: t('enemy.fillSleeve') });
   if (e.startHex) {
