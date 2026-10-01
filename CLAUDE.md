@@ -166,7 +166,7 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
 
 `EnemyDef` = `act`, `main` (frequent attack) + `specials[]` (rotating) + `every` (mains between specials),
 optional `onHalf`, `start` statuses, `block` (elites and bosses start with Block). A `MoveDef` can hit, block, heal, apply statuses, add `curse` cards (a list, several
-kinds at once), steal, drain mana, `hex` a share of your cards, `inflate` card costs, `infect` cards with a virus (`CombatCard.virus`: +1 cost, spreads to the card behind it after `CONFIG.virusDelay`, cured by playing it), and the belt-rust statuses (`StatusDef.rust`: `Combat.rust` slows the belt and stops it at 1; the mop beside the enemy, `ui/combat/mop.ts`, scrubs it off through `wipeRust`), or `absorb` the damage it takes while
+kinds at once), steal, drain mana, `hex` a share of your cards, `inflate` card costs, `infect` cards with a virus (`CombatCard.virus`: +1 cost, spreads to the card behind it after `CONFIG.virusDelay`, cured by playing it), and the belt-rust statuses (`StatusDef.rust`: `Combat.rustSpots` land on the belt, each slows it by `slow`, enough stop it; the mop beside the enemy, `ui/combat/mop.ts`, sits its head under the finger and scrubs the spots under it through `scrubRust`), or `absorb` the damage it takes while
 charging and `release` it with the next hit (intents include `idle` and `absorb`). Add a vector sprite to `creatures.ts` (pixelised automatically),
 plus `enemy.<id>.name`, `move.<id>` for every move, and `enemy.<id>.half` if it has `onHalf`.
 Optional: `startRows` (belt rows open at the start; `openBeltRows()` opens the rest, `closeBeltRows()` shuts them again and

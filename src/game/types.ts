@@ -59,6 +59,14 @@ export interface CombatCard extends CardInst {
   cut?: number;
 }
 
+/** A patch of rust on the belt: where (x, y: shares of the belt's width and height) and how much grime is left (1 = new). */
+export interface RustSpot {
+  id: number;
+  x: number;
+  y: number;
+  grime: number;
+}
+
 export interface BeltCard {
   card: CombatCard;
   /** Distance travelled, in belt widths. 0 = just entering on the right. */
@@ -173,8 +181,8 @@ export interface StatusDef {
   onDeath?: (c: Combat, side: Side, s: StatusVal) => boolean;
   /** A card of the hero's just left the belt unplayed. */
   onExpire?: (c: Combat, side: Side, s: StatusVal) => void;
-  /** While active on the enemy, rust builds up on the belt: `by` (0–1, 1 stops the belt) every `every` seconds. The hero scrubs it off with the mop. */
-  rust?: { every: number; by: number };
+  /** While active on the enemy, a rust spot lands on the belt every `every` seconds, and each one slows the belt by `slow` (0–1; enough spots stop it). The hero scrubs them off with the mop. */
+  rust?: { every: number; slow: number };
   /** Runs every simulation step while the status is active. */
   tick?: (c: Combat, side: Side, s: StatusVal, dt: number) => void;
 }

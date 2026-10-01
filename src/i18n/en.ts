@@ -232,7 +232,7 @@ const en = {
   'combat.chillOut': 'Chill out…',
   'combat.micromanaged': 'Any updates?',
   'combat.virus': 'Virus: infected cards cost 1 more, and spread it to the card behind them. Play them to cure them',
-  'combat.rust': 'Rust is slowing the belt. Drag the mop over it to scrub it off',
+  'combat.rust': 'Rust is slowing the belt. Drag the mop over the spots to scrub them off',
   'combat.inflation': 'Inflation: some cards cost 1 more until you play them',
   'combat.blackout': "Lights out: you can't read your cards",
   'combat.policy': 'Not the same colour twice!',
@@ -516,7 +516,8 @@ const en = {
   'status.paperCuts': 'Paper Cuts',
   'status.paperCuts.d': 'Every card that slips off your belt cuts you for {v} damage.',
   'status.deferredMaintenance': 'Deferred Maintenance',
-  'status.deferredMaintenance.d': 'Rust builds up on the belt and slows it down; at full rust it stops. Drag the mop over the belt to scrub it off.',
+  'status.deferredMaintenance.d':
+    'Rust spots keep landing on the belt, each one slowing it a little; too many and it stops. Drag the mop over the spots to scrub them off.',
   'status.weakSpot': 'Weak Spot',
   'status.weakSpot.d': 'Now and then a target shows on him for 2s. Tap it in time and your next attack is critical.',
   'status.crit': 'Critical',

@@ -14,8 +14,6 @@ import { type CombatView, PASSIVE_ICON } from './view';
 /** Everything around the cards: HP bars, statuses, the threat bar, mana and hero extras. `onPassive` explains the hero passive. */
 /** Share of max HP under which the hero's portrait sweats. */
 const LOW_HP = 0.3;
-/** Rust patches on the belt: they show up one by one as the rust builds, and go as the mop scrubs it off. */
-const RUST_SPOTS = 30;
 
 export function createHud(v: CombatView, onPassive: () => void): { render(): void } {
   const { combat, r } = v;
@@ -26,15 +24,8 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
   let warned = -1;
   /** `moveCount` of the lethal hit the alarm sounded for (-1 while not in danger). */
   let alarmed = -1;
-  const rustSpots = Array.from({ length: RUST_SPOTS }, (_, i) => {
-    const spot = h('i');
-    // Scattered by a fixed stride, so the same belt always rusts in the same places.
-    spot.style.left = `${(i * 61.8) % 92}%`;
-    spot.style.top = `${(i * 38.2 + 7) % 68}%`;
-    return spot;
-  });
-  r.rust.append(...rustSpots);
-  let rustShown = 0;
+  /** Rust spot elements by id. */
+  const rustEls = new Map<number, HTMLElement>();
   let lastMaxMana = -1;
   let lastMana = combat.hero.mana;
 
@@ -217,12 +208,26 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
   const renderEnemyState = (): void => {
     toggle(r.weakSpot, 'on', !!combat.weakSpot && !combat.isOver);
     toggle(r.mop, 'on', combat.rustsBelt && !combat.isOver);
-    const rusty = Math.ceil(combat.rust * RUST_SPOTS - 1e-6);
-    if (rusty !== rustShown) {
-      rustShown = rusty;
-      rustSpots.forEach((spot, i) => {
-        toggle(spot, 'on', i < rusty);
-      });
+    for (const spot of combat.rustSpots) {
+      let el = rustEls.get(spot.id);
+      if (!el) {
+        el = h('i', { 'data-id': spot.id });
+        el.style.left = `${spot.x * 100}%`;
+        el.style.top = `${spot.y * 100}%`;
+        rustEls.set(spot.id, el);
+        r.rust.append(el);
+      }
+      // Scrubbing thins the patch out (stepped, like the rest of the motion).
+      const grime = String(Math.ceil(spot.grime * 4) / 4);
+      if (el.dataset.grime !== grime) {
+        el.dataset.grime = grime;
+        el.style.setProperty('--grime', grime);
+      }
+    }
+    for (const [id, el] of rustEls) {
+      if (combat.rustSpots.some((x) => x.id === id)) continue;
+      el.remove();
+      rustEls.delete(id);
     }
     toggle(r.enemyArt, 'stunned', combat.has('enemy', 'stun'));
     toggle(r.enemyArt, 'frozen', combat.has('enemy', 'frozen'));

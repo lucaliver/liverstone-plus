@@ -436,29 +436,36 @@ test("the Sick Coworker's virus shows on the cards it infects and goes away when
   expect(problems).toEqual([]);
 });
 
-test("the Facilities Manager's rust slows the belt, and dragging the mop over the belt scrubs it off", async ({ page }) => {
+test("the Facilities Manager's rust spots slow the belt, and only dragging the mop over a spot scrubs it off", async ({ page }) => {
   const problems = await freshGame(page);
   await page.getByRole('button', { name: /debug/i }).click();
   await page.locator('.debug-foe[data-enemy="facilitiesManager"]').click();
   await expect(page.locator('.combat')).toBeVisible();
   const start = page.locator('.js-start');
   if (await start.count()) await start.click();
-  await combat(page, 'c.rust = 0.8;');
-  await expect(page.locator('.belt-rust i.on')).not.toHaveCount(0);
+  await combat(page, 'c.rustSpots.push({ id: 100, x: 0.5, y: 0.5, grime: 1 }, { id: 101, x: 0.15, y: 0.5, grime: 1 });');
+  await expect(page.locator('.belt-rust i')).toHaveCount(2);
   const mop = page.locator('.mop.on');
   await expect(mop).toBeVisible();
+  // The stage settles after the fight's intro: measure once it has.
+  await page.waitForTimeout(1500);
   const m = (await mop.boundingBox())!;
-  const belt = (await page.locator('.belt').boundingBox())!;
-  const x = m.x + m.width * 0.3;
-  const y = m.y + m.height * 0.85;
-  await mop.dispatchEvent('pointerdown', { pointerId: 1, clientX: x, clientY: y });
-  // The mop's head sweeps the belt back and forth.
-  for (let i = 0; i < 4; i++) {
-    await page.mouse.move(belt.x + 20, belt.y + belt.height / 2, { steps: 8 });
-    await page.mouse.move(belt.x + belt.width - 20, belt.y + belt.height / 2, { steps: 8 });
+  const spot = (await page.locator('.belt-rust i[data-id="100"]').boundingBox())!;
+  const x = spot.x + spot.width / 2;
+  const y = spot.y + spot.height / 2;
+  await mop.dispatchEvent('pointerdown', { pointerId: 1, clientX: m.x + m.width * 0.3, clientY: m.y + m.height * 0.85 });
+  // The mop's head follows the finger.
+  await page.mouse.move(x, y, { steps: 10 });
+  const head = (await mop.boundingBox())!;
+  expect(Math.abs(head.x + head.width * 0.3 - x)).toBeLessThan(2);
+  expect(Math.abs(head.y + head.height * 0.85 - y)).toBeLessThan(2);
+  // Scrubbing back and forth over the spot takes it off; the other one, never touched, stays.
+  for (let i = 0; i < 6; i++) {
+    await page.mouse.move(x - 12, y, { steps: 4 });
+    await page.mouse.move(x + 12, y, { steps: 4 });
   }
   await page.locator('.combat').dispatchEvent('pointerup', { pointerId: 1 });
-  expect(((await combat(page, 'return c.rust;')) as number) < 0.8).toBe(true);
+  expect(await combat(page, 'return c.rustSpots.map((s) => s.id).filter((id) => id >= 100);')).toEqual([101]);
   expect(problems).toEqual([]);
 });
 

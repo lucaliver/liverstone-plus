@@ -3,6 +3,7 @@ import { Combat, type CombatSetup } from '../src/game/combat';
 import { CONFIG, EXPIRE_POS } from '../src/data/config';
 import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
+import { STATUSES } from '../src/data/statuses';
 import { CARD_LIST, CARDS } from '../src/data/cards';
 import { canCopy, canShred, COPY_HP_COST, fightPay, loadRun, newRun, photocopyCard, SHRED_MIN_DECK, shredCard } from '../src/game/run';
 import type { CardInst } from '../src/game/types';
@@ -461,21 +462,27 @@ describe('combat engine', () => {
     expect(c.cardCost(front.card)).toBe(CARDS.punch.cost);
   });
 
-  it('rust builds up on the belt, slows it down, stops it at full, and the mop scrubs it off', () => {
-    const c = setup({ enemy: ENEMIES.facilitiesManager, hp: 500, maxHp: 500 });
+  it('rust spots land on the belt, each slows it a little, enough stop it, and scrubbing a spot takes it off', () => {
+    const c = setup({ enemy: ENEMIES.facilitiesManager, hp: 900, maxHp: 900 });
+    const { every, slow } = STATUSES.deferredMaintenance.rust!;
     expect(c.rustsBelt).toBe(true);
+    expect(setup().rustsBelt).toBe(false);
     run(c, CONFIG.introTime + 0.01);
     const base = c.beltRate();
-    run(c, 10);
-    expect(c.rust).toBeGreaterThan(0);
-    expect(c.beltRate()).toBeCloseTo(base * (1 - c.rust));
-    c.rust = 1;
+    run(c, every + 0.1);
+    expect(c.rustSpots).toHaveLength(1);
+    expect(c.beltRate()).toBeCloseTo(base * (1 - slow));
+    const [spot] = c.rustSpots;
+    c.scrubRust(spot.id, 0.6);
+    expect(c.rustSpots).toHaveLength(1);
+    expect(spot.grime).toBeCloseTo(0.4);
+    c.scrubRust(spot.id, 0.5);
+    expect(c.rustSpots).toHaveLength(0);
+    expect(c.beltRate()).toBeCloseTo(base);
+    // Left alone, the spots pile up until the belt stops dead.
+    run(c, every * (1 / slow + 2));
+    expect(c.rustSpots.length).toBe(Math.ceil(1 / slow));
     expect(c.beltRate()).toBe(0);
-    expect(c.wipeRust(0.3)).toBeCloseTo(0.3);
-    expect(c.beltRate()).toBeCloseTo(base * 0.3);
-    expect(c.wipeRust(5)).toBeCloseTo(0.7);
-    expect(c.rust).toBe(0);
-    expect(setup().rustsBelt).toBe(false);
   });
 
   it('sleeve slots come from the hero', () => {

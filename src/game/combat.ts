@@ -6,7 +6,21 @@ import { CARDS, cardCategory, cardCostOf, cardKeywordsOf, cardValsOf } from '../
 import { HEXES } from '../data/hexes';
 import { RELICS } from '../data/relics';
 import type { TKey } from '../core/i18n';
-import type { BeltCard, CardDef, CardInst, CombatCard, CombatEvent, CombatResult, EnemyDef, HeroDef, MoveDef, Side, Statuses } from './types';
+import type {
+  BeltCard,
+  CardDef,
+  CardInst,
+  CombatCard,
+  CombatEvent,
+  CombatResult,
+  EnemyDef,
+  HeroDef,
+  MoveDef,
+  RustSpot,
+  Side,
+  StatusDef,
+  Statuses,
+} from './types';
 
 export interface Fighter {
   hp: number;
@@ -121,9 +135,10 @@ export class Combat {
   private current: { card: CombatCard; def: CardDef; row: number } | null = null;
   /** A target on the enemy's sprite (x, y: where, as a share of the drawing; t: seconds left). Tapped in time, it makes the hero's next attack critical. */
   weakSpot: { x: number; y: number; t: number } | null = null;
-  /** Rust on the belt, 0–1: it slows the belt down and stops it at 1. The hero scrubs it off (`wipeRust`). */
-  rust = 0;
+  /** Rust spots on the belt: each slows it down, enough stop it. The hero scrubs them off (`scrubRust`). */
+  rustSpots: RustSpot[] = [];
   private rustClock = 0;
+  private rustId = 0;
   /** Free-form per-combat state for relics and powers. */
   mem: Record<string, number> = {};
   private tempUid = 0;
@@ -334,7 +349,7 @@ export class Combat {
     if (this.has('hero', 'rush')) r *= CONFIG.beltRush;
     if (this.has('hero', 'hurry')) r *= CONFIG.beltHurry;
     if (this.has('hero', 'crunch')) r *= CONFIG.beltCrunch;
-    r *= 1 - this.rust;
+    r *= Math.max(0, 1 - this.rustSpots.length * this.rustSlow());
     if (this.has('hero', 'stalled') || this.beltHalt > 0) r = 0;
     if (this.has('hero', 'slowdown')) r *= CONFIG.beltSlow;
     return r;
@@ -1163,28 +1178,40 @@ export class Combat {
     }
   }
 
+  /** The rust the enemy's status brings, if any. */
+  private rustDef(): NonNullable<StatusDef['rust']> | undefined {
+    for (const id of Object.keys(this.enemy.statuses)) if (this.has('enemy', id) && STATUSES[id].rust) return STATUSES[id].rust;
+    return undefined;
+  }
+
   /** Whether the enemy rusts the belt (the mop shows up beside it). */
   get rustsBelt(): boolean {
-    return Object.keys(this.enemy.statuses).some((id) => this.has('enemy', id) && STATUSES[id].rust);
+    return !!this.rustDef();
+  }
+
+  /** How much of the belt's speed each rust spot takes. */
+  private rustSlow(): number {
+    return this.rustDef()?.slow ?? 0;
   }
 
   private tickRust(dt: number): void {
-    for (const id of Object.keys(this.enemy.statuses)) {
-      const rust = this.has('enemy', id) ? STATUSES[id].rust : undefined;
-      if (!rust) continue;
-      this.rustClock += dt;
-      if (this.rustClock < rust.every) return;
-      this.rustClock -= rust.every;
-      if (this.rust === 0) this.events.emit({ type: 'rust' });
-      this.rust = Math.min(1, this.rust + rust.by);
-    }
+    const rust = this.rustDef();
+    if (!rust) return;
+    this.rustClock += dt;
+    if (this.rustClock < rust.every) return;
+    this.rustClock -= rust.every;
+    // Past the point where the belt is already stopped, more rust changes nothing.
+    if (this.rustSpots.length * rust.slow >= 1) return;
+    if (this.rustSpots.length === 0) this.events.emit({ type: 'rust' });
+    this.rustSpots.push({ id: ++this.rustId, x: 0.06 + this.rng.next() * 0.8, y: 0.12 + this.rng.next() * 0.7, grime: 1 });
   }
 
-  /** The hero scrubs the belt with the mop. Returns how much rust came off. */
-  wipeRust(amount: number): number {
-    const n = Math.min(this.rust, amount);
-    this.rust -= n;
-    return n;
+  /** The hero scrubs a rust spot with the mop: `amount` of its grime comes off, and it's gone at 0. */
+  scrubRust(id: number, amount: number): void {
+    const spot = this.rustSpots.find((x) => x.id === id);
+    if (!spot) return;
+    spot.grime -= amount;
+    if (spot.grime <= 0) this.rustSpots = this.rustSpots.filter((x) => x !== spot);
   }
 
   /** The hero dragged a card one more swipe around the screen: a card with `wind` grows. False when there's nothing (more) to wind. */

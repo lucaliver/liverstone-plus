@@ -151,7 +151,7 @@
   cursor: grab;
 }
 .mop.on { display: block; }
-.mop.dragging { cursor: grabbing; rotate: -12deg; }
+.mop.dragging { cursor: grabbing; }
 /* Weak Spot: a target pinned on the sprite's drawing (--u, --v: where, set per appearance); it answers on touch-down */
 .weak-spot {
   display: none;
