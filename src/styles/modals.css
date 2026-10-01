@@ -466,7 +466,7 @@
 .debug-foe .riso { width: 56px; height: 56px; }
 .debug-foe small { font-size: 13px; color: var(--muted); }
 /* the build, at the foot of Settings */
-.modal .version { margin-top: 12px; text-align: center; font-family: var(--font-ui); font-size: 15px; color: var(--muted); }
+.modal .version { margin-top: 12px; text-align: center; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; font-family: var(--font-ui); font-size: 15px; color: var(--muted); }
 
 /* management memos: an icon, a name with its effect underneath, a switch */
 .setting.memo { justify-content: flex-start; padding: 8px 2px; }

@@ -7,8 +7,8 @@ import { RELIC_LIST } from '../../data/relics';
 import { unlockAll } from '../../game/meta';
 import { settings } from '../../game/settings';
 import type { HeroId } from '../../game/types';
-import { confirmModal, openModal, type ModalHandle } from '../app';
-import { clearAll } from '../../core/save';
+import { openModal, type ModalHandle } from '../app';
+import { openResetConfirm } from './modals';
 import { h } from '../dom';
 import { creature } from '../art/creatures';
 import { haptic } from '../fx/fx';
@@ -145,15 +145,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
         icon: 'trash',
         cls: 'danger',
         onClick: () => {
-          confirmModal(
-            t('menu.resetConfirm'),
-            t('common.confirm'),
-            () => {
-              clearAll();
-              location.reload();
-            },
-            t('common.cancel'),
-          );
+          openResetConfirm();
           return false;
         },
       },

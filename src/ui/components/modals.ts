@@ -4,8 +4,9 @@ import { setMusicVolume } from '../../audio/music';
 import { CARDS, type CardCategory, cardCategory, cardCostOf } from '../../data/cards';
 import { saveSettings, settings } from '../../game/settings';
 import type { CardInst, Rarity } from '../../game/types';
-import { type ModalAction, openModal, type ModalHandle } from '../app';
-import { h, onPress, onTapOrHold, stagger } from '../dom';
+import { clearAll } from '../../core/save';
+import { confirmModal, type ModalAction, openModal, type ModalHandle } from '../app';
+import { cssMs, h, onPress, onTapOrHold, stagger } from '../dom';
 import { icon } from '../art/icons';
 import { cardKeywords, cardText, cardView, keywordHtml } from './cardView';
 
@@ -38,9 +39,32 @@ function volumeRow(label: string, get: () => number, set: (v: number) => void): 
   return h('div', { class: 'setting' }, h('span', null, label), h('div', { class: 'slider-wrap' }, input, num));
 }
 
+/** Asks before erasing every save (the run, unlocks, discoveries, settings), then reloads on a clean slate. */
+export function openResetConfirm(): void {
+  confirmModal(
+    t('menu.resetConfirm'),
+    t('common.confirm'),
+    () => {
+      clearAll();
+      location.reload();
+    },
+    t('common.cancel'),
+  );
+}
+
 /** Settings; `extra` actions go above Reset progress and Close (e.g. Main menu from the map). */
 export function openSettings(extra: ModalAction[] = []): ModalHandle {
   const locales = availableLocales();
+  // A hidden way to wipe everything: hold the version line.
+  const version = h(
+    'div',
+    { class: 'version' },
+    t('settings.version', {
+      v: __APP_VERSION__,
+      d: new Date(__BUILD_TIME__).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }),
+    }),
+  );
+  onTapOrHold(version, () => {}, openResetConfirm, cssMs('--dur-hold'));
   const body = h(
     'div',
     null,
@@ -116,14 +140,7 @@ export function openSettings(extra: ModalAction[] = []): ModalHandle {
           ),
         )
       : null,
-    h(
-      'div',
-      { class: 'version' },
-      t('settings.version', {
-        v: __APP_VERSION__,
-        d: new Date(__BUILD_TIME__).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }),
-      }),
-    ),
+    version,
   );
   return openModal({
     title: t('settings.title'),

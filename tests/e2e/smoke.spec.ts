@@ -645,6 +645,18 @@ test('reset progress wipes saves after a confirmation', async ({ page }) => {
   expect(await page.evaluate("Object.keys(localStorage).filter((k) => k.startsWith('cardstone+:')).length")).toBe(0);
 });
 
+test('holding the version in Settings opens the reset confirmation', async ({ page }) => {
+  await freshGame(page);
+  await page.getByRole('button', { name: /settings/i }).click();
+  await page.locator('.modal .version').hover();
+  await page.mouse.down();
+  await page.waitForTimeout(1200);
+  await page.mouse.up();
+  await expect(page.getByText(/erase everything/i)).toBeVisible();
+  await page.getByRole('button', { name: 'Confirm' }).click();
+  await expect(page.locator('.splash')).toBeVisible();
+});
+
 test('handbook: pressing a status in a move pattern explains it', async ({ page }) => {
   await freshGame(page);
   await page.getByRole('button', { name: /handbook/i }).click();
