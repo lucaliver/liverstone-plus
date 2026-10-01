@@ -4,6 +4,7 @@ import enStrings from '../src/i18n/en';
 /** Indexed as a plain dictionary: these tests check keys that are built at runtime. */
 const en: Record<string, string> = enStrings;
 import { CARD_LIST, CARDS } from '../src/data/cards';
+import { REWARD_ODDS } from '../src/data/config';
 import { DIFFICULTY, ENEMY_LIST, enemyMoves } from '../src/data/enemies';
 import { HERO_LIST, starterCards } from '../src/data/heroes';
 import { PERK_LIST } from '../src/data/perks';
@@ -70,6 +71,11 @@ describe('content integrity', () => {
         for (const id of offer)
           expect(CARDS[id] && (CARDS[id].cls === h.id || CARDS[id].cls === 'neutral') && !CARDS[id].pack, `${h.id}: ${id}`).toBeTruthy();
       }
+  });
+
+  it('Legendary cards are offered only after elites and bosses', () => {
+    expect(REWARD_ODDS.fight.some(([r]) => r === 'legendary')).toBe(false);
+    expect(REWARD_ODDS.elite.some(([r]) => r === 'legendary')).toBe(true);
   });
 
   it('every enemy past the first three can grow stronger, except the ones with nothing to hit with or a single move', () => {

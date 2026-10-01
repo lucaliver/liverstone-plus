@@ -16,6 +16,8 @@
 
 - [ ] nell'handbook aggiungi tab per le relics (o come si chiamano)
 
+- [x] le carte Legendary dovrebbero essere proposte come reward solo dopo elite e boss
+
 # NEXT STEPS (ignore for now):
 
 > aggiungere modificatori difficoltà run dopo la vittoria

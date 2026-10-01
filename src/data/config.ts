@@ -81,13 +81,12 @@ export const CONFIG = {
   vendingHp: { rare: 6, epic: 12 },
 } as const;
 
-/** Rarity odds (weights) of each card offered after a fight or an elite. */
+/** Rarity odds (weights) of each card offered after a fight or an elite (a boss pays like an elite). Legendary cards only drop from elites and bosses. */
 export const REWARD_ODDS: Record<'fight' | 'elite', [Rarity, number][]> = {
   fight: [
     ['common', 64],
     ['rare', 29],
-    ['epic', 6],
-    ['legendary', 1],
+    ['epic', 7],
   ],
   elite: [
     ['common', 30],
