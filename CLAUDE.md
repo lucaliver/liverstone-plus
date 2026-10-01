@@ -18,7 +18,7 @@ This file is the technical guide: read it before changing code. Field-by-field d
 - Before handing over: `npm run check` and `npm run e2e` pass; look at the screens you touched (Playwright screenshot at
   390×844 and 375×620).
 - Balance: one quick `npm run sim` pass is enough while design moves.
-- Bump `version` in `package.json` after every big batch (shown in Settings).
+- Bump `version` in `package.json` after every big batch (shown in Settings with the build time, `__BUILD_TIME__`).
 - Keep this file true: fix any line a change makes stale, in the same commit.
 
 ## Writing code

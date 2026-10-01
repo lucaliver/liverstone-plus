@@ -116,7 +116,14 @@ export function openSettings(extra: ModalAction[] = []): ModalHandle {
           ),
         )
       : null,
-    h('div', { class: 'version' }, t('settings.version', { v: __APP_VERSION__ })),
+    h(
+      'div',
+      { class: 'version' },
+      t('settings.version', {
+        v: __APP_VERSION__,
+        d: new Date(__BUILD_TIME__).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }),
+      }),
+    ),
   );
   return openModal({
     title: t('settings.title'),

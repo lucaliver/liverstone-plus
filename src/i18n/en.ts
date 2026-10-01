@@ -125,7 +125,7 @@ const en = {
 
   // ------------------------------------------------------------ settings
   'settings.title': 'Settings',
-  'settings.version': 'Version {v}',
+  'settings.version': 'Version {v} · built {d}',
   'settings.sound': 'Sound effects',
   'settings.music': 'Music',
   'settings.motion': 'Reduce motion',
