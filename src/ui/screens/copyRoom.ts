@@ -8,8 +8,7 @@ import { icon } from '../art/icons';
 import type { CardInst } from '../../game/types';
 import { CARD_SHOW_MS, playPhotocopy, playShred } from '../components/cardShow';
 import { openDeck } from '../components/modals';
-import { closeRoom, roomOption } from '../components/room';
-import { motes } from '../components/decor';
+import { closeRoom, roomOption, roomScene } from '../components/room';
 import { runHud } from './journey';
 
 /** Copy Room: shred a card out of the deck for good, or photocopy one (it costs HP). */
@@ -34,10 +33,7 @@ export function copyRoomScreen(run: RunState, onDone: () => void): Screen {
     runHud(run),
     h('h1', { class: 'h1', style: { marginTop: '12px' } }, t('copy.title')),
     h('p', { class: 'sub' }, t('copy.desc')),
-    h('div', {
-      class: 'rest-fire',
-      html: `${motes(14, ['var(--paper)', 'var(--paper)', 'var(--y)'])}<div class="promo-badge chew">${icon('shredder')}</div>`,
-    }),
+    roomScene('copy'),
     h(
       'div',
       { class: 'rest-options' },

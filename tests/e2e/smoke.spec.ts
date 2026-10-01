@@ -237,7 +237,7 @@ test('copy room: photocopy costs HP and adds the card, shred removes one', async
   await page.getByRole('button', { name: /start shift/i }).click();
   const floor = await roomFloor(page, 'copy');
   await page.getByRole('button', { name: new RegExp(`enter floor ${floor}`, 'i') }).click();
-  await expect(page.locator('.promo-badge')).toBeVisible();
+  await expect(page.locator('.room-art')).toBeVisible();
   const deck = (): Promise<number> => page.evaluate('window.__game.run.deck.length') as Promise<number>;
   const before = await deck();
   await page.getByRole('button', { name: /photocopy/i }).click();

@@ -4,9 +4,9 @@ import { sprite } from './riso';
  * Hand-built vector creatures on a 200×200 grid. Parts carry classes (`.eye`, `.limb`)
  * that CSS animates. Gradient ids are prefixed per creature to avoid collisions.
  */
-const OUT = 'stroke="#120e18" stroke-width="3" stroke-linejoin="round"';
+export const OUT = 'stroke="#120e18" stroke-width="3" stroke-linejoin="round"';
 
-const lg = (id: string, a: string, b: string, x2 = 0, y2 = 1): string =>
+export const lg = (id: string, a: string, b: string, x2 = 0, y2 = 1): string =>
   `<linearGradient id="${id}" x1="0" y1="0" x2="${x2}" y2="${y2}"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;
 const rg = (id: string, a: string, b: string): string =>
   `<radialGradient id="${id}" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></radialGradient>`;
@@ -14,7 +14,7 @@ const glow = (id: string, color: string): string =>
   `<radialGradient id="${id}"><stop offset="0" stop-color="${color}" stop-opacity=".9"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></radialGradient>`;
 const eyes = (x1: number, x2: number, y: number, r: number, color: string, id: string): string =>
   `<g class="eye"><circle cx="${x1}" cy="${y}" r="${r * 2.6}" fill="url(#${id})"/><circle cx="${x2}" cy="${y}" r="${r * 2.6}" fill="url(#${id})"/><circle cx="${x1}" cy="${y}" r="${r}" fill="${color}"/><circle cx="${x2}" cy="${y}" r="${r}" fill="${color}"/><circle cx="${x1 - r * 0.3}" cy="${y - r * 0.35}" r="${r * 0.35}" fill="#fff"/><circle cx="${x2 - r * 0.3}" cy="${y - r * 0.35}" r="${r * 0.35}" fill="#fff"/></g>`;
-const shadow = `<ellipse cx="100" cy="188" rx="62" ry="9" fill="#000" opacity=".35"/>`;
+export const shadow = `<ellipse cx="100" cy="188" rx="62" ry="9" fill="#000" opacity=".35"/>`;
 
 /** The Snitch: an upright rat in a hi-vis vest, notepad in one paw, pencil in the other, taking names. */
 const snitch = `
@@ -538,23 +538,6 @@ ${shadow}
 <rect x="72" y="108" width="14" height="12" fill="#ff3d9a" ${OUT}/><rect x="114" y="108" width="14" height="12" fill="#1c5fd0" ${OUT}/>
 <rect x="68" y="124" width="64" height="6" fill="#1b1830"/>
 <rect x="144" y="104" width="14" height="44" fill="#f6f0e4" ${OUT}/><path d="M144 116h14M144 128h14" stroke="#1b1830" stroke-width="3"/>`;
-
-/** The Break Room coffee machine: a brass-domed steampunk espresso machine with a pressure gauge and a cup under the spout. */
-const coffeeMachine = `
-<defs>${lg('cm-b', '#9ab8f0', '#1c4fb0')}${lg('cm-g', '#ffe45a', '#d09a20')}</defs>
-${shadow}
-<path d="M30 164h140v22H30z" fill="#3a3450" ${OUT}/><path d="M40 172h120" stroke="#9ab8f0" stroke-width="3"/>
-<path d="M46 70h108v96H46z" fill="url(#cm-b)" ${OUT}/>
-<path d="M54 70c0-28 20-42 46-42s46 14 46 42z" fill="url(#cm-g)" ${OUT}/><path d="M70 60c6-12 18-20 30-20" stroke="#fff" stroke-width="4" opacity=".6" fill="none"/>
-<circle cx="100" cy="22" r="8" fill="url(#cm-g)" ${OUT}/>
-<circle cx="100" cy="94" r="16" fill="#f6f0e4" stroke="url(#cm-g)" stroke-width="5"/><path d="M100 94l10-8" stroke="#ff3d9a" stroke-width="4"/><path d="M88 94h4M100 82v4M112 94h-4" stroke="#1b1830" stroke-width="2"/>
-<path d="M82 120h36v10H82z" fill="url(#cm-g)" ${OUT}/><path d="M92 130h5v10h-5zM103 130h5v10h-5z" fill="#1b1830"/>
-<rect x="98" y="140" width="4" height="8" fill="#6a3a1a"/>
-<path d="M82 148h36v12c0 4-3 6-6 6H88c-3 0-6-2-6-6z" fill="#f6f0e4" ${OUT}/><path d="M118 152c8 0 8 10 0 10" stroke="#1b1830" stroke-width="4" fill="none"/><path d="M82 154h36" stroke="#ff3d9a" stroke-width="4"/>
-<path d="M154 88h18v8h-18z" fill="url(#cm-g)" ${OUT}/><rect x="166" y="74" width="8" height="34" rx="3" fill="#1b1830" ${OUT}/>
-<path d="M46 104H30v44" stroke="#1b1830" stroke-width="7" fill="none"/><path d="M46 104H30v44" stroke="url(#cm-g)" stroke-width="3" fill="none"/>
-<rect x="128" y="128" width="16" height="5" fill="#1b1830"/>
-<g fill="#1b1830"><circle cx="52" cy="76" r="2.5"/><circle cx="148" cy="76" r="2.5"/><circle cx="52" cy="160" r="2.5"/><circle cx="148" cy="160" r="2.5"/></g>`;
 
 const warrior = `
 <defs>${lg('wa-h', '#9ac0f8', '#1c5fd0', 1, 1)}${lg('wa-s', '#ffb4d4', '#ff86bc')}${lg('wa-a', '#ff8ac8', '#d03a8a')}${lg('wa-y', '#ffc890', '#ffbc80')}</defs>
@@ -1181,7 +1164,6 @@ export const CREATURES: Record<string, string> = {
   helpdeskChatbot,
   contractLawyer,
   outgoingVp,
-  coffeeMachine,
   timeClock,
   waterCooler,
   warrior,

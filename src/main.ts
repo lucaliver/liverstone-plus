@@ -39,6 +39,7 @@ import { initFx } from './ui/fx/fx';
 import { preloadArt } from './ui/art/riso';
 import { CREATURES } from './ui/art/creatures';
 import { RELIC_SPRITES } from './ui/art/relics';
+import { ROOM_SPRITES } from './ui/art/rooms';
 import { ICONS } from './ui/art/icons';
 import { combatScreen } from './ui/combat/combatScreen';
 import { endScreen } from './ui/screens/end';
@@ -294,7 +295,7 @@ async function boot(): Promise<void> {
   addEventListener('pointerdown', unlockAudio, { passive: true });
   addEventListener('keydown', unlockAudio);
   // Pixel art is generated from the vector sources once, before the first screen.
-  await preloadArt({ creatures: { ...CREATURES, ...RELIC_SPRITES }, icons: ICONS });
+  await preloadArt({ creatures: { ...CREATURES, ...RELIC_SPRITES, ...ROOM_SPRITES }, icons: ICONS });
   // The employment contract only until it's signed; afterwards the game opens on the title.
   if (contractSigned()) goTitle();
   else show(splashScreen(goTitle));

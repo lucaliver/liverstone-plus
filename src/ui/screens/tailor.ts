@@ -9,8 +9,7 @@ import { icon } from '../art/icons';
 import { relicArt } from '../art/relics';
 import { playHealing, HEAL_ANIM_MS } from './rest';
 import { CARD_SHOW_MS, playRelic } from '../components/cardShow';
-import { closeRoom, roomOption } from '../components/room';
-import { motes } from '../components/decor';
+import { closeRoom, roomOption, roomScene } from '../components/room';
 import { runHud } from './journey';
 
 /** The relic the Tailor sells. */
@@ -26,10 +25,7 @@ export function tailorScreen(run: RunState, onDone: () => void): Screen {
     runHud(run),
     h('h1', { class: 'h1', style: { marginTop: '12px' } }, t('tailor.title')),
     h('p', { class: 'sub' }, t('tailor.desc')),
-    h('div', {
-      class: 'rest-fire',
-      html: `${motes(14, ['var(--paper)', 'var(--paper)', 'var(--y)'])}<div class="promo-badge">${icon('tailor')}</div>`,
-    }),
+    roomScene('tailor'),
     h(
       'div',
       { class: 'rest-options' },

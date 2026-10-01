@@ -27,7 +27,7 @@ This file is the technical guide: read it before changing code. Field-by-field d
 
 - Do what the task asks: no speculative options, flags, abstractions or hooks without a caller. Three similar lines beat a
   premature helper.
-- Reuse first: `h`, `$`, `setText`/`setHtml`/`toggle`, `onPress`/`onTapOrHold`, `retrigger` (`ui/dom.ts`), `roomOption`/`closeRoom`
+- Reuse first: `h`, `$`, `setText`/`setHtml`/`toggle`, `onPress`/`onTapOrHold`, `retrigger` (`ui/dom.ts`), `roomOption`/`closeRoom`/`roomScene`
   (`ui/components/room.ts`), `statusIcon`, `Rng`, `Emitter`, `load`/`store`, existing icons, sfx, modals, CSS tokens.
 - No new dependencies without asking. No framework, state library or CSS preprocessor.
 - Delete what you replace (dead code, CSS, i18n keys, icons, tests) in the same commit.
@@ -82,7 +82,7 @@ src/
   data/        config (all tuning), acts, statuses, heroes, enemies, perks, hexes, relics, modifiers, cards/<class>.ts
   game/        combat (engine), run (map graph, rewards, save), meta (discoveries, unlocks, records, act stamps), settings, types
   ui/          app (screens, modals), dom
-    art/       icons (64×64), creatures (200×200), relics (200×200 stationery sprites), actArt (the skyline behind each act's map title), riso (pixel renderer)
+    art/       icons (64×64), creatures (200×200), relics (200×200 stationery sprites), rooms (200×200 picture of each room), actArt (the skyline behind each act's map title), riso (pixel renderer)
     combat/    view, hud, cardLayer, mop, combatFx, combatScreen
     components/ cardView, cardShow, coach, modals, memos, debugMenu, room, moveText, heroSheet, shareSlip, decor
     fx/        particles, floating text, shake, haptics
@@ -100,7 +100,7 @@ tests/         combat, content, balance.sim (+ bot), e2e/
   lanes linked a couple of times (`LANES`, `LINKS` in `run.ts`), then the boss, which leads to the next act. Rooms beyond
   `VISION` doors are fogged. The first run has a scripted act 1 (`newRun(…, scripted)`, `FIRST_RUN_*`); its later acts are dealt like any run's. Room types (`NodeType`):
   fight, elite, boss, rest, promotion, copy, each a screen in `ROOMS` (`main.ts`). A new room = `NodeType`, `LANES` entry,
-  `ROOMS` screen, `NODE_ICON`, `journey.node.*`/`journey.info.*` strings.
+  `ROOMS` screen, `NODE_ICON`, `journey.node.*`/`journey.info.*` strings, and a picture: a sprite `room.<type>` in `art/rooms.ts` plus a `ROOM_SCENE` entry (its motion is a class in `rooms.css`) that the screen shows with `roomScene(type)`.
 - **Rendering is diff-based**: `setText`/`setHtml`/`toggle` write only on change; status chips rebuild only when the set changes.
 
 ## Conventions

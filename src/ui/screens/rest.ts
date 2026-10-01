@@ -4,11 +4,9 @@ import { canUpgrade, rest, restHeal, upgradeCard, type RunState } from '../../ga
 import type { Screen } from '../app';
 import { h } from '../dom';
 import { icon } from '../art/icons';
-import { creature } from '../art/creatures';
 import { CARD_SHOW_MS, playCardChange } from '../components/cardShow';
 import { openDeck } from '../components/modals';
-import { closeRoom, roomOption } from '../components/room';
-import { motes } from '../components/decor';
+import { closeRoom, roomOption, roomScene } from '../components/room';
 import { runHud } from './journey';
 
 export const HEAL_ANIM_MS = 1900;
@@ -42,11 +40,7 @@ export function restScreen(run: RunState, onDone: () => void): Screen {
     runHud(run),
     h('h1', { class: 'h1', style: { marginTop: '12px' } }, t('rest.title')),
     h('p', { class: 'sub' }, t('rest.desc')),
-    h('div', {
-      class: 'rest-fire',
-      // The break room's coffee machine, with steam drifting up.
-      html: `${motes(14, ['var(--paper)', 'var(--paper)', 'var(--y)'])}<div class="coffee-machine">${creature('coffeeMachine')}</div>`,
-    }),
+    roomScene('rest'),
     h(
       'div',
       { class: 'rest-options' },

@@ -5,8 +5,7 @@ import type { Screen } from '../app';
 import { h } from '../dom';
 import { icon } from '../art/icons';
 import { CARD_SHOW_MS, playCardGain } from '../components/cardShow';
-import { motes } from '../components/decor';
-import { closeRoom, roomOption } from '../components/room';
+import { closeRoom, roomOption, roomScene } from '../components/room';
 import { runHud } from './journey';
 
 const RARITIES = ['rare', 'epic'] as const;
@@ -19,10 +18,7 @@ export function vendingScreen(run: RunState, onDone: () => void): Screen {
     runHud(run),
     h('h1', { class: 'h1', style: { marginTop: '12px' } }, t('vending.title')),
     h('p', { class: 'sub' }, t('vending.desc')),
-    h('div', {
-      class: 'rest-fire',
-      html: `${motes(14, ['var(--paper)', 'var(--paper)', 'var(--y)'])}<div class="promo-badge">${icon('vendingMachine')}</div>`,
-    }),
+    roomScene('vending'),
     h(
       'div',
       { class: 'rest-options' },

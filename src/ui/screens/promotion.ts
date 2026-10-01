@@ -7,8 +7,7 @@ import { h } from '../dom';
 import { icon } from '../art/icons';
 import { CARD_SHOW_MS, playCardChange } from '../components/cardShow';
 import { openDeck } from '../components/modals';
-import { closeRoom, roomOption } from '../components/room';
-import { motes } from '../components/decor';
+import { closeRoom, roomOption, roomScene } from '../components/room';
 import { runHud } from './journey';
 
 /** Promotion: pick a perk, then the deck card that earns it (for good). */
@@ -19,7 +18,7 @@ export function promotionScreen(run: RunState, onDone: () => void): Screen {
     runHud(run),
     h('h1', { class: 'h1', style: { marginTop: '12px' } }, t('promo.title')),
     h('p', { class: 'sub' }, t('promo.desc')),
-    h('div', { class: 'rest-fire', html: `${motes(14, ['var(--y)', 'var(--b)'])}<div class="promo-badge climb">${icon('ladder')}</div>` }),
+    roomScene('promotion'),
     h(
       'div',
       { class: 'rest-options' },

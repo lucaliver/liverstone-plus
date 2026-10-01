@@ -16,6 +16,8 @@ import { GLYPHS, TAG_ICON } from '../src/ui/components/cardView';
 import { moveTone } from '../src/ui/components/moveText';
 import { ICONS, INTENT_ICON } from '../src/ui/art/icons';
 import { RELIC_SPRITES } from '../src/ui/art/relics';
+import { ROOM_SPRITES } from '../src/ui/art/rooms';
+import { ROOM_SCENE } from '../src/ui/components/room';
 import { INK_HEX } from '../src/ui/art/riso';
 import { HEXES } from '../src/data/hexes';
 import { MODIFIER_LIST } from '../src/data/modifiers';
@@ -146,6 +148,14 @@ describe('content integrity', () => {
       expect(RELIC_SPRITES[`relic.${r.id}`], `${r.id}: missing sprite`).toBeTruthy();
     }
     expect(Object.keys(RELIC_SPRITES).length).toBe(RELIC_LIST.length);
+  });
+
+  it('every room picture has a sprite (and its second frame, if it has one)', () => {
+    for (const [type, scene] of Object.entries(ROOM_SCENE)) {
+      expect(ROOM_SPRITES[`room.${type}`], `${type}: missing sprite`).toBeTruthy();
+      if (scene.alt) expect(ROOM_SPRITES[`room.${type}.open`], `${type}: missing second frame`).toBeTruthy();
+    }
+    expect(Object.keys(ROOM_SPRITES).length).toBe(Object.keys(ROOM_SCENE).length + Object.values(ROOM_SCENE).filter((s) => s.alt).length);
   });
 
   it('every management memo has a name, a text and an icon, and changes something', () => {

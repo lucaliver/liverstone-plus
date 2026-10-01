@@ -4,12 +4,12 @@ import { sprite } from './riso';
  * Stationery sprites on the same 200×200 grid as the creatures, keyed by relic id. Small cute things, most with a face;
  * the renderer turns them into riso pixels like any creature (see riso.ts).
  */
-const OUT = 'stroke="#120e18" stroke-width="3" stroke-linejoin="round"';
-const INK = '#1b1830';
-const PAPER = '#f6f0e4';
+export const OUT = 'stroke="#120e18" stroke-width="3" stroke-linejoin="round"';
+export const INK = '#1b1830';
+export const PAPER = '#f6f0e4';
 
 /** Two dot eyes with a glint, pink cheeks and a small smile, centred on (cx, cy). */
-const face = (cx: number, cy: number, gap = 20, r = 5.5): string =>
+export const face = (cx: number, cy: number, gap = 20, r = 5.5): string =>
   `<circle cx="${cx - gap}" cy="${cy}" r="${r}" fill="${INK}"/><circle cx="${cx + gap}" cy="${cy}" r="${r}" fill="${INK}"/>` +
   `<circle cx="${cx - gap - r * 0.3}" cy="${cy - r * 0.35}" r="${r * 0.35}" fill="#fff"/><circle cx="${cx + gap - r * 0.3}" cy="${cy - r * 0.35}" r="${r * 0.35}" fill="#fff"/>` +
   `<ellipse cx="${cx - gap - 8}" cy="${cy + 9}" rx="7" ry="4.5" fill="#ff3d9a" opacity=".55"/><ellipse cx="${cx + gap + 8}" cy="${cy + 9}" rx="7" ry="4.5" fill="#ff3d9a" opacity=".55"/>` +

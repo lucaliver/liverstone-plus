@@ -4,12 +4,10 @@ import { RELICS } from '../../data/relics';
 import { gainRelic, rollRelics, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h, onTapOrHold } from '../dom';
-import { icon } from '../art/icons';
 import { relicArt } from '../art/relics';
 import { CARD_SHOW_MS, playRelic } from '../components/cardShow';
-import { motes } from '../components/decor';
 import { openInfo } from '../components/modals';
-import { closeRoom } from '../components/room';
+import { closeRoom, roomScene } from '../components/room';
 import { runHud } from './journey';
 
 /** Lost & Found: three relics nobody came back for; the player keeps one. */
@@ -20,10 +18,7 @@ export function lostFoundScreen(run: RunState, onDone: () => void): Screen {
     runHud(run),
     h('h1', { class: 'h1', style: { marginTop: '12px' } }, t('lost.title')),
     h('p', { class: 'sub' }, t('lost.desc')),
-    h('div', {
-      class: 'rest-fire',
-      html: `${motes(14, ['var(--paper)', 'var(--paper)', 'var(--y)'])}<div class="promo-badge">${icon('lostBox')}</div>`,
-    }),
+    roomScene('lostFound'),
     h(
       'div',
       { class: 'relic-row' },
