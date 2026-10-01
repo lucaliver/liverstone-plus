@@ -156,7 +156,7 @@ export function splashScreen(onStart: () => void): Screen {
     h('p', null, t('contract.intro')),
     h('ol', null, h('li', null, t('contract.c1')), h('li', null, t('contract.c2')), h('li', null, t('contract.c3'))),
     h('div', { class: 'contract-row' }, terms, h('div', { class: 'contract-conf' }, t('contract.confidential'))),
-    h('p', { class: 'contract-fine' }, t('contract.fine')),
+    h('div', { class: 'contract-fine', 'aria-hidden': 'true', html: SCRIBBLES }),
     line,
     h('div', { class: 'contract-page' }, t('contract.page')),
     h('div', { class: 'contract-hand', 'aria-hidden': 'true', html: propArt('hand') }),
@@ -228,6 +228,20 @@ export function splashScreen(onStart: () => void): Screen {
     },
   };
 }
+
+/** Lines of tiny grey scribbles standing in for the fine print: wavy strokes of uneven height, each row ending short of the edge. */
+const SCRIBBLES = (() => {
+  const amp = [3, 5, 2, 4, 3, 2, 5, 3];
+  const rows = [296, 288, 292, 190]
+    .map((width, r) => {
+      const y = 6 + r * 9;
+      let d = `M2 ${y}`;
+      for (let x = 2, i = r; x < width; x += 5, i++) d += `q2.5 ${-amp[i % amp.length]} 5 0`;
+      return `<path d="${d}"/>`;
+    })
+    .join('');
+  return `<svg viewBox="0 0 300 40" preserveAspectRatio="none"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">${rows}</g></svg>`;
+})();
 
 /** A hand-written scribble for the signature line (drawn in steps when signing). */
 const SIGNATURE = `<svg viewBox="0 0 200 50" aria-hidden="true"><path d="M8 34c10-22 18-26 20-14s-6 22 2 18 12-26 18-24-2 26 6 22 8-16 14-14 0 12 6 10 10-12 16-12 2 10 8 10 16-8 22-10 6 6 12 6 18-4 24-6" fill="none" stroke="#1c5fd0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
