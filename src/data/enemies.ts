@@ -212,7 +212,7 @@ const defs: EnemyDef[] = [
     main: atk('reorg', 6, 8),
     every: 2,
     specials: [
-      atk('goldenHandshake', 10, 8, { intent: 'steal', steal: 2}),
+      atk('goldenHandshake', 10, 8, { intent: 'steal', steal: 2 }),
       { id: 'stockBuyback', intent: 'buff', windup: 5, block: 10, status: [{ id: 'strength', v: 2, target: 'enemy' }] },
       { id: 'legacyProject', intent: 'curse', windup: 5, curse: [{ id: 'debt', n: 1, to: 'belt' }] },
     ],
@@ -384,7 +384,7 @@ const defs: EnemyDef[] = [
     specials: [
       atk('spinToWin', 3, 9, { hits: 6, intent: 'charge' }),
       { id: 'slowSink', intent: 'debuff', windup: 4, status: [{ id: 'slowdown', t: 8, target: 'hero' }] },
-      { id: 'tenPercentPerformance', intent: 'buff', windup: 4, status: [{ id: 'strength', v: 2, target: 'enemy' }] },
+      { id: 'ergonomics', intent: 'buff', windup: 4, status: [{ id: 'strength', v: 2, target: 'enemy' }] },
     ],
   },
   {

@@ -960,18 +960,18 @@ describe('combat engine', () => {
       expect(c.cardCost(card)).toBe(2);
     });
 
-    it('Dave idles four times, then hits hard and adds four different curses', () => {
+    it('Dave idles three times, then hits hard and adds four different curses', () => {
       const c = vs('dave');
       const acts: string[] = [];
       c.events.on((e) => {
         if (e.type === 'enemyAct') acts.push(e.move.id);
       });
       const hp = c.hero.hp;
-      run(c, 4 * 4 + 0.5);
-      expect(acts).toEqual(['scrolling', 'scrolling', 'scrolling', 'scrolling']);
+      run(c, 3 * 4 + 0.5);
+      expect(acts).toEqual(['scrolling', 'scrolling', 'scrolling']);
       expect(c.hero.hp).toBe(hp);
-      run(c, 2);
-      expect(acts[4]).toBe('lastMinute');
+      run(c, 3);
+      expect(acts[3]).toBe('lastMinute');
       expect(c.hero.hp).toBeLessThan(hp);
       const everywhere = [...c.draw, ...c.discard, ...c.belt.map((b) => b.card)];
       expect(new Set(everywhere.filter((x) => CARDS[x.id].type === 'curse').map((x) => x.id)).size).toBe(4);
