@@ -155,25 +155,33 @@
   color: var(--k);
   --ink2: var(--y);
 }
-/* rarity gem: only rare and above carry one (a pixel diamond in the rarity ink) */
+/* rarity mark: only rare and above carry one, a triangle in the bottom-right corner in the rarity ink */
 .c-gem {
   display: none;
   position: absolute;
-  right: 4cqw;
-  bottom: 4cqw;
-  width: 9cqw;
-  height: 9cqw;
-  rotate: 45deg;
-  border: max(1.5px, 1.6cqw) solid var(--k);
+  right: 0;
+  bottom: 0;
+  width: 17cqw;
+  height: 17cqw;
+  background: var(--k);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+.c-gem::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gem);
+  clip-path: polygon(100% 26%, 100% 100%, 26% 100%);
 }
 .card[data-rarity='rare'] .c-gem,
 .card[data-rarity='epic'] .c-gem,
-.card[data-rarity='legendary'] .c-gem { display: block; }
-.card[data-rarity='rare'] .c-gem { background: var(--b); }
-.card[data-rarity='epic'] .c-gem { background: var(--p); }
-.card[data-rarity='legendary'] .c-gem { background: var(--y); }
+.card[data-rarity='legendary'] .c-gem,
+.card[data-rarity='special'] .c-gem { display: block; }
+.card[data-rarity='rare'] .c-gem { --gem: var(--b); }
+.card[data-rarity='epic'] .c-gem { --gem: var(--p); }
+.card[data-rarity='legendary'] .c-gem { --gem: var(--y); }
+.card[data-rarity='special'] .c-gem { --gem: var(--k); }
 .card[data-rarity='legendary'] { box-shadow: var(--sh) var(--sh) 0 var(--p); }
-.card[data-rarity='special'] .c-gem { background: var(--k); }
 
 /* cost lowered by a perk (Budget Cut) */
 .card .c-cost.cheap { color: var(--green); }
