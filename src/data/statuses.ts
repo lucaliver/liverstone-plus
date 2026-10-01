@@ -12,7 +12,7 @@ const LANE_WINDOW = 4;
 /** Chill Out: seconds between two cards. */
 const CHILL_GAP = 2;
 /** Micromanagement: seconds without playing a card before he cuts in. */
-const IDLE_LIMIT = 2;
+const IDLE_LIMIT = 3;
 /** Card colours, by index (a status's free number `e` remembers one). */
 const CATEGORIES: CardCategory[] = ['attack', 'defense', 'utility', 'curse'];
 /** Golden Parachute: the share of its max HP the enemy is back on its feet with, the Block it retires with and the Strength it gains. */

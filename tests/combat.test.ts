@@ -910,11 +910,11 @@ describe('combat engine', () => {
       expect(c.hero.maxMana).toBe(3);
     });
 
-    it('Micromanager: standing still for 2 seconds brings an instant hit', () => {
+    it('Micromanager: standing still for 3 seconds brings an instant hit', () => {
       const c = vs('micromanager');
       c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
       const hp = c.hero.hp;
-      run(c, 2.1);
+      run(c, 3.1);
       expect(c.hero.hp).toBeLessThan(hp);
       // Playing cards keeps him off your back.
       const after = c.hero.hp;
@@ -988,12 +988,12 @@ describe('pop culture cards', () => {
     return { c, uid: c.belt[c.belt.length - 1].card.uid };
   };
 
-  it("Take Credit: Block for you, and half the enemy's Block becomes yours", () => {
+  it("Take Credit: Block for you, and most of the enemy's Block becomes yours", () => {
     const { c, uid } = ready('mrBurnsEmpire');
     c.enemy.block = 20;
     c.playCard(uid);
-    expect(c.enemy.block).toBe(10);
-    expect(c.hero.block).toBe(CARDS.mrBurnsEmpire.vals[0] + 10);
+    expect(c.enemy.block).toBe(4);
+    expect(c.hero.block).toBe(CARDS.mrBurnsEmpire.vals[0] + 16);
   });
 
   it('Team Change pins the cards on the belt where they are; new cards ride past them', () => {
@@ -1032,14 +1032,21 @@ describe('pop culture cards', () => {
     expect(c.windCard(uid)).toBe(false);
   });
 
-  it('Payday Loan hits hard and shuffles a Debt in; the Debt bites harder every time it slips off the belt', () => {
+  it('Payday Loan hits hard, costs HP and shuffles a First Aid Kit in', () => {
     const { c, uid } = ready('paydayLoan');
     c.belt.find((b) => b.card.uid === uid)!.card.passed = true;
     c.hero.hp = c.hero.maxHp = 500;
     c.playCard(uid);
     expect(c.enemy.maxHp - c.enemy.hp).toBe(CARDS.paydayLoan.vals[0]);
+    expect(500 - c.hero.hp).toBe(CARDS.paydayLoan.vals[1]);
+    expect(c.draw.some((x) => x.id === 'firstAidKit')).toBe(true);
+  });
+
+  it('Debt bites harder every time it slips off the belt', () => {
+    const { c } = ready('paydayLoan');
+    c.hero.hp = c.hero.maxHp = 500;
+    c.addTempCard('debt', 'draw');
     const debt = c.draw.find((x) => x.id === 'debt')!;
-    expect(debt).toBeDefined();
     const [bite, more] = CARDS.debt.vals;
     c.belt.length = 0;
     c.belt.push({ card: debt, pos: EXPIRE_POS, row: 0 });
@@ -1744,8 +1751,8 @@ describe('relics', () => {
 describe('act 3 rules', () => {
   it('Rate Limit caps every hit of the hero, but not the small ones', () => {
     const c = setup({ enemy: ENEMIES.rateLimiter });
-    expect(c.previewHeroDamage(30, null)).toBe(7);
-    expect(c.previewHeroDamage(5, null)).toBe(5);
+    expect(c.previewHeroDamage(30, null)).toBe(4);
+    expect(c.previewHeroDamage(3, null)).toBe(3);
   });
 
   it('Microsleep: the enemy dozes off after its awake spell, stunned and vulnerable', () => {

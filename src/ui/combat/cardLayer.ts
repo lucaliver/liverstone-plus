@@ -183,7 +183,7 @@ export function createCardLayer(v: CombatView): CardLayer {
         const card = findCard(uid);
         cancelDrag();
         if (!card) return;
-        // In a blackout the cards can't be read, not even up close.
+        // In a blackout what the cards do can't be read, not even up close.
         if (combat.has('hero', 'blackout')) {
           v.toast(t('combat.blackout'));
           return;

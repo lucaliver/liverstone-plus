@@ -651,8 +651,8 @@ test('lost and found: three relics, keeping one', async ({ page }) => {
   await page.getByRole('button', { name: /start shift/i }).click();
   const floor = await roomFloor(page, 'lostFound');
   await page.getByRole('button', { name: new RegExp(`enter floor ${floor}`, 'i') }).click();
-  await expect(page.locator('.rest-options .option')).toHaveCount(3);
-  await page.locator('.rest-options .option').nth(1).click();
+  await expect(page.locator('.relic-row .relic-card')).toHaveCount(3);
+  await page.locator('.relic-row .relic-card').nth(1).click();
   await expect(page.locator('.node.open').first()).toBeVisible();
   expect(await page.evaluate('window.__game.run.relics.length')).toBe(1);
 });

@@ -406,7 +406,10 @@ export function photocopyCard(run: RunState, uid: number): void {
 }
 
 /** HP a Break Room rest would heal now. */
-export const restHeal = (run: RunState): number => Math.min(run.maxHp - run.hp, Math.round(run.maxHp * CONFIG.restHeal));
+export const restHeal = (run: RunState): number => {
+  const missing = run.maxHp - run.hp;
+  return Math.min(missing, Math.round(run.maxHp * CONFIG.restHeal + missing * CONFIG.restHealMissing));
+};
 
 export function rest(run: RunState): number {
   const amount = restHeal(run);

@@ -3,11 +3,12 @@ import { sfx } from '../../audio/sfx';
 import { RELICS } from '../../data/relics';
 import { gainRelic, rollRelics, type RunState } from '../../game/run';
 import type { Screen } from '../app';
-import { h } from '../dom';
+import { h, onTapOrHold } from '../dom';
 import { icon } from '../art/icons';
 import { CARD_SHOW_MS, playRelic } from '../components/cardShow';
 import { motes } from '../components/decor';
-import { closeRoom, roomOption } from '../components/room';
+import { openInfo } from '../components/modals';
+import { closeRoom } from '../components/room';
 import { runHud } from './journey';
 
 /** Lost & Found: three relics nobody came back for; the player keeps one. */
@@ -24,15 +25,26 @@ export function lostFoundScreen(run: RunState, onDone: () => void): Screen {
     }),
     h(
       'div',
-      { class: 'rest-options' },
-      ...rollRelics(run).map((id) =>
-        roomOption(RELICS[id].art, t(`relic.${id}.name`), t(`relic.${id}.d`, { n: RELICS[id].n }), false, () => {
-          sfx('tap');
-          gainRelic(run, id);
-          playRelic(el, id);
-          closeRoom(el, onDone, CARD_SHOW_MS);
-        }),
-      ),
+      { class: 'relic-row' },
+      ...rollRelics(run).map((id) => {
+        const text = t(`relic.${id}.d`, { n: RELICS[id].n });
+        const card = h('button', {
+          class: `relic-card ${RELICS[id].rarity}`,
+          html: `<b>${t(`relic.${id}.name`)}</b>${icon(RELICS[id].art)}<span>${text}</span>`,
+        });
+        // Tap = keep it, hold = read all of it (the card shows only the first lines).
+        onTapOrHold(
+          card,
+          () => {
+            sfx('tap');
+            gainRelic(run, id);
+            playRelic(el, id);
+            closeRoom(el, onDone, CARD_SHOW_MS);
+          },
+          () => openInfo({ icon: RELICS[id].art, title: t(`relic.${id}.name`), desc: text }),
+        );
+        return card;
+      }),
     ),
   );
   return { el };

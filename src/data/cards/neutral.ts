@@ -442,19 +442,20 @@ export const neutralCards: CardDef[] = [
   },
   {
     id: 'paydayLoan',
-    face: '{dmg:0}|{addCard}',
+    face: '{dmg:0}|{hp:1}|{addCard}',
     cls: 'neutral',
     type: 'attack',
     rarity: 'epic',
     cost: 1,
-    vals: [30],
-    upVals: [40],
+    vals: [30, 20],
+    upVals: [40, 20],
     keywords: ['exhaust', 'pending'],
     art: 'coinStack',
-    // Money now, and the bill comes due: a Debt goes into your draw pile.
+    // Money now, paid in blood; the shop's first aid kit goes into your draw pile to patch you up later.
     play: (c, v) => {
       c.hit(v[0]);
-      c.addTempCard('debt', 'draw');
+      c.loseHp(v[1]);
+      c.addTempCard('firstAidKit', 'draw');
     },
   },
   {
@@ -464,8 +465,8 @@ export const neutralCards: CardDef[] = [
     type: 'skill',
     rarity: 'common',
     cost: 1,
-    vals: [3, 50],
-    upVals: [5, 75],
+    vals: [4, 80],
+    upVals: [6, 100],
     art: 'mrBurnsEmpire',
     // Your idea, your Block: the enemy's own is yours now.
     play: (c, v) => {
@@ -625,7 +626,7 @@ export const curseCards: CardDef[] = [
     onExpire: (c, v) => void c.damage('enemy', 'hero', v[0], { raw: true, kind: 'fire' }, 'dot'),
   },
   {
-    // Payday Loan's: nobody wants to pay for it, and every time it slips off the belt it bites, harder than the last.
+    // Nobody wants to pay for it, and every time it slips off the belt it bites, harder than the last.
     id: 'debt',
     face: '{?exit}{boom:0}|{grow:1}',
     cls: 'curse',

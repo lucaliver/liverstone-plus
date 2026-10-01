@@ -185,6 +185,49 @@
 .option:disabled { opacity: 0.4; box-shadow: none; }
 .option .pico { font-size: 52px; color: var(--p); --ink2: var(--y); }
 .option:last-child .pico { color: var(--b); }
+/* Lost & Found: the three relics side by side, like small cards; the text is clipped, a long press reads it all */
+.relic-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.relic-card {
+  color: var(--k);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px 6px 10px;
+  text-align: center;
+  background: var(--paper);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
+  animation: option-in 0.24s steps(3) 0.3s backwards;
+}
+.relic-card:nth-child(2) { animation-delay: 0.45s; }
+.relic-card:nth-child(3) { animation-delay: 0.6s; }
+.relic-card:active:not(:disabled) { transform: translate(var(--off), var(--off)); box-shadow: none; }
+.relic-card:disabled { opacity: 0.4; box-shadow: none; }
+.relic-card .pico { font-size: 44px; color: var(--p); --ink2: var(--y); }
+.relic-card:last-child .pico { color: var(--b); }
+.relic-card b {
+  font-family: var(--font-display);
+  font-size: 12px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.relic-card span {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+}
 /* an odd option out takes the whole last row (Lost & Found: three relics) */
 .option:nth-child(2n + 1):last-child { grid-column: 1 / -1; }
 .option b {

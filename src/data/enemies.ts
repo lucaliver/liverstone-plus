@@ -454,20 +454,18 @@ const defs: EnemyDef[] = [
     ],
   },
   {
-    // Cuts in with "any updates?" whenever you stop playing for a moment.
+    // Cuts in with "any updates?" whenever you stop playing for a moment. Nothing else to learn: one rule, two specials.
     id: 'micromanager',
     act: 2,
     tier: 'boss',
-    hp: 200,
-    block: 30,
+    hp: 170,
+    block: 20,
     art: 'micromanager',
-    main: atk('anyUpdates', 8, 5),
+    main: atk('anyUpdates', 7, 5),
     every: 2,
     specials: [
-      { id: 'topPriority', intent: 'curse', windup: 6, curse: [{ id: 'priorityTask', n: 1, to: 'belt' }], status: [gainStrength] },
       { id: 'quickQuestion', intent: 'curse', windup: 6, curse: [{ id: 'quickFavour', n: 1, to: 'draw' }], status: [gainStrength] },
-      { id: 'allHands', intent: 'curse', windup: 6, curse: [{ id: 'lockout', n: 1, to: 'belt' }], status: [gainStrength] },
-      atk('annualReview', 22, 8, { intent: 'charge' }),
+      atk('annualReview', 20, 8, { intent: 'charge' }),
     ],
     start: [{ id: 'micromanagement' }],
   },
@@ -501,7 +499,7 @@ const defs: EnemyDef[] = [
       { id: 'tooManyRequests', intent: 'debuff', windup: 6, status: [gainStrength, { id: 'slowdown', t: 6, target: 'hero' }] },
       atk('banHammer', 16, 9, { intent: 'charge' }),
     ],
-    start: [{ id: 'rateLimit', v: 7 }],
+    start: [{ id: 'rateLimit', v: 4 }],
   },
   {
     // Keep it moving: only the card at the front of its row can be played.

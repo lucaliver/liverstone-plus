@@ -1,14 +1,22 @@
 # TASKS
 
-- [x] implementa una nuova carta speciale che devi trascinare in giro sullo schermo per potenziarla
+- [x] nella schermata di lost and found i 3 relics dovrebbero essere in riga e dovrebbero apparire come simil-carte con descrizione in breve (e poi facendo long press puoi leggere tutto l'effetto) ; inoltre attento a non far andare i testi in bassp fuori schermo
 
-- [x] implementa un nuovo nemico "Sick coworker": come mossa speciale mette "virus" alle tue carte; le carte con virus costano 1 in più e quando una carta con virus è sulla belt, dopo 1sec infetta la carta successiva (e così via)
+- [x] payday loan: dovrebbe fare 30 danni al nemico e perdere 20hp propri + mescolare una cura nel mazzo
 
-- [x] un nuovo nemico: che aggiunge ogni tot ruggine sopra la belt; affianco a lui c'è uno straccio, puoi trascinarlo sopra la belt per pulirla (con più passate); la ruggine rallenta la belt e se è troppa la ferma proprio
+- [x] durante il blackout del janitor: si dovrebbe vedere lo sfondo dell'art delle carte e il titolo (in pratica solo l'effetto è nascosto)
+
+- [x] micromanager: è troppo forte e incasinato, sistemalo
+
+- [x] la cura nella breakroom calcolala anche in base alla missing hp
+
+- [x] mr burns empire: portiamolo a 4 shield + ruba 80%
+
+- [x] "rate limit" effect: portalo a 4
+
+- [ ] nell'handbook aggiungi tab per le relics (o come si chiamano)
 
 # NEXT STEPS (ignore for now):
-
-FUTURE:
 
 > aggiungere modificatori difficoltà run dopo la vittoria
 
@@ -18,7 +26,7 @@ FUTURE:
 
 > Desktop. Chi apre il gioco su itch.io spesso è al computer. Controlla che la colonna verticale sia centrata e con una cornice decente, che il mouse funzioni bene e magari aggiungi qualche tasto rapido (spazio = pausa).
 
-> URL. Il sito vive su liverstone-plus: per il lancio servono un nome coerente (itch.io/punchcard o un dominio) e un'immagine og aggiornata.
+> URL. Il sito vive su liverstone- [ ]plus: per il lancio servono un nome coerente (itch.io/punchcard o un dominio) e un'immagine og aggiornata.
 
 > Feedback. Un link "Send feedback" in Impostazioni. Se vuoi dei dati, GoatCounter o Plausible non usano cookie (niente banner GDPR) e ti dicono dove la gente abbandona.
 

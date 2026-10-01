@@ -296,15 +296,9 @@
 /* Inflation: the cost went up for this fight */
 .card .c-cost.taxed { color: var(--paper); background: var(--red); }
 
-/* Blackout: every card on the belt and in the sleeve turns black; only the art and the cost show */
-.combat.blackout .belt-cards .card,
-.combat.blackout .sleeve .card { background: var(--k); --band: var(--k); }
-.combat.blackout .belt-cards .card :is(.c-name, .c-face, .c-tags, .c-gem, .rule-badge),
-.combat.blackout .sleeve .card :is(.c-name, .c-face, .c-tags, .c-gem, .rule-badge) { visibility: hidden; }
-.combat.blackout .belt-cards .card .c-art,
-.combat.blackout .sleeve .card .c-art { background: var(--k); }
-.combat.blackout .belt-cards .card .c-art .pico,
-.combat.blackout .sleeve .card .c-art .pico { color: var(--paper); --ink2: var(--muted); }
+/* Blackout: the cards keep their art, name and cost, but their effect can't be read */
+.combat.blackout .belt-cards .card :is(.c-face, .c-tags, .rule-badge),
+.combat.blackout .sleeve .card :is(.c-face, .c-tags, .rule-badge) { visibility: hidden; }
 
 /* a belt row an enemy keeps shut: barred with hazard stripes; when it opens, the shutter grinds slowly off towards the
    exit (the stripes crawl as it goes), so the row's first cards show first */

@@ -64,8 +64,9 @@ export const CONFIG = {
   floorDmg: 0.04,
   /** Chance that a floor of the map swaps its two rooms between the lanes. */
   laneSwap: 0.3,
-  /** Break Room: the share of max HP a rest heals. Skipping a card reward: the max HP it pays. */
-  restHeal: 0.35,
+  /** Break Room: a rest heals this share of max HP plus this share of the HP missing. Skipping a card reward: the max HP it pays. */
+  restHeal: 0.25,
+  restHealMissing: 0.25,
   skipMaxHp: 3,
   /** Each time a card reward is skipped for max HP, the next skip pays this much more. */
   skipMaxHpStep: 2,
