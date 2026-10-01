@@ -360,9 +360,7 @@
   background: var(--k);
   border-left: 2px solid var(--void);
 }
-.threat .t-next .pico { font-size: 18px; color: var(--y); --ink2: var(--p); }
-.threat .t-next[data-intent='charge'] .pico,
-.threat .t-next[data-intent='attack'] .pico { color: var(--p); --ink2: var(--y); }
+.threat .t-next .pico { font-size: 18px; color: var(--tone-hi, var(--y)); --ink2: var(--k); }
 .threat .t-time {
   flex: none;
   width: 46px;
@@ -371,20 +369,9 @@
   font-size: 20px;
   border-left: 2px solid var(--void);
 }
-.threat[data-intent='attack'],
-.threat[data-intent='charge'] { --t-ink: var(--red); --t-ink2: var(--intent-charge-hi); }
-.threat[data-intent='attack'] .t-ico,
-.threat[data-intent='charge'] .t-ico { color: var(--red); }
-.threat[data-intent='defend'] .t-ico { color: var(--shield); }
-.threat[data-intent='buff'] .t-ico,
-.threat[data-intent='curse'] .t-ico { color: var(--purple); }
-.threat[data-intent='curse'],
-.threat[data-intent='buff'] { --t-ink: var(--intent-buff); --t-ink2: var(--intent-buff-hi); }
-.threat[data-intent='defend'] { --t-ink: var(--shield); --t-ink2: var(--shield-hi); }
-.threat[data-intent='steal'] { --t-ink: var(--intent-steal); --t-ink2: var(--y); }
-.threat[data-intent='idle'] { --t-ink: var(--muted); --t-ink2: var(--intent-idle-hi); }
-.threat[data-intent='absorb'] { --t-ink: var(--intent-absorb); --t-ink2: var(--intent-absorb-hi); }
-.threat[data-intent='absorb'] .t-ico { color: var(--intent-absorb-lo); }
+/* the bar and its icon take the move's tone (set by the HUD from what the move does); an idle move stays grey */
+.threat { --t-ink: var(--tone, var(--muted)); --t-ink2: var(--tone-hi, var(--intent-idle-hi)); }
+.threat .t-ico { color: var(--t-ink); }
 .threat[data-intent='charge'] { background-color: var(--y); }
 .threat.pop { animation: pop 0.2s steps(2); }
 @keyframes pop {
@@ -547,8 +534,7 @@
   border: 2px solid var(--k);
 }
 .status .pico { font-size: 26px; }
-.status.good .pico { color: var(--b); --ink2: var(--y); }
-.status.bad .pico { color: var(--p); --ink2: var(--y); }
+.status .pico { color: var(--tone, var(--k)); --ink2: var(--y); }
 /* a status drawn as a bar: the box is a dark slot, the coloured fill (the status's tone) drains left to right as its timer runs out */
 .status.draining { position: relative; min-width: 56px; overflow: hidden; color: var(--paper); background: var(--bg2); }
 .status.draining > * { position: relative; }
@@ -556,7 +542,7 @@
 .status.draining .drain {
   position: absolute;
   inset: 0;
-  background: var(--bar-ink, var(--b));
+  background: var(--tone, var(--b));
   transform: scaleX(var(--fill, 0));
   transform-origin: left;
 }
@@ -564,10 +550,6 @@
 @keyframes drain-low {
   50% { opacity: 0.35; }
 }
-.status[data-tone='green'] { --bar-ink: var(--green); }
-.status[data-tone='red'] { --bar-ink: var(--red); }
-.status[data-tone='purple'] { --bar-ink: var(--intent-buff); }
-.status[data-tone='blue'] { --bar-ink: var(--mana); }
 /* an enemy's half-HP trait: waiting (muted), then lit once it has kicked in */
 .status.half .pico { color: var(--muted); --ink2: transparent; }
 .status.half.fired { background: var(--p); }

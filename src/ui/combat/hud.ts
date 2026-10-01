@@ -7,7 +7,7 @@ import type { MoveDef, Side } from '../../game/types';
 import { icon } from '../art/icons';
 import { keywordHtml } from '../components/cardView';
 import { openInfo } from '../components/modals';
-import { HALF_ICON, moveIcon } from '../components/moveText';
+import { HALF_ICON, moveIcon, moveTone } from '../components/moveText';
 import { h, onPress, setHtml, setText, toggle } from '../dom';
 import { type CombatView, PASSIVE_ICON } from './view';
 
@@ -168,12 +168,18 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     return '';
   };
 
+  const setTone = (el: HTMLElement, tone: string | null): void => {
+    if (tone) el.dataset.tone = tone;
+    else delete el.dataset.tone;
+  };
+
   const renderIntent = (): void => {
     const e = combat.enemy;
     const m = e.move;
     if (m !== lastMove) {
       lastMove = m;
       r.intent.dataset.intent = m.intent;
+      setTone(r.intent, moveTone(m));
       setHtml(r.intentIco, icon(moveIcon(m)));
       setText(r.intentLbl, t(`move.${m.id}`));
       v.retrigger(r.intent, 'pop');
@@ -191,6 +197,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
       r.intentNext.hidden = !isMain;
       if (isMain && special) {
         r.intentNext.dataset.intent = special.intent;
+        setTone(r.intentNext, moveTone(special));
         r.intentNext.innerHTML = `${icon(moveIcon(special))}<b>${e.mainsLeft + 1}</b>`;
         r.intentNext.title = `${t('combat.afterAttacks', { n: e.mainsLeft + 1 })} ${t(`move.${special.id}`)}`;
       }

@@ -13,6 +13,7 @@ import { VALUES } from '../src/data/values';
 import { PERK_LIST } from '../src/data/perks';
 import { STATUS_ORDER, STATUSES } from '../src/data/statuses';
 import { GLYPHS, TAG_ICON } from '../src/ui/components/cardView';
+import { moveTone } from '../src/ui/components/moveText';
 import { ICONS, INTENT_ICON } from '../src/ui/art/icons';
 import { INK_HEX } from '../src/ui/art/riso';
 import { HEXES } from '../src/data/hexes';
@@ -187,6 +188,23 @@ describe('colours', () => {
       const hexes = readFileSync(`src/styles/${file}`, 'utf8').match(/#[0-9a-fA-F]{3,8}\b/g);
       expect(hexes, `${file} has raw colours: use a token`).toBeNull();
     }
+  });
+
+  it('every status has a tone, and every tone has its two inks and its data-tone rule in tokens.css', () => {
+    const tones = ['red', 'green', 'purple', 'blue', 'teal', 'amber', 'mint'];
+    for (const id of STATUS_ORDER) expect(tones, id).toContain(STATUSES[id].tone);
+    for (const tone of tones) {
+      expect(tokens, tone).toContain(`--tone-${tone}:`);
+      expect(tokens, tone).toContain(`--tone-${tone}-hi:`);
+      expect(tokens, tone).toContain(`[data-tone='${tone}']`);
+    }
+  });
+
+  it('an enemy move takes the colour of what it does', () => {
+    expect(moveTone(ENEMIES.toxicCoworker.main)).toBe('green');
+    expect(moveTone(ENEMIES.seniorBoomer.main)).toBe('red');
+    expect(moveTone(ENEMIES.hrOrientationVideo.specials[0])).toBe('teal');
+    for (const e of ENEMY_LIST) for (const m of enemyMoves(e)) if (m.intent !== 'idle') expect(moveTone(m), `${e.id}.${m.id}`).not.toBeNull();
   });
 
   it('every inks-with-transparency token starts with its base ink', () => {

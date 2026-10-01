@@ -107,11 +107,7 @@
 }
 .foe-moves li:last-child { border-bottom: 0; }
 .foe-moves .mi { font-size: 22px; --ink2: var(--y); }
-.foe-moves li[data-intent='attack'] .mi,
-.foe-moves li[data-intent='charge'] .mi { color: var(--p); }
-.foe-moves li[data-intent='defend'] .mi { color: var(--shield); }
-.foe-moves li[data-intent='curse'] .mi,
-.foe-moves li[data-intent='buff'] .mi { color: var(--purple); }
+.foe-moves .mi { color: var(--tone, var(--muted)); }
 .foe-moves .mi { flex: none; width: 26px; }
 .foe-moves .mn { flex: 1 0 auto; }
 .foe-moves .fx { white-space: normal; }

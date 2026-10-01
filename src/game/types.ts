@@ -151,15 +151,16 @@ export interface CardDef {
 export type StatusKind = 'timed' | 'stacks' | 'dot';
 
 /** The ink a status or keyword is written in: poison and life green, fire and force red, control purple, the rest blue. */
-export type Tone = 'green' | 'red' | 'purple' | 'blue';
+/** The colour of what something does (`--tone-*` in tokens.css): a status, a keyword, an enemy move. */
+export type Tone = 'green' | 'red' | 'purple' | 'blue' | 'teal' | 'amber' | 'mint';
 
 export interface StatusDef {
   id: string;
   kind: StatusKind;
   good: boolean;
   icon: string;
-  /** Ink of its name in texts and move chips; without one a keyword is blue and a chip follows `good`. */
-  tone?: Tone;
+  /** Ink of its chip, its name in texts and move chips, from what it does: poison green, force red, defence teal, speed and time amber, rules and control purple, mana and tech blue. */
+  tone: Tone;
   /** How an enemy move's chip names it: `icon` = just the icon, `short` = the `status.<id>.short` string; by default the full name. */
   chip?: 'icon' | 'short';
   /** Timed statuses that also stack show their stacks instead of the seconds left. */

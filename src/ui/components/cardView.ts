@@ -3,7 +3,7 @@ import { CARDS, cardCategory, cardCostOf, cardKeywordsOf, cardValsOf } from '../
 import { PERKS } from '../../data/perks';
 import { STATUSES } from '../../data/statuses';
 import type { Combat } from '../../game/combat';
-import type { CardInst } from '../../game/types';
+import type { CardInst, Tone } from '../../game/types';
 import { h } from '../dom';
 import { icon } from '../art/icons';
 
@@ -128,10 +128,13 @@ export function cardFace(card: CardInst & { bonus?: number }, combat?: Combat | 
   return lines.join('');
 }
 
+/** Keywords that are not statuses but still have a colour: Block is teal. */
+const KEYWORD_TONE: Record<string, Tone> = { block: 'teal' };
+
 /** Rules text with its `[keyword]` marks as bold names in the keyword's colour (`tone` in statuses.ts). */
 export function keywordHtml(text: string): string {
   return text.replace(/\[(\w+)\]/g, (_, kw: string) => {
-    const tone = STATUSES[kw]?.tone;
+    const tone = STATUSES[kw]?.tone ?? KEYWORD_TONE[kw];
     return `<b class="kw"${tone ? ` data-tone="${tone}"` : ''}>${t(`kw.${kw}`)}</b>`;
   });
 }

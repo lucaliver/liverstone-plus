@@ -21,7 +21,5 @@
   font-weight: 700;
   color: var(--b);
 }
-/* keywords keep the colour of what they are (`tone` in statuses.ts): poison green, fire and force red, control purple, the rest blue */
-.kw[data-tone='green'] { color: var(--green); }
-.kw[data-tone='red'] { color: var(--red); }
-.kw[data-tone='purple'] { color: var(--purple); }
+/* keywords keep the colour of what they are (`tone` in statuses.ts); the rest are blue */
+.kw[data-tone] { color: var(--tone); }

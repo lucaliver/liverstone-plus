@@ -388,29 +388,38 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     el,
     enter() {
       layout();
-      // The way in: seen from the corridor, an office double door with the enemy's portrait and name on the glass;
-      // three knocks, the latch, the doors swing open on their hinges onto the lit room, and we walk through into the fight.
+      // The way in: seen from the corridor, one office door with the enemy framed on it above a brass plate; three knocks, the latch,
+      // the leaf swings open on its hinge onto the lit room, and we walk through into the fight.
       const node = currentNode(run);
       const door = h(
         'div',
         { class: 'office-door', 'aria-hidden': 'true' },
+        h('div', { class: 'door-wainscot' }),
+        h('div', { class: 'door-floor' }),
+        h('i', { class: 'door-sconce l', html: '<i></i>' }),
+        h('i', { class: 'door-sconce r', html: '<i></i>' }),
         h(
           'div',
-          { class: 'door-frame' },
-          h('div', { class: 'door-light' }),
+          { class: 'door-way' },
+          h('div', { class: 'door-room' }),
           h(
             'div',
-            { class: 'door-half l' },
+            { class: 'door-leaf' },
+            h('div', { class: 'door-pic' }, h('div', { class: 'door-frame' }, h('div', { class: 'door-art', html: creature(combat.enemy.def.art) }))),
             h(
               'div',
-              { class: 'door-glass' },
-              h('div', { class: 'door-portrait', html: creature(combat.enemy.def.art) }),
+              { class: 'door-plate' },
               h('b', null, t(`enemy.${combat.enemy.def.id}.name`)),
               h('span', null, t('common.floorOf', { a: node.act, n: node.floor, total: totalFloors(run) })),
             ),
+            h('div', { class: 'door-kick' }),
+            h('i', { class: 'door-hinge a' }),
+            h('i', { class: 'door-hinge b' }),
+            h('i', { class: 'door-hinge c' }),
+            h('i', { class: 'door-knob' }),
           ),
-          h('div', { class: 'door-half r' }, h('div', { class: 'door-glass' })),
         ),
+        h('div', { class: 'door-mat' }),
       );
       door.addEventListener('animationend', (e) => {
         if (e.target !== door) return;

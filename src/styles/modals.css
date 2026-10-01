@@ -363,18 +363,10 @@
 .fx-bad .pico { color: var(--p); }
 .fx-good { color: var(--green); }
 .fx-good .pico { color: var(--green); }
-.fx[data-tone='green'],
-.fx[data-tone='green'] .pico { color: var(--green); }
-.fx[data-tone='red'],
-.fx[data-tone='red'] .pico { color: var(--red); }
-.fx[data-tone='purple'],
-.fx[data-tone='purple'] .pico { color: var(--purple); }
-.fx[data-tone='blue'],
-.fx[data-tone='blue'] .pico { color: var(--b); }
+.fx[data-tone],
+.fx[data-tone] .pico { color: var(--tone); }
 .fx-curse { color: var(--purple); }
 .fx-curse .pico { color: var(--purple); }
-.fx-steal { color: var(--intent-steal-lo); }
-.fx-steal .pico { color: var(--intent-steal-lo); }
 
 /* card anatomy: a sample card with numbered spots, then the legend */
 .anatomy {

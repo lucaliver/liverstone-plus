@@ -121,7 +121,7 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
       case 'status': {
         const def = STATUSES[e.id];
         const p = v.pointOf(e.target);
-        floatText(p.x, p.y - 36, t(`status.${e.id}`), `status ${def.good ? 'good' : 'bad'}`);
+        floatText(p.x, p.y - 36, t(`status.${e.id}`), 'status').dataset.tone = def.tone;
         sfx(def.good ? 'status' : 'debuff');
         if (def.burst) burst(def.burst.kind, p.x, p.y, def.burst.n);
         break;
@@ -180,7 +180,8 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         } else {
           const p = v.heroPoint();
           burst('mana', p.x, p.y, 10);
-          sfx('stash');
+          v.retrigger(r.portrait, 'gain');
+          sfx('deckAdd');
         }
         break;
       }

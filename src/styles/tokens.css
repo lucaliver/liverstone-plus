@@ -39,16 +39,23 @@
   --cat-utility-dot: #f0c800;
   --cat-curse: #bfe38a;
   --cat-curse-dot: #5aa04a;
-  /* Enemy intents (the threat bar): a base ink and a lighter one, where they differ from the plain inks */
-  --intent-charge-hi: #ff8a2a;
-  --intent-buff: #9a7ae0;
-  --intent-buff-hi: #b89af0;
-  --intent-steal: #d09000;
-  --intent-steal-lo: #a07000;
+  /* Tones, the colour of what a status, a keyword or an enemy move does (`Tone` in types.ts): the ink, then a light partner for bar stripes and dark grounds */
+  --tone-red: var(--red);
+  --tone-red-hi: #ff8a2a;
+  --tone-green: var(--green);
+  --tone-green-hi: #7fd08e;
+  --tone-purple: var(--purple);
+  --tone-purple-hi: #9a7ae0;
+  --tone-blue: var(--b);
+  --tone-blue-hi: var(--mana-hi);
+  --tone-teal: var(--shield);
+  --tone-teal-hi: var(--shield-hi);
+  --tone-amber: var(--cat-utility-ink);
+  --tone-amber-hi: var(--y);
+  --tone-mint: #1a9a80;
+  --tone-mint-hi: #8ae8d0;
+  /* What a bar or a chip shows when nothing is said (an idle move) */
   --intent-idle-hi: #9a94ac;
-  --intent-absorb: #1cc0a0;
-  --intent-absorb-hi: #8ae8d0;
-  --intent-absorb-lo: #1a9a80;
   /* Inks with transparency (there is no color-mix for Safari 16): the base ink, then its alpha in percent */
   --void-a77: #0c0818c4;
   --void-a80: #0c0818cc;
@@ -61,11 +68,11 @@
   --white-a6: #ffffff10;
   --white-a60: #ffffff99;
   /* One-off colours of single effects and props */
-  --wallpaper: #2a2040;
-  --wallpaper-stripe: #332850;
+  --door-wood: #6a3d2b;
+  --door-panel: #7e4b34;
+  --door-shade: #3f2318;
+  --door-hi: #9a6244;
   --glow-dot: #fff3a0;
-  --plank: #3a2a3a;
-  --plank-edge: #2a1e2a;
   --paper-dot: #c8bca4;
   --paper-dot-light: #d4c8b0;
   --neon-off: #4a4260;
@@ -141,6 +148,15 @@
   --app-w: min(100vw, 520px);
   color-scheme: light;
 }
+
+/* Anything tagged with a tone takes its two inks: `var(--tone)` is the ink, `var(--tone-hi)` its light partner */
+[data-tone='red'] { --tone: var(--tone-red); --tone-hi: var(--tone-red-hi); }
+[data-tone='green'] { --tone: var(--tone-green); --tone-hi: var(--tone-green-hi); }
+[data-tone='purple'] { --tone: var(--tone-purple); --tone-hi: var(--tone-purple-hi); }
+[data-tone='blue'] { --tone: var(--tone-blue); --tone-hi: var(--tone-blue-hi); }
+[data-tone='teal'] { --tone: var(--tone-teal); --tone-hi: var(--tone-teal-hi); }
+[data-tone='amber'] { --tone: var(--tone-amber); --tone-hi: var(--tone-amber-hi); }
+[data-tone='mint'] { --tone: var(--tone-mint); --tone-hi: var(--tone-mint-hi); }
 
 [hidden] {
   display: none !important;

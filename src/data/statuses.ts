@@ -72,24 +72,25 @@ const buildPressure = everySecond((c, side, n) => {
 });
 
 const defs: StatusDef[] = [
-  { id: 'strength', kind: 'stacks', good: true, tone: 'red', chip: 'icon', icon: 'muscle', strength: true },
+  { id: 'strength', tone: 'red', kind: 'stacks', good: true, chip: 'icon', icon: 'muscle', strength: true },
   // Workaholic: `v` Strength, for a while only.
-  { id: 'workaholic', kind: 'timed', good: true, tone: 'red', icon: 'muscle', strength: true },
-  { id: 'brownNosing', kind: 'timed', good: true, icon: 'crystalUp', regenMul: 2 },
-  { id: 'spellPower', kind: 'stacks', good: true, icon: 'wand' },
-  { id: 'thorns', kind: 'stacks', good: true, icon: 'thorns' },
-  { id: 'dodge', kind: 'timed', good: true, icon: 'dodge', immune: true },
-  { id: 'juggernaut', kind: 'stacks', good: true, icon: 'helm' },
-  { id: 'fortified', kind: 'timed', good: true, icon: 'fortress', holdsBlock: true },
-  { id: 'regen', kind: 'dot', good: true, tone: 'green', chip: 'short', icon: 'leaf', heals: true },
-  { id: 'overtime', kind: 'timed', good: true, icon: 'overtime' },
-  { id: 'parry', kind: 'timed', good: true, icon: 'crossed' },
-  { id: 'haste', kind: 'timed', good: true, icon: 'gauge', timeMul: 1.5, look: 'enraged' },
-  { id: 'rush', kind: 'timed', good: true, icon: 'speedCards', beltMul: CONFIG.beltRush },
+  { id: 'workaholic', tone: 'red', kind: 'timed', good: true, icon: 'muscle', strength: true },
+  { id: 'brownNosing', tone: 'blue', kind: 'timed', good: true, icon: 'crystalUp', regenMul: 2 },
+  { id: 'spellPower', tone: 'blue', kind: 'stacks', good: true, icon: 'wand' },
+  { id: 'thorns', tone: 'red', kind: 'stacks', good: true, icon: 'thorns' },
+  { id: 'dodge', tone: 'teal', kind: 'timed', good: true, icon: 'dodge', immune: true },
+  { id: 'juggernaut', tone: 'teal', kind: 'stacks', good: true, icon: 'helm' },
+  { id: 'fortified', tone: 'teal', kind: 'timed', good: true, icon: 'fortress', holdsBlock: true },
+  { id: 'regen', tone: 'green', kind: 'dot', good: true, chip: 'short', icon: 'leaf', heals: true },
+  { id: 'overtime', tone: 'red', kind: 'timed', good: true, icon: 'overtime' },
+  { id: 'parry', tone: 'red', kind: 'timed', good: true, icon: 'crossed' },
+  { id: 'haste', tone: 'amber', kind: 'timed', good: true, icon: 'gauge', timeMul: 1.5, look: 'enraged' },
+  { id: 'rush', tone: 'amber', kind: 'timed', good: true, icon: 'speedCards', beltMul: CONFIG.beltRush },
   // Work-Life Balance: every card played hits again (for v), until two cards of the same colour come one after the
   // other; `e` is the colour of the last one.
   {
     id: 'workLifeBalance',
+    tone: 'red',
     kind: 'stacks',
     good: true,
     icon: 'seesaw',
@@ -105,14 +106,15 @@ const defs: StatusDef[] = [
     },
   },
   // Autopilot (Severance): cards slipping off the belt play themselves when they can.
-  { id: 'autopilot', kind: 'timed', good: true, icon: 'autopilot', autoplay: true },
+  { id: 'autopilot', tone: 'blue', kind: 'timed', good: true, icon: 'autopilot', autoplay: true },
   // Root access (sudo): no rule can stop the hero's cards.
-  { id: 'rootAccess', kind: 'timed', good: true, icon: 'terminal', ignoresRules: true },
-  { id: 'multitasking', kind: 'timed', good: true, tone: 'purple', icon: 'bolt2', showStacks: true, span: CONFIG.multitaskingWindow },
-  { id: 'plague', kind: 'stacks', good: true, tone: 'green', icon: 'wrench' },
+  { id: 'rootAccess', tone: 'blue', kind: 'timed', good: true, icon: 'terminal', ignoresRules: true },
+  { id: 'multitasking', tone: 'purple', kind: 'timed', good: true, icon: 'bolt2', showStacks: true, span: CONFIG.multitaskingWindow },
+  { id: 'plague', tone: 'green', kind: 'stacks', good: true, icon: 'wrench' },
   // Slacking off (v = amount per second), until the hero plays another card.
   {
     id: 'bareMinimum',
+    tone: 'amber',
     kind: 'timed',
     good: true,
     icon: 'battery',
@@ -121,6 +123,7 @@ const defs: StatusDef[] = [
   },
   {
     id: 'outOfOffice',
+    tone: 'green',
     kind: 'timed',
     good: true,
     icon: 'sun',
@@ -129,16 +132,18 @@ const defs: StatusDef[] = [
   },
   {
     id: 'grindset',
+    tone: 'red',
     kind: 'timed',
     good: true,
     icon: 'rocket',
     tick: everySecond((c, side, _n, s) => void c.damage(side, side === 'hero' ? 'enemy' : 'hero', s.v, { kind: 'blunt' }, side)),
     onCardPlayed: endOnPlay('grindset'),
   },
-  { id: 'virulence', kind: 'stacks', good: true, tone: 'green', icon: 'biohazard' },
+  { id: 'virulence', tone: 'green', kind: 'stacks', good: true, icon: 'biohazard' },
   // Steel Toes: every attack played gives `v` Block.
   {
     id: 'steelToes',
+    tone: 'teal',
     kind: 'stacks',
     good: true,
     icon: 'shield',
@@ -156,14 +161,14 @@ const defs: StatusDef[] = [
     burst: { kind: 'fire', n: 10 },
     onAttack: (c, side, s) => void c.damage(side === 'enemy' ? 'hero' : 'enemy', side, s.v, { raw: true, ignoreBlock: true, kind: 'burn' }, 'dot'),
   },
-  { id: 'poison', kind: 'dot', good: false, tone: 'green', icon: 'drop' },
-  { id: 'weak', kind: 'timed', good: false, tone: 'purple', icon: 'broken', dealtMul: 0.75 },
-  { id: 'vulnerable', kind: 'timed', good: false, tone: 'red', icon: 'crack', takenMul: 1.5 },
+  { id: 'poison', tone: 'green', kind: 'dot', good: false, icon: 'drop' },
+  { id: 'weak', tone: 'purple', kind: 'timed', good: false, icon: 'broken', dealtMul: 0.75 },
+  { id: 'vulnerable', tone: 'red', kind: 'timed', good: false, icon: 'crack', takenMul: 1.5 },
   {
     id: 'chill',
+    tone: 'blue',
     kind: 'timed',
     good: false,
-    tone: 'blue',
     icon: 'snow',
     regenMul: 0.5,
     timeMul: 0.5,
@@ -182,16 +187,17 @@ const defs: StatusDef[] = [
     timeMul: 0,
     canPlay: (_c, side) => (side === 'hero' ? 'combat.stunned' : null),
   },
-  { id: 'hurry', kind: 'timed', good: false, tone: 'purple', icon: 'stopwatch', beltMul: CONFIG.beltHurry },
+  { id: 'hurry', tone: 'purple', kind: 'timed', good: false, icon: 'stopwatch', beltMul: CONFIG.beltHurry },
   // Emergency button: the belt stops dead.
-  { id: 'stalled', kind: 'timed', good: false, tone: 'purple', icon: 'pause', beltMul: 0 },
-  { id: 'crunch', kind: 'timed', good: false, tone: 'purple', icon: 'siren', beltMul: CONFIG.beltCrunch },
+  { id: 'stalled', tone: 'purple', kind: 'timed', good: false, icon: 'pause', beltMul: 0 },
+  { id: 'crunch', tone: 'purple', kind: 'timed', good: false, icon: 'siren', beltMul: CONFIG.beltCrunch },
   // Every card turns black: only the art and the cost are left to go by.
-  { id: 'blackout', kind: 'timed', good: false, tone: 'purple', icon: 'bulbOff' },
-  { id: 'slowdown', kind: 'timed', good: false, tone: 'purple', icon: 'cone', beltMul: CONFIG.beltSlow },
+  { id: 'blackout', tone: 'purple', kind: 'timed', good: false, icon: 'bulbOff' },
+  { id: 'slowdown', tone: 'purple', kind: 'timed', good: false, icon: 'cone', beltMul: CONFIG.beltSlow },
   // Enemy passives (permanent traits).
   {
     id: 'noRepeatsPolicy',
+    tone: 'purple',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -204,6 +210,7 @@ const defs: StatusDef[] = [
   },
   {
     id: 'meticulous',
+    tone: 'purple',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -217,16 +224,18 @@ const defs: StatusDef[] = [
   },
   {
     id: 'chillOut',
+    tone: 'purple',
     kind: 'stacks',
     good: true,
     passive: true,
     icon: 'lotus',
     canPlay: (c, side) => (side === 'enemy' && c.time - c.lastPlayedAt < CHILL_GAP ? 'combat.chillOut' : null),
   },
-  { id: 'spendingFreeze', kind: 'stacks', good: true, passive: true, icon: 'calculator', manaCap: SPENDING_FREEZE_CAP },
+  { id: 'spendingFreeze', tone: 'blue', kind: 'stacks', good: true, passive: true, icon: 'calculator', manaCap: SPENDING_FREEZE_CAP },
   // Train of thought: take `v` damage while it charges a move and it forgets what it was doing (the move is lost).
   {
     id: 'trainOfThought',
+    tone: 'purple',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -245,6 +254,7 @@ const defs: StatusDef[] = [
   },
   {
     id: 'micromanagement',
+    tone: 'red',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -258,12 +268,13 @@ const defs: StatusDef[] = [
     warning: (c, s) => idleFor(c, s) / IDLE_LIMIT,
   },
   // Rusty belt: on the hero, one per rust spot on the belt (`Combat.syncRustStatus` keeps the count).
-  { id: 'rustedBelt', kind: 'stacks', good: false, icon: 'rust' },
+  { id: 'rustedBelt', tone: 'amber', kind: 'stacks', good: false, icon: 'rust' },
   // Deferred maintenance: rust builds up on the belt, slowing it down; the hero scrubs it off with the mop.
-  { id: 'deferredMaintenance', kind: 'stacks', good: true, passive: true, icon: 'rust', rust: { every: RUST_EVERY, max: RUST_MAX } },
+  { id: 'deferredMaintenance', tone: 'amber', kind: 'stacks', good: true, passive: true, icon: 'rust', rust: { every: RUST_EVERY, max: RUST_MAX } },
   // Weak spot: now and then a target shows on his sprite; `e` counts down to the next one.
   {
     id: 'weakSpot',
+    tone: 'red',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -278,10 +289,11 @@ const defs: StatusDef[] = [
     },
   },
   // Critical: the hero's next attack card deals double damage (consumed in `Combat.resolvePlay`).
-  { id: 'crit', kind: 'stacks', good: true, icon: 'target' },
+  { id: 'crit', tone: 'red', kind: 'stacks', good: true, icon: 'target' },
   // Paper cuts: every card slipping off the belt cuts the hero for `v`.
   {
     id: 'paperCuts',
+    tone: 'red',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -293,6 +305,7 @@ const defs: StatusDef[] = [
   // Paradigm shift: every quarter of its HP lost turns the belt around (`mem.turns` counts the turns made).
   {
     id: 'paradigmShift',
+    tone: 'purple',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -307,10 +320,11 @@ const defs: StatusDef[] = [
     },
   },
   // Fine print: every hit of your cards deals `v` less damage (Poison, Burn and thorns don't count as hits).
-  { id: 'finePrint', kind: 'stacks', good: true, passive: true, icon: 'magnifier', cutsHits: true },
+  { id: 'finePrint', tone: 'teal', kind: 'stacks', good: true, passive: true, icon: 'magnifier', cutsHits: true },
   // Golden parachute: the first time it would fall, it takes the severance package instead and gets back up.
   {
     id: 'goldenParachute',
+    tone: 'amber',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -327,6 +341,7 @@ const defs: StatusDef[] = [
   // Microsleep: `e` is the clock of its day; at the end of the awake spell it dozes off (stunned, so its attack waits, and vulnerable).
   {
     id: 'microsleep',
+    tone: 'purple',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -343,10 +358,11 @@ const defs: StatusDef[] = [
     },
   },
   // Rate limit: `v` is the most one hit of your cards can deal.
-  { id: 'rateLimit', kind: 'stacks', good: true, passive: true, icon: 'funnel', capsHits: true },
+  { id: 'rateLimit', tone: 'teal', kind: 'stacks', good: true, passive: true, icon: 'funnel', capsHits: true },
   // Assembly line: only the card at the front of its belt row can be played (curses can always be paid off).
   {
     id: 'assemblyLine',
+    tone: 'purple',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -360,6 +376,7 @@ const defs: StatusDef[] = [
   // Overtime creep: a little stronger every so often, whatever you do.
   {
     id: 'overtimeCreep',
+    tone: 'red',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -371,6 +388,7 @@ const defs: StatusDef[] = [
   // Low battery: it chirps now and then, and every chirp costs the hero `v` mana.
   {
     id: 'lowBattery',
+    tone: 'blue',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -382,6 +400,7 @@ const defs: StatusDef[] = [
   // Machine learning: `e` counts the cards you let slip.
   {
     id: 'machineLearning',
+    tone: 'blue',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -397,6 +416,7 @@ const defs: StatusDef[] = [
   // Pressure: Block builds up on its own; let it reach the limit and it bursts. `e` is the clock of the build-up.
   {
     id: 'pressure',
+    tone: 'teal',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -413,6 +433,7 @@ const defs: StatusDef[] = [
   // The Board: every third of its HP you take, one more director loses patience (`mem.thirds` counts them).
   {
     id: 'boardroom',
+    tone: 'purple',
     kind: 'stacks',
     good: true,
     passive: true,
@@ -433,6 +454,7 @@ const defs: StatusDef[] = [
   },
   {
     id: 'lightSleeper',
+    tone: 'purple',
     kind: 'stacks',
     good: true,
     passive: true,

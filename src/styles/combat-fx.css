@@ -167,11 +167,12 @@
   background: var(--k);
   text-shadow: none;
 }
-.floater.status.good { background: var(--b); }
-.floater.status.bad { background: var(--p); }
+.floater.status { background: var(--tone, var(--k)); }
+.floater.status[data-tone='amber'],
+.floater.status[data-tone='mint'] { color: var(--k); }
 .floater.mana { color: var(--b); font-size: 26px; }
 /* damage the Printer copies instead of taking */
-.floater.copied { color: var(--intent-absorb-lo); font-size: 30px; }
+.floater.copied { color: var(--tone-mint); font-size: 30px; }
 @keyframes float {
   0% { transform: translateY(8px) scale(0.6); opacity: 0; }
   15% { transform: translateY(-6px) scale(1.1); opacity: 1; }
@@ -251,110 +252,257 @@
   animation: stamp-in 0.12s steps(2) 0.3s both;
 }
 .timecard.out .tc-stamp { color: var(--b); border-color: var(--b); animation-delay: 0.35s; }
-/* the way into a fight: an office double door seen from the corridor. After three knocks (sfx 'door') it swings open
-   on its hinges onto the lit room (each leaf narrows towards its hinge, stepped), then we walk through: the whole scene grows and fades. */
+/* the way into a fight: one office door seen from the corridor, in the act's colours. The enemy hangs framed on it, above a brass plate.
+   Three knocks shake the door (sfx 'door'), the latch turns, the leaf swings open on its left hinge onto the lit room (it narrows towards the
+   hinge, stepped), then we walk through: the whole scene grows and fades. */
 .office-door {
   position: absolute;
   inset: 0;
   z-index: var(--z-door);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
   overflow: hidden;
   pointer-events: none;
-  /* the corridor wall: striped wallpaper */
-  background-color: var(--wallpaper);
-  background-image: repeating-linear-gradient(90deg, transparent 0 18px, var(--wallpaper-stripe) 18px 30px);
+  /* the corridor wall */
+  background-color: var(--bg2);
+  background-image: radial-gradient(circle, var(--bg-dot) 30%, transparent 34%);
+  background-size: 6px 6px;
   transform-origin: 50% 58%;
   animation: door-walk 0.5s steps(5) 1.27s forwards;
 }
 @keyframes door-walk {
   to { transform: scale(3.2); opacity: 0; visibility: hidden; }
 }
-.door-frame {
-  position: relative;
-  display: flex;
-  width: 76%;
-  height: 84%;
-  border: 10px solid var(--brass);
+/* wainscot with a chair rail, then the skirting and the floor */
+.door-wainscot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 13%;
+  height: 30%;
+  background-color: var(--bg);
+  background-image: repeating-linear-gradient(90deg, transparent 0 56px, var(--void) 56px 60px);
+  border-top: 8px solid var(--door-shade);
+  box-shadow: 0 -4px 0 var(--void);
+}
+.door-floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 13%;
+  background-color: var(--void);
+  background-image: repeating-linear-gradient(90deg, transparent 0 30px, var(--night-dot) 30px 34px);
+  border-top: 8px solid var(--door-shade);
+}
+/* the doorway: an architrave around the room beyond and the door leaf */
+.door-way {
+  position: absolute;
+  left: 50%;
+  bottom: 13%;
+  width: min(72%, 290px);
+  height: min(80%, 560px);
+  translate: -50% 0;
+  background: var(--void);
+  border: 10px solid var(--door-shade);
   border-bottom: 0;
   box-shadow: 0 0 0 4px var(--void);
+  animation: door-knock 0.5s steps(1) both;
 }
-/* the enemy's framed portrait, stuck on the glass above its name */
-.door-portrait {
-  align-self: center;
-  width: 86%;
-  aspect-ratio: 1;
-  background: var(--bg2);
-  border: 3px solid var(--brass);
-  box-shadow: 0 0 0 2px var(--void);
+/* lintel above the doorway, a little wider than it */
+.door-way::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  right: -20px;
+  top: -26px;
+  height: 14px;
+  background: var(--door-shade);
+  border: 3px solid var(--void);
+  border-bottom-width: 4px;
 }
-.door-portrait .riso { width: 100%; height: 100%; }
-/* the room beyond, lit: seen once the doors open */
-.door-light {
+/* knock, knock, knock (matches the three thumps of the sound) */
+@keyframes door-knock {
+  0%, 34%, 68% { transform: translateX(-3px); }
+  8%, 42%, 76%, 100% { transform: none; }
+}
+/* the room beyond, lit: seen once the leaf opens */
+.door-room {
   position: absolute;
   inset: 0;
   background-color: var(--y);
   background-image: radial-gradient(circle, var(--glow-dot) 30%, transparent 34%);
   background-size: 6px 6px;
 }
-.door-half {
-  position: relative;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  padding: 0 4px;
-  background-color: var(--plank);
-  /* vertical planks, hard edges */
-  background-image: repeating-linear-gradient(90deg, transparent 0 22px, var(--plank-edge) 22px 25px);
-  border: 3px solid var(--void);
-  animation: door-swing 0.5s steps(5) 0.72s forwards;
+.door-room::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 9%;
+  background: var(--paper-dim);
+  border-top: 4px solid var(--k);
 }
-.door-half.l { justify-content: flex-end; transform-origin: left; }
-.door-half.r { justify-content: flex-start; transform-origin: right; }
-/* swinging inwards: the leaf narrows towards its hinge and darkens as it turns away */
-@keyframes door-swing {
-  to { transform: scaleX(0.14); filter: brightness(0.45); }
-}
-.door-glass {
-  width: min(100%, 130px);
-  min-height: 130px;
+.door-leaf {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px 2px;
+  gap: 10px;
+  padding: 12px 14px 0;
+  background: var(--door-wood);
+  border-right: 4px solid var(--door-shade);
+  box-shadow: inset 4px 0 0 var(--door-hi);
+  transform-origin: left center;
+  animation: door-swing 0.5s steps(5) 0.72s forwards;
+}
+/* swinging inwards: the leaf narrows towards its hinge, tilts a little and darkens as it turns away */
+@keyframes door-swing {
+  to { transform: scaleX(0.14) skewY(-4deg); filter: brightness(0.45); }
+}
+/* a recessed panel: a dark groove, a lit edge */
+.door-pic,
+.door-kick {
+  border: 4px solid var(--door-shade);
+  background: var(--door-panel);
+  box-shadow: inset 3px 3px 0 var(--door-hi);
+}
+.door-pic {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  container-type: size;
+}
+/* the enemy, framed: brass frame, paper mat, the picture on the night print */
+.door-frame {
+  width: min(88cqw, 94cqh);
+  aspect-ratio: 1;
+  padding: 5px;
+  background: var(--paper);
+  border: 6px solid var(--brass);
+  box-shadow: 0 0 0 3px var(--void), 4px 4px 0 3px var(--shadow);
+}
+.door-art {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg2);
+  background-image: radial-gradient(circle, var(--bg-dot) 30%, transparent 34%);
+  background-size: 6px 6px;
+  border: 3px solid var(--k);
+}
+.door-art .riso { width: 100%; height: 100%; }
+/* the brass name plate: the enemy and the floor */
+.door-plate {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 5px 6px 4px;
   text-align: center;
   color: var(--k);
-  background-color: var(--paper-dim);
-  background-image: radial-gradient(circle, var(--paper-dot) 30%, transparent 34%);
-  background-size: 4px 4px;
-  border: 4px solid var(--brass);
-}
-.door-glass b {
+  background: var(--brass);
+  border: 3px solid var(--void);
+  box-shadow: inset 2px 2px 0 var(--y);
   font-family: var(--font-ui);
-  font-size: 15px;
+}
+.door-plate b {
+  font-size: 19px;
   line-height: 1;
   text-transform: uppercase;
-  /* a name too long for the sign breaks inside the word rather than spill out of it */
+  /* a name too long for the plate breaks inside the word rather than spill out of it */
   overflow-wrap: anywhere;
 }
-.door-glass span {
-  font-family: var(--font-ui);
-  font-size: 15px;
-  color: var(--muted);
-}
-/* the handles, by the seam */
-.door-half::after {
-  content: '';
-  width: 6px;
-  height: 30px;
-  flex: none;
+.door-plate span { font-size: 15px; line-height: 1; }
+.door-kick { flex: none; height: 17%; margin-bottom: 12px; }
+/* hinges on the left edge, the handle on the right */
+.door-hinge {
+  position: absolute;
+  left: -6px;
+  width: 10px;
+  height: 24px;
   background: var(--brass);
   border: 2px solid var(--void);
 }
-.door-half.l::after { order: 1; margin-left: 8px; }
-.door-half.r::after { order: -1; margin-right: 8px; }
+.door-hinge.a { top: 8%; }
+.door-hinge.b { top: 48%; }
+.door-hinge.c { bottom: 8%; }
+.door-knob {
+  position: absolute;
+  right: 4px;
+  top: 54%;
+  width: 18px;
+  height: 52px;
+  background: var(--brass);
+  border: 3px solid var(--void);
+  box-shadow: inset 2px 2px 0 var(--y);
+}
+/* a round knob on its plate, a slot across it: it turns when the latch goes */
+.door-knob::after {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 12px;
+  width: 18px;
+  height: 18px;
+  background-color: var(--y);
+  background-image: linear-gradient(var(--k), var(--k));
+  background-size: 4px 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 3px solid var(--void);
+  animation: door-latch 0.12s steps(2) 0.6s both;
+}
+@keyframes door-latch {
+  to { transform: rotate(45deg); }
+}
+/* a doormat in front of the door */
+.door-mat {
+  position: absolute;
+  left: 50%;
+  bottom: 3%;
+  width: min(52%, 210px);
+  height: 22px;
+  translate: -50% 0;
+  background: var(--door-shade);
+  border: 3px solid var(--void);
+  box-shadow: inset 0 0 0 3px var(--p);
+}
+/* a wall candle on each side, the flame stepping in the draught */
+.door-sconce {
+  position: absolute;
+  bottom: 52%;
+  width: 14px;
+  height: 22px;
+  background: var(--paper);
+  border: 3px solid var(--void);
+}
+.door-sconce.l { left: 5%; }
+.door-sconce.r { right: 5%; }
+.door-sconce::before {
+  content: '';
+  position: absolute;
+  left: -9px;
+  right: -9px;
+  bottom: -9px;
+  height: 7px;
+  background: var(--brass);
+  border: 3px solid var(--void);
+}
+.door-sconce i {
+  position: absolute;
+  left: 1px;
+  top: -16px;
+  width: 6px;
+  height: 11px;
+  background: var(--y);
+  border: 2px solid var(--p);
+  animation: flame 0.5s steps(1) infinite;
+}
+.door-sconce.r i { animation-delay: -0.25s; }
+@keyframes flame {
+  50% { transform: translateY(2px) scaleY(0.8); }
+}
 
 /* an enemy speaking: a paper speech bubble over the stage, pointing at it */
 .speech {

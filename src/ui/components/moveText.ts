@@ -3,7 +3,7 @@ import { CONFIG } from '../../data/config';
 import { HEXES } from '../../data/hexes';
 import { STATUSES } from '../../data/statuses';
 import { sfx } from '../../audio/sfx';
-import type { EnemyDef, MoveDef } from '../../game/types';
+import type { EnemyDef, MoveDef, Tone } from '../../game/types';
 import { icon, INTENT_ICON } from '../art/icons';
 import { onPress } from '../dom';
 import { keywordHtml } from './cardView';
@@ -50,7 +50,7 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
     const { tone, chip, icon: ico } = STATUSES[st.id];
     const name = chip === 'icon' ? '' : `${t(`status.${st.id}${chip === 'short' ? '.short' : ''}`)} `;
     parts.push(
-      `<span class="fx ${bad ? 'fx-bad' : 'fx-good'}"${tone ? ` data-tone="${tone}"` : ''} data-status="${st.id}" data-v="${st.v ?? 1}">${icon(ico)}${name}<b>${st.t ? `${st.t}s` : `+${st.v ?? 1}`}</b></span>`,
+      `<span class="fx ${bad ? 'fx-bad' : 'fx-good'}" data-tone="${tone}" data-status="${st.id}" data-v="${st.v ?? 1}">${icon(ico)}${name}<b>${st.t ? `${st.t}s` : `+${st.v ?? 1}`}</b></span>`,
     );
   }
   // Each curse names its card, so the handbook can open it on a press.
@@ -69,7 +69,7 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
     const n = t('move.fx.hexShare', { n: Math.round(m.hex.share * 100) });
     parts.push(`<span class="fx fx-curse" data-hex="${m.hex.id}">${icon(HEXES[m.hex.id].icon)}${t(`hex.${m.hex.id}`)} <b>${n}</b></span>`);
   }
-  if (m.steal) parts.push(`<span class="fx fx-steal">${icon('snatch')}${t('compendium.steal')}</span>`);
+  if (m.steal) parts.push(`<span class="fx" data-tone="amber">${icon('snatch')}${t('compendium.steal')}</span>`);
   return parts.join(' ');
 }
 
@@ -80,13 +80,36 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
 export function movePattern(e: EnemyDef, values: MoveValues = baseValues, mark?: { now: MoveDef; next: MoveDef | null }): string {
   const row = (m: MoveDef): string => {
     const cls = m === mark?.now ? 'now' : m === mark?.next ? 'next' : '';
-    return `<li class="${cls}" data-intent="${m.intent}"><span class="mi">${icon(moveIcon(m))}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m, false, values)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`;
+    const tone = moveTone(m);
+    return `<li class="${cls}" data-intent="${m.intent}"${tone ? ` data-tone="${tone}"` : ''}><span class="mi">${icon(moveIcon(m))}</span><span class="mn">${t(`move.${m.id}`)}</span><span class="me">${moveEffect(m, false, values)}</span><span class="mt">${m.windup.toFixed(1)}s</span></li>`;
   };
   const every = e.specials.length ? `<li class="foe-every">${t('compendium.every', { n: e.every })}</li>` : '';
   const traits = enemyTraits(e)
     .map((x) => `<p class="foe-half">${icon(x.icon)}${x.name ? `<b>${x.name}</b><i class="sep"></i>` : ''}<span>${x.desc}</span></p>`)
     .join('');
   return `<ul class="foe-moves">${row(e.main)}${every}${e.specials.map(row).join('')}</ul>${traits}`;
+}
+
+/**
+ * The colour of a move, from what it does to you first (damage, the status it puts on you, curses, theft…), then what it does for
+ * itself (Block, healing, a buff): Snark, which poisons, is green. Idle moves have none (the bar stays grey).
+ */
+export function moveTone(m: MoveDef): Tone | null {
+  if (m.intent === 'idle') return null;
+  const onHero = m.status?.find((s) => s.target === 'hero');
+  if (m.intent === 'defend' && m.block) return 'teal';
+  if (m.dmg || m.release) return 'red';
+  if (onHero) return STATUSES[onHero.id].tone;
+  if (m.infect) return 'green';
+  if (m.inflate) return 'red';
+  if (m.curse || m.hex) return 'purple';
+  if (m.steal) return 'amber';
+  if (m.drainMana) return 'blue';
+  if (m.absorb) return 'mint';
+  if (m.block) return 'teal';
+  if (m.heal) return 'green';
+  if (m.status?.length) return STATUSES[m.status[0].id].tone;
+  return null;
 }
 
 /** A move's icon: its intent's, or the status's own when applying one status is all it does (Snark: Poison). */

@@ -212,6 +212,13 @@
 @keyframes hurt {
   50% { background: var(--p); transform: translate(3px, -2px); }
 }
+/* a card joins your deck: the frame hops, flashes and a ring of ink stamps out around it */
+.hero-portrait.gain { animation: gain 0.4s steps(4); }
+@keyframes gain {
+  0% { background: var(--y); transform: translateY(-5px); box-shadow: 0 0 0 5px var(--y), 0 0 0 8px var(--k); }
+  50% { background: var(--y); transform: translateY(-3px); box-shadow: 0 0 0 3px var(--y), 0 0 0 6px var(--k); }
+  100% { transform: none; box-shadow: 0 0 0 0 var(--y), 0 0 0 0 var(--k); }
+}
 /* low HP: the hero shivers and sweats (two drops running down, out of step) */
 .hero-portrait { position: relative; }
 .hero-portrait.low .riso { animation: shiver 0.3s steps(2) infinite; }

@@ -108,6 +108,12 @@ const SOUNDS = {
     tone(440, 0.08, { type: 'triangle', vol: 0.15 });
     tone(330, 0.1, { type: 'triangle', vol: 0.12, delay: 0.05 });
   },
+  /** A card joins your deck mid-fight: three quick rising notes. */
+  deckAdd: () => {
+    [523, 659, 880].forEach((f, i) => {
+      tone(f, 0.07, { type: 'triangle', vol: 0.12, delay: i * 0.05 });
+    });
+  },
   error: () => tone(160, 0.14, { type: 'square', vol: 0.08, to: 120 }),
   slash: () => {
     noise(0.16, { freq: 2600, to: 700, vol: 0.4, q: 1.4 });

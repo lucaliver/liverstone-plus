@@ -152,7 +152,7 @@ function loop(now: number): void {
 }
 
 /** Floating combat text at a viewport point. */
-export function floatText(x: number, y: number, text: string, cls: string, delay = 0, html = false): void {
+export function floatText(x: number, y: number, text: string, cls: string, delay = 0, html = false): HTMLElement {
   const el = document.createElement('div');
   el.className = `floater ${cls}`;
   if (html) el.innerHTML = text;
@@ -166,6 +166,7 @@ export function floatText(x: number, y: number, text: string, cls: string, delay
   const half = el.offsetWidth / 2 + 8;
   const jitter = x + (Math.random() * 30 - 15);
   el.style.left = `${Math.min(Math.max(jitter, bounds.left + half), bounds.right - half)}px`;
+  return el;
 }
 
 /** Jolts the combat stage (never the whole screen, which would make the layout jump). */
