@@ -95,6 +95,7 @@ const CARDS = was({
 });
 const ENEMIES = was({
   boneKnight: 'securityMonitor',
+  cobot: 'replacement',
   compliance: 'complianceOfficer',
   cultist: 'teamLeader',
   goblin: 'goblinConsultant',
@@ -104,6 +105,7 @@ const ENEMIES = was({
   janitor: 'nightJanitor',
   lich: 'slavesCeo',
   meticulous: 'meticulousColleague',
+  phoneTree: 'switchboard',
   rat: 'snitch',
   skeleton: 'seniorBoomer',
   sleeper: 'guyAsleep',

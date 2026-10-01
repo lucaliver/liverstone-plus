@@ -1008,46 +1008,54 @@ ${eyes(82, 118, 160, 6, '#ffd900', 'wf-g')}
 <path d="M84 176c10-8 22-8 32 0" fill="none" stroke="#120e18" stroke-width="5" stroke-linecap="round"/>
 <g fill="none" stroke="#120e18" stroke-width="3" stroke-linecap="round"><path d="M30 92l-8-6M170 92l8-6M84 52l-6-8M116 52l6-8"/></g>`;
 
-/** The Phone Tree: a trunk made of a desk-phone keypad with a screen face, its branches ending in swinging handsets. */
-const phoneTree = `
-<defs>${glow('pt-g', '#1c5fd0')}</defs>
+/** The Switchboard: an old operator's cabinet, two lamp eyes over a grid of jacks, a headset on top and patch cables for arms. */
+const switchboard = `
+<defs>${glow('sb-g', '#1c5fd0')}</defs>
 ${shadow}
-<path d="M72 188c-8-16-4-26 6-30M128 188c8-16 4-26-6-30" fill="none" stroke="#1b1830" stroke-width="7" stroke-linecap="round"/>
-<path d="M62 188c-14-4-18-14-8-22M138 188c14-4 18-14 8-22" fill="none" stroke="#1b1830" stroke-width="5" stroke-linecap="round" stroke-dasharray="3 5"/>
-<path d="M60 176l14-100h52l14 100z" fill="#3a3450" ${OUT}/>
-<rect x="68" y="30" width="64" height="52" rx="6" fill="#120e18" ${OUT}/>
-${eyes(86, 114, 52, 5, '#7aa7ff', 'pt-g')}
-<path d="M84 68c8 6 24 6 32 0" fill="none" stroke="#f6f0e4" stroke-width="4" stroke-linecap="round"/>
-<g ${OUT}><rect x="76" y="94" width="14" height="12" rx="2" fill="#f6f0e4"/><rect x="93" y="94" width="14" height="12" rx="2" fill="#f6f0e4"/><rect x="110" y="94" width="14" height="12" rx="2" fill="#f6f0e4"/><rect x="74" y="112" width="14" height="12" rx="2" fill="#f6f0e4"/><rect x="93" y="112" width="14" height="12" rx="2" fill="#ffd900"/><rect x="112" y="112" width="14" height="12" rx="2" fill="#f6f0e4"/><rect x="72" y="130" width="14" height="12" rx="2" fill="#f6f0e4"/><rect x="93" y="130" width="14" height="12" rx="2" fill="#ff3d9a"/><rect x="114" y="130" width="14" height="12" rx="2" fill="#f6f0e4"/></g>
-<path d="M68 70C44 70 30 56 26 40M132 70c24 0 38-14 42-30M100 30c0-12-6-20-14-26" fill="none" stroke="#3a3450" stroke-width="9" stroke-linecap="round"/>
-<g class="limb"><g transform="rotate(-20 26 36)"><path d="M10 40c0-12 6-18 16-18s16 6 16 18c-4-2-8-2-10 2-2-6-8-6-12 0-2-4-6-4-10-2z" fill="#ff3d9a" ${OUT}/></g></g>
-<g transform="rotate(20 174 36)"><path d="M158 40c0-12 6-18 16-18s16 6 16 18c-4-2-8-2-10 2-2-6-8-6-12 0-2-4-6-4-10-2z" fill="#ffd900" ${OUT}/></g>
-<g transform="rotate(-30 84 6)"><path d="M70 12c0-10 6-14 14-14s14 4 14 14c-4-2-6-2-8 2-2-5-6-5-10 0-2-4-6-4-10-2z" fill="#1c5fd0" ${OUT}/></g>`;
+<path d="M56 180v8h-10v-8zM144 180v8h10v-8z" fill="#1b1830" ${OUT}/>
+<rect x="40" y="48" width="120" height="134" rx="8" fill="#3a3450" ${OUT}/>
+<rect x="50" y="58" width="100" height="42" rx="4" fill="#120e18" ${OUT}/>
+${eyes(78, 122, 79, 6, '#7aa7ff', 'sb-g')}
+<path d="M88 92c8 4 16 4 24 0" fill="none" stroke="#f6f0e4" stroke-width="3" stroke-linecap="round"/>
+<g fill="#120e18" stroke="#c9c4d6" stroke-width="2.5">
+<circle cx="64" cy="118" r="6"/><circle cx="82" cy="118" r="6"/><circle cx="100" cy="118" r="6"/><circle cx="118" cy="118" r="6"/><circle cx="136" cy="118" r="6"/>
+<circle cx="64" cy="138" r="6"/><circle cx="82" cy="138" r="6"/><circle cx="100" cy="138" r="6"/><circle cx="118" cy="138" r="6"/><circle cx="136" cy="138" r="6"/>
+<circle cx="64" cy="158" r="6"/><circle cx="82" cy="158" r="6"/><circle cx="100" cy="158" r="6"/><circle cx="118" cy="158" r="6"/><circle cx="136" cy="158" r="6"/>
+</g>
+<path d="M60 146l8 0M96 126l8 0" stroke="#ffd900" stroke-width="3"/>
+<g fill="#ffd900"><circle cx="64" cy="118" r="3"/><circle cx="118" cy="158" r="3"/></g>
+<path d="M82 138C60 140 36 148 32 170M118 158C130 150 134 140 136 138" fill="none" stroke="#ff3d9a" stroke-width="6" stroke-linecap="round"/>
+<path d="M136 118C170 116 178 90 168 70" fill="none" stroke="#ffd900" stroke-width="6" stroke-linecap="round"/>
+<g class="limb"><path d="M64 158C40 166 20 150 22 126" fill="none" stroke="#1c5fd0" stroke-width="6" stroke-linecap="round"/><g ${OUT}><rect x="14" y="108" width="16" height="22" rx="3" fill="#f6f0e4"/><rect x="18" y="100" width="8" height="10" fill="#c9c4d6"/></g></g>
+<g ${OUT}><rect x="160" y="52" width="16" height="22" rx="3" fill="#f6f0e4"/><rect x="164" y="44" width="8" height="10" fill="#c9c4d6"/></g>
+<path d="M54 54C54 20 146 20 146 54" fill="none" stroke="#120e18" stroke-width="8" stroke-linecap="round"/>
+<g ${OUT}><rect x="42" y="42" width="16" height="28" rx="5" fill="#ff3d9a"/><rect x="142" y="42" width="16" height="28" rx="5" fill="#ff3d9a"/></g>
+<path d="M50 68c-4 22 10 34 34 36" fill="none" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
+<circle cx="86" cy="104" r="6" fill="#ff3d9a" ${OUT}/>`;
 
-/** The Cobot: a factory robot arm on a hazard-striped base, a camera lens for a head and a welding torch that never stops. */
-const cobot = `
-<defs>${glow('cb-g', '#ff3b3b')}${lg('cb-b', '#ffe45a', '#e0a800')}</defs>
+/** The Replacement: a lanky factory robot with a smiling screen for a face, a welding torch for one hand and a gripper for the other. */
+const replacement = `
+<defs>${glow('rp-g', '#ff3b3b')}</defs>
 ${shadow}
-<g transform="translate(8 18) scale(.9)">
-<rect x="22" y="160" width="156" height="26" rx="4" fill="#5a5470" ${OUT}/>
-<path d="M30 160l16 26M54 160l16 26M78 160l16 26M102 160l16 26M126 160l16 26M150 160l16 26" stroke="#ffd900" stroke-width="9"/>
-<rect x="22" y="160" width="156" height="26" rx="4" fill="none" ${OUT}/>
-<path d="M70 164v-22h36v22z" fill="#9a94ac" ${OUT}/>
-<path d="M76 142V92c0-8 6-12 14-12h12c8 0 14 4 14 12v50z" fill="url(#cb-b)" ${OUT}/>
-<circle cx="96" cy="96" r="18" fill="#9a94ac" ${OUT}/><circle cx="96" cy="96" r="8" fill="#ffd900" ${OUT}/>
-<g class="limb"><path d="M84 92L50 56c-6-6-4-14 4-16l22-6 6 18-18 4 28 30z" fill="url(#cb-b)" ${OUT}/>
-<circle cx="64" cy="40" r="14" fill="#9a94ac" ${OUT}/><circle cx="64" cy="40" r="6" fill="#ffd900" ${OUT}/></g>
-<path d="M44 20c-8-4-12-12-8-18h40c4 6 0 14-8 18z" fill="#c9c4d6" ${OUT}/>
-<rect x="30" y="16" width="40" height="30" rx="8" fill="#f6f0e4" ${OUT}/>
-<circle cx="50" cy="31" r="12" fill="#120e18" ${OUT}/>
-<g class="eye"><circle cx="50" cy="31" r="16" fill="url(#cb-g)"/><circle cx="50" cy="31" r="7" fill="#ff3b3b"/><circle cx="47" cy="28" r="2.5" fill="#fff"/></g>
-<path d="M36 18l14 6 14-6" stroke="#120e18" stroke-width="5" fill="none" stroke-linecap="round"/>
-<path d="M70 46l22 18c4 4 12 4 16 0l12-12" stroke="#8a84a0" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-<g fill="#ffd900" ${OUT}><path d="M108 52l22 8-4 10-22-6z"/></g>
-<g fill="none" stroke="#ffd900" stroke-width="4" stroke-linecap="round"><path d="M132 60l14-8M134 68l16 2M130 74l12 10M138 56l6-14"/></g>
-<path d="M136 64l10-4-2 8z" fill="#fff"/>
-<path d="M104 94h36c8 0 10 8 6 14l-10 14h-32z" fill="#9a94ac" ${OUT}/><path d="M112 102v12M122 102v12M132 102v12" stroke="#ff3d9a" stroke-width="4"/>
-</g>`;
+<path d="M74 142v38M126 142v38" stroke="#5a5470" stroke-width="16" stroke-linecap="round"/>
+<g ${OUT}><rect x="58" y="176" width="34" height="12" rx="4" fill="#3a3450"/><rect x="108" y="176" width="34" height="12" rx="4" fill="#3a3450"/></g>
+<rect x="62" y="84" width="76" height="64" rx="8" fill="#9a94ac" ${OUT}/>
+<path d="M62 132h76v16a8 8 0 0 1-8 0H70a8 8 0 0 1-8 0z" fill="#ffd900"/>
+<path d="M72 132l-8 16M92 132l-8 16M112 132l-8 16M132 132l-8 16" stroke="#120e18" stroke-width="5"/>
+<rect x="62" y="132" width="76" height="16" fill="none" ${OUT}/>
+<g ${OUT}><rect x="84" y="94" width="32" height="22" rx="3" fill="#f6f0e4"/></g>
+<rect x="90" y="102" width="20" height="6" fill="#ff3d9a"/>
+<rect x="94" y="76" width="12" height="10" fill="#3a3450" ${OUT}/>
+<path d="M100 24V10" stroke="#120e18" stroke-width="4"/><circle cx="100" cy="8" r="6" fill="#ffd900" ${OUT}/>
+<rect x="58" y="24" width="84" height="56" rx="8" fill="#f6f0e4" ${OUT}/>
+<rect x="66" y="32" width="68" height="40" rx="4" fill="#120e18" ${OUT}/>
+${eyes(84, 116, 48, 5, '#ff3b3b', 'rp-g')}
+<path d="M80 60c10 8 30 8 40 0" fill="none" stroke="#f6f0e4" stroke-width="4" stroke-linecap="round"/>
+<g class="limb"><path d="M64 96L38 114L50 140" fill="none" stroke="#8a84a0" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+<g ${OUT}><path d="M42 138h16l4 14H38z" fill="#ffd900"/></g>
+<g fill="none" stroke="#ffd900" stroke-width="4" stroke-linecap="round"><path d="M30 160l-8 6M42 166l-2 10M56 166l4 10M66 160l8 6"/></g></g>
+<path d="M136 96L162 114L152 138" fill="none" stroke="#8a84a0" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="#c9c4d6" ${OUT}><path d="M142 138l10 0 0 20-6 0zM164 138l-10 0 0 20 6 0z"/></g>`;
 
 /** The Old Boiler: a riveted steam boiler on iron legs, brass bands, a pressure gauge and a furnace door that grins. */
 const oldBoiler = `
@@ -1131,14 +1139,14 @@ export const CREATURES: Record<string, string> = {
   veteran,
   nightJanitor,
   micromanager,
-  cobot,
+  replacement,
   oldBoiler,
   theBoard,
   punchClock,
   smokeDetector,
   microwave,
   witheredFicus,
-  phoneTree,
+  switchboard,
   graveyardIntern,
   rateLimiter,
   lineLead,

@@ -620,12 +620,12 @@ const defs: EnemyDef[] = [
     start: [{ id: 'thorns', v: 1 }],
   },
   {
-    // Press 1 to be transferred: its calls turn some of your cards to stone.
-    id: 'phoneTree',
+    // Every call it patches through turns some of your cards to stone.
+    id: 'switchboard',
     act: 3,
     tier: 'normal',
     hp: 75,
-    art: 'phoneTree',
+    art: 'switchboard',
     main: atk('pleaseHold', 7, 6),
     every: 2,
     specials: [
@@ -634,13 +634,13 @@ const defs: EnemyDef[] = [
     ],
   },
   {
-    // Collaborates with your replacement: at half HP it recalibrates and works half as fast again.
-    id: 'cobot',
+    // Your replacement, already on the floor: at half HP it recalibrates and works half as fast again.
+    id: 'replacement',
     act: 3,
     tier: 'elite',
     hp: 115,
     block: 20,
-    art: 'cobot',
+    art: 'replacement',
     main: atk('weld', 8, 7, ramp),
     every: 2,
     specials: [
@@ -729,8 +729,8 @@ export const DIFFICULTY = [
   'smokeDetector',
   'microwave',
   'witheredFicus',
-  'phoneTree',
-  'cobot',
+  'switchboard',
+  'replacement',
   'oldBoiler',
   'theBoard',
 ];
