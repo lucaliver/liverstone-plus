@@ -13,7 +13,7 @@ import { discover, progress, type RunRecord, recordFight, recordRun } from './me
 import { renamedCard, renamedEnemy, renamedPerk } from './renamed';
 import type { CardDef, CardInst, EnemyDef, HeroId } from './types';
 
-export const NODE_TYPES = ['fight', 'elite', 'rest', 'promotion', 'copy', 'tailor', 'lostFound', 'boss'] as const;
+export const NODE_TYPES = ['fight', 'elite', 'rest', 'promotion', 'copy', 'tailor', 'lostFound', 'vending', 'boss'] as const;
 export type NodeType = (typeof NODE_TYPES)[number];
 
 /** A room of a lane as written in `LANES`: a real room type or a slot still to be dealt. */
@@ -79,7 +79,7 @@ const LANES: Slot[][] = [
   ['fight', 'promotion', 'fight', 'rest', 'fight', 'special', 'fight', 'rest'],
 ];
 /** A `special` slot of a lane becomes one of these when the act is built; one act never deals the same room twice. */
-const SPECIALS: NodeType[] = ['copy', 'tailor', 'lostFound'];
+export const SPECIALS: NodeType[] = ['copy', 'tailor', 'lostFound', 'vending'];
 /** Floors on a single road at the start of act 1, before the map splits in two (then the lanes skip as many floors). */
 const ACT1_OPENING = 3;
 /** Links between the lanes per act: diagonal (to the other lane one floor up) or flat (across the same floor, both ways). */
@@ -354,6 +354,23 @@ export function rollRelics(run: RunState): string[] {
     .map((r) => r.id);
   run.rng = rng.state;
   return picks;
+}
+
+/** Vending Machine: what a snack costs in HP, by the rarity of the card that drops. */
+export const vendingCost = (rarity: keyof typeof CONFIG.vendingHp): number => CONFIG.vendingHp[rarity];
+export const canVend = (run: RunState, rarity: keyof typeof CONFIG.vendingHp): boolean => run.hp > vendingCost(rarity);
+
+/** A random card of this rarity drops into the deck, for HP. Returns it. */
+export function vend(run: RunState, rarity: keyof typeof CONFIG.vendingHp): CardInst {
+  const rng = rngOf(run);
+  const def = rng.pick(rewardPool(run.hero, rarity));
+  run.rng = rng.state;
+  run.hp -= vendingCost(rarity);
+  discover([def.id]);
+  const card = newCard(run, def.id);
+  run.deck.push(card);
+  run.cleared = true;
+  return card;
 }
 
 /** Tailor: the uniform is let out, for good: more max HP, filled up. */

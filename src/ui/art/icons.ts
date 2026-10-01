@@ -1037,6 +1037,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'holy',
     svg: `<path d="M2 22h60v38H2z"/><path d="M2 22l8-14h44l8 14z"/><path fill="#16121f" opacity=".35" d="M26 8h12v14H26z"/><rect x="18" y="32" width="28" height="16" fill="#16121f"/><path d="M26 36h12v3h-12zM26 42h8v3h-8z" fill="#fff" opacity=".7"/>`,
   },
+  vendingMachine: {
+    el: 'steel',
+    svg: `<rect x="8" y="2" width="48" height="60" rx="2"/><rect x="13" y="8" width="26" height="36" fill="#16121f"/><path fill="#fff" opacity=".75" d="M16 12h8v8h-8zM28 12h8v8h-8zM16 25h8v8h-8zM28 25h8v8h-8zM16 36h20v5H16z"/><rect x="43" y="10" width="8" height="6" fill="#16121f"/><rect x="43" y="22" width="8" height="4" fill="#16121f"/><rect x="43" y="30" width="8" height="4" fill="#16121f"/><rect x="13" y="49" width="38" height="9" fill="#16121f"/>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {

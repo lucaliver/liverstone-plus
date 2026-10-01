@@ -5,6 +5,7 @@ import {
   advance,
   applyCombat,
   canPerk,
+  canVend,
   canShred,
   canUpgrade,
   combatSetup,
@@ -17,6 +18,7 @@ import {
   shredCard,
   swapCard,
   upgradeCard,
+  vend,
   type RunState,
 } from '../src/game/run';
 import type { CombatCard, HeroId } from '../src/game/types';
@@ -159,6 +161,9 @@ export function simulateRun(hero: HeroId, seed: number, opts: BotOpts): RunOutco
     } else if (node.type === 'lostFound') {
       const [pick] = rollRelics(run);
       if (pick) gainRelic(run, pick);
+      run.cleared = true;
+    } else if (node.type === 'vending') {
+      if (canVend(run, 'rare') && run.hp > run.maxHp * 0.7) vend(run, 'rare');
       run.cleared = true;
     } else if (node.type === 'copy') {
       // Thin the deck: shred a plain starter card (never a mana crystal).

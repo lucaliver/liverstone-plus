@@ -8,6 +8,7 @@ import { CARD_LIST, CARDS } from '../src/data/cards';
 import { RELICS } from '../src/data/relics';
 import {
   canCopy,
+  canVend,
   canShred,
   fightPay,
   gainRelic,
@@ -19,6 +20,9 @@ import {
   shredCard,
   skipPay,
   skipReward,
+  SPECIALS,
+  vend,
+  vendingCost,
 } from '../src/game/run';
 import type { CardInst } from '../src/game/types';
 
@@ -1660,11 +1664,22 @@ describe('the Copy Room', () => {
   it('deals two different special rooms per act on a random map, none in the very first run', () => {
     const r = newRun('warrior', 5);
     for (const act of [1, 2]) {
-      const specials = r.nodes.filter((n) => n.act === act && ['copy', 'tailor', 'lostFound'].includes(n.type)).map((n) => n.type);
+      const specials = r.nodes.filter((n) => n.act === act && SPECIALS.includes(n.type)).map((n) => n.type);
       expect(specials).toHaveLength(2);
       expect(new Set(specials).size).toBe(2);
     }
-    expect(newRun('warrior', 1, true).nodes.some((n) => ['copy', 'tailor', 'lostFound'].includes(n.type))).toBe(false);
+    expect(newRun('warrior', 1, true).nodes.some((n) => SPECIALS.includes(n.type))).toBe(false);
+  });
+
+  it('the Vending Machine drops a card of the rarity paid for, and never takes the last HP', () => {
+    const r = newRun('warrior', 5);
+    const deck = r.deck.length;
+    const card = vend(r, 'epic');
+    expect(CARDS[card.id].rarity).toBe('epic');
+    expect(r.deck).toHaveLength(deck + 1);
+    expect(r.hp).toBe(r.maxHp - vendingCost('epic'));
+    r.hp = vendingCost('rare');
+    expect(canVend(r, 'rare')).toBe(false);
   });
 
   it('the Lost & Found offers relics the run does not hold yet', () => {

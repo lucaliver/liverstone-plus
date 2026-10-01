@@ -40,6 +40,15 @@ export function playCardChange(screen: HTMLElement, before: CardInst, after: Car
   sparkAt(fresh, 'gold', 34, 480, 'ability');
 }
 
+/** A new card drops in with a flash, and the word is stamped last. */
+export function playCardGain(screen: HTMLElement, card: CardInst, word: string): void {
+  const fresh = cardView(card, { cls: 'show-new' });
+  showOver(screen, 'change', h('div', { class: 'show-stage' }, h('i', { class: 'show-flash' }), fresh), word);
+  sfx('block');
+  haptic('tap');
+  sparkAt(fresh, 'gold', 34, 480, 'ability');
+}
+
 /** The card goes through the shredder: it comes apart in strips that fall away. */
 export function playShred(screen: HTMLElement, card: CardInst, word: string): void {
   const stage = h('div', { class: 'show-stage' });

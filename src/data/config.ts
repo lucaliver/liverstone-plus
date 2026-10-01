@@ -76,6 +76,8 @@ export const CONFIG = {
   tailorMaxHp: 10,
   /** Lost & Found: how many relics lie in the box. */
   lostFoundChoices: 3,
+  /** Vending Machine: the HP a card of each rarity costs (the machine takes blood). */
+  vendingHp: { rare: 6, epic: 12 },
 } as const;
 
 /** Rarity odds (weights) of each card offered after a fight or an elite. */
