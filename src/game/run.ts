@@ -322,12 +322,15 @@ export function upgradeCard(run: RunState, uid: number): void {
   if (card) card.up = true;
 }
 
-export const canUpgrade = (card: CardInst): boolean => !card.up && CARDS[card.id].rarity !== 'special';
+/** Curses and special cards (generated in a fight) are never upgraded or perked. */
+const fixed = (card: CardInst): boolean => CARDS[card.id].cls === 'curse' || CARDS[card.id].rarity === 'special';
+
+export const canUpgrade = (card: CardInst): boolean => !card.up && !fixed(card);
 
 /** A perk fits a card when it would change something: a keyword it lacks, or a cost it can still lose. */
 export function canPerk(card: CardInst, perk: string): boolean {
   const p = PERKS[perk];
-  if (card.perks?.includes(perk) || CARDS[card.id].rarity === 'special') return false;
+  if (card.perks?.includes(perk) || fixed(card)) return false;
   if (p.keywords?.every((k) => cardKeywordsOf(card).includes(k))) return false;
   if (p.costDelta && cardCostOf(card) <= (CARDS[card.id].minCost ?? 0)) return false;
   return true;

@@ -639,7 +639,7 @@ describe('combat engine', () => {
     const hp = c.enemy.hp;
     c.hero.mana = 10;
     c.playCard(c.belt.find((b) => b.card.id === 'grievance')!.card.uid);
-    expect(hp - c.enemy.hp).toBe(11);
+    expect(hp - c.enemy.hp).toBe(CARDS.grievance.vals[1]);
 
     const n = setup({ hero: HEROES.necromancer, hp: 62, maxHp: 62, deck: deckOf(['wordOfMouth', 'wordOfMouth']) });
     run(n, CONFIG.introTime + 0.01);

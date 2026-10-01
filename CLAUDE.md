@@ -115,7 +115,7 @@ tests/         combat, content, balance.sim (+ bot), e2e/
 - Cost, keywords and values of a copy always come from `cardCostOf`/`cardKeywordsOf`/`cardValsOf` (upgrades and **perks**
   included). Set `dmg: []` only for raw damage that ignores modifiers.
 - Special mechanics (`ride`, `onOverflow`, `tip`, `wind`, `costDrop`, `inSleeve`, `anchor`, `span`/`tall`/`lockRow`, `pack`) are
-  documented on `CardDef`. Curse *cards* live in `neutral.ts`; **hexes** (`hexes.ts`) are a different thing (a curse on one
+  documented on `CardDef`. Curse *cards* live in `neutral.ts` (their rarity is a power level: common = a nuisance, rare = hurts or clogs, epic = shuts down belt space or can't be cleared; they never drop as rewards and can't be upgraded); **hexes** (`hexes.ts`) are a different thing (a curse on one
   belt card, chipped away by taps).
 - Every card has its own art; rule icons (glyphs, statuses, intents, map nodes) are shared only within one concept.
 
