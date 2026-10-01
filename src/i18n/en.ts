@@ -59,6 +59,8 @@ const en = {
   'records.fastest': 'Fastest fight',
   'records.seconds': '{n}s',
   'records.none': '-',
+  'records.stamps': 'Shifts completed',
+  'records.stamp': '{hero}, act {a}',
   'compendium.steal': 'Steals a card',
   'compendium.every': 'Every {n} attacks:',
   'compendium.tab.warrior': 'Warrior',

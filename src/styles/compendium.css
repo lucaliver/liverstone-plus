@@ -163,7 +163,6 @@
 .info .foe-moves { margin: 6px 0 0; padding: 4px 0; }
 .info .foe-moves li { font-size: 16px; color: var(--k); }
 
-.tier.act { background: var(--k); }
 
 .relics {
   display: flex;
@@ -192,3 +191,23 @@
   text-transform: uppercase;
 }
 .relic-line.undiscovered .pico { filter: grayscale(0.7); }
+/* the service record's stamps: a row per hero, a column per act; ink by act, like a time card's rubber stamps */
+.stamps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 6px; padding: 8px 0 4px; }
+.stamp,
+.stamp-slot { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 52px; }
+.stamp-slot { border: 2px dashed var(--paper-rule); }
+.stamp {
+  padding: 2px 4px;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--p);
+  border: 3px solid var(--p);
+  mix-blend-mode: multiply;
+  rotate: -4deg;
+}
+.stamp:nth-child(even) { rotate: 3deg; }
+.stamp b { font-size: 13px; font-weight: 700; }
+.stamp span { font-size: 10px; }
+.stamp.act2 { color: var(--b); border-color: var(--b); }
+.stamp.act3 { color: var(--k); border-color: var(--k); }

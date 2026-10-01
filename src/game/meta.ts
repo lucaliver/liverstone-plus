@@ -1,4 +1,5 @@
 import { load, store } from '../core/save';
+import { ACT_DEFS } from '../data/acts';
 import { HERO_LIST, HEROES } from '../data/heroes';
 import { RELICS } from '../data/relics';
 import { renamedCard, renamedEnemy } from './renamed';
@@ -20,6 +21,8 @@ interface Meta {
   runs: number;
   /** The employment contract has been signed (the start screen's first-time hold). */
   signed: boolean;
+  /** Acts finished (their boss beaten), one `hero:act` entry per hero and act: the records page stamps them. */
+  stamps: string[];
   records: Records;
 }
 
@@ -38,7 +41,17 @@ const NO_RECORDS: Records = {
   fastest: 0,
 };
 
-const meta: Meta = load('meta', { discovered: [], heroes: [], fresh: [], met: [], relics: [], runs: 0, signed: false, records: { ...NO_RECORDS } });
+const meta: Meta = load('meta', {
+  discovered: [],
+  heroes: [],
+  fresh: [],
+  met: [],
+  relics: [],
+  runs: 0,
+  signed: false,
+  stamps: [],
+  records: { ...NO_RECORDS },
+});
 // Saved data is untrusted: keep only known hero ids.
 for (const k of ['heroes', 'fresh'] as const) meta[k] = Array.isArray(meta[k]) ? meta[k].filter((id) => id in HEROES) : [];
 // Ids saved before they followed the English names are mapped to the new ones.
@@ -47,6 +60,14 @@ meta.met = Array.isArray(meta.met) ? meta.met.map(renamedEnemy) : [];
 meta.relics = Array.isArray(meta.relics) ? meta.relics.filter((id) => typeof id === 'string' && id in RELICS) : [];
 if (typeof meta.runs !== 'number') meta.runs = 0;
 meta.signed = meta.signed === true;
+{
+  const valid = (s: unknown): s is string => {
+    if (typeof s !== 'string') return false;
+    const [hero, act] = s.split(':');
+    return hero in HEROES && Number.isInteger(Number(act)) && Number(act) >= 1 && Number(act) <= ACT_DEFS.length;
+  };
+  meta.stamps = Array.isArray(meta.stamps) ? [...new Set(meta.stamps.filter(valid))] : [];
+}
 {
   // Only finite numbers survive; anything missing starts at zero.
   const saved: Partial<Record<keyof Records, unknown>> = typeof meta.records === 'object' && meta.records ? meta.records : {};
@@ -167,6 +188,15 @@ export function recordRun(f: { won: boolean; fullDay: boolean; act: number; floo
 }
 
 export const records = (): Readonly<Records & { runs: number }> => ({ ...meta.records, runs: meta.runs });
+
+/** A hero finished an act (beat its boss): the records page stamps it. */
+export function stampAct(hero: HeroId, act: number): void {
+  const key = `${hero}:${act}`;
+  if (meta.stamps.includes(key)) return;
+  meta.stamps.push(key);
+  store('meta', meta);
+}
+export const hasStamp = (hero: HeroId, act: number): boolean => meta.stamps.includes(`${hero}:${act}`);
 
 /** Records progress that can unlock heroes (a run finished with a hero, an act boss reached). Returns the heroes it unlocked. */
 export function progress(met: (u: HeroUnlock) => boolean): HeroId[] {

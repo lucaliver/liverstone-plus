@@ -6,7 +6,9 @@ import { HEROES } from '../src/data/heroes';
 import { STATUSES } from '../src/data/statuses';
 import { CARD_LIST, CARDS } from '../src/data/cards';
 import { RELICS } from '../src/data/relics';
+import { hasStamp } from '../src/game/meta';
 import {
+  applyCombat,
   canCopy,
   canVend,
   canShred,
@@ -1784,6 +1786,21 @@ describe('relics', () => {
     gainRelic(r, 'thermos');
     expect(r.relics).toEqual(['thermos']);
     expect(hasRelic(r, 'thermos')).toBe(true);
+  });
+});
+
+describe('act stamps', () => {
+  it('beating an act boss stamps that act for the hero, and only that act', () => {
+    const r = newRun('mage', 7);
+    const boss = r.nodes.find((n) => n.type === 'boss' && n.act === 1);
+    expect(boss).toBeDefined();
+    r.current = boss?.id ?? 0;
+    const c = setup({ hero: HEROES.mage, enemy: ENEMIES.bossSon });
+    c.damage('hero', 'enemy', 9999, { raw: true }, 'hero');
+    applyCombat(r, c);
+    expect(hasStamp('mage', 1)).toBe(true);
+    expect(hasStamp('mage', 2)).toBe(false);
+    expect(hasStamp('warrior', 1)).toBe(false);
   });
 });
 

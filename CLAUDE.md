@@ -82,7 +82,7 @@ src/
   core/        rng (seeded), emitter, i18n (typed keys), save (safe localStorage), util
   i18n/en.ts   every player-facing string
   data/        config (all tuning), acts, statuses, heroes, enemies, perks, hexes, relics, cards/<class>.ts
-  game/        combat (engine), run (map graph, rewards, save), meta (discoveries, unlocks, records), renamed, settings, types
+  game/        combat (engine), run (map graph, rewards, save), meta (discoveries, unlocks, records, act stamps), renamed, settings, types
   ui/          app (screens, modals), dom
     art/       icons (64×64), creatures (200×200), riso (pixel renderer)
     combat/    view, hud, cardLayer, mop, combatFx, combatScreen

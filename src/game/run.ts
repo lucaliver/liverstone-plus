@@ -9,7 +9,7 @@ import { CONFIG, CROSS_TRAINING_ODDS, REWARD_ODDS } from '../data/config';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HERO_LIST, HEROES, starterCards } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
-import { discover, progress, type RunRecord, recordFight, recordRun, seeRelics } from './meta';
+import { discover, progress, type RunRecord, recordFight, recordRun, seeRelics, stampAct } from './meta';
 import { renamedCard, renamedEnemy, renamedPerk } from './renamed';
 import type { CardDef, CardInst, EnemyDef, HeroId } from './types';
 
@@ -261,6 +261,7 @@ export function applyCombat(run: RunState, combat: Combat): void {
     run.stats.kills++;
     if (combat.enemy.def.tier === 'elite') run.stats.elites++;
     run.money += fightPay(combat.enemy.def.tier, combat.time);
+    if (node.type === 'boss') stampAct(run.hero, node.act);
     // A new shift starts rested: beating an act boss heals fully.
     if (node.type === 'boss' && node.next.length) run.hp = run.maxHp;
   }
