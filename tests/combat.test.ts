@@ -1457,37 +1457,8 @@ describe('the very first run', () => {
   });
 });
 
-describe('saves from before the ids followed the English names', () => {
-  it('load with their cards, perks and enemies renamed', () => {
-    const store = new Map<string, string>();
-    const stub = {
-      getItem: (k: string) => store.get(k) ?? null,
-      setItem: (k: string, v: string) => void store.set(k, v),
-      removeItem: (k: string) => void store.delete(k),
-    };
-    Object.defineProperty(globalThis, 'localStorage', { value: stub, configurable: true });
-    const run = newRun('warrior', 7);
-    const old = {
-      ...run,
-      version: 2,
-      deck: [
-        { uid: 1, id: 'strike', up: false },
-        { uid: 2, id: 'manaGeode', up: true, perks: ['innate', 'discount'] },
-      ],
-      nodes: run.nodes.map((n) => (n.enemy ? { ...n, enemy: 'rat' } : n)),
-    };
-    store.set('cardstone+:run', JSON.stringify(old));
-    const loaded = loadRun();
-    expect(loaded?.version).toBe(3);
-    expect(loaded?.deck).toEqual([
-      { uid: 1, id: 'punch', up: false },
-      { uid: 2, id: 'italianEspresso', up: true, perks: ['fastTrack', 'budgetCut'] },
-    ]);
-    expect(loaded?.nodes.filter((n) => n.enemy).every((n) => n.enemy === 'snitch')).toBe(true);
-    Reflect.deleteProperty(globalThis, 'localStorage');
-  });
-
-  it('a run saved before the last act existed carries on into it', () => {
+describe('saved runs', () => {
+  it('a run that does not reach the last act is dropped', () => {
     const store = new Map<string, string>();
     Object.defineProperty(globalThis, 'localStorage', {
       value: {
@@ -1500,11 +1471,7 @@ describe('saves from before the ids followed the English names', () => {
     const run = newRun('warrior', 7);
     const twoActs = run.nodes.filter((n) => n.act <= 2).map((n) => (n.type === 'boss' && n.act === 2 ? { ...n, next: [] } : n));
     store.set('cardstone+:run', JSON.stringify({ ...run, nodes: twoActs }));
-    const loaded = loadRun();
-    expect(Math.max(...(loaded?.nodes.map((n) => n.act) ?? [0]))).toBe(3);
-    const boss2 = loaded?.nodes.find((n) => n.act === 2 && n.type === 'boss');
-    expect(boss2?.next).toHaveLength(1);
-    expect(loaded?.nodes[boss2?.next[0] ?? 0].act).toBe(3);
+    expect(loadRun()).toBeNull();
     Reflect.deleteProperty(globalThis, 'localStorage');
   });
 

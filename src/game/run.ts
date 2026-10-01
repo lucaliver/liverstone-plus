@@ -11,7 +11,6 @@ import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HERO_LIST, HEROES, starterCards } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
 import { discover, progress, type RunRecord, recordFight, recordRun, seeRelics, stampAct } from './meta';
-import { renamedCard, renamedEnemy, renamedPerk } from './renamed';
 import type { CardDef, CardInst, EnemyDef, HeroId } from './types';
 
 export const NODE_TYPES = ['fight', 'elite', 'rest', 'promotion', 'copy', 'tailor', 'lostFound', 'vending', 'crossTraining', 'boss'] as const;
@@ -40,7 +39,7 @@ export interface RunStats {
   damageTaken: number;
 }
 
-/** Shape of the saved run; older saves are migrated on load when possible, dropped otherwise. */
+/** Shape of the saved run; a save of another version is dropped. */
 const SAVE_VERSION = 3;
 
 export interface RunState {
@@ -543,11 +542,7 @@ function parseRun(raw: unknown): RunState | null {
   if (!isNum(current) || !isIndexes([current], nodes.length) || !isIndexes(path, nodes.length) || !isObj(stats)) return null;
   const { kills, elites, cardsPlayed, damageTaken } = stats;
   if (!isNum(kills) || !isNum(elites) || !isNum(cardsPlayed) || !isNum(damageTaken)) return null;
-  // A run saved before the last act existed carries on into it: the missing acts are dealt from the run's seed.
-  for (let act = Math.max(...nodes.map((n) => n.act)) + 1; act <= ACTS; act++) {
-    const boss = nodes.filter((n) => n.act === act - 1 && n.type === 'boss');
-    addAct(nodes, new Rng(seed + act * 7919), act, boss, false);
-  }
+  if (Math.max(...nodes.map((n) => n.act)) !== ACTS) return null;
   return {
     version: SAVE_VERSION,
     seed,
@@ -563,30 +558,15 @@ function parseRun(raw: unknown): RunState | null {
     path,
     cleared,
     stats: { kills, elites, cardsPlayed, damageTaken },
-    // Saves from before pay existed start at zero.
     money: isNum(money) ? money : 0,
     skips: isNum(skips) ? skips : 0,
     uid,
-    // Saves from before memos existed carry none.
     mods: isStrings(mods) ? mods.filter((id) => id in MODIFIERS) : [],
     scripted: scripted === true,
   };
 }
 
-export function loadRun(): RunState | null {
-  const run = loadRaw<unknown>(SAVE_KEY);
-  // Version 2 had the ids from before they followed the English names.
-  if (isObj(run) && run.version === 2 && Array.isArray(run.deck) && Array.isArray(run.nodes)) {
-    for (const c of run.deck) {
-      if (!isObj(c)) continue;
-      if (typeof c.id === 'string') c.id = renamedCard(c.id);
-      if (isStrings(c.perks)) c.perks = c.perks.map(renamedPerk);
-    }
-    for (const n of run.nodes) if (isObj(n) && typeof n.enemy === 'string') n.enemy = renamedEnemy(n.enemy);
-    run.version = SAVE_VERSION;
-  }
-  return parseRun(run);
-}
+export const loadRun = (): RunState | null => parseRun(loadRaw<unknown>(SAVE_KEY));
 
 export function clearRun(): void {
   remove(SAVE_KEY);

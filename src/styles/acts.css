@@ -22,6 +22,12 @@
   --tc-paper: #ddd5f0;
   --tc-muted: #52497a;
   --tc-accent: var(--p);
+  /* the door into a fight: the crypt's dark wood; the office and the night shift re-set it below */
+  --door-wood: #6a3d2b;
+  --door-panel: #7e4b34;
+  --door-shade: #3f2318;
+  --door-hi: #9a6244;
+  --door-bar: #c9ccd6;
 }
 [data-act='2'] {
   --bg: #35101f;
@@ -45,6 +51,10 @@
   --tc-paper: #f4cdd9;
   --tc-muted: #7a2a47;
   --tc-accent: #a3243f;
+  --door-wood: #d6c7b2;
+  --door-panel: #e4d8c6;
+  --door-shade: #8f93a3;
+  --door-hi: #f4ecdf;
 }
 [data-act='3'] {
   --bg: #082a33;
@@ -68,6 +78,10 @@
   --tc-paper: #bfe6ea;
   --tc-muted: #1f5560;
   --tc-accent: #0f7f8f;
+  --door-wood: #5b6e78;
+  --door-panel: #6b7f8a;
+  --door-shade: #2d3b42;
+  --door-hi: #8fa5b0;
 }
 /* the screen paints the night itself, over the app's, so the act's colours replace it */
 .screen[data-act] {

@@ -1,9 +1,10 @@
 import { load, store } from '../core/save';
 import { ACT_DEFS } from '../data/acts';
+import { CARDS } from '../data/cards';
+import { ENEMIES } from '../data/enemies';
 import { HERO_LIST, HEROES } from '../data/heroes';
 import { MODIFIERS } from '../data/modifiers';
 import { RELICS } from '../data/relics';
-import { renamedCard, renamedEnemy } from './renamed';
 import type { EnemyDef, HeroId, HeroUnlock, Records } from './types';
 
 /** Progress kept across runs. */
@@ -58,9 +59,8 @@ const meta: Meta = load('meta', {
 });
 // Saved data is untrusted: keep only known hero ids.
 for (const k of ['heroes', 'fresh'] as const) meta[k] = Array.isArray(meta[k]) ? meta[k].filter((id) => id in HEROES) : [];
-// Ids saved before they followed the English names are mapped to the new ones.
-const discovered = new Set(Array.isArray(meta.discovered) ? meta.discovered.map(renamedCard) : []);
-meta.met = Array.isArray(meta.met) ? meta.met.map(renamedEnemy) : [];
+const discovered = new Set(Array.isArray(meta.discovered) ? meta.discovered.filter((id) => typeof id === 'string' && id in CARDS) : []);
+meta.met = Array.isArray(meta.met) ? meta.met.filter((id) => typeof id === 'string' && id in ENEMIES) : [];
 meta.relics = Array.isArray(meta.relics) ? meta.relics.filter((id) => typeof id === 'string' && id in RELICS) : [];
 if (typeof meta.runs !== 'number') meta.runs = 0;
 meta.signed = meta.signed === true;

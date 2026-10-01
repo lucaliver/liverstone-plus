@@ -12,8 +12,7 @@ export const HALF = { paperCuts: 2, securityBlock: 30, slavesStall: 8, complianc
  * Every enemy has one steady main attack and, every `every` main attacks, a special move
  * (slow heavy hits, curses, theft…). Specials rotate when there are several.
  * Moves are slow and heavy on purpose: each hit is an event to prepare for, with room to breathe in between.
- * Ids follow the English names (`enemy.<id>.name`); sprites come from `art`. Saves from before the rename are migrated
- * (`game/renamed.ts`).
+ * Ids follow the English names (`enemy.<id>.name`); sprites come from `art`.
  */
 const defs: EnemyDef[] = [
   {

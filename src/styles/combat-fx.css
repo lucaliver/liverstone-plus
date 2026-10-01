@@ -470,41 +470,108 @@
   border: 3px solid var(--void);
   box-shadow: inset 0 0 0 3px var(--p);
 }
-/* a wall candle on each side, the flame stepping in the draught */
-.door-sconce {
+/* ---- the door by act: act 1 (the crypt) a panelled wooden door that swings open, act 2 (the afternoon office) a glass-and-laminate badge door
+   that slides aside, act 3 (the night shift) a steel shutter that rattles up. The palette comes from `acts.css` (`--door-*`). */
+.door-aperture {
   position: absolute;
-  bottom: 52%;
-  width: 14px;
-  height: 22px;
-  background: var(--paper);
-  border: 3px solid var(--void);
+  inset: 0;
+  overflow: hidden;
 }
-.door-sconce.l { left: 5%; }
-.door-sconce.r { right: 5%; }
-.door-sconce::before {
+.door-bar,
+.door-lamp { display: none; }
+.door-lamp {
+  position: absolute;
+  background: var(--door-bar);
+  border: 3px solid var(--void);
+  box-shadow: inset 2px 2px 0 var(--paper);
+}
+/* the light on the reader or the cage: it blinks red with each beep, then turns green when the lock lets go */
+.door-lamp::after {
   content: '';
   position: absolute;
-  left: -9px;
-  right: -9px;
-  bottom: -9px;
-  height: 7px;
-  background: var(--brass);
-  border: 3px solid var(--void);
+  background: var(--red);
+  border: 2px solid var(--void);
+  animation: door-led 0.8s steps(1) both;
 }
-.door-sconce i {
+@keyframes door-led {
+  0%, 21%, 42%, 58% { background: var(--red); }
+  8%, 29%, 50% { background: var(--k); }
+  77%, 100% { background: var(--green); }
+}
+
+[data-act='2'] .door-way { animation: none; }
+[data-act='2'] .door-leaf {
+  padding-right: 32px;
+  animation: door-slide 0.5s steps(5) 0.72s forwards;
+}
+@keyframes door-slide {
+  to { transform: translateX(104%); }
+}
+[data-act='2'] :is(.door-hinge, .door-knob) { display: none; }
+/* a steel pull bar by the edge, and the badge reader on the wall beside the door */
+[data-act='2'] .door-bar {
+  display: block;
   position: absolute;
-  left: 1px;
-  top: -16px;
-  width: 6px;
-  height: 11px;
-  background: var(--y);
-  border: 2px solid var(--p);
-  animation: flame 0.5s steps(1) infinite;
+  right: 8px;
+  top: 30%;
+  width: 11px;
+  height: 36%;
+  background: var(--door-bar);
+  border: 3px solid var(--void);
+  box-shadow: inset 2px 0 0 var(--paper);
 }
-.door-sconce.r i { animation-delay: -0.25s; }
-@keyframes flame {
-  50% { transform: translateY(2px) scaleY(0.8); }
+[data-act='2'] .door-lamp {
+  display: block;
+  left: calc(100% + 22px);
+  top: 44%;
+  width: 26px;
+  height: 42px;
 }
+[data-act='2'] .door-lamp::after { left: 4px; top: 4px; width: 10px; height: 10px; }
+[data-act='2'] .door-lamp::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  bottom: 5px;
+  height: 7px;
+  background: var(--k);
+}
+
+[data-act='3'] .door-way { height: min(74%, 520px); }
+[data-act='3'] .door-way::before {
+  height: 18px;
+  top: -30px;
+  background-color: var(--y);
+  background-image: repeating-linear-gradient(-45deg, var(--k) 0 8px, transparent 8px 16px);
+}
+[data-act='3'] .door-leaf {
+  padding: 12px 12px 0;
+  background-color: var(--door-wood);
+  background-image: repeating-linear-gradient(0deg, var(--door-shade) 0 3px, transparent 3px 20px);
+  animation: door-roll 0.5s steps(6) 0.72s forwards;
+}
+@keyframes door-roll {
+  to { transform: translateY(-104%); }
+}
+[data-act='3'] :is(.door-hinge, .door-knob) { display: none; }
+/* a hazard-striped foot on the shutter, and the warning light in its cage above the door */
+[data-act='3'] .door-kick {
+  background-color: var(--y);
+  background-image: repeating-linear-gradient(-45deg, var(--k) 0 9px, transparent 9px 18px);
+  border-color: var(--k);
+  box-shadow: none;
+}
+[data-act='3'] .door-lamp {
+  display: block;
+  left: 50%;
+  top: -64px;
+  translate: -50% 0;
+  width: 38px;
+  height: 28px;
+  background: var(--door-shade);
+}
+[data-act='3'] .door-lamp::after { left: 9px; top: 3px; width: 14px; height: 14px; }
 
 /* an enemy speaking: a paper speech bubble over the stage, pointing at it */
 .speech {

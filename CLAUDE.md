@@ -43,8 +43,8 @@ This file is the technical guide: read it before changing code. Field-by-field d
   (`Keyword`, `IntentType`…) rather than passing loose strings.
 - A screen undoes in `leave()` what `enter()` did: listeners, emitter subscriptions, timers, temporary music.
 - **Save data is untrusted.** `loadRun` (`run.ts`), `settings.ts` and `meta.ts` validate every field on load and drop or reset
-  what is wrong. Changing a saved shape → bump `SAVE_VERSION` or migrate. A new act needs no bump: `parseRun` deals the missing acts to older saves.
-- Ids follow English names. Renaming = rename the id + add the old one to `game/renamed.ts` (saves, discoveries, met enemies).
+  what is wrong. Changing a saved shape (or adding an act) → bump `SAVE_VERSION`: there are no players on old versions, so saves of another version are simply dropped, never migrated.
+- Ids follow English names. Renaming = rename the id everywhere (no alias table: old saves are not kept alive).
 - Test what you change: engine rule → `combat.test.ts`; data shape → `content.test.ts`; flow/screen → `smoke.spec.ts`.
 
 ### Future-proof
@@ -71,9 +71,7 @@ npm run sim      # balance bot win rates
 npm run build    # typecheck + production build
 ```
 
-Deploy: a push to `master` publishes to GitHub Pages (`.github/workflows/pages.yml`), which also builds the frozen `beta`
-branch under `/beta/` (save prefix `cardstone-beta:`; never give another build a prefix starting with `cardstone+:`, `clearAll`
-would wipe it). Refresh the beta: commit on `beta`, re-run the workflow.
+Deploy: a push to `master` publishes to GitHub Pages (`.github/workflows/pages.yml`).
 
 ## Architecture
 
@@ -82,7 +80,7 @@ src/
   core/        rng (seeded), emitter, i18n (typed keys), save (safe localStorage), util
   i18n/en.ts   every player-facing string
   data/        config (all tuning), acts, statuses, heroes, enemies, perks, hexes, relics, modifiers, cards/<class>.ts
-  game/        combat (engine), run (map graph, rewards, save), meta (discoveries, unlocks, records, act stamps), renamed, settings, types
+  game/        combat (engine), run (map graph, rewards, save), meta (discoveries, unlocks, records, act stamps), settings, types
   ui/          app (screens, modals), dom
     art/       icons (64×64), creatures (200×200), actArt (the skyline behind each act's map title), riso (pixel renderer)
     combat/    view, hud, cardLayer, mop, combatFx, combatScreen
@@ -165,7 +163,7 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 - Tokens in `tokens.css`, act themes in `acts.css` (inks `--p --b --y --k`, `--paper`, night `--bg --bg2 --void`, brass/paper helpers). Use a token,
   not a raw hex: a test fails on any colour written outside `tokens.css`/`acts.css` (scripts read tokens with `cssColor`; the pixel renderer's inks in `art/riso.ts` are checked against them). Paper panels: `--line` borders, hard `--off` shadows.
 - **One source for anything two places must agree on.** Durations script waits on are tokens (`--dur-*`, read with `cssMs`); layers above the screens are `--z-*`; a hero's ink is `HeroDef.ink` and a status's look and particles are `StatusDef.look`/`burst` (no hero or status ids in CSS or UI code); numbers in rules text are `{$name}` values.
-- Every act has a colour theme (`styles/acts.css`): the night tokens (`--bg`, `--bg2`, `--bg-dot`, `--night-dot`, the belt stream `--belt`) and the map's (`--map-*`) are re-set under `[data-act='N']`. A screen opts in with `data-act`: the map and the fight set it themselves (the fight by its enemy's act), rooms and rewards get it from `inAct` in `main.ts`; a new act needs its block there and an `actArt` scene.
+- Every act has a colour theme (`styles/acts.css`): the night tokens (`--bg`, `--bg2`, `--bg-dot`, `--night-dot`, the belt stream `--belt`) and the map's (`--map-*`) are re-set under `[data-act='N']`. A screen opts in with `data-act`: the map and the fight set it themselves (the fight by its enemy's act), rooms and rewards get it from `inAct` in `main.ts`; a new act needs its block there, an `actArt` scene and a door into its fights (`ActDef.door` sound, `--door-*` colours in its block, a `[data-act]` leaf in `combat-fx.css`).
 - Fonts: `--font-display` (Silkscreen) for title words only; numbers use `--font-ui` (Jersey 10); long text `--font`.
 - Motion is stepped (`steps(n)`); modals are the exception. Respect `reduce-motion`. Shared keyframes live once.
 - `.card` sets its own `--cw`; resize by setting `--cw` on the card selector. Never let the combat layout change height

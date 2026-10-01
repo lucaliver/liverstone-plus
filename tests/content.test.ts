@@ -19,27 +19,11 @@ import { INK_HEX } from '../src/ui/art/riso';
 import { HEXES } from '../src/data/hexes';
 import { MODIFIER_LIST } from '../src/data/modifiers';
 import { ENEMIES } from '../src/data/enemies';
-import { PERKS } from '../src/data/perks';
 import { RELIC_LIST } from '../src/data/relics';
-import { RENAMED } from '../src/game/renamed';
 import { ABILITY_ICON, PASSIVE_ICON } from '../src/ui/combat/view';
 import { NODE_ICON } from '../src/ui/screens/journey';
 
 describe('content integrity', () => {
-  it('ids renamed after the English names map old saves onto content that exists, and no old id is reused', () => {
-    const kinds: [string, Map<string, string>, Record<string, unknown>][] = [
-      ['cards', RENAMED.cards, CARDS],
-      ['enemies', RENAMED.enemies, ENEMIES],
-      ['perks', RENAMED.perks, PERKS],
-    ];
-    for (const [kind, table, now] of kinds) {
-      for (const [was, is] of table) {
-        expect(now[is], `${kind}: ${was} → ${is}`).toBeTruthy();
-        expect(now[was], `${kind}: ${was} is still an id`).toBeUndefined();
-      }
-    }
-  });
-
   it('every card has i18n text and valid face glyphs', () => {
     for (const c of CARD_LIST) {
       expect(en[`card.${c.id}.name`], c.id).toBeTruthy();

@@ -2,6 +2,7 @@ import { t } from '../../core/i18n';
 import { endTemporaryMusic, playTemporaryMusic, setMusicTempo } from '../../audio/music';
 import { sfx } from '../../audio/sfx';
 import { CARDS } from '../../data/cards';
+import { actDef } from '../../data/acts';
 import { CONFIG } from '../../data/config';
 import type { Combat } from '../../game/combat';
 import type { MoveDef } from '../../game/types';
@@ -396,28 +397,36 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         { class: 'office-door', 'aria-hidden': 'true' },
         h('div', { class: 'door-wainscot' }),
         h('div', { class: 'door-floor' }),
-        h('i', { class: 'door-sconce l', html: '<i></i>' }),
-        h('i', { class: 'door-sconce r', html: '<i></i>' }),
         h(
           'div',
           { class: 'door-way' },
-          h('div', { class: 'door-room' }),
           h(
             'div',
-            { class: 'door-leaf' },
-            h('div', { class: 'door-pic' }, h('div', { class: 'door-frame' }, h('div', { class: 'door-art', html: creature(combat.enemy.def.art) }))),
+            { class: 'door-aperture' },
+            h('div', { class: 'door-room' }),
             h(
               'div',
-              { class: 'door-plate' },
-              h('b', null, t(`enemy.${combat.enemy.def.id}.name`)),
-              h('span', null, t('common.floorOf', { a: node.act, n: node.floor, total: totalFloors(run) })),
+              { class: 'door-leaf' },
+              h(
+                'div',
+                { class: 'door-pic' },
+                h('div', { class: 'door-frame' }, h('div', { class: 'door-art', html: creature(combat.enemy.def.art) })),
+              ),
+              h(
+                'div',
+                { class: 'door-plate' },
+                h('b', null, t(`enemy.${combat.enemy.def.id}.name`)),
+                h('span', null, t('common.floorOf', { a: node.act, n: node.floor, total: totalFloors(run) })),
+              ),
+              h('div', { class: 'door-kick' }),
+              h('i', { class: 'door-hinge a' }),
+              h('i', { class: 'door-hinge b' }),
+              h('i', { class: 'door-hinge c' }),
+              h('i', { class: 'door-knob' }),
+              h('i', { class: 'door-bar' }),
             ),
-            h('div', { class: 'door-kick' }),
-            h('i', { class: 'door-hinge a' }),
-            h('i', { class: 'door-hinge b' }),
-            h('i', { class: 'door-hinge c' }),
-            h('i', { class: 'door-knob' }),
           ),
+          h('i', { class: 'door-lamp' }),
         ),
         h('div', { class: 'door-mat' }),
       );
@@ -427,7 +436,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         if (!settings.seenTutorial) firstFightTour();
       });
       el.append(door);
-      sfx('door');
+      sfx(actDef(combat.enemy.def.act).door);
       addEventListener('resize', onResize);
       document.addEventListener('visibilitychange', onVisibility);
       render(0);
