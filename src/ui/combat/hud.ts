@@ -99,8 +99,10 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
       // The hero's passive always leads the hero's row, like a permanent status; an enemy's half-HP trait leads its
       // row (waiting, then lit once it has kicked in).
       const passive =
-        side === 'hero' && !lead
-          ? h('button', { class: 'status passive', html: icon(PASSIVE_ICON[v.heroId]), 'aria-label': t(`hero.${v.heroId}.passiveName`) })
+        side === 'hero'
+          ? lead
+            ? null
+            : h('button', { class: 'status passive', html: icon(PASSIVE_ICON[v.heroId]), 'aria-label': t(`hero.${v.heroId}.passiveName`) })
           : e.onHalf && !secret
             ? h('button', { class: 'status passive half', html: icon(HALF_ICON), 'aria-label': t('status.half') })
             : null;
@@ -155,7 +157,6 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
         const left = s.v > 0 ? Math.min(1, Math.max(0, s.t / sd.span)) : 0;
         const fill = Math.ceil(left * BAR_STEPS) / BAR_STEPS;
         b.querySelector<HTMLElement>('.drain')!.style.setProperty('--fill', String(fill));
-        toggle(b, 'live', fill > 0);
         toggle(b, 'low', fill > 0 && fill <= BAR_LOW);
       }
     }

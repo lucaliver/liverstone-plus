@@ -21,10 +21,13 @@
   .end.lose .portrait-lg .riso { transform: rotate(90deg); }
   .end .sub { margin: 0; font-size: 15px; }
   .payslip { padding-top: 6px; padding-bottom: 8px; font-size: 15px; line-height: 1.1; }
-  /* the belt is short here: the update window drops its message line and shrinks its icon so the buttons keep their room */
-  .up-text { display: none; }
-  .up-ico { font-size: 32px; }
-  .up-body { padding: 2px 12px 12px; }
+  /* the belt is short here: the update window tightens its bar, message and margins so the bigger icon and the buttons still fit */
+  .update-popup { inset: 3px 8px 3px; }
+  .up-bar { padding: 2px 8px; font-size: 13px; }
+  .up-ico { font-size: 38px; }
+  .up-body { gap: 0; padding: 0 12px 6px; }
+  .up-text { font-size: 12px; line-height: 1.1; }
+}
   .slip-row.slip-section { display: none; }
 }
 @media (max-height: 700px) {

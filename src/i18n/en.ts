@@ -11,7 +11,7 @@ const en = {
   'menu.howTo': 'How to play',
   'menu.settings': 'Settings',
   'menu.compendium': 'Handbook',
-  'menu.slogan': 'Arbeit macht frei',
+  'menu.slogan': 'Work. Obey. Repeat.',
   'menu.plate': 'Punchcard Inc. · est. 1887',
   'menu.freshDay': 'A fresh workday',
   'menu.tapHint': 'Tap to clock in',
