@@ -128,7 +128,10 @@ export function simulateCombat(c: Combat, rnd: () => number, opts: BotOpts, maxT
 
 export interface RunOutcome {
   won: boolean;
+  act: number;
   floor: number;
+  /** The enemy that ended a lost run. */
+  killer?: string;
   hp: number;
   combatTimes: number[];
 }
@@ -165,7 +168,7 @@ export function simulateRun(hero: HeroId, seed: number, opts: BotOpts): RunOutco
       simulateCombat(c, rnd, opts);
       combatTimes.push(c.time);
       applyCombat(run, c);
-      if (c.result === 'lose' || !c.result) return { won: false, floor: node.floor, hp: 0, combatTimes };
+      if (c.result === 'lose' || !c.result) return { won: false, act: node.act, floor: node.floor, killer: node.enemy, hp: 0, combatTimes };
       if (c.result === 'win' && node.type !== 'boss') {
         const picks = rollRewards(run, node.type === 'elite' ? 'elite' : 'fight');
         // Swap the best offer in for a plain starter card (never a mana crystal).
@@ -174,6 +177,6 @@ export function simulateRun(hero: HeroId, seed: number, opts: BotOpts): RunOutco
         if (pick && out) swapCard(run, out.uid, pick.id);
       }
     }
-    if (!advance(run)) return { won: true, floor: node.floor, hp: run.hp, combatTimes };
+    if (!advance(run)) return { won: true, act: node.act, floor: node.floor, hp: run.hp, combatTimes };
   }
 }
