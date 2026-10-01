@@ -274,9 +274,7 @@
   gap: 10px;
   /* the whole sequence plays at this share of its natural length */
   --pace: 0.8;
-  --px: 4px;
-  --ground: calc(var(--safe-b) + 40px);
-  padding: 16px 16px calc(var(--ground) + 40 * var(--px));
+  padding: calc(var(--safe-t) + 16px) 16px calc(var(--safe-b) + 16px);
   text-align: center;
   background-color: var(--bg2);
   background-image: radial-gradient(circle, var(--bg-dot) 30%, transparent 34%);
@@ -284,27 +282,23 @@
   animation: act-in calc(0.3s * var(--pace)) steps(3) both, act-out calc(0.4s * var(--pace)) steps(4) calc(3.2s * var(--pace)) forwards;
 }
 .act-intro.out { animation: act-out 0.3s steps(3) forwards; }
-/* the act's scene with its sky stands on the ground at the bottom of the curtain (the ground runs on to both edges) */
+/* the act's scene with its sky, as wide as the screen and centred between the title and the clock; the ground runs on to both edges */
 .act-intro-art {
-  position: absolute;
-  inset: auto 0 0;
+  align-self: stretch;
+  margin-inline: -16px;
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  padding-bottom: var(--ground);
+  flex-direction: column;
+  align-items: center;
   pointer-events: none;
 }
-.act-intro-art::before {
+.act-intro-art .act-art { width: 100%; max-width: 520px; height: auto; aspect-ratio: 96 / 40; }
+.act-intro-art::after {
   content: '';
-  position: absolute;
-  inset: auto 0 0;
-  height: calc(var(--ground) + 3 * var(--px));
+  align-self: stretch;
+  height: 32px;
+  margin-top: -1px;
   background: var(--map-trod);
 }
-@media (min-width: 480px) {
-  .act-intro { --px: 5px; }
-}
-.act-intro > :not(.act-intro-art) { position: relative; }
 /* the clock card is stamped on opaque: hidden, then big, then in place (no half-faded paper card flashing white) */
 @keyframes act-stamp {
   from { scale: 1.5; visibility: hidden; }

@@ -307,8 +307,8 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     const curtain = h(
       'div',
       { class: 'act-intro' },
-      h('div', { class: 'act-intro-art', html: actArt(act, true) }),
       h('div', { class: 'h1 act-intro-title', 'aria-label': title, html: dropLetters(title) }),
+      h('div', { class: 'act-intro-art', html: actArt(act, true) }),
       h('p', { class: 'act-intro-name' }, t(`journey.actName.${act}`)),
       h('p', { class: 'act-intro-clock', html: `${icon('timer')}${t('combat.clockIn', { time: clockText(to) })}` }),
     );
