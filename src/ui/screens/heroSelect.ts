@@ -145,7 +145,8 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
 
   function goTo(i: number): void {
     const target = Math.max(0, Math.min(HERO_LIST.length - 1, i));
-    track.scrollTo({ left: target * track.clientWidth, behavior: 'smooth' });
+    // Instant: the browser's smooth scroll takes ~half a second and crawls through every hero in between.
+    track.scrollTo({ left: target * track.clientWidth, behavior: 'instant' });
   }
 
   // The hero in view is the selection; update as soon as the carousel settles on a new one.
