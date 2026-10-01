@@ -11,7 +11,7 @@ import { meetEnemy } from '../../game/meta';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
 import { debugButton, openDebugMenu } from '../components/debugMenu';
-import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedRow } from '../components/modals';
+import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings } from '../components/modals';
 import { creature } from '../art/creatures';
 import { spriteBox } from '../art/riso';
 import { icon } from '../art/icons';
@@ -237,7 +237,6 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     playTemporaryMusic('pause');
     pauseModal = openModal({
       title: t('combat.paused'),
-      body: speedRow(),
       actions: [
         { label: t('combat.resume'), icon: 'play' },
         {

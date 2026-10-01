@@ -2,7 +2,6 @@ import { availableLocales, getLocale, setLocale, type TKey, t } from '../../core
 import { setSfxVolume, sfx } from '../../audio/sfx';
 import { setMusicVolume } from '../../audio/music';
 import { CARDS, type CardCategory, cardCategory, cardCostOf } from '../../data/cards';
-import { GAME_SPEEDS } from '../../data/config';
 import { saveSettings, settings } from '../../game/settings';
 import type { CardInst, Rarity } from '../../game/types';
 import { type ModalAction, openModal, type ModalHandle } from '../app';
@@ -34,34 +33,6 @@ function volumeRow(label: string, get: () => number, set: (v: number) => void): 
     sfx('tap');
   });
   return h('div', { class: 'setting' }, h('span', null, label), h('div', { class: 'slider-wrap' }, input, num));
-}
-
-/** Game speed row; above 1× a note warns that it makes the game harder. */
-export function speedRow(): HTMLElement {
-  const seg = h('div', { class: 'seg', role: 'group' });
-  const note = h('p', { class: 'setting-note' }, t('settings.speedNote'));
-  const render = (): void => {
-    note.hidden = settings.speed === 1;
-    seg.replaceChildren(
-      ...GAME_SPEEDS.map((s) =>
-        h(
-          'button',
-          {
-            'aria-pressed': String(settings.speed === s),
-            onclick: () => {
-              settings.speed = s;
-              saveSettings();
-              sfx('tap');
-              render();
-            },
-          },
-          `${s}×`,
-        ),
-      ),
-    );
-  };
-  render();
-  return h('div', { class: 'setting wrap' }, h('span', null, t('settings.speed')), seg, note);
 }
 
 /** Settings; `extra` actions go above Reset progress and Close (e.g. Main menu from the map). */

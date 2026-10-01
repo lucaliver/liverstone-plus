@@ -127,8 +127,6 @@ const en = {
   'settings.version': 'Version {v}',
   'settings.sound': 'Sound effects',
   'settings.music': 'Music',
-  'settings.speed': 'Game speed',
-  'settings.speedNote': 'Careful: this is not recommended, it makes the game harder!',
   'settings.motion': 'Reduce motion',
   'settings.haptics': 'Vibration',
   'settings.rightToLeft': 'Belt runs right to left',
