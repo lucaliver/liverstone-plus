@@ -51,13 +51,14 @@
 .act-art .l { fill: var(--y); }
 .act-art .w { fill: var(--map-warm); }
 .act-art .d { fill: var(--paper-dim); }
-/* the small birds cross the banner one cell at a time (the 3-cell wings flap by swapping two frames) */
-.bird { transform: translate(-6px, var(--y)); animation: bird-fly var(--d) steps(52) var(--dl) infinite; }
-@keyframes bird-fly {
+/* what moves on the banner, one cell at a time: things that cross it (birds, clouds, a blimp, a plane), puffs of smoke or steam rising,
+   windows that go dark, stars and lamps that flicker; the birds' 3-cell wings flap by swapping two frames */
+.drift { transform: translate(-14px, var(--y)); animation: drift var(--d) steps(var(--n)) var(--dl) infinite; }
+@keyframes drift {
   to { transform: translate(102px, var(--y)); }
 }
-.bird .up { animation: wing-up 0.6s steps(1) infinite; }
-.bird .down { animation: wing-down 0.6s steps(1) infinite; }
+.drift .up { animation: wing-up 0.6s steps(1) infinite; }
+.drift .down { animation: wing-down 0.6s steps(1) infinite; }
 @keyframes wing-up {
   50% { visibility: hidden; }
 }
@@ -65,7 +66,24 @@
   0% { visibility: hidden; }
   50% { visibility: visible; }
 }
-.act-art.tall { position: relative; width: calc(96 * var(--px)); height: calc(40 * var(--px)); }
+.puff { opacity: 0; transform: translate(var(--x), var(--y)); animation: puff 3.4s steps(8) var(--dl) infinite; }
+@keyframes puff {
+  10% { opacity: 0.9; }
+  80% { opacity: 0.5; }
+  to { opacity: 0; transform: translate(calc(var(--x) + 2px), calc(var(--y) - 6px)); }
+}
+.off { visibility: hidden; animation: lights-out var(--d) steps(1) var(--dl) infinite; }
+@keyframes lights-out {
+  0%, 55% { visibility: hidden; }
+  56%, 80% { visibility: visible; }
+  81%, 100% { visibility: hidden; }
+}
+.twinkle { animation: twinkle var(--d) steps(1) var(--dl) infinite; }
+@keyframes twinkle {
+  0%, 70% { visibility: visible; }
+  71%, 85% { visibility: hidden; }
+  86%, 100% { visibility: visible; }
+}
 /* the workday clock, drawn on the dot of an act's boss: four ticks and a pink pin; the hands run forward in steps */
 .shift-clock {
   position: relative;

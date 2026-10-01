@@ -1746,8 +1746,11 @@ describe('the Copy Room', () => {
     expect(r.maxHp).toBe(hp + 2 * CONFIG.skipMaxHp + CONFIG.skipMaxHpStep);
   });
 
-  it('the very first run has no special room in act 1', () => {
-    expect(newRun('warrior', 1, true).nodes.some((n) => n.act === 1 && SPECIALS.includes(n.type))).toBe(false);
+  it('opens on two fights, a Lost and Found, then the third scripted enemy', () => {
+    const road = newRun('warrior', 1, true).nodes.slice(0, 4);
+    expect(road.map((n) => n.type)).toEqual(['fight', 'fight', 'lostFound', 'fight']);
+    expect(road.map((n) => n.enemy)).toEqual(['hrOrientationVideo', 'snitch', undefined, 'newHire']);
+    expect(road.map((n) => n.lane)).toEqual([0.5, 0.5, 0.5, 0.5]);
   });
 
   it('the Vending Machine drops a card of the rarity paid for, and never takes the last HP', () => {

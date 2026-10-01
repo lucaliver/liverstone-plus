@@ -71,20 +71,128 @@ const factory =
   parts('w', [[33, 2, 3, 1], [43, 7, 2, 1], [84, 1, 2, 2]]) +
   parts('l', [[7, 15, 2, 2], [12, 15, 2, 2], [17, 15, 2, 2], [22, 15, 2, 2], [7, 18, 2, 2], [17, 18, 2, 2], [90, 16, 2, 2]]);
 
-/** A small bird, two frames (wings up, wings down) swapped by the CSS; `y` is its height in cells, `dur` the seconds it takes to cross and `delay` when it starts. */
-const bird = (y: number, dur: number, delay: number): string =>
-  `<g class="bird" style="--y:${y}px;--d:${dur}s;--dl:${delay}s"><g class="up">${parts('d', [
-    [0, 0, 1, 1],
-    [1, 1, 1, 1],
-    [2, 0, 1, 1],
-  ])}</g><g class="down">${parts('d', [
-    [0, 1, 1, 1],
-    [1, 0, 1, 1],
-    [2, 1, 1, 1],
-  ])}</g></g>`;
+/**
+ * Things that move on the map's banner, as groups the CSS animates (journey.css). `y` is a height in cells, `dur` seconds, `delay` seconds
+ * (negative: already under way). `drift` crosses the banner from left to right in `n` steps (about a cell each at 116).
+ */
+const drift = (y: number, dur: number, delay: number, body: string, n = 52): string =>
+  `<g class="drift" style="--y:${y}px;--d:${dur}s;--dl:${delay}s;--n:${n}">${body}</g>`;
 
-/** What flies over each scene on the map (not on the act intro, which has its own sky). */
-const FLYERS = [bird(3, 16, 0) + bird(8, 22, -7) + bird(12, 19, -13), '', ''];
+/** A small bird, two frames (wings up, wings down) swapped by the CSS. */
+const bird = (y: number, dur: number, delay: number): string =>
+  drift(
+    y,
+    dur,
+    delay,
+    `<g class="up">${parts('d', [
+      [0, 0, 1, 1],
+      [1, 1, 1, 1],
+      [2, 0, 1, 1],
+    ])}</g><g class="down">${parts('d', [
+      [0, 1, 1, 1],
+      [1, 0, 1, 1],
+      [2, 1, 1, 1],
+    ])}</g>`,
+  );
+
+/** A slow cloud (`big`: a wider one). */
+const cloud = (y: number, dur: number, delay: number, big = false): string =>
+  drift(
+    y,
+    dur,
+    delay,
+    parts(
+      'b',
+      big
+        ? [
+            [3, 0, 5, 1],
+            [1, 1, 9, 1],
+            [0, 2, 11, 1],
+          ]
+        : [
+            [2, 0, 4, 1],
+            [0, 1, 8, 1],
+          ],
+    ),
+    116,
+  );
+
+/** An advertising blimp. */
+const blimp = (y: number, dur: number, delay: number): string =>
+  drift(
+    y,
+    dur,
+    delay,
+    parts('b', [
+      [2, 0, 8, 1],
+      [0, 1, 12, 3],
+      [2, 4, 8, 1],
+      [5, 5, 2, 1],
+      [11, 0, 2, 1],
+    ]) + parts('w', [[3, 2, 6, 1]]),
+    116,
+  );
+
+/** A plane with a blinking light. */
+const plane = (y: number, dur: number, delay: number): string =>
+  drift(
+    y,
+    dur,
+    delay,
+    parts('d', [
+      [0, 0, 1, 1],
+      [0, 1, 6, 1],
+      [2, 2, 2, 1],
+    ]) + twinkle(6, 1, 1.2, 0, 'w'),
+    116,
+  );
+
+/** A window of the skyline going dark for a while (an overlay in the silhouette's colour, shown now and then). */
+const lightsOut = (x: number, y: number, dur: number, delay: number): string =>
+  `<g class="off" style="--d:${dur}s;--dl:${delay}s">${parts('a', [[x, y, 2, 2]])}</g>`;
+
+/** A puff of smoke or steam rising from a chimney or a rooftop unit at (x, y). */
+const puff = (x: number, y: number, delay: number): string =>
+  `<g class="puff" style="--x:${x}px;--y:${y}px;--dl:${delay}s">${parts('b', [
+    [0, 0, 2, 1],
+    [1, -1, 1, 1],
+  ])}</g>`;
+
+/** A dot of light that goes out now and then: a star, or a plane's lamp (`cls` is its ink). */
+const twinkle = (x: number, y: number, dur: number, delay: number, cls = 'l'): string =>
+  `<g class="twinkle" style="--d:${dur}s;--dl:${delay}s">${parts(cls, [[x, y, 1, 1]])}</g>`;
+
+/** What moves over each scene on the map (not on the act intro, which has its own sky). */
+const MOVERS = [
+  bird(3, 16, 0) + bird(8, 22, -7) + bird(12, 19, -13),
+  cloud(2, 70, 0, true) +
+    cloud(9, 52, -25) +
+    blimp(5, 110, -50) +
+    puff(6, 7, 0) +
+    puff(19, 3, -1.6) +
+    puff(73, 2, -0.8) +
+    puff(87, 6, -2.4) +
+    lightsOut(9, 16, 9, 0) +
+    lightsOut(22, 8, 13, -4) +
+    lightsOut(76, 15, 11, -7) +
+    lightsOut(84, 11, 15, -2),
+  twinkle(2, 2, 3.2, 0) +
+    twinkle(14, 5, 4.4, -1.5) +
+    twinkle(26, 3, 5.1, -3) +
+    twinkle(52, 3, 3.8, -2) +
+    twinkle(60, 6, 4.9, -4) +
+    twinkle(76, 1, 3.5, -0.5) +
+    twinkle(93, 6, 4.1, -2.5) +
+    plane(6, 80, -30) +
+    cloud(10, 90, -45, true) +
+    puff(33, 2, 0) +
+    puff(35, 2, -1.7) +
+    puff(43, 7, -0.9) +
+    puff(44, 7, -2.6) +
+    lightsOut(7, 18, 8, 0) +
+    lightsOut(17, 15, 12, -5) +
+    lightsOut(90, 16, 10, -3),
+];
 
 /** A pixel crescent: the disc at (cx, cy) with another one, centred (cx2, cy2), cut out of it. */
 const crescent = (cx: number, cy: number, r: number, cx2: number, cy2: number, r2: number): Rect[] => {
@@ -120,5 +228,5 @@ const SCENES = [crypt, office, factory];
 /** The scene of an act (1-based; later acts fall back to the last one, like `actDef`); `tall` adds its sky, for the act intro. */
 export const actArt = (act: number, tall = false): string => {
   const i = Math.min(act, SCENES.length) - 1;
-  return `<svg class="act-art${tall ? ' tall' : ''}" viewBox="0 ${tall ? -16 : 0} 96 ${tall ? 40 : 24}" shape-rendering="crispEdges" aria-hidden="true">${tall ? SKIES[i] : ''}${SCENES[i]}${tall ? '' : FLYERS[i]}</svg>`;
+  return `<svg class="act-art${tall ? ' tall' : ''}" viewBox="0 ${tall ? -16 : 0} 96 ${tall ? 40 : 24}" shape-rendering="crispEdges" aria-hidden="true">${tall ? SKIES[i] : ''}${SCENES[i]}${tall ? '' : MOVERS[i]}</svg>`;
 };

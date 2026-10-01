@@ -91,8 +91,18 @@ export const ACTS = ACT_DEFS.length;
 
 /** Seed of the very first run: its map is always the same, with the enemies in order of difficulty. */
 export const FIRST_RUN_SEED = 1;
-/** The very first run's act 1 normal enemies, one per floor from the second (both lanes of a floor meet the same one). */
-const FIRST_RUN_ENEMIES = ['snitch', 'newHire', 'workWife', 'teamLeader', 'goblinConsultant', 'seniorBoomer', 'hrBitch'];
+/** The very first run's act 1 shared road, one room per floor: two fights, a gift (so the map isn't only jobs), then the third fight. */
+const FIRST_RUN_ROAD: NodeType[] = ['fight', 'fight', 'lostFound', 'fight'];
+/** The very first run's act 1 normal enemies by floor (the first floor has the orientation fight; both lanes of a floor meet the same one). */
+const FIRST_RUN_ENEMIES: Record<number, string> = {
+  2: 'snitch',
+  4: 'newHire',
+  5: 'workWife',
+  6: 'teamLeader',
+  7: 'goblinConsultant',
+  8: 'seniorBoomer',
+  9: 'hrBitch',
+};
 /** The very first run's lanes, as `LANES` but already past the opening: a rest on each side, never two in a row. */
 const FIRST_RUN_LANES: NodeType[][] = [
   ['fight', 'rest', 'elite', 'fight', 'fight', 'rest'],
@@ -134,7 +144,7 @@ export function newRun(hero: HeroId, seed: number, scripted = false, mods: strin
 }
 
 /**
- * One act appended to `nodes`: a shared road (one fight; three floors in act 1), two lanes linked a couple of times, and the
+ * One act appended to `nodes`: a shared road (one fight; three floors in act 1, four in the very first run), two lanes linked a couple of times, and the
  * boss where they meet. `last` are the nodes of the act before (they lead to its first fight). Returns the boss.
  */
 function addAct(nodes: RunNode[], rng: Rng, act: number, last: RunNode[], scripted: boolean): RunNode[] {
@@ -147,7 +157,7 @@ function addAct(nodes: RunNode[], rng: Rng, act: number, last: RunNode[], script
     // A set enemy (the orientation fight) takes nobody's turn.
     let enemy = fixed;
     if (!enemy && type === 'fight') {
-      if (scripted) enemy = FIRST_RUN_ENEMIES[floor - 2];
+      if (scripted) enemy = FIRST_RUN_ENEMIES[floor];
       else {
         if (!bag.length) bag = rng.shuffle(enemiesFor(act, 'normal'));
         enemy = bag.pop()!.id;
@@ -159,7 +169,7 @@ function addAct(nodes: RunNode[], rng: Rng, act: number, last: RunNode[], script
     nodes.push(node);
     return node;
   };
-  const opening = act === 1 ? ACT1_OPENING : 1;
+  const opening = scripted ? FIRST_RUN_ROAD.length : act === 1 ? ACT1_OPENING : 1;
   const lanes = scripted ? FIRST_RUN_LANES : rng.shuffle(LANES.map((l) => l.slice(opening - 1)));
   if (!scripted)
     for (let i = 0; i < lanes[0].length - 1; i++) if (rng.next() < CONFIG.laneSwap) [lanes[0][i], lanes[1][i]] = [lanes[1][i], lanes[0][i]];
@@ -168,7 +178,7 @@ function addAct(nodes: RunNode[], rng: Rng, act: number, last: RunNode[], script
   let road = add(1, 0.5, 'fight', act === 1 && scripted ? firstRunEnemy()?.id : undefined);
   for (const n of last) n.next.push(road.id);
   for (let f = 2; f <= opening; f++) {
-    const n = add(f, 0.5, 'fight');
+    const n = add(f, 0.5, scripted ? FIRST_RUN_ROAD[f - 1] : 'fight');
     road.next.push(n.id);
     road = n;
   }
