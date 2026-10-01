@@ -57,7 +57,7 @@ export function openHeroSheet(run: RunState): void {
     { class: 'hero-sheet' },
     h('div', {
       class: 'sheet-head',
-      html: `<div class="sheet-art">${creature(hero.id)}</div><div><h3>${t(`hero.${hero.id}.name`)}</h3><p>${t(`hero.${hero.id}.job`)}</p></div>`,
+      html: `<div class="sheet-art">${creature(hero.id)}</div><div><h3>${t(`hero.${hero.id}.name`)}</h3></div>`,
     }),
     h(
       'div',
