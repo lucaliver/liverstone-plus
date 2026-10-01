@@ -4,7 +4,8 @@ const PREFIX = 'cardstone+:';
 export function load<T>(key: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(PREFIX + key);
-    return raw ? { ...fallback, ...JSON.parse(raw) } : fallback;
+    const data: unknown = raw ? JSON.parse(raw) : null;
+    return typeof data === 'object' && data !== null && !Array.isArray(data) ? { ...fallback, ...data } : fallback;
   } catch {
     return fallback;
   }

@@ -1311,6 +1311,35 @@ describe('saves from before the ids followed the English names', () => {
     expect(loaded?.nodes.filter((n) => n.enemy).every((n) => n.enemy === 'snitch')).toBe(true);
     Reflect.deleteProperty(globalThis, 'localStorage');
   });
+
+  it('are dropped when their shape is wrong, and kept when it is right', () => {
+    const store = new Map<string, string>();
+    Object.defineProperty(globalThis, 'localStorage', {
+      value: {
+        getItem: (k: string) => store.get(k) ?? null,
+        setItem: (k: string, v: string) => void store.set(k, v),
+        removeItem: (k: string) => void store.delete(k),
+      },
+      configurable: true,
+    });
+    const good = newRun('mage', 3);
+    const loadWith = (patch: Record<string, unknown>) => {
+      store.set('cardstone+:run', JSON.stringify({ ...good, ...patch }));
+      return loadRun();
+    };
+    expect(loadWith({})).toEqual(JSON.parse(JSON.stringify(good)));
+    expect(loadWith({ money: undefined })?.money).toBe(0);
+    expect(loadWith({ nodes: undefined })).toBeNull();
+    expect(loadWith({ current: 999 })).toBeNull();
+    expect(loadWith({ path: [0, 999] })).toBeNull();
+    expect(loadWith({ hp: 'lots' })).toBeNull();
+    expect(loadWith({ stats: { kills: 1 } })).toBeNull();
+    expect(loadWith({ nodes: good.nodes.map((n, i) => (i === 1 ? { ...n, enemy: undefined } : n)) })).toBeNull();
+    expect(loadWith({ nodes: good.nodes.map((n, i) => (i === 1 ? { ...n, next: [999] } : n)) })).toBeNull();
+    store.set('cardstone+:run', '[1,2]');
+    expect(loadRun()).toBeNull();
+    Reflect.deleteProperty(globalThis, 'localStorage');
+  });
 });
 
 describe('cards that fill the classes out', () => {

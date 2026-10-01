@@ -6,13 +6,14 @@ import { PERKS } from '../data/perks';
 import { ACT_DEFS, actDef } from '../data/acts';
 import { CONFIG } from '../data/config';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
-import { HEROES } from '../data/heroes';
+import { HERO_LIST, HEROES } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
 import { discover, progress, type RunRecord, recordFight, recordRun } from './meta';
 import { renamedCard, renamedEnemy, renamedPerk } from './renamed';
 import type { CardDef, CardInst, EnemyDef, HeroId, Rarity } from './types';
 
-export type NodeType = 'fight' | 'elite' | 'rest' | 'promotion' | 'copy' | 'boss';
+export const NODE_TYPES = ['fight', 'elite', 'rest', 'promotion', 'copy', 'boss'] as const;
+export type NodeType = (typeof NODE_TYPES)[number];
 
 /** One step of the run. `next` holds the reachable node ids (the player picks one when there are two). */
 export interface RunNode {
@@ -300,12 +301,12 @@ export function skipReward(run: RunState): void {
   run.hp += SKIP_MAX_HP;
 }
 
-/** Cardstone's classic "swap": the new card replaces one already in the deck. */
 /** Debug: adds a copy of a card to the deck. */
 export function addCard(run: RunState, id: string): void {
   run.deck.push(newCard(run, id));
 }
 
+/** The new card replaces one already in the deck (a reward). */
 export function swapCard(run: RunState, removeUid: number, id: string): void {
   const idx = run.deck.findIndex((c) => c.uid === removeUid);
   if (idx >= 0) run.deck[idx] = newCard(run, id);
@@ -405,23 +406,77 @@ export function saveRun(run: RunState): void {
   store(SAVE_KEY, run);
 }
 
+const isObj = (x: unknown): x is Record<string, unknown> => typeof x === 'object' && x !== null && !Array.isArray(x);
+const isNum = (x: unknown): x is number => typeof x === 'number' && Number.isFinite(x);
+const isStrings = (x: unknown): x is string[] => Array.isArray(x) && x.every((s) => typeof s === 'string');
+const isIndexes = (x: unknown, len: number): x is number[] => Array.isArray(x) && x.every((i) => Number.isInteger(i) && i >= 0 && i < len);
+
+const isCard = (c: unknown): c is CardInst =>
+  isObj(c) &&
+  isNum(c.uid) &&
+  typeof c.id === 'string' &&
+  !!CARDS[c.id] &&
+  typeof c.up === 'boolean' &&
+  (c.perks === undefined || (isStrings(c.perks) && c.perks.every((p) => !!PERKS[p])));
+
+const isNode = (n: unknown, i: number, len: number): n is RunNode => {
+  if (!isObj(n) || n.id !== i || !isNum(n.lane) || !isIndexes(n.next, len)) return false;
+  const { act, floor } = n;
+  if (!isNum(act) || !isNum(floor) || !Number.isInteger(act) || act < 1 || act > ACTS) return false;
+  const type = NODE_TYPES.find((x) => x === n.type);
+  // Fights, elites and bosses carry their enemy; rooms don't.
+  return (
+    !!type && (type === 'fight' || type === 'elite' || type === 'boss' ? typeof n.enemy === 'string' && !!ENEMIES[n.enemy] : n.enemy === undefined)
+  );
+};
+
+/** Saved data is untrusted: a run that doesn't have the exact shape (or names content that no longer exists) is dropped. */
+function parseRun(raw: unknown): RunState | null {
+  if (!isObj(raw) || raw.version !== SAVE_VERSION) return null;
+  const { hero, hp, maxHp, seed, rng, uid, current, cleared, deck, relics, relicFlags, nodes, path, stats, money, scripted } = raw;
+  const heroId = HERO_LIST.find((hd) => hd.id === hero)?.id;
+  if (!heroId || !isNum(hp) || !isNum(maxHp) || !isNum(seed) || !isNum(rng) || !isNum(uid) || typeof cleared !== 'boolean') return null;
+  if (!Array.isArray(deck) || !deck.every(isCard) || !isStrings(relics)) return null;
+  if (!isObj(relicFlags) || !Object.values(relicFlags).every(isNum)) return null;
+  if (!Array.isArray(nodes) || !nodes.length || !nodes.every((n, i) => isNode(n, i, nodes.length))) return null;
+  if (!isNum(current) || !isIndexes([current], nodes.length) || !isIndexes(path, nodes.length) || !isObj(stats)) return null;
+  const { kills, elites, cardsPlayed, damageTaken } = stats;
+  if (!isNum(kills) || !isNum(elites) || !isNum(cardsPlayed) || !isNum(damageTaken)) return null;
+  return {
+    version: SAVE_VERSION,
+    seed,
+    rng,
+    hero: heroId,
+    hp,
+    maxHp,
+    deck,
+    relics,
+    relicFlags: Object.fromEntries(Object.entries(relicFlags).filter((e): e is [string, number] => isNum(e[1]))),
+    nodes,
+    current,
+    path,
+    cleared,
+    stats: { kills, elites, cardsPlayed, damageTaken },
+    // Saves from before pay existed start at zero.
+    money: isNum(money) ? money : 0,
+    uid,
+    scripted: scripted === true,
+  };
+}
+
 export function loadRun(): RunState | null {
-  const run = loadRaw<RunState>(SAVE_KEY);
+  const run = loadRaw<unknown>(SAVE_KEY);
   // Version 2 had the ids from before they followed the English names.
-  if (run?.version === 2) {
+  if (isObj(run) && run.version === 2 && Array.isArray(run.deck) && Array.isArray(run.nodes)) {
     for (const c of run.deck) {
-      c.id = renamedCard(c.id);
-      if (c.perks) c.perks = c.perks.map(renamedPerk);
+      if (!isObj(c)) continue;
+      if (typeof c.id === 'string') c.id = renamedCard(c.id);
+      if (isStrings(c.perks)) c.perks = c.perks.map(renamedPerk);
     }
-    for (const n of run.nodes) if (n.enemy) n.enemy = renamedEnemy(n.enemy);
+    for (const n of run.nodes) if (isObj(n) && typeof n.enemy === 'string') n.enemy = renamedEnemy(n.enemy);
     run.version = SAVE_VERSION;
   }
-  if (run?.version !== SAVE_VERSION || !HEROES[run.hero]) return null;
-  // Drop the save if content changed and it references cards/enemies that no longer exist.
-  if (run.deck.some((c) => !CARDS[c.id] || c.perks?.some((p) => !PERKS[p])) || run.nodes.some((n) => n.enemy && !ENEMIES[n.enemy])) return null;
-  // Saves from before pay existed start at zero.
-  if (typeof run.money !== 'number') run.money = 0;
-  return run;
+  return parseRun(run);
 }
 
 export function clearRun(): void {

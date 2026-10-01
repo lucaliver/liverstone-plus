@@ -1,4 +1,5 @@
 import { load, store } from '../core/save';
+import { GAME_SPEEDS } from '../data/config';
 
 export interface Settings {
   /** Volumes from 0 (off) to 1. */
@@ -37,7 +38,10 @@ for (const k of ['sfxVolume', 'musicVolume'] as const) {
   settings[k] = typeof v === 'number' && Number.isFinite(v) ? Math.min(1, Math.max(0, v)) : defaults[k];
 }
 
-settings.debugMenus = settings.debugMenus === true;
+for (const k of ['reduceMotion', 'haptics', 'seenTutorial', 'rightToLeft', 'debugMenus'] as const)
+  if (typeof settings[k] !== 'boolean') settings[k] = defaults[k];
+if (!GAME_SPEEDS.some((s) => s === settings.speed)) settings.speed = defaults.speed;
+if (typeof settings.locale !== 'string') settings.locale = defaults.locale;
 if (!Array.isArray(settings.seenTips) || settings.seenTips.some((id) => typeof id !== 'string')) settings.seenTips = [];
 
 export function saveSettings(): void {
