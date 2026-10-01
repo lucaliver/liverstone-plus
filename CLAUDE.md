@@ -84,7 +84,7 @@ src/
   data/        config (all tuning), acts, statuses, heroes, enemies, perks, hexes, relics, modifiers, cards/<class>.ts
   game/        combat (engine), run (map graph, rewards, save), meta (discoveries, unlocks, records, act stamps), renamed, settings, types
   ui/          app (screens, modals), dom
-    art/       icons (64×64), creatures (200×200), riso (pixel renderer)
+    art/       icons (64×64), creatures (200×200), actArt (the skyline behind each act's map title), riso (pixel renderer)
     combat/    view, hud, cardLayer, mop, combatFx, combatScreen
     components/ cardView, cardShow, coach, modals, memos, debugMenu, room, moveText, heroSheet, shareSlip, decor
     fx/        particles, floating text, shake, haptics
@@ -162,6 +162,7 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 - Partials in cascade order via `styles/index.css`; **`responsive.css` stays last**. Shared decor in `decor.css`.
 - Tokens in `tokens.css` (inks `--p --b --y --k`, `--paper`, night `--bg --bg2 --void`, brass/paper helpers). Use a token,
   not a raw hex. Paper panels: `--line` borders, hard `--off` shadows.
+- The map has a colour theme per act: `--map-*` tokens on `.journey`, overridden by `.journey[data-act='N']` in `journey.css` (a new act needs its block and an `actArt` scene).
 - Fonts: `--font-display` (Silkscreen) for title words only; numbers use `--font-ui` (Jersey 10); long text `--font`.
 - Motion is stepped (`steps(n)`); modals are the exception. Respect `reduce-motion`. Shared keyframes live once.
 - `.card` sets its own `--cw`; resize by setting `--cw` on the card selector. Never let the combat layout change height

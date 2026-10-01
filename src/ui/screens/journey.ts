@@ -12,6 +12,7 @@ import { openHeroSheet } from '../components/heroSheet';
 import { dropLetters } from '../components/decor';
 import { creature } from '../art/creatures';
 import { UNKNOWN } from '../components/cardView';
+import { actArt } from '../art/actArt';
 
 export const NODE_ICON: Record<RunNode['type'], string> = {
   fight: 'toolbox',
@@ -288,11 +289,12 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   );
   const el = h(
     'div',
-    { class: 'screen journey' },
+    { class: 'screen journey', 'data-act': String(act) },
     runHud(run, menuBtns),
     h(
       'div',
       { class: 'act-banner' },
+      h('div', { class: 'act-scene', html: actArt(act) }),
       h('div', { class: 'h1' }, t('journey.title', { n: act })),
       h('p', { class: 'sub' }, t(`journey.actName.${act}`)),
     ),
