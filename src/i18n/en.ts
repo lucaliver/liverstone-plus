@@ -197,7 +197,7 @@ const en = {
   'hero.mage.job': 'I.T. guy, knows your password',
   'hero.mage.passiveName': 'Multitasking',
   'hero.mage.passiveShort': 'Chain attacks: +1 damage each.',
-  'hero.mage.abilityShort': 'Freeze the enemy for 5s and rush your belt for 5s.',
+  'hero.mage.abilityShort': 'Stun the enemy for 5s and rush your belt for 5s.',
   'hero.mage.ability': 'Time Theft',
 
   'hero.necromancer.name': 'Necromancer',
@@ -558,8 +558,6 @@ const en = {
   'status.chill.d': 'Slowed to half speed.',
   'status.stun': 'Stunned',
   'status.stun.d': 'Cannot act.',
-  'status.frozen': 'Frozen',
-  'status.frozen.d': 'Frozen in time.',
   'status.hurry': 'Hurry',
   'status.hurry.d': 'Your belt runs 50% faster: cards slip away sooner.',
   'status.stalled': 'Emergency Stop',

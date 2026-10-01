@@ -179,7 +179,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     r.timer.style.transform = `scaleX(${p.toFixed(3)})`;
     const rate = combat.enemyTimeRate();
     const left = rate > 0 ? Math.max(0, (m.windup - e.timer) / rate) : Infinity;
-    // Stunned or frozen: the timer is on hold.
+    // Stunned: the timer is on hold.
     // Tenths only when they matter (long fuses such as Guy Asleep's would not fit the box).
     setHtml(r.intentTime, rate > 0 ? `${left >= 10 ? Math.ceil(left) : left.toFixed(1)}s` : icon('pause'));
     const hostile = !v.state.ended && (m.intent === 'attack' || m.intent === 'charge' || !!m.release);
@@ -239,7 +239,6 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
       rustEls.delete(id);
     }
     toggle(r.enemyArt, 'stunned', combat.has('enemy', 'stun'));
-    toggle(r.enemyArt, 'frozen', combat.has('enemy', 'frozen'));
     toggle(r.enemyArt, 'chilled', combat.has('enemy', 'chill'));
     toggle(r.enemyArt, 'enraged', combat.has('enemy', 'haste') || (combat.enemy.halfTriggered && !!combat.enemy.def.onHalf));
     toggle(r.enemyArt, 'absorbing', !!combat.enemy.move.absorb && combat.enemyTimeRate() > 0);

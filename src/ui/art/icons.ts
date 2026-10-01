@@ -21,7 +21,6 @@ const potion = (liquid: string): string =>
   `<path d="M25 5h14v5h-2v11c9 3 15 11 15 20a20 20 0 0 1-40 0c0-9 6-17 15-20V10h-2z"/><path fill="${liquid}" d="M16 40h32a16 16 0 0 1-32 0z"/><circle cx="26" cy="44" r="2.5" fill="#fff" opacity=".6"/><circle cx="36" cy="49" r="1.8" fill="#fff" opacity=".5"/><path ${HI} d="M20 32c2-4 5-6 8-7v4c-3 1-5 3-6 6z"/>`;
 const star4 = (cx: number, cy: number, r: number): string =>
   `<path d="M${cx} ${cy - r}Q${cx + r * 0.18} ${cy - r * 0.18} ${cx + r} ${cy}Q${cx + r * 0.18} ${cy + r * 0.18} ${cx} ${cy + r}Q${cx - r * 0.18} ${cy + r * 0.18} ${cx - r} ${cy}Q${cx - r * 0.18} ${cy - r * 0.18} ${cx} ${cy - r}z"/>`;
-const hourglass = `<path d="M14 5h36v6h-3c0 10-8 15-11 21 3 6 11 11 11 21h3v6H14v-6h3c0-10 8-15 11-21-3-6-11-11-11-21h-3z"/><path fill="#16121f" opacity=".55" d="M23 11h18c0 7-6 11-9 16-3-5-9-9-9-16zM25 53c1-6 5-9 7-12 2 3 6 6 7 12z"/>`;
 /** Dodge: a figure darting sideways, speed lines trailing behind it. */
 const dodge = `<circle cx="46" cy="12" r="8"/><path ${S} stroke-width="13" d="M43 26l-8 15"/><path ${S} stroke-width="10" d="M35 41l12 15M35 41l-8 13"/><path ${S} stroke-width="5" d="M4 22h18M10 34h14M4 46h14"/>`;
 const bolt = `<path d="M37 4L14 36h14l-5 24 25-34H33z"/>`;
@@ -102,7 +101,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
       )
       .join(''),
   },
-  hourglass: { el: 'arcane', svg: hourglass },
   dodge: { el: 'arcane', svg: dodge },
   combust: {
     el: 'fire',

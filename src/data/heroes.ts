@@ -58,7 +58,7 @@ const mage: HeroDef = {
     id: 'timeTheft',
     cost: 6,
     use: (c) => {
-      c.applyStatus('enemy', 'frozen', 1, 5);
+      c.applyStatus('enemy', 'stun', 1, 5);
       c.rushBelt(5);
     },
   },

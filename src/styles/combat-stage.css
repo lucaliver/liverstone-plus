@@ -218,9 +218,6 @@
 }
 .enemy-art.chilled .ink-Y,
 .enemy-art.chilled .ink-P { opacity: 0.35; }
-.enemy-art.frozen { animation: none; }
-.enemy-art.frozen .ink-Y,
-.enemy-art.frozen .ink-P { opacity: 0.1; }
 .enemy-art.enraged .riso { animation: rage 0.5s steps(1) infinite; }
 @keyframes rage {
   50% { filter: drop-shadow(3px 0 0 var(--p)) drop-shadow(-3px 0 0 var(--p)) drop-shadow(0 3px 0 var(--p)); }

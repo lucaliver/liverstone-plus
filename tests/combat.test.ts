@@ -236,6 +236,16 @@ describe('combat engine', () => {
     expect(hp - c.enemy.hp).toBe(12);
   });
 
+  it('mage Time Theft stuns the enemy, which stops its timer', () => {
+    const c = setup({ hero: HEROES.mage, deck: deckOf(HEROES.mage.startDeck) });
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.maxMana = 10;
+    c.hero.mana = 10;
+    expect(c.useAbility()).toBe(true);
+    expect(c.has('enemy', 'stun')).toBe(true);
+    expect(c.enemyTimeRate()).toBe(0);
+  });
+
   it('perks: innate puts a copy first on the belt, discount lowers its cost', () => {
     const deck = deckOf(new Array(10).fill('punch'));
     deck[9] = { ...deck[9], id: 'sledgehammer', perks: ['fastTrack', 'budgetCut'] };

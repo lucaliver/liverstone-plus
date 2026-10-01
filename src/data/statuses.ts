@@ -168,7 +168,6 @@ const defs: StatusDef[] = [
     timeMul: 0,
     canPlay: (_c, side) => (side === 'hero' ? 'combat.stunned' : null),
   },
-  { id: 'frozen', kind: 'timed', good: false, tone: 'purple', icon: 'hourglass', timeMul: 0 },
   { id: 'hurry', kind: 'timed', good: false, tone: 'purple', icon: 'stopwatch', beltMul: CONFIG.beltHurry },
   // Emergency button: the belt stops dead.
   { id: 'stalled', kind: 'timed', good: false, tone: 'purple', icon: 'pause', beltMul: 0 },
