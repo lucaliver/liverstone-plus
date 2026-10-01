@@ -1246,10 +1246,12 @@ export class Combat {
     return !!rust && this.rustSpots.length >= rust.max * rust.warn;
   }
 
-  /** Share of the belt's speed the rust leaves: it drops with the square of the spots, so a few are nothing and many stop the belt. */
+  /** Share of the belt's speed the rust leaves: it eases out along a sine (ease-in-out) of the spots' share of `max`, so a few are nothing and many stop the belt. */
   private rustSpeed(): number {
     const max = this.rustDef()?.max;
-    return max ? Math.max(0, 1 - (this.rustSpots.length / max) ** 2) : 1;
+    if (!max) return 1;
+    const share = Math.min(1, this.rustSpots.length / max);
+    return (1 + Math.cos(Math.PI * share)) / 2;
   }
 
   private tickRust(dt: number): void {

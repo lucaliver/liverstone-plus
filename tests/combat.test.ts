@@ -505,7 +505,7 @@ describe('combat engine', () => {
     expect(c.cardCost(front.card)).toBe(CARDS.punch.cost);
   });
 
-  it('rust spots land on the belt, the belt slows down with their square until they stop it, and scrubbing a spot takes it off', () => {
+  it('rust spots land on the belt, the belt slows down along an ease-in-out sine until they stop it, and scrubbing a spot takes it off', () => {
     const c = setup({ enemy: ENEMIES.facilitiesManager, hp: 900, maxHp: 900 });
     const { every, max, warn } = STATUSES.deferredMaintenance.rust!;
     const said: string[] = [];
@@ -518,7 +518,7 @@ describe('combat engine', () => {
     const base = c.beltRate();
     run(c, every + 0.1);
     expect(c.rustSpots).toHaveLength(1);
-    expect(c.beltRate()).toBeCloseTo(base * (1 - 1 / max ** 2));
+    expect(c.beltRate()).toBeCloseTo(base * ((1 + Math.cos(Math.PI / max)) / 2));
     expect(c.hero.statuses.rustedBelt?.v).toBe(1);
     const [spot] = c.rustSpots;
     c.scrubRust(spot.id, 0.6);
@@ -530,7 +530,7 @@ describe('combat engine', () => {
     expect(c.hero.statuses.rustedBelt).toBeUndefined();
     // Left alone, the spots pile up, slowing the belt more and more, until it stops dead.
     run(c, every * (max / 2 + 0.5));
-    expect(c.beltRate() / base).toBeCloseTo(1 - 0.25, 1);
+    expect(c.beltRate() / base).toBeCloseTo((1 + Math.cos((Math.PI * c.rustSpots.length) / max)) / 2);
     expect(c.rustAlarm).toBe(false);
     run(c, every * (max * warn - c.rustSpots.length));
     expect(c.rustAlarm).toBe(true);
