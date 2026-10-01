@@ -64,6 +64,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   pile: { icon: 'pile' },
   snatch: { icon: 'snatch', unit: '%' },
   pin: { icon: 'pushpin' },
+  wind: { icon: 'windKey', sign: '+' },
   manaRegen: { icon: 'crystalUp', unit: 's' },
   /** The card's own cost goes down. */
   cheaper: { icon: 'priceTag', sign: '-' },

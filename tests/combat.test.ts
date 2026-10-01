@@ -957,6 +957,18 @@ describe('pop culture cards', () => {
     expect(c.beltRate()).toBeCloseTo(base);
   });
 
+  it('Wind-Up Intern grows by a step for every swipe, up to its cap, and hits for what it has wound up to', () => {
+    const { c, uid } = ready('windUpIntern');
+    const { vals } = CARDS.windUpIntern;
+    const [base, by, max] = vals;
+    for (let i = 0; i < 20; i++) c.windCard(uid);
+    expect(c.windCard(uid)).toBe(false);
+    c.playCard(uid);
+    expect(c.enemy.maxHp - c.enemy.hp).toBe(base + max);
+    expect(by).toBeGreaterThan(0);
+    expect(c.windCard(uid)).toBe(false);
+  });
+
   it('Payday Loan hits hard and shuffles a Debt in; the Debt bites harder every time it slips off the belt', () => {
     const { c, uid } = ready('paydayLoan');
     c.belt.find((b) => b.card.uid === uid)!.card.passed = true;

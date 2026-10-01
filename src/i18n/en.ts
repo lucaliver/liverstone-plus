@@ -745,6 +745,11 @@ const en = {
     "Doesn't leave the belt: it stops at the end. Attacks that reach it pile up behind it; any other card that reaches the pile sends it all off the belt. Play it to play the whole pile for free.",
   'card.onARoll.tip':
     'On a Roll stops at the end of the belt. Attacks pile up behind it: play it to fire the whole pile for free. Any other card that touches the pile sends it all off the belt.',
+  'card.windUpIntern.name': 'Wind-Up Intern',
+  'card.windUpIntern.desc':
+    'Deal {0} damage. Drag it around the screen to wind it up: +{1} damage per swipe, up to +{2}. Let go above the belt to play it.',
+  'card.windUpIntern.tip':
+    'Wind-Up Intern powers up while you drag it around the screen. Keep dragging before it reaches the end of the belt, then let go above the belt to play it.',
   'card.stakhanov.name': 'Stakhanov',
   'card.stakhanov.desc': 'Gain {0} [strength] for {1}s.',
   'card.brownNoser.name': 'Brown Noser',

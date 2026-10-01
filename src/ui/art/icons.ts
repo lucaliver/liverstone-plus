@@ -256,6 +256,14 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<path d="M12 4h30l10 10v46H12z"/><rect x="28" y="16" width="8" height="22" fill="#16121f"/><rect x="28" y="44" width="8" height="8" fill="#16121f"/>`,
   },
   pushback: { el: 'steel', svg: `<path d="M6 10l22 22L6 54V40l8-8-8-8zM32 10l22 22-22 22V40l8-8-8-8z"/>` },
+  windUp: {
+    el: 'steel',
+    svg: `<rect x="14" y="6" width="28" height="22"/><g fill="#16121f"><rect x="20" y="13" width="6" height="6"/><rect x="30" y="13" width="6" height="6"/><rect x="22" y="22" width="12" height="3"/></g><rect x="12" y="30" width="32" height="22"/><rect x="14" y="52" width="10" height="10"/><rect x="32" y="52" width="10" height="10"/><rect x="44" y="38" width="6" height="4"/><rect x="50" y="32" width="12" height="16"/><rect x="54" y="38" width="4" height="4" fill="#16121f"/>`,
+  },
+  windKey: {
+    el: 'steel',
+    svg: `<circle cx="20" cy="32" r="16"/><circle cx="20" cy="32" r="6" fill="#16121f"/><rect x="32" y="29" width="28" height="7"/><rect x="48" y="36" width="6" height="12"/><rect x="38" y="36" width="5" height="8"/>`,
+  },
   sandwich: {
     el: 'nature',
     svg: `<path d="M4 32L32 8l28 24z"/><rect x="4" y="34" width="56" height="8"/><rect x="4" y="46" width="56" height="10"/><path d="M8 42h48l-4 4H12z" fill="#16121f"/>`,

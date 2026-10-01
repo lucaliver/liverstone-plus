@@ -382,6 +382,22 @@ export const neutralCards: CardDef[] = [
   },
 
   {
+    // Hold it and drag it around the screen: every swipe winds it up, then let go above the belt to play it.
+    id: 'windUpIntern',
+    face: '{dmg:0}|{wind:1}',
+    cls: 'neutral',
+    type: 'attack',
+    rarity: 'rare',
+    cost: 2,
+    vals: [3, 2, 14],
+    upVals: [4, 3, 18],
+    wind: { by: 1, max: 2 },
+    tip: true,
+    art: 'windUp',
+    play: (c, v) => void c.hit(v[0]),
+  },
+
+  {
     id: 'stakhanov',
     face: '{str:0}|{timer:1}',
     cls: 'neutral',

@@ -148,6 +148,7 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
 - `onOverflow`: damage the card gains for every second of full, wasted mana, wherever it is (Complaint Box).
 - `tip`: the first time ever the card rides onto the belt, the fight stops and a coach mark shows `card.<id>.tip`
   (seen ones in `settings.seenTips`; Kamikaze).
+- `wind`: dragging the card around the screen winds it up (the UI turns the finger's path into `combat.windCard` steps; `vals[by]` per step into `CombatCard.bonus`, capped at `vals[max]`; Wind-Up Intern).
 - `costDrop`: index of the value its cost drops by every second, wherever it is (`CombatCard.cut`; Moving Box).
   Keyword `bulky`: a card in the sleeve can't be swapped out, only played.
 - `inSleeve` hooks (`bonusDamage`, `onCardPlayed`, `onHeroHit`) work only while the card waits in the sleeve
@@ -248,7 +249,7 @@ Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unloc
 - **Balance** (`tests/balance.sim.test.ts` + `bot.ts`): heuristic bot win rates; treat them as relative.
 - **E2E** (`tests/e2e/smoke.spec.ts`): contract (first launch only) → title, hero carousel and locks, fight → reward swap or skip, layout
   stability, Start gate, pause (music, backdrop tap, main menu, open windows), break room upgrade, map lane choice,
-  compendium (cards, personnel, records) and card anatomy, copy room, debug fight, title poster and time card fit, first-fight tour, first Kamikaze tip, the Boss's Son weak spot, crash window. `freshGame` unlocks every hero unless `locked`. Use real touch
+  compendium (cards, personnel, records) and card anatomy, copy room, debug fight, title poster and time card fit, first-fight tour, first Kamikaze tip, the Boss's Son weak spot, Wind-Up Intern drag, crash window. `freshGame` unlocks every hero unless `locked`. Use real touch
   (`page.touchscreen.tap`) when the behaviour differs on phones.
 - Other engines: `npx playwright test --browser=webkit` (Safari/iOS) passes too; Firefox needs a config without
   `isMobile` (same viewport, `hasTouch`). Keep CSS to what Safari 16 supports (no `color-mix`).

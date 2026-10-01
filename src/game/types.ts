@@ -114,6 +114,10 @@ export interface CardDef {
    * (it grows when `to` is above the base, decays when below). Frozen while the card waits in the sleeve.
    */
   ride?: { i: number; by: number; to: number };
+  /**
+   * Dragging the card around the screen winds it up: every swipe adds `vals[by]` to its bonus (the damage it deals), up to `vals[max]`.
+   */
+  wind?: { by: number; max: number };
   /** Damage this card gains for every second the hero's mana is full and overflowing, wherever the card is. */
   onOverflow?: number;
   /** The first time ever it rides onto the belt, the fight stops and a note (`card.<id>.tip`) says how to handle it. */

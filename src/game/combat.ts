@@ -1155,6 +1155,17 @@ export class Combat {
     }
   }
 
+  /** The hero dragged a card one more swipe around the screen: a card with `wind` grows. False when there's nothing (more) to wind. */
+  windCard(uid: number): boolean {
+    const card = this.belt.find((b) => b.card.uid === uid)?.card ?? this.sleeve.find((c) => c?.uid === uid);
+    const wind = card && CARDS[card.id].wind;
+    if (!card || !wind || this.result) return false;
+    const vals = this.cardVals(card);
+    if (card.bonus >= vals[wind.max]) return false;
+    card.bonus = Math.min(vals[wind.max], card.bonus + vals[wind.by]);
+    return true;
+  }
+
   /** Shows a target somewhere on the enemy's sprite for `time` seconds. */
   openWeakSpot(time: number): void {
     this.weakSpot = { x: 0.25 + this.rng.next() * 0.5, y: 0.25 + this.rng.next() * 0.5, t: time };

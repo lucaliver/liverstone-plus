@@ -387,6 +387,35 @@ test("the Boss's Son's weak spot: a touch on the target makes your next attack c
   expect(problems).toEqual([]);
 });
 
+test('Wind-Up Intern: dragging it around the screen winds it up, letting go above the belt plays it', async ({ page }) => {
+  const problems = await freshGame(page);
+  await startFight(page);
+  const uid = (await combat(
+    page,
+    "c.hero.mana = c.hero.maxMana = 10; c.addTempCard('windUpIntern', 'belt'); return c.belt[c.belt.length - 1].card.uid;",
+  )) as number;
+  // The first time it rides in, a coach mark explains it.
+  await page.getByRole('button', { name: 'Got it!' }).click();
+  const card = page.locator(`.belt-cards .card[data-uid="${uid}"]`);
+  await expect(card).toBeVisible();
+  const box = (await card.boundingBox())!;
+  const x = box.x + box.width / 2;
+  const y = box.y + box.height / 2;
+  // Press this very card (another one may ride over it), then drag with the mouse.
+  await card.dispatchEvent('pointerdown', { pointerId: 1, clientX: x, clientY: y });
+  await page.mouse.move(x, y);
+  for (let i = 0; i < 6; i++) {
+    await page.mouse.move(x - 120, y - 40, { steps: 6 });
+    await page.mouse.move(x + 120, y + 40, { steps: 6 });
+  }
+  expect(((await combat(page, `return c.belt.find((b) => b.card.uid === ${uid})?.card.bonus ?? 0;`)) as number) > 0).toBe(true);
+  const before = (await combat(page, 'return c.enemy.hp;')) as number;
+  await page.mouse.move(x, 120, { steps: 6 });
+  await page.locator('.combat').dispatchEvent('pointerup', { pointerId: 1, clientX: x, clientY: 120 });
+  await expect.poll(() => combat(page, 'return c.enemy.hp;')).toBeLessThan(before - 3);
+  expect(problems).toEqual([]);
+});
+
 test('debug: Unlock all hires every hero and reveals every card and enemy in the handbook', async ({ page }) => {
   await freshGame(page, { locked: true });
   await page.getByRole('button', { name: /debug/i }).click();

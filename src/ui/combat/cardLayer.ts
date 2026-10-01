@@ -7,10 +7,12 @@ import { icon } from '../art/icons';
 import { cardCostLabel, cardFace, cardView } from '../components/cardView';
 import { openCardDetail, openInfo } from '../components/modals';
 import { LONG_PRESS_MS, h, onTapOrHold, setHtml, setText, toggle } from '../dom';
-import { burst } from '../fx/fx';
+import { burst, haptic } from '../fx/fx';
 import type { CombatView } from './view';
 
 const DRAG_THRESHOLD = 10;
+/** A card with `wind` winds up one step for every swipe of this many belt widths dragged around the screen. */
+const WIND_SWIPE = 0.5;
 
 export type Removal = 'played' | 'expired' | 'stolen' | 'stashed';
 
@@ -44,6 +46,10 @@ interface Drag {
   offX: number;
   offY: number;
   moved: boolean;
+  /** Where the finger was at the last move and the path length not yet turned into a wind-up step (cards with `wind`). */
+  lastX: number;
+  lastY: number;
+  path: number;
   timer: number;
 }
 
@@ -167,6 +173,9 @@ export function createCardLayer(v: CombatView): CardLayer {
       offX: ev.clientX - rc.left,
       offY: ev.clientY - rc.top,
       moved: false,
+      lastX: ev.clientX,
+      lastY: ev.clientY,
+      path: 0,
       timer: window.setTimeout(() => {
         if (!drag || drag.moved) return;
         const card = findCard(uid);
@@ -194,6 +203,16 @@ export function createCardLayer(v: CombatView): CardLayer {
       drag.el.classList.add('dragging');
     }
     if (!drag.moved) return;
+    if (CARDS[findCard(drag.uid)?.id ?? '']?.wind) {
+      drag.path += Math.hypot(ev.clientX - drag.lastX, ev.clientY - drag.lastY);
+      for (; drag.path >= state.beltW * WIND_SWIPE; drag.path -= state.beltW * WIND_SWIPE) {
+        if (!combat.windCard(drag.uid)) break;
+        sfx('ratchet');
+        haptic('hit');
+      }
+    }
+    drag.lastX = ev.clientX;
+    drag.lastY = ev.clientY;
     if (drag.from === 'belt') {
       const base = r.beltCards.getBoundingClientRect();
       const tilt = Math.max(-8, Math.min(8, Math.round(ev.movementX)));

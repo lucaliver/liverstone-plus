@@ -1,22 +1,10 @@
 # TASKS
 
-- [ ] rinomina "smokestack" in "chain smoking" e aggiorna art
-
-- [x] alle carte cura forti dovresti mettere pending; alle carte forti con effetti game breaking pure
-
-- [x] per nemico "new hire": l'abilità di pietrificatare al 50% mettiamola come passiva che si triggera a inizio partita
-
-- [x] la mossa "outsource" dovrebbe avere l'icona dello steal card
-
-- [x] implementa un nuovo nemico "Boss son" con passiva "Punto debole": ogni tanto a rnadom sullo sprite del nemico compare per 2s un bersaglio. Se lo tocchi in tempo, il prossimo attacco è critico.
-
-- [x] ai lati dello sprite del nemico vedo delle candele, ma solo su desktop non su mobile (?). rimuovile.
-
-- [ ] implementa una nuova carta speciale che devi trascinare in giro sullo schermo per potenziarla
+- [x] implementa una nuova carta speciale che devi trascinare in giro sullo schermo per potenziarla
 
 - [ ] implementa un nuovo nemico "Sick coworker": come mossa speciale mette "virus" alle tue carte; le carte con virus costano 1 in più e quando una carta con virus è sulla belt, dopo 1sec infetta la carta successiva (e così via)
 
-- [ ] un nemico: che aggiunge ogni tot ruggine sopra la belt; affianco a lui c'è uno straccio, puoi trascinarlo sopra la belt per pulirla (con più passate); la ruggine rallenta la belt e se è troppa la ferma proprio
+- [ ] un nuovo nemico: che aggiunge ogni tot ruggine sopra la belt; affianco a lui c'è uno straccio, puoi trascinarlo sopra la belt per pulirla (con più passate); la ruggine rallenta la belt e se è troppa la ferma proprio
 
 # NEXT STEPS (ignore for now):
 
