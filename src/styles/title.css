@@ -260,11 +260,6 @@
   font-size: 20px;
   opacity: 0.7;
 }
-.version {
-  font-family: var(--font-ui);
-  font-size: 15px;
-  color: var(--muted-d);
-}
 
 /* ------------------------------------------------------------------ splash (the first tap also unlocks audio) */
 .splash {

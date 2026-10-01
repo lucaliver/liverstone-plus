@@ -183,7 +183,6 @@ export function splashScreen(onStart: () => void): Screen {
       h('div', { class: 'contract-line' }, signature, stamp, h('span', null, t('contract.signHere'))),
     ),
     action,
-    h('div', { class: 'version' }, `v${__APP_VERSION__}`),
   );
   return {
     el,
