@@ -33,8 +33,7 @@ const crypt = (tall: boolean): string => {
     parts('b', [
       [34, 18, 28, 1],
       ...[34, 38, 42, 46, 50, 54, 58].map((x): Rect => [x, 16, 1, 5]),
-      [44, 5, 5, 1], [43, 4, 1, 1], [49, 4, 1, 1],
-      [58, 8, 4, 1], [57, 7, 1, 1], [62, 7, 1, 1],
+      ...(tall ? [] : ([[44, 5, 5, 1], [43, 4, 1, 1], [49, 4, 1, 1], [58, 8, 4, 1], [57, 7, 1, 1], [62, 7, 1, 1]] satisfies Rect[])),
     ]) +
     parts('c', [[3, 18, 2, 3], [22, 18, 2, 3], [74, 18, 2, 3]]) +
     (tall
@@ -189,7 +188,7 @@ const bat = (y: number, dur: number, delay: number): string =>
 
 /** The life of a scene that belongs to its buildings (smoke, steam, windows going dark): it moves on the map's banner and on the act intro alike, over the scene. */
 const LIFE = [
-  '',
+  bat(4, 11, -5) + bat(8, 14, -9),
   puff(6, 7, 0) +
     puff(19, 3, -1.6) +
     puff(73, 2, -0.8) +
@@ -198,7 +197,13 @@ const LIFE = [
     lightsOut(22, 8, 13, -4) +
     lightsOut(76, 15, 11, -7) +
     lightsOut(84, 11, 15, -2),
-  puff(33, 2, 0) + puff(35, 2, -1.7) + puff(43, 7, -0.9) + puff(44, 7, -2.6) + lightsOut(7, 18, 8, 0) + lightsOut(17, 15, 12, -5) + lightsOut(90, 16, 10, -3),
+  puff(33, 2, 0) +
+    puff(35, 2, -1.7) +
+    puff(43, 7, -0.9) +
+    puff(44, 7, -2.6) +
+    lightsOut(7, 18, 8, 0) +
+    lightsOut(17, 15, 12, -5) +
+    lightsOut(90, 16, 10, -3),
 ];
 
 /** What moves over each scene on the map's banner (the act intro has its own sky, below). */
