@@ -93,11 +93,7 @@ function goTitle(): void {
         else goHeroSelect();
       },
       onCompendium: () => show(compendiumScreen(goTitle)),
-      onDebugFight: () => {
-        const pick = (): void => void openDebugFight(debugFight);
-        if (loadRun()) confirmModal(t('menu.abandonConfirm'), t('common.confirm'), pick, t('common.cancel'));
-        else pick();
-      },
+      onDebugFight: () => void openDebugFight(debugFight),
     }),
   );
 }
