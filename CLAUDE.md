@@ -172,7 +172,7 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 ### Pixel art and audio
 
 Icons (`ICONS`) and creatures (`CREATURES`) are SVG written for the ink palette and rasterised at boot by `art/riso.ts`;
-`icon(id)` / `creature(id)` / `relicArt(id)` return the pixel versions. `dev/art.html` (dev server) previews them all. Audio: `sfx(id)`,
+`icon(id)` / `creature(id)` / `relicArt(id)` return the pixel versions. `dev/art.html` (dev server) previews them all; `dev/og.html` composes the link-preview image `public/og.png` (1200×630) from the same sprites and cards: redraw it after art changes (screenshot `#og`). Audio: `sfx(id)`,
 `playMusic(track)`, `playTemporaryMusic`/`endTemporaryMusic`; tracks are data in `music.ts`.
 
 ## Testing
