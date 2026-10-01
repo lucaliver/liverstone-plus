@@ -179,14 +179,14 @@
   font-weight: 500;
   line-height: 1.25;
 }
-.relic-line .pico { flex: none; font-size: 32px; color: var(--p); --ink2: var(--y); }
+.relic-line .riso { flex: none; width: 48px; height: 48px; }
 .relic-line b {
   display: block;
   font-family: var(--font-ui);
   font-size: 18px;
   text-transform: uppercase;
 }
-.relic-line.undiscovered .pico { filter: grayscale(0.7); }
+.relic-line.undiscovered .riso { filter: grayscale(0.7); }
 /* the service record's stamps: a row per hero, a column per act; ink by act, like a time card's rubber stamps */
 .stamps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 6px; padding: 8px 0 4px; }
 .stamp,

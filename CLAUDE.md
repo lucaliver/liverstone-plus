@@ -82,7 +82,7 @@ src/
   data/        config (all tuning), acts, statuses, heroes, enemies, perks, hexes, relics, modifiers, cards/<class>.ts
   game/        combat (engine), run (map graph, rewards, save), meta (discoveries, unlocks, records, act stamps), settings, types
   ui/          app (screens, modals), dom
-    art/       icons (64×64), creatures (200×200), actArt (the skyline behind each act's map title), riso (pixel renderer)
+    art/       icons (64×64), creatures (200×200), relics (200×200 stationery sprites), actArt (the skyline behind each act's map title), riso (pixel renderer)
     combat/    view, hud, cardLayer, mop, combatFx, combatScreen
     components/ cardView, cardShow, coach, modals, memos, debugMenu, room, moveText, heroSheet, shareSlip, decor
     fx/        particles, floating text, shake, haptics
@@ -133,7 +133,7 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 
 ### Relics
 
-`RelicDef` (`data/relics.ts`): `mods` (sleeve, maxMana, beltSpeed, regen) and `hooks` (`onCombatStart`, `onCardPlayed`, `onDeath`…), `n` = the number its text shows. A hook shows itself with a `relic` event (floating name). Needs an icon (`art`), `relic.<id>.name`/`.d`. Run state: `run.relics` (ids) and `run.relicFlags` (once-per-run flags); the hero sheet lists them.
+`RelicDef` (`data/relics.ts`): `mods` (sleeve, maxMana, beltSpeed, regen) and `hooks` (`onCombatStart`, `onCardPlayed`, `onDeath`…), `n` = the number its text shows. A hook shows itself with a `relic` event (floating name). Needs a sprite in `art/relics.ts` (keyed by its id, drawn like a creature, most with a cute face), `relic.<id>.name`/`.d`. Run state: `run.relics` (ids) and `run.relicFlags` (once-per-run flags); the hero sheet lists them.
 
 ### Management memos (run modifiers)
 
@@ -172,7 +172,7 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 ### Pixel art and audio
 
 Icons (`ICONS`) and creatures (`CREATURES`) are SVG written for the ink palette and rasterised at boot by `art/riso.ts`;
-`icon(id)` / `creature(id)` return the pixel versions. `dev/art.html` (dev server) previews them all. Audio: `sfx(id)`,
+`icon(id)` / `creature(id)` / `relicArt(id)` return the pixel versions. `dev/art.html` (dev server) previews them all. Audio: `sfx(id)`,
 `playMusic(track)`, `playTemporaryMusic`/`endTemporaryMusic`; tracks are data in `music.ts`.
 
 ## Testing

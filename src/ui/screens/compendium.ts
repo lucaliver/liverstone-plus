@@ -12,6 +12,7 @@ import type { CardClass } from '../../game/types';
 import type { Screen } from '../app';
 import { h, onPress, stagger } from '../dom';
 import { icon } from '../art/icons';
+import { relicArt } from '../art/relics';
 import { creature } from '../art/creatures';
 import { cardView, UNKNOWN } from '../components/cardView';
 import { bindMoveDetails, movePattern } from '../components/moveText';
@@ -38,7 +39,7 @@ function relicView(r: RelicDef): HTMLElement {
   const seen = relicSeen(r.id);
   return h('article', {
     class: `relic-line${seen ? '' : ' undiscovered'}`,
-    html: `${icon(r.art)}<div><b>${seen ? t(`relic.${r.id}.name`) : UNKNOWN}</b>${seen ? t(`relic.${r.id}.d`, { n: r.n }) : UNKNOWN}</div>`,
+    html: `${relicArt(r.id)}<div><b>${seen ? t(`relic.${r.id}.name`) : UNKNOWN}</b>${seen ? t(`relic.${r.id}.d`, { n: r.n }) : UNKNOWN}</div>`,
   });
 }
 

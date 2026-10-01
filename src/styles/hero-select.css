@@ -224,6 +224,7 @@
   color: var(--hero-ink);
   --ink2: var(--y);
 }
+.hero-feature .riso { flex: none; width: 40px; height: 40px; }
 .hero-feature .ftag {
   margin-left: 4px;
   padding: 0 4px 1px;

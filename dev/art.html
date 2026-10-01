@@ -10,9 +10,10 @@ body{margin:0;background:#f6f0e4;font-family:sans-serif;padding:12px}
 <script type="module">
 import { preloadArt, sprite, pixelIcon } from '/src/ui/art/riso.ts';
 import { CREATURES } from '/src/ui/art/creatures.ts';
+import { RELIC_SPRITES } from '/src/ui/art/relics.ts';
 import { ICONS } from '/src/ui/art/icons.ts';
-await preloadArt({ creatures: CREATURES, icons: ICONS });
-document.getElementById('g').innerHTML = Object.keys(CREATURES).map((id) => sprite(id)).join('');
+await preloadArt({ creatures: { ...CREATURES, ...RELIC_SPRITES }, icons: ICONS });
+document.getElementById('g').innerHTML = Object.keys({ ...CREATURES, ...RELIC_SPRITES }).map((id) => sprite(id)).join('');
 document.getElementById('i').innerHTML = Object.keys(ICONS).map((id) => pixelIcon(id)).join('');
 document.title='ready';
 </script></body></html>

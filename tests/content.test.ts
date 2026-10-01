@@ -15,6 +15,7 @@ import { STATUS_ORDER, STATUSES } from '../src/data/statuses';
 import { GLYPHS, TAG_ICON } from '../src/ui/components/cardView';
 import { moveTone } from '../src/ui/components/moveText';
 import { ICONS, INTENT_ICON } from '../src/ui/art/icons';
+import { RELIC_SPRITES } from '../src/ui/art/relics';
 import { INK_HEX } from '../src/ui/art/riso';
 import { HEXES } from '../src/data/hexes';
 import { MODIFIER_LIST } from '../src/data/modifiers';
@@ -139,14 +140,12 @@ describe('content integrity', () => {
     for (const d of ACT_DEFS) if (d.bossIcon) expect(ICONS[d.bossIcon], d.bossIcon).toBeTruthy();
   });
 
-  it('every relic has a name, a text and its own icon', () => {
-    const arts = new Set<string>();
+  it('every relic has a name, a text and a sprite of its own', () => {
     for (const r of RELIC_LIST) {
       expect(en[`relic.${r.id}.name`] && en[`relic.${r.id}.d`], r.id).toBeTruthy();
-      expect(ICONS[r.art], `${r.id}: missing icon ${r.art}`).toBeTruthy();
-      expect(arts.has(r.art), `${r.id} shares ${r.art}`).toBe(false);
-      arts.add(r.art);
+      expect(RELIC_SPRITES[`relic.${r.id}`], `${r.id}: missing sprite`).toBeTruthy();
     }
+    expect(Object.keys(RELIC_SPRITES).length).toBe(RELIC_LIST.length);
   });
 
   it('every management memo has a name, a text and an icon, and changes something', () => {

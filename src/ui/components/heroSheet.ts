@@ -7,6 +7,7 @@ import type { HeroDef } from '../../game/types';
 import { openModal } from '../app';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
+import { relicArt } from '../art/relics';
 import { ABILITY_ICON, PASSIVE_ICON } from '../combat/view';
 import { h } from '../dom';
 import { UNKNOWN } from './cardView';
@@ -48,7 +49,7 @@ export function openHeroSheet(run: RunState): void {
   const relics = run.relics.map((id) =>
     h('div', {
       class: 'hero-feature',
-      html: `${icon(RELICS[id].art)}<div><b>${t(`relic.${id}.name`)}</b>${t(`relic.${id}.d`, { n: RELICS[id].n })}</div>`,
+      html: `${relicArt(id)}<div><b>${t(`relic.${id}.name`)}</b>${t(`relic.${id}.d`, { n: RELICS[id].n })}</div>`,
     }),
   );
   const body = h(

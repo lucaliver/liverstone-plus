@@ -398,7 +398,6 @@ export interface RelicDef {
   id: string;
   rarity: 'common' | 'rare' | 'epic' | 'boss' | 'starter' | 'special';
   cls?: HeroId;
-  art: string;
   pack?: string;
   /** The number its text shows (`{n}`). */
   n: number;

@@ -5,6 +5,7 @@ import { gainRelic, rollRelics, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h, onTapOrHold } from '../dom';
 import { icon } from '../art/icons';
+import { relicArt } from '../art/relics';
 import { CARD_SHOW_MS, playRelic } from '../components/cardShow';
 import { motes } from '../components/decor';
 import { openInfo } from '../components/modals';
@@ -30,7 +31,7 @@ export function lostFoundScreen(run: RunState, onDone: () => void): Screen {
         const text = t(`relic.${id}.d`, { n: RELICS[id].n });
         const card = h('button', {
           class: `relic-card ${RELICS[id].rarity}`,
-          html: `<b>${t(`relic.${id}.name`)}</b>${icon(RELICS[id].art)}<span>${text}</span>`,
+          html: `<b>${t(`relic.${id}.name`)}</b>${relicArt(id)}<span>${text}</span>`,
         });
         // Tap = keep it, hold = read all of it (the card shows only the first lines).
         onTapOrHold(
@@ -41,7 +42,7 @@ export function lostFoundScreen(run: RunState, onDone: () => void): Screen {
             playRelic(el, id);
             closeRoom(el, onDone, CARD_SHOW_MS);
           },
-          () => openInfo({ icon: RELICS[id].art, title: t(`relic.${id}.name`), desc: text }),
+          () => openInfo({ art: relicArt(id), title: t(`relic.${id}.name`), desc: text }),
         );
         return card;
       }),

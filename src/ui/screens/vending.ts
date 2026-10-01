@@ -28,7 +28,7 @@ export function vendingScreen(run: RunState, onDone: () => void): Screen {
       { class: 'rest-options' },
       ...RARITIES.map((rarity) =>
         roomOption(
-          rarity === 'rare' ? 'sandwich' : 'pizza',
+          icon(rarity === 'rare' ? 'sandwich' : 'pizza'),
           t(`vending.${rarity}`),
           canVend(run, rarity) ? t(`vending.${rarity}Desc`, { n: vendingCost(rarity) }) : t('vending.weak'),
           !canVend(run, rarity),

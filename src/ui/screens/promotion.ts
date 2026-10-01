@@ -25,7 +25,7 @@ export function promotionScreen(run: RunState, onDone: () => void): Screen {
       { class: 'rest-options' },
       ...PERK_LIST.map((p) => {
         const fits = run.deck.filter((c) => canPerk(c, p.id));
-        return roomOption(p.icon, t(`perk.${p.id}`), t(`perk.${p.id}.d`), fits.length === 0, () => {
+        return roomOption(icon(p.icon), t(`perk.${p.id}`), t(`perk.${p.id}.d`), fits.length === 0, () => {
           sfx('tap');
           openDeck(run.deck, {
             title: t('promo.hint'),

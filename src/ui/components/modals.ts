@@ -155,7 +155,9 @@ export function openHowTo(): ModalHandle {
 }
 
 export interface InfoOpts {
-  icon: string;
+  icon?: string;
+  /** HTML of a sprite, instead of an icon. */
+  art?: string;
   title: string;
   /** Small label next to the title (e.g. Passive / Active / On you). */
   tag?: string;
@@ -174,7 +176,7 @@ export function openInfo(opts: InfoOpts, onClose?: () => void): ModalHandle {
     { class: `info ${opts.ink ?? 'neutral'}` },
     h('div', {
       class: 'info-head',
-      html: `<span class="info-ico">${icon(opts.icon)}</span><div><h3>${opts.title}</h3>${opts.tag ? `<span class="ftag ${opts.tagCls ?? ''}">${opts.tag}</span>` : ''}</div>`,
+      html: `<span class="info-ico">${opts.art ?? icon(opts.icon ?? 'question')}</span><div><h3>${opts.title}</h3>${opts.tag ? `<span class="ftag ${opts.tagCls ?? ''}">${opts.tag}</span>` : ''}</div>`,
     }),
     h('p', { class: 'info-desc', html: opts.desc }),
     ...(opts.extra ?? []).map((x) => h('div', { class: 'info-extra', html: x })),

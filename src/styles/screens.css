@@ -185,6 +185,7 @@
 .option:disabled { opacity: 0.4; box-shadow: none; }
 .option .pico { font-size: 52px; color: var(--p); --ink2: var(--y); }
 .option:last-child .pico { color: var(--b); }
+.option .riso { flex: none; width: 64px; height: 64px; }
 /* Lost & Found: the three relics side by side, like small cards; the text is clipped, a long press reads it all */
 .relic-row {
   display: grid;
@@ -209,8 +210,7 @@
 .relic-card:nth-child(3) { animation-delay: 0.6s; }
 .relic-card:active:not(:disabled) { transform: translate(var(--off), var(--off)); box-shadow: none; }
 .relic-card:disabled { opacity: 0.4; box-shadow: none; }
-.relic-card .pico { font-size: 44px; color: var(--p); --ink2: var(--y); }
-.relic-card:last-child .pico { color: var(--b); }
+.relic-card .riso { width: 64px; height: 64px; }
 .relic-card b {
   font-family: var(--font-display);
   font-size: 13px;
@@ -569,13 +569,11 @@
   display: grid;
   place-items: center;
   aspect-ratio: 1;
-  font-size: min(34vw, 140px);
-  color: var(--b);
   background: var(--y);
   border: var(--line) solid var(--k);
   box-shadow: 6px 6px 0 var(--p);
-  --ink2: var(--paper);
 }
+.relic-badge .riso { width: 80%; height: 80%; }
 .promo-badge {
   position: relative;
   display: grid;

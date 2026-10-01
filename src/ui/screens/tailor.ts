@@ -6,6 +6,7 @@ import { gainRelic, hasRelic, tailorVest, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h } from '../dom';
 import { icon } from '../art/icons';
+import { relicArt } from '../art/relics';
 import { playHealing, HEAL_ANIM_MS } from './rest';
 import { CARD_SHOW_MS, playRelic } from '../components/cardShow';
 import { closeRoom, roomOption } from '../components/room';
@@ -32,13 +33,13 @@ export function tailorScreen(run: RunState, onDone: () => void): Screen {
     h(
       'div',
       { class: 'rest-options' },
-      roomOption(pants.art, t(`relic.${PANTS}.name`), owned ? t('tailor.owned') : t(`relic.${PANTS}.d`, { n: pants.n }), owned, () => {
+      roomOption(relicArt(PANTS), t(`relic.${PANTS}.name`), owned ? t('tailor.owned') : t(`relic.${PANTS}.d`, { n: pants.n }), owned, () => {
         sfx('tap');
         gainRelic(run, PANTS);
         playRelic(el, PANTS);
         closeRoom(el, onDone, CARD_SHOW_MS);
       }),
-      roomOption('heart', t('tailor.vest'), t('tailor.vestDesc', { n: CONFIG.tailorMaxHp }), false, () => {
+      roomOption(icon('heart'), t('tailor.vest'), t('tailor.vestDesc', { n: CONFIG.tailorMaxHp }), false, () => {
         tailorVest(run);
         playHealing(el, CONFIG.tailorMaxHp, t('tailor.fitted'));
         closeRoom(el, onDone, HEAL_ANIM_MS);

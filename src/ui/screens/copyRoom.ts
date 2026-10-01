@@ -42,7 +42,7 @@ export function copyRoomScreen(run: RunState, onDone: () => void): Screen {
       'div',
       { class: 'rest-options' },
       roomOption(
-        'trash',
+        icon('trash'),
         t('copy.shred'),
         canShred(run) ? t('copy.shredDesc') : t('copy.shredFull', { n: CONFIG.shredMinDeck }),
         !canShred(run),
@@ -55,7 +55,7 @@ export function copyRoomScreen(run: RunState, onDone: () => void): Screen {
           ),
       ),
       roomOption(
-        'copy',
+        icon('copy'),
         t('copy.photocopy'),
         canCopy(run) ? t('copy.photocopyDesc', { n: CONFIG.copyHpCost }) : t('copy.photocopyWeak'),
         !canCopy(run),

@@ -24,7 +24,6 @@ const defs: RelicDef[] = [
   {
     id: 'stressBall',
     rarity: 'common',
-    art: 'stressBall',
     n: STRESS_BALL_BLOCK,
     hooks: {
       onCombatStart: (c) => {
@@ -36,15 +35,13 @@ const defs: RelicDef[] = [
   {
     id: 'thermos',
     rarity: 'common',
-    art: 'thermos',
     n: THERMOS_HEAL,
     hooks: { onCombatEnd: (c) => void (c.heal('hero', THERMOS_HEAL) > 0 && proc(c, 'thermos')) },
   },
-  { id: 'ergoChair', rarity: 'common', art: 'ergoChair', n: 12, mods: { regen: 1.12 } },
+  { id: 'ergoChair', rarity: 'common', n: 12, mods: { regen: 1.12 } },
   {
     id: 'coffeeMug',
     rarity: 'common',
-    art: 'mug',
     n: MUG_EVERY,
     hooks: {
       onCardPlayed: (c) => {
@@ -58,7 +55,6 @@ const defs: RelicDef[] = [
   {
     id: 'wallClock',
     rarity: 'common',
-    art: 'wallClock',
     n: CLOCK_EVERY,
     hooks: {
       tick: (c, dt) => {
@@ -73,7 +69,6 @@ const defs: RelicDef[] = [
   {
     id: 'unionArmband',
     rarity: 'rare',
-    art: 'armband',
     n: 1,
     hooks: {
       onCombatStart: (c) => {
@@ -85,7 +80,6 @@ const defs: RelicDef[] = [
   {
     id: 'inboxZero',
     rarity: 'rare',
-    art: 'inbox',
     n: BOOT_MANA,
     hooks: {
       onCombatStart: (c) => {
@@ -97,7 +91,6 @@ const defs: RelicDef[] = [
   {
     id: 'heavyStapler',
     rarity: 'rare',
-    art: 'heavyStapler',
     n: STAPLER_EVERY,
     hooks: {
       onCardPlayed: (c) => {
@@ -107,11 +100,10 @@ const defs: RelicDef[] = [
       },
     },
   },
-  { id: 'spareBadge', rarity: 'epic', art: 'badge', n: 1, mods: { maxMana: 1 } },
+  { id: 'spareBadge', rarity: 'epic', n: 1, mods: { maxMana: 1 } },
   {
     id: 'emergencyExit',
     rarity: 'epic',
-    art: 'exitSign',
     n: Math.round(EXIT_HP * 100),
     hooks: {
       // Once per run: the flag lives in the run, so it survives the fight.
@@ -124,7 +116,7 @@ const defs: RelicDef[] = [
     },
   },
   // The Tailor's: not found in the Lost & Found.
-  { id: 'cargoPants', rarity: 'special', art: 'cargoPants', n: 1, mods: { sleeve: 1 } },
+  { id: 'cargoPants', rarity: 'special', n: 1, mods: { sleeve: 1 } },
 ];
 
 export const RELICS: Record<string, RelicDef> = Object.fromEntries(defs.map((r) => [r.id, r]));

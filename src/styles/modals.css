@@ -308,6 +308,7 @@
   border: var(--line) solid var(--k);
   --ink2: var(--p);
 }
+.info-ico .riso { width: 44px; height: 44px; }
 .info.good .info-ico { color: var(--b); }
 .info.bad .info-ico { color: var(--p); --ink2: var(--k); }
 .info-head h3 {

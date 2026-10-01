@@ -50,12 +50,12 @@ export function restScreen(run: RunState, onDone: () => void): Screen {
     h(
       'div',
       { class: 'rest-options' },
-      roomOption('heart', t('rest.heal'), heal > 0 ? t('rest.healDesc', { n: heal }) : t('rest.full'), heal <= 0, () => {
+      roomOption(icon('heart'), t('rest.heal'), heal > 0 ? t('rest.healDesc', { n: heal }) : t('rest.full'), heal <= 0, () => {
         const healed = rest(run);
         playHealing(el, healed);
         closeRoom(el, onDone, HEAL_ANIM_MS);
       }),
-      roomOption('hammer', t('rest.smith'), t('rest.smithDesc'), upgradable.length === 0, () => {
+      roomOption(icon('hammer'), t('rest.smith'), t('rest.smithDesc'), upgradable.length === 0, () => {
         sfx('tap');
         openDeck(run.deck, {
           title: t('rest.smithHint'),
