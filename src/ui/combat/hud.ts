@@ -14,6 +14,8 @@ import { type CombatView, PASSIVE_ICON } from './view';
 /** Everything around the cards: HP bars, statuses, the threat bar, mana and hero extras. `onPassive` explains the hero passive. */
 /** Share of max HP under which the hero's portrait sweats. */
 const LOW_HP = 0.3;
+/** Steps of the belt's red wash (motion is stepped). */
+const BELT_ALARM_STEPS = 8;
 
 export function createHud(v: CombatView, onPassive: () => void): { render(): void } {
   const { combat, r } = v;
@@ -24,6 +26,8 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
   let warned = -1;
   /** `moveCount` of the lethal hit the alarm sounded for (-1 while not in danger). */
   let alarmed = -1;
+  /** The belt's red wash, in steps (written only when the step changes). */
+  let beltAlarm = 0;
   /** Rust spot elements by id. */
   const rustEls = new Map<number, HTMLElement>();
   let lastMaxMana = -1;
@@ -206,6 +210,11 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
   };
 
   const renderEnemyState = (): void => {
+    const alarm = combat.isOver ? 0 : Math.floor(combat.enemyWarning() * BELT_ALARM_STEPS) / BELT_ALARM_STEPS;
+    if (alarm !== beltAlarm) {
+      beltAlarm = alarm;
+      r.beltAlarm.style.setProperty('--alarm', String(alarm));
+    }
     toggle(r.weakSpot, 'on', !!combat.weakSpot && !combat.isOver);
     toggle(r.mop, 'on', combat.rustsBelt && !combat.isOver);
     for (const spot of combat.rustSpots) {

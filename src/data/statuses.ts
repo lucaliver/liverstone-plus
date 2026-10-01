@@ -13,6 +13,8 @@ const LANE_WINDOW = 4;
 const CHILL_GAP = 2;
 /** Micromanagement: seconds without playing a card before he cuts in. */
 const IDLE_LIMIT = 3;
+/** Seconds since a card was last played or he last cut in. */
+const idleFor = (c: Combat, s: StatusVal): number => c.time - Math.max(c.lastPlayedAt, s.e ?? 0);
 /** Card colours, by index (a status's free number `e` remembers one). */
 const CATEGORIES: CardCategory[] = ['attack', 'defense', 'utility', 'curse'];
 /** Golden Parachute: the share of its max HP the enemy is back on its feet with, the Block it retires with and the Strength it gains. */
@@ -236,10 +238,11 @@ const defs: StatusDef[] = [
     icon: 'watchEye',
     // `e` holds when he last cut in, so one quiet spell costs one hit.
     tick: (c, side, s) => {
-      if (side !== 'enemy' || c.time - Math.max(c.lastPlayedAt, s.e ?? 0) < IDLE_LIMIT) return;
+      if (side !== 'enemy' || idleFor(c, s) < IDLE_LIMIT) return;
       s.e = c.time;
       c.enemyStrike();
     },
+    warning: (c, s) => idleFor(c, s) / IDLE_LIMIT,
   },
   // Rusty belt: on the hero, one per rust spot on the belt (`Combat.syncRustStatus` keeps the count).
   { id: 'rustedBelt', kind: 'stacks', good: false, icon: 'rust' },

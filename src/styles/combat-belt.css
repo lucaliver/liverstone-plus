@@ -64,6 +64,14 @@
   0%, 92%, 100% { opacity: 1; }
   94%, 98% { opacity: 0; }
 }
+.belt-alarm {
+  /* a flat red wash over the stream, stronger as an enemy's countdown nears its end (`--alarm`, 0 to 1, set in steps) */
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--red);
+  opacity: calc(var(--alarm, 0) * 0.55);
+}
 .belt-rust {
   /* rust patches over the stream, under the cards (JS shows them one by one) */
   position: absolute;

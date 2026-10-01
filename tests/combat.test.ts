@@ -925,7 +925,10 @@ describe('combat engine', () => {
       const c = vs('micromanager');
       c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
       const hp = c.hero.hp;
-      run(c, 3.1);
+      run(c, 1.5);
+      expect(c.enemyWarning()).toBeCloseTo(0.5, 1);
+      run(c, 1.6);
+      expect(c.enemyWarning()).toBeLessThan(0.1);
       expect(c.hero.hp).toBeLessThan(hp);
       // Playing cards keeps him off your back.
       const after = c.hero.hp;
@@ -1254,7 +1257,7 @@ describe('statuses that work through their data', () => {
   });
 });
 
-describe('run pay', () => {
+describe('run pay and rewards', () => {
   it('pays a base by tier plus a bonus for every second under par', () => {
     expect(fightPay('normal', CONFIG.pay.par + 20)).toBe(CONFIG.pay.normal);
     expect(fightPay('normal', CONFIG.pay.par - 10)).toBe(CONFIG.pay.normal + 10 * CONFIG.pay.perSecond);

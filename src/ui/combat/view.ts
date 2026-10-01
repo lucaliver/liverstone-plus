@@ -97,6 +97,7 @@ function markup(run: RunState, combat: Combat): string {
     </section>
     <section class="belt rows-${combat.beltRows} ${settings.rightToLeft ? '' : 'ltr'}">
       <div class="belt-track"></div>
+      <div class="belt-alarm"></div>
       <div class="belt-rust"></div>
       <div class="maw-eyes" aria-hidden="true"><i></i><i></i></div>
       <div class="belt-cards"></div>
@@ -117,6 +118,7 @@ function queryRefs(el: HTMLElement) {
     enemyArt: $('.enemy-art', el),
     weakSpot: $('.weak-spot', el),
     mop: $('.mop', el),
+    beltAlarm: $('.belt-alarm', el),
     rust: $('.belt-rust', el),
     intent: $('.threat', el),
     intentIco: $('.js-intent-ico', el),

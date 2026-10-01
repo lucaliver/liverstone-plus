@@ -253,6 +253,16 @@ export class Combat {
     return r;
   }
 
+  /** How close the enemy is to something its statuses count down to, 0 to 1 (the belt reddens). */
+  enemyWarning(): number {
+    let w = 0;
+    for (const [id, s] of Object.entries(this.enemy.statuses)) {
+      const warn = STATUSES[id].warning;
+      if (warn && this.has('enemy', id)) w = Math.max(w, warn(this, s));
+    }
+    return Math.min(1, w);
+  }
+
   /** Whether any active status of the side carries this rule flag. */
   private flag(side: Side, key: 'holdsBlock' | 'immune' | 'ignoresRules' | 'autoplay'): boolean {
     return Object.keys(this.fighter(side).statuses).some((id) => STATUSES[id][key] && this.has(side, id));

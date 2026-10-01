@@ -210,6 +210,8 @@ export interface StatusDef {
   rust?: { every: number; max: number };
   /** Runs every simulation step while the status is active. */
   tick?: (c: Combat, side: Side, s: StatusVal, dt: number) => void;
+  /** On the enemy: how close the status is to going off, 0 to 1 (the belt reddens as it nears 1). */
+  warning?: (c: Combat, s: StatusVal) => number;
 }
 
 /** `v` = stacks/amount; `t` = seconds left for timed statuses; `e` = a free clock for statuses with a tick. */
