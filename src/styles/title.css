@@ -47,7 +47,7 @@
   z-index: 5;
   width: 44px;
   height: 14px;
-  background: #d8ccb4;
+  background: var(--paper-dim);
   opacity: 0.85;
 }
 .poster::before { left: 10px; rotate: -8deg; }
@@ -151,7 +151,7 @@
   white-space: nowrap;
   text-transform: uppercase;
   color: var(--k);
-  background: #d8a830;
+  background: var(--brass);
   border: 2px solid var(--k);
 }
 

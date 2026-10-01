@@ -51,8 +51,8 @@
   bottom: 84px;
   height: 22px;
   pointer-events: none;
-  background: conic-gradient(#342859 25%, transparent 0 50%, #342859 0 75%, transparent 0) 0 0 / 6px 6px;
-  border-top: 3px solid #342859;
+  background: conic-gradient(var(--night-dot) 25%, transparent 0 50%, var(--night-dot) 0 75%, transparent 0) 0 0 / 6px 6px;
+  border-top: 3px solid var(--night-dot);
 }
 .shade {
   /* pixel shadow under the enemy (stepped, not round) */
@@ -330,7 +330,7 @@
   position: relative;
   flex: 1;
   overflow: hidden;
-  background-image: radial-gradient(circle, #d8ccb4 30%, transparent 34%);
+  background-image: radial-gradient(circle, var(--paper-dim) 30%, transparent 34%);
   background-size: 5px 5px;
 }
 .threat .t-fill {

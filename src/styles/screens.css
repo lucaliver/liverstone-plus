@@ -290,7 +290,7 @@
 }
 /* dot leaders between the label and the amount */
 .slip-row span { flex: 1; display: flex; gap: 6px; }
-.slip-row span::after { content: ''; flex: 1; border-bottom: 2px dotted #b8ab92; translate: 0 -4px; }
+.slip-row span::after { content: ''; flex: 1; border-bottom: 2px dotted var(--paper-rule); translate: 0 -4px; }
 .slip-row b { font-weight: 400; }
 .slip-row.slip-section { margin-top: 6px; color: var(--p); text-transform: uppercase; }
 .slip-row.slip-section span::after { content: none; }

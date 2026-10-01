@@ -132,15 +132,12 @@
 .gk-heal .pico,
 .gk-hp .pico,
 .gk-str .pico,
-.gk-rage .pico,
 .gk-burn .pico { color: var(--p); --ink2: var(--y); }
 .gk-crystal .pico { color: var(--b); --ink2: var(--y); }
 .gk-exit .pico + .pico { color: var(--p); --ink2: var(--y); }
 .gk-poison .pico { color: var(--green); --ink2: var(--y); }
 .gk-weak .pico { color: var(--purple); --ink2: var(--y); }
-.gk-vuln .pico,
-.gk-sac .pico { color: var(--p); --ink2: var(--k); }
-.gk-frenzy .pico,
+.gk-vuln .pico { color: var(--p); --ink2: var(--k); }
 .gk-stun .pico,
 .gk-parry .pico,
 .gk-grow .pico,

@@ -43,6 +43,14 @@ const ENEMY_MAX = 256;
 const ENEMY_ZOOM = 1.6;
 /** Pixels between the two rows of a two-row belt. */
 const BELT_ROW_GAP = 10;
+/** Tallest a belt card may be, as a share of the screen height, with one and with two rows. */
+const CARD_MAX_H = { one: 0.118, two: 0.092 };
+/** Pixels after which the belt's track pattern repeats (the scroll wraps there). */
+const TRACK_PERIOD = 26;
+/** Most simulation steps run in one frame; past that the fight drops the lag instead of spiralling. */
+const MAX_STEPS = 12;
+/** Milliseconds between the end of the fight and leaving it (the enemy finishes dying). */
+const END_MS = { lose: 1500, win: 2200, boss: 3000 };
 
 /** The combat screen: wires the view, HUD, card layer and FX together and owns pause and the game loop. */
 export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks): Screen {
@@ -52,6 +60,9 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   let beltOffset = 0;
   let lastTempo = 1;
   let acc = 0;
+  const timers: number[] = [];
+  /** A timeout that leave() cancels. */
+  const later = (fn: () => void, ms: number): void => void timers.push(window.setTimeout(fn, ms));
 
   // The fight runs only while no window at all is open (card detail, status info, pause menu…) and Start was pressed.
   const syncPause = (opening = false): void => {
@@ -88,8 +99,8 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       r.eStatus.classList.add('gone');
       const p = v.enemyPoint();
       burst('blood', p.x, p.y, 36, 1.4);
-      for (let i = 1; i <= (boss ? 5 : 3); i++) setTimeout(() => burst('blood', p.x + (i % 2 ? -30 : 30), p.y + i * 6, 14), i * 200);
-      setTimeout(() => burst('gold', p.x, p.y + 20, 40, 1.5), boss ? 1100 : 700);
+      for (let i = 1; i <= (boss ? 5 : 3); i++) later(() => burst('blood', p.x + (i % 2 ? -30 : 30), p.y + i * 6, 14), i * 200);
+      later(() => burst('gold', p.x, p.y + 20, 40, 1.5), boss ? 1100 : 700);
       shake('big');
       haptic('kill');
       sfx('enemyDown');
@@ -107,7 +118,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       haptic('defeat');
     }
     // A win waits for the enemy to finish dying (longer for a boss).
-    setTimeout(() => cb.onEnd(combat), result === 'lose' ? 1500 : boss ? 3000 : 2200);
+    later(() => cb.onEnd(combat), result === 'lose' ? END_MS.lose : boss ? END_MS.boss : END_MS.win);
   };
   const unsubscribe = bindCombatFx(v, cards, finish);
 
@@ -115,7 +126,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   const layout = (): void => {
     state.beltW = r.belt.clientWidth || el.clientWidth;
     // Cards follow the belt width, but shrink on short screens so the layout always fits (more with two rows).
-    const cw = Math.round(Math.min(state.beltW * CONFIG.cardWidth, el.clientHeight * (combat.beltRows > 1 ? 0.092 : 0.118)));
+    const cw = Math.round(Math.min(state.beltW * CONFIG.cardWidth, el.clientHeight * (combat.beltRows > 1 ? CARD_MAX_H.two : CARD_MAX_H.one)));
     state.cardW = cw;
     state.rowH = Math.round(cw * 1.4) + BELT_ROW_GAP;
     el.style.setProperty('--cw-belt', `${cw}px`);
@@ -368,7 +379,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     cards.render();
     if (!state.paused && !state.ended && state.stop <= 0 && combat.intro <= 0) {
       beltOffset -= (dt * settings.speed * combat.beltRate() * state.beltW) / CONFIG.beltTime;
-      r.track.style.setProperty('--belt-x', `${Math.round(beltOffset % 26)}px`);
+      r.track.style.setProperty('--belt-x', `${Math.round(beltOffset % TRACK_PERIOD)}px`);
     }
   };
 
@@ -443,6 +454,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     },
     leave() {
       setMusicTempo(1);
+      for (const id of timers) clearTimeout(id);
       unsubscribe();
       removeEventListener('resize', onResize);
       document.removeEventListener('visibilitychange', onVisibility);
@@ -452,12 +464,12 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       else if (!state.paused && !state.ended) {
         acc += dt * settings.speed;
         let steps = 0;
-        while (acc >= STEP && steps < 12) {
+        while (acc >= STEP && steps < MAX_STEPS) {
           combat.tick(STEP);
           acc -= STEP;
           steps++;
         }
-        if (steps === 12) acc = 0;
+        if (steps === MAX_STEPS) acc = 0;
         checkTip();
       }
       render(dt);

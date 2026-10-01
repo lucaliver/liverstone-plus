@@ -27,9 +27,6 @@ export function setSfxVolume(v: number): void {
   if (master) master.gain.value = MASTER * volume;
 }
 
-/** True once the browser has let us create the audio context (after the first user gesture). */
-export const audioUnlocked = (): boolean => ctx !== null && ctx.state === 'running';
-
 /** Tries to resume a suspended context (works after a first unlock; harmless otherwise). */
 export function resumeAudio(): void {
   if (ctx && ctx.state !== 'running') void ctx.resume().catch(() => {});

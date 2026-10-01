@@ -37,6 +37,11 @@
   --shadow: #0a0714;
   --fg: #f6f0e4;
   --muted-d: #a397c4;
+  /* Brass fittings, worn paper and the dotted night floor */
+  --brass: #d8a830;
+  --paper-dim: #d8ccb4;
+  --paper-rule: #b8ab92;
+  --night-dot: #342859;
 
   /* Pixel outlines for text over the fight (sprites, plates, night): light text gets the ink ring, dark text the paper ring. */
   --ring-k: 3px 0 0 var(--k), -3px 0 0 var(--k), 0 3px 0 var(--k), 0 -3px 0 var(--k), 3px 3px 0 var(--k), -3px 3px 0 var(--k), 3px -3px 0 var(--k), -3px -3px 0 var(--k);
