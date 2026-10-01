@@ -228,6 +228,31 @@
   -webkit-line-clamp: 5;
   overflow: hidden;
 }
+/* Cross-Training: the four cards of the other classes, two by two; they shrink with the screen's height */
+.cross-area {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+}
+.cross-offer {
+  --cross-cw: clamp(92px, calc((100svh - 340px) / 2.9), 150px);
+  display: grid;
+  grid-template-columns: repeat(2, var(--cross-cw));
+  gap: 14px 18px;
+}
+.cross-offer .card {
+  --cw: var(--cross-cw);
+  cursor: pointer;
+  animation: deal 0.24s steps(3);
+  transition: transform 0.1s steps(2), opacity 0.1s steps(2);
+}
+.cross-offer.has-sel .card:not(.sel) { opacity: 0.45; }
+.cross-offer .card.sel {
+  transform: translateY(-6px);
+  outline: 4px solid var(--y);
+  outline-offset: 3px;
+}
 /* an odd option out takes the whole last row (Lost & Found: three relics) */
 .option:nth-child(2n + 1):last-child { grid-column: 1 / -1; }
 .option b {

@@ -77,6 +77,8 @@ export const CONFIG = {
   tailorMaxHp: 10,
   /** Lost & Found: how many relics lie in the box. */
   lostFoundChoices: 3,
+  /** Cross-Training: how many cards of each of the other classes are on offer. */
+  crossTrainPerClass: 2,
   /** Vending Machine: the HP a card of each rarity costs (the machine takes blood). */
   vendingHp: { rare: 6, epic: 12 },
 } as const;
@@ -95,6 +97,13 @@ export const REWARD_ODDS: Record<'fight' | 'elite', [Rarity, number][]> = {
     ['legendary', 5],
   ],
 };
+
+/** Rarity odds (weights) of the cards on offer in Cross-Training (like an elite's, without Legendary). */
+export const CROSS_TRAINING_ODDS: [Rarity, number][] = [
+  ['common', 30],
+  ['rare', 50],
+  ['epic', 20],
+];
 
 /** Where cards enter (0) and expire, in belt-distance units. */
 export const EXPIRE_POS = 1 + CONFIG.cardWidth * CONFIG.expireOverhang;

@@ -660,6 +660,22 @@ test('lost and found: three relics, keeping one', async ({ page }) => {
   expect(await page.evaluate('window.__game.run.relics.length')).toBe(1);
 });
 
+test('cross-training: four cards of the other classes, taking one', async ({ page }) => {
+  await freshGame(page, { veteran: true });
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  const floor = await roomFloor(page, 'crossTraining');
+  await page.getByRole('button', { name: new RegExp(`enter floor ${floor}`, 'i') }).click();
+  await expect(page.locator('.cross-offer .card')).toHaveCount(4);
+  const take = page.getByRole('button', { name: /take it/i });
+  await expect(take).toBeDisabled();
+  const deck = (await page.evaluate('window.__game.run.deck.length')) as number;
+  await page.locator('.cross-offer .card').nth(2).click();
+  await take.click();
+  await expect(page.locator('.node.open').first()).toBeVisible();
+  expect(await page.evaluate('window.__game.run.deck.length')).toBe(deck + 1);
+});
+
 test('vending machine: a card drops into the deck and costs HP', async ({ page }) => {
   await freshGame(page, { veteran: true });
   await page.getByRole('button', { name: /new run/i }).click();

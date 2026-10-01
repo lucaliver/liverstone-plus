@@ -1074,6 +1074,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<g transform="rotate(-35 32 32)"><rect x="8" y="8" width="38" height="18" rx="3"/><rect x="12" y="8" width="6" height="18" fill="#16121f" opacity=".4"/><rect x="34" y="8" width="6" height="18" fill="#16121f" opacity=".4"/><rect x="24" y="24" width="7" height="34" rx="2"/></g><path d="M34 54h28v8H34z"/>`,
   },
+  whiteboard: {
+    el: 'steel',
+    svg: `<rect x="4" y="4" width="56" height="38" rx="1"/><rect x="9" y="9" width="46" height="28" fill="#16121f"/><path fill="#fff" opacity=".75" d="M14 14h16v3H14zM14 21h26v3H14zM14 28h12v3H14zM42 13h9v9h-9z"/><path d="M12 42h6v18h-6zM46 42h6v18h-6zM10 40h44v4H10z"/>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {

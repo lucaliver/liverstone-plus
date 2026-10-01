@@ -1,11 +1,11 @@
 import { Rng } from '../core/rng';
 import { loadRaw, remove, store } from '../core/save';
 import { nextUid, peekUid, resetUid } from '../core/util';
-import { CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../data/cards';
+import { CARD_LIST, CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../data/cards';
 import { PERKS } from '../data/perks';
 import { RELIC_LIST, RELICS } from '../data/relics';
 import { ACT_DEFS, actDef } from '../data/acts';
-import { CONFIG, REWARD_ODDS } from '../data/config';
+import { CONFIG, CROSS_TRAINING_ODDS, REWARD_ODDS } from '../data/config';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HERO_LIST, HEROES, starterCards } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
@@ -13,7 +13,7 @@ import { discover, progress, type RunRecord, recordFight, recordRun, seeRelics }
 import { renamedCard, renamedEnemy, renamedPerk } from './renamed';
 import type { CardDef, CardInst, EnemyDef, HeroId } from './types';
 
-export const NODE_TYPES = ['fight', 'elite', 'rest', 'promotion', 'copy', 'tailor', 'lostFound', 'vending', 'boss'] as const;
+export const NODE_TYPES = ['fight', 'elite', 'rest', 'promotion', 'copy', 'tailor', 'lostFound', 'vending', 'crossTraining', 'boss'] as const;
 export type NodeType = (typeof NODE_TYPES)[number];
 
 /** A room of a lane as written in `LANES`: a real room type or a slot still to be dealt. */
@@ -79,7 +79,7 @@ const LANES: Slot[][] = [
   ['fight', 'promotion', 'fight', 'rest', 'fight', 'special', 'fight', 'rest'],
 ];
 /** A `special` slot of a lane becomes one of these when the act is built; one act never deals the same room twice. */
-export const SPECIALS: NodeType[] = ['copy', 'tailor', 'lostFound', 'vending'];
+export const SPECIALS: NodeType[] = ['copy', 'tailor', 'lostFound', 'vending', 'crossTraining'];
 /** Floors on a single road at the start of act 1, before the map splits in two (then the lanes skip as many floors). */
 const ACT1_OPENING = 3;
 /** Links between the lanes per act: diagonal (to the other lane one floor up) or flat (across the same floor, both ways). */
@@ -378,6 +378,33 @@ export function vend(run: RunState, rarity: keyof typeof CONFIG.vendingHp): Card
   run.hp -= vendingCost(rarity);
   discover([def.id]);
   const card = newCard(run, def.id);
+  run.deck.push(card);
+  run.cleared = true;
+  return card;
+}
+
+/** Cross-Training: `crossTrainPerClass` cards from each class but the hero's own, to take one of. */
+export function rollCrossTraining(run: RunState): CardDef[] {
+  const rng = rngOf(run);
+  const offer: CardDef[] = [];
+  for (const hero of HERO_LIST) {
+    if (hero.id === run.hero) continue;
+    const own: CardDef[] = [];
+    for (let tries = 0; own.length < CONFIG.crossTrainPerClass && tries < 80; tries++) {
+      const rarity = rng.weighted(CROSS_TRAINING_ODDS, ([, w]) => w)[0];
+      const pool = CARD_LIST.filter((c) => c.cls === hero.id && c.rarity === rarity && !c.pack && !own.includes(c));
+      if (pool.length) own.push(rng.pick(pool));
+    }
+    offer.push(...own);
+  }
+  run.rng = rng.state;
+  discover(offer.map((c) => c.id));
+  return offer;
+}
+
+/** The hero takes one of the Cross-Training cards into the deck. Returns it. */
+export function crossTrain(run: RunState, id: string): CardInst {
+  const card = newCard(run, id);
   run.deck.push(card);
   run.cleared = true;
   return card;

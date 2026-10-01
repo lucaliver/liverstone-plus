@@ -88,7 +88,7 @@ src/
     combat/    view, hud, cardLayer, mop, combatFx, combatScreen
     components/ cardView, cardShow, coach, modals, debugMenu, room, moveText, heroSheet, shareSlip, decor
     fx/        particles, floating text, shake, haptics
-    screens/   title, heroSelect, journey, reward, rest, promotion, copyRoom, tailor, lostFound, vending, end, compendium
+    screens/   title, heroSelect, journey, reward, rest, promotion, copyRoom, tailor, lostFound, vending, crossTraining, end, compendium
   audio/       sfx (synth), music (sequencer + tracks)
   styles/      index.css imports partials in order; responsive.css stays last
 tests/         combat, content, balance.sim (+ bot), e2e/

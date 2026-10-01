@@ -22,6 +22,7 @@ export const NODE_ICON: Record<RunNode['type'], string> = {
   tailor: 'tailor',
   lostFound: 'lostBox',
   vending: 'vendingMachine',
+  crossTraining: 'whiteboard',
   boss: 'tophat',
 };
 /** Height of one floor on the map (px); a room takes most of it, the rest is corridor. */

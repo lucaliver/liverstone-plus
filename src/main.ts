@@ -47,6 +47,7 @@ import { copyRoomScreen } from './ui/screens/copyRoom';
 import { tailorScreen } from './ui/screens/tailor';
 import { lostFoundScreen } from './ui/screens/lostFound';
 import { vendingScreen } from './ui/screens/vending';
+import { crossTrainingScreen } from './ui/screens/crossTraining';
 import { rewardScreen } from './ui/screens/reward';
 import { splashScreen, titleScreen } from './ui/screens/title';
 import { compendiumScreen } from './ui/screens/compendium';
@@ -61,6 +62,7 @@ const ROOMS: Partial<Record<NodeType, (run: RunState, onDone: () => void) => Scr
   tailor: tailorScreen,
   lostFound: lostFoundScreen,
   vending: vendingScreen,
+  crossTraining: crossTrainingScreen,
 };
 
 function goTitle(): void {
