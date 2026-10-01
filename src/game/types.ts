@@ -162,6 +162,8 @@ export interface StatusDef {
   tone?: Tone;
   /** Timed statuses that also stack show their stacks instead of the seconds left. */
   showStacks?: boolean;
+  /** Seconds its chip's bar empties over: the chip is drawn as a coloured bar that drains with the timer (for a counter that runs out, like chained spells). */
+  span?: number;
   /** A permanent trait (enemy passives): shown without a number. */
   passive?: boolean;
   /** Icon when the status is on the hero, if it must read differently there (you stunned vs the enemy stunned). */
@@ -367,6 +369,8 @@ export interface HeroDef {
   /** Sleeve slots. */
   sleeve: number;
   starterRelic?: string;
+  /** The status that is this hero's passive: it leads the hero's status row (empty too) in place of a passive icon. */
+  passiveStatus?: string;
   /** The ink the hero is printed in, as a CSS token (`var(--p)`): the hero select and the fight tint their accents with it. */
   ink: string;
   ability: {

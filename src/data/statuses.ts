@@ -108,7 +108,7 @@ const defs: StatusDef[] = [
   { id: 'autopilot', kind: 'timed', good: true, icon: 'autopilot', autoplay: true },
   // Root access (sudo): no rule can stop the hero's cards.
   { id: 'rootAccess', kind: 'timed', good: true, icon: 'terminal', ignoresRules: true },
-  { id: 'multitasking', kind: 'timed', good: true, tone: 'purple', icon: 'bolt2', showStacks: true },
+  { id: 'multitasking', kind: 'timed', good: true, tone: 'purple', icon: 'bolt2', showStacks: true, span: CONFIG.multitaskingWindow },
   { id: 'plague', kind: 'stacks', good: true, tone: 'green', icon: 'wrench' },
   // Slacking off (v = amount per second), until the hero plays another card.
   {

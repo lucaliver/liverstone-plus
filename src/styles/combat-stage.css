@@ -549,6 +549,25 @@
 .status .pico { font-size: 26px; }
 .status.good .pico { color: var(--b); --ink2: var(--y); }
 .status.bad .pico { color: var(--p); --ink2: var(--y); }
+/* a status drawn as a bar: the box is a dark slot, the coloured fill (the status's tone) drains left to right as its timer runs out */
+.status.draining { position: relative; min-width: 56px; overflow: hidden; color: var(--paper); background: var(--bg2); }
+.status.draining > * { position: relative; }
+.status.draining .pico { color: var(--paper); --ink2: var(--y); }
+.status.draining .drain {
+  position: absolute;
+  inset: 0;
+  background: var(--bar-ink, var(--b));
+  transform: scaleX(var(--fill, 0));
+  transform-origin: left;
+}
+.status.draining.low .drain { animation: drain-low 0.5s steps(1) infinite; }
+@keyframes drain-low {
+  50% { opacity: 0.35; }
+}
+.status[data-tone='green'] { --bar-ink: var(--green); }
+.status[data-tone='red'] { --bar-ink: var(--red); }
+.status[data-tone='purple'] { --bar-ink: var(--intent-buff); }
+.status[data-tone='blue'] { --bar-ink: var(--mana); }
 /* an enemy's half-HP trait: waiting (muted), then lit once it has kicked in */
 .status.half .pico { color: var(--muted); --ink2: transparent; }
 .status.half.fired { background: var(--p); }

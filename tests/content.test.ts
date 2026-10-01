@@ -139,6 +139,15 @@ describe('content integrity', () => {
     }
   });
 
+  it('a hero whose passive is a status points at a real, timed one that drains', () => {
+    for (const h of HERO_LIST) {
+      if (!h.passiveStatus) continue;
+      const def = STATUSES[h.passiveStatus];
+      expect(def, `${h.id}: ${h.passiveStatus}`).toBeTruthy();
+      expect(def.kind === 'timed' && def.span && def.span > 0, `${h.passiveStatus} needs a span`).toBeTruthy();
+    }
+  });
+
   it('every act boss wears an icon of its own on the map', () => {
     const icons = ACT_DEFS.map((d) => (d.bossClock ? 'clock' : (d.bossIcon ?? 'default')));
     expect(new Set(icons).size).toBe(ACT_DEFS.length);

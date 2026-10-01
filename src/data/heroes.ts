@@ -59,6 +59,7 @@ const mage: HeroDef = {
     ['replyAll', 'blueScreen', 'modernTimes', 'lookBusy'],
   ],
   sleeve: 2,
+  passiveStatus: 'multitasking',
   ink: 'var(--b)',
   ability: {
     id: 'timeTheft',

@@ -14,6 +14,9 @@ import { type CombatView, PASSIVE_ICON } from './view';
 /** Everything around the cards: HP bars, statuses, the threat bar, mana and hero extras. `onPassive` explains the hero passive. */
 /** Share of max HP under which the hero's portrait sweats. */
 const LOW_HP = 0.3;
+/** A draining status bar moves in this many steps, and blinks once this share is left. */
+const BAR_STEPS = 10;
+const BAR_LOW = 0.3;
 /** The statuses that change how the enemy's sprite looks, and the looks themselves (the half-HP rage is one of them). */
 const LOOKS = Object.values(STATUSES).filter((s): s is typeof s & { look: string } => !!s.look);
 const ALL_LOOKS = [...new Set([...LOOKS.map((s) => s.look), 'enraged'])];
@@ -78,7 +81,12 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
   /** Status chips: rebuilt only when the set of statuses changes; values update in place (so presses aren't lost). */
   const renderStatuses = (side: Side, box: HTMLElement): void => {
     const f = combat.fighter(side);
-    const list = STATUS_ORDER.filter((id) => f.statuses[id] && (STATUSES[id].kind === 'timed' ? f.statuses[id].t > 0 : f.statuses[id].v > 0));
+    // A hero whose passive is a status always shows it first, empty or not.
+    const lead = side === 'hero' ? combat.heroDef.passiveStatus : undefined;
+    const list = [
+      ...(lead ? [lead] : []),
+      ...STATUS_ORDER.filter((id) => id !== lead && f.statuses[id] && (STATUSES[id].kind === 'timed' ? f.statuses[id].t > 0 : f.statuses[id].v > 0)),
+    ];
     const e = combat.enemy.def;
     // A secret half-HP trait only shows once it has kicked in.
     const secret = side === 'enemy' && !!e.halfSecret && !combat.enemy.halfTriggered;
@@ -88,7 +96,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
       // The hero's passive always leads the hero's row, like a permanent status; an enemy's half-HP trait leads its
       // row (waiting, then lit once it has kicked in).
       const passive =
-        side === 'hero'
+        side === 'hero' && !lead
           ? h('button', { class: 'status passive', html: icon(PASSIVE_ICON[v.heroId]), 'aria-label': t(`hero.${v.heroId}.passiveName`) })
           : e.onHalf && !secret
             ? h('button', { class: 'status passive half', html: icon(HALF_ICON), 'aria-label': t('status.half') })
@@ -116,9 +124,10 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
         ...list.map((id) => {
           const def = STATUSES[id];
           const b = h('button', {
-            class: `status ${def.good ? 'good' : 'bad'}`,
+            class: `status ${def.good ? 'good' : 'bad'}${def.span ? ' draining' : ''}`,
             'data-status': id,
-            html: `${icon(statusIcon(id, side))}<span></span>`,
+            'data-tone': def.tone,
+            html: `${def.span ? '<i class="drain"></i>' : ''}${icon(statusIcon(id, side))}<span></span>`,
             'aria-label': t(`status.${id}`),
           });
           onPress(b, () => showStatus(side, id));
@@ -132,11 +141,19 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     }
     for (const b of box.children) {
       const id = (b as HTMLElement).dataset.status;
-      const s = id ? f.statuses[id] : undefined;
-      if (!id || !s) continue;
+      if (!id) continue;
+      // A status that is always shown (a hero's passive) reads as empty while it isn't up.
+      const s = f.statuses[id] ?? { v: 0, t: 0 };
       const sd = STATUSES[id];
       const val = sd.passive ? '' : sd.kind !== 'timed' || sd.showStacks ? String(s.v) : s.t > 999 ? '' : `${Math.ceil(s.t)}s`;
       setText(b.querySelector('span')!, val);
+      // A draining bar: what's left of the timer, in steps; it blinks when it is about to run out.
+      if (sd.span) {
+        const left = s.v > 0 ? Math.min(1, Math.max(0, s.t / sd.span)) : 0;
+        const fill = Math.ceil(left * BAR_STEPS) / BAR_STEPS;
+        b.querySelector<HTMLElement>('.drain')!.style.setProperty('--fill', String(fill));
+        toggle(b, 'low', fill > 0 && fill <= BAR_LOW);
+      }
     }
   };
 

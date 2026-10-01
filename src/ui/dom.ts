@@ -9,8 +9,13 @@ export function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Attrs | 
       if (v === undefined || v === null || v === false) continue;
       if (k === 'html') el.innerHTML = String(v);
       else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2), v as EventListener);
-      else if (k === 'style' && typeof v === 'object') Object.assign(el.style, v);
-      else el.setAttribute(k, v === true ? '' : String(v));
+      else if (k === 'style' && typeof v === 'object') {
+        // Custom properties (`--x`) only take through setProperty.
+        for (const [prop, val] of Object.entries(v as Record<string, string>)) {
+          if (prop.startsWith('--')) el.style.setProperty(prop, val);
+          else (el.style as unknown as Record<string, string>)[prop] = val;
+        }
+      } else el.setAttribute(k, v === true ? '' : String(v));
     }
   }
   for (const c of children) {

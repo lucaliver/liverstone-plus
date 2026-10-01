@@ -32,7 +32,7 @@ function slide(hero: HeroDef, index: number): HTMLElement {
     {
       class: `hero-slide ${locked ? 'locked' : ''}`,
       'data-hero': id,
-      style: { '--hero-ink': hero.ink } as never,
+      style: { '--hero-ink': hero.ink },
       'aria-roledescription': 'slide',
       'aria-label': t(`hero.${id}.name`),
     },

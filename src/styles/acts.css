@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------------ act themes */
-/* Each act has its own colours: the crypt's violet, the afternoon office's brown, the night shift's blue. A screen takes them with
+/* Each act has its own colours: the crypt's violet, the afternoon office's wine red, the night shift's deep teal. A screen takes them with
    `data-act` (the map, the fight by its enemy's act, rooms and rewards by the act they are in); without it the first act's show.
    They re-set the night tokens (`--bg`, `--bg2`, the halftone dots, the belt stream) and the map's own (`--map-*`). */
 :root {
@@ -20,44 +20,44 @@
   --map-missed-ink: #6b5f96;
 }
 [data-act='2'] {
-  --bg: #2c2014;
-  --bg2: #1f160c;
-  --bg-dot: #38291a;
-  --night-dot: #4a3520;
-  --belt: #3a2a18;
-  --belt-dot: #46331e;
+  --bg: #35101f;
+  --bg2: #260a15;
+  --bg-dot: #431729;
+  --night-dot: #5a2038;
+  --belt: #451a2c;
+  --belt-dot: #55223a;
   --map-wall: #d8a83066;
-  --map-hall: #473320;
-  --map-trod: #5e4428;
-  --map-mid: #a07a48;
+  --map-hall: #4f1d33;
+  --map-trod: #692945;
+  --map-mid: #b0587a;
   --map-warm: var(--rust);
-  --map-fog-a: #35261a;
-  --map-fog-b: #43301f;
-  --map-done: #a69478;
-  --map-done-ink: #4a3a22;
-  --map-missed: #3a2a1b;
-  --map-missed-line: #8a6a40;
-  --map-missed-ink: #98764a;
+  --map-fog-a: #3b1426;
+  --map-fog-b: #4a1b31;
+  --map-done: #b08a98;
+  --map-done-ink: #4a2233;
+  --map-missed: #3f1628;
+  --map-missed-line: #92506a;
+  --map-missed-ink: #a45f7a;
 }
 [data-act='3'] {
-  --bg: #0e1a38;
-  --bg2: #09122a;
-  --bg-dot: #162650;
-  --night-dot: #1f3470;
-  --belt: #172a55;
-  --belt-dot: #20386e;
-  --map-wall: #7f9bef66;
-  --map-hall: #1a2b5a;
-  --map-trod: #263c80;
-  --map-mid: #5873c8;
+  --bg: #082a33;
+  --bg2: #051e26;
+  --bg-dot: #0e3a46;
+  --night-dot: #155062;
+  --belt: #0e3b49;
+  --belt-dot: #154b5c;
+  --map-wall: #5fd0d466;
+  --map-hall: #0f4452;
+  --map-trod: #19607a;
+  --map-mid: #3fa6b8;
   --map-warm: var(--red);
-  --map-fog-a: #14224a;
-  --map-fog-b: #1c2e60;
-  --map-done: #8493c0;
-  --map-done-ink: #1e2a50;
-  --map-missed: #16244d;
-  --map-missed-line: #4a62b0;
-  --map-missed-ink: #5f78c4;
+  --map-fog-a: #0c303b;
+  --map-fog-b: #123e4c;
+  --map-done: #86b3be;
+  --map-done-ink: #123844;
+  --map-missed: #0e3340;
+  --map-missed-line: #3a8396;
+  --map-missed-ink: #4f9fb2;
 }
 /* the screen paints the night itself, over the app's, so the act's colours replace it */
 .screen[data-act] {
