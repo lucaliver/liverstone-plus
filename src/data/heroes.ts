@@ -2,6 +2,12 @@ import { CONFIG } from './config';
 import type { HeroDef, HeroId } from '../game/types';
 
 const rep = (id: string, n: number): string[] => new Array(n).fill(id);
+
+/** The starter deck as cards: one copy of each `startUpgraded` id starts upgraded. */
+export function starterCards(hero: HeroDef): { id: string; up: boolean }[] {
+  const pending = new Set(hero.startUpgraded);
+  return hero.startDeck.map((id) => ({ id, up: pending.delete(id) }));
+}
 /** Virulence (Necromancer passive) only kicks in once the enemy carries this much Poison. */
 const VIRULENCE_AT = 7;
 
@@ -13,6 +19,7 @@ const warrior: HeroDef = {
   blockDecay: 1.2,
   // Starter decks: only basic cards (plus mana crystals); everything else comes from rewards.
   startDeck: [...rep('punch', 6), ...rep('hardHat', 6), 'unionChant', 'coffee', 'coffee'],
+  startUpgraded: ['punch', 'hardHat'],
   firstRewards: [
     ['heavyLifting', 'crowbar', 'palletWall', 'ductTape'],
     ['wrenchWhack', 'shoulderCheck', 'coffeeBreak', 'grievance'],
@@ -39,6 +46,7 @@ const mage: HeroDef = {
   regen: 1.25,
   blockDecay: 1.0,
   startDeck: [...rep('clippy', 7), ...rep('fireDoor', 5), 'coffee', 'doubleEspresso', 'caffeineJolt'],
+  startUpgraded: ['clippy', 'fireDoor'],
   firstRewards: [
     ['coldCall', 'slagBall', 'coldStorage', 'ductTape'],
     ['caffeineJolt', 'staticShock', 'coffeeBreak', 'burnout'],
@@ -73,6 +81,7 @@ const necromancer: HeroDef = {
   regen: 1.25,
   blockDecay: 0.9,
   startDeck: [...rep('skeletonCrew', 6), ...rep('karlMarx', 5), ...rep('toxicMemo', 2), 'coffee', 'doubleEspresso'],
+  startUpgraded: ['skeletonCrew', 'karlMarx'],
   firstRewards: [
     ['bloodMoney', 'rust', 'barricade', 'ductTape'],
     ['unionDues', 'zombieShift', 'coffeeBreak', 'whistleblow'],

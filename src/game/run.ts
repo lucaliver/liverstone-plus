@@ -6,7 +6,7 @@ import { PERKS } from '../data/perks';
 import { ACT_DEFS, actDef } from '../data/acts';
 import { CONFIG, REWARD_ODDS } from '../data/config';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
-import { HERO_LIST, HEROES } from '../data/heroes';
+import { HERO_LIST, HEROES, starterCards } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
 import { discover, progress, type RunRecord, recordFight, recordRun } from './meta';
 import { renamedCard, renamedEnemy, renamedPerk } from './renamed';
@@ -107,7 +107,7 @@ export function newRun(hero: HeroId, seed: number, scripted = false): RunState {
     hero,
     hp: def.hp,
     maxHp: def.hp,
-    deck: def.startDeck.map((id) => ({ uid: nextUid(), id, up: false })),
+    deck: starterCards(def).map((c) => ({ uid: nextUid(), ...c })),
     relics: def.starterRelic ? [def.starterRelic] : [],
     relicFlags: {},
     nodes,

@@ -186,6 +186,7 @@ test('campfire upgrade: tapping selects, the Upgrade button confirms', async ({ 
   await page.getByRole('button', { name: /training/i }).click();
   const upgrade = page.getByRole('button', { name: 'Upgrade', exact: true });
   await expect(upgrade).toBeDisabled();
+  // The grid lists only upgradable cards: the starter's upgraded attack and defense are not in it.
   await expect(page.locator('.deck-grid .card.is-up')).toHaveCount(0);
   await page.locator('.deck-grid .card').first().click();
   await expect(page.locator('.deck-grid .card.sel')).toHaveCount(1);
@@ -196,7 +197,7 @@ test('campfire upgrade: tapping selects, the Upgrade button confirms', async ({ 
   await upgrade.click();
   await expect(page.locator('.node.open').first()).toBeVisible();
   const upgraded = (await page.evaluate('window.__game.run.deck.filter((c) => c.up).length')) as number;
-  expect(upgraded).toBe(1);
+  expect(upgraded).toBe(3); // the starter's upgraded attack and defense, plus the new one
 });
 
 test('copy room: photocopy costs HP and adds the card, shred removes one', async ({ page }) => {
@@ -517,9 +518,9 @@ test('tapping the hero portrait in a fight shows the deck in play and pauses', a
   await freshGame(page);
   await startFight(page);
   await page.locator('.hero-portrait').click();
-  // The warrior's 15-card deck, identical copies grouped.
+  // The warrior's 15-card deck, identical copies grouped (the upgraded Punch and Hard Hat stand apart).
   await expect(page.locator('.modal h2')).toContainText('15');
-  await expect(page.locator('.modal .deck-grid .card')).toHaveCount(4);
+  await expect(page.locator('.modal .deck-grid .card')).toHaveCount(6);
   const clock = () => page.evaluate('window.__combat.time');
   const before = await clock();
   await page.waitForTimeout(300);

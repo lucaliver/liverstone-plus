@@ -5,7 +5,7 @@ import enStrings from '../src/i18n/en';
 const en: Record<string, string> = enStrings;
 import { CARD_LIST, CARDS } from '../src/data/cards';
 import { DIFFICULTY, ENEMY_LIST, enemyMoves } from '../src/data/enemies';
-import { HERO_LIST } from '../src/data/heroes';
+import { HERO_LIST, starterCards } from '../src/data/heroes';
 import { PERK_LIST } from '../src/data/perks';
 import { STATUS_ORDER, STATUSES } from '../src/data/statuses';
 import { GLYPHS, TAG_ICON } from '../src/ui/components/cardView';
@@ -54,6 +54,14 @@ describe('content integrity', () => {
     const ids = new Set(CARD_LIST.map((c) => c.id));
     for (const h of HERO_LIST) for (const id of h.startDeck) expect(ids.has(id), id).toBe(true);
     for (const h of HERO_LIST) expect(h.startDeck, h.id).toHaveLength(15);
+    for (const h of HERO_LIST) {
+      // A single copy of each listed starter starts upgraded.
+      const up = starterCards(h).filter((c) => c.up);
+      expect(
+        up.map((c) => c.id),
+        h.id,
+      ).toEqual(h.startUpgraded);
+    }
     // The first run's hand-picked rewards: real cards the hero could be offered, four each time.
     for (const h of HERO_LIST)
       for (const offer of h.firstRewards ?? []) {

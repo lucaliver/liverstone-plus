@@ -325,6 +325,8 @@ export interface HeroDef {
   /** Seconds per point of Block lost. */
   blockDecay: number;
   startDeck: string[];
+  /** Card ids of which one copy (the first in `startDeck`) starts upgraded: an attack and a defense. */
+  startUpgraded: string[];
   /** The very first run's reward offers after its first fights, in order (picked to teach, not rolled). */
   firstRewards?: string[][];
   /** Sleeve slots. */

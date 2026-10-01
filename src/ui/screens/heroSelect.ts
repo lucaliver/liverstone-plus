@@ -1,7 +1,7 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
-import { HERO_LIST } from '../../data/heroes';
+import { HERO_LIST, starterCards } from '../../data/heroes';
 import { heroFresh, heroUnlocked, markHeroSeen } from '../../game/meta';
 import type { HeroDef, HeroId, HeroUnlock } from '../../game/types';
 import type { Screen } from '../app';
@@ -58,7 +58,7 @@ function slide(hero: HeroDef, index: number): HTMLElement {
   onPress(el.querySelector<HTMLElement>('.stat.deck')!, () => {
     sfx('tap');
     openDeck(
-      hero.startDeck.map((cid, i) => ({ uid: i + 1, id: cid, up: false })),
+      starterCards(hero).map((c, i) => ({ uid: i + 1, ...c })),
       { title: t('hero.starterDeck') },
     );
   });
