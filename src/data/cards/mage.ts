@@ -415,7 +415,7 @@ export const mageCards: CardDef[] = [
   },
   {
     id: 'thermalShock',
-    face: '{dmg:0}|{?snow}{?burn}{dmg:1}',
+    face: '{dmg:0}|{?snow+burn}{dmg:1}',
     cls: 'mage',
     type: 'spell',
     rarity: 'epic',

@@ -100,18 +100,22 @@ function valueHtml(card: CardInst & { bonus?: number }, idx: number, combat?: Co
 
 /**
  * The language-neutral face: icons + big numbers, one effect per line (`|`).
- * Grammar: `{kind:i}` icon + value i · `{kind}` icon · `{?kind}` condition, shown as (icon) · `{i}` bare value · other text as is.
+ * Grammar: `{kind:i}` icon + value i · `{kind}` icon · `{?kind}` condition, shown as (icon) (`{?a+b}`: both in one pair of brackets) · `{i}` bare value · other text as is.
  */
 export function cardFace(card: CardInst & { bonus?: number }, combat?: Combat | null): string {
   const def = CARDS[card.id];
   const lines = def.face.split('|').map((line) => {
     const html = line.replace(
-      /\{(\?)?(\w+)(?::(\d))?\}|([^{]+)/g,
+      /\{(\?)?([\w+]+)(?::(\d))?\}|([^{]+)/g,
       (_, cond: string | undefined, k: string | undefined, idx: string | undefined, text: string | undefined) => {
         if (text !== undefined) return `<span class="op">${text}</span>`;
         if (/^\d$/.test(k!)) return valueHtml(card, Number(k), combat);
+        if (cond)
+          return `<span class="cond">(${k!
+            .split('+')
+            .map((c) => icon(GLYPHS[c].icon))
+            .join('')})</span>`;
         const g = GLYPHS[k!];
-        if (cond) return `<span class="cond">(${icon(g.icon)})</span>`;
         const val =
           idx !== undefined ? `${g.sign ?? ''}${valueHtml(card, Number(idx), combat)}${g.unit ? `<span class="unit">${g.unit}</span>` : ''}` : '';
         // Each glyph carries its own ink (`.gk-<kind>`), so a line like {dmg}={block} gets a pink sword and a blue shield.
