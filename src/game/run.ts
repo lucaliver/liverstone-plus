@@ -9,7 +9,7 @@ import { CONFIG, REWARD_ODDS } from '../data/config';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HERO_LIST, HEROES, starterCards } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
-import { discover, progress, type RunRecord, recordFight, recordRun } from './meta';
+import { discover, progress, type RunRecord, recordFight, recordRun, seeRelics } from './meta';
 import { renamedCard, renamedEnemy, renamedPerk } from './renamed';
 import type { CardDef, CardInst, EnemyDef, HeroId } from './types';
 
@@ -350,6 +350,7 @@ export function gainRelic(run: RunState, id: string): void {
     run.relics.push(id);
     RELICS[id].onGain?.(run);
   }
+  seeRelics([id]);
   run.cleared = true;
 }
 
@@ -361,6 +362,7 @@ export function rollRelics(run: RunState): string[] {
     .slice(0, CONFIG.lostFoundChoices)
     .map((r) => r.id);
   run.rng = rng.state;
+  seeRelics(picks);
   return picks;
 }
 

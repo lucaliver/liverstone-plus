@@ -14,7 +14,7 @@
 
 - [x] "rate limit" effect: portalo a 4
 
-- [ ] nell'handbook aggiungi tab per le relics (o come si chiamano)
+- [x] nell'handbook aggiungi tab per le relics (o come si chiamano)
 
 - [x] le carte Legendary dovrebbero essere proposte come reward solo dopo elite e boss
 

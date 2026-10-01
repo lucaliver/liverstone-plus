@@ -3,6 +3,7 @@ import { sfx } from '../../audio/sfx';
 import { CARDS } from '../../data/cards';
 import { ENEMY_LIST } from '../../data/enemies';
 import { HERO_LIST } from '../../data/heroes';
+import { RELIC_LIST } from '../../data/relics';
 import { unlockAll } from '../../game/meta';
 import { settings } from '../../game/settings';
 import type { HeroId } from '../../game/types';
@@ -133,6 +134,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
           unlockAll(
             Object.keys(CARDS),
             ENEMY_LIST.map((e) => e.id),
+            RELIC_LIST.map((r) => r.id),
           );
           sfx('ability');
           haptic('ability');

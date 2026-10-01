@@ -3,9 +3,10 @@ import { sfx } from '../../audio/sfx';
 import { CARD_LIST } from '../../data/cards';
 import { CONFIG } from '../../data/config';
 import { ENEMY_LIST } from '../../data/enemies';
-import type { EnemyDef } from '../../game/types';
+import type { EnemyDef, RelicDef } from '../../game/types';
 import { HERO_LIST } from '../../data/heroes';
-import { enemyMet, isDiscovered, records } from '../../game/meta';
+import { RELIC_LIST } from '../../data/relics';
+import { enemyMet, isDiscovered, records, relicSeen } from '../../game/meta';
 import type { CardClass } from '../../game/types';
 import type { Screen } from '../app';
 import { h, onPress, stagger } from '../dom';
@@ -32,6 +33,14 @@ function foeView(e: EnemyDef): HTMLElement {
   return el;
 }
 
+function relicView(r: RelicDef): HTMLElement {
+  const seen = relicSeen(r.id);
+  return h('article', {
+    class: `relic-line${seen ? '' : ' undiscovered'}`,
+    html: `${icon(r.art)}<div><b>${seen ? t(`relic.${r.id}.name`) : UNKNOWN}</b>${seen ? t(`relic.${r.id}.d`, { n: r.n }) : UNKNOWN}</div>`,
+  });
+}
+
 /** Lifetime records, printed like the end of a run's payslip. */
 function recordSlip(): HTMLElement {
   const r = records();
@@ -56,13 +65,14 @@ function recordSlip(): HTMLElement {
   );
 }
 
-/** Every card in the game by class, every enemy and its moves, and the player's records. */
+/** Every card in the game by class, every enemy and its moves, the relics, and the player's records. */
 export function compendiumScreen(onBack: () => void): Screen {
   let tab: CardClass = TABS[0];
-  let section: 'cards' | 'enemies' | 'records' = 'cards';
+  let section: 'cards' | 'enemies' | 'relics' | 'records' = 'cards';
   const total = CARD_LIST.length;
   const found = CARD_LIST.filter((c) => isDiscovered(c.id)).length;
   const met = ENEMY_LIST.filter((e) => enemyMet(e.id)).length;
+  const relicsSeen = RELIC_LIST.filter((r) => relicSeen(r.id)).length;
 
   const tabs = h('div', { class: 'tabs', role: 'tablist' });
   const grid = h('div', { class: 'deck-grid comp-grid print' });
@@ -73,13 +83,14 @@ export function compendiumScreen(onBack: () => void): Screen {
     { class: 'foes' },
     ...[...ENEMY_LIST].sort((a, b) => a.act - b.act || TIERS.indexOf(a.tier) - TIERS.indexOf(b.tier)).map(foeView),
   );
+  const relics = h('div', { class: 'relics' }, ...RELIC_LIST.map(relicView));
   const cardsWrap = h('div', null);
   const sub = h('p', { class: 'sub' });
   const slip = recordSlip();
 
   const render = (): void => {
     sectionSwitch.replaceChildren(
-      ...(['cards', 'enemies', 'records'] as const).map((sct) =>
+      ...(['cards', 'enemies', 'relics', 'records'] as const).map((sct) =>
         h(
           'button',
           {
@@ -101,10 +112,13 @@ export function compendiumScreen(onBack: () => void): Screen {
         ? t('compendium.progress', { n: found, total })
         : section === 'enemies'
           ? t('compendium.foes', { n: met, total: ENEMY_LIST.length })
-          : '';
+          : section === 'relics'
+            ? t('compendium.relicsFound', { n: relicsSeen, total: RELIC_LIST.length })
+            : '';
     sub.hidden = section === 'records';
     cardsWrap.hidden = section !== 'cards';
     foes.hidden = section !== 'enemies';
+    relics.hidden = section !== 'relics';
     slip.hidden = section !== 'records';
     tabs.replaceChildren(
       ...TABS.map((c) =>
@@ -172,7 +186,7 @@ export function compendiumScreen(onBack: () => void): Screen {
       }),
     ),
     sectionSwitch,
-    h('div', { class: 'scroll', style: { flex: '1' } }, sub, cardsWrap, foes, slip),
+    h('div', { class: 'scroll', style: { flex: '1' } }, sub, cardsWrap, foes, relics, slip),
   );
   return { el };
 }

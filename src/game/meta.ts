@@ -1,5 +1,6 @@
 import { load, store } from '../core/save';
 import { HERO_LIST, HEROES } from '../data/heroes';
+import { RELICS } from '../data/relics';
 import { renamedCard, renamedEnemy } from './renamed';
 import type { EnemyDef, HeroId, HeroUnlock, Records } from './types';
 
@@ -13,6 +14,8 @@ interface Meta {
   fresh: HeroId[];
   /** Enemy ids fought at least once (the handbook hides the others' names). */
   met: string[];
+  /** Relic ids seen (offered or owned): the handbook hides the others' names. */
+  relics: string[];
   /** Runs started so far (the very first one has a scripted map). */
   runs: number;
   /** The employment contract has been signed (the start screen's first-time hold). */
@@ -35,12 +38,13 @@ const NO_RECORDS: Records = {
   fastest: 0,
 };
 
-const meta: Meta = load('meta', { discovered: [], heroes: [], fresh: [], met: [], runs: 0, signed: false, records: { ...NO_RECORDS } });
+const meta: Meta = load('meta', { discovered: [], heroes: [], fresh: [], met: [], relics: [], runs: 0, signed: false, records: { ...NO_RECORDS } });
 // Saved data is untrusted: keep only known hero ids.
 for (const k of ['heroes', 'fresh'] as const) meta[k] = Array.isArray(meta[k]) ? meta[k].filter((id) => id in HEROES) : [];
 // Ids saved before they followed the English names are mapped to the new ones.
 const discovered = new Set(Array.isArray(meta.discovered) ? meta.discovered.map(renamedCard) : []);
 meta.met = Array.isArray(meta.met) ? meta.met.map(renamedEnemy) : [];
+meta.relics = Array.isArray(meta.relics) ? meta.relics.filter((id) => typeof id === 'string' && id in RELICS) : [];
 if (typeof meta.runs !== 'number') meta.runs = 0;
 meta.signed = meta.signed === true;
 {
@@ -91,11 +95,20 @@ export function meetEnemy(id: string): void {
 }
 export const enemyMet = (id: string): boolean => meta.met.includes(id);
 
-/** Debug: every hero hired, every card discovered and every enemy met. */
-export function unlockAll(cards: Iterable<string>, enemies: Iterable<string>): void {
+export function seeRelics(ids: Iterable<string>): void {
+  const fresh = [...ids].filter((id) => !meta.relics.includes(id));
+  if (!fresh.length) return;
+  meta.relics.push(...fresh);
+  store('meta', meta);
+}
+export const relicSeen = (id: string): boolean => meta.relics.includes(id);
+
+/** Debug: every hero hired, every card discovered, every enemy met and every relic seen. */
+export function unlockAll(cards: Iterable<string>, enemies: Iterable<string>, relics: Iterable<string>): void {
   meta.heroes = HERO_LIST.filter((hd) => hd.unlock).map((hd) => hd.id);
   meta.fresh = [];
   meta.met = [...enemies];
+  meta.relics = [...relics];
   for (const id of cards) discovered.add(id);
   meta.discovered = [...discovered];
   store('meta', meta);

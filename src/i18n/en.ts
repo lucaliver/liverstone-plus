@@ -40,6 +40,8 @@ const en = {
   'compendium.cards': 'Cards',
   'compendium.enemies': 'Personnel',
   'compendium.foes': '{n}/{total} met',
+  'compendium.relics': 'Relics',
+  'compendium.relicsFound': '{n}/{total} found',
   'compendium.records': 'Records',
   'records.title': 'Service record',
   'records.runs': 'Workdays started',

@@ -89,7 +89,7 @@ test('the combat layout never moves when statuses appear', async ({ page }) => {
   expect(norm(await snap())).toBe(norm(a));
 });
 
-test('compendium shows cards and enemies in separate sections', async ({ page }) => {
+test('compendium shows cards, enemies and relics in separate sections', async ({ page }) => {
   const problems = await freshGame(page);
   await page.getByRole('button', { name: /handbook/i }).click();
   await expect(page.locator('.comp-grid .card').first()).toBeVisible();
@@ -97,6 +97,9 @@ test('compendium shows cards and enemies in separate sections', async ({ page })
   await page.getByRole('tab', { name: /personnel/i }).click();
   await expect(page.locator('.foe').first()).toBeVisible();
   await expect(page.locator('.comp-grid')).toBeHidden();
+  await page.getByRole('tab', { name: /relics/i }).click();
+  await expect(page.locator('.relic-line').first()).toBeVisible();
+  await expect(page.locator('.foe').first()).toBeHidden();
   expect(problems).toEqual([]);
 });
 
