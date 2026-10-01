@@ -27,8 +27,6 @@ const en = {
   'contract.sign': 'Hold to sign',
   'contract.signHere': 'Signature',
   'contract.hired': 'Hired',
-  'contract.confidential': 'Confidential',
-  'contract.page': 'Page 1 of 47',
   'menu.home': 'Main menu',
   'menu.reset': 'Reset progress',
   'menu.resetConfirm': 'Erase everything: your saved run, unlocked heroes, discovered cards and settings?',

@@ -155,10 +155,9 @@ export function splashScreen(onStart: () => void): Screen {
     h('h2', null, t('contract.title')),
     h('p', null, t('contract.intro')),
     h('ol', null, h('li', null, t('contract.c1')), h('li', null, t('contract.c2')), h('li', null, t('contract.c3'))),
-    h('div', { class: 'contract-row' }, terms, h('div', { class: 'contract-conf' }, t('contract.confidential'))),
+    terms,
     h('div', { class: 'contract-fine', 'aria-hidden': 'true', html: SCRIBBLES }),
     line,
-    h('div', { class: 'contract-page' }, t('contract.page')),
     h('div', { class: 'contract-hand', 'aria-hidden': 'true', html: propArt('hand') }),
   );
   const cancel = (): void => {

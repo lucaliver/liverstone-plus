@@ -360,18 +360,6 @@
 .contract p,
 .contract li { margin: 0; font-size: 15px; line-height: 1.3; }
 .contract ol { margin: 8px 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
-/* the terms link and a CONFIDENTIAL stamp on one row */
-.contract-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.contract-conf {
-  flex: none;
-  padding: 0 6px;
-  font-family: var(--font-display);
-  font-size: 11px;
-  text-transform: uppercase;
-  color: var(--p);
-  border: 3px solid var(--p);
-  rotate: 7deg;
-}
 .contract-fine {
   height: 36px;
   margin: 4px 0 2px;
@@ -379,15 +367,6 @@
   opacity: 0.7;
 }
 .contract-fine svg { display: block; width: 100%; height: 100%; }
-.contract-page {
-  position: absolute;
-  left: 50%;
-  bottom: 6px;
-  translate: -50% 0;
-  font-family: var(--font-ui);
-  font-size: 13px;
-  color: var(--muted);
-}
 .contract-terms {
   pointer-events: auto;
   display: flex;
