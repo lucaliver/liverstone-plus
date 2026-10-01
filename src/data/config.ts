@@ -30,6 +30,8 @@ export const CONFIG = {
   enemyHp: 1,
   enemyDmg: 1,
   maxManaCap: 10,
+  /** Damage multiplier of a critical attack (Critical status). */
+  critMult: 2,
   startMana: 3,
   dotInterval: 1.5,
   multitaskingWindow: 2.5,

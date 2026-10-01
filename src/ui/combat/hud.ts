@@ -204,6 +204,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
   };
 
   const renderEnemyState = (): void => {
+    toggle(r.weakSpot, 'on', !!combat.weakSpot && !combat.isOver);
     toggle(r.enemyArt, 'stunned', combat.has('enemy', 'stun'));
     toggle(r.enemyArt, 'frozen', combat.has('enemy', 'frozen'));
     toggle(r.enemyArt, 'chilled', combat.has('enemy', 'chill'));

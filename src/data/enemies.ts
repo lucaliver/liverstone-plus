@@ -146,6 +146,18 @@ const defs: EnemyDef[] = [
     startHex: { id: 'petrify', share: 0.5 },
   },
   {
+    // Nepotism hire: a target shows on him now and then; tap it in time and your next attack is critical.
+    id: 'bossSon',
+    act: 1,
+    tier: 'normal',
+    hp: 45,
+    art: 'bossSon',
+    main: atk('tantrum', 6, 6),
+    every: 2,
+    specials: [atk('hideBehindDad', 8, 6, { intent: 'defend', block: 12 }), { id: 'ccDad', intent: 'buff', windup: 5, status: [gainStrength] }],
+    start: [{ id: 'weakSpot' }],
+  },
+  {
     // Moves in with you: her boxes fill your sleeve from the start, and only get cheaper to unpack with time.
     id: 'workWife',
     act: 1,
@@ -440,6 +452,7 @@ export const DIFFICULTY = [
   'hrOrientationVideo',
   'snitch',
   'newHire',
+  'bossSon',
   'workWife',
   'teamLeader',
   'goblinConsultant',

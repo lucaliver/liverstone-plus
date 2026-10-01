@@ -135,6 +135,29 @@
   width: calc(var(--enemy-size, 200px) * var(--k, 1));
   height: calc(var(--enemy-size, 200px) * var(--k, 1));
 }
+/* Weak Spot: a target pinned on the sprite's drawing (--u, --v: where, set per appearance); it answers on touch-down */
+.weak-spot {
+  display: none;
+  position: absolute;
+  z-index: 3;
+  left: calc(var(--enemy-size, 200px) * (0.5 + (var(--u, 0.5) - var(--cx, 0.5)) * var(--k, 1)));
+  top: calc(var(--enemy-size, 200px) * (1 - var(--by, 1) * var(--k, 1) + var(--v, 0.5) * var(--k, 1)));
+  translate: -50% -50%;
+  min-width: 56px;
+  min-height: 56px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--b);
+  --ink2: var(--paper);
+  font-size: 56px;
+}
+.weak-spot.on { display: block; }
+.weak-spot.appear { animation: stamp-in 0.15s steps(2); }
+.weak-spot .pico { animation: weak-pulse 0.5s steps(1) infinite; }
+@keyframes weak-pulse {
+  50% { scale: 0.8; }
+}
 .enemy-art.hit .riso { animation: jolt 0.24s steps(3), hitflash 0.16s steps(1); }
 @keyframes hitflash {
   0% { filter: invert(1); }

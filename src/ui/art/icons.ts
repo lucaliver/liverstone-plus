@@ -193,13 +193,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'shadow',
     svg: `<path d="M17 6h30v38H17z"/><rect x="17" y="32" width="30" height="6" fill="#16121f"/><path d="M3 44h58c0 8-6 13-13 13H16C9 57 3 52 3 44z"/>`,
   },
-  // Candle flame animation: three frames (outer flame + bright core each).
-  flameA: { el: 'fire', svg: `<path d="M32 4C40 18 50 28 50 42a18 18 0 0 1-36 0c0-12 10-24 18-38z"/>` },
-  flameAc: { el: 'fire', svg: `<path d="M32 26c4 8 10 12 10 20a10 10 0 0 1-20 0c0-8 6-12 10-20z"/>` },
-  flameB: { el: 'fire', svg: `<path d="M22 6c12 12 28 22 26 38a17 17 0 0 1-34 0c-1-12 4-22 8-38z"/>` },
-  flameBc: { el: 'fire', svg: `<path d="M26 28c5 8 12 12 11 20a10 10 0 0 1-20-1c1-7 5-11 9-19z"/>` },
-  flameC: { el: 'fire', svg: `<path d="M42 4c2 14 10 24 8 40a18 18 0 0 1-36-2c0-12 10-18 14-30 2 6 4 8 6 8 2-4 4-8 8-16z"/>` },
-  flameCc: { el: 'fire', svg: `<path d="M36 28c3 8 9 12 8 20a10 10 0 0 1-20 0c0-8 7-12 12-20z"/>` },
+  target: {
+    el: 'fire',
+    svg: `<circle cx="32" cy="32" r="22"/><circle cx="32" cy="32" r="15" fill="#16121f"/><circle cx="32" cy="32" r="8"/><g ${S} stroke-width="5"><path d="M32 2v14M32 48v14M2 32h14M48 32h14"/></g>`,
+  },
   swap: {
     el: 'steel',
     svg: `<path d="M20 4l14 16h-9v26h-10V20H6zM44 60L30 44h9V18h10v26h9z"/>`,
@@ -986,11 +983,6 @@ export const INTENT_ICON: Record<string, string> = {
   idle: 'dots',
   absorb: 'scanner',
 };
-
-/** Animated pixel candle flame: three hand-drawn frames cycled slowly. */
-export function candleFlame(): string {
-  return `<span class="flame" aria-hidden="true">${['A', 'B', 'C'].map((f) => `<span class="ff">${pixelIcon(`flame${f}`, 'fo')}${pixelIcon(`flame${f}c`, 'fc')}</span>`).join('')}</span>`;
-}
 
 /** Pixel icon (see riso.ts). The vector source above is rasterised once at boot. */
 export function icon(id: string, cls = ''): string {

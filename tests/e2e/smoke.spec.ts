@@ -371,6 +371,22 @@ test('debug button: pick a hero and an enemy, the fight starts against it', asyn
   expect(problems).toEqual([]);
 });
 
+test("the Boss's Son's weak spot: a touch on the target makes your next attack critical", async ({ page }) => {
+  const problems = await freshGame(page);
+  await page.getByRole('button', { name: /debug/i }).click();
+  await page.locator('.debug-foe[data-enemy="bossSon"]').click();
+  await expect(page.locator('.combat')).toBeVisible();
+  const start = page.locator('.js-start');
+  if (await start.count()) await start.click();
+  const spot = page.locator('.weak-spot.on');
+  await expect(spot).toBeVisible({ timeout: 15000 });
+  const box = (await spot.boundingBox())!;
+  await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
+  await expect(spot).toBeHidden();
+  expect(await combat(page, "return c.has('hero', 'crit');")).toBe(true);
+  expect(problems).toEqual([]);
+});
+
 test('debug: Unlock all hires every hero and reveals every card and enemy in the handbook', async ({ page }) => {
   await freshGame(page, { locked: true });
   await page.getByRole('button', { name: /debug/i }).click();

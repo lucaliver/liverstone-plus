@@ -414,6 +414,36 @@ describe('combat engine', () => {
     expect(hexed.length).toBe(Math.ceil(onBelt / 2) + Math.ceil(rest / 2));
   });
 
+  it("the Boss's Son shows a target now and then; tapping it in time makes the next attack hit twice as hard, once", () => {
+    const c = setup({ enemy: ENEMIES.bossSon, hp: 500, maxHp: 500 });
+    run(c, CONFIG.introTime + 0.01);
+    const waitSpot = (): void => {
+      for (let i = 0; i < 200 && !c.weakSpot; i++) run(c, 0.1);
+      expect(c.weakSpot).not.toBeNull();
+    };
+    expect(c.hitWeakSpot()).toBe(false);
+    waitSpot();
+    run(c, 2.1);
+    expect(c.weakSpot).toBeNull();
+    expect(c.has('hero', 'crit')).toBe(false);
+
+    const punch = (): number => {
+      c.hero.mana = c.hero.maxMana = 10;
+      c.enemy.block = 0;
+      c.addTempCard('punch', 'belt');
+      const before = c.enemy.hp;
+      c.playCard(c.belt[c.belt.length - 1].card.uid);
+      return before - c.enemy.hp;
+    };
+    const plain = punch();
+    waitSpot();
+    expect(c.hitWeakSpot()).toBe(true);
+    expect(c.has('hero', 'crit')).toBe(true);
+    expect(punch()).toBe(plain * CONFIG.critMult);
+    expect(c.has('hero', 'crit')).toBe(false);
+    expect(punch()).toBe(plain);
+  });
+
   it('sleeve slots come from the hero', () => {
     expect(setup({ hero: HEROES.warrior }).sleeve.length).toBe(1);
     expect(setup({ hero: HEROES.necromancer }).sleeve.length).toBe(3);

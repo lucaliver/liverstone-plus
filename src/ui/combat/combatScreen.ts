@@ -205,6 +205,11 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   );
   onPress(r.portrait, deckInfo);
   onPress(r.intent, moveInfo);
+  // The weak spot answers on touch-down, not on release: it only stays up for a couple of seconds.
+  r.weakSpot.addEventListener('pointerdown', () => {
+    if (state.paused || state.waiting || state.ended || !combat.hitWeakSpot()) return;
+    haptic('hit');
+  });
   // The mana bar explains itself only on a hold (it's right under the thumb while playing).
   onTapOrHold(r.manaRow, () => {}, manaInfo);
 

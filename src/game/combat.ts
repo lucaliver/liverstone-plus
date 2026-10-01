@@ -119,6 +119,8 @@ export class Combat {
   private replaying = false;
   /** Card currently resolving, so effect helpers know its type. */
   private current: { card: CombatCard; def: CardDef; row: number } | null = null;
+  /** A target on the enemy's sprite (x, y: where, as a share of the drawing; t: seconds left). Tapped in time, it makes the hero's next attack critical. */
+  weakSpot: { x: number; y: number; t: number } | null = null;
   /** Free-form per-combat state for relics and powers. */
   mem: Record<string, number> = {};
   private tempUid = 0;
@@ -354,6 +356,10 @@ export class Combat {
     this.tickHero(dt);
     this.tickFighter('hero', dt);
     this.tickFighter('enemy', dt);
+    if (this.weakSpot) {
+      this.weakSpot.t -= dt;
+      if (this.weakSpot.t <= 0) this.weakSpot = null;
+    }
     if (this.result) return;
     this.tickEnemy(dt);
     if (this.result) return;
@@ -775,6 +781,7 @@ export class Combat {
     );
     this.replaying = false;
     this.withCard(card, def, () => def.play!(this, vals, card), row);
+    if (def.type === 'attack') this.removeStatus('hero', 'crit');
     if (this.result === 'lose') return;
 
     this.lastPlayed = def;
@@ -889,6 +896,7 @@ export class Combat {
       dmg += this.heroDef.hooks.bonusDamage?.(this, def) ?? 0;
       for (const [held, hd] of this.held()) dmg += hd.inSleeve?.bonusDamage?.(this, this.cardVals(held), def) ?? 0;
       dmg *= this.heroDef.hooks.damageMult?.(this, def) ?? 1;
+      if (def?.type === 'attack' && this.has('hero', 'crit')) dmg *= CONFIG.critMult;
     } else {
       dmg += this.strengthOf('enemy');
     }
@@ -1145,6 +1153,20 @@ export class Combat {
       b.card = { uid: -++this.tempUid, id: last.card.id, up: last.card.up, bonus: 0, temp: true };
       this.events.emit({ type: 'cardSpawn', card: b.card });
     }
+  }
+
+  /** Shows a target somewhere on the enemy's sprite for `time` seconds. */
+  openWeakSpot(time: number): void {
+    this.weakSpot = { x: 0.25 + this.rng.next() * 0.5, y: 0.25 + this.rng.next() * 0.5, t: time };
+    this.events.emit({ type: 'weakSpot', x: this.weakSpot.x, y: this.weakSpot.y });
+  }
+
+  /** The hero taps the target in time: the next attack is critical. False when there's no target to hit. */
+  hitWeakSpot(): boolean {
+    if (!this.weakSpot || this.result) return false;
+    this.weakSpot = null;
+    if (!this.has('hero', 'crit')) this.applyStatus('hero', 'crit', 1);
+    return true;
   }
 
   /** Hexes a random `share` (0–1, rounded up) of the belt cards and of the rest of the deck (draw and discard piles), never curses. */

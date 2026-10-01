@@ -3,7 +3,7 @@ import type { Combat } from '../../game/combat';
 import { currentNode, type RunState, totalFloors } from '../../game/run';
 import type { HeroId, Side } from '../../game/types';
 import { creature } from '../art/creatures';
-import { candleFlame, icon } from '../art/icons';
+import { icon } from '../art/icons';
 import { darkEyes, motes } from '../components/decor';
 import { $, centerOf, h, retrigger } from '../dom';
 import { settings } from '../../game/settings';
@@ -62,12 +62,11 @@ function markup(run: RunState, combat: Combat): string {
         { x: '6%', y: '14%' },
         { x: '84%', y: '44%' },
       ])}
-      <div class="candle l">${candleFlame()}</div><div class="candle r">${candleFlame()}</div>
       <!-- act decor (CSS shows the one for the enemy's act, so debug fights match too): the afternoon's flickering tube light and water cooler -->
       <div class="neon"></div><div class="cooler">${creature('waterCooler')}</div><div class="neon-dim"></div>
       <div class="shade"></div>
       <div class="enemy-wrap">
-        <div class="enemy-art">${creature(enemyDef.art)}</div>
+        <div class="enemy-art">${creature(enemyDef.art)}<button class="weak-spot" aria-label="${t('status.weakSpot')}">${icon('target')}</button></div>
       </div>
       <div class="enemy-info">
         <div class="statuses js-estatus"></div>
@@ -114,6 +113,7 @@ function queryRefs(el: HTMLElement) {
     stage: $('.stage', el),
     enemyWrap: $('.enemy-wrap', el),
     enemyArt: $('.enemy-art', el),
+    weakSpot: $('.weak-spot', el),
     intent: $('.threat', el),
     intentIco: $('.js-intent-ico', el),
     intentVal: $('.threat .t-val', el),

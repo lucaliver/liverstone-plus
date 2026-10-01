@@ -35,8 +35,7 @@
   .action-row { --cw: calc(var(--cw-belt) * 0.85); }
   .sleeve-slot .card { --cw: calc(var(--cw-belt) * 0.85 - 8px); }
   .bar { height: 24px; }
-  /* no room for combat candles on very short screens */
-  .stage .candle,
+  /* no room for the cooler on very short screens */
   .stage .cooler { display: none; }
   /* the sleeve slot is too small for its label here: the hand says it */
   .sleeve-slot > span { display: none; }

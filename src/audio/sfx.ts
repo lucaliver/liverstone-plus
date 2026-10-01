@@ -156,6 +156,7 @@ const SOUNDS = {
       tone(f, 0.12, { type: 'sine', vol: 0.08, delay: i * 0.05 });
     });
   },
+  weakSpot: () => tone(1200, 0.07, { type: 'square', vol: 0.07, to: 1600 }),
   status: () => tone(300, 0.2, { type: 'triangle', vol: 0.12, to: 520 }),
   debuff: () => tone(400, 0.25, { type: 'sawtooth', vol: 0.06, to: 200 }),
   windup: () => tone(200, 0.4, { type: 'sawtooth', vol: 0.05, to: 400, attack: 0.1 }),

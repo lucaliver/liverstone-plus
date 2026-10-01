@@ -20,6 +20,9 @@ const PARACHUTE_BLOCK = 20;
 const PARACHUTE_STRENGTH = 3;
 /** What the Overthinker does once it has lost its train of thought. */
 const WHERE_WAS_I: MoveDef = { id: 'whereWasI', intent: 'idle', windup: 4 };
+/** Weak Spot: how long its target stays up, and the random wait (s) between the end of one and the next. */
+const WEAK_SPOT_TIME = 2;
+const WEAK_SPOT_GAP = [5, 9];
 /** Spending Freeze: the hero's max mana. */
 const SPENDING_FREEZE_CAP = 3;
 
@@ -202,6 +205,24 @@ const defs: StatusDef[] = [
       c.enemyStrike();
     },
   },
+  // Weak spot: now and then a target shows on his sprite; `e` counts down to the next one.
+  {
+    id: 'weakSpot',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'target',
+    tick: (c, _side, s, dt) => {
+      if (c.weakSpot) return;
+      s.e ??= WEAK_SPOT_GAP[0] + c.rng.next() * (WEAK_SPOT_GAP[1] - WEAK_SPOT_GAP[0]);
+      s.e -= dt;
+      if (s.e > 0) return;
+      delete s.e;
+      c.openWeakSpot(WEAK_SPOT_TIME);
+    },
+  },
+  // Critical: the hero's next attack card deals double damage (consumed in `Combat.resolvePlay`).
+  { id: 'crit', kind: 'stacks', good: true, icon: 'target' },
   // Paper cuts: every card slipping off the belt cuts the hero for `v`.
   {
     id: 'paperCuts',

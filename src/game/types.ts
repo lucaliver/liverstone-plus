@@ -359,6 +359,7 @@ export type CombatEvent =
   | { type: 'beltPinned' }
   | { type: 'rowsOpen' }
   | { type: 'rowsClose' }
+  | { type: 'weakSpot'; x: number; y: number }
   | { type: 'end'; result: CombatResult };
 
 export type CombatResult = 'win' | 'lose';

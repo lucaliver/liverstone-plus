@@ -275,6 +275,12 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
       case 'speech':
         speak(t(e.key), QUIP_MS);
         break;
+      case 'weakSpot':
+        r.weakSpot.style.setProperty('--u', String(e.x));
+        r.weakSpot.style.setProperty('--v', String(e.y));
+        v.retrigger(r.weakSpot, 'appear');
+        sfx('weakSpot');
+        break;
       case 'beltPinned':
         sfx('stash');
         haptic('stash');
