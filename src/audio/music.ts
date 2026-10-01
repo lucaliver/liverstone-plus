@@ -7,7 +7,7 @@
  */
 import { audioGraph, onAudioUnlock, resumeAudio } from './sfx';
 
-export type TrackId = 'menu' | 'map' | 'combat' | 'combat2' | 'elite' | 'boss' | 'rest' | 'pause' | 'victory';
+export type TrackId = 'menu' | 'map' | 'combat' | 'combat2' | 'combat3' | 'map3' | 'elite' | 'boss' | 'rest' | 'pause' | 'victory';
 
 /** [step (0-15), midi note, length in 16th steps] */
 type NoteEv = [number, number, number];
@@ -62,7 +62,8 @@ const A4 = 69,
   Ab5 = 80,
   Gs5 = 80,
   Fs5 = 78,
-  G4 = 67;
+  G4 = 67,
+  Ab4 = 68;
 
 const TRACKS: Record<TrackId, Track> = {
   // Slow, eerie: a music box in an empty crypt, with a heartbeat underneath.
@@ -298,6 +299,117 @@ const TRACKS: Record<TrackId, Track> = {
     drums: ['k...k...k...k...', '....s.......s..s', '..h...h...h...h.'],
     pad: true,
     gain: 0.75,
+  },
+  // The night shift: the factory runs by itself. F minor, a hammering pulse bass, dry four-on-the-floor with metal toms.
+  combat3: {
+    bpm: 118,
+    chords: [
+      { root: 41, tones: MIN }, // Fm
+      { root: 41, tones: MIN }, // Fm
+      { root: 37, tones: MAJ }, // Db
+      { root: 37, tones: MAJ }, // Db
+      { root: 44, tones: MAJ }, // Ab
+      { root: 39, tones: MAJ }, // Eb
+      { root: 41, tones: MIN }, // Fm
+      { root: 36, tones: DOM7 }, // C7 (harmonic minor)
+    ],
+    bass: [0, _, 0, _, 0, _, 0, 12, 0, _, 0, _, 12, _, 0, 7],
+    bassWave: 'pulse',
+    arp: [0, _, 2, _, 1, _, 2, _, 0, _, 2, _, 1, 2, _, 1],
+    arpOctave: 4,
+    lead: [
+      [
+        [0, F5, 3],
+        [3, Ab5, 3],
+        [6, G5, 2],
+        [8, F5, 4],
+        [12, C5, 4],
+      ],
+      [
+        [0, F5, 2],
+        [2, F5, 2],
+        [4, Ab5, 4],
+        [8, C5 + 12, 4],
+        [12, Ab5, 4],
+      ],
+      [
+        [0, Cs5 + 12, 4],
+        [4, C5 + 12, 4],
+        [8, Ab5, 8],
+      ],
+      [
+        [0, F5, 6],
+        [6, Ab5, 2],
+        [8, Cs5 + 12, 8],
+      ],
+      [
+        [0, C5 + 12, 3],
+        [3, Ab5, 3],
+        [6, F5, 2],
+        [8, Ab5, 8],
+      ],
+      [
+        [0, G5, 4],
+        [4, Bb5, 4],
+        [8, G5, 4],
+        [12, D5 + 12, 4],
+      ],
+      [
+        [0, Ab5, 4],
+        [4, F5, 4],
+        [8, C5, 8],
+      ],
+      [
+        [0, E5, 4],
+        [4, G5, 4],
+        [8, Bb5, 8],
+      ],
+    ],
+    leadOn: (p) => p % 2 === 1,
+    leadVoice: 'pulse',
+    drums: ['k...k...k...k...', '....s.......s...', 't.......t.t.....', '..h...h...h...hh'],
+    pad: true,
+    gain: 0.8,
+  },
+  // The night map: empty corridors under emergency lights, a slow bell over a low drone.
+  map3: {
+    bpm: 70,
+    chords: [
+      { root: 41, tones: MIN }, // Fm
+      { root: 37, tones: MAJ7 }, // Dbmaj7
+      { root: 44, tones: MAJ }, // Ab
+      { root: 36, tones: DOM7 }, // C7
+    ],
+    bass: [0, _, _, _, _, _, _, _, 7, _, _, _, _, _, _, _],
+    bassWave: 'triangle',
+    arp: [0, _, _, 2, _, _, 1, _, _, 2, _, _, 1, _, _, _],
+    arpOctave: 4,
+    lead: [
+      [
+        [0, C5, 6],
+        [8, Ab5, 8],
+      ],
+      [
+        [0, Cs5, 6],
+        [8, F5, 8],
+      ],
+      [
+        [0, Ds5, 4],
+        [4, C5, 4],
+        [8, Ab4 + 12, 8],
+      ],
+      [
+        [0, G5, 6],
+        [8, E5, 4],
+        [12, G5, 4],
+      ],
+    ],
+    leadOn: (p) => p % 2 === 1,
+    leadVoice: 'bell',
+    drums: ['k...............', '..........h.....'],
+    pad: true,
+    crackle: true,
+    gain: 0.8,
   },
   // Phrygian dread: hammering E bass, tritone turnaround, dissonant riff.
   boss: {

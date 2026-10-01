@@ -43,7 +43,7 @@ This file is the technical guide: read it before changing code. Field-by-field d
   (`Keyword`, `IntentType`…) rather than passing loose strings.
 - A screen undoes in `leave()` what `enter()` did: listeners, emitter subscriptions, timers, temporary music.
 - **Save data is untrusted.** `loadRun` (`run.ts`), `settings.ts` and `meta.ts` validate every field on load and drop or reset
-  what is wrong. Changing a saved shape (or the number of acts) → bump `SAVE_VERSION` or migrate.
+  what is wrong. Changing a saved shape → bump `SAVE_VERSION` or migrate. A new act needs no bump: `parseRun` deals the missing acts to older saves.
 - Ids follow English names. Renaming = rename the id + add the old one to `game/renamed.ts` (saves, discoveries, met enemies).
 - Test what you change: engine rule → `combat.test.ts`; data shape → `content.test.ts`; flow/screen → `smoke.spec.ts`.
 
@@ -128,6 +128,10 @@ tests/         combat, content, balance.sim (+ bot), e2e/
   `meta.ts`), a card file, a sprite, `hero.<id>.*` strings, `ABILITY_ICON`/`PASSIVE_ICON` entries (`ui/combat/view.ts`).
 - `StatusDef` (`statuses.ts`) + `status.<id>` and `status.<id>.d` (`{v}` = amount). Effects are fields or hooks on the def;
   `combat.ts` never names a status for a new effect. `passive: true` marks a permanent enemy trait.
+
+### Act 3 rules (night shift)
+
+New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHits`), `assemblyLine` (`canPlay`), `overtimeCreep`, `lowBattery`, `machineLearning`, `pressure`, `boardroom`; their numbers are constants at the top of the file. `music.ts` has `combat3`/`map3` for the act; its clock runs past midnight (`shift: [22, 30]`).
 
 ### Relics
 

@@ -56,7 +56,8 @@ mosse. Tra uno scontro e l'altro migliori il mazzo.
 ### La run
 
 - **Atti:** ogni atto è una mappa a **due percorsi** disegnata come pianta d'ufficio, che si ricongiungono nel **boss**.
-  Battuto il boss, ci si cura e si passa al turno successivo.
+  Battuto il boss, ci si cura e si passa al turno successivo. Tre atti: il turno del mattino, quello del pomeriggio e il
+  **turno di notte**, con l'orologio che arriva fino all'alba e il consiglio di amministrazione come boss finale.
 - **Stanze:** lavori (scontri), élite (ispezioni), **sala pausa** (cura o potenziamento), **promozioni** (vantaggi permanenti
   per una carta), **sala fotocopie** (distruggi o duplica una carta), **sartoria** (un relic che
   aggiunge uno slot manica, oppure più vita massima), **oggetti smarriti** (scegli uno tra tre relic),

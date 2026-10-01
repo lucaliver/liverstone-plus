@@ -1422,6 +1422,27 @@ describe('saves from before the ids followed the English names', () => {
     Reflect.deleteProperty(globalThis, 'localStorage');
   });
 
+  it('a run saved before the last act existed carries on into it', () => {
+    const store = new Map<string, string>();
+    Object.defineProperty(globalThis, 'localStorage', {
+      value: {
+        getItem: (k: string) => store.get(k) ?? null,
+        setItem: (k: string, v: string) => void store.set(k, v),
+        removeItem: (k: string) => void store.delete(k),
+      },
+      configurable: true,
+    });
+    const run = newRun('warrior', 7);
+    const twoActs = run.nodes.filter((n) => n.act <= 2).map((n) => (n.type === 'boss' && n.act === 2 ? { ...n, next: [] } : n));
+    store.set('cardstone+:run', JSON.stringify({ ...run, nodes: twoActs }));
+    const loaded = loadRun();
+    expect(Math.max(...(loaded?.nodes.map((n) => n.act) ?? [0]))).toBe(3);
+    const boss2 = loaded?.nodes.find((n) => n.act === 2 && n.type === 'boss');
+    expect(boss2?.next).toHaveLength(1);
+    expect(loaded?.nodes[boss2?.next[0] ?? 0].act).toBe(3);
+    Reflect.deleteProperty(globalThis, 'localStorage');
+  });
+
   it('are dropped when their shape is wrong, and kept when it is right', () => {
     const store = new Map<string, string>();
     Object.defineProperty(globalThis, 'localStorage', {
@@ -1777,7 +1798,7 @@ describe('act 3 rules, second batch', () => {
 
   it('the Withered Ficus stings back when an attack card hits it', () => {
     const c = setup({ enemy: ENEMIES.witheredFicus });
-    expect(c.stacks('enemy', 'thorns')).toBe(2);
+    expect(c.stacks('enemy', 'thorns')).toBe(1);
   });
 });
 

@@ -1029,24 +1029,24 @@ const cobot = `
 <defs>${glow('cb-g', '#ff3b3b')}${lg('cb-b', '#ffe45a', '#e0a800')}</defs>
 ${shadow}
 <g transform="translate(8 18) scale(.9)">
-<rect x="22" y="160" width="156" height="26" rx="4" fill="#1b1830" ${OUT}/>
+<rect x="22" y="160" width="156" height="26" rx="4" fill="#5a5470" ${OUT}/>
 <path d="M30 160l16 26M54 160l16 26M78 160l16 26M102 160l16 26M126 160l16 26M150 160l16 26" stroke="#ffd900" stroke-width="9"/>
 <rect x="22" y="160" width="156" height="26" rx="4" fill="none" ${OUT}/>
-<path d="M70 164v-22h36v22z" fill="#3a3450" ${OUT}/>
+<path d="M70 164v-22h36v22z" fill="#9a94ac" ${OUT}/>
 <path d="M76 142V92c0-8 6-12 14-12h12c8 0 14 4 14 12v50z" fill="url(#cb-b)" ${OUT}/>
-<circle cx="96" cy="96" r="18" fill="#3a3450" ${OUT}/><circle cx="96" cy="96" r="8" fill="#ffd900" ${OUT}/>
+<circle cx="96" cy="96" r="18" fill="#9a94ac" ${OUT}/><circle cx="96" cy="96" r="8" fill="#ffd900" ${OUT}/>
 <g class="limb"><path d="M84 92L50 56c-6-6-4-14 4-16l22-6 6 18-18 4 28 30z" fill="url(#cb-b)" ${OUT}/>
-<circle cx="64" cy="40" r="14" fill="#3a3450" ${OUT}/><circle cx="64" cy="40" r="6" fill="#ffd900" ${OUT}/></g>
+<circle cx="64" cy="40" r="14" fill="#9a94ac" ${OUT}/><circle cx="64" cy="40" r="6" fill="#ffd900" ${OUT}/></g>
 <path d="M44 20c-8-4-12-12-8-18h40c4 6 0 14-8 18z" fill="#c9c4d6" ${OUT}/>
 <rect x="30" y="16" width="40" height="30" rx="8" fill="#f6f0e4" ${OUT}/>
 <circle cx="50" cy="31" r="12" fill="#120e18" ${OUT}/>
 <g class="eye"><circle cx="50" cy="31" r="16" fill="url(#cb-g)"/><circle cx="50" cy="31" r="7" fill="#ff3b3b"/><circle cx="47" cy="28" r="2.5" fill="#fff"/></g>
 <path d="M36 18l14 6 14-6" stroke="#120e18" stroke-width="5" fill="none" stroke-linecap="round"/>
-<path d="M70 46l22 18c4 4 12 4 16 0l12-12" stroke="#1b1830" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M70 46l22 18c4 4 12 4 16 0l12-12" stroke="#8a84a0" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
 <g fill="#ffd900" ${OUT}><path d="M108 52l22 8-4 10-22-6z"/></g>
 <g fill="none" stroke="#ffd900" stroke-width="4" stroke-linecap="round"><path d="M132 60l14-8M134 68l16 2M130 74l12 10M138 56l6-14"/></g>
 <path d="M136 64l10-4-2 8z" fill="#fff"/>
-<path d="M104 94h36c8 0 10 8 6 14l-10 14h-32z" fill="#3a3450" ${OUT}/><path d="M112 102v12M122 102v12M132 102v12" stroke="#ff3d9a" stroke-width="4"/>
+<path d="M104 94h36c8 0 10 8 6 14l-10 14h-32z" fill="#9a94ac" ${OUT}/><path d="M112 102v12M122 102v12M132 102v12" stroke="#ff3d9a" stroke-width="4"/>
 </g>`;
 
 /** The Old Boiler: a riveted steam boiler on iron legs, brass bands, a pressure gauge and a furnace door that grins. */

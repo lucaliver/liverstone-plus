@@ -532,6 +532,24 @@ test('after the Act 1 boss the map turns to Act 2 (the very first run ends there
   expect(problems).toEqual([]);
 });
 
+test('after the Act 2 boss the map turns to Act 3, the night shift, and its clock runs past midnight', async ({ page }) => {
+  const problems = await freshGame(page, { veteran: true });
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  await page.evaluate(
+    '(() => { const g = window.__game; const boss = g.run.nodes.find((n) => n.type === "boss" && n.act === 2); g.run.current = boss.id; g.run.path.push(boss.id); g.run.cleared = true; g.goJourney(); })()',
+  );
+  await expect(page.locator('.journey:not(.leaving) .act-banner .h1')).toHaveText(/act 3/i);
+  await expect(page.locator('.journey:not(.leaving) .act-banner .sub')).toHaveText(/night shift/i);
+  await page
+    .locator('.journey:not(.leaving)')
+    .getByRole('button', { name: /enter floor 1/i })
+    .click();
+  await expect(page.locator('.combat')).toBeVisible();
+  expect(await page.evaluate('window.__combat.enemy.def.act')).toBe(3);
+  expect(problems).toEqual([]);
+});
+
 test('tapping the hero portrait in a fight shows the deck in play and pauses', async ({ page }) => {
   await freshGame(page);
   await startFight(page);

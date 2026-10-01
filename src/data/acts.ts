@@ -15,6 +15,8 @@ export interface ActDef {
 export const ACT_DEFS: readonly ActDef[] = [
   { shift: [8, 12], music: 'combat', mapMusic: 'map', bossClock: true },
   { shift: [13, 17], music: 'combat2', mapMusic: 'map' },
+  // The night shift runs past midnight to the dawn: the clock shows 22:00 to 06:00.
+  { shift: [22, 30], music: 'combat3', mapMusic: 'map3' },
 ];
 
 /** The definition of an act (1-based; later acts fall back to the last one). */

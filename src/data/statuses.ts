@@ -41,9 +41,9 @@ const CHIRP_EVERY = 6;
 const LEARN_EVERY = 3;
 /** Pressure: gains this much Block every so many seconds; at the limit it bursts (the Block is gone, the hero takes the blast). */
 const PRESSURE_EVERY = 5;
-const PRESSURE_STEP = 10;
-const PRESSURE_LIMIT = 40;
-const PRESSURE_BLAST = 14;
+const PRESSURE_STEP = 6;
+const PRESSURE_LIMIT = 30;
+const PRESSURE_BLAST = 12;
 /** The Board: what the first director to leave brings (Block, Strength); the second one speeds the whole board up. */
 const BOARD_BLOCK = 30;
 const BOARD_STRENGTH = 2;
@@ -334,10 +334,9 @@ const defs: StatusDef[] = [
     passive: true,
     icon: 'conveyorLine',
     canPlay: (c, side, def, uid) => {
-      const row = c.rowOf(uid);
-      if (side !== 'enemy' || def.type === 'curse' || row < 0) return null;
-      const front = c.belt.filter((b) => b.row === row && !b.pinned).reduce((a, b) => (b.pos > a.pos ? b : a));
-      return front.card.uid === uid ? null : 'combat.assemblyLine';
+      const me = c.belt.find((b) => b.card.uid === uid);
+      if (side !== 'enemy' || def.type === 'curse' || !me || me.pinned) return null;
+      return c.belt.some((b) => b.row === me.row && !b.pinned && b.pos > me.pos) ? 'combat.assemblyLine' : null;
     },
   },
   // Overtime creep: a little stronger every so often, whatever you do.
