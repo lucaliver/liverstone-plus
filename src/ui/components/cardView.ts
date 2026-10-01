@@ -105,7 +105,6 @@ function valueHtml(card: CardInst & { bonus?: number }, idx: number, combat?: Co
 export function cardFace(card: CardInst & { bonus?: number }, combat?: Combat | null): string {
   const def = CARDS[card.id];
   const lines = def.face.split('|').map((line) => {
-    let kind = 'op';
     const html = line.replace(
       /\{(\?)?(\w+)(?::(\d))?\}|([^{]+)/g,
       (_, cond: string | undefined, k: string | undefined, idx: string | undefined, text: string | undefined) => {
@@ -113,13 +112,13 @@ export function cardFace(card: CardInst & { bonus?: number }, combat?: Combat | 
         if (/^\d$/.test(k!)) return valueHtml(card, Number(k), combat);
         const g = GLYPHS[k!];
         if (cond) return `<span class="cond">(${icon(g.icon)})</span>`;
-        if (kind === 'op') kind = k!;
         const val =
           idx !== undefined ? `${g.sign ?? ''}${valueHtml(card, Number(idx), combat)}${g.unit ? `<span class="unit">${g.unit}</span>` : ''}` : '';
-        return `${icon(g.icon)}${val}`;
+        // Each glyph carries its own ink (`.gk-<kind>`), so a line like {dmg}={block} gets a pink sword and a blue shield.
+        return `<span class="gk gk-${k}">${icon(g.icon)}${val}</span>`;
       },
     );
-    return `<div class="gl gk-${kind}">${html}</div>`;
+    return `<div class="gl">${html}</div>`;
   });
   return lines.join('');
 }

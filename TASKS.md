@@ -18,6 +18,8 @@
 
 - [x] le carte Legendary dovrebbero essere proposte come reward solo dopo elite e boss
 
+- [x] icona del blocco rosa invece di blu su alcune carte (Shoulder Check, Blow Off Steam)
+
 # NEXT STEPS (ignore for now):
 
 > aggiungere modificatori difficoltà run dopo la vittoria
