@@ -12,11 +12,12 @@
   border: var(--line) solid var(--k);
   box-shadow: var(--off) var(--off) 0 var(--shadow);
 }
-.btn:active:not(:disabled) {
+.btn:active:not(:disabled):not(.locked) {
   transform: translate(var(--off), var(--off));
   box-shadow: none;
 }
-.btn:disabled {
+.btn:disabled,
+.btn.locked {
   color: var(--muted);
   background: var(--paper2);
   box-shadow: none;

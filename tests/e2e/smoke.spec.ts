@@ -392,6 +392,13 @@ test('heroes 2 and 3 start locked: padlock, how to unlock, no start', async ({ p
   await expect(page.locator('.hero-select')).toHaveAttribute('data-hero', 'mage');
   await expect(page.locator('.hero-slide.current .hero-unlock')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Locked' })).toBeDisabled();
+  // The Locked button and the silhouette do what the padlock does: rattle its chains.
+  const lock = page.locator('.hero-slide.current .hero-lock');
+  await page.getByRole('button', { name: 'Locked' }).click({ force: true });
+  await expect(lock).toHaveClass(/rattle/);
+  await expect(lock).not.toHaveClass(/rattle/);
+  await page.locator('.hero-slide.current .hero-sprite').click({ position: { x: 10, y: 10 } });
+  await expect(lock).toHaveClass(/rattle/);
   expect(problems).toEqual([]);
 });
 

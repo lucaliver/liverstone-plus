@@ -69,13 +69,14 @@ function slide(hero: HeroDef, index: number): HTMLElement {
       { title: t('hero.starterDeck') },
     );
   });
-  // Tapping the padlock rattles its chains.
+  // Tapping the padlock, or the silhouette it hangs on, rattles its chains.
   const lock = el.querySelector<HTMLElement>('.hero-lock');
   lock?.addEventListener('click', () => {
     sfx('chains');
     haptic('locked');
     retrigger(lock, 'rattle');
   });
+  if (locked) el.querySelector<HTMLElement>('.hero-sprite')!.addEventListener('click', () => lock?.click());
   return el;
 }
 
@@ -103,7 +104,8 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
     {
       class: 'btn block',
       onclick: () => {
-        if (!heroUnlocked(HERO_LIST[index].id)) return;
+        // The Locked button does what the padlock does.
+        if (!heroUnlocked(HERO_LIST[index].id)) return void slides[index].querySelector<HTMLElement>('.hero-lock')?.click();
         sfx('button');
         haptic('tap');
         onStart(HERO_LIST[index].id);
@@ -130,7 +132,8 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
     el.dataset.hero = hero.id;
     el.style.setProperty('--hero-ink', hero.ink);
     const locked = !heroUnlocked(hero.id);
-    startBtn.disabled = locked;
+    startBtn.classList.toggle('locked', locked);
+    startBtn.setAttribute('aria-disabled', String(locked));
     startBtn.textContent = locked ? t('hero.locked') : t('hero.start');
     if (!locked) markHeroSeen(hero.id);
     slides.forEach((s, i) => {
