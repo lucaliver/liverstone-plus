@@ -43,27 +43,6 @@
   justify-content: flex-end;
   padding: 0 12px 10px;
 }
-/* a boss's stage is framed in brass: four corner brackets around the sprite's room, quiet enough not to fight it */
-.combat[data-tier='boss'] .enemy-wrap::before {
-  content: '';
-  position: absolute;
-  inset: 8px 0 12px;
-  z-index: 0;
-  pointer-events: none;
-  --brk: linear-gradient(var(--brass), var(--brass));
-  --len: 34px;
-  --w: 4px;
-  background:
-    var(--brk) left top / var(--len) var(--w),
-    var(--brk) left top / var(--w) var(--len),
-    var(--brk) right top / var(--len) var(--w),
-    var(--brk) right top / var(--w) var(--len),
-    var(--brk) left bottom / var(--len) var(--w),
-    var(--brk) left bottom / var(--w) var(--len),
-    var(--brk) right bottom / var(--len) var(--w),
-    var(--brk) right bottom / var(--w) var(--len);
-  background-repeat: no-repeat;
-}
 .stage-floor {
   /* a strip of dithered stone at the enemy's feet */
   position: absolute;
