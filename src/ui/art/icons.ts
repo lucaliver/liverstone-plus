@@ -1041,6 +1041,39 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<rect x="8" y="2" width="48" height="60" rx="2"/><rect x="13" y="8" width="26" height="36" fill="#16121f"/><path fill="#fff" opacity=".75" d="M16 12h8v8h-8zM28 12h8v8h-8zM16 25h8v8h-8zM28 25h8v8h-8zM16 36h20v5H16z"/><rect x="43" y="10" width="8" height="6" fill="#16121f"/><rect x="43" y="22" width="8" height="4" fill="#16121f"/><rect x="43" y="30" width="8" height="4" fill="#16121f"/><rect x="13" y="49" width="38" height="9" fill="#16121f"/>`,
   },
+  // ---- act 3 rules
+  sleepMask: {
+    el: 'shadow',
+    svg: `<path d="M4 26c6-10 18-12 28-4 10-8 22-6 28 4 3 12-2 22-13 24-6 1-11-2-15-7-4 5-9 8-15 7C6 48 1 38 4 26z"/><path d="M14 34q6 6 13 0M37 34q6 6 13 0" fill="none" stroke="#16121f" stroke-width="3.5" stroke-linecap="round"/><path d="M44 4h12l-12 12h12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`,
+  },
+  funnel: {
+    el: 'steel',
+    svg: `<path d="M3 6h58L39 32v22l-14 6V32z"/><path ${HI} d="M8 10h24L22 24z"/><path fill="#16121f" opacity=".4" d="M25 40h14v4H25z"/>`,
+  },
+  conveyorLine: {
+    el: 'steel',
+    svg: `<path d="M4 44h56v10H4z"/><g fill="#16121f"><circle cx="12" cy="49" r="3"/><circle cx="26" cy="49" r="3"/><circle cx="40" cy="49" r="3"/><circle cx="54" cy="49" r="3"/></g><rect x="6" y="24" width="16" height="18"/><rect x="28" y="30" width="14" height="12"/><path d="M46 20h8v-6l10 10-10 10v-6h-8z"/>`,
+  },
+  creepClock: {
+    el: 'shadow',
+    svg: `<circle cx="28" cy="38" r="24"/><circle cx="28" cy="38" r="17" fill="#16121f" opacity=".5"/><path d="M28 26v13l9 5" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 4l10 12h-6v12h-8V16h-6z"/>`,
+  },
+  lowBattery: {
+    el: 'steel',
+    svg: `<rect x="3" y="18" width="50" height="30"/><rect x="53" y="27" width="8" height="12"/><rect x="9" y="24" width="38" height="18" fill="#16121f"/><rect x="11" y="26" width="7" height="14"/><path d="M30 8l-8 10h6l-4 8 12-12h-7z" fill="#ffd900" stroke="#16121f" stroke-width="2"/>`,
+  },
+  brainChip: {
+    el: 'arcane',
+    svg: `<rect x="14" y="14" width="36" height="36" rx="3"/><path d="M20 4h4v10h-4zM30 4h4v10h-4zM40 4h4v10h-4zM20 50h4v10h-4zM30 50h4v10h-4zM40 50h4v10h-4zM4 20h10v4H4zM4 30h10v4H4zM4 40h10v4H4zM50 20h10v4H50zM50 30h10v4H50zM50 40h10v4H50z"/><path d="M32 22c-6 0-9 4-9 8 0 3 2 5 3 6-1 3 1 6 4 6h4c3 0 5-3 4-6 1-1 3-3 3-6 0-4-3-8-9-8z" fill="#16121f"/><path d="M32 24v18M27 30h5M32 34h5" stroke="#fff" stroke-width="2" opacity=".7"/>`,
+  },
+  steamGauge: {
+    el: 'fire',
+    svg: `<circle cx="32" cy="32" r="28"/><circle cx="32" cy="32" r="21" fill="#16121f" opacity=".55"/><path d="M32 32L46 18" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="32" cy="32" r="4" fill="#fff"/><path d="M12 38l4-1M14 24l4 2M24 13l2 4M38 13l-2 4M50 24l-4 2" stroke="#fff" stroke-width="3" opacity=".8"/><path d="M26 56h12v6H26z"/>`,
+  },
+  gavel: {
+    el: 'steel',
+    svg: `<g transform="rotate(-35 32 32)"><rect x="8" y="8" width="38" height="18" rx="3"/><rect x="12" y="8" width="6" height="18" fill="#16121f" opacity=".4"/><rect x="34" y="8" width="6" height="18" fill="#16121f" opacity=".4"/><rect x="24" y="24" width="7" height="34" rx="2"/></g><path d="M34 54h28v8H34z"/>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {

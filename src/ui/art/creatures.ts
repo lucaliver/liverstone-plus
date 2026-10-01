@@ -858,6 +858,89 @@ ${eyes(82, 118, 58, 6, '#ff3b3b', 'vp-e')}
 <path d="M70 82c10-8 22-6 30 0 8-6 20-8 30 0-6 10-20 8-30 4-10 4-24 6-30-4z" fill="#3a2a2a" ${OUT}/>
 <rect x="104" y="92" width="34" height="8" fill="#8a5a2a" ${OUT}/><circle cx="140" cy="96" r="4" fill="#ff8a00"/><path d="M142 88c4-6 10-6 10-14" stroke="#b8b0cc" stroke-width="3" fill="none"/>`;
 
+/** The Graveyard Intern: a hooded intern asleep on his feet, lanyard swinging, an empty jumbo coffee in one fist. */
+const graveyardIntern = `
+<defs>${rg('gi-b', '#7aa7ff', '#1c5fd0')}${glow('gi-g', '#ffd900')}</defs>
+${shadow}
+<path d="M44 186c-10-52 8-92 56-94 48 2 66 42 56 94z" fill="url(#gi-b)" ${OUT}/>
+<path d="M72 98c6 18 50 18 56 0" fill="none" stroke="#120e18" stroke-width="3"/>
+<path d="M86 104l14 44 14-44" fill="none" stroke="#ff3d9a" stroke-width="5" stroke-linejoin="round"/>
+<rect x="88" y="146" width="24" height="28" rx="2" fill="#f6f0e4" ${OUT}/><circle cx="100" cy="156" r="5" fill="#ffd900"/><path d="M93 166h14" stroke="#1b1830" stroke-width="3"/>
+<path d="M62 168h76l8 18H54z" fill="#1c5fd0" ${OUT}/>
+<g class="limb"><path d="M146 122h34l-4 44c0 6-4 9-10 9h-6c-6 0-10-3-10-9z" fill="#f6f0e4" ${OUT}/><path d="M144 134h38" stroke="#ff3d9a" stroke-width="9"/><path d="M142 116h42v8h-42z" fill="#1b1830" ${OUT}/><circle cx="148" cy="150" r="9" fill="#f6ecd2" ${OUT}/></g>
+<path d="M54 130c-8 10-6 28 4 36l10-8c-6-6-6-14-2-22z" fill="#1c5fd0" ${OUT}/>
+<g transform="rotate(-14 100 70)">
+<path d="M58 62c0-24 18-38 42-38s42 14 42 38c0 24-16 44-42 44S58 86 58 62z" fill="#f6ecd2" ${OUT}/>
+<path d="M54 56c-2-26 18-40 46-40 26 0 46 12 44 40-8-10-22-14-44-14s-36 4-46 14z" fill="#1b1830" ${OUT}/>
+<path d="M76 70q9 7 18 0M106 70q9 7 18 0" fill="none" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
+<path d="M76 79q9 5 18 0M106 79q9 5 18 0" fill="none" stroke="#9a7ac8" stroke-width="3" stroke-linecap="round"/>
+<ellipse cx="100" cy="94" rx="9" ry="7" fill="#1b1830" ${OUT}/><path d="M104 100c2 8 0 12-2 14" stroke="#7aa7ff" stroke-width="4" fill="none" stroke-linecap="round"/>
+<circle cx="70" cy="84" r="6" fill="#ff8ac8" opacity=".7"/><circle cx="130" cy="84" r="6" fill="#ff8ac8" opacity=".7"/>
+</g>
+<g class="eye" fill="none" stroke="#ffd900" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M148 22h18l-18 20h18"/><path d="M170 8h12l-12 14h12"/></g>`;
+
+/** The Rate Limiter: a rack-mounted router with a stop sign for a face, antennas up and every status light red. */
+const rateLimiter = `
+<defs>${glow('rl-g', '#ff3d9a')}${lg('rl-b', '#8a84a0', '#3a3450')}</defs>
+${shadow}
+<path d="M62 14v34M138 14v34" stroke="#1b1830" stroke-width="7" stroke-linecap="round"/><circle cx="62" cy="12" r="8" fill="#ff3d9a" ${OUT}/><circle cx="138" cy="12" r="8" fill="#ffd900" ${OUT}/>
+<path d="M54 186v-12h20v12zM126 186v-12h20v12z" fill="#1b1830" ${OUT}/>
+<rect x="30" y="46" width="140" height="132" rx="10" fill="url(#rl-b)" ${OUT}/>
+<rect x="44" y="58" width="112" height="70" rx="6" fill="#120e18" ${OUT}/>
+<path d="M82 66h36l18 18v22l-18 18H82l-18-18V84z" fill="#c81f4e" ${OUT}/>
+<path d="M88 78l24 28M112 78l-24 28" stroke="#f6f0e4" stroke-width="7" stroke-linecap="round"/>
+${eyes(80, 120, 90, 4, '#ffd900', 'rl-g')}
+<path d="M64 140h72M64 150h72M64 160h72" stroke="#1b1830" stroke-width="5"/>
+<g ${OUT}><circle cx="46" cy="150" r="5" fill="#ff3d9a"/><circle cx="46" cy="162" r="5" fill="#ff3d9a"/><circle cx="154" cy="150" r="5" fill="#ff3d9a"/><circle cx="154" cy="162" r="5" fill="#ffd900"/></g>
+<g class="limb"><path d="M30 100c-14 0-22 8-22 20" stroke="#1b1830" stroke-width="8" fill="none" stroke-linecap="round"/><rect x="0" y="116" width="26" height="30" rx="4" fill="#f6f0e4" ${OUT}/><path d="M5 124h16M5 132h16M5 140h10" stroke="#c81f4e" stroke-width="3"/></g>`;
+
+/** The Line Lead: a bristling foreman in a hard hat and coveralls, whistle between his teeth, one boot on the line. */
+const lineLead = `
+<defs>${rg('ll-b', '#7aa7ff', '#1c5fd0')}${glow('ll-g', '#1b1830')}</defs>
+${shadow}
+<rect x="0" y="168" width="200" height="14" fill="#3a3450" ${OUT}/><path d="M10 168v14M40 168v14M70 168v14M100 168v14M130 168v14M160 168v14M190 168v14" stroke="#120e18" stroke-width="2"/>
+<rect x="10" y="146" width="26" height="22" fill="#ffd900" ${OUT}/><rect x="164" y="152" width="22" height="16" fill="#ff3d9a" ${OUT}/>
+<path d="M54 172c-4-44 8-72 46-74 38 2 50 30 46 74z" fill="url(#ll-b)" ${OUT}/>
+<path d="M88 98l12 20 12-20" fill="#f6f0e4" ${OUT}/><path d="M60 134h80" stroke="#ffd900" stroke-width="8"/><rect x="92" y="128" width="16" height="14" fill="#ffd900" ${OUT}/>
+<path d="M52 112c-14 4-18 24-8 36l54 6c10-4 8-14-2-16l-32-4c0-10 4-14 0-22zM148 112c14 4 18 24 8 36l-54 6c-10-4-8-14 2-16l32-4c0-10-4-14 0-22z" fill="#ff3d9a" ${OUT}/>
+<circle cx="44" cy="150" r="9" fill="#f6ecd2" ${OUT}/><circle cx="156" cy="150" r="9" fill="#f6ecd2" ${OUT}/>
+<path d="M62 62c0-22 16-34 38-34s38 12 38 34c0 24-16 42-38 42S62 86 62 62z" fill="#f6ecd2" ${OUT}/>
+<path d="M54 50c4-22 22-34 46-34s42 12 46 34z" fill="#ffd900" ${OUT}/><path d="M50 50h100v10H50z" fill="#ffd900" ${OUT}/><rect x="90" y="8" width="20" height="14" rx="3" fill="#f6f0e4" ${OUT}/>
+<path d="M74 66l20 8M126 66l-20 8" stroke="#120e18" stroke-width="7" stroke-linecap="round"/>
+${eyes(82, 118, 76, 5, '#1b1830', 'll-g')}
+<path d="M70 92c10-8 20-4 30 0 10-4 20-8 30 0-4 12-18 12-30 8-12 4-26 4-30-8z" fill="#3a2a2a" ${OUT}/>
+<rect x="94" y="98" width="12" height="10" rx="3" fill="#ffd900" ${OUT}/><path d="M100 98v-4" stroke="#1b1830" stroke-width="2"/>`;
+
+/** The Mining Rig: a bare-frame rack of graphics cards, three fans for a face, an RGB strip on and its cables hanging like arms. */
+const miningRig = `
+<defs>${glow('mr-g', '#ff3d9a')}${lg('mr-b', '#5a5470', '#1b1830')}</defs>
+${shadow}
+<path d="M54 22c-8-10-2-18 4-20 0 8 4 12 8 14zM100 16c-8-12-2-20 6-22 0 10 6 14 10 18zM146 24c-6-10 0-16 6-18 0 8 4 10 6 14z" fill="#ff3d9a" ${OUT}/>
+<rect x="30" y="28" width="140" height="150" rx="6" fill="url(#mr-b)" ${OUT}/>
+<path d="M30 76h140M30 124h140" stroke="#120e18" stroke-width="4"/>
+<g ${OUT}><circle cx="70" cy="52" r="20" fill="#120e18"/><circle cx="130" cy="52" r="20" fill="#120e18"/><circle cx="100" cy="100" r="22" fill="#120e18"/></g>
+<g class="limb" stroke="#ff3d9a" stroke-width="5" stroke-linecap="round"><path d="M70 36v32M54 52h32M59 41l22 22M81 41l-22 22"/><path d="M130 36v32M114 52h32M119 41l22 22M141 41l-22 22" stroke="#ffd900"/><path d="M100 82v36M82 100h36M88 88l24 24M112 88l-24 24" stroke="#1c5fd0"/></g>
+${eyes(70, 130, 52, 4, '#ffd900', 'mr-g')}
+<path d="M70 140c0 10 60 10 60 0" fill="none" stroke="#f6f0e4" stroke-width="6" stroke-linecap="round"/><path d="M82 142v6M96 146v6M110 146v6M122 142v6" stroke="#f6f0e4" stroke-width="4"/>
+<rect x="36" y="160" width="128" height="10" fill="#120e18"/><path d="M36 165h32" stroke="#ff3d9a" stroke-width="8"/><path d="M68 165h32" stroke="#ffd900" stroke-width="8"/><path d="M100 165h32" stroke="#1c5fd0" stroke-width="8"/><path d="M132 165h32" stroke="#c8b4f4" stroke-width="8"/>
+<path d="M30 110c-18 4-22 24-14 40M170 100c18 6 20 28 10 46" fill="none" stroke="#1b1830" stroke-width="7" stroke-linecap="round"/><circle cx="16" cy="152" r="8" fill="#ffd900" ${OUT}/><circle cx="180" cy="148" r="8" fill="#ff3d9a" ${OUT}/>
+<path d="M44 186l-2-8h16l-2 8zM142 186l-2-8h16l-2 8z" fill="#1b1830"/>`;
+
+/** The Helpdesk Chatbot: a speech bubble on wheels with a headset, a screen face and a grin that's slightly too wide. */
+const helpdeskChatbot = `
+<defs>${rg('hc-b', '#ffffff', '#c8d8ff')}${glow('hc-g', '#1c5fd0')}</defs>
+${shadow}
+<path d="M26 74c0-22 14-34 36-34h76c22 0 36 12 36 34v54c0 22-14 34-36 34H92l-26 24 4-24h-8c-22 0-36-12-36-34z" fill="url(#hc-b)" ${OUT}/>
+<circle cx="70" cy="146" r="7" fill="#1c5fd0"/><circle cx="100" cy="146" r="7" fill="#1c5fd0"/><circle cx="130" cy="146" r="7" fill="#1c5fd0"/>
+<g class="limb"><path d="M30 100c-16-6-24-18-20-34" stroke="#1b1830" stroke-width="8" fill="none" stroke-linecap="round"/><circle cx="10" cy="62" r="9" fill="#ffd900" ${OUT}/></g>
+<path d="M170 106c14 6 20 16 18 28" stroke="#1b1830" stroke-width="8" fill="none" stroke-linecap="round"/><circle cx="188" cy="136" r="9" fill="#ffd900" ${OUT}/>
+<rect x="52" y="56" width="96" height="62" rx="14" fill="#1b1830" ${OUT}/>
+${eyes(80, 120, 80, 7, '#7aa7ff', 'hc-g')}
+<path d="M70 98c8 18 52 18 60 0z" fill="#f6f0e4" ${OUT}/><path d="M78 99v10M88 99v13M98 99v14M108 99v13M118 99v10" stroke="#1b1830" stroke-width="2.5"/>
+<path d="M44 62c-8 0-14 6-14 14v12c0 8 6 14 14 14z" fill="#ff3d9a" ${OUT}/><path d="M156 62c8 0 14 6 14 14v12c0 8-6 14-14 14z" fill="#ff3d9a" ${OUT}/>
+<path d="M44 40c0-18 24-28 56-28s56 10 56 28" fill="none" stroke="#1b1830" stroke-width="6"/><path d="M156 110c0 14-10 22-30 24" fill="none" stroke="#1b1830" stroke-width="5" stroke-linecap="round"/><circle cx="124" cy="134" r="6" fill="#ffd900" ${OUT}/>
+<path d="M100 44V22" stroke="#1b1830" stroke-width="5"/><circle cx="100" cy="16" r="8" fill="#ff3d9a" ${OUT}/>`;
+
 export const CREATURES: Record<string, string> = {
   leaver,
   workWife,
@@ -889,6 +972,11 @@ export const CREATURES: Record<string, string> = {
   veteran,
   nightJanitor,
   micromanager,
+  graveyardIntern,
+  rateLimiter,
+  lineLead,
+  miningRig,
+  helpdeskChatbot,
   contractLawyer,
   outgoingVp,
   coffeeMachine,

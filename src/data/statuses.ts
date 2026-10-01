@@ -30,9 +30,27 @@ const RUST_MAX = 20;
 /** Spending Freeze: the hero's max mana. */
 const SPENDING_FREEZE_CAP = 3;
 
+/** Microsleep: awake this long (s), then asleep this long: its clock stops and it takes more damage. */
+const AWAKE = 7;
+const ASLEEP = 3;
+/** Overtime Creep: +1 Strength this often (s). */
+const CREEP_EVERY = 10;
+/** Low Battery: chirps this often (s). */
+const CHIRP_EVERY = 6;
+/** Machine Learning: every this many cards slipping off the belt teach it +1 Strength. */
+const LEARN_EVERY = 3;
+/** Pressure: gains this much Block every so many seconds; at the limit it bursts (the Block is gone, the hero takes the blast). */
+const PRESSURE_EVERY = 5;
+const PRESSURE_STEP = 10;
+const PRESSURE_LIMIT = 40;
+const PRESSURE_BLAST = 14;
+/** The Board: what the first director to leave brings (Block, Strength); the second one speeds the whole board up. */
+const BOARD_BLOCK = 30;
+const BOARD_STRENGTH = 2;
+
 /** A status tick that runs `fn` once per whole second the status has been up (n = 1, 2, 3…). */
 const everySecond =
-  (fn: (c: Combat, side: Side, n: number, s: StatusVal) => void): StatusDef['tick'] =>
+  (fn: (c: Combat, side: Side, n: number, s: StatusVal) => void): NonNullable<StatusDef['tick']> =>
   (c, side, s, dt) => {
     const before = Math.floor((s.e ?? 0) + 1e-6);
     s.e = (s.e ?? 0) + dt;
@@ -44,6 +62,10 @@ const endOnPlay =
   (id: string): StatusDef['onCardPlayed'] =>
   (c, side) =>
     c.removeStatus(side, id);
+
+const buildPressure = everySecond((c, side, n) => {
+  if (n % PRESSURE_EVERY === 0) c.gainBlock(side, PRESSURE_STEP);
+});
 
 const defs: StatusDef[] = [
   { id: 'strength', kind: 'stacks', good: true, icon: 'fist', strength: true },
@@ -282,6 +304,114 @@ const defs: StatusDef[] = [
       c.applyStatus(side, 'strength', PARACHUTE_STRENGTH);
       c.say('status.goldenParachute.speech');
       return true;
+    },
+  },
+  // Microsleep: `e` is the clock of its day; at the end of the awake spell it dozes off (stunned, so its attack waits, and vulnerable).
+  {
+    id: 'microsleep',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'sleepMask',
+    tick: (c, side, s, dt) => {
+      const before = s.e ?? 0;
+      s.e = before + dt;
+      if (before < AWAKE && s.e >= AWAKE) {
+        c.applyStatus(side, 'stun', 1, ASLEEP);
+        c.applyStatus(side, 'vulnerable', 1, ASLEEP);
+        c.say('status.microsleep.speech');
+      }
+      if (s.e >= AWAKE + ASLEEP) s.e -= AWAKE + ASLEEP;
+    },
+  },
+  // Rate limit: `v` is the most one hit of your cards can deal.
+  { id: 'rateLimit', kind: 'stacks', good: true, passive: true, icon: 'funnel', capsHits: true },
+  // Assembly line: only the card at the front of its belt row can be played (curses can always be paid off).
+  {
+    id: 'assemblyLine',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'conveyorLine',
+    canPlay: (c, side, def, uid) => {
+      const row = c.rowOf(uid);
+      if (side !== 'enemy' || def.type === 'curse' || row < 0) return null;
+      const front = c.belt.filter((b) => b.row === row && !b.pinned).reduce((a, b) => (b.pos > a.pos ? b : a));
+      return front.card.uid === uid ? null : 'combat.assemblyLine';
+    },
+  },
+  // Overtime creep: a little stronger every so often, whatever you do.
+  {
+    id: 'overtimeCreep',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'creepClock',
+    tick: everySecond((c, side, n) => {
+      if (n % CREEP_EVERY === 0) c.applyStatus(side, 'strength', 1);
+    }),
+  },
+  // Low battery: it chirps now and then, and every chirp costs the hero `v` mana.
+  {
+    id: 'lowBattery',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'lowBattery',
+    tick: everySecond((c, _side, n, s) => {
+      if (n % CHIRP_EVERY === 0 && c.hero.mana > 0) c.drainMana(s.v);
+    }),
+  },
+  // Machine learning: `e` counts the cards you let slip.
+  {
+    id: 'machineLearning',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'brainChip',
+    onExpire: (c, side, s) => {
+      if (side !== 'enemy') return;
+      s.e = (s.e ?? 0) + 1;
+      if (s.e < LEARN_EVERY) return;
+      s.e = 0;
+      c.applyStatus(side, 'strength', 1);
+    },
+  },
+  // Pressure: Block builds up on its own; let it reach the limit and it bursts. `e` is the clock of the build-up.
+  {
+    id: 'pressure',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'steamGauge',
+    tick: (c, side, s, dt) => {
+      buildPressure(c, side, s, dt);
+      const f = c.fighter(side);
+      if (f.block < PRESSURE_LIMIT) return;
+      f.block = 0;
+      c.say('status.pressure.speech');
+      c.damage(side, 'hero', Math.round(PRESSURE_BLAST * c.enemy.dmgScale), { raw: true, kind: 'claw' }, 'enemy');
+    },
+  },
+  // The Board: every third of its HP you take, one more director loses patience (`mem.thirds` counts them).
+  {
+    id: 'boardroom',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'gavel',
+    onHurt: (c, side) => {
+      const e = c.enemy;
+      if (side !== 'enemy' || e.hp <= 0) return;
+      const thirds = Math.min(2, Math.floor((3 * (e.maxHp - e.hp)) / e.maxHp));
+      for (let n = e.mem.thirds ?? 0; n < thirds; n++) {
+        c.say(`status.boardroom.speech${n + 1}`);
+        if (n === 0) {
+          c.gainBlock(side, BOARD_BLOCK);
+          c.applyStatus(side, 'strength', BOARD_STRENGTH);
+        } else c.applyStatus(side, 'haste', 1, 9999);
+      }
+      e.mem.thirds = Math.max(e.mem.thirds ?? 0, thirds);
     },
   },
   {

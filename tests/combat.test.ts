@@ -1719,3 +1719,40 @@ describe('relics', () => {
     expect(hasRelic(r, 'thermos')).toBe(true);
   });
 });
+
+describe('act 3 rules', () => {
+  it('Rate Limit caps every hit of the hero, but not the small ones', () => {
+    const c = setup({ enemy: ENEMIES.rateLimiter });
+    expect(c.previewHeroDamage(30, null)).toBe(7);
+    expect(c.previewHeroDamage(5, null)).toBe(5);
+  });
+
+  it('Microsleep: the enemy dozes off after its awake spell, stunned and vulnerable', () => {
+    const c = setup({ enemy: { ...ENEMIES.graveyardIntern, main: { ...ENEMIES.graveyardIntern.main, windup: 999 } } });
+    run(c, CONFIG.introTime + 3);
+    expect(c.has('enemy', 'stun')).toBe(false);
+    run(c, 5);
+    expect(c.has('enemy', 'stun')).toBe(true);
+    expect(c.has('enemy', 'vulnerable')).toBe(true);
+    run(c, 4);
+    expect(c.has('enemy', 'stun')).toBe(false);
+  });
+
+  it('the Assembly Line only lets the front card of each belt row be played', () => {
+    const c = setup({ enemy: ENEMIES.lineLead });
+    run(c, 8);
+    for (const row of [0, 1]) {
+      const cards = c.belt.filter((b) => b.row === row).sort((a, b) => b.pos - a.pos);
+      expect(cards.length).toBeGreaterThan(1);
+      expect(c.ruleBlock(cards[0].card)).toBeNull();
+      expect(c.ruleBlock(cards[1].card)?.status).toBe('assemblyLine');
+    }
+  });
+
+  it('Machine Learning: every third card you let slip makes the enemy stronger', () => {
+    const c = setup({ enemy: { ...ENEMIES.helpdeskChatbot, main: { ...ENEMIES.helpdeskChatbot.main, windup: 999 } } });
+    expect(c.stacks('enemy', 'strength')).toBe(0);
+    run(c, 60);
+    expect(c.stacks('enemy', 'strength')).toBeGreaterThan(0);
+  });
+});

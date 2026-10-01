@@ -952,7 +952,7 @@ export class Combat {
       dmg += this.strengthOf('enemy');
     }
     dmg *= this.mul(from, 'dealtMul') * this.mul(to, 'takenMul');
-    if (from === 'hero') dmg -= this.hitCut();
+    if (from === 'hero') dmg = Math.min(dmg - this.hitCut(), this.hitCap());
     return Math.max(0, Math.floor(dmg));
   }
 
@@ -961,6 +961,13 @@ export class Combat {
     let n = 0;
     for (const [id, s] of Object.entries(this.enemy.statuses)) if (STATUSES[id].cutsHits && this.has('enemy', id)) n += s.v;
     return n;
+  }
+
+  /** The most one hit of the hero's cards can deal now (Rate Limit), if anything caps it. */
+  private hitCap(): number {
+    let cap = Infinity;
+    for (const [id, s] of Object.entries(this.enemy.statuses)) if (STATUSES[id].capsHits && this.has('enemy', id)) cap = Math.min(cap, s.v);
+    return cap;
   }
 
   /** Core damage routine. Returns HP actually lost. */

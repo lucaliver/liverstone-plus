@@ -471,6 +471,100 @@ const defs: EnemyDef[] = [
     ],
     start: [{ id: 'micromanagement' }],
   },
+
+  // ------------------------------------------------------------- Act 3
+  {
+    // Nobody told him he could go home: every so often he nods off on his feet, and then he's easy prey.
+    id: 'graveyardIntern',
+    act: 3,
+    tier: 'normal',
+    hp: 75,
+    art: 'graveyardIntern',
+    main: atk('sleepTyping', 8, 6),
+    every: 2,
+    specials: [
+      { id: 'energyDrink', intent: 'buff', windup: 5, status: [{ id: 'strength', v: 2, target: 'enemy' }] },
+      atk('allNighter', 17, 10, { intent: 'charge' }),
+    ],
+    start: [{ id: 'microsleep' }],
+  },
+  {
+    // Error 429: no hit of yours counts for more than a few points. Small hits, poison and burn get through.
+    id: 'rateLimiter',
+    act: 3,
+    tier: 'normal',
+    hp: 70,
+    art: 'rateLimiter',
+    main: atk('timeout', 7, 6),
+    every: 2,
+    specials: [
+      { id: 'tooManyRequests', intent: 'debuff', windup: 6, status: [gainStrength, { id: 'slowdown', t: 6, target: 'hero' }] },
+      atk('banHammer', 16, 9, { intent: 'charge' }),
+    ],
+    start: [{ id: 'rateLimit', v: 7 }],
+  },
+  {
+    // Keep it moving: only the card at the front of its row can be played.
+    id: 'lineLead',
+    act: 3,
+    tier: 'normal',
+    hp: 80,
+    art: 'lineLead',
+    main: atk('keepItMoving', 8, 6),
+    every: 2,
+    specials: [
+      { id: 'pickUpThePace', intent: 'debuff', windup: 5, status: [gainStrength, { id: 'hurry', t: 8, target: 'hero' }] },
+      atk('quotaCheck', 15, 9, { intent: 'charge' }),
+    ],
+    start: [{ id: 'assemblyLine' }],
+  },
+  {
+    // A glass cannon: it hits fast and hard, and every attack burns it too.
+    id: 'miningRig',
+    act: 3,
+    tier: 'normal',
+    hp: 55,
+    art: 'miningRig',
+    main: atk('hashRate', 9, 4),
+    every: 3,
+    specials: [
+      {
+        id: 'overclock',
+        intent: 'buff',
+        windup: 4,
+        status: [
+          { id: 'strength', v: 2, target: 'enemy' },
+          { id: 'haste', t: 6, target: 'enemy' },
+        ],
+      },
+      atk('thermalSpike', 14, 5, { intent: 'charge' }),
+    ],
+    start: [{ id: 'burn', v: 2 }],
+  },
+  {
+    // Learns from every card you let slip.
+    id: 'helpdeskChatbot',
+    act: 3,
+    tier: 'normal',
+    hp: 75,
+    art: 'helpdeskChatbot',
+    main: atk('haveYouTriedRestarting', 6, 6),
+    every: 2,
+    specials: [
+      {
+        id: 'hallucinate',
+        intent: 'curse',
+        windup: 6,
+        curse: [
+          { id: 'pcLoadLetter', n: 1, to: 'draw' },
+          { id: 'quickFavour', n: 1, to: 'draw' },
+        ],
+        status: [gainStrength],
+      },
+      atk('escalateToTierTwo', 14, 9, { intent: 'charge' }),
+    ],
+    start: [{ id: 'machineLearning' }],
+  },
 ];
 
 /** The handbook lists the enemies in this order: the very first run's enemies first, in the order it meets them. */
@@ -506,6 +600,11 @@ export const DIFFICULTY = [
   'printer',
   'veteran',
   'micromanager',
+  'graveyardIntern',
+  'rateLimiter',
+  'lineLead',
+  'miningRig',
+  'helpdeskChatbot',
 ];
 
 export const ENEMIES: Record<string, EnemyDef> = Object.fromEntries(defs.map((e) => [e.id, e]));
