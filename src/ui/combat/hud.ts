@@ -244,6 +244,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     }
     toggle(r.weakSpot, 'on', !!combat.weakSpot && !combat.isOver);
     toggle(r.mop, 'on', combat.rustsBelt && !combat.isOver);
+    toggle(r.mop, 'alarm', combat.rustAlarm && !combat.isOver);
     for (const spot of combat.rustSpots) {
       let el = rustEls.get(spot.id);
       if (!el) {

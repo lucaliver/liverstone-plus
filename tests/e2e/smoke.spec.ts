@@ -538,6 +538,12 @@ test("the Facilities Manager's rust spots slow the belt, and only dragging the m
   await expect(page.locator('.belt-rust i')).toHaveCount(2);
   const mop = page.locator('.mop.on');
   await expect(mop).toBeVisible();
+  await expect(mop).not.toHaveClass(/alarm/);
+  // Three quarters of the rust it takes to stop the belt: the mop shakes and blinks.
+  await combat(page, 'for (let i = 0; i < 15; i++) c.rustSpots.push({ id: 200 + i, x: 0.5, y: 0.5, grime: 1 });');
+  await expect(mop).toHaveClass(/alarm/);
+  await combat(page, 'c.rustSpots.splice(2);');
+  await expect(mop).not.toHaveClass(/alarm/);
   // The stage settles after the fight's intro: measure once it has.
   await page.waitForTimeout(1500);
   const m = (await mop.boundingBox())!;

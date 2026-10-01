@@ -153,6 +153,15 @@
 }
 .mop.on { display: block; }
 .mop.dragging { cursor: grabbing; }
+/* the belt is about to stop: the mop shakes (rotate/translate, so the drag's transform is left alone) and blinks */
+.mop.alarm:not(.dragging) { animation: mop-shake 0.2s steps(1) infinite, mop-blink 0.4s steps(1) infinite; }
+@keyframes mop-shake {
+  25% { rotate: -6deg; translate: -3px 0; }
+  75% { rotate: 6deg; translate: 3px 0; }
+}
+@keyframes mop-blink {
+  50% { color: var(--y); }
+}
 /* Weak Spot: a target pinned on the sprite's drawing (--u, --v: where, set per appearance); it answers on touch-down */
 .weak-spot {
   display: none;

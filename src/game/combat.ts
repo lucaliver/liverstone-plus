@@ -1240,6 +1240,12 @@ export class Combat {
     return !!this.rustDef();
   }
 
+  /** Whether the rust has piled up enough that the belt is about to stop (the mop warns). */
+  get rustAlarm(): boolean {
+    const rust = this.rustDef();
+    return !!rust && this.rustSpots.length >= rust.max * rust.warn;
+  }
+
   /** Share of the belt's speed the rust leaves: it drops with the square of the spots, so a few are nothing and many stop the belt. */
   private rustSpeed(): number {
     const max = this.rustDef()?.max;

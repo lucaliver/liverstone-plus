@@ -507,7 +507,7 @@ describe('combat engine', () => {
 
   it('rust spots land on the belt, the belt slows down with their square until they stop it, and scrubbing a spot takes it off', () => {
     const c = setup({ enemy: ENEMIES.facilitiesManager, hp: 900, maxHp: 900 });
-    const { every, max } = STATUSES.deferredMaintenance.rust!;
+    const { every, max, warn } = STATUSES.deferredMaintenance.rust!;
     expect(c.rustsBelt).toBe(true);
     expect(setup().rustsBelt).toBe(false);
     run(c, CONFIG.introTime + 0.01);
@@ -527,6 +527,9 @@ describe('combat engine', () => {
     // Left alone, the spots pile up, slowing the belt more and more, until it stops dead.
     run(c, every * (max / 2 + 0.5));
     expect(c.beltRate() / base).toBeCloseTo(1 - 0.25, 1);
+    expect(c.rustAlarm).toBe(false);
+    run(c, every * (max * warn - c.rustSpots.length));
+    expect(c.rustAlarm).toBe(true);
     run(c, every * (max + 2));
     expect(c.rustSpots.length).toBe(max);
     expect(c.beltRate()).toBe(0);

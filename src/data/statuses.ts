@@ -26,9 +26,10 @@ const WHERE_WAS_I: MoveDef = { id: 'thePreviousSlide', intent: 'idle', windup: 4
 /** Weak Spot: how long its target stays up, and the random wait (s) between the end of one and the next. */
 export const WEAK_SPOT_TIME = 2;
 const WEAK_SPOT_GAP = [5, 9];
-/** Deferred Maintenance: a rust spot lands on the belt this often (s); this many stop the belt, and the slowdown grows with their square. */
+/** Deferred Maintenance: a rust spot lands on the belt this often (s); this many stop the belt, and the slowdown grows with their square (the mop warns from `RUST_WARN` of them). */
 const RUST_EVERY = 2.5;
 const RUST_MAX = 20;
+const RUST_WARN = 0.75;
 /** Spending Freeze: the hero's max mana. */
 export const SPENDING_FREEZE_CAP = 3;
 
@@ -270,7 +271,15 @@ const defs: StatusDef[] = [
   // Rusty belt: on the hero, one per rust spot on the belt (`Combat.syncRustStatus` keeps the count).
   { id: 'rustedBelt', tone: 'amber', kind: 'stacks', good: false, icon: 'rust' },
   // Deferred maintenance: rust builds up on the belt, slowing it down; the hero scrubs it off with the mop.
-  { id: 'deferredMaintenance', tone: 'amber', kind: 'stacks', good: true, passive: true, icon: 'rust', rust: { every: RUST_EVERY, max: RUST_MAX } },
+  {
+    id: 'deferredMaintenance',
+    tone: 'amber',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'rust',
+    rust: { every: RUST_EVERY, max: RUST_MAX, warn: RUST_WARN },
+  },
   // Weak spot: now and then a target shows on his sprite; `e` counts down to the next one.
   {
     id: 'weakSpot',
