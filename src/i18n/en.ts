@@ -118,7 +118,7 @@ const en = {
   'common.floor': 'Floor {n}',
   'common.pay': 'Pay earned',
   'info.hp.t': 'Health',
-  'info.hp.d': 'Your HP. It carries over from floor to floor; at 0 you are fired.',
+  'info.hp.d': 'Your HP. It carries over from floor to floor. At 0 you are fired.',
   'info.pay.d': 'Every job you win pays, and the faster you win, the more. It is your score for the run.',
   'common.floorOf': 'Act {a} · Floor {n}/{total}',
 
@@ -446,7 +446,7 @@ const en = {
   'kw.block': 'Block',
   'kw.block.d': 'Absorbs incoming damage. Fades over time.',
   'kw.stun': 'Stun',
-  'kw.stun.d': "Can't act: a stunned enemy's attack timer stops; while you are stunned you can't play cards or use your ability.",
+  'kw.stun.d': "Can't act: a stunned enemy's attack timer stops, while you are stunned you can't play cards or use your ability.",
   'kw.chill': 'Chill',
   'kw.chill.d': "The enemy's attack timer runs at half speed.",
   'kw.burn': 'Burn',
@@ -636,10 +636,10 @@ const en = {
   'rule.drain.d': 'Empties that much [mana] from your bar, if you have it. Spend it before the move lands.',
   'rule.copy': 'Copying',
   'rule.copy.d':
-    'While it scans, the damage your cards deal it is stored instead of lost; its next hit prints all of it back at you. Damage over time still gets through.',
+    'While it scans, the damage your cards deal it is stored instead of lost: its next hit prints all of it back at you. Damage over time still gets through.',
   'hex.petrify': 'Petrify',
   'hex.tapIt': 'Tap it!',
-  'hex.petrify.d': 'Tap a petrified card {n} times to crack it; it thaws, then plays normally.',
+  'hex.petrify.d': 'Tap a petrified card {n} times to crack it. It is cleaned, then plays normally.',
 
   // --------------------------------------------------------------- cards
   'card.punch.name': 'Punch',
@@ -846,7 +846,7 @@ const en = {
   'card.complaintBox.desc': 'Deal {0} damage. This card gains +1 damage for every second your mana is full and going to waste (wherever it is).',
   'card.onARoll.name': 'On a Roll',
   'card.onARoll.desc':
-    "Doesn't leave the belt: it stops at the end. Attacks that reach it pile up behind it; any other card that reaches the pile sends it all off the belt. Play it to play the whole pile for free.",
+    "Doesn't leave the belt: it stops at the end. Attacks that reach it pile up behind it, while any other card that reaches the pile sends it all off the belt. Play it to play the whole pile for free.",
   'card.onARoll.tip':
     'On a Roll stops at the end of the belt. Attacks pile up behind it: play it to fire the whole pile for free. Any other card that touches the pile sends it all off the belt.',
   'card.windUpIntern.name': 'Wind-Up Intern',

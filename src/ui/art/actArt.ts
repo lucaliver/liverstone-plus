@@ -1,6 +1,6 @@
 /**
  * The scene behind each act's title on the map: a flat pixel skyline, 96×24 cells drawn with rects (3px each on screen). Parts take their ink from the
- * map theme (`journey.css`): `a` is the solid silhouette, `b` thin lighter strokes (fences, bats, stars, smoke), `c` candle wax, `l` lit windows and flames, `w` the act's warm accent.
+ * map theme (`journey.css`): `a` is the solid silhouette, `b` thin lighter strokes (fences, bats, clouds, smoke), `c` wax and the moon, `l` lit windows, flames and stars, `w` the act's warm accent.
  */
 type Rect = [x: number, y: number, w: number, h: number];
 
@@ -62,8 +62,47 @@ const factory =
   parts('w', [[33, 2, 3, 1], [43, 7, 2, 1], [84, 1, 2, 2]]) +
   parts('l', [[7, 15, 2, 2], [12, 15, 2, 2], [17, 15, 2, 2], [22, 15, 2, 2], [7, 18, 2, 2], [17, 18, 2, 2], [90, 16, 2, 2]]);
 
+/** A pixel disc, one rect per row. */
+const disc = (cx: number, cy: number, r: number): Rect[] =>
+  Array.from({ length: 2 * r + 1 }, (_, i): Rect => {
+    const dy = i - r;
+    const half = Math.round(Math.sqrt(r * r + 0.5 - dy * dy));
+    return [cx - half, cy + dy, 2 * half, 1];
+  });
+
+/** A pixel crescent: the disc at (cx, cy) with another one, centred (cx2, cy2), cut out of it. */
+const crescent = (cx: number, cy: number, r: number, cx2: number, cy2: number, r2: number): Rect[] => {
+  const half = (rad: number, dy: number): number => Math.round(Math.sqrt(rad * rad + 0.5 - dy * dy));
+  const out: Rect[] = [];
+  for (let dy = -r; dy <= r; dy++) {
+    const [from, to] = [cx - half(r, dy), cx + half(r, dy)];
+    const dy2 = cy + dy - cy2;
+    if (Math.abs(dy2) > r2) {
+      out.push([from, cy + dy, to - from, 1]);
+      continue;
+    }
+    const [cutFrom, cutTo] = [cx2 - half(r2, dy2), cx2 + half(r2, dy2)];
+    if (cutFrom > from) out.push([from, cy + dy, Math.min(to, cutFrom) - from, 1]);
+    if (cutTo < to) out.push([Math.max(from, cutTo), cy + dy, to - Math.max(from, cutTo), 1]);
+  }
+  return out;
+};
+
+/** The sky above each scene (rows -16 to 0), drawn only on the act intro: a moon with bats, a low sun with clouds, a crescent moon with stars. */
+// biome-ignore format: pixel rects read best in rows
+const SKIES = [
+  parts('c', disc(78, -9, 6)) + parts('a', [[75, -11, 2, 2], [80, -8, 3, 2], [77, -6, 1, 1]]) +
+    parts('b', [[14, -8, 5, 1], [13, -9, 1, 1], [18, -9, 1, 1], [32, -13, 4, 1], [31, -14, 1, 1], [35, -14, 1, 1], [50, -5, 5, 1], [49, -6, 1, 1], [54, -6, 1, 1]]),
+  parts('w', disc(22, -7, 6)) +
+    parts('b', [[44, -11, 16, 2], [48, -13, 10, 2], [40, -9, 24, 1], [70, -6, 14, 2], [74, -8, 8, 2], [4, -13, 10, 1], [8, -14, 6, 1]]),
+  parts('c', crescent(74, -9, 6, 78, -10, 5)) +
+    parts('l', [[8, -13, 1, 1], [20, -9, 1, 1], [30, -14, 1, 1], [42, -7, 1, 1], [52, -12, 1, 1], [60, -5, 1, 1], [14, -4, 1, 1], [88, -5, 1, 1], [90, -14, 1, 1]]),
+];
+
 const SCENES = [crypt, office, factory];
 
-/** The scene of an act (1-based; later acts fall back to the last one, like `actDef`). */
-export const actArt = (act: number): string =>
-  `<svg class="act-art" viewBox="0 0 96 24" shape-rendering="crispEdges" aria-hidden="true">${SCENES[Math.min(act, SCENES.length) - 1]}</svg>`;
+/** The scene of an act (1-based; later acts fall back to the last one, like `actDef`); `tall` adds its sky, for the act intro. */
+export const actArt = (act: number, tall = false): string => {
+  const i = Math.min(act, SCENES.length) - 1;
+  return `<svg class="act-art${tall ? ' tall' : ''}" viewBox="0 ${tall ? -16 : 0} 96 ${tall ? 40 : 24}" shape-rendering="crispEdges" aria-hidden="true">${tall ? SKIES[i] : ''}${SCENES[i]}</svg>`;
+};

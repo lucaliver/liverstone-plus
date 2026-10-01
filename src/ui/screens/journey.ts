@@ -26,6 +26,8 @@ export const NODE_ICON: Record<RunNode['type'], string> = {
   crossTraining: 'whiteboard',
   boss: 'tophat',
 };
+/** The icon of a room on the map: a boss wears the one of its act. */
+export const nodeIcon = (n: RunNode): string => (n.type === 'boss' ? (actDef(n.act).bossIcon ?? NODE_ICON.boss) : NODE_ICON[n.type]);
 /** Height of one floor on the map (px); a room takes most of it, the rest is corridor. */
 const ROW_H = 92;
 const laneX = (lane: number): number => 22 + lane * 56;
@@ -221,11 +223,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       },
       h('button', {
         class: 'dot',
-        html: fog
-          ? icon('question')
-          : past || !(n.type === 'boss' && !!actDef(n.act).bossClock)
-            ? icon(past ? 'check' : NODE_ICON[n.type])
-            : undefined,
+        html: fog ? icon('question') : past || !(n.type === 'boss' && !!actDef(n.act).bossClock) ? icon(past ? 'check' : nodeIcon(n)) : undefined,
         'aria-label': `${t('common.floor', { n: n.floor })} · ${label}`,
         // Not `disabled`: every node can still be held to read what it is.
         'aria-disabled': String(!open),
@@ -257,7 +255,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
         }
         const enemy = n.enemy ? t(`enemy.${n.enemy}.name`) : null;
         openInfo({
-          icon: NODE_ICON[n.type],
+          icon: nodeIcon(n),
           title: label,
           tag: t('common.floor', { n: n.floor }),
           desc: t(`journey.info.${n.type}`),
@@ -309,6 +307,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     const curtain = h(
       'div',
       { class: 'act-intro' },
+      h('div', { class: 'act-intro-art', html: actArt(act, true) }),
       h('div', { class: 'h1 act-intro-title', 'aria-label': title, html: dropLetters(title) }),
       h('p', { class: 'act-intro-name' }, t(`journey.actName.${act}`)),
       h('p', { class: 'act-intro-clock', html: `${icon('timer')}${t('combat.clockIn', { time: clockText(to) })}` }),

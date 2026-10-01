@@ -136,6 +136,12 @@ describe('content integrity', () => {
     }
   });
 
+  it('every act boss wears an icon of its own on the map', () => {
+    const icons = ACT_DEFS.map((d) => (d.bossClock ? 'clock' : (d.bossIcon ?? 'default')));
+    expect(new Set(icons).size).toBe(ACT_DEFS.length);
+    for (const d of ACT_DEFS) if (d.bossIcon) expect(ICONS[d.bossIcon], d.bossIcon).toBeTruthy();
+  });
+
   it('every relic has a name, a text and its own icon', () => {
     const arts = new Set<string>();
     for (const r of RELIC_LIST) {
