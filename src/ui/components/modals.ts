@@ -9,15 +9,18 @@ import { h, onPress, onTapOrHold, stagger } from '../dom';
 import { icon } from '../art/icons';
 import { cardKeywords, cardText, cardView, keywordHtml } from './cardView';
 
-function toggleRow(label: string, get: () => boolean, set: (v: boolean) => void): HTMLElement {
+/** `note` appears under the row once it is touched. */
+function toggleRow(label: string, get: () => boolean, set: (v: boolean) => void, note?: string): HTMLElement {
   const sw = h('button', { class: 'switch', role: 'switch', 'aria-checked': String(get()), 'aria-label': label });
+  const noteEl = note ? h('p', { class: 'setting-note', hidden: true }, note) : null;
   sw.addEventListener('click', () => {
     set(!get());
     sw.setAttribute('aria-checked', String(get()));
+    if (noteEl) noteEl.hidden = false;
     saveSettings();
     sfx('tap');
   });
-  return h('div', { class: 'setting' }, h('span', null, label), sw);
+  return h('div', { class: `setting ${note ? 'wrap' : ''}` }, h('span', null, label), sw, noteEl);
 }
 
 /** Volume slider in ten steps (0 = off). */
@@ -76,6 +79,7 @@ export function openSettings(extra: ModalAction[] = []): ModalHandle {
       t('settings.rightToLeft'),
       () => settings.rightToLeft,
       (v) => (settings.rightToLeft = v),
+      t('settings.nextFight'),
     ),
     toggleRow(
       t('settings.debugMenus'),

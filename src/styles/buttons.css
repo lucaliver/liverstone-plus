@@ -34,6 +34,20 @@
   font-size: 15px;
 }
 .btn.block { width: 100%; }
+/* hold to confirm: a dark fill grows across the button in steps while it is held */
+.btn.hold { overflow: hidden; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.btn.hold > span { position: relative; }
+.hold-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--k);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.btn.holding .hold-fill {
+  transform: scaleX(1);
+  transition: transform var(--dur-hold) steps(10);
+}
 
 .icon-btn {
   color: var(--k);

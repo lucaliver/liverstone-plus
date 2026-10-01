@@ -280,7 +280,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
             openModal({
               body: t('journey.abandonConfirm'),
               actions: [
-                { label: t('common.confirm'), cls: 'danger', onClick: () => cb.onQuit() },
+                { label: t('common.holdConfirm'), cls: 'danger', hold: true, onClick: () => cb.onQuit() },
                 { label: t('common.cancel'), cls: 'secondary' },
               ],
             });

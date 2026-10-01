@@ -113,6 +113,7 @@ const en = {
   'common.close': 'Close',
   'common.confirm': 'Confirm',
   'common.cancel': 'Cancel',
+  'common.holdConfirm': 'Hold to confirm',
   'common.deck': 'Deck',
   'common.mana': 'Mana',
   'common.floor': 'Floor {n}',
@@ -130,6 +131,7 @@ const en = {
   'settings.motion': 'Reduce motion',
   'settings.haptics': 'Vibration',
   'settings.rightToLeft': 'Belt runs right to left',
+  'settings.nextFight': 'Takes effect from the next fight.',
   'settings.debugMenus': 'Debug menus',
   'settings.language': 'Language',
 

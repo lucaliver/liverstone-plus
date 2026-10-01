@@ -45,6 +45,8 @@ export interface ModalAction {
   /** Pixel icon before the label. */
   icon?: string;
   cls?: string;
+  /** Must be held down for `--dur-hold` before it fires (a tap does nothing): for actions that lose progress. */
+  hold?: boolean;
   /** Return false to keep the modal open. */
   onClick?: () => unknown;
 }
@@ -86,17 +88,37 @@ export function openModal(opts: ModalOpts): ModalHandle {
       ? h(
           'div',
           { class: 'actions' },
-          ...opts.actions.map((a) =>
-            h(
+          ...opts.actions.map((a) => {
+            const fire = (): void => {
+              if (a.onClick?.() !== false) close();
+            };
+            const btn = h(
               'button',
-              {
-                class: `btn ${a.cls ?? ''}`,
-                onclick: () => (a.onClick?.() === false ? undefined : close()),
-                html: a.icon ? icon(a.icon) : undefined,
-              },
-              a.icon ? h('span', null, a.label) : a.label,
-            ),
-          ),
+              { class: `btn ${a.cls ?? ''} ${a.hold ? 'hold' : ''}`, html: a.icon ? icon(a.icon) : undefined },
+              a.hold ? h('i', { class: 'hold-fill' }) : null,
+              a.icon || a.hold ? h('span', null, a.label) : a.label,
+            );
+            if (!a.hold) btn.onclick = fire;
+            else {
+              let timer = 0;
+              const stop = (): void => {
+                clearTimeout(timer);
+                btn.classList.remove('holding');
+              };
+              btn.addEventListener('pointerdown', () => {
+                stop();
+                btn.classList.add('holding');
+                timer = window.setTimeout(fire, cssMs('--dur-hold'));
+              });
+              for (const ev of ['pointerup', 'pointerleave', 'pointercancel']) btn.addEventListener(ev, stop);
+              // A keyboard press has no hold to measure: Enter/Space on the focused button confirms at once.
+              btn.addEventListener('click', (e) => {
+                if (e.detail === 0) fire();
+              });
+              btn.addEventListener('contextmenu', (e) => e.preventDefault());
+            }
+            return btn;
+          }),
         )
       : null,
   );

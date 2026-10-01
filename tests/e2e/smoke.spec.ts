@@ -415,6 +415,33 @@ test('debug menus are off by default, and the Settings switch shows them at once
   await expect(page.locator('.debug-fab')).toBeVisible();
 });
 
+test('touching the belt direction switch says it takes effect from the next fight', async ({ page }) => {
+  await freshGame(page);
+  await page.getByRole('button', { name: /settings/i }).click();
+  const note = page.locator('.setting', { hasText: 'Belt runs right to left' }).locator('.setting-note');
+  await expect(note).toBeHidden();
+  await page.getByRole('switch', { name: 'Belt runs right to left' }).click();
+  await expect(note).toBeVisible();
+});
+
+test('calling in sick needs a long press on the confirm button', async ({ page }) => {
+  await freshGame(page);
+  await startFight(page);
+  await page.locator('.js-pause').click();
+  await page.getByRole('button', { name: 'Call in sick' }).click();
+  const confirm = page.getByRole('button', { name: 'Hold to confirm' });
+  await confirm.click();
+  await expect(page.locator('.combat')).toBeVisible();
+  const box = (await confirm.boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(300);
+  await page.mouse.up();
+  await expect(page.locator('.combat')).toBeVisible();
+  await page.mouse.down();
+  await expect(page.locator('.combat')).toBeHidden();
+});
+
 test('debug button: pick a hero and an enemy, the fight starts against it', async ({ page }) => {
   const problems = await freshGame(page);
   await page.getByRole('button', { name: /debug/i }).click();
