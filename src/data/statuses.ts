@@ -68,16 +68,16 @@ const buildPressure = everySecond((c, side, n) => {
 });
 
 const defs: StatusDef[] = [
-  { id: 'strength', kind: 'stacks', good: true, icon: 'fist', strength: true },
+  { id: 'strength', kind: 'stacks', good: true, tone: 'red', icon: 'muscle', strength: true },
   // Workaholic: `v` Strength, for a while only.
-  { id: 'workaholic', kind: 'timed', good: true, icon: 'fist', strength: true },
+  { id: 'workaholic', kind: 'timed', good: true, tone: 'red', icon: 'muscle', strength: true },
   { id: 'brownNosing', kind: 'timed', good: true, icon: 'crystalUp', regenMul: 2 },
   { id: 'spellPower', kind: 'stacks', good: true, icon: 'wand' },
   { id: 'thorns', kind: 'stacks', good: true, icon: 'thorns' },
   { id: 'dodge', kind: 'timed', good: true, icon: 'mirror', immune: true },
   { id: 'juggernaut', kind: 'stacks', good: true, icon: 'helm' },
   { id: 'fortified', kind: 'timed', good: true, icon: 'fortress', holdsBlock: true },
-  { id: 'regen', kind: 'dot', good: true, icon: 'leaf', heals: true },
+  { id: 'regen', kind: 'dot', good: true, tone: 'green', icon: 'leaf', heals: true },
   { id: 'overtime', kind: 'timed', good: true, icon: 'overtime' },
   { id: 'parry', kind: 'timed', good: true, icon: 'crossed' },
   { id: 'haste', kind: 'timed', good: true, icon: 'gauge', timeMul: 1.5 },
@@ -104,8 +104,8 @@ const defs: StatusDef[] = [
   { id: 'autopilot', kind: 'timed', good: true, icon: 'autopilot', autoplay: true },
   // Root access (sudo): no rule can stop the hero's cards.
   { id: 'rootAccess', kind: 'timed', good: true, icon: 'terminal', ignoresRules: true },
-  { id: 'multitasking', kind: 'timed', good: true, icon: 'bolt2', showStacks: true },
-  { id: 'plague', kind: 'stacks', good: true, icon: 'wrench' },
+  { id: 'multitasking', kind: 'timed', good: true, tone: 'purple', icon: 'bolt2', showStacks: true },
+  { id: 'plague', kind: 'stacks', good: true, tone: 'green', icon: 'wrench' },
   // Slacking off (v = amount per second), until the hero plays another card.
   {
     id: 'bareMinimum',
@@ -131,7 +131,7 @@ const defs: StatusDef[] = [
     tick: everySecond((c, side, _n, s) => void c.damage(side, side === 'hero' ? 'enemy' : 'hero', s.v, { kind: 'blunt' }, side)),
     onCardPlayed: endOnPlay('grindset'),
   },
-  { id: 'virulence', kind: 'stacks', good: true, icon: 'biohazard' },
+  { id: 'virulence', kind: 'stacks', good: true, tone: 'green', icon: 'biohazard' },
   // Steel Toes: every attack played gives `v` Block.
   {
     id: 'steelToes',
@@ -145,18 +145,20 @@ const defs: StatusDef[] = [
   // Burn: no clock and no decay; the enemy takes its stacks every time it attacks (Poison is the slow, fading one).
   {
     id: 'burn',
+    tone: 'red',
     kind: 'stacks',
     good: false,
     icon: 'flame',
     onAttack: (c, side, s) => void c.damage(side === 'enemy' ? 'hero' : 'enemy', side, s.v, { raw: true, ignoreBlock: true, kind: 'burn' }, 'dot'),
   },
-  { id: 'poison', kind: 'dot', good: false, icon: 'drop' },
-  { id: 'weak', kind: 'timed', good: false, icon: 'broken', dealtMul: 0.75 },
-  { id: 'vulnerable', kind: 'timed', good: false, icon: 'crack', takenMul: 1.5 },
-  { id: 'chill', kind: 'timed', good: false, icon: 'snow', regenMul: 0.5, timeMul: 0.5 },
+  { id: 'poison', kind: 'dot', good: false, tone: 'green', icon: 'drop' },
+  { id: 'weak', kind: 'timed', good: false, tone: 'purple', icon: 'broken', dealtMul: 0.75 },
+  { id: 'vulnerable', kind: 'timed', good: false, tone: 'red', icon: 'crack', takenMul: 1.5 },
+  { id: 'chill', kind: 'timed', good: false, tone: 'blue', icon: 'snow', regenMul: 0.5, timeMul: 0.5 },
   // A stunned enemy's timer stops (see enemyTimeRate); a stunned hero can't play cards.
   {
     id: 'stun',
+    tone: 'purple',
     kind: 'timed',
     good: false,
     icon: 'stars',
@@ -164,14 +166,14 @@ const defs: StatusDef[] = [
     timeMul: 0,
     canPlay: (_c, side) => (side === 'hero' ? 'combat.stunned' : null),
   },
-  { id: 'frozen', kind: 'timed', good: false, icon: 'hourglass', timeMul: 0 },
-  { id: 'hurry', kind: 'timed', good: false, icon: 'stopwatch', beltMul: CONFIG.beltHurry },
+  { id: 'frozen', kind: 'timed', good: false, tone: 'purple', icon: 'hourglass', timeMul: 0 },
+  { id: 'hurry', kind: 'timed', good: false, tone: 'purple', icon: 'stopwatch', beltMul: CONFIG.beltHurry },
   // Emergency button: the belt stops dead.
-  { id: 'stalled', kind: 'timed', good: false, icon: 'pause', beltMul: 0 },
-  { id: 'crunch', kind: 'timed', good: false, icon: 'siren', beltMul: CONFIG.beltCrunch },
+  { id: 'stalled', kind: 'timed', good: false, tone: 'purple', icon: 'pause', beltMul: 0 },
+  { id: 'crunch', kind: 'timed', good: false, tone: 'purple', icon: 'siren', beltMul: CONFIG.beltCrunch },
   // Every card turns black: only the art and the cost are left to go by.
-  { id: 'blackout', kind: 'timed', good: false, icon: 'bulbOff' },
-  { id: 'slowdown', kind: 'timed', good: false, icon: 'cone', beltMul: CONFIG.beltSlow },
+  { id: 'blackout', kind: 'timed', good: false, tone: 'purple', icon: 'bulbOff' },
+  { id: 'slowdown', kind: 'timed', good: false, tone: 'purple', icon: 'cone', beltMul: CONFIG.beltSlow },
   // Enemy passives (permanent traits).
   {
     id: 'noRepeatsPolicy',

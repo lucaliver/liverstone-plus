@@ -150,11 +150,16 @@ export interface CardDef {
 
 export type StatusKind = 'timed' | 'stacks' | 'dot';
 
+/** The ink a status or keyword is written in: poison and life green, fire and force red, control purple, the rest blue. */
+export type Tone = 'green' | 'red' | 'purple' | 'blue';
+
 export interface StatusDef {
   id: string;
   kind: StatusKind;
   good: boolean;
   icon: string;
+  /** Ink of its name in texts and move chips; without one a keyword is blue and a chip follows `good`. */
+  tone?: Tone;
   /** Timed statuses that also stack show their stacks instead of the seconds left. */
   showStacks?: boolean;
   /** A permanent trait (enemy passives): shown without a number. */

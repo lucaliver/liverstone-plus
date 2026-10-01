@@ -29,7 +29,7 @@ const crystal = `<path d="M32 4l16 18-16 38-16-38z"/><path ${HI} d="M32 4l16 18H
 /** Hollow gem = an empty mana crystal (raises the max; fills over time), like an empty pip in the mana bar. */
 const crystalSlot = `<path d="M32 4l16 18-16 38-16-38z"/><path fill="#16121f" d="M32 14l9 10-9 23-9-23z"/>`;
 const cloud = `<path d="M18 40a10 10 0 0 1 2-20 13 13 0 0 1 25-2 11 11 0 0 1 3 22z"/>`;
-const fist = `<path d="M18 28c0-5 3-7 6-7h20c4 0 6 3 6 6v3c3 0 5 2 5 5v8c0 9-7 16-16 16h-6c-9 0-15-7-15-16z"/><path fill="#16121f" opacity=".45" d="M24 22v11M32 21v12M40 21v12" stroke="#16121f" stroke-width="2"/><path d="M14 30c0-3 2-5 5-5h5v14h-5c-3 0-5-2-5-5z"/>`;
+const muscle = `<path d="M4 56V46C4 36 12 26 22 25c8-1 14 3 18 11V20h-4V10c0-4 3-6 7-6h10c4 0 7 2 7 6v10h-4v22c0 9-4 14-10 14z"/><path fill="none" stroke="#16121f" stroke-width="2" opacity=".45" d="M42 4v10M48 4v10M54 4v10M12 46c4-7 12-8 18-4"/>`;
 const wing = `<path d="M6 44C14 20 34 8 58 8c-6 6-8 10-9 14 3-1 6-1 9 0-5 5-10 8-15 9 3 1 6 2 8 4-9 4-19 6-28 5-6 0-12 2-17 4z"/>`;
 
 export const ICONS: Record<string, { el: Element; svg: string }> = {
@@ -140,7 +140,7 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   },
 
   // ---- statuses & intents
-  fist: { el: 'blood', svg: fist },
+  muscle: { el: 'blood', svg: muscle },
   star: { el: 'arcane', svg: star4(32, 32, 28) },
   thorns: { el: 'nature', svg: `<path d="M32 4l5 16 14-8-6 15 15 5-15 5 6 15-14-8-5 16-5-16-14 8 6-15-15-5 15-5-6-15 14 8z"/>` },
   helm: { el: 'steel', svg: `<path d="M10 34C10 18 20 6 32 6s22 12 22 28v22H40V40H24v16H10z"/><path fill="#16121f" d="M18 30h28v6H18z"/>` },

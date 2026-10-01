@@ -43,12 +43,13 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
     const n = values.heal(m);
     parts.push(`<span class="fx fx-bad">${icon('heart')}<b>+${n}</b>${verbose ? ` ${t('move.fx.heal')}` : ''}</span>`);
   }
-  if (m.drainMana) parts.push(`<span class="fx fx-bad" data-rule="drain">${icon('crystal')}${t('move.fx.drain', { n: m.drainMana })}</span>`);
+  if (m.drainMana) parts.push(`<span class="fx fx-mana" data-rule="drain">${icon('crystal')}${t('move.fx.drain', { n: m.drainMana })}</span>`);
   for (const st of m.status ?? []) {
     // Tone from the player's point of view: an enemy buff or a debuff on the hero is bad news.
     const bad = st.target === 'hero' ? !STATUSES[st.id].good : STATUSES[st.id].good;
+    const tone = STATUSES[st.id].tone;
     parts.push(
-      `<span class="fx ${bad ? 'fx-bad' : 'fx-good'}" data-status="${st.id}" data-v="${st.v ?? 1}">${icon(STATUSES[st.id].icon)}${t(`status.${st.id}`)} <b>${st.t ? `${st.t}s` : `+${st.v ?? 1}`}</b></span>`,
+      `<span class="fx ${bad ? 'fx-bad' : 'fx-good'}"${tone ? ` data-tone="${tone}"` : ''} data-status="${st.id}" data-v="${st.v ?? 1}">${icon(STATUSES[st.id].icon)}${t(`status.${st.id}`)} <b>${st.t ? `${st.t}s` : `+${st.v ?? 1}`}</b></span>`,
     );
   }
   // Each curse names its card, so the handbook can open it on a press.

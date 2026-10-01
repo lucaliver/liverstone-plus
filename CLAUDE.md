@@ -126,7 +126,7 @@ tests/         combat, content, balance.sim (+ bot), e2e/
   `enemy.<id>.half` if it has `onHalf`. Global difficulty: `CONFIG.enemyHp`/`enemyDmg`; floor scaling `CONFIG.floorHp`/`floorDmg`.
 - `HeroDef` (`heroes.ts`): hp, mana, sleeve, starter deck (`startUpgraded`: one attack and one defense copy start upgraded), `ability`, hooks, optional `unlock` (checked by `progress()` in
   `meta.ts`), a card file, a sprite, `hero.<id>.*` strings, `ABILITY_ICON`/`PASSIVE_ICON` entries (`ui/combat/view.ts`).
-- `StatusDef` (`statuses.ts`) + `status.<id>` and `status.<id>.d` (`{v}` = amount). Effects are fields or hooks on the def;
+- `StatusDef` (`statuses.ts`) + `status.<id>` and `status.<id>.d` (`{v}` = amount). Its optional `tone` (green/red/purple/blue) inks its name in keyword text and move chips. Effects are fields or hooks on the def;
   `combat.ts` never names a status for a new effect. `passive: true` marks a permanent enemy trait.
 
 ### Act 3 rules (night shift)

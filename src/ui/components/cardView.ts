@@ -1,6 +1,7 @@
 import { t } from '../../core/i18n';
 import { CARDS, cardCategory, cardCostOf, cardKeywordsOf, cardValsOf } from '../../data/cards';
 import { PERKS } from '../../data/perks';
+import { STATUSES } from '../../data/statuses';
 import type { Combat } from '../../game/combat';
 import type { CardInst } from '../../game/types';
 import { h } from '../dom';
@@ -28,7 +29,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   chill: { icon: 'snow', unit: 's' },
   rush: { icon: 'speedCards', unit: 's' },
   burn: { icon: 'flame' },
-  str: { icon: 'fist', sign: '+' },
+  str: { icon: 'muscle', sign: '+' },
   dodge: { icon: 'mirror', unit: 's' },
   parry: { icon: 'crossed' },
   hp: { icon: 'blood', sign: '-' },
@@ -127,9 +128,12 @@ export function cardFace(card: CardInst & { bonus?: number }, combat?: Combat | 
   return lines.join('');
 }
 
-/** Rules text with its `[keyword]` marks as bold names in the keyword's colour (`.kw-<id>`). */
+/** Rules text with its `[keyword]` marks as bold names in the keyword's colour (`tone` in statuses.ts). */
 export function keywordHtml(text: string): string {
-  return text.replace(/\[(\w+)\]/g, (_, kw: string) => `<b class="kw kw-${kw}">${t(`kw.${kw}`)}</b>`);
+  return text.replace(/\[(\w+)\]/g, (_, kw: string) => {
+    const tone = STATUSES[kw]?.tone;
+    return `<b class="kw"${tone ? ` data-tone="${tone}"` : ''}>${t(`kw.${kw}`)}</b>`;
+  });
 }
 
 /** The same text for places that show no markup (toasts): the keywords as plain names. */
