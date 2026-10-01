@@ -24,7 +24,7 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     vals: [7],
     upVals: [10],
-    art: 'karlMarx',
+    art: 'dasKapital',
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {

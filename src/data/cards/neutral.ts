@@ -40,7 +40,7 @@ export const neutralCards: CardDef[] = [
     vals: [15],
     upVals: [22],
     keywords: ['consume'],
-    art: 'potionRed',
+    art: 'medkit',
     play: (c, v) => void c.heal('hero', v[0]),
   },
   {
@@ -106,7 +106,7 @@ export const neutralCards: CardDef[] = [
     vals: [4],
     upVals: [6],
     keywords: ['consume'],
-    art: 'potionBlue',
+    art: 'energyCan',
     play: (c, v) => c.gainMana(v[0]),
   },
 

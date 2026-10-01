@@ -223,7 +223,7 @@ export const warriorCards: CardDef[] = [
     cost: 4,
     vals: [15, 30],
     upVals: [20, 40],
-    art: 'execute',
+    art: 'picketSign',
     play: (c, v) => void c.hit(c.enemy.hp <= c.enemy.maxHp * 0.3 ? v[1] : v[0]),
   },
   {
@@ -315,7 +315,7 @@ export const warriorCards: CardDef[] = [
     cost: 3,
     vals: [8, 5],
     upVals: [11, 8],
-    art: 'crate',
+    art: 'liftingWorker',
     play: (c, v) => {
       c.hit(v[0], { kind: 'blunt' });
       c.gainBlock('hero', v[1]);

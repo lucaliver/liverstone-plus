@@ -66,9 +66,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M10 12h8v6h6v-6h6v6h4v-6h6v6h6v-6h8v46H10z"/><path fill="#16121f" opacity=".55" d="M26 58V44a6 6 0 0 1 12 0v14z"/><path ${HI} d="M10 22h44v3H10z"/>`,
   },
-  execute: {
+  picketSign: {
     el: 'blood',
-    svg: `<g transform="rotate(-32 32 32)"><rect x="29" y="6" width="5" height="56" rx="2"/><path d="M33 7c16-4 26 7 26 19s-10 19-26 15z"/></g><path fill="#c52a2a" d="M50 44c3 5 6 8 6 12a6 6 0 0 1-12 0c0-4 3-7 6-12z"/>`,
+    svg: `<path d="M3.2 3.2h57.6v3.2h-57.6zM3.2 6.4h57.6v3.2h-57.6zM3.2 9.6h25.6v3.2h-25.6zM35.2 9.6h25.6v3.2h-25.6zM3.2 12.8h25.6v3.2h-25.6zM35.2 12.8h25.6v3.2h-25.6zM3.2 16h25.6v3.2h-25.6zM35.2 16h25.6v3.2h-25.6zM3.2 19.2h25.6v3.2h-25.6zM35.2 19.2h25.6v3.2h-25.6zM3.2 22.4h25.6v3.2h-25.6zM35.2 22.4h25.6v3.2h-25.6zM3.2 25.6h57.6v3.2h-57.6zM3.2 28.8h25.6v3.2h-25.6zM35.2 28.8h25.6v3.2h-25.6zM3.2 32h25.6v3.2h-25.6zM35.2 32h25.6v3.2h-25.6zM3.2 35.2h57.6v3.2h-57.6zM3.2 38.4h57.6v3.2h-57.6zM28.8 41.6h6.4v3.2h-6.4zM28.8 44.8h6.4v3.2h-6.4zM28.8 48h6.4v3.2h-6.4zM28.8 51.2h6.4v3.2h-6.4zM28.8 54.4h6.4v3.2h-6.4zM28.8 57.6h6.4v3.2h-6.4zM28.8 60.8h6.4v3.2h-6.4z"/>`,
   },
   fang: { el: 'blood', svg: `<path d="M6 12h52c0 6-3 9-8 10L42 58 34 22h-4l-8 36-8-36c-5-1-8-4-8-10z"/><path ${HI} d="M18 24l6 22 2-24z"/>` },
   quake: {
@@ -116,9 +116,15 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `${cloud}<g transform="translate(6 40) scale(.3)">${snowflake}</g><g transform="translate(24 44) scale(.3)">${snowflake}</g><g transform="translate(42 40) scale(.3)">${snowflake}</g>`,
   },
   // ---- neutral
-  potionRed: { el: 'nature', svg: potion('#e0404a') },
+  medkit: {
+    el: 'nature',
+    svg: `<path d="M19.2 6.4h25.6v3.2h-25.6zM19.2 9.6h6.4v3.2h-6.4zM38.4 9.6h6.4v3.2h-6.4zM19.2 12.8h6.4v3.2h-6.4zM38.4 12.8h6.4v3.2h-6.4zM6.4 16h51.2v3.2h-51.2zM3.2 19.2h57.6v3.2h-57.6zM3.2 22.4h22.4v3.2h-22.4zM38.4 22.4h22.4v3.2h-22.4zM3.2 25.6h22.4v3.2h-22.4zM38.4 25.6h22.4v3.2h-22.4zM3.2 28.8h22.4v3.2h-22.4zM38.4 28.8h22.4v3.2h-22.4zM3.2 32h12.8v3.2h-12.8zM48 32h12.8v3.2h-12.8zM3.2 35.2h12.8v3.2h-12.8zM48 35.2h12.8v3.2h-12.8zM3.2 38.4h12.8v3.2h-12.8zM48 38.4h12.8v3.2h-12.8zM3.2 41.6h12.8v3.2h-12.8zM48 41.6h12.8v3.2h-12.8zM3.2 44.8h22.4v3.2h-22.4zM38.4 44.8h22.4v3.2h-22.4zM3.2 48h22.4v3.2h-22.4zM38.4 48h22.4v3.2h-22.4zM3.2 51.2h22.4v3.2h-22.4zM38.4 51.2h22.4v3.2h-22.4zM3.2 54.4h57.6v3.2h-57.6zM6.4 57.6h51.2v3.2h-51.2z"/>`,
+  },
   potionOrange: { el: 'fire', svg: potion('#ff8a1f') },
-  potionBlue: { el: 'arcane', svg: potion('#3f8cff') },
+  energyCan: {
+    el: 'arcane',
+    svg: `<path d="M32 0h9.6v3.2h-9.6zM19.2 3.2h25.6v3.2h-25.6zM16 6.4h32v3.2h-32zM19.2 9.6h25.6v3.2h-25.6zM19.2 12.8h25.6v3.2h-25.6zM19.2 16h12.8v3.2h-12.8zM41.6 16h3.2v3.2h-3.2zM19.2 19.2h9.6v3.2h-9.6zM38.4 19.2h6.4v3.2h-6.4zM19.2 22.4h6.4v3.2h-6.4zM35.2 22.4h9.6v3.2h-9.6zM19.2 25.6h3.2v3.2h-3.2zM41.6 25.6h3.2v3.2h-3.2zM19.2 28.8h12.8v3.2h-12.8zM38.4 28.8h6.4v3.2h-6.4zM19.2 32h9.6v3.2h-9.6zM35.2 32h9.6v3.2h-9.6zM19.2 35.2h6.4v3.2h-6.4zM32 35.2h12.8v3.2h-12.8zM19.2 38.4h6.4v3.2h-6.4zM28.8 38.4h16v3.2h-16zM19.2 41.6h3.2v3.2h-3.2zM25.6 41.6h19.2v3.2h-19.2zM19.2 44.8h25.6v3.2h-25.6zM19.2 48h25.6v3.2h-25.6zM16 51.2h32v3.2h-32zM19.2 54.4h25.6v3.2h-25.6z"/>`,
+  },
   bandage: {
     el: 'nature',
     svg: `<g transform="rotate(45 32 32)"><rect x="8" y="24" width="48" height="16" rx="8"/></g><g transform="rotate(-45 32 32)"><rect x="8" y="24" width="48" height="16" rx="8"/></g><g fill="#16121f" opacity=".4"><circle cx="29" cy="29" r="1.6"/><circle cx="35" cy="29" r="1.6"/><circle cx="29" cy="35" r="1.6"/><circle cx="35" cy="35" r="1.6"/></g>`,
@@ -218,9 +224,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'necro',
     svg: `<path d="M8 50l30-30-3-6a6 6 0 1 1 9-6 6 6 0 1 1 6 9l6 3-30 30 3 6a6 6 0 1 1-9 6 6 6 0 1 1-6-9z"/><path d="M52 4L40 22l4 4 18-12z"/>`,
   },
-  karlMarx: {
+  dasKapital: {
     el: 'necro',
-    svg: `<circle cx="12" cy="24" r="10"/><circle cx="20" cy="11" r="11"/><circle cx="34" cy="8" r="10"/><circle cx="47" cy="13" r="10"/><circle cx="53" cy="27" r="9"/><path d="M8 28c-2 14 2 26 10 32 4 3 9 4 14 4s10-1 14-4c8-6 12-18 10-32z"/><path d="M19 18h26v18c0 4-6 7-13 7s-13-3-13-7z" fill="#fff" stroke="#16121f" stroke-width="3"/><circle cx="26" cy="26" r="3" fill="#16121f"/><circle cx="38" cy="26" r="3" fill="#16121f"/><path d="M22 20l8 2M42 20l-8 2" stroke="#16121f" stroke-width="3"/><path d="M19 38c6-4 10-2 13 0 3-2 7-4 13 0-2 7-8 7-13 4-5 3-11 3-13-4z" stroke="#16121f" stroke-width="3"/><path d="M26 52q6 4 12 0" stroke="#16121f" stroke-width="3" fill="none"/>`,
+    svg: `<path d="M9.6 3.2h6.4v3.2h-6.4zM19.2 3.2h32v3.2h-32zM9.6 6.4h6.4v3.2h-6.4zM19.2 6.4h32v3.2h-32zM54.4 6.4h6.4v3.2h-6.4zM9.6 9.6h6.4v3.2h-6.4zM19.2 9.6h3.2v3.2h-3.2zM48 9.6h3.2v3.2h-3.2zM54.4 9.6h6.4v3.2h-6.4zM9.6 12.8h6.4v3.2h-6.4zM19.2 12.8h3.2v3.2h-3.2zM48 12.8h3.2v3.2h-3.2zM54.4 12.8h6.4v3.2h-6.4zM9.6 16h6.4v3.2h-6.4zM19.2 16h32v3.2h-32zM54.4 16h6.4v3.2h-6.4zM9.6 19.2h6.4v3.2h-6.4zM19.2 19.2h32v3.2h-32zM54.4 19.2h6.4v3.2h-6.4zM9.6 22.4h6.4v3.2h-6.4zM19.2 22.4h12.8v3.2h-12.8zM38.4 22.4h12.8v3.2h-12.8zM54.4 22.4h6.4v3.2h-6.4zM9.6 25.6h6.4v3.2h-6.4zM19.2 25.6h12.8v3.2h-12.8zM38.4 25.6h12.8v3.2h-12.8zM54.4 25.6h6.4v3.2h-6.4zM9.6 28.8h6.4v3.2h-6.4zM19.2 28.8h3.2v3.2h-3.2zM48 28.8h3.2v3.2h-3.2zM54.4 28.8h6.4v3.2h-6.4zM9.6 32h6.4v3.2h-6.4zM19.2 32h6.4v3.2h-6.4zM44.8 32h6.4v3.2h-6.4zM54.4 32h6.4v3.2h-6.4zM9.6 35.2h6.4v3.2h-6.4zM19.2 35.2h9.6v3.2h-9.6zM41.6 35.2h9.6v3.2h-9.6zM54.4 35.2h6.4v3.2h-6.4zM9.6 38.4h6.4v3.2h-6.4zM19.2 38.4h9.6v3.2h-9.6zM41.6 38.4h9.6v3.2h-9.6zM54.4 38.4h6.4v3.2h-6.4zM9.6 41.6h6.4v3.2h-6.4zM19.2 41.6h6.4v3.2h-6.4zM32 41.6h6.4v3.2h-6.4zM44.8 41.6h6.4v3.2h-6.4zM54.4 41.6h6.4v3.2h-6.4zM9.6 44.8h6.4v3.2h-6.4zM19.2 44.8h6.4v3.2h-6.4zM28.8 44.8h12.8v3.2h-12.8zM44.8 44.8h6.4v3.2h-6.4zM54.4 44.8h6.4v3.2h-6.4zM9.6 48h6.4v3.2h-6.4zM19.2 48h32v3.2h-32zM54.4 48h6.4v3.2h-6.4zM9.6 51.2h6.4v3.2h-6.4zM19.2 51.2h32v3.2h-32zM54.4 51.2h6.4v3.2h-6.4zM9.6 54.4h6.4v3.2h-6.4zM19.2 54.4h32v3.2h-32zM38.4 57.6h6.4v3.2h-6.4zM38.4 60.8h6.4v3.2h-6.4z"/>`,
   },
   gear: {
     el: 'steel',
@@ -243,9 +249,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'curse',
     svg: `<path d="M6 24l26-10 26 10v30L32 62 6 54z"/><g fill="#16121f"><path d="M32 30v32h-3V30zM6 24l26 8 26-8-26-8zM12 36h8v3h-8z"/></g><path d="M2 20l24-8 6 6-24 8zM62 20l-24-8-6 6 24 8z"/>`,
   },
-  crate: {
+  liftingWorker: {
     el: 'steel',
-    svg: `<rect x="8" y="12" width="48" height="44"/><g fill="#16121f"><rect x="14" y="18" width="36" height="4"/><rect x="14" y="46" width="36" height="4"/><path d="M14 26l36 16v4L14 30z"/></g>`,
+    svg: `<path d="M6.4 3.2h51.2v3.2h-51.2zM6.4 6.4h51.2v3.2h-51.2zM6.4 9.6h6.4v3.2h-6.4zM51.2 9.6h6.4v3.2h-6.4zM6.4 12.8h51.2v3.2h-51.2zM6.4 16h51.2v3.2h-51.2zM12.8 19.2h6.4v3.2h-6.4zM44.8 19.2h6.4v3.2h-6.4zM12.8 22.4h6.4v3.2h-6.4zM25.6 22.4h12.8v3.2h-12.8zM44.8 22.4h6.4v3.2h-6.4zM16 25.6h6.4v3.2h-6.4zM25.6 25.6h12.8v3.2h-12.8zM41.6 25.6h6.4v3.2h-6.4zM16 28.8h6.4v3.2h-6.4zM25.6 28.8h12.8v3.2h-12.8zM41.6 28.8h6.4v3.2h-6.4zM19.2 32h25.6v3.2h-25.6zM22.4 35.2h19.2v3.2h-19.2zM22.4 38.4h19.2v3.2h-19.2zM22.4 41.6h19.2v3.2h-19.2zM22.4 44.8h19.2v3.2h-19.2zM22.4 48h6.4v3.2h-6.4zM35.2 48h6.4v3.2h-6.4zM22.4 51.2h6.4v3.2h-6.4zM35.2 51.2h6.4v3.2h-6.4zM22.4 54.4h6.4v3.2h-6.4zM35.2 54.4h6.4v3.2h-6.4zM22.4 57.6h6.4v3.2h-6.4zM35.2 57.6h6.4v3.2h-6.4zM19.2 60.8h9.6v3.2h-9.6zM35.2 60.8h9.6v3.2h-9.6z"/>`,
   },
   doubleClock: {
     el: 'blood',
