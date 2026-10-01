@@ -9,6 +9,10 @@ const THERMOS_HEAL = 5;
 const STAPLER_EVERY = 6;
 const STAPLER_DAMAGE = 6;
 const BOOT_MANA = 2;
+const MUG_EVERY = 5;
+const MUG_MANA = 1;
+const CLOCK_EVERY = 10;
+const CLOCK_BLOCK = 4;
 /** Share of max HP the Emergency Exit gets you back on your feet with. */
 const EXIT_HP = 0.35;
 
@@ -37,7 +41,35 @@ const defs: RelicDef[] = [
     hooks: { onCombatEnd: (c) => void (c.heal('hero', THERMOS_HEAL) > 0 && proc(c, 'thermos')) },
   },
   { id: 'ergoChair', rarity: 'common', art: 'ergoChair', n: 12, mods: { regen: 1.12 } },
-  { id: 'slippers', rarity: 'common', art: 'slippers', n: 8, mods: { beltSpeed: 0.92 } },
+  {
+    id: 'coffeeMug',
+    rarity: 'common',
+    art: 'mug',
+    n: MUG_EVERY,
+    hooks: {
+      onCardPlayed: (c) => {
+        c.mem.mug = (c.mem.mug ?? 0) + 1;
+        if (c.mem.mug % MUG_EVERY) return;
+        c.gainMana(MUG_MANA);
+        proc(c, 'coffeeMug');
+      },
+    },
+  },
+  {
+    id: 'wallClock',
+    rarity: 'common',
+    art: 'wallClock',
+    n: CLOCK_EVERY,
+    hooks: {
+      tick: (c, dt) => {
+        c.mem.clock = (c.mem.clock ?? 0) + dt;
+        if (c.mem.clock < CLOCK_EVERY) return;
+        c.mem.clock -= CLOCK_EVERY;
+        c.gainBlock('hero', CLOCK_BLOCK);
+        proc(c, 'wallClock');
+      },
+    },
+  },
   {
     id: 'unionArmband',
     rarity: 'rare',

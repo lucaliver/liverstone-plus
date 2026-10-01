@@ -362,7 +362,7 @@ export interface RelicDef {
   /** The number its text shows (`{n}`). */
   n: number;
   /** Static modifiers applied to combat setup. */
-  mods?: Partial<{ maxMana: number; sleeve: number; beltSpeed: number; regen: number; maxHp: number; gold: number }>;
+  mods?: Partial<{ maxMana: number; sleeve: number; regen: number; maxHp: number; gold: number }>;
   hooks?: RelicHooks;
   /** Runs once when the relic is obtained. */
   onGain?: (run: import('./run').RunState) => void;

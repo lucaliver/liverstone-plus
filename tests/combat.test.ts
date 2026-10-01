@@ -1743,6 +1743,29 @@ describe('relics', () => {
     expect(c.sleeve).toHaveLength(HEROES.warrior.sleeve + 1);
   });
 
+  it('the Wall Clock gives Block on a timer and the Coffee Mug gives mana back on every 5th card', () => {
+    const c = setup({ relics: ['wallClock'] });
+    let chimes = 0;
+    c.events.on((e) => {
+      if (e.type === 'relic') chimes++;
+    });
+    run(c, 3);
+    expect(chimes).toBe(0);
+    run(c, RELICS.wallClock.n + 3);
+    expect(chimes).toBe(1);
+
+    const m = setup({ relics: ['coffeeMug'] });
+    m.hero.mana = 0;
+    const events: string[] = [];
+    m.events.on((e) => {
+      if (e.type === 'relic') events.push(e.id);
+    });
+    const { card } = m.belt[0];
+    for (let i = 0; i < RELICS.coffeeMug.n; i++) RELICS.coffeeMug.hooks?.onCardPlayed?.(m, card, CARDS[card.id]);
+    expect(events).toEqual(['coffeeMug']);
+    expect(m.hero.mana).toBeGreaterThan(0);
+  });
+
   it('the Emergency Exit saves you once per run, then never again', () => {
     const flags: Record<string, number> = {};
     const c = setup({ relics: ['emergencyExit'], relicFlags: flags });

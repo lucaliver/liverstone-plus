@@ -115,7 +115,6 @@ export class Combat {
   /** Seconds the belt still stands before it turns around, and how many turns it was asked for meanwhile (two cancel out). */
   private beltHalt = 0;
   private beltTurns = 0;
-  private beltSpeed = 1;
   private regenMul = 1;
   /** Deck uids permanently removed (potions). */
   consumed: number[] = [];
@@ -163,7 +162,6 @@ export class Combat {
       if (!m) continue;
       maxMana += m.maxMana ?? 0;
       sleeve += m.sleeve ?? 0;
-      this.beltSpeed *= m.beltSpeed ?? 1;
       regenMul *= m.regen ?? 1;
     }
     this.regenMul = regenMul;
@@ -362,7 +360,7 @@ export class Combat {
   }
 
   beltRate(): number {
-    return this.beltSpeed * (this.beltRows > 1 ? CONFIG.twoRowSpeed : 1) * this.beltBoost();
+    return (this.beltRows > 1 ? CONFIG.twoRowSpeed : 1) * this.beltBoost();
   }
 
   /** How much statuses speed the belt up (Rush, Hurry, Crunch), slow it down (Slowdown, rust) or stop it (Stalled, full rust, or about to turn around): 1 when none does. */

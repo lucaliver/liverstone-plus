@@ -1007,9 +1007,13 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M16 3h24c5 0 7 3 6 8l-3 18H18z"/><rect x="10" y="31" width="44" height="9" rx="3"/><rect x="29" y="40" width="6" height="14"/><path d="M6 58l26-5 26 5v3H6z"/><circle cx="12" cy="61" r="2.5" fill="#16121f"/><circle cx="52" cy="61" r="2.5" fill="#16121f"/>`,
   },
-  slippers: {
-    el: 'blood',
-    svg: `<path d="M3 34c0-9 8-14 20-14 7 0 9 5 17 7 12 2 21 6 21 15v8H3z"/><path fill="#16121f" opacity=".4" d="M3 48h58v8H3z"/><path ${HI} d="M8 32c3-5 8-7 14-7-6 2-9 5-10 10z"/>`,
+  mug: {
+    el: 'fire',
+    svg: `<path d="M8 14h36v34c0 7-5 12-12 12H20c-7 0-12-5-12-12z"/><path d="M44 22h6c6 0 10 4 10 10s-4 10-10 10h-6v-6h6c2 0 4-1 4-4s-2-4-4-4h-6z"/><path fill="#16121f" opacity=".4" d="M8 14h36v7H8z"/><path ${HI} d="M13 28h4v20h-4z"/><g ${S} stroke-width="3"><path d="M18 2c3 3-3 5 0 9M30 2c3 3-3 5 0 9"/></g>`,
+  },
+  wallClock: {
+    el: 'holy',
+    svg: `<circle cx="32" cy="32" r="29"/><circle cx="32" cy="32" r="22" fill="#16121f" opacity=".4"/><path d="M30 14h4v18h12v4H30z" fill="#16121f"/><path ${HI} d="M12 22c3-6 8-10 14-12-5 4-9 8-11 14z"/>`,
   },
   armband: {
     el: 'blood',
