@@ -100,7 +100,7 @@ export const necromancerCards: CardDef[] = [
     play: (c, v) => c.applyStatus('enemy', 'stun', 1, v[0]),
   },
   {
-    id: 'smokestack',
+    id: 'chainSmoking',
     face: '{poison:0}|{weak:1}',
     cls: 'necromancer',
     type: 'spell',
@@ -108,7 +108,7 @@ export const necromancerCards: CardDef[] = [
     cost: 2,
     vals: [2, 4],
     upVals: [4, 6],
-    art: 'smokestack',
+    art: 'chainSmoking',
     play: (c, v) => {
       c.applyStatus('enemy', 'poison', v[0]);
       c.applyStatus('enemy', 'weak', 1, v[1]);
@@ -205,7 +205,7 @@ export const necromancerCards: CardDef[] = [
     cost: 6,
     upCost: 5,
     vals: [],
-    keywords: ['exhaust'],
+    keywords: ['exhaust', 'pending'],
     art: 'walkout',
     play: (c) => c.applyStatus('enemy', 'poison', c.stacks('enemy', 'poison')),
   },
@@ -245,7 +245,7 @@ export const necromancerCards: CardDef[] = [
     cost: 3,
     upCost: 2,
     vals: [],
-    keywords: ['exhaust'],
+    keywords: ['exhaust', 'pending'],
     art: 'mangioni',
     play: (c) => void c.heal('hero', c.stacks('enemy', 'poison')),
   },

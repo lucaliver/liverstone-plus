@@ -402,12 +402,10 @@ describe('combat engine', () => {
     expect(c.enemy.timer).toBeCloseTo(before + 1, 5);
   });
 
-  it("New Hire's stare petrifies half the belt and half the rest of the deck; a hex survives the piles until broken", () => {
+  it('New Hire petrifies half the belt and half the rest of the deck at the start; a hex survives the piles until broken', () => {
     const c = setup({ enemy: ENEMIES.newHire, deck: deckOf(new Array(12).fill('punch')) });
-    run(c, CONFIG.introTime + 0.01);
     const onBelt = c.belt.length;
     const rest = c.draw.length + c.discard.length;
-    c.hexCards('petrify', 0.5);
     expect(c.belt.filter((b) => b.card.hex).length).toBe(Math.ceil(onBelt / 2));
     expect([...c.draw, ...c.discard].filter((x) => x.hex).length).toBe(Math.ceil(rest / 2));
     // Left alone, hexed cards fall off the belt still hexed.
@@ -624,14 +622,14 @@ describe('combat engine', () => {
     expect(c.has('hero', 'hurry')).toBe(true);
   });
 
-  it("the CEO's emergency button stops the belt dead for 5s once he is under half HP", () => {
+  it("the CEO's emergency button stops the belt dead for 8s once he is under half HP", () => {
     const c = setup({ enemy: ENEMIES.slavesCeo });
     run(c, CONFIG.introTime + 0.01);
     c.enemy.block = 0;
     c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 2), { raw: true }, 'hero');
     expect(c.beltRate()).toBe(0);
     const pos = c.belt.map((b) => b.pos);
-    run(c, 4);
+    run(c, 7);
     expect(c.belt.map((b) => b.pos)).toEqual(pos);
     run(c, 1.5);
     expect(c.beltRate()).toBeGreaterThan(0);
@@ -931,6 +929,7 @@ describe('pop culture cards', () => {
 
   it('Payday Loan hits hard and shuffles a Debt in; the Debt bites harder every time it slips off the belt', () => {
     const { c, uid } = ready('paydayLoan');
+    c.belt.find((b) => b.card.uid === uid)!.card.passed = true;
     c.hero.hp = c.hero.maxHp = 500;
     c.playCard(uid);
     expect(c.enemy.maxHp - c.enemy.hp).toBe(CARDS.paydayLoan.vals[0]);

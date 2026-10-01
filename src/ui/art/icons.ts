@@ -405,9 +405,9 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'necro',
     svg: `<path d="M38 4a28 28 0 1 0 22 42A24 24 0 0 1 38 4z"/><path d="M50 10l2 5 5 1-4 3 1 5-4-3-5 3 2-5-4-3h5z"/>`,
   },
-  smokestack: {
+  chainSmoking: {
     el: 'necro',
-    svg: `<path d="M6 60V30l14-8v8l14-8v8l14-8v38z"/><rect x="44" y="10" width="10" height="22"/><circle cx="48" cy="6" r="6"/><circle cx="38" cy="5" r="4"/><g fill="#16121f"><rect x="12" y="40" width="7" height="7"/><rect x="26" y="40" width="7" height="7"/></g>`,
+    svg: `<rect x="2" y="40" width="16" height="14"/><rect x="21" y="40" width="30" height="14"/><rect x="52" y="40" width="10" height="14"/><rect x="56" y="44" width="4" height="4" fill="#16121f"/><g ${S} stroke-width="5"><path d="M42 36l-6-7 6-7-6-7M56 36l-6-7 6-7-6-7"/></g>`,
   },
   sabot: {
     el: 'necro',

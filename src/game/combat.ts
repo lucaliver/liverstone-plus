@@ -200,6 +200,7 @@ export class Combat {
     this.spawnClock = Infinity;
     const step = 1 / 60;
     for (let t = 0; t < (CONFIG.prewarm * CONFIG.beltTime) / this.beltRate(); t += step) this.tickBelt(step);
+    if (e.startHex) this.hexCards(e.startHex.id, e.startHex.share);
   }
 
   // ---------------------------------------------------------------- queries

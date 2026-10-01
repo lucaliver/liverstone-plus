@@ -141,8 +141,9 @@ const defs: EnemyDef[] = [
     hp: 40,
     art: 'newHire',
     main: atk('coffeeSpill', 6, 6),
-    every: 2,
-    specials: [{ id: 'blankStare', intent: 'debuff', windup: 6, hex: { id: 'petrify', share: 0.5 } }],
+    every: 0,
+    specials: [],
+    startHex: { id: 'petrify', share: 0.5 },
   },
   {
     // Moves in with you: her boxes fill your sleeve from the start, and only get cheaper to unpack with time.

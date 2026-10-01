@@ -88,7 +88,7 @@ export function movePattern(e: EnemyDef, values: MoveValues = baseValues, mark?:
 /** A move's icon: its intent's, or the status's own when applying one status is all it does (Snark: Poison). */
 export function moveIcon(m: MoveDef): string {
   const st = m.status?.length === 1 ? m.status[0] : undefined;
-  const only = st && !m.dmg && !m.block && !m.heal && !m.curse && !m.hex && !m.inflate && !m.drainMana;
+  const only = st && !m.dmg && !m.block && !m.heal && !m.curse && !m.hex && !m.steal && !m.inflate && !m.drainMana;
   return only ? STATUSES[st.id].icon : (INTENT_ICON[m.intent] ?? 'star');
 }
 
@@ -101,6 +101,10 @@ export function enemyTraits(e: EnemyDef, withHalf = true): { icon: string; name:
     .filter((s) => STATUSES[s.id].passive)
     .map((s) => ({ icon: STATUSES[s.id].icon, name: t(`status.${s.id}`), desc: keywordHtml(t(`status.${s.id}.d`, { v: s.v ?? 1 })) }));
   if (e.fillSleeve) traits.push({ icon: 'hand', name: t(`card.${e.fillSleeve}.name`), desc: t('enemy.fillSleeve') });
+  if (e.startHex) {
+    const { id, share } = e.startHex;
+    traits.push({ icon: HEXES[id].icon, name: t(`hex.${id}`), desc: t('enemy.startHex', { n: Math.round(share * 100) }) });
+  }
   if (e.onHalf && withHalf) traits.push({ icon: HALF_ICON, name: t('status.half'), desc: keywordHtml(t(`enemy.${e.id}.half`)) });
   return traits;
 }

@@ -225,6 +225,8 @@ export interface EnemyDef {
   start?: { id: string; v?: number; t?: number }[];
   /** Curse card that fills every sleeve slot at the start of the fight. */
   fillSleeve?: string;
+  /** Hex cast on a `share` (0–1) of your cards at the start of the fight. */
+  startHex?: { id: string; share: number };
   /** Called once when HP drops under 50%. */
   onHalf?: (c: Combat) => void;
   /** At half HP it also says something (`enemy.<id>.speech`, shown in a speech bubble). */

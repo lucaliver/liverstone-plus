@@ -176,7 +176,7 @@ export const warriorCards: CardDef[] = [
     cost: 3,
     vals: [12, 8],
     upVals: [16, 11],
-    keywords: ['exhaust'],
+    keywords: ['exhaust', 'pending'],
     art: 'sandwich',
     play: (c, v) => {
       c.heal('hero', v[0]);
@@ -235,6 +235,7 @@ export const warriorCards: CardDef[] = [
     cost: 4,
     vals: [14],
     upVals: [18],
+    keywords: ['pending'],
     art: 'fang',
     play: (c, v) => {
       const dealt = c.hit(v[0]);
