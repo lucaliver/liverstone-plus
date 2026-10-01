@@ -79,6 +79,7 @@ describe('content integrity', () => {
   it('Legendary cards are offered only after elites and bosses', () => {
     expect(REWARD_ODDS.fight.some(([r]) => r === 'legendary')).toBe(false);
     expect(REWARD_ODDS.elite.some(([r]) => r === 'legendary')).toBe(true);
+    expect(REWARD_ODDS.boss.every(([r]) => r === 'legendary')).toBe(true);
   });
 
   it('every enemy past the first three can grow stronger, except the ones with nothing to hit with or a single move', () => {

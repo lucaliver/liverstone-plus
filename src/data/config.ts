@@ -83,8 +83,10 @@ export const CONFIG = {
   vendingHp: { rare: 6, epic: 12 },
 } as const;
 
-/** Rarity odds (weights) of each card offered after a fight or an elite (a boss pays like an elite). Legendary cards only drop from elites and bosses. */
-export const REWARD_ODDS: Record<'fight' | 'elite', [Rarity, number][]> = {
+export type RewardKind = 'fight' | 'elite' | 'boss';
+
+/** Rarity odds (weights) of each card offered after a fight, an elite or an act boss. Legendary cards only drop from elites and bosses. */
+export const REWARD_ODDS: Record<RewardKind, [Rarity, number][]> = {
   fight: [
     ['common', 64],
     ['rare', 29],
@@ -96,7 +98,11 @@ export const REWARD_ODDS: Record<'fight' | 'elite', [Rarity, number][]> = {
     ['epic', 20],
     ['legendary', 5],
   ],
+  boss: [['legendary', 1]],
 };
+
+/** Legendary cards an offer always holds (the rest of it follows `REWARD_ODDS`). */
+export const REWARD_MIN_LEGENDARY: Record<RewardKind, number> = { fight: 0, elite: 2, boss: 0 };
 
 /** Rarity odds (weights) of the cards on offer in Cross-Training (like an elite's, without Legendary). */
 export const CROSS_TRAINING_ODDS: [Rarity, number][] = [

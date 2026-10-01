@@ -104,6 +104,7 @@ const en = {
   'debug.mapMenu': 'Debug: map',
   'debug.rewardFight': 'Card reward',
   'debug.rewardElite': 'Elite card reward',
+  'debug.rewardBoss': 'Boss card reward',
   'debug.skipRoom': 'Clear this room',
   'menu.abandonConfirm': 'A new run will scrap your current workday. Continue?',
   'common.back': 'Back',

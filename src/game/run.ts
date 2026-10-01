@@ -5,7 +5,7 @@ import { CARD_LIST, CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../dat
 import { PERKS } from '../data/perks';
 import { RELIC_LIST, RELICS } from '../data/relics';
 import { ACT_DEFS, actDef } from '../data/acts';
-import { CONFIG, CROSS_TRAINING_ODDS, REWARD_ODDS } from '../data/config';
+import { CONFIG, CROSS_TRAINING_ODDS, REWARD_MIN_LEGENDARY, REWARD_ODDS, type RewardKind } from '../data/config';
 import { MODIFIERS, resolveMods } from '../data/modifiers';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HERO_LIST, HEROES, starterCards } from '../data/heroes';
@@ -279,7 +279,7 @@ export function applyCombat(run: RunState, combat: Combat): void {
 export const REWARD_CHOICES = 4;
 export const rewardChoices = (run: RunState): number => Math.max(1, REWARD_CHOICES + resolveMods(run.mods).rewardCards);
 
-export function rollRewards(run: RunState, kind: 'fight' | 'elite'): CardDef[] {
+export function rollRewards(run: RunState, kind: RewardKind): CardDef[] {
   // The very first run teaches with hand-picked offers after its first fights (the win just counted is `kills`).
   const firsts = run.scripted ? HEROES[run.hero].firstRewards?.[run.stats.kills - 1] : undefined;
   if (firsts) {
@@ -289,7 +289,7 @@ export function rollRewards(run: RunState, kind: 'fight' | 'elite'): CardDef[] {
   const rng = rngOf(run);
   const picks: CardDef[] = [];
   for (let tries = 0; picks.length < rewardChoices(run) && tries < 80; tries++) {
-    const rarity = rng.weighted(REWARD_ODDS[kind], ([, w]) => w)[0];
+    const rarity = picks.length < REWARD_MIN_LEGENDARY[kind] ? 'legendary' : rng.weighted(REWARD_ODDS[kind], ([, w]) => w)[0];
     const pool = rewardPool(run.hero, rarity).filter((c) => !picks.includes(c));
     if (pool.length) picks.push(rng.pick(pool));
   }

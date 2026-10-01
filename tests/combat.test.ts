@@ -1260,6 +1260,17 @@ describe('run pay', () => {
     expect(fightPay('normal', CONFIG.pay.par - 10)).toBe(CONFIG.pay.normal + 10 * CONFIG.pay.perSecond);
     expect(fightPay('boss', 0)).toBe(CONFIG.pay.boss + CONFIG.pay.par * CONFIG.pay.perSecond);
   });
+
+  it('an elite offers at least two Legendary cards and a boss only Legendary ones', () => {
+    const run = newRun('warrior', 7);
+    for (let i = 0; i < 20; i++) {
+      expect(rollRewards(run, 'elite').filter((c) => c.rarity === 'legendary').length).toBeGreaterThanOrEqual(2);
+      const boss = rollRewards(run, 'boss');
+      expect(boss).toHaveLength(4);
+      expect(boss.every((c) => c.rarity === 'legendary')).toBe(true);
+      expect(new Set(boss).size).toBe(4);
+    }
+  });
 });
 
 describe('cards that change on the belt', () => {

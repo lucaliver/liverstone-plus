@@ -9,6 +9,7 @@ import { randomSeed } from './core/rng';
 import { setSfxVolume, unlockAudio } from './audio/sfx';
 import { musicTrack, playMusic, setMusicVolume, suspendMusic } from './audio/music';
 import { actDef } from './data/acts';
+import type { RewardKind } from './data/config';
 import { ENEMIES } from './data/enemies';
 import { Combat } from './game/combat';
 import {
@@ -132,7 +133,7 @@ function debugMap(): void {
     r.cleared = cleared;
     goJourney();
   };
-  const reward = (kind: 'fight' | 'elite') => (): void => show(rewardScreen(r, rollRewards(r, kind), back));
+  const reward = (kind: RewardKind) => (): void => show(rewardScreen(r, rollRewards(r, kind), back));
   const rooms = Object.entries(ROOMS).map(([type, screen]) => ({
     label: t(`journey.node.${type as NodeType}`),
     icon: NODE_ICON[type as NodeType],
@@ -144,6 +145,7 @@ function debugMap(): void {
   openDebugMenu(t('debug.mapMenu'), [
     { label: t('debug.rewardFight'), icon: 'cards', run: reward('fight') },
     { label: t('debug.rewardElite'), icon: 'medal', run: reward('elite') },
+    { label: t('debug.rewardBoss'), icon: 'tophat', run: reward('boss') },
     ...rooms,
     {
       label: t('debug.heal'),
@@ -190,8 +192,8 @@ function afterCombat(combat: Combat): void {
     show(endScreen(r, true, finishRun(r, true), goHeroSelect, goTitle));
     return;
   }
-  // Elites and act bosses pay better.
-  const picks = rollRewards(r, node.type === 'fight' ? 'fight' : 'elite');
+  // Elites and act bosses pay better (bosses in legendary cards only).
+  const picks = rollRewards(r, node.type === 'fight' ? 'fight' : node.type === 'boss' ? 'boss' : 'elite');
   saveRun(r);
   show(rewardScreen(r, picks, nextNode));
 }
