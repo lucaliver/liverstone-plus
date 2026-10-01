@@ -5,7 +5,7 @@ import { CARDS, type CardCategory, cardCategory, cardCostOf } from '../../data/c
 import { saveSettings, settings } from '../../game/settings';
 import type { CardInst, Rarity } from '../../game/types';
 import { clearAll } from '../../core/save';
-import { type ModalAction, openModal, type ModalHandle } from '../app';
+import { confirmModal, type ModalAction, openModal, type ModalHandle } from '../app';
 import { cssMs, h, onPress, onTapOrHold, stagger } from '../dom';
 import { icon } from '../art/icons';
 import { cardKeywords, cardText, cardView, keywordHtml } from './cardView';
@@ -39,23 +39,17 @@ function volumeRow(label: string, get: () => number, set: (v: number) => void): 
   return h('div', { class: 'setting' }, h('span', null, label), h('div', { class: 'slider-wrap' }, input, num));
 }
 
-/** Asks before erasing every save (the run, unlocks, discoveries, settings): the confirm button must be held, then it reloads on a clean slate. */
+/** Asks before erasing every save (the run, unlocks, discoveries, settings), then reloads on a clean slate. */
 export function openResetConfirm(): void {
-  openModal({
-    body: t('menu.resetConfirm'),
-    actions: [
-      {
-        label: t('common.holdConfirm'),
-        cls: 'danger',
-        hold: true,
-        onClick: () => {
-          clearAll();
-          location.reload();
-        },
-      },
-      { label: t('common.cancel'), cls: 'secondary' },
-    ],
-  });
+  confirmModal(
+    t('menu.resetConfirm'),
+    t('common.confirm'),
+    () => {
+      clearAll();
+      location.reload();
+    },
+    t('common.cancel'),
+  );
 }
 
 /** Settings; `extra` actions go above Reset progress and Close (e.g. Main menu from the map). */

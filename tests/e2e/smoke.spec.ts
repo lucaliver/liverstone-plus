@@ -635,21 +635,12 @@ test('once signed, the contract is never shown again: the game opens on the titl
   await expect(page.locator('.splash')).toHaveCount(0);
 });
 
-/** Holds the "Hold to confirm" button of the open modal until it fires. */
-async function holdConfirm(page: Page): Promise<void> {
-  const box = (await page.getByRole('button', { name: 'Hold to confirm' }).boundingBox())!;
-  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-  await page.mouse.down();
-  await page.waitForTimeout(1200);
-  await page.mouse.up();
-}
-
 test('reset progress wipes saves after a confirmation', async ({ page }) => {
   await freshGame(page);
   page.on('dialog', (d) => d.accept());
   await page.getByRole('button', { name: /debug/i }).click();
   await page.getByRole('button', { name: /reset progress/i }).click();
-  await holdConfirm(page);
+  await page.getByRole('button', { name: 'Confirm' }).click();
   await expect(page.locator('.splash')).toBeVisible();
   expect(await page.evaluate("Object.keys(localStorage).filter((k) => k.startsWith('cardstone+:')).length")).toBe(0);
 });
@@ -662,10 +653,7 @@ test('holding the version in Settings opens the reset confirmation', async ({ pa
   await page.waitForTimeout(1200);
   await page.mouse.up();
   await expect(page.getByText(/erase everything/i)).toBeVisible();
-  // A tap on the confirm button does nothing: it has to be held.
-  await page.getByRole('button', { name: 'Hold to confirm' }).click();
-  await expect(page.locator('.splash')).toHaveCount(0);
-  await holdConfirm(page);
+  await page.getByRole('button', { name: 'Confirm' }).click();
   await expect(page.locator('.splash')).toBeVisible();
 });
 
