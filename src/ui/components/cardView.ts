@@ -30,7 +30,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   rush: { icon: 'speedCards', unit: 's' },
   burn: { icon: 'flame' },
   str: { icon: 'muscle', sign: '+' },
-  dodge: { icon: 'mirror', unit: 's' },
+  dodge: { icon: 'dodge', unit: 's' },
   parry: { icon: 'crossed' },
   hp: { icon: 'blood', sign: '-' },
   grow: { icon: 'growth', sign: '+' },

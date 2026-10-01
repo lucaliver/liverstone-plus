@@ -74,7 +74,7 @@ const defs: StatusDef[] = [
   { id: 'brownNosing', kind: 'timed', good: true, icon: 'crystalUp', regenMul: 2 },
   { id: 'spellPower', kind: 'stacks', good: true, icon: 'wand' },
   { id: 'thorns', kind: 'stacks', good: true, icon: 'thorns' },
-  { id: 'dodge', kind: 'timed', good: true, icon: 'mirror', immune: true },
+  { id: 'dodge', kind: 'timed', good: true, icon: 'dodge', immune: true },
   { id: 'juggernaut', kind: 'stacks', good: true, icon: 'helm' },
   { id: 'fortified', kind: 'timed', good: true, icon: 'fortress', holdsBlock: true },
   { id: 'regen', kind: 'dot', good: true, tone: 'green', icon: 'leaf', heals: true },
