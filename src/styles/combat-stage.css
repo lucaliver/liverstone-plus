@@ -375,12 +375,12 @@
 .threat[data-intent='charge'] { --t-ink: var(--red); --t-ink2: var(--intent-charge-hi); }
 .threat[data-intent='attack'] .t-ico,
 .threat[data-intent='charge'] .t-ico { color: var(--red); }
-.threat[data-intent='defend'] .t-ico { color: var(--steel); }
+.threat[data-intent='defend'] .t-ico { color: var(--shield); }
 .threat[data-intent='buff'] .t-ico,
 .threat[data-intent='curse'] .t-ico { color: var(--purple); }
 .threat[data-intent='curse'],
 .threat[data-intent='buff'] { --t-ink: var(--intent-buff); --t-ink2: var(--intent-buff-hi); }
-.threat[data-intent='defend'] { --t-ink: var(--steel); --t-ink2: var(--steel-hi); }
+.threat[data-intent='defend'] { --t-ink: var(--shield); --t-ink2: var(--shield-hi); }
 .threat[data-intent='steal'] { --t-ink: var(--intent-steal); --t-ink2: var(--y); }
 .threat[data-intent='idle'] { --t-ink: var(--muted); --t-ink2: var(--intent-idle-hi); }
 .threat[data-intent='absorb'] { --t-ink: var(--intent-absorb); --t-ink2: var(--intent-absorb-hi); }
@@ -500,7 +500,7 @@
   color: var(--k);
   text-shadow: 2px 0 0 var(--paper), -2px 0 0 var(--paper), 0 2px 0 var(--paper), 0 -2px 0 var(--paper);
 }
-.bar.has-block { border-color: var(--steel); box-shadow: 3px 3px 0 var(--steel); }
+.bar.has-block { border-color: var(--shield); box-shadow: 3px 3px 0 var(--shield); }
 
 .block-chip {
   flex: none;
@@ -509,7 +509,7 @@
   height: 38px;
   display: grid;
   place-items: center;
-  color: var(--steel);
+  color: var(--shield);
 }
 .block-chip .pico {
   position: absolute;

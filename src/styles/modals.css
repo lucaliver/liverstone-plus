@@ -353,8 +353,8 @@
 .fx-dmg .pico { color: var(--red); }
 .fx-mana { color: var(--b); }
 .fx-mana .pico { color: var(--b); }
-.fx-block { color: var(--steel); }
-.fx-block .pico { color: var(--steel); }
+.fx-block { color: var(--shield); }
+.fx-block .pico { color: var(--shield); }
 .fx[data-card],
 .fx[data-status],
 .fx[data-hex],

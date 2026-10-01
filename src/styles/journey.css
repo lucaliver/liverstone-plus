@@ -240,6 +240,8 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+  /* the whole sequence plays at this share of its natural length */
+  --pace: 0.8;
   --px: 4px;
   --ground: calc(var(--safe-b) + 40px);
   padding: 16px 16px calc(var(--ground) + 40 * var(--px));
@@ -247,7 +249,7 @@
   background-color: var(--bg2);
   background-image: radial-gradient(circle, var(--bg-dot) 30%, transparent 34%);
   background-size: 6px 6px;
-  animation: act-in 0.3s steps(3) both, act-out 0.4s steps(4) 3.2s forwards;
+  animation: act-in calc(0.3s * var(--pace)) steps(3) both, act-out calc(0.4s * var(--pace)) steps(4) calc(3.2s * var(--pace)) forwards;
 }
 .act-intro.out { animation: act-out 0.3s steps(3) forwards; }
 /* the act's scene with its sky stands on the ground at the bottom of the curtain (the ground runs on to both edges) */
@@ -271,6 +273,10 @@
   .act-intro { --px: 5px; }
 }
 .act-intro > :not(.act-intro-art) { position: relative; }
+/* the clock card is stamped on opaque: hidden, then big, then in place (no half-faded paper card flashing white) */
+@keyframes act-stamp {
+  from { scale: 1.5; visibility: hidden; }
+}
 @keyframes act-in {
   from { opacity: 0; }
 }
@@ -286,8 +292,8 @@
 .act-intro-title .word { display: inline-block; white-space: nowrap; }
 .act-intro-title .word span {
   display: inline-block;
-  animation: letter-drop 0.42s steps(6) both;
-  animation-delay: calc(0.3s + var(--i) * 0.1s);
+  animation: letter-drop calc(0.42s * var(--pace)) steps(6) both;
+  animation-delay: calc((0.3s + var(--i) * 0.1s) * var(--pace));
 }
 .act-intro-name {
   margin: 0;
@@ -295,7 +301,7 @@
   font-size: clamp(20px, 6.5vw, 28px);
   text-transform: uppercase;
   color: var(--fg);
-  animation: act-in 0.2s steps(2) 1s both;
+  animation: act-in calc(0.2s * var(--pace)) steps(2) calc(1s * var(--pace)) both;
 }
 .act-intro-clock {
   display: flex;
@@ -311,6 +317,6 @@
   border: var(--line) solid var(--k);
   box-shadow: var(--off) var(--off) 0 var(--p);
   rotate: -4deg;
-  animation: stamp-in 0.15s steps(2) 1.5s both;
+  animation: act-stamp calc(0.15s * var(--pace)) steps(2) calc(1.5s * var(--pace)) both;
 }
 .act-intro-clock .pico { font-size: 26px; color: var(--p); --ink2: var(--k); }
