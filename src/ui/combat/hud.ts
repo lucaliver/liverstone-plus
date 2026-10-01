@@ -188,7 +188,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
         v.toast(`${t(`enemy.${e.def.id}.name`)}: ${t('intent.charge')}`);
       }
     }
-    // Countdown to the special move: its icon and how many main attacks until it comes.
+    // Countdown to the special move (left of the enemy's HP): its icon and in how many attacks it comes.
     const special = combat.nextSpecial();
     const isMain = m === e.def.main && !!special;
     const nextSig = isMain && special ? `${special.id}|${e.mainsLeft + 1}` : '';
@@ -198,7 +198,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
       if (isMain && special) {
         r.intentNext.dataset.intent = special.intent;
         setTone(r.intentNext, moveTone(special));
-        r.intentNext.innerHTML = `${icon(moveIcon(special))}<b>${e.mainsLeft + 1}</b>`;
+        r.intentNext.innerHTML = `${icon(moveIcon(special))}<span>${t('combat.specialIn', { n: e.mainsLeft + 1 })}</span>`;
         r.intentNext.title = `${t('combat.afterAttacks', { n: e.mainsLeft + 1 })} ${t(`move.${special.id}`)}`;
       }
     }

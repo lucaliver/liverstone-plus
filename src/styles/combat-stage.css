@@ -357,19 +357,29 @@
   white-space: nowrap;
   text-shadow: 2px 0 0 var(--paper), -2px 0 0 var(--paper), 0 2px 0 var(--paper), 0 -2px 0 var(--paper);
 }
-.threat .t-next {
-  flex: none;
+/* the special move to come, in the empty column left of the enemy's HP (the hero's portrait column below): its icon and "in N" attacks */
+.t-next {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  translate: 0 -50%;
+  width: var(--portrait);
+  height: 38px;
   display: flex;
   align-items: center;
-  gap: 2px;
-  padding: 0 5px;
+  justify-content: center;
+  gap: 3px;
+  color: var(--k);
+  background: var(--paper);
+  border: var(--line) solid var(--void);
+  box-shadow: 3px 3px 0 var(--shadow);
   font-family: var(--font-ui);
   font-size: 18px;
-  color: var(--paper);
-  background: var(--k);
-  border-left: 2px solid var(--void);
+  line-height: 1;
+  white-space: nowrap;
 }
-.threat .t-next .pico { font-size: 18px; color: var(--tone-hi, var(--y)); --ink2: var(--k); }
+.t-next[hidden] { display: none; }
+.t-next .pico { font-size: 24px; color: var(--tone, var(--k)); --ink2: var(--y); }
 .threat .t-time {
   flex: none;
   width: 46px;
@@ -448,6 +458,7 @@
 
 /* bars */
 .hpline {
+  position: relative;
   width: 100%;
   display: flex;
   align-items: center;

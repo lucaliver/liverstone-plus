@@ -219,6 +219,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   );
   onPress(r.portrait, deckInfo);
   onPress(r.intent, moveInfo);
+  onPress(r.intentNext, moveInfo);
   // The weak spot answers on touch-down, not on release: it only stays up for a couple of seconds.
   bindMop(v);
   r.weakSpot.addEventListener('pointerdown', () => {
