@@ -42,7 +42,7 @@ export function crossTrainingScreen(run: RunState, onDone: () => void): Screen {
   take.addEventListener('click', () => {
     if (!chosen) return;
     sfx('button');
-    playCardGain(el, { ...crossTrain(run, chosen) }, t('cross.learned'));
+    playCardGain(el, { ...crossTrain(run, chosen) }, t('cross.learned'), { start: 'ding', end: 'deckAdd' });
     closeRoom(el, onDone, CARD_SHOW_MS);
   });
 

@@ -30,7 +30,7 @@ export function vendingScreen(run: RunState, onDone: () => void): Screen {
           !canVend(run, rarity),
           () => {
             sfx('tap');
-            playCardGain(el, { ...vend(run, rarity) }, t('vending.dropped'));
+            playCardGain(el, { ...vend(run, rarity) }, t('vending.dropped'), { start: 'bloodDrip', end: 'thunk' });
             closeRoom(el, onDone, CARD_SHOW_MS);
           },
         ),

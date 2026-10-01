@@ -286,6 +286,88 @@ const SOUNDS = {
     });
     noise(1.3, { freq: 3500, vol: 0.08, type: 'highpass', attack: 0.15 });
   },
+  /** A hammer on an anvil: a bright clang of off-key partials over a low knock (a card is being upgraded). */
+  anvil: () => {
+    [1180, 1790, 2610].forEach((f, i) => {
+      tone(f, 0.45 - i * 0.08, { type: 'sine', vol: 0.1 });
+    });
+    tone(130, 0.12, { type: 'sine', vol: 0.4, to: 70 });
+    noise(0.04, { freq: 3500, vol: 0.2, type: 'highpass' });
+  },
+  /** A card came out better: four quick rising notes and a glitter on top. */
+  levelUp: () => {
+    [523, 659, 784, 1046].forEach((f, i) => {
+      tone(f, 0.14, { type: 'square', vol: 0.05, delay: i * 0.06 });
+    });
+    noise(0.3, { freq: 6500, vol: 0.06, type: 'highpass', delay: 0.2 });
+  },
+  /** A rubber stamp on paper: a dull thump and a short scuff. */
+  stamp: () => {
+    tone(100, 0.1, { type: 'sine', vol: 0.5, to: 55 });
+    noise(0.08, { freq: 700, vol: 0.3, type: 'lowpass' });
+    noise(0.06, { freq: 2200, vol: 0.1, delay: 0.04 });
+  },
+  /** Promoted: a two-step brass fanfare ending on a held chord. */
+  promoted: () => {
+    [392, 523].forEach((f, i) => {
+      tone(f, 0.16, { type: 'sawtooth', vol: 0.07, delay: i * 0.13 });
+    });
+    [523, 659, 784].forEach((f) => {
+      tone(f, 0.7, { type: 'sawtooth', vol: 0.05, delay: 0.28, attack: 0.02 });
+    });
+  },
+  /** A paper shredder: a buzzing motor and a rattle of teeth. */
+  shred: () => {
+    tone(110, 0.7, { type: 'sawtooth', vol: 0.08, to: 90 });
+    for (let i = 0; i < 10; i++) noise(0.05, { freq: 2400 + (i % 2) * 800, q: 2, vol: 0.14, delay: i * 0.06 });
+    noise(0.7, { freq: 3000, vol: 0.06, type: 'highpass' });
+  },
+  /** A photocopier: the scan bar whirs across, then the copy lands with a thunk. */
+  copier: () => {
+    tone(260, 0.5, { type: 'sawtooth', vol: 0.05, to: 620 });
+    noise(0.5, { freq: 1500, to: 3500, q: 3, vol: 0.08 });
+    tone(110, 0.1, { type: 'square', vol: 0.1, to: 70, delay: 0.52 });
+    noise(0.06, { freq: 700, vol: 0.25, type: 'lowpass', delay: 0.52 });
+  },
+  /** Jaws snapping shut twice. */
+  chomp: () => {
+    for (const d of [0, 0.14]) {
+      tone(180, 0.05, { type: 'square', vol: 0.14, to: 90, delay: d });
+      noise(0.05, { freq: 1500, q: 2, vol: 0.3, delay: d });
+      noise(0.04, { freq: 4000, vol: 0.1, type: 'highpass', delay: d + 0.02 });
+    }
+  },
+  /** Scissors: two quick metallic snips. */
+  snip: () => {
+    for (const d of [0, 0.09]) {
+      noise(0.05, { freq: 5200, to: 3000, q: 6, vol: 0.2, delay: d });
+      tone(2600, 0.04, { type: 'triangle', vol: 0.05, to: 1900, delay: d });
+    }
+  },
+  /** Small things rattling into your hands: a quick run of high chimes. */
+  jingle: () => {
+    [1568, 1976, 2349, 2637, 3136].forEach((f, i) => {
+      tone(f, 0.16, { type: 'triangle', vol: 0.06, delay: i * 0.045 });
+    });
+  },
+  /** The machine takes its payment: two heartbeats, then drips. */
+  bloodDrip: () => {
+    for (const d of [0, 0.16]) tone(70, 0.12, { type: 'sine', vol: 0.45, to: 45, delay: d });
+    tone(900, 0.1, { type: 'sine', vol: 0.12, to: 260, delay: 0.34 });
+    tone(700, 0.1, { type: 'sine', vol: 0.08, to: 200, delay: 0.5 });
+  },
+  /** Something heavy drops into the tray. */
+  thunk: () => {
+    tone(95, 0.18, { type: 'sine', vol: 0.5, to: 50 });
+    noise(0.1, { freq: 500, vol: 0.3, type: 'lowpass' });
+    tone(300, 0.05, { type: 'triangle', vol: 0.08, delay: 0.14 });
+    noise(0.08, { freq: 2500, vol: 0.1, delay: 0.12 });
+  },
+  /** A desk bell. */
+  ding: () => {
+    tone(1568, 0.5, { type: 'sine', vol: 0.14 });
+    tone(2352, 0.35, { type: 'sine', vol: 0.06 });
+  },
   enrage: () => {
     tone(80, 0.6, { type: 'sawtooth', vol: 0.15, to: 160 });
     noise(0.5, { freq: 400, vol: 0.2, type: 'lowpass' });

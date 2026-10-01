@@ -34,7 +34,7 @@ export function promotionScreen(run: RunState, onDone: () => void): Screen {
             onPick: (c) => {
               const before = { ...c };
               addPerk(run, c.uid, p.id);
-              playCardChange(el, before, { ...c }, t(`perk.${p.id}`));
+              playCardChange(el, before, { ...c }, t(`perk.${p.id}`), { start: 'stamp', end: 'promoted' });
               closeRoom(el, onDone, CARD_SHOW_MS);
             },
           });

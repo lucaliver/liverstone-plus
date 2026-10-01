@@ -87,28 +87,46 @@ ${shadow}
 <circle cx="90" cy="34" r="3" fill="${INK}"/><circle cx="110" cy="34" r="3" fill="${INK}"/>
 <path d="M95 45q5 4 10 0" stroke="${INK}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
 
-/** Lost & Found: a cardboard box of stationery that is, on closer look, chewing on it. `open` is its other frame, the lid up. */
+/**
+ * Lost & Found: a cardboard box with stationery poking out of its flaps, a pair of angry eyes on its front and a mouth full of
+ * teeth with the tongue out. `open` is its other frame (flaps flung wide, jaws gaping), swapped in now and then by the CSS.
+ */
 const mimic = (open: boolean): string => {
-  // the lid shuts the mouth to a crack; open, the mouth gapes and the stationery rises out of it
-  const top = open ? 98 : 104;
-  const mouth = open ? 30 : 16;
-  const teeth = open ? 14 : 8;
-  const lift = open ? 28 : 0;
-  const zig = `M34 ${top - 6}${'l4 {t}l4 -{t}'.repeat(16).replaceAll('{t}', String(teeth))}z`;
+  const KRAFT = '#ffd900';
+  const SHADE = '#ff6a30';
+  const lift = open ? 42 : 24;
+  const slant = open ? 26 : 10;
+  const mouthTop = 124;
+  const mouthBottom = open ? 168 : 148;
+  const tooth = open ? 14 : 9;
+  const teeth = (y: number, dir: 1 | -1, x0: number): string => `M${x0} ${y}${'l8 {t}l8 -{t}'.repeat(8).replaceAll('{t}', String(dir * tooth))}`;
+  const eye = (cx: number): string =>
+    `<circle cx="${cx}" cy="100" r="14" fill="${PAPER}" ${OUT}/><rect x="${cx - 2.5}" y="${open ? 90 : 93}" width="5" height="${open ? 20 : 15}" fill="${INK}"/>`;
   return `
-<defs>${lg('lf-b', '#e0a050', '#9a6428')}${lg('lf-l', '#d09040', '#8a5420')}</defs>
 ${shadow}
-${open ? `<path d="M34 24h132l12 ${top - 28}H22z" fill="url(#lf-l)" ${OUT}/><path d="M92 24h16v${top - 28}H92z" fill="#e8d8a0" ${OUT}/>` : ''}
-<path d="M62 ${84 - lift}l-8-40 10-2 12 40z" fill="#ffd900" ${OUT}/><path d="M56 ${52 - lift}l8-2-2-8z" fill="#ff3d9a" ${OUT}/>
-<path d="M118 ${86 - lift}l22-38 8 6-20 40z" fill="#6a9af8" ${OUT}/><path d="M128 ${76 - lift}l5 3M134 ${68 - lift}l5 3" stroke="${INK}" stroke-width="2"/>
-<path d="M92 ${80 - lift}l4-30 22 4-2 30z" fill="${PAPER}" ${OUT}/><path d="M98 ${62 - lift}h14" stroke="#1c5fd0" stroke-width="3"/>
-<path d="M22 ${top}h156v${184 - top}H22z" fill="url(#lf-b)" ${OUT}/>
-<rect x="30" y="${top - 6}" width="140" height="${mouth}" fill="#120e18" ${OUT}/>
-<path d="${zig}" fill="${PAPER}" ${OUT}/>
-<circle cx="76" cy="${top + 4}" r="9" fill="#ffd900" ${OUT}/><circle cx="124" cy="${top + 4}" r="9" fill="#ffd900" ${OUT}/>
-<rect x="73" y="${top - 4}" width="6" height="16" fill="#120e18"/><rect x="121" y="${top - 4}" width="6" height="16" fill="#120e18"/>
-<path d="M84 ${top + 28}h32v34H84z" fill="${PAPER}" ${OUT}/><path d="M90 ${top + 38}h20M90 ${top + 46}h14" stroke="#c9bd98" stroke-width="3"/>
-${open ? '' : `<path d="M16 ${top - 4}l4-14h160l4 14z" fill="url(#lf-l)" ${OUT}/><path d="M92 ${top - 18}h16v14H92z" fill="#e8d8a0" ${OUT}/>`}`;
+<!-- stationery it has eaten, poking out between the flaps -->
+<path d="M64 80L58 ${74 - lift - 14}l10-3 12 ${lift + 14}z" fill="#ff3d9a" ${OUT}/><path d="M59 ${74 - lift - 14}l10-3-2-8z" fill="${INK}"/>
+<path d="M104 80l14-${lift + 22} 10 4-8 ${lift + 18}z" fill="#1c5fd0" ${OUT}/><path d="M112 ${72 - lift}l5 2M116 ${64 - lift}l5 2" stroke="${PAPER}" stroke-width="2.5"/>
+<path d="M82 80l2-${lift + 6} 22 3-4 ${lift + 3}z" fill="${PAPER}" ${OUT}/><path d="M88 ${70 - lift}h12" stroke="#1c5fd0" stroke-width="3"/>
+<!-- the flaps -->
+<path d="M24 76L${24 - slant} ${76 - lift}h66l${slant + 4} ${lift}z" fill="${SHADE}" ${OUT}/>
+<path d="M176 76l${slant} -${lift}h-66l-${slant + 4} ${lift}z" fill="${SHADE}" ${OUT}/>
+<!-- the box -->
+<path d="M20 74h160v110H20z" fill="${KRAFT}" ${OUT}/>
+<path d="M166 76h12v106h-12z" fill="${SHADE}"/>
+<path d="M90 74h20v50H90z" fill="${PAPER}" ${OUT}/><path d="M96 80h8M96 88h8M96 96h8" stroke="#c9bd98" stroke-width="2"/>
+${eye(66)}${eye(134)}
+<path d="M44 82l40 14M156 82l-40 14" stroke="${INK}" stroke-width="7" stroke-linecap="square"/>
+<!-- the mouth: teeth from above and below, tongue out -->
+<path d="M32 ${mouthTop}h136v${mouthBottom - mouthTop}H32z" fill="${INK}" ${OUT}/>
+<path d="${teeth(mouthTop, 1, 36)}z" fill="${PAPER}" ${OUT}/>
+<path d="${teeth(mouthBottom, -1, 40)}z" fill="${PAPER}" ${OUT}/>
+<path d="M88 ${mouthBottom - 4}h30v${open ? 22 : 14}c0 8-6 12-15 12s-15-4-15-12z" fill="#ff3d9a" ${OUT}/>
+<path d="M103 ${mouthBottom + 2}v${open ? 18 : 10}" stroke="#a01060" stroke-width="3"/>
+<!-- a shipping label, and a pencil stuck in the corner of its mouth -->
+<path d="M30 ${open ? 172 : 160}h44v${open ? 10 : 20}H30z" fill="${PAPER}" ${OUT}/><path d="M35 ${open ? 177 : 166}h26M35 ${open ? 177 : 172}h18" stroke="#1c5fd0" stroke-width="3"/>
+<path d="M168 ${mouthTop + 12}l22 -8" stroke="${INK}" stroke-width="12" stroke-linecap="round"/><path d="M168 ${mouthTop + 12}l22 -8" stroke="#ffd900" stroke-width="6" stroke-linecap="round"/>
+<path d="M186 ${mouthTop + 5}l8 -3" stroke="#ff3d9a" stroke-width="6" stroke-linecap="round"/>`;
 };
 
 /** Vending Machine: it takes blood. A drip bag hangs from its side, its display has eyes, its flap has teeth. */

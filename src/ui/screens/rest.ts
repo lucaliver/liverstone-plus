@@ -61,7 +61,7 @@ export function restScreen(run: RunState, onDone: () => void): Screen {
             const before = { ...c };
             upgradeCard(run, c.uid);
             run.cleared = true;
-            playCardChange(el, before, { ...c }, t('rest.upgraded'));
+            playCardChange(el, before, { ...c }, t('rest.upgraded'), { start: 'anvil', end: 'levelUp' });
             closeRoom(el, onDone, CARD_SHOW_MS);
           },
         });

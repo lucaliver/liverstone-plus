@@ -1,4 +1,4 @@
-import { sfx } from '../../audio/sfx';
+import { type SoundId, sfx } from '../../audio/sfx';
 import { t } from '../../core/i18n';
 import type { CardInst } from '../../game/types';
 import { icon } from '../art/icons';
@@ -13,6 +13,12 @@ export const CARD_SHOW_MS = 1700;
 /** Shreds are cut into this many vertical strips. */
 const STRIPS = 5;
 
+/** The two sounds of a show: when it starts, and with the sparks. */
+export interface ShowSounds {
+  start: SoundId;
+  end: SoundId;
+}
+
 /** A dark veil over the room with the card animation on it, and the `word` stamped last. */
 function showOver(screen: HTMLElement, kind: string, stage: HTMLElement, word: string, extra?: HTMLElement): HTMLElement {
   const layer = h('div', { class: `card-show ${kind}`, 'aria-hidden': 'true' }, stage, extra ?? null, h('div', { class: 'show-stamp' }, word));
@@ -21,7 +27,7 @@ function showOver(screen: HTMLElement, kind: string, stage: HTMLElement, word: s
 }
 
 /** The middle of a stage, where the particles go. */
-function sparkAt(el: HTMLElement, kind: string, n: number, delay: number, sound: Parameters<typeof sfx>[0]): void {
+function sparkAt(el: HTMLElement, kind: string, n: number, delay: number, sound: SoundId): void {
   setTimeout(() => {
     const r = el.getBoundingClientRect();
     burst(kind, r.left + r.width / 2, r.top + r.height / 2, n, 1.3);
@@ -31,22 +37,22 @@ function sparkAt(el: HTMLElement, kind: string, n: number, delay: number, sound:
 }
 
 /** The card takes a hammer blow, then comes back changed (upgraded, promoted) with a flash and a stamp. */
-export function playCardChange(screen: HTMLElement, before: CardInst, after: CardInst, word: string): void {
+export function playCardChange(screen: HTMLElement, before: CardInst, after: CardInst, word: string, sounds: ShowSounds): void {
   const fresh = cardView(after, { cls: 'show-new' });
   const stage = h('div', { class: 'show-stage' }, cardView(before, { cls: 'show-old' }), h('i', { class: 'show-flash' }), fresh);
   showOver(screen, 'change', stage, word);
-  sfx('block');
+  sfx(sounds.start);
   haptic('tap');
-  sparkAt(fresh, 'gold', 34, 480, 'ability');
+  sparkAt(fresh, 'gold', 34, 480, sounds.end);
 }
 
 /** A new card drops in with a flash, and the word is stamped last. */
-export function playCardGain(screen: HTMLElement, card: CardInst, word: string): void {
+export function playCardGain(screen: HTMLElement, card: CardInst, word: string, sounds: ShowSounds): void {
   const fresh = cardView(card, { cls: 'show-new' });
   showOver(screen, 'change', h('div', { class: 'show-stage' }, h('i', { class: 'show-flash' }), fresh), word);
-  sfx('block');
+  sfx(sounds.start);
   haptic('tap');
-  sparkAt(fresh, 'gold', 34, 480, 'ability');
+  sparkAt(fresh, 'gold', 34, 480, sounds.end);
 }
 
 /** The card goes through the shredder: it comes apart in strips that fall away. */
@@ -60,9 +66,9 @@ export function playShred(screen: HTMLElement, card: CardInst, word: string): vo
     stage.append(strip);
   }
   showOver(screen, 'shred', stage, word, h('div', { class: 'shred-machine', html: icon('shredder') }));
-  sfx('cardExpire');
+  sfx('shred');
   haptic('tap');
-  sparkAt(stage, 'paper', 26, 420, 'stash');
+  sparkAt(stage, 'paper', 26, 420, 'reshuffle');
 }
 
 /** A light sweeps the card, and a second one slides out from behind it. */
@@ -70,17 +76,17 @@ export function playPhotocopy(screen: HTMLElement, card: CardInst, word: string)
   const copy = cardView(card, { cls: 'copy-new' });
   const stage = h('div', { class: 'show-stage' }, cardView(card, { cls: 'copy-src' }), h('i', { class: 'copy-scan' }), copy);
   showOver(screen, 'photocopy', stage, word);
-  sfx('cardPlay');
+  sfx('copier');
   haptic('tap');
-  sparkAt(copy, 'paper', 18, 520, 'stash');
+  sparkAt(copy, 'paper', 18, 520, 'cardPlay');
 }
 
 /** A relic is handed over: its badge stamps in with a flash, and its name is stamped last. */
-export function playRelic(screen: HTMLElement, id: string): void {
+export function playRelic(screen: HTMLElement, id: string, sounds: ShowSounds): void {
   const badge = h('div', { class: 'relic-badge show-new', html: relicArt(id) });
   const stage = h('div', { class: 'show-stage' }, badge, h('i', { class: 'show-flash' }));
   showOver(screen, 'relic', stage, t(`relic.${id}.name`));
-  sfx('block');
+  sfx(sounds.start);
   haptic('tap');
-  sparkAt(badge, 'gold', 34, 480, 'ability');
+  sparkAt(badge, 'gold', 34, 480, sounds.end);
 }

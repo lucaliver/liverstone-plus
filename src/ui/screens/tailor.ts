@@ -32,7 +32,7 @@ export function tailorScreen(run: RunState, onDone: () => void): Screen {
       roomOption(relicArt(PANTS), t(`relic.${PANTS}.name`), owned ? t('tailor.owned') : t(`relic.${PANTS}.d`, { n: pants.n }), owned, () => {
         sfx('tap');
         gainRelic(run, PANTS);
-        playRelic(el, PANTS);
+        playRelic(el, PANTS, { start: 'snip', end: 'jingle' });
         closeRoom(el, onDone, CARD_SHOW_MS);
       }),
       roomOption(icon('heart'), t('tailor.vest'), t('tailor.vestDesc', { n: CONFIG.tailorMaxHp }), false, () => {

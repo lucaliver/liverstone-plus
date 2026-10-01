@@ -34,7 +34,7 @@ export function lostFoundScreen(run: RunState, onDone: () => void): Screen {
           () => {
             sfx('tap');
             gainRelic(run, id);
-            playRelic(el, id);
+            playRelic(el, id, { start: 'chomp', end: 'jingle' });
             closeRoom(el, onDone, CARD_SHOW_MS);
           },
           () => openInfo({ art: relicArt(id), title: t(`relic.${id}.name`), desc: text }),
