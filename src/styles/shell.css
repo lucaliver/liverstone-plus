@@ -17,7 +17,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 100;
+  z-index: var(--z-grain);
   pointer-events: none;
   opacity: 0.22;
   mix-blend-mode: overlay;
@@ -34,7 +34,7 @@
 }
 
 .screen.leaving {
-  animation: screen-out 0.2s steps(3) both;
+  animation: screen-out var(--dur-leave) steps(3) both;
   pointer-events: none;
 }
 
@@ -61,7 +61,7 @@
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 50;
+  z-index: var(--z-fx);
   image-rendering: pixelated;
 }
 
@@ -69,7 +69,7 @@
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 60;
+  z-index: var(--z-floaters);
 }
 
 .shake-small { animation: shake-s 0.2s steps(4); }

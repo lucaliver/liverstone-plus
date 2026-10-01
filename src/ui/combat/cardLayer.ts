@@ -6,7 +6,7 @@ import type { CombatCard } from '../../game/types';
 import { icon } from '../art/icons';
 import { cardCostLabel, cardFace, cardView } from '../components/cardView';
 import { openCardDetail, openInfo } from '../components/modals';
-import { LONG_PRESS_MS, h, onTapOrHold, setHtml, setText, toggle } from '../dom';
+import { LONG_PRESS_MS, SLACK_MS, cssMs, h, onTapOrHold, setHtml, setText, toggle } from '../dom';
 import { burst, haptic } from '../fx/fx';
 import type { CombatView } from './view';
 
@@ -265,7 +265,7 @@ export function createCardLayer(v: CombatView): CardLayer {
     if (reason === 'played' && combat.exhaust.includes(ce.card)) {
       el2.classList.add('exhaust-out');
       burst('ash', rc.left + rc.width / 2, rc.top + rc.height / 2, 18);
-      setTimeout(() => el2.remove(), 350);
+      setTimeout(() => el2.remove(), cssMs('--dur-exhaust') + SLACK_MS);
       return;
     }
     const target =
@@ -284,9 +284,9 @@ export function createCardLayer(v: CombatView): CardLayer {
       el2.classList.add('fly-out');
       el2.style.transform = `${base} translate3d(${dx}px, ${dy}px, 0) scale(.35) rotate(${dx > 0 ? 20 : -20}deg)`;
       // Skills have their own effects (Block, heal, mana…): only the other cards land with a hit.
-      if (reason === 'played' && def.type !== 'skill') setTimeout(() => burst('hit', target.x, target.y, 8), 300);
+      if (reason === 'played' && def.type !== 'skill') setTimeout(() => burst('hit', target.x, target.y, 8), cssMs('--dur-fly'));
     }
-    setTimeout(() => el2.remove(), 520);
+    setTimeout(() => el2.remove(), cssMs(el2.classList.contains('fall-out') ? '--dur-fall' : '--dur-fly') + SLACK_MS);
   };
 
   /**

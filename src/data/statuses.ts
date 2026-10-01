@@ -84,7 +84,7 @@ const defs: StatusDef[] = [
   { id: 'regen', kind: 'dot', good: true, tone: 'green', icon: 'leaf', heals: true },
   { id: 'overtime', kind: 'timed', good: true, icon: 'overtime' },
   { id: 'parry', kind: 'timed', good: true, icon: 'crossed' },
-  { id: 'haste', kind: 'timed', good: true, icon: 'gauge', timeMul: 1.5 },
+  { id: 'haste', kind: 'timed', good: true, icon: 'gauge', timeMul: 1.5, look: 'enraged' },
   { id: 'rush', kind: 'timed', good: true, icon: 'speedCards', beltMul: CONFIG.beltRush },
   // Work-Life Balance: every card played hits again (for v), until two cards of the same colour come one after the
   // other; `e` is the colour of the last one.
@@ -153,12 +153,23 @@ const defs: StatusDef[] = [
     kind: 'stacks',
     good: false,
     icon: 'flame',
+    burst: { kind: 'fire', n: 10 },
     onAttack: (c, side, s) => void c.damage(side === 'enemy' ? 'hero' : 'enemy', side, s.v, { raw: true, ignoreBlock: true, kind: 'burn' }, 'dot'),
   },
   { id: 'poison', kind: 'dot', good: false, tone: 'green', icon: 'drop' },
   { id: 'weak', kind: 'timed', good: false, tone: 'purple', icon: 'broken', dealtMul: 0.75 },
   { id: 'vulnerable', kind: 'timed', good: false, tone: 'red', icon: 'crack', takenMul: 1.5 },
-  { id: 'chill', kind: 'timed', good: false, tone: 'blue', icon: 'snow', regenMul: 0.5, timeMul: 0.5 },
+  {
+    id: 'chill',
+    kind: 'timed',
+    good: false,
+    tone: 'blue',
+    icon: 'snow',
+    regenMul: 0.5,
+    timeMul: 0.5,
+    burst: { kind: 'ice', n: 14 },
+    look: 'chilled',
+  },
   // A stunned enemy's timer stops (see enemyTimeRate); a stunned hero can't play cards.
   {
     id: 'stun',
@@ -166,6 +177,7 @@ const defs: StatusDef[] = [
     kind: 'timed',
     good: false,
     icon: 'stars',
+    look: 'stunned',
     selfIcon: 'ko',
     timeMul: 0,
     canPlay: (_c, side) => (side === 'hero' ? 'combat.stunned' : null),

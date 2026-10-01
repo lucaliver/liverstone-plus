@@ -263,6 +263,11 @@ export class Combat {
     return Math.min(1, w);
   }
 
+  /** Whether the side takes no damage right now (Dodge). */
+  isImmune(side: Side): boolean {
+    return this.flag(side, 'immune');
+  }
+
   /** Whether any active status of the side carries this rule flag. */
   private flag(side: Side, key: 'holdsBlock' | 'immune' | 'ignoresRules' | 'autoplay'): boolean {
     return Object.keys(this.fighter(side).statuses).some((id) => STATUSES[id][key] && this.has(side, id));

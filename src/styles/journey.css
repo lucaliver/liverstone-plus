@@ -92,7 +92,7 @@
 .path {
   position: relative;
   margin: 8px 0 12px;
-  background-image: linear-gradient(#ffffff10 1px, transparent 1px), linear-gradient(90deg, #ffffff10 1px, transparent 1px);
+  background-image: linear-gradient(var(--white-a6) 1px, transparent 1px), linear-gradient(90deg, var(--white-a6) 1px, transparent 1px);
   background-size: 23px 23px;
   border: 3px solid var(--map-wall);
 }
@@ -234,7 +234,7 @@
 .act-intro {
   position: absolute;
   inset: 0;
-  z-index: 50;
+  z-index: var(--z-curtain);
   display: flex;
   flex-direction: column;
   align-items: center;

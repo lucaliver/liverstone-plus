@@ -1,4 +1,5 @@
 import type { CardClass, CardDef, CardInst, Keyword, Rarity } from '../../game/types';
+import { CONFIG } from '../config';
 import { PERKS } from '../perks';
 import { mageCards } from './mage';
 import { necromancerCards } from './necromancer';
@@ -49,7 +50,7 @@ export function cardCostOf(card: CardInst & { tax?: number; cut?: number; virus?
   const cost = card.up && def.upCost !== undefined ? def.upCost : def.cost;
   if (cost < 0) return cost;
   const base = Math.max(def.minCost ?? 0, cost + (card.perks ?? []).reduce((d, p) => d + (PERKS[p]?.costDelta ?? 0), 0));
-  return Math.max(0, base + (card.tax ?? 0) + (card.virus ? 1 : 0) - (card.cut ?? 0));
+  return Math.max(0, base + (card.tax ?? 0) * CONFIG.inflationCost + (card.virus ? CONFIG.virusCost : 0) - (card.cut ?? 0));
 }
 
 /** Values of a card copy (upgrade, per-fight bonus and time on the belt included). */

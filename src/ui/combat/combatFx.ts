@@ -123,8 +123,7 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         const p = v.pointOf(e.target);
         floatText(p.x, p.y - 36, t(`status.${e.id}`), `status ${def.good ? 'good' : 'bad'}`);
         sfx(def.good ? 'status' : 'debuff');
-        if (e.id === 'burn') burst('fire', p.x, p.y, 10);
-        if (e.id === 'chill') burst('ice', p.x, p.y, 14);
+        if (def.burst) burst(def.burst.kind, p.x, p.y, def.burst.n);
         break;
       }
       case 'text': {

@@ -29,7 +29,13 @@ function slide(hero: HeroDef, index: number): HTMLElement {
         : '';
   const el = h(
     'section',
-    { class: `hero-slide ${locked ? 'locked' : ''}`, 'data-hero': id, 'aria-roledescription': 'slide', 'aria-label': t(`hero.${id}.name`) },
+    {
+      class: `hero-slide ${locked ? 'locked' : ''}`,
+      'data-hero': id,
+      style: { '--hero-ink': hero.ink } as never,
+      'aria-roledescription': 'slide',
+      'aria-label': t(`hero.${id}.name`),
+    },
     h('div', {
       class: 'hero-stage',
       html: `${motes(8)}<div class="pedestal"></div><div class="hero-sprite">${creature(id)}</div><div class="hero-num">${String(index + 1).padStart(2, '0')}</div>${badge}`,
@@ -122,6 +128,7 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
     memoBtn.hidden = !memos;
     memoBtn.innerHTML = `${icon('clipboard')}${memos && chosenMemos().length ? `<b>${chosenMemos().length}</b>` : ''}`;
     el.dataset.hero = hero.id;
+    el.style.setProperty('--hero-ink', hero.ink);
     const locked = !heroUnlocked(hero.id);
     startBtn.disabled = locked;
     startBtn.textContent = locked ? t('hero.locked') : t('hero.start');

@@ -70,7 +70,7 @@
   z-index: 5;
   opacity: 1;
   outline: none;
-  animation: swap-fly 0.35s steps(6) forwards;
+  animation: swap-fly var(--dur-swap-fly) steps(6) forwards;
 }
 @keyframes swap-fly {
   0% { transform: none; }
@@ -78,7 +78,7 @@
   80% { transform: translate(var(--dx), var(--dy)) scale(var(--fit)); }
   100% { transform: translate(var(--dx), var(--dy)) scale(var(--fit)); }
 }
-.swap-deck .card.sel.replaced { outline: none; animation: swap-gone 0.2s steps(2) 0.25s forwards; }
+.swap-deck .card.sel.replaced { outline: none; animation: swap-gone var(--dur-swap-gone) steps(2) var(--delay-swap-gone) forwards; }
 @keyframes swap-gone {
   to { transform: scale(0.85) rotate(-6deg); opacity: 0; }
 }
@@ -427,7 +427,7 @@
 .heal-rise {
   position: absolute;
   inset: 0;
-  z-index: 40;
+  z-index: var(--z-overlay);
   overflow: hidden;
   pointer-events: none;
 }
@@ -476,13 +476,13 @@
 .card-show {
   position: absolute;
   inset: 0;
-  z-index: 40;
+  z-index: var(--z-overlay);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 18px;
-  background: #0c0818cc;
+  background: var(--void-a80);
   pointer-events: none;
   animation: show-out 0.2s steps(2) 1.5s forwards;
 }

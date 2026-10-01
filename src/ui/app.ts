@@ -1,5 +1,5 @@
 import { icon } from './art/icons';
-import { h } from './dom';
+import { SLACK_MS, cssMs, h } from './dom';
 
 export interface Screen {
   el: HTMLElement;
@@ -29,7 +29,7 @@ export function show(screen: Screen): void {
   if (prev) {
     prev.leave?.();
     prev.el.classList.add('leaving');
-    setTimeout(() => prev.el.remove(), 250);
+    setTimeout(() => prev.el.remove(), cssMs('--dur-leave') + SLACK_MS);
   }
   // Close any modal left open by the previous screen.
   root.querySelectorAll('.modal-back').forEach((m) => {

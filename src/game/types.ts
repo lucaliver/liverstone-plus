@@ -210,6 +210,10 @@ export interface StatusDef {
   rust?: { every: number; max: number };
   /** Runs every simulation step while the status is active. */
   tick?: (c: Combat, side: Side, s: StatusVal, dt: number) => void;
+  /** The particles that burst when the status lands (`kind` is a palette of `ui/fx/fx.ts`). */
+  burst?: { kind: string; n: number };
+  /** A class its sprite wears while the enemy carries the status (the look is in `combat-stage.css`). */
+  look?: string;
   /** On the enemy: how close the status is to going off, 0 to 1 (the belt reddens as it nears 1). */
   warning?: (c: Combat, s: StatusVal) => number;
 }
@@ -363,7 +367,8 @@ export interface HeroDef {
   /** Sleeve slots. */
   sleeve: number;
   starterRelic?: string;
-  color: string;
+  /** The ink the hero is printed in, as a CSS token (`var(--p)`): the hero select and the fight tint their accents with it. */
+  ink: string;
   ability: {
     id: string;
     /** Mana cost: abilities are expensive, a mid-fight power move once the crystals have grown. */

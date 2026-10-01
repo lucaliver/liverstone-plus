@@ -12,9 +12,6 @@
 
 /* game-style carousel: one hero per screen, horizontal swipe with snapping */
 .hero-select { gap: 8px; }
-.hero-select[data-hero='warrior'] { --hero-ink: var(--p); }
-.hero-select[data-hero='mage'] { --hero-ink: var(--b); }
-.hero-select[data-hero='necromancer'] { --hero-ink: var(--green); }
 .hero-carousel {
   position: relative;
   flex: 1;
@@ -46,9 +43,6 @@
   scrollbar-width: none;
 }
 .hero-slide::-webkit-scrollbar { display: none; }
-.hero-slide[data-hero='warrior'] { --hero-ink: var(--p); }
-.hero-slide[data-hero='mage'] { --hero-ink: var(--b); }
-.hero-slide[data-hero='necromancer'] { --hero-ink: var(--green); }
 
 .hero-stage {
   position: relative;
@@ -312,7 +306,7 @@
   line-height: 1.1;
   text-transform: uppercase;
   color: var(--y);
-  background: #0c0818cc; /* --void at 80% */
+  background: var(--void-a80);
 }
 .hero-new {
   /* a starburst sticker slapped on the stage, rocking in two steps */

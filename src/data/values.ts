@@ -1,7 +1,8 @@
 import { HALF } from './enemies';
 import { CONFIG } from './config';
+import { CARDS } from './cards';
 import { JUST_CAUSE_HP } from './cards/warrior';
-import { OVERTIME_MULT, OVERTIME_TIME, TIME_THEFT, VIRULENCE_AT, VIRULENCE_BONUS } from './heroes';
+import { HEROES, OVERTIME_MULT, OVERTIME_TIME, TIME_THEFT, VIRULENCE_AT, VIRULENCE_BONUS } from './heroes';
 import { PERKS } from './perks';
 import { CLOCK_BLOCK, MUG_MANA, STAPLER_DAMAGE } from './relics';
 import {
@@ -25,7 +26,7 @@ import {
 } from './statuses';
 
 const pct = (x: number): number => Math.round(x * 100);
-const mul = (id: string, key: 'dealtMul' | 'takenMul' | 'timeMul'): number => STATUSES[id][key] ?? 1;
+const mul = (id: string, key: 'dealtMul' | 'takenMul' | 'timeMul' | 'regenMul'): number => STATUSES[id][key] ?? 1;
 
 /**
  * The numbers rules text quotes, as `{$name}` in `i18n/en.ts`. Each one is read from the constant, status or record that makes the rule work
@@ -38,6 +39,10 @@ export const VALUES = {
   vulnPct: pct(mul('vulnerable', 'takenMul') - 1),
   hastePct: pct(mul('haste', 'timeMul') - 1),
   hurryPct: pct(CONFIG.beltHurry - 1),
+  chillPct: pct(1 - mul('chill', 'timeMul')),
+  crunchPct: pct(CONFIG.beltCrunch - 1),
+  brownPct: pct(mul('brownNosing', 'regenMul') - 1),
+  critMult: CONFIG.critMult,
   policyWindow: POLICY_WINDOW,
   laneWindow: LANE_WINDOW,
   chillGap: CHILL_GAP,
@@ -56,12 +61,16 @@ export const VALUES = {
   wakePerCard: WAKE_PER_CARD,
   // Rules on cards
   virusDelay: CONFIG.virusDelay,
+  virusCost: CONFIG.virusCost,
+  inflationCost: CONFIG.inflationCost,
+  kamikazeDamage: CARDS.kamikaze.vals[1],
   // Half-HP moves (the Paper Cuts it starts with count 1)
   paperCutsX: 1 + HALF.paperCuts,
   securityBlock: HALF.securityBlock,
   slavesStall: HALF.slavesStall,
   complianceSlow: HALF.complianceSlow,
   // Heroes
+  thickSkinPct: pct(HEROES.warrior.blockDecay / CONFIG.heroBlockDecay - 1),
   overtimeMult: OVERTIME_MULT,
   overtimeTime: OVERTIME_TIME,
   timeTheft: TIME_THEFT,

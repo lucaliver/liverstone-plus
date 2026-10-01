@@ -152,7 +152,7 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
     class: 'screen combat',
     'data-hero': run.hero,
     'data-act': String(combat.enemy.def.act),
-    style: { '--hero-color': combat.heroDef.color } as never,
+    style: { '--hero-ink': combat.heroDef.ink } as never,
   });
   el.innerHTML = markup(run, combat);
   const r = queryRefs(el);

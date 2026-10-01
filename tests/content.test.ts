@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import enStrings from '../src/i18n/en';
 
@@ -172,6 +172,24 @@ describe('content integrity', () => {
 describe('colours', () => {
   const tokens = readFileSync('src/styles/tokens.css', 'utf8');
   const token = (name: string): string | undefined => new RegExp(`${name}:\\s*(#[0-9a-fA-F]{6})`).exec(tokens)?.[1];
+
+  it('colours are written only in tokens.css and acts.css', () => {
+    for (const file of readdirSync('src/styles').filter((f) => f.endsWith('.css') && f !== 'tokens.css' && f !== 'acts.css')) {
+      const hexes = readFileSync(`src/styles/${file}`, 'utf8').match(/#[0-9a-fA-F]{3,8}\b/g);
+      expect(hexes, `${file} has raw colours: use a token`).toBeNull();
+    }
+  });
+
+  it('every inks-with-transparency token starts with its base ink', () => {
+    const base: Record<string, string | undefined> = {
+      void: token('--void'),
+      k: token('--k'),
+      paper: token('--paper'),
+      p: token('--p'),
+      white: '#ffffff',
+    };
+    for (const m of tokens.matchAll(/--(\w+)-a\d+:\s*(#[0-9a-fA-F]{8})/g)) expect(m[2].slice(0, 7).toLowerCase(), m[0]).toBe(base[m[1]]);
+  });
 
   it('the pixel renderer prints with the inks of the stylesheet', () => {
     expect(INK_HEX).toEqual({ Y: token('--y'), P: token('--p'), B: token('--b'), K: token('--k') });

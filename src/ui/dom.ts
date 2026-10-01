@@ -36,6 +36,12 @@ export function toggle(el: Element, cls: string, on: boolean): void {
   if (el.classList.contains(cls) !== on) el.classList.toggle(cls, on);
 }
 
+/** A little longer than an animation, so its last frame is shown before the element is removed or the next step begins. */
+export const SLACK_MS = 60;
+
+/** A duration token of the stylesheet (`--dur-fly`) in milliseconds, so what waits for an animation to end waits as long as the CSS plays it. */
+export const cssMs = (token: string): number => Number.parseFloat(cssColor(token)) || 0;
+
 /** A colour token of the stylesheet (`--shield`), so scripts paint with the same inks as the CSS. */
 export const cssColor = (token: string): string => getComputedStyle(document.documentElement).getPropertyValue(token).trim();
 

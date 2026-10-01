@@ -7,13 +7,13 @@ import type { Screen } from '../app';
 import { icon } from '../art/icons';
 import { cardView } from '../components/cardView';
 import { openCardDetail, sortCards, sortControl } from '../components/modals';
-import { h, onTapOrHold } from '../dom';
+import { SLACK_MS, cssMs, h, onTapOrHold } from '../dom';
 import { dropLetters } from '../components/decor';
 import { runHud } from './journey';
 import { HEAL_FAST_MS, playHealing } from './rest';
 
-/** How long the chosen card takes to fly onto the one it replaces, and to be seen sitting there (ms). */
-const SWAP_ANIM_MS = 550;
+/** How long the chosen card takes to fly onto the one it replaces, and to be seen sitting there (ms): the CSS plays it, this waits for it. */
+const swapMs = (): number => cssMs('--delay-swap-gone') + cssMs('--dur-swap-gone') + SLACK_MS;
 
 /** Tap selects; a long press opens the card detail instead (and doesn't select). */
 function selectable(el: HTMLElement, card: CardInst, onSelect: () => void): void {
@@ -120,7 +120,7 @@ export function rewardScreen(run: RunState, picks: RewardOffer[], onDone: () => 
     flyer.style.setProperty('--fit', String(to.width / from.width));
     flyer.classList.add('flying');
     old.classList.add('replaced');
-    setTimeout(onDone, SWAP_ANIM_MS);
+    setTimeout(onDone, swapMs());
   });
 
   const el = h(

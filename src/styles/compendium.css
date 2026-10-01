@@ -103,7 +103,7 @@
   min-height: 34px;
   font-family: var(--font-ui);
   font-size: 18px;
-  border-bottom: 1px dashed #1b183033;
+  border-bottom: 1px dashed var(--k-a20);
 }
 .foe-moves li:last-child { border-bottom: 0; }
 .foe-moves .mi { font-size: 22px; --ink2: var(--y); }

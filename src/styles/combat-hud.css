@@ -185,9 +185,8 @@
 }
 .ability-btn .acost .pico { font-size: 13px; color: var(--paper); --ink2: transparent; }
 .ability-btn:active { transform: translate(var(--off), var(--off)); box-shadow: none; }
-[data-hero='warrior'] { --res-ink: var(--p); --hero-ink: var(--p); }
-[data-hero='mage'] { --res-ink: var(--b); --hero-ink: var(--b); }
-[data-hero='necromancer'] { --res-ink: var(--green); --hero-ink: var(--green); }
+/* the fight takes the hero's ink (`--hero-ink`, set from the hero's data) for its resource accents */
+.combat { --res-ink: var(--hero-ink); }
 
 /* hero row: right above the belt, so your HP and Block are read without looking away from the cards */
 .hero-row {

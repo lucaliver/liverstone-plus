@@ -75,7 +75,7 @@ button.stat:active,
   bottom: 0;
   left: -30%;
   width: 18%;
-  background: repeating-linear-gradient(90deg, #fff9 0 4px, transparent 4px 8px);
+  background: repeating-linear-gradient(90deg, var(--white-a60) 0 4px, transparent 4px 8px);
   transform: skewX(-20deg);
   animation: cta-glint 2.6s steps(10) infinite;
   pointer-events: none;

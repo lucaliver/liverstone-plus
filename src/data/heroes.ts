@@ -33,7 +33,7 @@ const warrior: HeroDef = {
   ],
   // The simplest class: no once-per-run special. One arm left: a single sleeve slot.
   sleeve: 1,
-  color: '#d0563f',
+  ink: 'var(--p)',
   ability: {
     id: 'overtime',
     cost: 6,
@@ -59,7 +59,7 @@ const mage: HeroDef = {
     ['replyAll', 'blueScreen', 'modernTimes', 'lookBusy'],
   ],
   sleeve: 2,
-  color: '#5b8cff',
+  ink: 'var(--b)',
   ability: {
     id: 'timeTheft',
     cost: 6,
@@ -94,7 +94,7 @@ const necromancer: HeroDef = {
     ['deadLetter', 'sickLeave', 'sabotage', 'slowdown'],
   ],
   sleeve: 3,
-  color: '#2a8a4a',
+  ink: 'var(--green)',
   ability: {
     id: 'generalStrike',
     cost: 6,

@@ -164,7 +164,7 @@
   gap: 10px;
   width: min(100%, 360px);
   padding-bottom: 8px;
-  border-bottom: 6px solid #5a3a28;
+  border-bottom: 6px solid var(--wood-edge);
 }
 .timecard-cta {
   position: relative;
@@ -253,7 +253,7 @@
   position: absolute;
   top: calc(var(--safe-t) + 6px);
   right: 6px;
-  z-index: 10;
+  z-index: var(--z-debug);
   width: 36px;
   height: 36px;
   font-size: 20px;

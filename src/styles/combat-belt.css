@@ -58,7 +58,7 @@
 .maw-eyes i {
   width: 4px;
   height: 4px;
-  background: #b0306e;
+  background: var(--maw-eye);
 }
 @keyframes blink {
   0%, 92%, 100% { opacity: 1; }
@@ -123,7 +123,7 @@
   top: 0;
   height: calc((1 - var(--charge, 0)) * 100%);
   pointer-events: none;
-  background-color: #f6f0e4b8;
+  background-color: var(--paper-a72);
   border-bottom: max(2px, calc(var(--cw) * 0.03)) solid var(--b);
 }
 /* Pending: its first ride along the belt, stamped and out of reach until it comes round again */
@@ -133,7 +133,7 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: repeating-linear-gradient(-45deg, #1b183099 0 6px, transparent 6px 14px);
+  background: repeating-linear-gradient(-45deg, var(--k-a60) 0 6px, transparent 6px 14px);
 }
 .card.pending .c-tags { z-index: 2; background: var(--y); outline: max(2px, calc(var(--cw) * 0.02)) solid var(--k); }
 
@@ -143,7 +143,7 @@
 .card.ruled .c-face { opacity: 0.7; }
 .card[data-cat='attack'] { --rule-ink: var(--p); }
 .card[data-cat='defense'] { --rule-ink: var(--b); }
-.card[data-cat='utility'] { --rule-ink: #c08a00; }
+.card[data-cat='utility'] { --rule-ink: var(--cat-utility-ink); }
 .card[data-cat='curse'] { --rule-ink: var(--green); }
 .pin-badge {
   position: absolute;
@@ -175,7 +175,7 @@
 /* exhausted: it shrinks where it was played while it burns away row by row */
 .card.exhaust-out {
   pointer-events: none;
-  animation: exhaust-out 0.3s steps(5) forwards;
+  animation: exhaust-out var(--dur-exhaust) steps(5) forwards;
 }
 @keyframes exhaust-out {
   0% { scale: 1; clip-path: inset(0); }
@@ -186,7 +186,7 @@
   50% { border-color: var(--p); box-shadow: var(--sh) var(--sh) 0 var(--p); }
 }
 .card.dragging {
-  z-index: 200 !important;
+  z-index: var(--z-drag) !important;
   box-shadow: calc(var(--sh) * 2) calc(var(--sh) * 2) 0 var(--shadow);
 }
 .card.nope { animation: nope 0.24s steps(4); }
@@ -196,12 +196,12 @@
   75% { margin-left: -4px; }
 }
 .card.fly-out {
-  transition: transform 0.28s steps(5), opacity 0.28s steps(5);
+  transition: transform var(--dur-fly) steps(5), opacity var(--dur-fly) steps(5);
   opacity: 0;
   pointer-events: none;
 }
 .card.fall-out {
-  transition: transform 0.4s steps(5), opacity 0.4s steps(5);
+  transition: transform var(--dur-fall) steps(5), opacity var(--dur-fall) steps(5);
   opacity: 0;
   pointer-events: none;
 }
@@ -319,7 +319,7 @@
   top: var(--belt-row-h);
   height: calc(var(--cw-belt) * 1.4);
   z-index: 5;
-  background: repeating-linear-gradient(-45deg, #1b1830 0 12px, #3a3450 12px 24px);
+  background: repeating-linear-gradient(-45deg, var(--k) 0 12px, var(--hazard-light) 12px 24px);
   border-top: 3px solid var(--y);
   border-bottom: 3px solid var(--y);
   opacity: 0.9;

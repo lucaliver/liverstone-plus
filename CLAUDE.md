@@ -163,7 +163,8 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 
 - Partials in cascade order via `styles/index.css`; **`responsive.css` stays last**. Shared decor in `decor.css`.
 - Tokens in `tokens.css`, act themes in `acts.css` (inks `--p --b --y --k`, `--paper`, night `--bg --bg2 --void`, brass/paper helpers). Use a token,
-  not a raw hex (scripts read tokens with `cssColor`; the pixel renderer's inks in `art/riso.ts` are checked against them by a test). Paper panels: `--line` borders, hard `--off` shadows.
+  not a raw hex: a test fails on any colour written outside `tokens.css`/`acts.css` (scripts read tokens with `cssColor`; the pixel renderer's inks in `art/riso.ts` are checked against them). Paper panels: `--line` borders, hard `--off` shadows.
+- **One source for anything two places must agree on.** Durations script waits on are tokens (`--dur-*`, read with `cssMs`); layers above the screens are `--z-*`; a hero's ink is `HeroDef.ink` and a status's look and particles are `StatusDef.look`/`burst` (no hero or status ids in CSS or UI code); numbers in rules text are `{$name}` values.
 - Every act has a colour theme (`styles/acts.css`): the night tokens (`--bg`, `--bg2`, `--bg-dot`, `--night-dot`, the belt stream `--belt`) and the map's (`--map-*`) are re-set under `[data-act='N']`. A screen opts in with `data-act`: the map and the fight set it themselves (the fight by its enemy's act), rooms and rewards get it from `inAct` in `main.ts`; a new act needs its block there and an `actArt` scene.
 - Fonts: `--font-display` (Silkscreen) for title words only; numbers use `--font-ui` (Jersey 10); long text `--font`.
 - Motion is stepped (`steps(n)`); modals are the exception. Respect `reduce-motion`. Shared keyframes live once.
@@ -189,6 +190,4 @@ Icons (`ICONS`) and creatures (`CREATURES`) are SVG written for the ink palette 
 - Pixel-art caching (deferred: generation is fast).
 - Biome covers lint and format (no ESLint with TS 7).
 - The balance bot underplays the Mage's chaining and spends abilities as soon as it can.
-- Status look in the UI (`hud.ts` CSS classes per status, `combatFx.ts` bursts) still names a few status ids.
 - The reward choice is not saved: closing the game on the reward screen loses it.
-- `z-index` values have no shared scale.

@@ -14,6 +14,9 @@ import { type CombatView, PASSIVE_ICON } from './view';
 /** Everything around the cards: HP bars, statuses, the threat bar, mana and hero extras. `onPassive` explains the hero passive. */
 /** Share of max HP under which the hero's portrait sweats. */
 const LOW_HP = 0.3;
+/** The statuses that change how the enemy's sprite looks, and the looks themselves (the half-HP rage is one of them). */
+const LOOKS = Object.values(STATUSES).filter((s): s is typeof s & { look: string } => !!s.look);
+const ALL_LOOKS = [...new Set([...LOOKS.map((s) => s.look), 'enraged'])];
 /** Steps of the belt's red wash (motion is stepped). */
 const BELT_ALARM_STEPS = 8;
 
@@ -200,7 +203,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     r.incoming.style.width = shown ? `${(lost / hs.maxHp) * 100}%` : '0';
     toggle(v.el, 'danger', shown && left < 0.8);
     // The hit being charged would knock the hero out (Dodge would save them): alarm on the edges, and a siren once.
-    const lethal = hostile && combat.intentDamage(m) > 0 && incoming >= hs.hp && !combat.has('hero', 'dodge');
+    const lethal = hostile && combat.intentDamage(m) > 0 && incoming >= hs.hp && !combat.isImmune('hero');
     toggle(v.el, 'lethal', lethal);
     if (lethal && alarmed !== e.moveCount) {
       sfx('lethal');
@@ -238,9 +241,10 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
       el.remove();
       rustEls.delete(id);
     }
-    toggle(r.enemyArt, 'stunned', combat.has('enemy', 'stun'));
-    toggle(r.enemyArt, 'chilled', combat.has('enemy', 'chill'));
-    toggle(r.enemyArt, 'enraged', combat.has('enemy', 'haste') || (combat.enemy.halfTriggered && !!combat.enemy.def.onHalf));
+    // The sprite wears the look of the statuses it carries (and is enraged once its half-HP move has fired).
+    const looks = new Set(LOOKS.filter((s) => combat.has('enemy', s.id)).map((s) => s.look));
+    if (combat.enemy.halfTriggered && combat.enemy.def.onHalf) looks.add('enraged');
+    for (const look of ALL_LOOKS) toggle(r.enemyArt, look, looks.has(look));
     toggle(r.enemyArt, 'absorbing', !!combat.enemy.move.absorb && combat.enemyTimeRate() > 0);
     // Blackout: the cards hide what they do (their art, name and cost stay).
     toggle(v.el, 'blackout', combat.has('hero', 'blackout'));

@@ -34,7 +34,7 @@
 .neon::after { right: 14%; }
 @keyframes neon {
   70%, 73%, 76%, 81% { background: var(--paper); }
-  71%, 74%, 77% { background: #4a4260; }
+  71%, 74%, 77% { background: var(--neon-off); }
 }
 /* the scene dims, not the HP and threat bars (same layer as .enemy-info, which comes later) */
 .neon-dim {

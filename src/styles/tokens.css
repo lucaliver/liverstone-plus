@@ -49,6 +49,30 @@
   --intent-absorb: #1cc0a0;
   --intent-absorb-hi: #8ae8d0;
   --intent-absorb-lo: #1a9a80;
+  /* Inks with transparency (there is no color-mix for Safari 16): the base ink, then its alpha in percent */
+  --void-a77: #0c0818c4;
+  --void-a80: #0c0818cc;
+  --void-a85: #0c0818d8;
+  --k-a20: #1b183033;
+  --k-a27: #1b183044;
+  --k-a60: #1b183099;
+  --paper-a72: #f6f0e4b8;
+  --p-a13: #ff3d9a22;
+  --white-a6: #ffffff10;
+  --white-a60: #ffffff99;
+  /* One-off colours of single effects and props */
+  --wallpaper: #2a2040;
+  --wallpaper-stripe: #332850;
+  --glow-dot: #fff3a0;
+  --plank: #3a2a3a;
+  --plank-edge: #2a1e2a;
+  --paper-dot: #c8bca4;
+  --paper-dot-light: #d4c8b0;
+  --neon-off: #4a4260;
+  --maw-eye: #b0306e;
+  --hazard-light: #3a3450;
+  --wood-edge: #5a3a28;
+  --cat-utility-ink: #c08a00;
   /* Splats behind damage numbers */
   --splat-dmg: #d8121e;
   --splat-hurt: #8a0a24;
@@ -76,6 +100,35 @@
   /* Pixel outlines for text over the fight (sprites, plates, night): light text gets the ink ring, dark text the paper ring. */
   --ring-k: 3px 0 0 var(--k), -3px 0 0 var(--k), 0 3px 0 var(--k), 0 -3px 0 var(--k), 3px 3px 0 var(--k), -3px 3px 0 var(--k), 3px -3px 0 var(--k), -3px -3px 0 var(--k);
   --ring-p: 2px 0 0 var(--paper), -2px 0 0 var(--paper), 0 2px 0 var(--paper), 0 -2px 0 var(--paper), 2px 2px 0 var(--paper), -2px 2px 0 var(--paper), 2px -2px 0 var(--paper), -2px -2px 0 var(--paper);
+
+  /* Durations that script waits on, so the CSS and the code can't disagree: a screen leaving, a card flying or falling away or
+     burning up, the reward swap (the card crosses over, then the old one drops away after a pause) */
+  --dur-leave: 200ms;
+  --dur-exhaust: 300ms;
+  --dur-fly: 280ms;
+  --dur-fall: 400ms;
+  --dur-swap-fly: 350ms;
+  --dur-swap-gone: 200ms;
+  --delay-swap-gone: 250ms;
+
+  /* Layers above the screens, lowest first (the small numbers inside a component stay local) */
+  --z-debug: 10;
+  --z-hint: 30;
+  --z-lethal: 34;
+  --z-danger: 35;
+  --z-speech: 35;
+  --z-overlay: 40;
+  --z-banner: 45;
+  --z-fx: 50;
+  --z-curtain: 50;
+  --z-floaters: 60;
+  --z-coach: 70;
+  --z-modal: 80;
+  --z-grain: 100;
+  --z-drag: 200;
+  --z-timecard: 240;
+  --z-start: 250;
+  --z-door: 300;
 
   --line: 3px;
   --off: 4px;

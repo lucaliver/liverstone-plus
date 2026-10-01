@@ -2,7 +2,7 @@
 .ability-flash {
   position: absolute;
   inset: 0;
-  z-index: 40;
+  z-index: var(--z-overlay);
   pointer-events: none;
   background-image: radial-gradient(circle, var(--res-ink) 30%, transparent 34%);
   background-size: 10px 10px;
@@ -17,7 +17,7 @@
   left: 0;
   right: 0;
   top: 26%;
-  z-index: 45;
+  z-index: var(--z-banner);
   padding: 0 16px;
   text-align: center;
   font-family: var(--font-display);
@@ -43,7 +43,7 @@
   left: 50%;
   top: 40%;
   translate: -50% 0;
-  z-index: 30;
+  z-index: var(--z-hint);
   max-width: 86%;
   padding: 8px 14px;
   text-align: center;
@@ -183,7 +183,7 @@
 .start-wrap {
   position: absolute;
   inset: 0;
-  z-index: 250;
+  z-index: var(--z-start);
   display: grid;
   place-items: center;
   pointer-events: none;
@@ -210,7 +210,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  z-index: 240;
+  z-index: var(--z-timecard);
   width: min(64%, 230px);
   padding: 8px 10px 10px;
   translate: -50% -50%;
@@ -256,15 +256,15 @@
 .office-door {
   position: absolute;
   inset: 0;
-  z-index: 300;
+  z-index: var(--z-door);
   display: flex;
   align-items: flex-end;
   justify-content: center;
   overflow: hidden;
   pointer-events: none;
   /* the corridor wall: striped wallpaper */
-  background-color: #2a2040;
-  background-image: repeating-linear-gradient(90deg, transparent 0 18px, #332850 18px 30px);
+  background-color: var(--wallpaper);
+  background-image: repeating-linear-gradient(90deg, transparent 0 18px, var(--wallpaper-stripe) 18px 30px);
   transform-origin: 50% 58%;
   animation: door-walk 0.5s steps(5) 1.27s forwards;
 }
@@ -295,7 +295,7 @@
   position: absolute;
   inset: 0;
   background-color: var(--y);
-  background-image: radial-gradient(circle, #fff3a0 30%, transparent 34%);
+  background-image: radial-gradient(circle, var(--glow-dot) 30%, transparent 34%);
   background-size: 6px 6px;
 }
 .door-half {
@@ -304,9 +304,9 @@
   display: flex;
   align-items: center;
   padding: 0 4px;
-  background-color: #3a2a3a;
+  background-color: var(--plank);
   /* vertical planks, hard edges */
-  background-image: repeating-linear-gradient(90deg, transparent 0 22px, #2a1e2a 22px 25px);
+  background-image: repeating-linear-gradient(90deg, transparent 0 22px, var(--plank-edge) 22px 25px);
   border: 3px solid var(--void);
   animation: door-swing 0.5s steps(5) 0.72s forwards;
 }
@@ -327,7 +327,7 @@
   text-align: center;
   color: var(--k);
   background-color: var(--paper-dim);
-  background-image: radial-gradient(circle, #c8bca4 30%, transparent 34%);
+  background-image: radial-gradient(circle, var(--paper-dot) 30%, transparent 34%);
   background-size: 4px 4px;
   border: 4px solid var(--brass);
 }
@@ -361,7 +361,7 @@
   position: absolute;
   left: 50%;
   top: 34%;
-  z-index: 35;
+  z-index: var(--z-speech);
   width: min(80%, 300px);
   translate: -50% 0;
   padding: 10px 14px;
@@ -395,12 +395,12 @@
 }
 
 /* coach marks (first fight, first Kamikaze): one element lit, the rest dimmed, a paper note next to it */
-.coach { position: absolute; inset: 0; z-index: 70; overflow: hidden; }
+.coach { position: absolute; inset: 0; z-index: var(--z-coach); overflow: hidden; }
 .coach-hole {
   position: absolute;
   outline: 4px solid var(--y);
   outline-offset: 2px;
-  box-shadow: 0 0 0 200vmax #0c0818c4;
+  box-shadow: 0 0 0 200vmax var(--void-a77);
   pointer-events: none;
 }
 .coach-note {

@@ -2,13 +2,13 @@
 .modal-back {
   position: absolute;
   inset: 0;
-  z-index: 80;
+  z-index: var(--z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: calc(var(--safe-t) + 16px) 16px calc(var(--safe-b) + 16px);
-  background-color: #0c0818d8;
-  background-image: radial-gradient(circle, #ff3d9a22 30%, transparent 34%);
+  background-color: var(--void-a85);
+  background-image: radial-gradient(circle, var(--p-a13) 30%, transparent 34%);
   background-size: 6px 6px;
   /* windows open fast and smoothly (the rest of the UI keeps its stepped motion) */
   animation: fade 0.1s ease-out both;
@@ -76,7 +76,7 @@
   gap: 12px;
   min-height: 56px;
   padding: 6px 2px;
-  border-bottom: 2px dashed #1b183044;
+  border-bottom: 2px dashed var(--k-a27);
   font-family: var(--font-ui);
   font-size: 18px;
 }
