@@ -256,6 +256,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<path d="M12 4h30l10 10v46H12z"/><rect x="28" y="16" width="8" height="22" fill="#16121f"/><rect x="28" y="44" width="8" height="8" fill="#16121f"/>`,
   },
   pushback: { el: 'steel', svg: `<path d="M6 10l22 22L6 54V40l8-8-8-8zM32 10l22 22-22 22V40l8-8-8-8z"/>` },
+  virus: {
+    el: 'nature',
+    svg: `<circle cx="32" cy="32" r="16"/><g ${S} stroke-width="5"><path d="M32 4v12M32 48v12M4 32h12M48 32h12M12 12l9 9M43 43l9 9M52 12l-9 9M21 43l-9 9"/></g><g fill="#16121f"><rect x="25" y="26" width="5" height="5"/><rect x="35" y="35" width="5" height="5"/><rect x="34" y="24" width="4" height="4"/></g>`,
+  },
   windUp: {
     el: 'steel',
     svg: `<rect x="14" y="6" width="28" height="22"/><g fill="#16121f"><rect x="20" y="13" width="6" height="6"/><rect x="30" y="13" width="6" height="6"/><rect x="22" y="22" width="12" height="3"/></g><rect x="12" y="30" width="32" height="22"/><rect x="14" y="52" width="10" height="10"/><rect x="32" y="52" width="10" height="10"/><rect x="44" y="38" width="6" height="4"/><rect x="50" y="32" width="12" height="16"/><rect x="54" y="38" width="4" height="4" fill="#16121f"/>`,

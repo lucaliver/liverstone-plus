@@ -49,6 +49,8 @@ export interface CombatCard extends CardInst {
   hex?: CardHex;
   /** True once the card has ridden the whole belt this fight (a Pending card becomes playable). */
   passed?: boolean;
+  /** Infected (Sick Coworker): costs 1 more until played, and once `t` (seconds on the belt) reaches `CONFIG.virusDelay` it infects the next card behind it, once (`spread`). */
+  virus?: { t: number; spread: boolean };
   /** Extra mana cost until the card is next played (Inflation). */
   tax?: number;
   /** Seconds spent on the belt since it was drawn (cards with `ride` change with it). */
@@ -205,6 +207,8 @@ export interface MoveDef {
   hex?: { id: string; share: number };
   /** Inflation: this many random cards (belt first, then the rest of the deck) cost 1 more mana until next played. */
   inflate?: number;
+  /** Virus: this many random cards (belt first, then the rest of the deck) are infected until next played. */
+  infect?: number;
   /** While this move charges, the damage the enemy takes from cards is stored instead of lost… */
   absorb?: boolean;
   /** …and a `release` move adds everything stored to its hit. */
@@ -346,6 +350,7 @@ export type CombatEvent =
   | { type: 'cardDiscarded'; card: CombatCard }
   | { type: 'hexed'; card: CombatCard }
   | { type: 'inflated'; card: CombatCard }
+  | { type: 'infected'; card: CombatCard }
   | { type: 'absorbed'; amount: number }
   | { type: 'hexTap'; card: CombatCard }
   | { type: 'hexBroken'; card: CombatCard }

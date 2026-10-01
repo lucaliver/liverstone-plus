@@ -200,6 +200,16 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         }
         break;
       }
+      case 'infected': {
+        const el = cards.elementOf(e.card.uid);
+        if (el) v.retrigger(el, 'hex-in');
+        sfx('curse');
+        if (!hexHinted.has('virus')) {
+          hexHinted.add('virus');
+          v.toast(t('combat.virus'));
+        }
+        break;
+      }
       case 'absorbed': {
         const p = v.enemyPoint();
         floatText(p.x, p.y - 30, `+${e.amount}`, 'copied');

@@ -58,6 +58,7 @@ export function moveEffect(m: MoveDef, verbose = false, values: MoveValues = bas
     parts.push(`<span class="fx fx-curse" data-card="${cu.id}">${icon('skull')}${verbose ? t('move.fx.adds', { card }) : card}<b>${n}</b></span>`);
   }
   if (m.inflate) parts.push(`<span class="fx fx-bad" data-rule="inflation">${icon('inflation')}${t('move.fx.inflate', { n: m.inflate })}</span>`);
+  if (m.infect) parts.push(`<span class="fx fx-bad" data-rule="virus">${icon('virus')}${t('move.fx.infect', { n: m.infect })}</span>`);
   if (m.absorb) parts.push(`<span class="fx fx-block" data-rule="copy">${icon('scanner')}${t('move.fx.absorb')}</span>`);
   if (m.release) parts.push(`<span class="fx fx-dmg" data-rule="copy">${icon('copy')}${t('move.fx.release')}</span>`);
   if (m.intent === 'idle') parts.push(`<span class="fx">${t('move.fx.idle')}</span>`);
@@ -88,7 +89,7 @@ export function movePattern(e: EnemyDef, values: MoveValues = baseValues, mark?:
 /** A move's icon: its intent's, or the status's own when applying one status is all it does (Snark: Poison). */
 export function moveIcon(m: MoveDef): string {
   const st = m.status?.length === 1 ? m.status[0] : undefined;
-  const only = st && !m.dmg && !m.block && !m.heal && !m.curse && !m.hex && !m.steal && !m.inflate && !m.drainMana;
+  const only = st && !m.dmg && !m.block && !m.heal && !m.curse && !m.hex && !m.steal && !m.inflate && !m.infect && !m.drainMana;
   return only ? STATUSES[st.id].icon : (INTENT_ICON[m.intent] ?? 'star');
 }
 
@@ -112,6 +113,7 @@ export function enemyTraits(e: EnemyDef, withHalf = true): { icon: string; name:
 /** Rules a move can bring that aren't statuses or cards, explained on a press. */
 const RULES: Record<string, { icon: string; title: TKey; desc: TKey }> = {
   inflation: { icon: 'inflation', title: 'rule.inflation', desc: 'rule.inflation.d' },
+  virus: { icon: 'virus', title: 'rule.virus', desc: 'rule.virus.d' },
   drain: { icon: 'drain', title: 'rule.drain', desc: 'rule.drain.d' },
   copy: { icon: 'scanner', title: 'rule.copy', desc: 'rule.copy.d' },
 };

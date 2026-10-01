@@ -26,6 +26,8 @@ interface CardEl {
   over: boolean;
   /** Stone cover with the taps left, while the card is petrified. */
   hexEl?: HTMLElement;
+  /** The virus on an infected card. */
+  virusEl?: HTMLElement;
   /** The pushpin on a card pinned where it is (Team Change). */
   pinEl?: HTMLElement;
   /** Icon of the rule (enemy passive, stun…) that blocks the card, while one does. */
@@ -308,7 +310,12 @@ export function createCardLayer(v: CombatView): CardLayer {
     }
     // Inflation raises the cost mid-fight: the label follows, in red.
     setText(ce.cost, cardCostLabel(card));
-    toggle(ce.cost, 'taxed', !!card.tax);
+    toggle(ce.cost, 'taxed', !!card.tax || !!card.virus);
+    toggle(ce.el, 'sick', !!card.virus);
+    if (!card.virus !== !ce.virusEl) {
+      ce.virusEl?.remove();
+      ce.virusEl = card.virus ? ce.el.appendChild(h('div', { class: 'virus-badge', html: icon('virus') })) : undefined;
+    }
     const ruleId = rule?.status;
     if (ruleId !== ce.rule) {
       ce.rule = ruleId;

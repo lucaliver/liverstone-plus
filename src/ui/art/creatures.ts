@@ -332,6 +332,35 @@ ${shadow}
 <path d="M82 88c10 8 26 6 34-6" stroke="#1b1830" stroke-width="4" fill="none" stroke-linecap="round"/>
 <path d="M116 82l5-3" stroke="#1b1830" stroke-width="3" stroke-linecap="round"/>`;
 
+/** The Sick Coworker: pale green, red nose, a thermometer in his mouth, a tissue box under one arm and a cloud of germs he refuses to take home. */
+const sickCoworker = `
+<defs>${lg('cw-s', '#d8d0c0', '#9a948a')}${lg('cw-k', '#c8e8a8', '#7ab86a')}</defs>
+${shadow}
+<!-- germ cloud -->
+<g class="limb" fill="#2a8a4a" ${OUT}><circle cx="36" cy="40" r="9"/><circle cx="168" cy="52" r="8"/><circle cx="26" cy="86" r="6"/><circle cx="174" cy="96" r="6"/></g>
+<g stroke="#1b1830" stroke-width="2.5"><path d="M36 28v-5M36 52v5M24 40h-5M48 40h5M168 41v-5M168 63v5M157 52h-5M179 52h5"/></g>
+<!-- legs and shoes -->
+<path d="M74 150h20v34H70zM106 150h20l4 34h-26z" fill="#4a4660" ${OUT}/>
+<path d="M60 184h38v10H60zM104 184h38v10h-38z" fill="#1b1830" ${OUT}/>
+<!-- rumpled shirt and loosened tie -->
+<path d="M52 188c-4-44 6-82 34-88h28c28 6 38 44 34 88z" fill="url(#cw-s)" ${OUT}/>
+<path d="M84 100l16 36 16-36z" fill="#f6f0e4" ${OUT}/>
+<path d="M96 108h8l4 44-8 6-8-6z" fill="#1c5fd0" ${OUT}/>
+<!-- tissue box under the left arm -->
+<g class="limb"><rect x="40" y="124" width="36" height="28" fill="#8db3f2" ${OUT}/><path d="M52 124c2-12 6-14 10-14s6 6 8 14z" fill="#f6f0e4" ${OUT}/><circle cx="46" cy="150" r="9" fill="url(#cw-k)" ${OUT}/></g>
+<!-- right hand with a crumpled tissue -->
+<path d="M132 108c14 6 22 18 22 34l-12 2c0-10-6-18-14-22z" fill="url(#cw-s)" ${OUT}/><circle cx="150" cy="144" r="9" fill="url(#cw-k)" ${OUT}/><circle cx="154" cy="136" r="8" fill="#f6f0e4" ${OUT}/>
+<!-- head: green face, red nose, heavy eyelids, thermometer -->
+<path d="M70 62c0-24 14-40 30-40s30 16 30 40c0 22-12 40-30 40S70 84 70 62z" fill="url(#cw-k)" ${OUT}/>
+<path d="M72 50c4-22 18-30 30-30s26 8 28 30c-10-10-20-12-30-12s-18 2-28 12z" fill="#6a4a2a" ${OUT}/>
+<g ${OUT}><ellipse cx="86" cy="64" rx="9" ry="7" fill="#f6f0e4"/><ellipse cx="114" cy="64" rx="9" ry="7" fill="#f6f0e4"/></g>
+<g class="eye" fill="#1b1830"><circle cx="86" cy="67" r="4"/><circle cx="114" cy="67" r="4"/></g>
+<path d="M75 60h22M103 60h22" stroke="#1b1830" stroke-width="6" stroke-linecap="round"/>
+<ellipse cx="100" cy="80" rx="9" ry="7" fill="#f63a1e" ${OUT}/>
+<path d="M88 94c8-4 16-4 24 0" stroke="#1b1830" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M104 92l32 6" stroke="#f6f0e4" stroke-width="5" stroke-linecap="round"/><path d="M128 97l8 1.5" stroke="#f63a1e" stroke-width="5" stroke-linecap="round"/>
+<path d="M130 40c2 6 0 10-4 14" stroke="#1c5fd0" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+
 // Title screen props (office and factory): the time clock, a filing cabinet, a sack of money, a toxic barrel.
 const timeClock = `
 <defs>${lg('tk-m', '#9ab8f0', '#1c4fb0')}${lg('tk-g', '#ffe45a', '#d09a20')}</defs>
@@ -814,6 +843,7 @@ export const CREATURES: Record<string, string> = {
   guyAsleep,
   newHire,
   bossSon,
+  sickCoworker,
   meticulousColleague,
   dave,
   printer,

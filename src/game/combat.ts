@@ -589,6 +589,7 @@ export class Combat {
     if (m.drainMana) this.drainMana(m.drainMana);
     if (m.hex) this.hexCards(m.hex.id, m.hex.share);
     if (m.inflate) this.inflateCards(m.inflate);
+    if (m.infect) this.infectCards(m.infect);
     m.fx?.(this);
   }
 
@@ -598,6 +599,7 @@ export class Combat {
     for (let row = 0; row < this.beltRows; row++) this.moveRow(row, move);
     for (const b of this.belt) {
       b.card.age = (b.card.age ?? 0) + dt;
+      this.spreadVirus(b, dt);
       const hex = b.card.hex;
       if (!hex || hex.left > 0) continue;
       hex.t -= dt;
@@ -795,6 +797,7 @@ export class Combat {
 
     // Inflation lasts until the card is paid for once.
     delete card.tax;
+    delete card.virus;
     const kw = this.keywords(card);
     if (kw.includes('consume')) {
       if (!card.temp) this.consumed.push(card.uid);
@@ -1203,6 +1206,31 @@ export class Combat {
       card.tax = (card.tax ?? 0) + 1;
       this.events.emit({ type: 'inflated', card });
     }
+  }
+
+  /** Virus: `n` random cards (belt first, then the rest of the deck) are infected until they're next played. */
+  infectCards(n: number): void {
+    const fits = (c: CombatCard): boolean => CARDS[c.id].type !== 'curse' && !c.virus && this.cardCost(c) >= 0;
+    const onBelt = this.rng.shuffle(this.belt.map((b) => b.card).filter(fits));
+    const rest = this.rng.shuffle([...this.draw, ...this.discard].filter(fits));
+    for (const card of [...onBelt, ...rest].slice(0, n)) this.infect(card);
+  }
+
+  private infect(card: CombatCard): void {
+    card.virus = { t: 0, spread: false };
+    this.events.emit({ type: 'infected', card });
+  }
+
+  /** An infected card on the belt, after its delay, infects the card right behind it (the nearest one that isn't already sick); a curse never counts. */
+  private spreadVirus(b: BeltCard, dt: number): void {
+    const virus = b.card.virus;
+    if (!virus || virus.spread) return;
+    virus.t += dt;
+    if (virus.t < CONFIG.virusDelay) return;
+    const behind = this.belt.filter((x) => x.pos < b.pos && !x.card.virus && CARDS[x.card.id].type !== 'curse').sort((p, q) => q.pos - p.pos)[0];
+    if (!behind) return;
+    virus.spread = true;
+    this.infect(behind.card);
   }
 
   /** A tap on a hexed card chips at the hex instead of playing it; the last tap starts the thaw. */

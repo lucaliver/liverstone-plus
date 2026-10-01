@@ -158,6 +158,20 @@ const defs: EnemyDef[] = [
     start: [{ id: 'weakSpot' }],
   },
   {
+    // Came in anyway: his sneezes put a virus on your cards, which then spreads along the belt on its own.
+    id: 'sickCoworker',
+    act: 1,
+    tier: 'normal',
+    hp: 45,
+    art: 'sickCoworker',
+    main: atk('cough', 6, 6),
+    every: 2,
+    specials: [
+      { id: 'sneezeOnYou', intent: 'curse', windup: 6, infect: 2, status: [gainStrength] },
+      atk('stillHereWithFever', 12, 9, { intent: 'charge' }),
+    ],
+  },
+  {
     // Moves in with you: her boxes fill your sleeve from the start, and only get cheaper to unpack with time.
     id: 'workWife',
     act: 1,
@@ -453,6 +467,7 @@ export const DIFFICULTY = [
   'snitch',
   'newHire',
   'bossSon',
+  'sickCoworker',
   'workWife',
   'teamLeader',
   'goblinConsultant',

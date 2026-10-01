@@ -166,7 +166,7 @@ handbook but are never offered as rewards (no pack can be unlocked yet; the Work
 
 `EnemyDef` = `act`, `main` (frequent attack) + `specials[]` (rotating) + `every` (mains between specials),
 optional `onHalf`, `start` statuses, `block` (elites and bosses start with Block). A `MoveDef` can hit, block, heal, apply statuses, add `curse` cards (a list, several
-kinds at once), steal, drain mana, `hex` a share of your cards, `inflate` card costs, or `absorb` the damage it takes while
+kinds at once), steal, drain mana, `hex` a share of your cards, `inflate` card costs, `infect` cards with a virus (`CombatCard.virus`: +1 cost, spreads to the card behind it after `CONFIG.virusDelay`, cured by playing it), or `absorb` the damage it takes while
 charging and `release` it with the next hit (intents include `idle` and `absorb`). Add a vector sprite to `creatures.ts` (pixelised automatically),
 plus `enemy.<id>.name`, `move.<id>` for every move, and `enemy.<id>.half` if it has `onHalf`.
 Optional: `startRows` (belt rows open at the start; `openBeltRows()` opens the rest, `closeBeltRows()` shuts them again and
@@ -249,7 +249,7 @@ Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unloc
 - **Balance** (`tests/balance.sim.test.ts` + `bot.ts`): heuristic bot win rates; treat them as relative.
 - **E2E** (`tests/e2e/smoke.spec.ts`): contract (first launch only) → title, hero carousel and locks, fight → reward swap or skip, layout
   stability, Start gate, pause (music, backdrop tap, main menu, open windows), break room upgrade, map lane choice,
-  compendium (cards, personnel, records) and card anatomy, copy room, debug fight, title poster and time card fit, first-fight tour, first Kamikaze tip, the Boss's Son weak spot, Wind-Up Intern drag, crash window. `freshGame` unlocks every hero unless `locked`. Use real touch
+  compendium (cards, personnel, records) and card anatomy, copy room, debug fight, title poster and time card fit, first-fight tour, first Kamikaze tip, the Boss's Son weak spot, Wind-Up Intern drag, the Sick Coworker's virus, crash window. `freshGame` unlocks every hero unless `locked`. Use real touch
   (`page.touchscreen.tap`) when the behaviour differs on phones.
 - Other engines: `npx playwright test --browser=webkit` (Safari/iOS) passes too; Firefox needs a config without
   `isMobile` (same viewport, `hasTouch`). Keep CSS to what Safari 16 supports (no `color-mix`).

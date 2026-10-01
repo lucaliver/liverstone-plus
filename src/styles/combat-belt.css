@@ -257,6 +257,26 @@
 .belt.ltr .maw-eyes { left: auto; right: 4px; }
 .belt.ltr .card.wide .c-gate { right: auto; left: 100%; }
 
+/* Virus: a green halftone over the card, a virus on the corner (opposite the cost), and the cost in red like Inflation */
+.card.sick::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--green) 28%, transparent 32%);
+  background-size: 6px 6px;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.virus-badge {
+  position: absolute;
+  right: -8cqw;
+  top: -12cqw;
+  z-index: 2;
+  font-size: 30cqw;
+  color: var(--green);
+  --ink2: var(--k);
+}
+
 /* Inflation: the cost went up for this fight */
 .card .c-cost.taxed { color: var(--paper); background: var(--red); }
 

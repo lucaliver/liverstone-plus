@@ -80,7 +80,7 @@ export function cardName(card: CardInst): string {
   return t(`card.${card.id}.name`);
 }
 
-export function cardCostLabel(card: CardInst & { tax?: number; cut?: number }): string {
+export function cardCostLabel(card: CardInst & { tax?: number; cut?: number; virus?: object }): string {
   const cost = cardCostOf(card);
   return cost < 0 ? 'X' : String(cost);
 }

@@ -416,6 +416,26 @@ test('Wind-Up Intern: dragging it around the screen winds it up, letting go abov
   expect(problems).toEqual([]);
 });
 
+test("the Sick Coworker's virus shows on the cards it infects and goes away when they are played", async ({ page }) => {
+  const problems = await freshGame(page);
+  await page.getByRole('button', { name: /debug/i }).click();
+  await page.locator('.debug-foe[data-enemy="sickCoworker"]').click();
+  await expect(page.locator('.combat')).toBeVisible();
+  const start = page.locator('.js-start');
+  if (await start.count()) await start.click();
+  await combat(page, 'c.infectCards(1);');
+  await expect(page.locator('.belt-cards .card.sick')).toHaveCount(1);
+  // It spreads along the belt by itself.
+  await expect(async () => expect(await page.locator('.belt-cards .card.sick').count()).toBeGreaterThan(1)).toPass({ timeout: 5000 });
+  await page.waitForTimeout(800);
+  const uid = (await combat(
+    page,
+    'c.hero.mana = c.hero.maxMana = 10; const b = c.belt.find((x) => x.card.virus); c.playCard(b.card.uid); return b.card.uid;',
+  )) as number;
+  expect(await combat(page, `return c.discard.concat(c.exhaust).find((x) => x.uid === ${uid})?.virus ?? null;`)).toBeNull();
+  expect(problems).toEqual([]);
+});
+
 test('debug: Unlock all hires every hero and reveals every card and enemy in the handbook', async ({ page }) => {
   await freshGame(page, { locked: true });
   await page.getByRole('button', { name: /debug/i }).click();

@@ -444,6 +444,23 @@ describe('combat engine', () => {
     expect(punch()).toBe(plain);
   });
 
+  it('a virus costs 1 more, infects the card behind it after a second (once), and playing the card cures it', () => {
+    const c = setup({ hp: 500, maxHp: 500, deck: deckOf(new Array(12).fill('punch')) });
+    run(c, CONFIG.introTime + 0.01);
+    const [front, behind] = [...c.belt].sort((a, b) => b.pos - a.pos);
+    front.card.virus = { t: 0, spread: false };
+    expect(c.cardCost(front.card)).toBe(CARDS.punch.cost + 1);
+    run(c, CONFIG.virusDelay / 2);
+    expect(behind.card.virus).toBeUndefined();
+    run(c, CONFIG.virusDelay);
+    expect(behind.card.virus).toBeDefined();
+    expect(front.card.virus?.spread).toBe(true);
+    c.hero.mana = c.hero.maxMana = 10;
+    expect(c.playCard(front.card.uid)).toBe(true);
+    expect(front.card.virus).toBeUndefined();
+    expect(c.cardCost(front.card)).toBe(CARDS.punch.cost);
+  });
+
   it('sleeve slots come from the hero', () => {
     expect(setup({ hero: HEROES.warrior }).sleeve.length).toBe(1);
     expect(setup({ hero: HEROES.necromancer }).sleeve.length).toBe(3);

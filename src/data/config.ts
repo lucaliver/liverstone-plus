@@ -32,6 +32,8 @@ export const CONFIG = {
   maxManaCap: 10,
   /** Damage multiplier of a critical attack (Critical status). */
   critMult: 2,
+  /** Seconds a virus card rides the belt before it infects the card behind it. */
+  virusDelay: 1,
   startMana: 3,
   dotInterval: 1.5,
   multitaskingWindow: 2.5,
