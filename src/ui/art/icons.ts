@@ -78,7 +78,7 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   // ---- mage
   clippy: {
     el: 'arcane',
-    svg: `<path d="M20 48V16a12 12 0 0 1 24 0v32a16 16 0 0 1-32 0V26" ${S} stroke-width="7"/><path d="M17 16h30v24H17z"/><circle cx="27" cy="24" r="5.5" fill="#16121f"/><circle cx="39" cy="24" r="5.5" fill="#16121f"/><circle cx="28.5" cy="25" r="2.2" fill="#fff"/><circle cx="37.5" cy="25" r="2.2" fill="#fff"/><path d="M20 15l12 4M44 15l-12 4" stroke="#16121f" stroke-width="3.5"/>`,
+    svg: `<path d="M19.2 0h25.6v3.2h-25.6zM12.8 3.2h38.4v3.2h-38.4zM6.4 6.4h22.4v3.2h-22.4zM35.2 6.4h22.4v3.2h-22.4zM6.4 9.6h6.4v3.2h-6.4zM51.2 9.6h6.4v3.2h-6.4zM6.4 12.8h6.4v3.2h-6.4zM16 12.8h9.6v3.2h-9.6zM38.4 12.8h9.6v3.2h-9.6zM51.2 12.8h6.4v3.2h-6.4zM6.4 16h6.4v3.2h-6.4zM16 16h9.6v3.2h-9.6zM38.4 16h9.6v3.2h-9.6zM51.2 16h6.4v3.2h-6.4zM6.4 19.2h6.4v3.2h-6.4zM16 19.2h3.2v3.2h-3.2zM22.4 19.2h3.2v3.2h-3.2zM38.4 19.2h3.2v3.2h-3.2zM44.8 19.2h3.2v3.2h-3.2zM51.2 19.2h6.4v3.2h-6.4zM6.4 22.4h6.4v3.2h-6.4zM16 22.4h9.6v3.2h-9.6zM38.4 22.4h9.6v3.2h-9.6zM51.2 22.4h6.4v3.2h-6.4zM6.4 25.6h6.4v3.2h-6.4zM51.2 25.6h6.4v3.2h-6.4zM6.4 28.8h6.4v3.2h-6.4zM51.2 28.8h6.4v3.2h-6.4zM6.4 32h6.4v3.2h-6.4zM19.2 32h25.6v3.2h-25.6zM51.2 32h6.4v3.2h-6.4zM6.4 35.2h6.4v3.2h-6.4zM19.2 35.2h6.4v3.2h-6.4zM38.4 35.2h6.4v3.2h-6.4zM51.2 35.2h6.4v3.2h-6.4zM6.4 38.4h6.4v3.2h-6.4zM19.2 38.4h6.4v3.2h-6.4zM38.4 38.4h6.4v3.2h-6.4zM51.2 38.4h6.4v3.2h-6.4zM6.4 41.6h6.4v3.2h-6.4zM19.2 41.6h6.4v3.2h-6.4zM38.4 41.6h6.4v3.2h-6.4zM51.2 41.6h6.4v3.2h-6.4zM6.4 44.8h6.4v3.2h-6.4zM19.2 44.8h6.4v3.2h-6.4zM38.4 44.8h6.4v3.2h-6.4zM6.4 48h6.4v3.2h-6.4zM38.4 48h6.4v3.2h-6.4zM6.4 51.2h6.4v3.2h-6.4zM38.4 51.2h6.4v3.2h-6.4zM6.4 54.4h6.4v3.2h-6.4zM38.4 54.4h6.4v3.2h-6.4zM6.4 57.6h38.4v3.2h-38.4zM12.8 60.8h25.6v3.2h-25.6z"/>`,
   },
   ward: {
     el: 'arcane',
@@ -597,6 +597,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<path d="M32 6a26 26 0 1 0 26 26H32z"/><path d="M32 32V16M32 32H20" stroke="#16121f" stroke-width="5"/><path d="M38 2l24 24H38z"/>`,
   },
   wrench: { el: 'steel', svg: `<path d="M50 4a12 12 0 0 0-15 16L6 49l9 9 29-29A12 12 0 0 0 60 14l-8 8-7-7z"/>` },
+  wrenchWhack: {
+    el: 'steel',
+    svg: `<path d="M48 0h3.2v3.2h-3.2zM57.6 0h3.2v3.2h-3.2zM54.4 3.2h3.2v3.2h-3.2zM25.6 6.4h16v3.2h-16zM25.6 9.6h16v3.2h-16zM25.6 12.8h16v3.2h-16zM48 12.8h9.6v3.2h-9.6zM25.6 16h16v3.2h-16zM48 16h9.6v3.2h-9.6zM25.6 19.2h32v3.2h-32zM22.4 22.4h35.2v3.2h-35.2zM22.4 25.6h32v3.2h-32zM22.4 28.8h25.6v3.2h-25.6zM22.4 32h12.8v3.2h-12.8zM19.2 35.2h12.8v3.2h-12.8zM16 38.4h12.8v3.2h-12.8zM12.8 41.6h12.8v3.2h-12.8zM9.6 44.8h12.8v3.2h-12.8zM6.4 48h12.8v3.2h-12.8zM3.2 51.2h12.8v3.2h-12.8zM3.2 54.4h9.6v3.2h-9.6z"/>`,
+  },
   biohazard: {
     el: 'necro',
     svg: `<circle cx="32" cy="18" r="14"/><circle cx="17" cy="43" r="14"/><circle cx="47" cy="43" r="14"/><circle cx="32" cy="35" r="7" fill="#16121f"/><g fill="#16121f"><circle cx="32" cy="11" r="6"/><circle cx="11" cy="47" r="6"/><circle cx="53" cy="47" r="6"/></g>`,

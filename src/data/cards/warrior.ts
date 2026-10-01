@@ -36,7 +36,7 @@ export const warriorCards: CardDef[] = [
     upCost: 3,
     vals: [12, 5],
     upVals: [16, 10],
-    art: 'hammer',
+    art: 'wrenchWhack',
     play: (c, v) => {
       c.hit(v[0], { kind: 'blunt' });
       c.applyStatus('enemy', 'stun', 1, v[1]);
