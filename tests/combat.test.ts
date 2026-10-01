@@ -30,6 +30,7 @@ import {
   skipReward,
   rollCrossTraining,
   crossTrain,
+  ACTS,
   SPECIALS,
   vend,
   vendingCost,
@@ -1394,15 +1395,21 @@ describe('Complaint Box', () => {
 });
 
 describe('the very first run', () => {
+  it('goes on through every act, the later ones dealt like any run', () => {
+    const run = newRun('warrior', 1, true);
+    expect(new Set(run.nodes.map((n) => n.act)).size).toBe(ACTS);
+    expect(run.nodes.some((n) => n.act > 1 && SPECIALS.includes(n.type))).toBe(true);
+  });
+
   it('has one enemy per floor, whichever lane it takes, and the rests are split between the lanes', () => {
     const run = newRun('warrior', 1, true);
-    const fights = run.nodes.filter((n) => n.type === 'fight');
+    const fights = run.nodes.filter((n) => n.act === 1 && n.type === 'fight');
     const floors = [...new Set(fights.map((n) => n.floor))];
     for (const f of floors) expect(new Set(fights.filter((n) => n.floor === f).map((n) => n.enemy)).size).toBe(1);
     const pool = ['hrOrientationVideo', ...enemiesFor(1, 'normal').map((e) => e.id)];
     expect(fights.every((n) => pool.includes(n.enemy!))).toBe(true);
     for (const lane of [0, 1]) {
-      const types = run.nodes.filter((n) => n.lane === lane).map((n) => n.type);
+      const types = run.nodes.filter((n) => n.act === 1 && n.lane === lane).map((n) => n.type);
       expect(types).toContain('rest');
       expect(types.some((t, i) => t === 'rest' && types[i + 1] === 'rest')).toBe(false);
     }
@@ -1699,14 +1706,14 @@ describe('the Copy Room', () => {
     expect(r.maxHp).toBe(hp + 2 * CONFIG.skipMaxHp + CONFIG.skipMaxHpStep);
   });
 
-  it('deals two different special rooms per act on a random map, none in the very first run', () => {
+  it('deals two different special rooms per act on a random map, none in act 1 of the very first run', () => {
     const r = newRun('warrior', 5);
     for (const act of [1, 2]) {
       const specials = r.nodes.filter((n) => n.act === act && SPECIALS.includes(n.type)).map((n) => n.type);
       expect(specials).toHaveLength(2);
       expect(new Set(specials).size).toBe(2);
     }
-    expect(newRun('warrior', 1, true).nodes.some((n) => SPECIALS.includes(n.type))).toBe(false);
+    expect(newRun('warrior', 1, true).nodes.some((n) => n.act === 1 && SPECIALS.includes(n.type))).toBe(false);
   });
 
   it('the Vending Machine drops a card of the rarity paid for, and never takes the last HP', () => {

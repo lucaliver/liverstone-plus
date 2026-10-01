@@ -68,7 +68,7 @@ export interface RunState {
   uid: number;
   /** Management memos active for this run (`MODIFIERS` ids). */
   mods: string[];
-  /** The very first run: its map is fixed and its first rewards are picked (`HeroDef.firstRewards`). */
+  /** The very first run: act 1's map is fixed and its first rewards are picked (`HeroDef.firstRewards`); later acts are dealt as usual. */
   scripted?: boolean;
 }
 
@@ -91,7 +91,7 @@ export const ACTS = ACT_DEFS.length;
 
 /** Seed of the very first run: its map is always the same, with the enemies in order of difficulty. */
 export const FIRST_RUN_SEED = 1;
-/** The very first run's normal enemies, one per floor from the second (both lanes of a floor meet the same one). */
+/** The very first run's act 1 normal enemies, one per floor from the second (both lanes of a floor meet the same one). */
 const FIRST_RUN_ENEMIES = ['snitch', 'newHire', 'workWife', 'teamLeader', 'goblinConsultant', 'seniorBoomer', 'hrBitch'];
 /** The very first run's lanes, as `LANES` but already past the opening: a rest on each side, never two in a row. */
 const FIRST_RUN_LANES: NodeType[][] = [
@@ -100,8 +100,8 @@ const FIRST_RUN_LANES: NodeType[][] = [
 ];
 
 /**
- * A new run; a `scripted` one (the very first) has a fixed map and enemies (`FIRST_RUN_*`) instead of shuffled ones, and ends
- * with act 1's boss. `mods` are the memos it plays under.
+ * A new run; a `scripted` one (the very first) has a fixed act 1 map and enemies (`FIRST_RUN_*`) instead of shuffled ones, then
+ * goes on through every act like any other. `mods` are the memos it plays under.
  */
 export function newRun(hero: HeroId, seed: number, scripted = false, mods: string[] = []): RunState {
   resetUid(0);
@@ -198,7 +198,7 @@ function addAct(nodes: RunNode[], rng: Rng, act: number, last: RunNode[], script
 function buildNodes(rng: Rng, scripted: boolean): RunNode[] {
   const nodes: RunNode[] = [];
   let last: RunNode[] = [];
-  for (let act = 1; act <= (scripted ? 1 : ACTS); act++) last = addAct(nodes, rng, act, last, scripted);
+  for (let act = 1; act <= ACTS; act++) last = addAct(nodes, rng, act, last, scripted && act === 1);
   return nodes;
 }
 
@@ -535,11 +535,9 @@ function parseRun(raw: unknown): RunState | null {
   const { kills, elites, cardsPlayed, damageTaken } = stats;
   if (!isNum(kills) || !isNum(elites) || !isNum(cardsPlayed) || !isNum(damageTaken)) return null;
   // A run saved before the last act existed carries on into it: the missing acts are dealt from the run's seed.
-  if (scripted !== true) {
-    for (let act = Math.max(...nodes.map((n) => n.act)) + 1; act <= ACTS; act++) {
-      const boss = nodes.filter((n) => n.act === act - 1 && n.type === 'boss');
-      addAct(nodes, new Rng(seed + act * 7919), act, boss, false);
-    }
+  for (let act = Math.max(...nodes.map((n) => n.act)) + 1; act <= ACTS; act++) {
+    const boss = nodes.filter((n) => n.act === act - 1 && n.type === 'boss');
+    addAct(nodes, new Rng(seed + act * 7919), act, boss, false);
   }
   return {
     version: SAVE_VERSION,

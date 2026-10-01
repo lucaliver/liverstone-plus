@@ -389,7 +389,6 @@ const en = {
   'end.defeat': 'Terminated',
   'end.defeatDesc': 'Carried out on a stretcher from floor {n}.',
   'end.victory': 'Shift over',
-  'end.firstShiftDesc': 'Trial shift passed. From tomorrow you work the full day, afternoon shift included.',
   'end.memosOpen': 'Management has memos for {hero}. Find them on the hire screen.',
   'end.victoryDesc': 'The Board is adjourned. The sun is up and the line is quiet. Clock out and go home. Same time tomorrow.',
   'end.slip.title': 'Payslip',

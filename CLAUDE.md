@@ -100,7 +100,7 @@ tests/         combat, content, balance.sim (+ bot), e2e/
   `RelicHooks` extend behaviour. Card numbers live once in `vals`/`upVals`; face, text, previews and logic all read them.
 - **A run is a graph drawn as an office floor plan.** `RunNode.next[]` + `lane`; per act (`ACT_DEFS`): a shared opening, two
   lanes linked a couple of times (`LANES`, `LINKS` in `run.ts`), then the boss, which leads to the next act. Rooms beyond
-  `VISION` doors are fogged. The first run is scripted (`newRun(…, scripted)`, `FIRST_RUN_*`). Room types (`NodeType`):
+  `VISION` doors are fogged. The first run has a scripted act 1 (`newRun(…, scripted)`, `FIRST_RUN_*`); its later acts are dealt like any run's. Room types (`NodeType`):
   fight, elite, boss, rest, promotion, copy, each a screen in `ROOMS` (`main.ts`). A new room = `NodeType`, `LANES` entry,
   `ROOMS` screen, `NODE_ICON`, `journey.node.*`/`journey.info.*` strings.
 - **Rendering is diff-based**: `setText`/`setHtml`/`toggle` write only on change; status chips rebuild only when the set changes.

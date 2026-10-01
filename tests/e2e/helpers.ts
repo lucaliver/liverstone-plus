@@ -2,7 +2,7 @@ import { expect, type Page } from '@playwright/test';
 
 /**
  * Fresh game: no saves, tutorial already seen, every hero unlocked (unless `locked`), debug menus on (unless `debug: false`). `veteran`: not the very first run
- * (that one is scripted and short).
+ * (that one has a scripted act 1).
  * Collects console errors and warnings (e.g. missing i18n keys).
  */
 export async function freshGame(

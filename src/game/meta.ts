@@ -18,7 +18,7 @@ interface Meta {
   met: string[];
   /** Relic ids seen (offered or owned): the handbook hides the others' names. */
   relics: string[];
-  /** Runs started so far (the very first one has a scripted map). */
+  /** Runs started so far (the very first one has a scripted act 1). */
   runs: number;
   /** The employment contract has been signed (the start screen's first-time hold). */
   signed: boolean;
