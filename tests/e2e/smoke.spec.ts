@@ -15,6 +15,26 @@ test('title, hero select and journey render without errors', async ({ page }) =>
   expect(problems).toEqual([]);
 });
 
+test('a hero who has won a full day can pin up management memos before a run', async ({ page }) => {
+  const problems = await freshGame(page, { stamps: ['warrior:3'] });
+  await page.getByRole('button', { name: /new run/i }).click();
+  const memos = page.locator('.memo-btn');
+  await expect(memos).toBeVisible();
+  await memos.click();
+  await page.locator('.setting.memo .switch').first().click();
+  await page.locator('.setting.memo .switch').nth(5).click();
+  await page.getByRole('button', { name: 'Close' }).click();
+  await expect(memos.locator('b')).toHaveText('2');
+  // Other heroes haven't earned them.
+  await page.locator('.hero-arrow.next').click();
+  await expect(memos).toBeHidden();
+  await page.locator('.hero-arrow.prev').click();
+  await expect(memos).toBeVisible();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  await expect.poll(() => page.evaluate('window.__game.run.mods')).toEqual(['quotas', 'budget']);
+  expect(problems).toEqual([]);
+});
+
 test('an uncaught error shows the machine jam window, and Restart reloads the game', async ({ page }) => {
   await freshGame(page);
   await page.evaluate(() => {

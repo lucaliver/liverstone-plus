@@ -77,6 +77,8 @@ export interface CombatSetup {
   bonusMaxMana?: number;
   /** Belt rows (default `CONFIG.beltRows`). With two rows cards alternate between them and the belt runs a bit slower. */
   beltRows?: number;
+  /** Run-wide belt speed multiplier (memos). */
+  beltMul?: number;
 }
 
 interface DamageOpts {
@@ -116,6 +118,7 @@ export class Combat {
   private beltHalt = 0;
   private beltTurns = 0;
   private regenMul = 1;
+  private runBeltMul = 1;
   /** Deck uids permanently removed (potions). */
   consumed: number[] = [];
   cardsPlayed = 0;
@@ -165,6 +168,7 @@ export class Combat {
       regenMul *= m.regen ?? 1;
     }
     this.regenMul = regenMul;
+    this.runBeltMul = setup.beltMul ?? 1;
 
     this.hero = {
       hp: setup.hp,
@@ -360,7 +364,7 @@ export class Combat {
   }
 
   beltRate(): number {
-    return (this.beltRows > 1 ? CONFIG.twoRowSpeed : 1) * this.beltBoost();
+    return (this.beltRows > 1 ? CONFIG.twoRowSpeed : 1) * this.runBeltMul * this.beltBoost();
   }
 
   /** How much statuses speed the belt up (Rush, Hurry, Crunch), slow it down (Slowdown, rust) or stop it (Stalled, full rust, or about to turn around): 1 when none does. */

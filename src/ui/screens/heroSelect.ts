@@ -2,13 +2,14 @@ import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
 import { HERO_LIST, starterCards } from '../../data/heroes';
-import { heroFresh, heroUnlocked, markHeroSeen } from '../../game/meta';
+import { chosenMemos, heroFresh, heroUnlocked, markHeroSeen, memosOpen } from '../../game/meta';
 import type { HeroDef, HeroId, HeroUnlock } from '../../game/types';
 import type { Screen } from '../app';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { heroFeatures } from '../components/heroSheet';
 import { dropLetters, motes } from '../components/decor';
+import { openMemos } from '../components/memos';
 import { openDeck, openStatInfo } from '../components/modals';
 import { h, onPress, retrigger, stagger } from '../dom';
 
@@ -105,8 +106,21 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
     t('hero.start'),
   );
 
+  // A hero who has won a full day can run under management memos: the button shows how many are pinned up.
+  const memoBtn = h('button', {
+    class: 'icon-btn memo-btn',
+    'aria-label': t('memo.title'),
+    onclick: () => {
+      sfx('tap');
+      openMemos(sync);
+    },
+  });
+
   const sync = (): void => {
     const hero = HERO_LIST[index];
+    const memos = memosOpen(hero.id);
+    memoBtn.hidden = !memos;
+    memoBtn.innerHTML = `${icon('clipboard')}${memos && chosenMemos().length ? `<b>${chosenMemos().length}</b>` : ''}`;
     el.dataset.hero = hero.id;
     const locked = !heroUnlocked(hero.id);
     startBtn.disabled = locked;
@@ -159,7 +173,7 @@ export function heroSelectScreen(onStart: (hero: HeroId) => void, onBack: () => 
     ),
     h('div', { class: 'hero-carousel' }, track, prev, next),
     h('div', { class: 'hero-dots' }, ...dots),
-    startBtn,
+    h('div', { class: 'hero-start' }, memoBtn, startBtn),
   );
   sync();
   return {

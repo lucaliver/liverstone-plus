@@ -6,6 +6,7 @@ import { PERKS } from '../data/perks';
 import { RELIC_LIST, RELICS } from '../data/relics';
 import { ACT_DEFS, actDef } from '../data/acts';
 import { CONFIG, CROSS_TRAINING_ODDS, REWARD_ODDS } from '../data/config';
+import { MODIFIERS, resolveMods } from '../data/modifiers';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HERO_LIST, HEROES, starterCards } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
@@ -65,6 +66,8 @@ export interface RunState {
   /** Pay earned so far: the run's score (fast wins pay more). */
   money: number;
   uid: number;
+  /** Management memos active for this run (`MODIFIERS` ids). */
+  mods: string[];
   /** The very first run: its map is fixed and its first rewards are picked (`HeroDef.firstRewards`). */
   scripted?: boolean;
 }
@@ -98,21 +101,22 @@ const FIRST_RUN_LANES: NodeType[][] = [
 
 /**
  * A new run; a `scripted` one (the very first) has a fixed map and enemies (`FIRST_RUN_*`) instead of shuffled ones, and ends
- * with act 1's boss.
+ * with act 1's boss. `mods` are the memos it plays under.
  */
-export function newRun(hero: HeroId, seed: number, scripted = false): RunState {
+export function newRun(hero: HeroId, seed: number, scripted = false, mods: string[] = []): RunState {
   resetUid(0);
   const rng = new Rng(seed);
   const def = HEROES[hero];
   const nodes = buildNodes(rng, scripted);
   discover(def.startDeck);
+  const maxHp = Math.round(def.hp * resolveMods(mods).heroHp);
   return {
     version: SAVE_VERSION,
     seed,
     rng: rng.state,
     hero,
-    hp: def.hp,
-    maxHp: def.hp,
+    hp: maxHp,
+    maxHp,
     deck: starterCards(def).map((c) => ({ uid: nextUid(), ...c })),
     relics: def.starterRelic ? [def.starterRelic] : [],
     relicFlags: {},
@@ -124,6 +128,7 @@ export function newRun(hero: HeroId, seed: number, scripted = false): RunState {
     money: 0,
     skips: 0,
     uid: peekUid(),
+    mods,
     scripted,
   };
 }
@@ -214,10 +219,11 @@ function rngOf(run: RunState): Rng {
   return new Rng(run.rng);
 }
 
-/** Enemy scaling: normal enemies get tougher as the act goes on. */
-export function enemyScale(node: RunNode): { hp: number; dmg: number } {
+/** Enemy scaling: normal enemies get tougher as the act goes on, and every enemy under the run's memos. */
+export function enemyScale(node: RunNode, mods: string[] = []): { hp: number; dmg: number } {
   const f = node.type === 'fight' ? node.floor - 1 : 0;
-  return { hp: (1 + CONFIG.floorHp * f) * CONFIG.enemyHp, dmg: (1 + CONFIG.floorDmg * f) * CONFIG.enemyDmg };
+  const m = resolveMods(mods);
+  return { hp: (1 + CONFIG.floorHp * f) * CONFIG.enemyHp * m.enemyHp, dmg: (1 + CONFIG.floorDmg * f) * CONFIG.enemyDmg * m.enemyDmg };
 }
 
 export function combatSetup(run: RunState): CombatSetup {
@@ -233,7 +239,8 @@ export function combatSetup(run: RunState): CombatSetup {
     relics: run.relics,
     relicFlags: run.relicFlags,
     enemy: ENEMIES[node.enemy!],
-    scale: enemyScale(node),
+    scale: enemyScale(node, run.mods),
+    beltMul: resolveMods(run.mods).beltMul,
     seed,
   };
 }
@@ -268,8 +275,9 @@ export function applyCombat(run: RunState, combat: Combat): void {
   run.cleared = true;
 }
 
-/** Four distinct reward cards for the current node (the player swaps one into the deck). */
+/** Distinct reward cards for the current node (the player swaps one into the deck). */
 export const REWARD_CHOICES = 4;
+export const rewardChoices = (run: RunState): number => Math.max(1, REWARD_CHOICES + resolveMods(run.mods).rewardCards);
 
 export function rollRewards(run: RunState, kind: 'fight' | 'elite'): CardDef[] {
   // The very first run teaches with hand-picked offers after its first fights (the win just counted is `kills`).
@@ -280,7 +288,7 @@ export function rollRewards(run: RunState, kind: 'fight' | 'elite'): CardDef[] {
   }
   const rng = rngOf(run);
   const picks: CardDef[] = [];
-  for (let tries = 0; picks.length < REWARD_CHOICES && tries < 80; tries++) {
+  for (let tries = 0; picks.length < rewardChoices(run) && tries < 80; tries++) {
     const rarity = rng.weighted(REWARD_ODDS[kind], ([, w]) => w)[0];
     const pool = rewardPool(run.hero, rarity).filter((c) => !picks.includes(c));
     if (pool.length) picks.push(rng.pick(pool));
@@ -441,7 +449,7 @@ export function photocopyCard(run: RunState, uid: number): void {
 /** HP a Break Room rest would heal now. */
 export const restHeal = (run: RunState): number => {
   const missing = run.maxHp - run.hp;
-  return Math.min(missing, Math.round(run.maxHp * CONFIG.restHeal + missing * CONFIG.restHealMissing));
+  return Math.min(missing, Math.round((run.maxHp * CONFIG.restHeal + missing * CONFIG.restHealMissing) * resolveMods(run.mods).restHeal));
 };
 
 export function rest(run: RunState): number {
@@ -517,7 +525,7 @@ const isNode = (n: unknown, i: number, len: number): n is RunNode => {
 /** Saved data is untrusted: a run that doesn't have the exact shape (or names content that no longer exists) is dropped. */
 function parseRun(raw: unknown): RunState | null {
   if (!isObj(raw) || raw.version !== SAVE_VERSION) return null;
-  const { hero, hp, maxHp, seed, rng, uid, current, cleared, deck, relics, relicFlags, nodes, path, stats, money, skips, scripted } = raw;
+  const { hero, hp, maxHp, seed, rng, uid, current, cleared, deck, relics, relicFlags, nodes, path, stats, money, skips, mods, scripted } = raw;
   const heroId = HERO_LIST.find((hd) => hd.id === hero)?.id;
   if (!heroId || !isNum(hp) || !isNum(maxHp) || !isNum(seed) || !isNum(rng) || !isNum(uid) || typeof cleared !== 'boolean') return null;
   if (!Array.isArray(deck) || !deck.every(isCard) || !isStrings(relics)) return null;
@@ -552,6 +560,8 @@ function parseRun(raw: unknown): RunState | null {
     money: isNum(money) ? money : 0,
     skips: isNum(skips) ? skips : 0,
     uid,
+    // Saves from before memos existed carry none.
+    mods: isStrings(mods) ? mods.filter((id) => id in MODIFIERS) : [],
     scripted: scripted === true,
   };
 }

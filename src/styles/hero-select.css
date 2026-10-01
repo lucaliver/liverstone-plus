@@ -345,3 +345,23 @@
   50% { rotate: -4deg; scale: 1.08; }
 }
 .hero-dot.locked { opacity: 0.45; }
+
+/* start row: the memos button (only for a hero who has won a full day) beside Start */
+.hero-start { display: flex; gap: 10px; align-items: stretch; }
+.hero-start .btn { flex: 1; }
+.memo-btn { position: relative; width: auto; height: auto; min-width: 54px; flex: none; }
+.memo-btn[hidden] { display: none; }
+.memo-btn b {
+  position: absolute;
+  right: -6px;
+  top: -8px;
+  min-width: 22px;
+  padding: 0 4px;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  color: var(--paper);
+  background: var(--p);
+  border: 2px solid var(--k);
+}

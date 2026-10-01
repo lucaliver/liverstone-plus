@@ -81,12 +81,12 @@ would wipe it). Refresh the beta: commit on `beta`, re-run the workflow.
 src/
   core/        rng (seeded), emitter, i18n (typed keys), save (safe localStorage), util
   i18n/en.ts   every player-facing string
-  data/        config (all tuning), acts, statuses, heroes, enemies, perks, hexes, relics, cards/<class>.ts
+  data/        config (all tuning), acts, statuses, heroes, enemies, perks, hexes, relics, modifiers, cards/<class>.ts
   game/        combat (engine), run (map graph, rewards, save), meta (discoveries, unlocks, records, act stamps), renamed, settings, types
   ui/          app (screens, modals), dom
     art/       icons (64×64), creatures (200×200), riso (pixel renderer)
     combat/    view, hud, cardLayer, mop, combatFx, combatScreen
-    components/ cardView, cardShow, coach, modals, debugMenu, room, moveText, heroSheet, shareSlip, decor
+    components/ cardView, cardShow, coach, modals, memos, debugMenu, room, moveText, heroSheet, shareSlip, decor
     fx/        particles, floating text, shake, haptics
     screens/   title, heroSelect, journey, reward, rest, promotion, copyRoom, tailor, lostFound, vending, crossTraining, end, compendium
   audio/       sfx (synth), music (sequencer + tracks)
@@ -136,6 +136,10 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 ### Relics
 
 `RelicDef` (`data/relics.ts`): `mods` (sleeve, maxMana, beltSpeed, regen) and `hooks` (`onCombatStart`, `onCardPlayed`, `onDeath`…), `n` = the number its text shows. A hook shows itself with a `relic` event (floating name). Needs an icon (`art`), `relic.<id>.name`/`.d`. Run state: `run.relics` (ids) and `run.relicFlags` (once-per-run flags); the hero sheet lists them.
+
+### Management memos (run modifiers)
+
+`ModifierDef` (`data/modifiers.ts`): optional handicaps, open to a hero once the last act's stamp is theirs (`memosOpen` in `meta.ts`). Fields are multipliers (`enemyHp`, `enemyDmg`, `beltMul`, `heroHp`, `restHeal`) or a sum (`rewardCards`); `resolveMods` combines the active ones and `run.ts`/`combat.ts` read the result, never a memo id. The pinned ones are `run.mods` (saved; unknown ids dropped on load) and `meta.memos` (the choice for the next run, set from the hero select's `openMemos`). A new memo = a record + `memo.<id>.name`/`.d` (`{n}` = its `n`); a new kind of effect = a new field read where it applies. The first (scripted) run never has memos.
 
 ### i18n
 

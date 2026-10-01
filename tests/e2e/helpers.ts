@@ -7,7 +7,7 @@ import { expect, type Page } from '@playwright/test';
  */
 export async function freshGame(
   page: Page,
-  opts: { tutorial?: boolean; locked?: boolean; veteran?: boolean; debug?: boolean } = {},
+  opts: { tutorial?: boolean; locked?: boolean; veteran?: boolean; debug?: boolean; stamps?: string[] } = {},
 ): Promise<string[]> {
   const problems: string[] = [];
   page.on('console', (m) => {
@@ -16,13 +16,17 @@ export async function freshGame(
   page.on('pageerror', (e) => problems.push(`pageerror: ${e.message}`));
   await page.goto('/');
   await page.evaluate(
-    ([seen, unlocked, veteran, debug]) => {
+    ([seen, unlocked, veteran, debug, stamps]) => {
       localStorage.clear();
       localStorage.setItem('cardstone+:settings', JSON.stringify({ seenTutorial: seen, debugMenus: debug }));
       const heroes = unlocked ? ['mage', 'necromancer'] : [];
-      if (unlocked || veteran) localStorage.setItem('cardstone+:meta', JSON.stringify({ discovered: [], heroes, fresh: [], runs: veteran ? 1 : 0 }));
+      if (unlocked || veteran || stamps.length)
+        localStorage.setItem(
+          'cardstone+:meta',
+          JSON.stringify({ discovered: [], heroes, fresh: [], runs: veteran || stamps.length ? 1 : 0, stamps }),
+        );
     },
-    [!opts.tutorial, !opts.locked, !!opts.veteran, opts.debug ?? true],
+    [!opts.tutorial, !opts.locked, !!opts.veteran, opts.debug ?? true, opts.stamps ?? []] as const,
   );
   await page.reload();
   // The splash screen comes first: the contract, signed with a hold the first time, then one tap (it unlocks audio).

@@ -6,11 +6,17 @@ import { HEROES } from '../src/data/heroes';
 import { STATUSES } from '../src/data/statuses';
 import { CARD_LIST, CARDS } from '../src/data/cards';
 import { RELICS } from '../src/data/relics';
-import { hasStamp } from '../src/game/meta';
+import { hasStamp, memosOpen, stampAct } from '../src/game/meta';
+import { ACT_DEFS } from '../src/data/acts';
 import {
   applyCombat,
   canCopy,
   canVend,
+  currentNode,
+  enemyScale,
+  restHeal,
+  rewardChoices,
+  rollRewards,
   canShred,
   fightPay,
   gainRelic,
@@ -1801,6 +1807,51 @@ describe('act stamps', () => {
     expect(hasStamp('mage', 1)).toBe(true);
     expect(hasStamp('mage', 2)).toBe(false);
     expect(hasStamp('warrior', 1)).toBe(false);
+  });
+});
+
+describe('management memos', () => {
+  it('open for a hero once the last act is stamped for them', () => {
+    expect(memosOpen('necromancer')).toBe(false);
+    stampAct('necromancer', ACT_DEFS.length - 1);
+    expect(memosOpen('necromancer')).toBe(false);
+    stampAct('necromancer', ACT_DEFS.length);
+    expect(memosOpen('necromancer')).toBe(true);
+    expect(memosOpen('warrior')).toBe(false);
+  });
+
+  it('toughen enemies, the belt, the hero, rests and rewards, and stack', () => {
+    const plain = newRun('warrior', 7);
+    const hard = newRun('warrior', 7, false, ['quotas', 'hostile', 'speedUp', 'benefits', 'noBreaks', 'budget']);
+    expect(hard.maxHp).toBe(Math.round(HEROES.warrior.hp * 0.8));
+    const node = currentNode(plain);
+    expect(enemyScale(node, hard.mods).hp).toBeCloseTo(enemyScale(node).hp * 1.25);
+    expect(enemyScale(node, hard.mods).dmg).toBeCloseTo(enemyScale(node).dmg * 1.25);
+    expect(enemyScale(node, ['quotas', 'quotas']).hp).toBeCloseTo(enemyScale(node).hp * 1.25 ** 2);
+    plain.hp = 1;
+    hard.hp = 1;
+    expect(restHeal(hard)).toBeLessThan(restHeal(plain));
+    expect(rewardChoices(plain)).toBe(4);
+    expect(rewardChoices(hard)).toBe(3);
+    expect(rollRewards(hard, 'fight')).toHaveLength(3);
+    const base = setup().beltRate();
+    expect(setup({ beltMul: 1.15 }).beltRate()).toBeCloseTo(base * 1.15);
+  });
+
+  it('a saved run keeps its known memos and drops the rest', () => {
+    const store = new Map<string, string>();
+    const stub = {
+      getItem: (k: string) => store.get(k) ?? null,
+      setItem: (k: string, v: string) => void store.set(k, v),
+      removeItem: (k: string) => void store.delete(k),
+    };
+    Object.defineProperty(globalThis, 'localStorage', { value: stub, configurable: true });
+    const run = newRun('warrior', 7, false, ['quotas']);
+    store.set('cardstone+:run', JSON.stringify({ ...run, mods: ['quotas', 'bogus'] }));
+    expect(loadRun()?.mods).toEqual(['quotas']);
+    store.set('cardstone+:run', JSON.stringify({ ...run, mods: undefined }));
+    expect(loadRun()?.mods).toEqual([]);
+    Reflect.deleteProperty(globalThis, 'localStorage');
   });
 });
 

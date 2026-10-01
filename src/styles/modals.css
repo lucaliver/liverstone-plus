@@ -468,3 +468,11 @@
 .debug-foe small { font-size: 12px; color: var(--muted); }
 /* the build, at the foot of Settings */
 .modal .version { margin-top: 12px; text-align: center; color: var(--muted); }
+
+/* management memos: an icon, a name with its effect underneath, a switch */
+.setting.memo { justify-content: flex-start; padding: 8px 2px; }
+.memo-ico { flex: none; font-size: 30px; --ink2: var(--p); }
+.memo-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.memo-text b { font-weight: 400; }
+.memo-text small { font-family: var(--font); font-size: 14px; line-height: 1.25; }
+.setting.memo .switch { flex: none; }

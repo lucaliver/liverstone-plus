@@ -316,6 +316,28 @@ export interface Records {
 /** How a hero is unlocked: finish a run (win or lose) with another hero, or reach the boss of an act. */
 export type HeroUnlock = { finishRun: HeroId } | { reachBoss: number };
 
+/**
+ * A management memo: an optional handicap for a run, open to a hero that has won a full day. Several can be active at once;
+ * multipliers combine by product (omitted = 1), `rewardCards` by sum.
+ */
+export interface ModifierDef {
+  id: string;
+  icon: string;
+  /** The number the memo's text shows (`{n}`). */
+  n: number;
+  /** Enemy HP and damage. */
+  enemyHp?: number;
+  enemyDmg?: number;
+  /** Belt speed. */
+  beltMul?: number;
+  /** The hero's max HP (rounded). */
+  heroHp?: number;
+  /** HP a Break Room rest heals. */
+  restHeal?: number;
+  /** Cards on offer after a fight (added to the usual count). */
+  rewardCards?: number;
+}
+
 export interface HeroDef {
   id: HeroId;
   /** Locked until this is done once (always available when omitted). */

@@ -12,6 +12,7 @@ import { STATUS_ORDER, STATUSES } from '../src/data/statuses';
 import { GLYPHS, TAG_ICON } from '../src/ui/components/cardView';
 import { ICONS, INTENT_ICON } from '../src/ui/art/icons';
 import { HEXES } from '../src/data/hexes';
+import { MODIFIER_LIST } from '../src/data/modifiers';
 import { ENEMIES } from '../src/data/enemies';
 import { PERKS } from '../src/data/perks';
 import { RELIC_LIST } from '../src/data/relics';
@@ -129,6 +130,14 @@ describe('content integrity', () => {
       expect(ICONS[r.art], `${r.id}: missing icon ${r.art}`).toBeTruthy();
       expect(arts.has(r.art), `${r.id} shares ${r.art}`).toBe(false);
       arts.add(r.art);
+    }
+  });
+
+  it('every management memo has a name, a text and an icon, and changes something', () => {
+    for (const m of MODIFIER_LIST) {
+      expect(en[`memo.${m.id}.name`] && en[`memo.${m.id}.d`], m.id).toBeTruthy();
+      expect(ICONS[m.icon], `${m.id}: missing icon ${m.icon}`).toBeTruthy();
+      expect(m.enemyHp ?? m.enemyDmg ?? m.beltMul ?? m.heroHp ?? m.restHeal ?? m.rewardCards, `${m.id} does nothing`).toBeDefined();
     }
   });
 

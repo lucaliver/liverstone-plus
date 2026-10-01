@@ -36,6 +36,7 @@ export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: (he
     row('end.slip.kills', run.stats.kills),
     row('end.slip.overtime', run.stats.elites),
     row('end.slip.cards', run.stats.cardsPlayed),
+    ...(run.mods.length ? [row('end.slip.memos', run.mods.length)] : []),
     row('end.slip.gross', run.money),
     row('end.slip.deductions', '', 'section'),
     row('end.slip.injuries', `-${run.stats.damageTaken}`),
@@ -80,6 +81,7 @@ export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: (he
         }),
       ),
       h('p', { class: 'sub' }, won ? t(node.act < ACTS ? 'end.firstShiftDesc' : 'end.victoryDesc') : t('end.defeatDesc', { n: node.floor })),
+      won && node.act === ACTS ? h('p', { class: 'sub' }, t('end.memosOpen', { hero: t(`hero.${run.hero}.name`) })) : null,
       // The run's stats as a dot-matrix payslip: all that work, and the net pay is still zero.
       h(
         'div',

@@ -1,6 +1,7 @@
 import { load, store } from '../core/save';
 import { ACT_DEFS } from '../data/acts';
 import { HERO_LIST, HEROES } from '../data/heroes';
+import { MODIFIERS } from '../data/modifiers';
 import { RELICS } from '../data/relics';
 import { renamedCard, renamedEnemy } from './renamed';
 import type { EnemyDef, HeroId, HeroUnlock, Records } from './types';
@@ -23,6 +24,8 @@ interface Meta {
   signed: boolean;
   /** Acts finished (their boss beaten), one `hero:act` entry per hero and act: the records page stamps them. */
   stamps: string[];
+  /** Management memos switched on for the next run (`MODIFIERS` ids); they only apply to a hero who has won a full day. */
+  memos: string[];
   records: Records;
 }
 
@@ -50,6 +53,7 @@ const meta: Meta = load('meta', {
   runs: 0,
   signed: false,
   stamps: [],
+  memos: [],
   records: { ...NO_RECORDS },
 });
 // Saved data is untrusted: keep only known hero ids.
@@ -68,6 +72,7 @@ meta.signed = meta.signed === true;
   };
   meta.stamps = Array.isArray(meta.stamps) ? [...new Set(meta.stamps.filter(valid))] : [];
 }
+meta.memos = Array.isArray(meta.memos) ? [...new Set(meta.memos.filter((id) => typeof id === 'string' && id in MODIFIERS))] : [];
 {
   // Only finite numbers survive; anything missing starts at zero.
   const saved: Partial<Record<keyof Records, unknown>> = typeof meta.records === 'object' && meta.records ? meta.records : {};
@@ -197,6 +202,17 @@ export function stampAct(hero: HeroId, act: number): void {
   store('meta', meta);
 }
 export const hasStamp = (hero: HeroId, act: number): boolean => meta.stamps.includes(`${hero}:${act}`);
+
+/** A hero who has won a full day (beaten the last act's boss) may run under management memos. */
+export const memosOpen = (hero: HeroId): boolean => hasStamp(hero, ACT_DEFS.length);
+
+/** The memos switched on for the next run. */
+export const chosenMemos = (): string[] => [...meta.memos];
+export function setMemo(id: string, on: boolean): void {
+  meta.memos = meta.memos.filter((x) => x !== id);
+  if (on && id in MODIFIERS) meta.memos.push(id);
+  store('meta', meta);
+}
 
 /** Records progress that can unlock heroes (a run finished with a hero, an act boss reached). Returns the heroes it unlocked. */
 export function progress(met: (u: HeroUnlock) => boolean): HeroId[] {

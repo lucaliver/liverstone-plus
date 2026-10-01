@@ -27,7 +27,7 @@ import {
   saveRun,
   type RunState,
 } from './game/run';
-import { contractSigned, startingFirstRun } from './game/meta';
+import { chosenMemos, contractSigned, memosOpen, startingFirstRun } from './game/meta';
 import { settings } from './game/settings';
 import type { HeroId } from './game/types';
 import { confirmModal, initApp, openModal, type Screen, show } from './ui/app';
@@ -101,7 +101,7 @@ function goHeroSelect(first?: HeroId): void {
 function startRun(hero: HeroId): void {
   // The very first run always has the same map and enemies.
   const first = startingFirstRun();
-  run = newRun(hero, first ? FIRST_RUN_SEED : randomSeed(), first);
+  run = newRun(hero, first ? FIRST_RUN_SEED : randomSeed(), first, !first && memosOpen(hero) ? chosenMemos() : []);
   goJourney();
 }
 
