@@ -74,11 +74,12 @@ export interface RunState {
 const SAVE_KEY = 'run';
 /**
  * Floors between the first fight and the boss, one list per lane. Lanes are dealt to a random side, and a few
- * floors swap their two nodes, so each run's map differs while both lanes keep a fair mix.
+ * floors swap their two nodes, so each run's map differs while both lanes keep a fair mix. The last floor never swaps: both
+ * lanes end on a rest before the boss.
  */
 const LANES: Slot[][] = [
-  ['fight', 'fight', 'rest', 'fight', 'elite', 'special', 'fight', 'rest'],
-  ['fight', 'promotion', 'fight', 'rest', 'fight', 'special', 'fight', 'rest'],
+  ['fight', 'special', 'rest', 'fight', 'elite', 'special', 'fight', 'rest'],
+  ['fight', 'promotion', 'special', 'fight', 'rest', 'special', 'fight', 'rest'],
 ];
 /** A `special` slot of a lane becomes one of these when the act is built; one act never deals the same room twice. */
 export const SPECIALS: NodeType[] = ['copy', 'tailor', 'lostFound', 'vending', 'crossTraining'];
@@ -187,6 +188,17 @@ function addAct(nodes: RunNode[], rng: Rng, act: number, last: RunNode[], script
       // Flat: across the floor either way (a node already visited can't be entered again).
       rows[i][side].next.push(rows[i][1 - side].id);
       rows[i][1 - side].next.push(rows[i][side].id);
+    }
+  }
+  // Now and then one road between two floors is cut: its lane is crossed over, down the other lane and back (the long way round).
+  // Both crossings are one-way, so no room is ever a dead end.
+  if (!scripted && rng.next() < CONFIG.roadCut) {
+    const i = rng.shuffle([...Array(rows.length - 1).keys()]).find((f) => floors.every((l) => Math.abs(l - f) > 1));
+    if (i !== undefined) {
+      const side = rng.next() < 0.5 ? 0 : 1;
+      rows[i][side].next = rows[i][side].next.filter((id) => id !== rows[i + 1][side].id);
+      rows[i][side].next.push(rows[i][1 - side].id);
+      rows[i + 1][1 - side].next.push(rows[i + 1][side].id);
     }
   }
   const boss = add(lanes[0].length + opening + 1, 0.5, 'boss');

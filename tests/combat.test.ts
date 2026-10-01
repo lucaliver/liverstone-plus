@@ -1435,6 +1435,38 @@ describe('Complaint Box', () => {
   });
 });
 
+describe('run maps', () => {
+  const maps = Array.from({ length: 60 }, (_, seed) => newRun('warrior', seed + 2).nodes);
+
+  it('deal several specials per act, all different, and a rest on every road into the boss', () => {
+    for (const nodes of maps)
+      for (let act = 1; act <= ACTS; act++) {
+        const specials = nodes.filter((n) => n.act === act && SPECIALS.includes(n.type)).map((n) => n.type);
+        expect(specials.length).toBeGreaterThanOrEqual(3);
+        expect(new Set(specials).size).toBe(specials.length);
+        const boss = nodes.find((n) => n.act === act && n.type === 'boss')!;
+        for (const n of nodes.filter((m) => m.next.includes(boss.id))) expect(n.type).toBe('rest');
+      }
+  });
+
+  it('never strand a player: every walk reaches the boss, and every room can be reached (even with a road cut)', () => {
+    let cuts = 0;
+    for (const nodes of maps) {
+      const seen = new Set<number>();
+      const walk = (id: number, path: number[]): void => {
+        seen.add(id);
+        const options = nodes[id].next.filter((n) => !path.includes(n));
+        if (!options.length) expect(nodes[id].type).toBe('boss');
+        for (const n of options) walk(n, [...path, n]);
+      };
+      walk(0, [0]);
+      expect(seen.size).toBe(nodes.length);
+      for (const n of nodes) if (n.lane !== 0.5 && !n.next.some((id) => nodes[id].floor > n.floor && [n.lane, 0.5].includes(nodes[id].lane))) cuts++;
+    }
+    expect(cuts).toBeGreaterThan(0);
+  });
+});
+
 describe('the very first run', () => {
   it('goes on through every act, the later ones dealt like any run', () => {
     const run = newRun('warrior', 1, true);
@@ -1714,13 +1746,7 @@ describe('the Copy Room', () => {
     expect(r.maxHp).toBe(hp + 2 * CONFIG.skipMaxHp + CONFIG.skipMaxHpStep);
   });
 
-  it('deals two different special rooms per act on a random map, none in act 1 of the very first run', () => {
-    const r = newRun('warrior', 5);
-    for (const act of [1, 2]) {
-      const specials = r.nodes.filter((n) => n.act === act && SPECIALS.includes(n.type)).map((n) => n.type);
-      expect(specials).toHaveLength(2);
-      expect(new Set(specials).size).toBe(2);
-    }
+  it('the very first run has no special room in act 1', () => {
     expect(newRun('warrior', 1, true).nodes.some((n) => n.act === 1 && SPECIALS.includes(n.type))).toBe(false);
   });
 

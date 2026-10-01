@@ -69,6 +69,8 @@ export const CONFIG = {
   floorDmg: 0.04,
   /** Chance that a floor of the map swaps its two rooms between the lanes. */
   laneSwap: 0.3,
+  /** Chance that an act's map has one road between two floors cut, so that lane is crossed to the other and back. */
+  roadCut: 0.5,
   /** Break Room: a rest heals this share of max HP plus this share of the HP missing. Skipping a card reward: the max HP it pays. */
   restHeal: 0.25,
   restHealMissing: 0.25,

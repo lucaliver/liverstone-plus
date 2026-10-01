@@ -119,11 +119,11 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       [xb, yb],
     ];
   };
-  /** The corridors (a flat one goes both ways: drawn once), and which wall of a room each one leaves through. */
+  /** The corridors (a flat one usually goes both ways: drawn once), and which wall of a room each one leaves through. */
   const halls = nodes.flatMap((n) =>
     n.next
       .map((id) => run.nodes[id])
-      .filter((m) => m.act === n.act && !(m.floor === n.floor && m.id < n.id))
+      .filter((m) => m.act === n.act && !(m.floor === n.floor && m.id < n.id && m.next.includes(n.id)))
       .map((m) => ({ n, m, pts: route(n, m) })),
   );
   const doors = new Map<number, Set<string>>();

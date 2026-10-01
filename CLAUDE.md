@@ -97,7 +97,7 @@ tests/         combat, content, balance.sim (+ bot), e2e/
 - **Content is data.** Cards, enemies, heroes, statuses are declarative records with small functions; `HeroHooks` and
   `RelicHooks` extend behaviour. Card numbers live once in `vals`/`upVals`; face, text, previews and logic all read them.
 - **A run is a graph drawn as an office floor plan.** `RunNode.next[]` + `lane`; per act (`ACT_DEFS`): a shared opening, two
-  lanes linked a couple of times (`LANES`, `LINKS` in `run.ts`), then the boss, which leads to the next act. Rooms beyond
+  lanes linked a couple of times and now and then with one road cut (`LANES`, `LINKS`, `CONFIG.roadCut` in `run.ts`), then the boss, which leads to the next act. Rooms beyond
   `VISION` doors are fogged. The first run has a scripted act 1 (`newRun(…, scripted)`, `FIRST_RUN_*`); its later acts are dealt like any run's. Room types (`NodeType`):
   fight, elite, boss, rest, promotion, copy, each a screen in `ROOMS` (`main.ts`). A new room = `NodeType`, `LANES` entry,
   `ROOMS` screen, `NODE_ICON`, `journey.node.*`/`journey.info.*` strings, and a picture: a sprite `room.<type>` in `art/rooms.ts` plus a `ROOM_SCENE` entry (its motion is a class in `rooms.css`) that the screen shows with `roomScene(type)`.
