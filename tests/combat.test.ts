@@ -461,6 +461,23 @@ describe('combat engine', () => {
     expect(c.cardCost(front.card)).toBe(CARDS.punch.cost);
   });
 
+  it('rust builds up on the belt, slows it down, stops it at full, and the mop scrubs it off', () => {
+    const c = setup({ enemy: ENEMIES.facilitiesManager, hp: 500, maxHp: 500 });
+    expect(c.rustsBelt).toBe(true);
+    run(c, CONFIG.introTime + 0.01);
+    const base = c.beltRate();
+    run(c, 10);
+    expect(c.rust).toBeGreaterThan(0);
+    expect(c.beltRate()).toBeCloseTo(base * (1 - c.rust));
+    c.rust = 1;
+    expect(c.beltRate()).toBe(0);
+    expect(c.wipeRust(0.3)).toBeCloseTo(0.3);
+    expect(c.beltRate()).toBeCloseTo(base * 0.3);
+    expect(c.wipeRust(5)).toBeCloseTo(0.7);
+    expect(c.rust).toBe(0);
+    expect(setup().rustsBelt).toBe(false);
+  });
+
   it('sleeve slots come from the hero', () => {
     expect(setup({ hero: HEROES.warrior }).sleeve.length).toBe(1);
     expect(setup({ hero: HEROES.necromancer }).sleeve.length).toBe(3);

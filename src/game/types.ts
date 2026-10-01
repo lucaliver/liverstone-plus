@@ -173,6 +173,8 @@ export interface StatusDef {
   onDeath?: (c: Combat, side: Side, s: StatusVal) => boolean;
   /** A card of the hero's just left the belt unplayed. */
   onExpire?: (c: Combat, side: Side, s: StatusVal) => void;
+  /** While active on the enemy, rust builds up on the belt: `by` (0–1, 1 stops the belt) every `every` seconds. The hero scrubs it off with the mop. */
+  rust?: { every: number; by: number };
   /** Runs every simulation step while the status is active. */
   tick?: (c: Combat, side: Side, s: StatusVal, dt: number) => void;
 }
@@ -369,6 +371,7 @@ export type CombatEvent =
   | { type: 'rowsOpen' }
   | { type: 'rowsClose' }
   | { type: 'weakSpot'; x: number; y: number }
+  | { type: 'rust' }
   | { type: 'end'; result: CombatResult };
 
 export type CombatResult = 'win' | 'lose';

@@ -361,6 +361,35 @@ ${shadow}
 <path d="M104 92l32 6" stroke="#f6f0e4" stroke-width="5" stroke-linecap="round"/><path d="M128 97l8 1.5" stroke="#f63a1e" stroke-width="5" stroke-linecap="round"/>
 <path d="M130 40c2 6 0 10-4 14" stroke="#1c5fd0" stroke-width="4" fill="none" stroke-linecap="round"/>`;
 
+/** The Facilities Manager: a stout man in a patched brown jacket and a flat cap, a clipboard of tickets nobody reads, a jangling key ring, rust blooming on everything he owns. */
+const facilitiesManager = `
+<defs>${lg('fm-j', '#f0903c', '#b84a20')}${lg('fm-k', '#f2cfa8', '#d8a078')}</defs>
+${shadow}
+<!-- legs and boots -->
+<path d="M72 150h22v34H68zM106 150h22l4 34h-28z" fill="#3a3450" ${OUT}/>
+<path d="M58 184h40v10H58zM104 184h40v10h-40z" fill="#1b1830" ${OUT}/>
+<!-- jacket, a belt with a key ring -->
+<path d="M48 188c-6-46 6-84 36-90h32c30 6 42 44 36 90z" fill="url(#fm-j)" ${OUT}/>
+<path d="M100 100v88" stroke="#1b1830" stroke-width="3"/>
+<rect x="52" y="150" width="96" height="10" fill="#1b1830"/><rect x="94" y="148" width="12" height="14" fill="#ffd900" ${OUT}/>
+<g class="limb" fill="none" stroke="#b8b0cc" stroke-width="4"><circle cx="128" cy="168" r="9"/></g>
+<g fill="#ffd900" ${OUT}><rect x="122" y="172" width="7" height="14"/><rect x="132" y="170" width="6" height="12"/></g>
+<!-- rust blooming on the jacket -->
+<g fill="#c25a1c"><rect x="64" y="116" width="10" height="8"/><rect x="74" y="124" width="6" height="6"/><rect x="120" y="126" width="12" height="9"/><rect x="108" y="170" width="9" height="7"/><rect x="66" y="168" width="8" height="8"/></g>
+<!-- clipboard in the left hand -->
+<g class="limb"><path d="M62 112c-12 8-16 24-14 38l13 0c0-12 2-22 10-28z" fill="url(#fm-j)" ${OUT}/><rect x="22" y="110" width="40" height="52" fill="#f6f0e4" ${OUT}/><rect x="34" y="104" width="16" height="10" fill="#6d6680" ${OUT}/><path d="M28 124h28M28 134h28M28 144h18" stroke="#1c5fd0" stroke-width="3"/><circle cx="56" cy="154" r="9" fill="url(#fm-k)" ${OUT}/></g>
+<!-- right hand with a rusty wrench -->
+<path d="M134 108c14 6 22 18 22 34l-12 2c0-10-6-18-14-22z" fill="url(#fm-j)" ${OUT}/>
+<path d="M160 144l12-48" stroke="#c25a1c" stroke-width="9" stroke-linecap="round"/><path d="M164 96c-6-2-10-8-8-14l6 4 6-4c2 6-2 12-8 14z" fill="#b8b0cc" ${OUT}/>
+<circle cx="156" cy="146" r="9" fill="url(#fm-k)" ${OUT}/>
+<!-- head: heavy moustache, flat cap, tired eyes -->
+<path d="M70 64c0-24 14-40 30-40s30 16 30 40c0 22-12 38-30 38S70 86 70 64z" fill="url(#fm-k)" ${OUT}/>
+<path d="M66 44c4-24 20-32 36-32s30 8 34 32z" fill="#3a3450" ${OUT}/><path d="M100 44h56c4 0 6 4 4 8h-60z" fill="#3a3450" ${OUT}/>
+<g ${OUT}><ellipse cx="86" cy="66" rx="8" ry="6" fill="#f6f0e4"/><ellipse cx="114" cy="66" rx="8" ry="6" fill="#f6f0e4"/></g>
+<g class="eye" fill="#1b1830"><circle cx="86" cy="68" r="3.5"/><circle cx="114" cy="68" r="3.5"/></g>
+<path d="M76 60l20 5M124 60l-20 5" stroke="#1b1830" stroke-width="5" stroke-linecap="round"/>
+<path d="M78 84c8-8 14-4 22 0 8-4 14-8 22 0-4 12-14 12-22 8-8 4-18 4-22-8z" fill="#6a4a2a" ${OUT}/>`;
+
 // Title screen props (office and factory): the time clock, a filing cabinet, a sack of money, a toxic barrel.
 const timeClock = `
 <defs>${lg('tk-m', '#9ab8f0', '#1c4fb0')}${lg('tk-g', '#ffe45a', '#d09a20')}</defs>
@@ -844,6 +873,7 @@ export const CREATURES: Record<string, string> = {
   newHire,
   bossSon,
   sickCoworker,
+  facilitiesManager,
   meticulousColleague,
   dave,
   printer,

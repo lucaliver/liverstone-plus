@@ -121,6 +121,9 @@ export class Combat {
   private current: { card: CombatCard; def: CardDef; row: number } | null = null;
   /** A target on the enemy's sprite (x, y: where, as a share of the drawing; t: seconds left). Tapped in time, it makes the hero's next attack critical. */
   weakSpot: { x: number; y: number; t: number } | null = null;
+  /** Rust on the belt, 0–1: it slows the belt down and stops it at 1. The hero scrubs it off (`wipeRust`). */
+  rust = 0;
+  private rustClock = 0;
   /** Free-form per-combat state for relics and powers. */
   mem: Record<string, number> = {};
   private tempUid = 0;
@@ -325,12 +328,13 @@ export class Combat {
     return this.beltSpeed * (this.beltRows > 1 ? CONFIG.twoRowSpeed : 1) * this.beltBoost();
   }
 
-  /** How much statuses speed the belt up (Rush, Hurry, Crunch), slow it down (Slowdown) or stop it (Stalled, or about to turn around): 1 when none does. */
+  /** How much statuses speed the belt up (Rush, Hurry, Crunch), slow it down (Slowdown, rust) or stop it (Stalled, full rust, or about to turn around): 1 when none does. */
   beltBoost(): number {
     let r = 1;
     if (this.has('hero', 'rush')) r *= CONFIG.beltRush;
     if (this.has('hero', 'hurry')) r *= CONFIG.beltHurry;
     if (this.has('hero', 'crunch')) r *= CONFIG.beltCrunch;
+    r *= 1 - this.rust;
     if (this.has('hero', 'stalled') || this.beltHalt > 0) r = 0;
     if (this.has('hero', 'slowdown')) r *= CONFIG.beltSlow;
     return r;
@@ -356,6 +360,7 @@ export class Combat {
     this.tickHero(dt);
     this.tickFighter('hero', dt);
     this.tickFighter('enemy', dt);
+    this.tickRust(dt);
     if (this.weakSpot) {
       this.weakSpot.t -= dt;
       if (this.weakSpot.t <= 0) this.weakSpot = null;
@@ -1156,6 +1161,30 @@ export class Combat {
       b.card = { uid: -++this.tempUid, id: last.card.id, up: last.card.up, bonus: 0, temp: true };
       this.events.emit({ type: 'cardSpawn', card: b.card });
     }
+  }
+
+  /** Whether the enemy rusts the belt (the mop shows up beside it). */
+  get rustsBelt(): boolean {
+    return Object.keys(this.enemy.statuses).some((id) => this.has('enemy', id) && STATUSES[id].rust);
+  }
+
+  private tickRust(dt: number): void {
+    for (const id of Object.keys(this.enemy.statuses)) {
+      const rust = this.has('enemy', id) ? STATUSES[id].rust : undefined;
+      if (!rust) continue;
+      this.rustClock += dt;
+      if (this.rustClock < rust.every) return;
+      this.rustClock -= rust.every;
+      if (this.rust === 0) this.events.emit({ type: 'rust' });
+      this.rust = Math.min(1, this.rust + rust.by);
+    }
+  }
+
+  /** The hero scrubs the belt with the mop. Returns how much rust came off. */
+  wipeRust(amount: number): number {
+    const n = Math.min(this.rust, amount);
+    this.rust -= n;
+    return n;
   }
 
   /** The hero dragged a card one more swipe around the screen: a card with `wind` grows. False when there's nothing (more) to wind. */

@@ -285,6 +285,9 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
       case 'speech':
         speak(t(e.key), QUIP_MS);
         break;
+      case 'rust':
+        v.toast(t('combat.rust'));
+        break;
       case 'weakSpot':
         r.weakSpot.style.setProperty('--u', String(e.x));
         r.weakSpot.style.setProperty('--v', String(e.y));

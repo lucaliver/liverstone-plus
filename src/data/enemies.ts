@@ -240,6 +240,18 @@ const defs: EnemyDef[] = [
 
   // ------------------------------------------------------------- Act 2
   {
+    // Never fixes anything: rust builds up on the belt until it crawls, and then stops. The mop beside him scrubs it off.
+    id: 'facilitiesManager',
+    act: 2,
+    tier: 'normal',
+    hp: 60,
+    art: 'facilitiesManager',
+    main: atk('clipboardSmack', 7, 6),
+    every: 2,
+    specials: [atk('wetFloor', 14, 9, { intent: 'charge' }), { id: 'submitATicket', intent: 'buff', windup: 5, status: [gainStrength] }],
+    start: [{ id: 'deferredMaintenance' }],
+  },
+  {
     // Everything in its lane: you have to alternate the rows of the belt.
     id: 'meticulousColleague',
     act: 2,
@@ -487,6 +499,7 @@ export const DIFFICULTY = [
   'wellnessCoach',
   'contractLawyer',
   'meticulousColleague',
+  'facilitiesManager',
   'beanCounter',
   'complianceOfficer',
   'nightJanitor',

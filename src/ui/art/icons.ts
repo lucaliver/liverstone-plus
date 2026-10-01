@@ -260,6 +260,14 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'nature',
     svg: `<circle cx="32" cy="32" r="16"/><g ${S} stroke-width="5"><path d="M32 4v12M32 48v12M4 32h12M48 32h12M12 12l9 9M43 43l9 9M52 12l-9 9M21 43l-9 9"/></g><g fill="#16121f"><rect x="25" y="26" width="5" height="5"/><rect x="35" y="35" width="5" height="5"/><rect x="34" y="24" width="4" height="4"/></g>`,
   },
+  rust: {
+    el: 'fire',
+    svg: `<path d="M20 6h24l16 26-16 26H20L4 32z"/><circle cx="32" cy="32" r="9" fill="#16121f"/><g fill="#16121f"><rect x="8" y="26" width="6" height="6"/><rect x="48" y="14" width="6" height="6"/><rect x="40" y="46" width="8" height="6"/><rect x="22" y="12" width="5" height="5"/></g>`,
+  },
+  mop: {
+    el: 'steel',
+    svg: `<path d="M48 2l8 4-24 36-8-4z"/><path d="M6 42l22 6 8 14H2z"/><g fill="#16121f"><rect x="9" y="54" width="3" height="8"/><rect x="17" y="54" width="3" height="8"/><rect x="25" y="54" width="3" height="8"/></g>`,
+  },
   windUp: {
     el: 'steel',
     svg: `<rect x="14" y="6" width="28" height="22"/><g fill="#16121f"><rect x="20" y="13" width="6" height="6"/><rect x="30" y="13" width="6" height="6"/><rect x="22" y="22" width="12" height="3"/></g><rect x="12" y="30" width="32" height="22"/><rect x="14" y="52" width="10" height="10"/><rect x="32" y="52" width="10" height="10"/><rect x="44" y="38" width="6" height="4"/><rect x="50" y="32" width="12" height="16"/><rect x="54" y="38" width="4" height="4" fill="#16121f"/>`,

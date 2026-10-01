@@ -4,7 +4,7 @@
 
 - [x] implementa un nuovo nemico "Sick coworker": come mossa speciale mette "virus" alle tue carte; le carte con virus costano 1 in più e quando una carta con virus è sulla belt, dopo 1sec infetta la carta successiva (e così via)
 
-- [ ] un nuovo nemico: che aggiunge ogni tot ruggine sopra la belt; affianco a lui c'è uno straccio, puoi trascinarlo sopra la belt per pulirla (con più passate); la ruggine rallenta la belt e se è troppa la ferma proprio
+- [x] un nuovo nemico: che aggiunge ogni tot ruggine sopra la belt; affianco a lui c'è uno straccio, puoi trascinarlo sopra la belt per pulirla (con più passate); la ruggine rallenta la belt e se è troppa la ferma proprio
 
 # NEXT STEPS (ignore for now):
 

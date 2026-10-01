@@ -67,6 +67,7 @@ function markup(run: RunState, combat: Combat): string {
       <div class="shade"></div>
       <div class="enemy-wrap">
         <div class="enemy-art">${creature(enemyDef.art)}<button class="weak-spot" aria-label="${t('status.weakSpot')}">${icon('target')}</button></div>
+        <div class="mop" aria-hidden="true">${icon('mop')}</div>
       </div>
       <div class="enemy-info">
         <div class="statuses js-estatus"></div>
@@ -96,6 +97,7 @@ function markup(run: RunState, combat: Combat): string {
     </section>
     <section class="belt rows-${combat.beltRows} ${settings.rightToLeft ? '' : 'ltr'}">
       <div class="belt-track"></div>
+      <div class="belt-rust"></div>
       <div class="maw-eyes" aria-hidden="true"><i></i><i></i></div>
       <div class="belt-cards"></div>
     </section>
@@ -114,6 +116,8 @@ function queryRefs(el: HTMLElement) {
     enemyWrap: $('.enemy-wrap', el),
     enemyArt: $('.enemy-art', el),
     weakSpot: $('.weak-spot', el),
+    mop: $('.mop', el),
+    rust: $('.belt-rust', el),
     intent: $('.threat', el),
     intentIco: $('.js-intent-ico', el),
     intentVal: $('.threat .t-val', el),

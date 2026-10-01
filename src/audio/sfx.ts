@@ -156,6 +156,7 @@ const SOUNDS = {
       tone(f, 0.12, { type: 'sine', vol: 0.08, delay: i * 0.05 });
     });
   },
+  scrub: () => noise(0.12, { freq: 1800, to: 900, vol: 0.12 }),
   ratchet: () => tone(900, 0.03, { type: 'square', vol: 0.06, to: 600 }),
   weakSpot: () => tone(1200, 0.07, { type: 'square', vol: 0.07, to: 1600 }),
   status: () => tone(300, 0.2, { type: 'triangle', vol: 0.12, to: 520 }),

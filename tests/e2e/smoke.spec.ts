@@ -436,6 +436,32 @@ test("the Sick Coworker's virus shows on the cards it infects and goes away when
   expect(problems).toEqual([]);
 });
 
+test("the Facilities Manager's rust slows the belt, and dragging the mop over the belt scrubs it off", async ({ page }) => {
+  const problems = await freshGame(page);
+  await page.getByRole('button', { name: /debug/i }).click();
+  await page.locator('.debug-foe[data-enemy="facilitiesManager"]').click();
+  await expect(page.locator('.combat')).toBeVisible();
+  const start = page.locator('.js-start');
+  if (await start.count()) await start.click();
+  await combat(page, 'c.rust = 0.8;');
+  await expect(page.locator('.belt-rust i.on')).not.toHaveCount(0);
+  const mop = page.locator('.mop.on');
+  await expect(mop).toBeVisible();
+  const m = (await mop.boundingBox())!;
+  const belt = (await page.locator('.belt').boundingBox())!;
+  const x = m.x + m.width * 0.3;
+  const y = m.y + m.height * 0.85;
+  await mop.dispatchEvent('pointerdown', { pointerId: 1, clientX: x, clientY: y });
+  // The mop's head sweeps the belt back and forth.
+  for (let i = 0; i < 4; i++) {
+    await page.mouse.move(belt.x + 20, belt.y + belt.height / 2, { steps: 8 });
+    await page.mouse.move(belt.x + belt.width - 20, belt.y + belt.height / 2, { steps: 8 });
+  }
+  await page.locator('.combat').dispatchEvent('pointerup', { pointerId: 1 });
+  expect(((await combat(page, 'return c.rust;')) as number) < 0.8).toBe(true);
+  expect(problems).toEqual([]);
+});
+
 test('debug: Unlock all hires every hero and reveals every card and enemy in the handbook', async ({ page }) => {
   await freshGame(page, { locked: true });
   await page.getByRole('button', { name: /debug/i }).click();

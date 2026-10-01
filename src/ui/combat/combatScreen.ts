@@ -17,6 +17,7 @@ import { coach } from '../components/coach';
 import { bindMoveDetails, enemyTraits, moveEffect, moveIcon, movePattern } from '../components/moveText';
 import { $, h, onPress, onTapOrHold } from '../dom';
 import { burst, haptic, shake } from '../fx/fx';
+import { bindMop } from './mop';
 import { clockText } from '../screens/journey';
 import { createCardLayer } from './cardLayer';
 import { bindCombatFx } from './combatFx';
@@ -206,6 +207,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   onPress(r.portrait, deckInfo);
   onPress(r.intent, moveInfo);
   // The weak spot answers on touch-down, not on release: it only stays up for a couple of seconds.
+  bindMop(v);
   r.weakSpot.addEventListener('pointerdown', () => {
     if (state.paused || state.waiting || state.ended || !combat.hitWeakSpot()) return;
     haptic('hit');
