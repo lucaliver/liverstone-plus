@@ -93,8 +93,9 @@
   display: none;
   position: absolute;
   inset: 0;
-  z-index: 6;
+  z-index: var(--z-belt-window);
   flex-direction: column;
+  color: var(--k);
   background: var(--paper);
   border: var(--line) solid var(--k);
   animation: stamp-in 0.15s steps(2);

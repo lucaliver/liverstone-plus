@@ -1025,7 +1025,7 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   },
   update: {
     el: 'arcane',
-    svg: `<path d="M4 8h56v48H4z"/><path fill="#16121f" opacity=".45" d="M4 8h56v10H4z"/><circle cx="11" cy="13" r="2.2" fill="#fff"/><circle cx="18" cy="13" r="2.2" fill="#fff"/><path fill="#fff" d="M28 24h8v12h8L32 50 20 36h8z"/>`,
+    svg: `<path d="M4 6h56v52H4z"/><path fill="#16121f" d="M4 19h56v4H4z"/><path fill="#16121f" d="M9 10h6v5H9zM19 10h6v5h-6z"/><path fill="#16121f" d="M29 27h6v10h11L32 53 18 37h11z"/>`,
   },
   creepClock: {
     el: 'shadow',
