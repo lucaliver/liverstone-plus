@@ -283,7 +283,8 @@ export function createCardLayer(v: CombatView): CardLayer {
       const dy = target.y - (rc.top + rc.height / 2);
       el2.classList.add('fly-out');
       el2.style.transform = `${base} translate3d(${dx}px, ${dy}px, 0) scale(.35) rotate(${dx > 0 ? 20 : -20}deg)`;
-      if (reason === 'played') setTimeout(() => burst(def.type === 'skill' ? 'block' : 'hit', target.x, target.y, 8), 300);
+      // Skills have their own effects (Block, heal, mana…): only the other cards land with a hit.
+      if (reason === 'played' && def.type !== 'skill') setTimeout(() => burst('hit', target.x, target.y, 8), 300);
     }
     setTimeout(() => el2.remove(), 520);
   };

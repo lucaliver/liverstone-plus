@@ -12,6 +12,8 @@ interface P {
   color: string;
   g: number;
   shape: 'dot' | 'spark' | 'ring';
+  /** How far a ring grows beyond its starting size. */
+  reach?: number;
 }
 
 let canvas: HTMLCanvasElement;
@@ -56,7 +58,7 @@ const PALETTES: Record<string, string[]> = {
   ice: [B, '#8fc0f0'],
   arcane: [P, B],
   heal: [P, Y],
-  block: [B, Y],
+  block: ['#7b86a3', '#a3adc4', K],
   mana: [B, P],
   blood: [P, K],
   poison: ['#2a8a4a', Y],
@@ -67,8 +69,8 @@ const PALETTES: Record<string, string[]> = {
   hit: [K, Y],
 };
 
-/** Chunky square "ink" pixels, snapped to a 4px grid. */
-export function burst(kind: string, x: number, y: number, n = 16, spread = 1): void {
+/** Chunky square "ink" pixels, snapped to a 4px grid; the ring around them grows `reach` px. */
+export function burst(kind: string, x: number, y: number, n = 16, spread = 1, reach = 70): void {
   if (settings.reduceMotion) n = Math.ceil(n / 3);
   const pal = PALETTES[kind] ?? PALETTES.hit;
   const up = kind === 'heal' || kind === 'mana' || kind === 'fire' || kind === 'burn' || kind === 'ash';
@@ -88,7 +90,7 @@ export function burst(kind: string, x: number, y: number, n = 16, spread = 1): v
       shape: 'dot',
     });
   }
-  if (kind !== 'heal' && kind !== 'mana') ps.push({ x, y, vx: 0, vy: 0, life: 0, max: 0.24, size: 12, color: pal[0], g: 0, shape: 'ring' });
+  if (kind !== 'heal' && kind !== 'mana') ps.push({ x, y, vx: 0, vy: 0, life: 0, max: 0.24, size: 12, color: pal[0], g: 0, shape: 'ring', reach });
 }
 
 let last = performance.now();
@@ -121,7 +123,7 @@ function loop(now: number): void {
     const sy = Math.round(p.y / 4) * 4;
     if (p.shape === 'ring') {
       // Expanding square outline, stepped.
-      const r = Math.round((p.size + (1 - k) * 70) / 4) * 4;
+      const r = Math.round((p.size + (1 - k) * (p.reach ?? 70)) / 4) * 4;
       g.lineWidth = 4;
       g.strokeRect(sx - r, sy - r, r * 2, r * 2);
     } else {

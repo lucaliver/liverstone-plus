@@ -109,11 +109,13 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         break;
       }
       case 'block': {
-        const p = v.pointOf(e.target);
+        // On the Block indicator, where the number will show.
+        const chip = e.target === 'hero' ? r.hBlock : r.eBlock;
+        const p = centerOf(chip);
         floatText(p.x, p.y - 10, `+${e.amount}`, 'block');
-        burst('block', p.x, p.y, 10);
+        burst('block', p.x, p.y, 10, 0.5, 24);
         sfx('block');
-        v.retrigger(e.target === 'hero' ? r.hBlock : r.eBlock, 'pop');
+        v.retrigger(chip, 'pop');
         break;
       }
       case 'status': {
