@@ -153,6 +153,27 @@ ${shadow}
 <path d="M42 134v10l6 8 6-8 6 8 6-8 6 8 6-8 6 8 6-8 6 8 6-8 6 8 6-8v-10z" fill="${PAPER}" ${OUT}/>
 <path d="M44 174h92" stroke="#ff3d9a" stroke-width="3"/>`;
 
+/** The contract screen's hand: a skeleton's hand in a pink sleeve with a white cuff, pinching the corner of the paper (the pinch is at the top left). */
+const contractHand = `
+<path d="M144 108l56 56v36h-36l-56-56z" fill="#ff3d9a" ${OUT}/>
+<path d="M164 146l16 16M150 164l16 16" stroke="#a01060" stroke-width="3" stroke-linecap="round"/>
+<path d="M130 94l14 14-36 36-14-14z" fill="${PAPER}" ${OUT}/><circle cx="123" cy="115" r="5" fill="#ffd900" ${OUT}/>
+<path d="M94 130L58 108l4-34 36-18 28 10 4 28z" fill="${PAPER}" ${OUT}/>
+<g fill="${PAPER}" ${OUT}><circle cx="108" cy="58" r="10"/><circle cx="124" cy="70" r="10"/><circle cx="128" cy="88" r="10"/></g>
+<path d="M76 74L46 40M62 108L32 68" stroke="${INK}" stroke-width="24" stroke-linecap="round"/>
+<path d="M76 74L46 40M62 108L32 68" stroke="${PAPER}" stroke-width="17" stroke-linecap="round"/>
+<circle cx="62" cy="58" r="5" fill="${INK}"/><circle cx="47" cy="88" r="5" fill="${INK}"/>`;
+
+/** The pen that signs: a fountain pen, nib at the bottom left (about a fifth in from the left and a fifth up from the bottom). */
+const contractPen = `
+<g transform="rotate(-45 100 100)">
+<path d="M22 100l30-12v24z" fill="#ffd900" ${OUT}/><path d="M26 100h22" stroke="${INK}" stroke-width="3"/><circle cx="48" cy="100" r="3" fill="${INK}"/>
+<path d="M52 90h26v20H52z" fill="#3a3450" ${OUT}/>
+<path d="M78 86h72v28H78z" fill="#ff3d9a" ${OUT}/><path d="M84 92h60" stroke="#ffb4d4" stroke-width="4" stroke-linecap="round"/>
+<path d="M118 86h8v28h-8z" fill="#1c5fd0" ${OUT}/>
+<path d="M150 88h26v24h-26z" fill="#a01060" ${OUT}/><path d="M140 80h36v8h-36z" fill="#ffd900" ${OUT}/>
+</g>`;
+
 /** Sprite sources by room type, as the renderer wants them (`room.` keeps them apart from creature ids). */
 export const ROOM_SPRITES: Record<string, string> = {
   'room.rest': coffeeMachine,
@@ -163,6 +184,12 @@ export const ROOM_SPRITES: Record<string, string> = {
   'room.lostFound.open': mimic(true),
   'room.vending': vending,
 };
+
+/** Sprites of the contract screen's props, keyed like the rooms'. */
+export const PROP_SPRITES: Record<string, string> = { 'contract.hand': contractHand, 'contract.pen': contractPen };
+
+/** Riso-pixel sprite of a contract prop (see riso.ts). */
+export const propArt = (id: string, cls = ''): string => sprite(`contract.${id}`, cls);
 
 /** Riso-pixel sprite of a room (see riso.ts). */
 export const roomArt = (id: string, cls = ''): string => sprite(`room.${id}`, cls);

@@ -267,7 +267,8 @@
   justify-content: center;
   text-align: center;
   gap: 16px;
-  overflow: hidden;
+  /* clip, not hidden: the contract slides in from below the screen and must not make it scrollable */
+  overflow: clip;
 }
 /* a wide yellow band across the night, the poster's diagonal */
 .splash-band {
@@ -276,6 +277,28 @@
   z-index: -1;
   background: var(--y);
   clip-path: polygon(0 34%, 100% 16%, 100% 42%, 0 60%);
+}
+/* the desk the contract lies on: dark planks along the bottom */
+.splash-desk {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(90px, 18%, 150px);
+  background: repeating-linear-gradient(90deg, var(--wood-edge) 0 76px, var(--k) 76px 80px);
+  border-top: 6px solid var(--k);
+}
+/* the dark around the desk: motes and a few eyes, behind everything */
+.splash-dark,
+.splash-dark .motes,
+.splash-dark .dark-eyes { z-index: -1; }
+.splash-dark { position: absolute; inset: 0; pointer-events: none; }
+.splash .logo .word { display: inline-block; white-space: nowrap; }
+.splash .logo .word span {
+  display: inline-block;
+  animation: letter-drop 0.24s steps(6) both;
+  animation-delay: calc(0.15s + var(--i) * 0.04s);
 }
 .splash .logo {
   margin: 0;
@@ -301,6 +324,31 @@
   border: var(--line) solid var(--k);
   box-shadow: var(--off) var(--off) 0 var(--shadow);
   rotate: 1.5deg;
+  z-index: 1;
+  /* it rides over the button while it slides in (and the hand with it): only the terms link takes taps */
+  pointer-events: none;
+  /* slid across the desk by a hand, which lets go on arrival */
+  animation: contract-in 0.7s steps(7) 0.5s backwards;
+}
+@keyframes contract-in {
+  from { translate: 0 100vh; }
+  70% { translate: 0 -10px; }
+}
+/* signed: pulled away off the top of the screen */
+.contract.pulled { animation: contract-out 0.4s steps(5) forwards; }
+@keyframes contract-out {
+  to { translate: 0 -110vh; }
+}
+/* a staple in the corner */
+.contract::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  width: 16px;
+  height: 5px;
+  background: var(--k);
+  rotate: -12deg;
 }
 .contract h2 {
   margin: 0 0 6px;
@@ -312,7 +360,35 @@
 .contract p,
 .contract li { margin: 0; font-size: 15px; line-height: 1.3; }
 .contract ol { margin: 8px 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+/* the terms link and a CONFIDENTIAL stamp on one row */
+.contract-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.contract-conf {
+  flex: none;
+  padding: 0 6px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--p);
+  border: 3px solid var(--p);
+  rotate: 7deg;
+}
+.contract-fine {
+  margin: 0 0 2px;
+  font-size: 10px;
+  line-height: 1.2;
+  color: var(--muted);
+}
+.contract-page {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  translate: -50% 0;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--muted);
+}
 .contract-terms {
+  pointer-events: auto;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -329,7 +405,7 @@
 .contract-terms.shake-big { color: var(--p); }
 .contract-line {
   position: relative;
-  height: 50px;
+  height: 62px;
   border-bottom: 2px solid var(--k);
 }
 .contract-line > span {
@@ -342,9 +418,44 @@
 }
 .contract-sig { position: absolute; left: 8px; bottom: 2px; width: 70%; height: 44px; clip-path: inset(0 100% 0 0); }
 .contract-sig svg { width: 100%; height: 100%; }
-.contract-sig.done { animation: sign 0.6s steps(8) forwards; }
-@keyframes sign {
-  to { clip-path: inset(0 0 0 0); }
+/* held: the signature is written as the hold goes on, and the pen travels with it (letting go snaps both back) */
+.contract-line.signing .contract-sig { clip-path: inset(0 0 0 0); transition: clip-path 0.9s steps(9); }
+.contract-sig.done { clip-path: inset(0 0 0 0); }
+.contract-pen {
+  position: absolute;
+  left: 8px;
+  bottom: 12px;
+  z-index: 1;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+/* the nib sits on the anchor (a fifth in and a fifth up from the sprite's corner) */
+.contract-pen .riso { position: absolute; left: -16px; top: -57px; width: 72px; height: 72px; animation: bob 1.2s steps(2) infinite; }
+.contract-line.signing .contract-pen { left: calc(8px + 64%); transition: left 0.9s steps(9); }
+.contract-line.signing .contract-pen .riso { animation: scribble 0.2s steps(2) infinite; }
+@keyframes scribble {
+  50% { transform: translate(2px, 3px); }
+}
+.contract-line.done .contract-pen { left: calc(8px + 64%); animation: pen-away 0.3s steps(3) forwards; }
+@keyframes pen-away {
+  to { translate: 0 -30px; opacity: 0; }
+}
+/* the hand that slid the contract in pinches its bottom edge, then lets go and slips away */
+.contract-hand {
+  position: absolute;
+  left: 55%;
+  top: 100%;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  animation: hand-away 0.5s steps(5) 1.3s forwards;
+}
+/* the pinch is a fifth in and a fifth down from the sprite's corner */
+.contract-hand .riso { position: absolute; left: -27px; top: -30px; width: 150px; height: 150px; }
+@keyframes hand-away {
+  to { translate: 150px 200px; visibility: hidden; }
 }
 .contract-stamp {
   position: absolute;

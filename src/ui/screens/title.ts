@@ -3,12 +3,14 @@ import { sfx } from '../../audio/sfx';
 import { ENEMY_LIST } from '../../data/enemies';
 import { enemyMet, neverPlayed, signContract } from '../../game/meta';
 import { currentNode, type RunState, totalFloors } from '../../game/run';
-import { haptic } from '../fx/fx';
+import { burst, haptic } from '../fx/fx';
 import type { Screen } from '../app';
 import { h, onPress, retrigger } from '../dom';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
+import { propArt } from '../art/rooms';
 import { debugButton } from '../components/debugMenu';
+import { darkEyes, dropLetters, motes } from '../components/decor';
 import { openHowTo, openInfo, openSettings } from '../components/modals';
 
 export interface TitleCallbacks {
@@ -23,6 +25,9 @@ export interface TitleCallbacks {
 
 /** Holes the logo takes before it's swapped for a fresh one. */
 const LOGO_HOLES = 7;
+
+/** A beat after the HIRED stamp lands, before the contract is pulled away (ms). */
+const STAMP_BEAT_MS = 600;
 
 /** How long the time card takes to slide into the clock before the next screen (ms). */
 const PUNCH_MS = 380;
@@ -125,8 +130,9 @@ export function titleScreen(cb: TitleCallbacks): Screen {
 const SIGN_MS = 900;
 
 /**
- * The very first screen, until it's signed: an employment contract, signed with a hold, which teaches "hold to learn"
- * (the terms can be held to read them, and must be read first). That gesture also lets the browser play sound.
+ * The very first screen, until it's signed: a skeleton's hand slides an employment contract across the desk, and it is
+ * signed with a hold (a pen writes the signature as the hold goes on), which teaches "hold to learn" (the terms can be held
+ * to read them, and must be read first). That gesture also lets the browser play sound.
  */
 export function splashScreen(onStart: () => void): Screen {
   let timer = 0;
@@ -140,10 +146,38 @@ export function splashScreen(onStart: () => void): Screen {
   });
   const signature = h('div', { class: 'contract-sig', html: SIGNATURE });
   const stamp = h('div', { class: 'contract-stamp' }, t('contract.hired'));
+  const pen = h('div', { class: 'contract-pen', 'aria-hidden': 'true', html: propArt('pen') });
+  const line = h('div', { class: 'contract-line' }, signature, stamp, pen, h('span', null, t('contract.signHere')));
   const action = h('button', { class: 'btn cta sign-btn', html: `<span class="fill"></span>${icon('pen')}<span>${t('contract.sign')}</span>` });
+  const contract = h(
+    'div',
+    { class: 'contract' },
+    h('h2', null, t('contract.title')),
+    h('p', null, t('contract.intro')),
+    h('ol', null, h('li', null, t('contract.c1')), h('li', null, t('contract.c2')), h('li', null, t('contract.c3'))),
+    h('div', { class: 'contract-row' }, terms, h('div', { class: 'contract-conf' }, t('contract.confidential'))),
+    h('p', { class: 'contract-fine' }, t('contract.fine')),
+    line,
+    h('div', { class: 'contract-page' }, t('contract.page')),
+    h('div', { class: 'contract-hand', 'aria-hidden': 'true', html: propArt('hand') }),
+  );
   const cancel = (): void => {
     clearTimeout(timer);
     action.classList.remove('holding');
+    line.classList.remove('signing');
+  };
+  /** Once the HIRED stamp has landed: the desk jolts, paper flies, and the contract is pulled away before the title. */
+  const stampLanded = (e: Event): void => {
+    if (e.target !== stamp) return;
+    stamp.removeEventListener('animationend', stampLanded);
+    const r = stamp.getBoundingClientRect();
+    burst('paper', r.left + r.width / 2, r.top + r.height / 2, 26, 1.3);
+    retrigger(contract, 'shake-big');
+    sfx('stamp');
+    timer = window.setTimeout(() => {
+      contract.classList.add('pulled');
+      contract.addEventListener('animationend', (ev) => ev.target === contract && onStart(), { once: true });
+    }, STAMP_BEAT_MS);
   };
   action.addEventListener('pointerdown', () => {
     if (!read) {
@@ -154,16 +188,18 @@ export function splashScreen(onStart: () => void): Screen {
       return;
     }
     action.classList.add('holding');
+    line.classList.add('signing');
     haptic('tap');
     timer = window.setTimeout(() => {
       signContract();
       action.classList.remove('holding');
       action.classList.add('signed');
+      line.classList.replace('signing', 'done');
       signature.classList.add('done');
       stamp.classList.add('in');
+      stamp.addEventListener('animationend', stampLanded);
       sfx('punchClock');
       haptic('ability');
-      timer = window.setTimeout(onStart, 1100);
     }, SIGN_MS);
   });
   for (const ev of ['pointerup', 'pointerleave', 'pointercancel'])
@@ -172,16 +208,17 @@ export function splashScreen(onStart: () => void): Screen {
     'div',
     { class: 'screen splash' },
     h('div', { class: 'splash-band', 'aria-hidden': 'true' }),
-    h('h1', { class: 'logo' }, t('app.title')),
-    h(
-      'div',
-      { class: 'contract' },
-      h('h2', null, t('contract.title')),
-      h('p', null, t('contract.intro')),
-      h('ol', null, h('li', null, t('contract.c1')), h('li', null, t('contract.c2')), h('li', null, t('contract.c3'))),
-      terms,
-      h('div', { class: 'contract-line' }, signature, stamp, h('span', null, t('contract.signHere'))),
-    ),
+    h('div', { class: 'splash-desk', 'aria-hidden': 'true' }),
+    h('div', {
+      class: 'splash-dark',
+      html: `${motes(10, ['var(--y)', 'var(--p)'])}${darkEyes([
+        { x: '7%', y: '7%' },
+        { x: '84%', y: '12%' },
+        { x: '5%', y: '58%' },
+      ])}`,
+    }),
+    h('h1', { class: 'logo', 'aria-label': t('app.title'), html: dropLetters(t('app.title')) }),
+    contract,
     action,
   );
   return {

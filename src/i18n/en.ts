@@ -27,6 +27,10 @@ const en = {
   'contract.sign': 'Hold to sign',
   'contract.signHere': 'Signature',
   'contract.hired': 'Hired',
+  'contract.confidential': 'Confidential',
+  'contract.page': 'Page 1 of 47',
+  'contract.fine':
+    'The undersigned waives the right to read this and to have been asked. Punchcard Inc. is not liable for lost limbs, lost souls or lost lunches. Lunch is not included.',
   'menu.home': 'Main menu',
   'menu.reset': 'Reset progress',
   'menu.resetConfirm': 'Erase everything: your saved run, unlocked heroes, discovered cards and settings?',
