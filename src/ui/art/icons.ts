@@ -988,6 +988,51 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'holy',
     svg: `<path d="M4 30C4 14 16 4 32 4s28 10 28 26c-6-6-10-6-14 0-4-6-10-6-14 0-4-6-10-6-14 0-4-6-8-6-14 0z"/><g ${S} stroke-width="3"><path d="M10 32l20 20M54 32L34 52M32 30v22"/></g><rect x="26" y="50" width="12" height="11"/>`,
   },
+  // ---- relics and rooms
+  stressBall: {
+    el: 'holy',
+    svg: `<circle cx="32" cy="34" r="25"/><path fill="#16121f" opacity=".4" d="M10 30c14 6 30 6 44 0v5c-14 7-30 7-44 0z"/><path ${HI} d="M18 22c3-6 9-9 15-9-7 2-11 6-13 12z"/><circle cx="25" cy="42" r="2.5" fill="#16121f"/><circle cx="39" cy="42" r="2.5" fill="#16121f"/>`,
+  },
+  thermos: {
+    el: 'steel',
+    svg: `<rect x="20" y="3" width="24" height="12" rx="3"/><rect x="16" y="14" width="32" height="47" rx="5"/><rect x="16" y="28" width="32" height="7" fill="#16121f" opacity=".45"/><path ${HI} d="M21 20h4v35h-4z"/>`,
+  },
+  ergoChair: {
+    el: 'steel',
+    svg: `<path d="M16 3h24c5 0 7 3 6 8l-3 18H18z"/><rect x="10" y="31" width="44" height="9" rx="3"/><rect x="29" y="40" width="6" height="14"/><path d="M6 58l26-5 26 5v3H6z"/><circle cx="12" cy="61" r="2.5" fill="#16121f"/><circle cx="52" cy="61" r="2.5" fill="#16121f"/>`,
+  },
+  slippers: {
+    el: 'blood',
+    svg: `<path d="M3 34c0-9 8-14 20-14 7 0 9 5 17 7 12 2 21 6 21 15v8H3z"/><path fill="#16121f" opacity=".4" d="M3 48h58v8H3z"/><path ${HI} d="M8 32c3-5 8-7 14-7-6 2-9 5-10 10z"/>`,
+  },
+  armband: {
+    el: 'blood',
+    svg: `<rect x="12" y="4" width="40" height="56" rx="3"/><g fill="#16121f">${star4(32, 32, 15)}</g><path fill="#16121f" opacity=".35" d="M12 4h6v56h-6zM46 4h6v56h-6z"/>`,
+  },
+  inbox: {
+    el: 'steel',
+    svg: `<path d="M10 6h44l8 30v22H2V36z"/><path fill="#16121f" opacity=".4" d="M2 36h18l4 8h16l4-8h18v4H2z"/><path d="M21 21l8 8 14-14" fill="none" stroke="#16121f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`,
+  },
+  heavyStapler: {
+    el: 'steel',
+    svg: `<path d="M2 38h60v10H2z"/><path d="M8 38L18 14h34c6 0 10 3 10 9v15z"/><path fill="#16121f" opacity=".4" d="M22 20h24v4H22z"/><path d="M12 48h6v10h-6zM46 48h6v10h-6z"/>`,
+  },
+  badge: {
+    el: 'holy',
+    svg: `<path d="M18 2h8l6 12 6-12h8L38 20H26z"/><rect x="10" y="18" width="44" height="44" rx="4"/><rect x="25" y="23" width="14" height="4" fill="#16121f"/><rect x="18" y="32" width="16" height="16" fill="#16121f"/><path fill="#16121f" d="M38 34h10v4H38zM38 42h10v4H38z"/>`,
+  },
+  exitSign: {
+    el: 'nature',
+    svg: `<path d="M14 3h4v14h-4zM46 3h4v14h-4z"/><rect x="3" y="16" width="58" height="34" rx="2"/><path fill="#16121f" d="M11 33h24v-9l16 11-16 11v-9H11z"/><path d="M8 54h48v6H8z"/>`,
+  },
+  cargoPants: {
+    el: 'nature',
+    svg: `<path d="M12 3h40l5 58H37l-5-30-5 30H7z"/><path fill="#16121f" opacity=".4" d="M12 3h40v6H12z"/><rect x="9" y="36" width="13" height="13" fill="#16121f"/><rect x="42" y="36" width="13" height="13" fill="#16121f"/><path ${HI} d="M11 38h9v3h-9zM44 38h9v3h-9z"/>`,
+  },
+  tailor: {
+    el: 'holy',
+    svg: `<path d="M24 11c0 4 4 7 8 7s8-3 8-7l14 7 4 15-10 3v22H16V36L6 33l4-15z"/><path fill="#16121f" opacity=".35" d="M29 18h6v38h-6z"/><rect x="29" y="56" width="6" height="6"/><path d="M32 2v6" stroke="currentColor" stroke-width="4"/>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {

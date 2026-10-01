@@ -1,6 +1,7 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { HEROES } from '../../data/heroes';
+import { RELICS, relicSum } from '../../data/relics';
 import type { RunState } from '../../game/run';
 import type { HeroDef } from '../../game/types';
 import { openModal } from '../app';
@@ -42,6 +43,14 @@ export function openHeroSheet(run: RunState): void {
   const hero = HEROES[run.hero];
   sfx('tap');
   const features = heroFeatures(hero);
+  const sleeve = hero.sleeve + relicSum(run.relics, 'sleeve');
+  const mana = hero.maxMana + relicSum(run.relics, 'maxMana');
+  const relics = run.relics.map((id) =>
+    h('div', {
+      class: 'hero-feature',
+      html: `${icon(RELICS[id].art)}<div><b>${t(`relic.${id}.name`)}</b>${t(`relic.${id}.d`, { n: RELICS[id].n })}</div>`,
+    }),
+  );
   const body = h(
     'div',
     { class: 'hero-sheet' },
@@ -53,8 +62,8 @@ export function openHeroSheet(run: RunState): void {
       'div',
       { class: 'hero-stats' },
       h('span', { class: 'stat hp', html: `${icon('heart')}${run.hp}/${run.maxHp}` }),
-      h('span', { class: 'stat mana', html: `${icon('crystal')}${hero.maxMana}` }),
-      h('span', { class: 'stat sleeve', 'aria-label': t('hero.sleeve', { n: hero.sleeve }), html: `${icon('hand')}${hero.sleeve}` }),
+      h('span', { class: 'stat mana', html: `${icon('crystal')}${mana}` }),
+      h('span', { class: 'stat sleeve', 'aria-label': t('hero.sleeve', { n: sleeve }), html: `${icon('hand')}${sleeve}` }),
       h('button', {
         class: 'stat deck',
         'aria-label': t('common.deck'),
@@ -66,6 +75,7 @@ export function openHeroSheet(run: RunState): void {
       }),
     ),
     features,
+    ...(relics.length ? [h('h4', { class: 'sheet-relics' }, t('hero.relics')), h('div', { class: 'hero-features' }, ...relics)] : []),
   );
   openModal({ body, actions: [{ label: t('common.close'), cls: 'secondary' }] });
 }

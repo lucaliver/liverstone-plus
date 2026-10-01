@@ -5,7 +5,8 @@ import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
 import { STATUSES } from '../src/data/statuses';
 import { CARD_LIST, CARDS } from '../src/data/cards';
-import { canCopy, canShred, fightPay, loadRun, newRun, photocopyCard, shredCard, skipPay, skipReward } from '../src/game/run';
+import { RELICS } from '../src/data/relics';
+import { canCopy, canShred, fightPay, gainRelic, hasRelic, loadRun, newRun, photocopyCard, shredCard, skipPay, skipReward } from '../src/game/run';
 import type { CardInst } from '../src/game/types';
 
 const deckOf = (ids: string[]): CardInst[] => ids.map((id, i) => ({ uid: i + 1, id, up: false }));
@@ -1647,5 +1648,33 @@ describe('the Copy Room', () => {
     const r = newRun('warrior', 5);
     for (const act of [1, 2]) expect(r.nodes.filter((n) => n.act === act && n.type === 'copy')).toHaveLength(1);
     expect(newRun('warrior', 1, true).nodes.some((n) => n.type === 'copy')).toBe(false);
+  });
+});
+
+describe('relics', () => {
+  it('a Stress Ball starts the fight with Block and Cargo Pants add a sleeve slot', () => {
+    const c = setup({ relics: ['stressBall', 'cargoPants'] });
+    expect(c.hero.block).toBe(RELICS.stressBall.n);
+    expect(c.sleeve).toHaveLength(HEROES.warrior.sleeve + 1);
+  });
+
+  it('the Emergency Exit saves you once per run, then never again', () => {
+    const flags: Record<string, number> = {};
+    const c = setup({ relics: ['emergencyExit'], relicFlags: flags });
+    c.loseHp(999);
+    expect(c.result).toBeNull();
+    expect(c.hero.hp).toBeGreaterThan(0);
+    expect(flags.emergencyExit).toBe(1);
+    const again = setup({ relics: ['emergencyExit'], relicFlags: flags });
+    again.loseHp(999);
+    expect(again.result).toBe('lose');
+  });
+
+  it('a relic is taken once, and a saved run drops relics that no longer exist', () => {
+    const r = newRun('warrior', 5);
+    gainRelic(r, 'thermos');
+    gainRelic(r, 'thermos');
+    expect(r.relics).toEqual(['thermos']);
+    expect(hasRelic(r, 'thermos')).toBe(true);
   });
 });

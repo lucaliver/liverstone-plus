@@ -1,4 +1,6 @@
 import { sfx } from '../../audio/sfx';
+import { t } from '../../core/i18n';
+import { RELICS } from '../../data/relics';
 import type { CardInst } from '../../game/types';
 import { icon } from '../art/icons';
 import { h } from '../dom';
@@ -62,4 +64,14 @@ export function playPhotocopy(screen: HTMLElement, card: CardInst, word: string)
   sfx('cardPlay');
   haptic('tap');
   sparkAt(copy, 'paper', 18, 520, 'stash');
+}
+
+/** A relic is handed over: its badge stamps in with a flash, and its name is stamped last. */
+export function playRelic(screen: HTMLElement, id: string): void {
+  const badge = h('div', { class: 'relic-badge show-new', html: icon(RELICS[id].art) });
+  const stage = h('div', { class: 'show-stage' }, badge, h('i', { class: 'show-flash' }));
+  showOver(screen, 'relic', stage, t(`relic.${id}.name`));
+  sfx('block');
+  haptic('tap');
+  sparkAt(badge, 'gold', 34, 480, 'ability');
 }

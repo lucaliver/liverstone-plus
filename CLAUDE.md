@@ -32,7 +32,6 @@ This file is the technical guide: read it before changing code. Field-by-field d
 - No new dependencies without asking. No framework, state library or CSS preprocessor.
 - Delete what you replace (dead code, CSS, i18n keys, icons, tests) in the same commit.
 - Match the surrounding code: naming, comment density (short `/** */` on non-obvious things; comments say *why*).
-- Relics are deliberately kept as unused hooks for the future.
 
 ### Correct
 
@@ -89,7 +88,7 @@ src/
     combat/    view, hud, cardLayer, mop, combatFx, combatScreen
     components/ cardView, cardShow, coach, modals, debugMenu, room, moveText, heroSheet, shareSlip, decor
     fx/        particles, floating text, shake, haptics
-    screens/   title, heroSelect, journey, reward, rest, promotion, copyRoom, end, compendium
+    screens/   title, heroSelect, journey, reward, rest, promotion, copyRoom, tailor, end, compendium
   audio/       sfx (synth), music (sequencer + tracks)
   styles/      index.css imports partials in order; responsive.css stays last
 tests/         combat, content, balance.sim (+ bot), e2e/
@@ -129,6 +128,10 @@ tests/         combat, content, balance.sim (+ bot), e2e/
   `meta.ts`), a card file, a sprite, `hero.<id>.*` strings, `ABILITY_ICON`/`PASSIVE_ICON` entries (`ui/combat/view.ts`).
 - `StatusDef` (`statuses.ts`) + `status.<id>` and `status.<id>.d` (`{v}` = amount). Effects are fields or hooks on the def;
   `combat.ts` never names a status for a new effect. `passive: true` marks a permanent enemy trait.
+
+### Relics
+
+`RelicDef` (`data/relics.ts`): `mods` (sleeve, maxMana, beltSpeed, regen) and `hooks` (`onCombatStart`, `onCardPlayed`, `onDeath`…), `n` = the number its text shows. A hook shows itself with a `relic` event (floating name). Needs an icon (`art`), `relic.<id>.name`/`.d`. Run state: `run.relics` (ids) and `run.relicFlags` (once-per-run flags); the hero sheet lists them.
 
 ### i18n
 

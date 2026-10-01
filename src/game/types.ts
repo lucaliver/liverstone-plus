@@ -357,6 +357,8 @@ export interface RelicDef {
   cls?: HeroId;
   art: string;
   pack?: string;
+  /** The number its text shows (`{n}`). */
+  n: number;
   /** Static modifiers applied to combat setup. */
   mods?: Partial<{ maxMana: number; sleeve: number; beltSpeed: number; regen: number; maxHp: number; gold: number }>;
   hooks?: RelicHooks;
@@ -391,6 +393,7 @@ export type CombatEvent =
   | { type: 'manaCrystal'; amount: number }
   | { type: 'manaDrain'; amount: number }
   | { type: 'ability'; id: string }
+  /** A relic did its thing (shows its name over the hero). */
   | { type: 'relic'; id: string }
   | { type: 'enrage' }
   | { type: 'speech'; key: TKey }

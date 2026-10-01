@@ -9,6 +9,7 @@ import {
   canUpgrade,
   combatSetup,
   currentNode,
+  gainRelic,
   newRun,
   rest,
   rollRewards,
@@ -150,6 +151,9 @@ export function simulateRun(hero: HeroId, seed: number, opts: BotOpts): RunOutco
       // Crystals first: they grow the mana the rest of the deck needs.
       const card = run.deck.find((c) => c.id === 'doubleEspresso' || c.id === 'coffee');
       if (card && canPerk(card, 'fastTrack')) addPerk(run, card.uid, 'fastTrack');
+      run.cleared = true;
+    } else if (node.type === 'tailor') {
+      gainRelic(run, 'cargoPants');
       run.cleared = true;
     } else if (node.type === 'copy') {
       // Thin the deck: shred a plain starter card (never a mana crystal).

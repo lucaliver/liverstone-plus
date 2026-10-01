@@ -492,6 +492,20 @@
   to { translate: 16% 3%; rotate: 4deg; opacity: 1; }
 }
 .card-show.photocopy .show-stamp { animation-delay: 0.9s; }
+/* A relic is handed over: its badge stands in the middle of the stage */
+.relic-badge {
+  position: absolute;
+  inset: 15% 0 auto;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  font-size: min(34vw, 140px);
+  color: var(--b);
+  background: var(--y);
+  border: var(--line) solid var(--k);
+  box-shadow: 6px 6px 0 var(--p);
+  --ink2: var(--paper);
+}
 .promo-badge {
   position: relative;
   display: grid;

@@ -72,6 +72,8 @@ export const CONFIG = {
   /** Copy Room: a card can't be shredded below this many deck cards; a photocopy costs this much HP (and needs more left). */
   shredMinDeck: 10,
   copyHpCost: 8,
+  /** Tailor: the max HP the let-out uniform gives. */
+  tailorMaxHp: 10,
 } as const;
 
 /** Rarity odds (weights) of each card offered after a fight or an elite. */

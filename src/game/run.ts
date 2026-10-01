@@ -3,6 +3,7 @@ import { loadRaw, remove, store } from '../core/save';
 import { nextUid, peekUid, resetUid } from '../core/util';
 import { CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../data/cards';
 import { PERKS } from '../data/perks';
+import { RELICS } from '../data/relics';
 import { ACT_DEFS, actDef } from '../data/acts';
 import { CONFIG, REWARD_ODDS } from '../data/config';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
@@ -12,8 +13,11 @@ import { discover, progress, type RunRecord, recordFight, recordRun } from './me
 import { renamedCard, renamedEnemy, renamedPerk } from './renamed';
 import type { CardDef, CardInst, EnemyDef, HeroId } from './types';
 
-export const NODE_TYPES = ['fight', 'elite', 'rest', 'promotion', 'copy', 'boss'] as const;
+export const NODE_TYPES = ['fight', 'elite', 'rest', 'promotion', 'copy', 'tailor', 'boss'] as const;
 export type NodeType = (typeof NODE_TYPES)[number];
+
+/** A room of a lane as written in `LANES`: a real room type or a slot still to be dealt. */
+type Slot = NodeType | 'special';
 
 /** One step of the run. `next` holds the reachable node ids (the player picks one when there are two). */
 export interface RunNode {
@@ -70,10 +74,12 @@ const SAVE_KEY = 'run';
  * Floors between the first fight and the boss, one list per lane. Lanes are dealt to a random side, and a few
  * floors swap their two nodes, so each run's map differs while both lanes keep a fair mix.
  */
-const LANES: NodeType[][] = [
-  ['fight', 'fight', 'rest', 'fight', 'elite', 'copy', 'fight', 'rest'],
-  ['fight', 'promotion', 'fight', 'rest', 'fight', 'promotion', 'fight', 'rest'],
+const LANES: Slot[][] = [
+  ['fight', 'fight', 'rest', 'fight', 'elite', 'special', 'fight', 'rest'],
+  ['fight', 'promotion', 'fight', 'rest', 'fight', 'special', 'fight', 'rest'],
 ];
+/** A `special` slot of a lane becomes one of these when the act is built; one act never deals the same room twice. */
+const SPECIALS: NodeType[] = ['copy', 'tailor'];
 /** Floors on a single road at the start of act 1, before the map splits in two (then the lanes skip as many floors). */
 const ACT1_OPENING = 3;
 /** Links between the lanes per act: diagonal (to the other lane one floor up) or flat (across the same floor, both ways). */
@@ -129,7 +135,10 @@ function buildNodes(rng: Rng, scripted: boolean): RunNode[] {
   for (let act = 1; act <= (scripted ? 1 : ACTS); act++) {
     // Deal normal enemies from a shuffled bag so the same one doesn't repeat back to back.
     let bag: EnemyDef[] = [];
-    const add = (floor: number, lane: number, type: NodeType, fixed?: string): RunNode => {
+    let specials: NodeType[] = [];
+    const add = (floor: number, lane: number, slot: Slot, fixed?: string): RunNode => {
+      if (slot === 'special' && !specials.length) specials = rng.shuffle([...SPECIALS]);
+      const type = slot === 'special' ? specials.pop()! : slot;
       // A set enemy (the orientation fight) takes nobody's turn.
       let enemy = fixed;
       if (!enemy && type === 'fight') {
@@ -325,6 +334,24 @@ export function addPerk(run: RunState, uid: number, perk: string): void {
   run.cleared = true;
 }
 
+export const hasRelic = (run: RunState, id: string): boolean => run.relics.includes(id);
+
+/** The run takes a relic (once each). */
+export function gainRelic(run: RunState, id: string): void {
+  if (!hasRelic(run, id)) {
+    run.relics.push(id);
+    RELICS[id].onGain?.(run);
+  }
+  run.cleared = true;
+}
+
+/** Tailor: the uniform is let out, for good: more max HP, filled up. */
+export function tailorVest(run: RunState): void {
+  run.maxHp += CONFIG.tailorMaxHp;
+  run.hp += CONFIG.tailorMaxHp;
+  run.cleared = true;
+}
+
 export const canShred = (run: RunState): boolean => run.deck.length > CONFIG.shredMinDeck;
 export const canCopy = (run: RunState): boolean => run.hp > CONFIG.copyHpCost;
 
@@ -438,7 +465,7 @@ function parseRun(raw: unknown): RunState | null {
     hp,
     maxHp,
     deck,
-    relics,
+    relics: relics.filter((id) => !!RELICS[id]),
     relicFlags: Object.fromEntries(Object.entries(relicFlags).filter((e): e is [string, number] => isNum(e[1]))),
     nodes,
     current,

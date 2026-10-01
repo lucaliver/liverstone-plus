@@ -13,6 +13,7 @@ import { ICONS, INTENT_ICON } from '../src/ui/art/icons';
 import { HEXES } from '../src/data/hexes';
 import { ENEMIES } from '../src/data/enemies';
 import { PERKS } from '../src/data/perks';
+import { RELIC_LIST } from '../src/data/relics';
 import { RENAMED } from '../src/game/renamed';
 import { ABILITY_ICON, PASSIVE_ICON } from '../src/ui/combat/view';
 import { NODE_ICON } from '../src/ui/screens/journey';
@@ -110,6 +111,16 @@ describe('content integrity', () => {
       expect(seen.get(c.art), `${c.id} and ${seen.get(c.art)} share ${c.art}`).toBeUndefined();
       expect(rules.has(c.art), `${c.id} uses the rule icon ${c.art}`).toBe(false);
       seen.set(c.art, c.id);
+    }
+  });
+
+  it('every relic has a name, a text and its own icon', () => {
+    const arts = new Set<string>();
+    for (const r of RELIC_LIST) {
+      expect(en[`relic.${r.id}.name`] && en[`relic.${r.id}.d`], r.id).toBeTruthy();
+      expect(ICONS[r.art], `${r.id}: missing icon ${r.art}`).toBeTruthy();
+      expect(arts.has(r.art), `${r.id} shares ${r.art}`).toBe(false);
+      arts.add(r.art);
     }
   });
 

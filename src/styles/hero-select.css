@@ -141,8 +141,10 @@
   color: var(--muted-d);
   text-transform: uppercase;
 }
+/* wraps on the narrowest phones, where the in-run sheet's four chips don't fit in a row */
 .hero-stats {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 .stat {

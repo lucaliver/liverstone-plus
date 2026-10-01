@@ -21,6 +21,7 @@ type DynamicPrefix =
   | 'compendium'
   | 'intent'
   | 'perk'
+  | 'relic'
   | 'hex';
 export type TKey = EnKey | `${DynamicPrefix}.${string}`;
 export type Params = Record<string, string | number>;

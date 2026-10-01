@@ -226,6 +226,22 @@ test('copy room: photocopy costs HP and adds the card, shred removes one', async
   expect(await deck()).toBe(before);
 });
 
+test('tailor: cargo pants add a sleeve slot to the hero sheet and the fight', async ({ page }) => {
+  await freshGame(page, { veteran: true });
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  const floor = await page.evaluate(
+    '(() => { const g = window.__game; const n = g.run.nodes.find((x) => x.type === "tailor"); g.run.current = n.id; g.run.cleared = false; g.goJourney(); return n.floor; })()',
+  );
+  await page.getByRole('button', { name: new RegExp(`enter floor ${floor}`, 'i') }).click();
+  await page.getByRole('button', { name: /cargo pants/i }).click();
+  await expect(page.locator('.node.open').first()).toBeVisible();
+  expect(await page.evaluate('window.__game.run.relics')).toEqual(['cargoPants']);
+  await page.locator('.hero-chip').last().click();
+  await expect(page.locator('.hero-sheet .stat.sleeve')).toContainText('2');
+  await expect(page.locator('.hero-sheet')).toContainText('Cargo Pants');
+});
+
 test('debug menus: the fight menu kills the enemy, the map menu opens rooms and rewards and keeps the progress', async ({ page }) => {
   await freshGame(page);
   await startFight(page);

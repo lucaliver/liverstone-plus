@@ -44,6 +44,7 @@ import { journeyScreen, NODE_ICON } from './ui/screens/journey';
 import { restScreen } from './ui/screens/rest';
 import { promotionScreen } from './ui/screens/promotion';
 import { copyRoomScreen } from './ui/screens/copyRoom';
+import { tailorScreen } from './ui/screens/tailor';
 import { rewardScreen } from './ui/screens/reward';
 import { splashScreen, titleScreen } from './ui/screens/title';
 import { compendiumScreen } from './ui/screens/compendium';
@@ -55,6 +56,7 @@ const ROOMS: Partial<Record<NodeType, (run: RunState, onDone: () => void) => Scr
   rest: restScreen,
   promotion: promotionScreen,
   copy: copyRoomScreen,
+  tailor: tailorScreen,
 };
 
 function goTitle(): void {
