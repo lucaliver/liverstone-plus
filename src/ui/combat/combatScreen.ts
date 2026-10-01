@@ -9,7 +9,8 @@ import { clockAt, currentNode, type RunState, totalFloors } from '../../game/run
 import { meetEnemy } from '../../game/meta';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
-import { debugButton, type InfoOpts, openDebugMenu, openDeck, openHowTo, openInfo, openSettings, speedRow } from '../components/modals';
+import { debugButton, openDebugMenu } from '../components/debugMenu';
+import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings, speedRow } from '../components/modals';
 import { creature } from '../art/creatures';
 import { spriteBox } from '../art/riso';
 import { icon } from '../art/icons';

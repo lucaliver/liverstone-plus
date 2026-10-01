@@ -6,7 +6,8 @@ import { clockAt, currentNode, type RunNode, type RunState } from '../../game/ru
 import type { Screen } from '../app';
 import { h, onPress, onTapOrHold } from '../dom';
 import { icon } from '../art/icons';
-import { debugButton, openDeck, openInfo, openSettings, openStatInfo } from '../components/modals';
+import { debugButton } from '../components/debugMenu';
+import { openDeck, openInfo, openSettings, openStatInfo } from '../components/modals';
 import { openHeroSheet } from '../components/heroSheet';
 import { dropLetters } from '../components/decor';
 import { creature } from '../art/creatures';

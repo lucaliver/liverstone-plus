@@ -32,7 +32,7 @@ import { settings } from './game/settings';
 import type { HeroId } from './game/types';
 import { confirmModal, initApp, openModal, type Screen, show } from './ui/app';
 import { h } from './ui/dom';
-import { openDebugFight, openDebugMenu } from './ui/components/modals';
+import { openDebugFight, openDebugMenu } from './ui/components/debugMenu';
 import { initFx } from './ui/fx/fx';
 import { preloadArt } from './ui/art/riso';
 import { CREATURES } from './ui/art/creatures';

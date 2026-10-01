@@ -8,7 +8,8 @@ import type { Screen } from '../app';
 import { h, onPress, retrigger } from '../dom';
 import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
-import { debugButton, openHowTo, openInfo, openSettings } from '../components/modals';
+import { debugButton } from '../components/debugMenu';
+import { openHowTo, openInfo, openSettings } from '../components/modals';
 
 export interface TitleCallbacks {
   /** The run in progress, if any: the time card shows it and clocks back in. */

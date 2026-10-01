@@ -1,263 +1,180 @@
 # Punchcard — technical guide
 
-Real-time conveyor-belt deckbuilder for mobile browsers (portrait): a fantasy adventure run as a factory job,
-with a bit of social satire. A feature overview lives in
-[README.md](README.md) (Italian, the owner's doc; no exact numbers or task lists there, so balancing never touches it).
-This file is the technical guide: read it before changing code.
+Real-time conveyor-belt deckbuilder for mobile browsers (portrait): a fantasy adventure run as a factory job, with a bit
+of social satire. [README.md](README.md) is the owner's feature overview (Italian, no numbers: balancing never touches it).
+This file is the technical guide: read it before changing code. Field-by-field details live in the doc comments of
+`src/game/types.ts`; read those, not a copy here.
 
 ## Working agreement
 
 - Reply to the owner in **Italian**. Game text is **English** (i18n-ready).
-- Work task by task; **commit after each task** with a clear message (git history is the task log).
-- Official style: **riso pop inks + pixel art, a bit dark/scary**. Never add gradients for shading, glows, fake 3D,
-  decorative background circles, emoji or Unicode symbols as icons (use pixel icons). Industrial, robotic and
-  steampunk touches grow act by act: act 1 is a factory inside the crypt (bones, candles, a little brass).
-- Tone: a run is a **workday**, each act a **shift** (morning, afternoon, night). Cards, enemies, moves, curses and
-  UI words use workplace names (*Punch*, *Toxic Coworker*, *Deadline*, *Clock in* to start a fight); satire hits management and
-  coworkers alike. Heroes stay fantasy with a light job touch. Statuses and keywords keep plain game names
-  (Poison, Block, Rush…) so rules stay readable.
-- Before handing over: `npm run check` and `npm run e2e` must pass, then look at the screens you touched
-  (Playwright screenshot at 390×844 and at a short height such as 375×620).
-- Balance: don't spend long on simulations while design is moving; one quick sim pass is enough.
-- Bump `version` in `package.json` at the end of every big batch of changes (it shows in Settings).
-- Keep this file true: when a change makes a line here stale (a name, a path, a rule), fix it in the same commit.
+- One task, one commit (git history is the task log). Small tweaks can share a commit.
+- Style: **riso pop inks + pixel art, a bit dark/scary**. No gradients for shading, glows, fake 3D, decorative background
+  circles, emoji or Unicode symbols as icons (pixel icons only). Industrial/robotic/steampunk touches grow act by act
+  (act 1: a factory inside a crypt: bones, candles, a little brass).
+- Tone: a run is a **workday**, each act a **shift**. Cards, enemies, moves, curses and UI words use workplace names
+  (*Punch*, *Toxic Coworker*, *Deadline*, *Clock in*); satire hits management and coworkers alike. Heroes stay fantasy with a
+  light job touch. Statuses and keywords keep plain game names (Poison, Block, Rush…).
+- Before handing over: `npm run check` and `npm run e2e` pass; look at the screens you touched (Playwright screenshot at
+  390×844 and 375×620).
+- Balance: one quick `npm run sim` pass is enough while design moves.
+- Bump `version` in `package.json` after every big batch (shown in Settings).
+- Keep this file true: fix any line a change makes stale, in the same commit.
 
 ## Writing code
 
 ### Minimal
 
-- Do what the task asks, nothing speculative: no options, flags, abstractions or "for later" hooks without a
-  current caller. Three similar lines beat a premature helper.
-- Reuse before writing: `h`, `$`, `setText`/`setHtml`/`toggle`, `onPress`/`onTapOrHold`, `retrigger` (`ui/dom.ts`), `statusIcon`, `Rng`,
-  `Emitter`, `load`/`store` (`core/save.ts`), existing icons, sfx, modals and CSS tokens. Grep for a similar
-  feature first and follow its shape.
-- No new dependencies without asking the owner. No framework, no state library, no CSS preprocessor.
-- Delete what you replace: dead code, unused CSS rules, i18n keys, icons and tests go in the same commit.
-  `noUnusedLocals`/`noUnusedParameters` catch only part of it.
-- Match the surrounding code: naming, comment density (short `/** */` on non-obvious fields and functions,
-  comments explain *why*), file size. Split a file only when it gains a clear responsibility.
+- Do what the task asks: no speculative options, flags, abstractions or hooks without a caller. Three similar lines beat a
+  premature helper.
+- Reuse first: `h`, `$`, `setText`/`setHtml`/`toggle`, `onPress`/`onTapOrHold`, `retrigger` (`ui/dom.ts`), `roomOption`/`closeRoom`
+  (`ui/components/room.ts`), `statusIcon`, `Rng`, `Emitter`, `load`/`store`, existing icons, sfx, modals, CSS tokens.
+- No new dependencies without asking. No framework, state library or CSS preprocessor.
+- Delete what you replace (dead code, CSS, i18n keys, icons, tests) in the same commit.
+- Match the surrounding code: naming, comment density (short `/** */` on non-obvious things; comments say *why*).
+- Relics are deliberately kept as unused hooks for the future.
 
 ### Correct
 
-- Engine code (`game/`, `data/`) uses `combat.rng` / `Rng` only (never `Math.random`), and simulated time
-  (`dt` from `tick`) only (never `Date.now`, timers or `performance.now`), so seeds replay exactly and
-  the balance sim stays valid.
-- The UI reads `Combat` state and calls its public actions (`playCard`, `stash`, `useAbility`, …); it never
-  mutates fighters, piles or statuses directly. Anything a card or enemy does goes through `Combat` helpers
-  (`hit`, `gainBlock`, `applyStatus`, `addTempCard`, …) so events, previews and hooks stay in sync.
-- No `any`, no unchecked casts of untyped data; `!` only where the DOM element is certain (own template).
-  Widen union types (`Keyword`, `IntentType`, …) instead of passing loose strings.
-- Every screen undoes in `leave()` what it did in `enter()`: window/document listeners, emitter subscriptions,
-  timers, temporary music. Elements inside the screen's own `el` need no cleanup.
-- Save data is untrusted: read it through `core/save.ts`, validate on load, and when its shape changes bump
-  `SAVE_VERSION` in `run.ts` (or migrate) instead of letting old saves crash the game.
-- Ids follow the English names (`punch` is Punch, `snitch` The Snitch). When a name changes, rename the id too and add
-  the old one to `game/renamed.ts`, so saved runs, discoveries and met enemies carry over.
-- Test what you change: engine rule → `combat.test.ts`; new data shape → `content.test.ts`; new flow or screen
-  interaction → `smoke.spec.ts`. Fix a bug with a test that fails first when it's cheap to write.
+- Engine (`game/`, `data/`): only `combat.rng`/`Rng` (never `Math.random`) and simulated `dt` (never `Date.now`, timers) so
+  seeds replay and the sim stays valid.
+- The UI reads `Combat` state and calls its public actions; it never mutates fighters, piles or statuses. Card/enemy effects
+  go through `Combat` helpers (`hit`, `gainBlock`, `applyStatus`, `addTempCard`…) so events and previews stay in sync.
+- No `any`, no unchecked casts of untyped data, `!` only for DOM elements the template guarantees. Widen union types
+  (`Keyword`, `IntentType`…) rather than passing loose strings.
+- A screen undoes in `leave()` what `enter()` did: listeners, emitter subscriptions, timers, temporary music.
+- **Save data is untrusted.** `loadRun` (`run.ts`), `settings.ts` and `meta.ts` validate every field on load and drop or reset
+  what is wrong. Changing a saved shape (or the number of acts) → bump `SAVE_VERSION` or migrate.
+- Ids follow English names. Renaming = rename the id + add the old one to `game/renamed.ts` (saves, discoveries, met enemies).
+- Test what you change: engine rule → `combat.test.ts`; data shape → `content.test.ts`; flow/screen → `smoke.spec.ts`.
 
 ### Future-proof
 
-- Adding a card, enemy, hero, status or relic should touch data, i18n and art only. If it needs an `if (id === …)`
-  in the engine or UI, add a generic field or hook instead.
-- No hard-coded hero or enemy ids in UI; lists and icons come from data maps (`HEROES`, `ENEMIES`, `CARDS`,
-  `STATUSES`, `ABILITY_ICON`). Tunable numbers live in `data/config.ts` or the records, never inline in UI or engine.
-- Every player-facing string goes through `t()`; no text concatenation that assumes English word order
-  (use `{placeholders}` and plurals).
-- Layout must survive phones from 375×620 to tall screens and text that may grow in other languages: no fixed
-  widths for text boxes, no absolute positions that depend on string length.
+- Adding a card, enemy, hero, status or relic touches data, i18n and art only. If it needs `if (id === …)` in engine or UI,
+  add a generic field or hook instead. Statuses already work this way (`StatusDef`: `timeMul`, `beltMul`, `dealtMul`,
+  `takenMul`, `holdsBlock`, `immune`, `ignoresRules`, `autoplay`, `heals`, `strength`, `cutsHits`, `regenMul`, `manaCap`, hooks…).
+- No hard-coded hero/enemy ids in UI; lists and icons come from data maps (`HEROES`, `ENEMIES`, `CARDS`, `STATUSES`,
+  `ABILITY_ICON`). Tunable numbers live in `data/config.ts` or the records, never inline in UI or engine.
+- Every player-facing string goes through `t()`; use `{placeholders}` and plurals, never English word order.
+- Layout survives phones from 375×620 up and longer text: no fixed text widths, no positions that depend on string length.
 
-## Stack
+## Stack and commands
 
-- **Vite 8 + TypeScript 7** (strict), no framework: plain DOM through a tiny `h()` helper, CSS, one canvas for particles.
-- **Vitest** (unit, content, balance sim), **Playwright** (`tests/e2e`, mobile viewport, touch).
-- **Biome** for lint and format (typescript-eslint doesn't support TS 7 yet). Width 150, single quotes.
-- Fonts via `@fontsource` (Silkscreen, Jersey 10, Space Grotesk). Audio is pure WebAudio (no assets).
-- Static build, no backend; storage is `localStorage` (prefix `cardstone+:`, legacy name: keep it or migrate).
-- Deploy: a push to `master` publishes the game to GitHub Pages (`.github/workflows/pages.yml`). The same workflow also builds the `beta`
-  branch (an old frozen build, own save prefix `cardstone-beta:`) and serves it under `/beta/`. Never give a prefix that starts with
-  `cardstone+:` to another build: `clearAll` would wipe it. To refresh the beta, commit on `beta`, then re-run the workflow (Actions → Run workflow).
-
-## Commands
+Vite + TypeScript (strict), plain DOM through `h()`, CSS, one canvas for particles. Vitest (unit, content, balance sim),
+Playwright (mobile viewport, touch), Biome (width 150, single quotes). Fonts: `@fontsource` (Silkscreen, Jersey 10, Space
+Grotesk). Audio is WebAudio only. Static build, `localStorage` (prefix `cardstone+:`: keep it).
 
 ```bash
-npm run dev      # dev server on the LAN (phone testing)
-npm run check    # tsc + biome check + vitest (run before every commit)
-npm run e2e      # Playwright smoke tests (starts its own server on :5174)
-npm run sim      # balance simulation (prints bot win rates)
-npm run format   # biome format --write
-npm run build    # typecheck + production build to dist/
+npm run dev      # dev server on the LAN
+npm run check    # tsc + biome + vitest (before every commit)
+npm run e2e      # Playwright smoke tests (own server on :5174)
+npm run sim      # balance bot win rates
+npm run build    # typecheck + production build
 ```
+
+Deploy: a push to `master` publishes to GitHub Pages (`.github/workflows/pages.yml`), which also builds the frozen `beta`
+branch under `/beta/` (save prefix `cardstone-beta:`; never give another build a prefix starting with `cardstone+:`, `clearAll`
+would wipe it). Refresh the beta: commit on `beta`, re-run the workflow.
 
 ## Architecture
 
 ```text
 src/
   core/        rng (seeded), emitter, i18n (typed keys), save (safe localStorage), util
-  i18n/en.ts   every player-facing string (key → text)
-  data/        config, acts (shift hours, fight music, map boss per act), statuses, heroes, enemies, perks, hexes, relics (empty, hooks ready), cards/<class>.ts
-  game/        combat.ts (engine), run.ts (node graph, rewards, saves), meta.ts (discovery, unlocks, lifetime records), renamed.ts (old → new ids for saves), settings, types
-  ui/          app.ts (screens + modals), dom.ts (h, onPress, onTapOrHold, LONG_PRESS_MS)
-    art/       icons.ts (64×64 vector icons), creatures.ts (200×200 vector sprites), riso.ts (pixel renderer)
-    combat/    view (DOM + refs + shared state), hud, cardLayer (belt/sleeve/input), mop (drag the mop over the belt), combatFx (events → FX), combatScreen
-    components/cardView (card DOM, face glyphs), cardShow (a room's card animation: upgrade, promotion, shred, photocopy), coach (coach-mark overlay: first-fight tour, card tips), modals (settings, deck, card detail, info, card anatomy, debug fight),
-               moveText (moves, enemy
-               pattern and traits), heroSheet (hero features and in-run sheet), decor
+  i18n/en.ts   every player-facing string
+  data/        config (all tuning), acts, statuses, heroes, enemies, perks, hexes, relics, cards/<class>.ts
+  game/        combat (engine), run (map graph, rewards, save), meta (discoveries, unlocks, records), renamed, settings, types
+  ui/          app (screens, modals), dom
+    art/       icons (64×64), creatures (200×200), riso (pixel renderer)
+    combat/    view, hud, cardLayer, mop, combatFx, combatScreen
+    components/ cardView, cardShow, coach, modals, debugMenu, room, moveText, heroSheet, shareSlip, decor
     fx/        particles, floating text, shake, haptics
-    screens/   title (+ splash), heroSelect, journey, reward, rest, promotion, copyRoom, end, compendium
-  audio/       sfx.ts (synth), music.ts (sequencer + tracks)
-  styles/      index.css imports ordered partials; responsive.css must stay last
-tests/         combat, content, balance.sim (+ bot.ts), e2e/
+    screens/   title, heroSelect, journey, reward, rest, promotion, copyRoom, end, compendium
+  audio/       sfx (synth), music (sequencer + tracks)
+  styles/      index.css imports partials in order; responsive.css stays last
+tests/         combat, content, balance.sim (+ bot), e2e/
 ```
 
-### Principles
-
-- **The engine is pure and deterministic.** `Combat` never touches the DOM; it runs fixed 1/60 s ticks from a
-  seed and emits typed `CombatEvent`s. The UI subscribes (`combatFx.ts`) and renders state each frame (`hud.ts`,
-  `cardLayer.ts`). Gameplay rules belong in the engine or data, never in the UI.
-- **Content is data.** Cards, enemies, heroes and statuses are declarative records with small functions.
-  Hooks (`HeroHooks`, `RelicHooks`) extend behaviour without touching the engine loop.
-- **One source of truth.** Card numbers live in `vals`/`upVals`. The face, the rules text, damage previews and
-  the logic all read them. Damage indices are derived from the `{dmg:i}` glyphs of the face.
-- **Run as a graph, drawn as the office floor plan** (rooms, corridors, doors; rooms more than `VISION` doors ahead are in fog). `RunNode.next[]` + `lane`: each act (`ACT_DEFS` in `data/acts.ts`, two for now, each with its fight and map music) is a shared first fight, two lanes
-  (`LANES` in `run.ts`) with `LINKS` links between them (diagonal upward, or flat both ways; never on neighbouring
-  floors), and the boss, which leads to the next act (full heal, elite-grade reward; the map switches act). The very first run is scripted
-(`newRun(…, scripted)`): fixed seed, lanes and enemies (`FIRST_RUN_LANES`, `FIRST_RUN_ENEMIES` in `run.ts`), and it ends with act 1's boss. `advance(run, to)` moves along a link; `run.path` records the nodes entered.
-  Room types (`NodeType`): fight, elite, boss, and the rooms without an enemy, each a screen in `ROOMS` (`main.ts`): `rest` (Break Room: heal or upgrade), `promotion` (a perk), `copy` (Copy Room: shred a card, never below `SHRED_MIN_DECK`, or photocopy one for `COPY_HP_COST` HP; one per act, never in the scripted first run). A new room is a `NodeType`, an entry in `LANES`, a screen in `ROOMS`, `NODE_ICON` and the `journey.node.*`/`journey.info.*` strings.
-- **Per-frame rendering is diff-based** (`setText`, `setHtml`, `toggle` only write on change). Status chips are
-  rebuilt only when the set changes, so presses aren't lost.
+- **The engine is pure and deterministic.** `Combat` never touches the DOM: fixed 1/60 s ticks from a seed, typed
+  `CombatEvent`s out. The UI subscribes (`combatFx.ts`) and renders state each frame (`hud.ts`, `cardLayer.ts`).
+- **Content is data.** Cards, enemies, heroes, statuses are declarative records with small functions; `HeroHooks` and
+  `RelicHooks` extend behaviour. Card numbers live once in `vals`/`upVals`; face, text, previews and logic all read them.
+- **A run is a graph drawn as an office floor plan.** `RunNode.next[]` + `lane`; per act (`ACT_DEFS`): a shared opening, two
+  lanes linked a couple of times (`LANES`, `LINKS` in `run.ts`), then the boss, which leads to the next act. Rooms beyond
+  `VISION` doors are fogged. The first run is scripted (`newRun(…, scripted)`, `FIRST_RUN_*`). Room types (`NodeType`):
+  fight, elite, boss, rest, promotion, copy, each a screen in `ROOMS` (`main.ts`). A new room = `NodeType`, `LANES` entry,
+  `ROOMS` screen, `NODE_ICON`, `journey.node.*`/`journey.info.*` strings.
+- **Rendering is diff-based**: `setText`/`setHtml`/`toggle` write only on change; status chips rebuild only when the set changes.
 
 ## Conventions
 
-### Cards
+### Cards (`data/cards/<class>.ts` + `card.<id>.name`/`.desc` in `en.ts`)
 
-`CardDef` in `src/data/cards/<class>.ts` plus `card.<id>.name` / `card.<id>.desc` in `en.ts`. That's all
-(`cards/index.ts` collects every class array into `CARDS`; a new class file must be added there). Curses live in
-`neutral.ts` (`curseCards`, rarity `special`). `pack` marks cards locked behind an unlock pack: they show in the
-handbook but are never offered as rewards (no pack can be unlocked yet; the Workplace cards wait there).
+- `face` grammar: `{kind:i}` icon + value · `{kind}` icon · `{?kind}` condition · `{i}` bare value · `|` new line. Kinds in
+  `GLYPHS` (`cardView.ts`). `desc`: `{i}` values, `[kw]` keywords (need `kw.<kw>` and `kw.<kw>.d`).
+- Keywords that change the engine are in `Keyword` (`types.ts`); glossary-only ones just need `kw.*` strings.
+- Cost, keywords and values of a copy always come from `cardCostOf`/`cardKeywordsOf`/`cardValsOf` (upgrades and **perks**
+  included). Set `dmg: []` only for raw damage that ignores modifiers.
+- Special mechanics (`ride`, `onOverflow`, `tip`, `wind`, `costDrop`, `inSleeve`, `anchor`, `span`/`tall`/`lockRow`, `pack`) are
+  documented on `CardDef`. Curse *cards* live in `neutral.ts`; **hexes** (`hexes.ts`) are a different thing (a curse on one
+  belt card, chipped away by taps).
+- Every card has its own art; rule icons (glyphs, statuses, intents, map nodes) are shared only within one concept.
 
-- `face` grammar: `{kind:i}` icon + value i · `{kind}` icon · `{?kind}` condition shown as (icon) · `{i}` bare
-  value · `|` new line · other text as is. Kinds live in `GLYPHS` (`ui/components/cardView.ts`).
-- `desc`: `{i}` values, `[kw]` keywords (need `kw.<kw>` and `kw.<kw>.d`). Status, rule, glossary and half-HP texts take `[kw]` too (`keywordHtml` / `keywordText` in `cardView.ts`; colours by `.kw-<id>` in `type.css`).
-- Art colour comes from the face (attack / defense / utility / curse) unless `cat` is set. Set `dmg: []` only for
-  raw damage that ignores modifiers (e.g. `forklift`).
-- Keyword flags (`Keyword` type, change engine behaviour): exhaust, consume, fleeting, volatile, innate,
-  unplayable, pending (not playable until its first full ride along the belt each fight). Glossary-only keywords (`[rush]`, `[power]`, `[x]`, statuses…) just need their `kw.*` strings.
-- `ride` makes one value change for every second the card rides the belt (`CombatCard.age`, frozen in the sleeve),
-  read through `cardValsOf` like everything else (Unpaid Overtime grows, Patience decays).
-- `onOverflow`: damage the card gains for every second of full, wasted mana, wherever it is (Complaint Box).
-- `tip`: the first time ever the card rides onto the belt, the fight stops and a coach mark shows `card.<id>.tip`
-  (seen ones in `settings.seenTips`; Kamikaze).
-- `wind`: dragging the card around the screen winds it up (the UI turns the finger's path into `combat.windCard` steps; `vals[by]` per step into `CombatCard.bonus`, capped at `vals[max]`; Wind-Up Intern).
-- `costDrop`: index of the value its cost drops by every second, wherever it is (`CombatCard.cut`; Moving Box).
-  Keyword `bulky`: a card in the sleeve can't be swapped out, only played.
-- `inSleeve` hooks (`bonusDamage`, `onCardPlayed`, `onHeroHit`) work only while the card waits in the sleeve
-  (Tool Belt, Cache, Burn Book); the face shows them after `{?sleeve}`.
-- `anchor` stops a card at the exit: attacks that reach it pile up behind it (`BeltCard.stuck`), any other card reaching the pile sends it off; its `play` calls `playPile` (On a Roll). `Team Change` pins every belt card (`BeltCard.pinned`: it stays until played, new cards ride over it). `bonusIdx` is the value `CombatCard.bonus` grows (Debt).
-- `span` (belt widths) makes a card wide: it rides over the cards ahead of it (Gatekeeping); `tall` makes it cover both
-  rows (Lockout). `lockRow` holds every other card of its row (Priority Task). Covered cards can't be played or stashed.
-- Cost, keywords and values of a copy come from `cardCostOf` / `cardKeywordsOf` / `cardValsOf` (`data/cards/index.ts`),
-  shared by engine and UI: they include upgrades and **perks** (`data/perks.ts`, permanent per copy, `CardInst.perks`).
-- **Hexes** (`data/hexes.ts`) are curses on one combat card (`CombatCard.hex`, cast by a move's `hex`): taps chip them
-  through `playCard`, then the card thaws. Curse *cards* are a different thing (temporary cards in `neutral.ts`).
-- `tests/content.test.ts` checks texts, glyphs, keywords, enemy moves and starter decks.
+### Enemies, heroes, statuses
 
-### Enemies
-
-`EnemyDef` = `act`, `main` (frequent attack) + `specials[]` (rotating) + `every` (mains between specials),
-optional `onHalf`, `start` statuses, `block` (elites and bosses start with Block). A `MoveDef` can hit, block, heal, apply statuses, add `curse` cards (a list, several
-kinds at once), steal, drain mana, `hex` a share of your cards, `inflate` card costs, `infect` cards with a virus (`CombatCard.virus`: +1 cost, spreads to the card behind it after `CONFIG.virusDelay`, cured by playing it), and the belt-rust statuses (`StatusDef.rust`: `Combat.rustSpots` land on the belt, each slows it by `slow`, enough stop it; the mop beside the enemy, `ui/combat/mop.ts`, sits its head under the finger and scrubs the spots under it through `scrubRust`), or `absorb` the damage it takes while
-charging and `release` it with the next hit (intents include `idle` and `absorb`). Add a vector sprite to `creatures.ts` (pixelised automatically),
-plus `enemy.<id>.name`, `move.<id>` for every move, and `enemy.<id>.half` if it has `onHalf`.
-Optional: `startRows` (belt rows open at the start; `openBeltRows()` opens the rest, `closeBeltRows()` shuts them again and
-discards their cards), `halfSpeech` (says `enemy.<id>.speech`
-at half HP), `halfArt` (sprite after its half-HP trait triggers), `halfSecret` (that trait isn't shown until it triggers), `fillSleeve` (a curse card in every sleeve slot at the start), `startHex` (a hex on a share of your cards at the start: New Hire), `firstRunOnly` (only the first fight of the very first run). Global difficulty: `CONFIG.enemyHp` / `CONFIG.enemyDmg`; floor scaling in `run.ts` (`enemyScale`).
-
-### Heroes
-
-`HeroDef` in `data/heroes.ts` (hp, maxMana, regen, blockDecay, `sleeve` slots, starter deck with basic cards + crystals (the Warrior's Union Chant is his source of mana),
-`ability { id, cost, use }`, hooks, optional `unlock`: finish a run with a hero, or reach an act's boss; checked
-through `progress()` in `game/meta.ts`), a card file, a sprite, `hero.<id>.*` strings, and entries in
-`ABILITY_ICON` / `PASSIVE_ICON` (`ui/combat/view.ts`).
-
-### Statuses
-
-`StatusDef` in `data/statuses.ts` (`kind`: timed / stacks / dot, `good`, `icon`) plus `status.<id>` and
-`status.<id>.d` (`{v}` = amount). Their effect is applied where it matters in `combat.ts` (damage, ticks, decay).
-Rule statuses carry their own hooks instead: `manaCap` (the hero's max mana can't grow past it),
-`canPlay` (returns the i18n key of why a card can't be played; the belt
-shows that status's icon on the card), `onCardPlayed` (cards played after the status was applied), `onHurt` (its side
-just lost HP; the Overthinker's Train of Thought calls `distractEnemy`), `onAttack` (the enemy carrying it resolved a damaging move: Burn), `selfIcon` (icon when it's on the hero) and `onExpire` (a card slipped off the belt: Paper Cuts), `strength` (its amount counts as Strength: Workaholic), `regenMul` (mana regeneration multiplier: Chill, Brown Nosing) and `tick` (every step;
-`everySecond` in `statuses.ts` for per-second effects); `cutsHits` (its amount comes off every hit of the hero's cards, Poison and Burn excepted: Fine Print) and `onDeath` (the enemy carrying it took a lethal hit: return true to survive it: Golden Parachute); `passive: true` marks a permanent enemy trait (no number on the chip). Weak Spot (the Boss's Son) is a passive whose `tick` calls `Combat.openWeakSpot`: a target (`Combat.weakSpot`, drawn by `.weak-spot` over the sprite) that `hitWeakSpot` turns into the hero's Critical status (`CONFIG.critMult` on the next attack card).
-A stunned hero can't play cards or use the ability.
+- `EnemyDef` (`enemies.ts`): `act`, `main` + `specials[]` + `every`, optional `onHalf`, `start`, `block`, belt/virus/rust
+  options (all documented on the type). Needs a sprite in `creatures.ts`, `enemy.<id>.name`, `move.<id>` per move,
+  `enemy.<id>.half` if it has `onHalf`. Global difficulty: `CONFIG.enemyHp`/`enemyDmg`; floor scaling `CONFIG.floorHp`/`floorDmg`.
+- `HeroDef` (`heroes.ts`): hp, mana, sleeve, starter deck, `ability`, hooks, optional `unlock` (checked by `progress()` in
+  `meta.ts`), a card file, a sprite, `hero.<id>.*` strings, `ABILITY_ICON`/`PASSIVE_ICON` entries (`ui/combat/view.ts`).
+- `StatusDef` (`statuses.ts`) + `status.<id>` and `status.<id>.d` (`{v}` = amount). Effects are fields or hooks on the def;
+  `combat.ts` never names a status for a new effect. `passive: true` marks a permanent enemy trait.
 
 ### i18n
 
-`t(key)` is typed: literal ids must exist in `en.ts` (a typo fails `tsc`). Keys built at runtime use known
-prefixes (`card.`, `enemy.`, `move.`, `status.`, `kw.`, `hero.`, …) and are covered by the content test.
-Plurals: `{n|one|other}`. New language: copy `en.ts`, register it in `core/i18n.ts`.
+`t(key)` is typed: literal ids must exist in `en.ts`. Runtime-built keys use known prefixes (`card.`, `enemy.`, `move.`,
+`status.`, `kw.`, `hero.`…), covered by the content test. Plurals: `{n|one|other}`. New language: copy `en.ts`, register in `core/i18n.ts`.
 
 ### UI and interaction
 
-- Screens: `show(screen)`; a screen is `{ el, enter?, leave?, frame? }`. Modals: `openModal`, `openInfo` (statuses,
-  abilities, moves), `openCardDetail`, `openDeck` (browse, or select-then-confirm with `onPick`).
-- Input: tap = act, **hold = inspect** (`onPress`, `onTapOrHold`, shared `LONG_PRESS_MS`). Inspecting pauses the fight
-  through `view.inspect(open)`. Tap targets ≥ 44 px.
-- Modals close on a full tap on the backdrop (press + release), never on pointerdown.
-- An uncaught error or rejection opens the *Machine jam* window (`catchCrashes` in `main.ts`): Restart reloads, Copy
-  error copies version, browser and stack. Catch expected rejections (share sheet closed, audio resume) so they don't trip it.
-- Icons: every card has its own art; rule icons (glyphs, statuses, intents, tags, map nodes) are shared only within
-  one concept. `content.test.ts` enforces the card side.
-- Dev hooks (dev server only): `window.__combat` (current `Combat`) and `window.__game` (`run`, `nextNode`,
-  `goJourney`, `musicTrack`). E2E tests and screenshot scripts rely on them.
-- The belt has two rows by default (`CONFIG.beltRows`); tests that need one row pass `beltRows: 1`.
-- Temporary debug menus (the title's too), off unless the Settings switch `debugMenus` is on, each behind a small floating bug button (`debugButton` / `openDebugMenu` in `modals.ts`): in a fight (kill enemy, restore HP and mana, stun, lose…) and on the map (card rewards and every room in `ROOMS` on demand, restore HP, clear the room; rooms opened this way leave the current room's cleared state alone). The title has a temporary "Debug fight" button (any hero against any enemy, on a fresh run, plus a search box that adds copies of the hero's and neutral cards to the deck; "Unlock all" hires
-  every hero and reveals every card and enemy; "Reset progress" wipes every save, `clearAll` in `core/save.ts`).
-- Move descriptions (`moveEffect`) tag curses, statuses, hexes and rules with `data-*`; `bindMoveDetails` makes them
-  pressable (explained in a popup) wherever a pattern is shown.
+- Screens: `show(screen)`, a screen is `{ el, enter?, leave?, frame? }`. Modals: `openModal`, `openInfo`, `openCardDetail`, `openDeck`.
+- Tap = act, **hold = inspect** (`onPress`, `onTapOrHold`, `LONG_PRESS_MS`); inspecting pauses the fight (`view.inspect`). Tap
+  targets ≥ 44 px. Modals close on a full tap on the backdrop, never on pointerdown.
+- An uncaught error opens the *Machine jam* window (`catchCrashes` in `main.ts`); catch expected rejections yourself.
+- Dev hooks (dev server only): `window.__combat`, `window.__game`; e2e and screenshot scripts use them.
+- Debug menus (`ui/components/debugMenu.ts`) show only with the Settings switch `debugMenus`; they are temporary.
+- Move descriptions (`moveEffect`) tag curses, statuses, hexes and rules with `data-*`; `bindMoveDetails` makes them pressable.
+- The belt has two rows by default (`CONFIG.beltRows`); tests needing one pass `beltRows: 1`.
 
 ### CSS
 
-- Partials are imported in cascade order by `styles/index.css`; **`responsive.css` must stay last** (short-screen
-  overrides). Put shared decor in `decor.css`.
-- Tokens in `tokens.css`: inks `--p --b --y --k`, `--paper`, night `--bg --bg2 --void --shadow`, `--fg`.
-  Paper panels use `--line` borders and hard `--off` shadows.
-- Fonts: `--font-display` (Silkscreen) for title **words** only; anything with **numbers** uses `--font-ui`
-  (Jersey 10); long text uses `--font` (Space Grotesk).
-- Motion is stepped (`steps(n)`); modals are the exception (fast, smooth). Respect `reduce-motion`. Shared keyframes
-  (`stamp-in` for every rubber stamp, `bob`, `misprint`) live once; don't redefine near-copies.
-- Cards: `.card` sets its own `--cw`; to resize, set `--cw` on the card selector itself (e.g. `.x .card { --cw: … }`).
-  `cqw` units inside a card refer to the card; the card's own border and shadow use `--cw` maths instead.
-- Never let the combat layout change height mid-fight: fixed rows, the enemy sprite size is measured once.
+- Partials in cascade order via `styles/index.css`; **`responsive.css` stays last**. Shared decor in `decor.css`.
+- Tokens in `tokens.css` (inks `--p --b --y --k`, `--paper`, night `--bg --bg2 --void`, brass/paper helpers). Use a token,
+  not a raw hex. Paper panels: `--line` borders, hard `--off` shadows.
+- Fonts: `--font-display` (Silkscreen) for title words only; numbers use `--font-ui` (Jersey 10); long text `--font`.
+- Motion is stepped (`steps(n)`); modals are the exception. Respect `reduce-motion`. Shared keyframes live once.
+- `.card` sets its own `--cw`; resize by setting `--cw` on the card selector. Never let the combat layout change height
+  mid-fight. Keep CSS to what Safari 16 supports (no `color-mix`).
 
-### Pixel art
+### Pixel art and audio
 
-Icons (`ICONS`, 64×64) and creatures (`CREATURES`, 200×200) are written as SVG with the ink palette in mind and
-rasterised at boot by `ui/art/riso.ts` (~26 ms total); `main.ts` passes the sources to `preloadArt` (the renderer
-imports no art module, so there is no import cycle). `icon(id)` returns a pixel icon tinted by `color` and
-`--ink2`; `creature(id)` returns stacked ink layers (kept in register; no offsets).
-
-### Audio
-
-`sfx(id)` (throttled per id). Music: `playMusic(track)`, `playTemporaryMusic` / `endTemporaryMusic` (pause theme).
-Tracks are data in `music.ts` (chords, bass, arp, lead, drums, pad). Audio unlocks on the first gesture.
+Icons (`ICONS`) and creatures (`CREATURES`) are SVG written for the ink palette and rasterised at boot by `art/riso.ts`;
+`icon(id)` / `creature(id)` return the pixel versions. `dev/art.html` (dev server) previews them all. Audio: `sfx(id)`,
+`playMusic(track)`, `playTemporaryMusic`/`endTemporaryMusic`; tracks are data in `music.ts`.
 
 ## Testing
 
-- **Unit** (`tests/combat.test.ts`): engine rules. Add a test for every new mechanic.
-- **Content** (`tests/content.test.ts`): data integrity.
-- **Balance** (`tests/balance.sim.test.ts` + `bot.ts`): heuristic bot win rates; treat them as relative.
-- **E2E** (`tests/e2e/smoke.spec.ts`): contract (first launch only) → title, hero carousel and locks, fight → reward swap or skip, layout
-  stability, Start gate, pause (music, backdrop tap, main menu, open windows), break room upgrade, map lane choice,
-  compendium (cards, personnel, records) and card anatomy, copy room, debug fight, title poster and time card fit, first-fight tour, first Kamikaze tip, the Boss's Son weak spot, Wind-Up Intern drag, the Sick Coworker's virus, the Facilities Manager's mop, crash window. `freshGame` unlocks every hero unless `locked`. Use real touch
-  (`page.touchscreen.tap`) when the behaviour differs on phones.
-- Other engines: `npx playwright test --browser=webkit` (Safari/iOS) passes too; Firefox needs a config without
-  `isMobile` (same viewport, `hasTouch`). Keep CSS to what Safari 16 supports (no `color-mix`).
-- Ad-hoc screenshot scripts live in the git-ignored `screenshots/` folder. `dev/art.html` (open it on the dev
-  server) previews every creature sprite and icon after pixelisation.
+- `combat.test.ts`: engine rules (add one per mechanic). `content.test.ts`: data integrity. `balance.sim.test.ts` + `bot.ts`:
+  bot win rates, relative only. `tests/e2e/smoke.spec.ts`: flows on a mobile viewport with real touch where it matters;
+  `freshGame` unlocks every hero unless `locked`.
+- Other browsers: `npx playwright test --browser=webkit` passes; Firefox needs a config without `isMobile`.
+- Screenshot scripts go in the git-ignored `screenshots/`.
 
 ## Known technical debt
 
 - Pixel-art caching (deferred: generation is fast).
-- ESLint not available with TS 7: Biome covers lint and format.
-- The balance bot underplays the Mage's spell chaining and spends abilities as soon as it can.
+- Biome covers lint and format (no ESLint with TS 7).
+- The balance bot underplays the Mage's chaining and spends abilities as soon as it can.
+- Status look in the UI (`hud.ts` CSS classes per status, `combatFx.ts` bursts) still names a few status ids.
+- The reward choice is not saved: closing the game on the reward screen loses it.
+- `z-index` values have no shared scale.
