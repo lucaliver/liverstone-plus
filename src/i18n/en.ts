@@ -107,6 +107,8 @@ const en = {
   'debug.rewardBoss': 'Boss card reward',
   'debug.skipRoom': 'Clear this room',
   'debug.nextAct': 'Skip to next act',
+  'debug.revealRooms': 'Reveal all rooms',
+  'debug.hideRooms': 'Back to fog',
   'menu.abandonConfirm': 'A new run will scrap your current workday. Continue?',
   'common.back': 'Back',
   'common.next': 'Next',

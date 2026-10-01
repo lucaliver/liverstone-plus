@@ -67,7 +67,7 @@ export function runHud(run: RunState, extra?: HTMLElement): HTMLElement {
  * The act map, bottom to top: the floor plan of the office. Rooms on two lanes joined by corridors, a few rooms ahead in
  * sight and the rest in fog. After a room is cleared its doors light up; tap a room to pick it (tap it again, or the button, to go in).
  */
-export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onHome: () => void, onDebug: () => void): Screen {
+export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onHome: () => void, onDebug: () => void, revealAll = false): Screen {
   const cur = currentNode(run);
   const options = run.cleared ? cur.next.filter((id) => !run.path.includes(id)) : [];
   // After an act boss the map turns to the next act.
@@ -101,7 +101,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   const before =
     run.cleared && run.path.length > 1 && run.nodes[run.path[run.path.length - 2]].act === cur.act ? seenFrom(run.path[run.path.length - 2]) : null;
   let walkMs = 0;
-  const foggy = (n: RunNode): boolean => n.type !== 'boss' && !run.path.includes(n.id) && !dist.has(n.id);
+  const foggy = (n: RunNode): boolean => !revealAll && n.type !== 'boss' && !run.path.includes(n.id) && !dist.has(n.id);
 
   /** The corridor between two rooms: straight along a lane or across a floor, else up, across and up again. */
   const route = (a: RunNode, b: RunNode): Pt[] => {

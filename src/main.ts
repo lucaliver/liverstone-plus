@@ -57,6 +57,8 @@ import { splashScreen, titleScreen } from './ui/screens/title';
 import { compendiumScreen } from './ui/screens/compendium';
 
 let run: RunState | null = null;
+/** Debug: the map shows every room, fog or not. */
+let revealMap = false;
 
 /** A room or reward screen wears the colours of the act it is in (the map and the fights do it themselves). */
 function inAct(screen: Screen, r: RunState): Screen {
@@ -126,7 +128,7 @@ function goJourney(): void {
   }
   playMusic(actDef(currentNode(run).act).mapMusic);
   saveRun(run);
-  show(journeyScreen(run, enterNode, goTitle, debugMap));
+  show(journeyScreen(run, enterNode, goTitle, debugMap, revealMap));
 }
 
 /** Debug: the map's cheat menu. Rewards and rooms on demand, then back to the map with the current room as it was. */
@@ -178,6 +180,14 @@ function debugMap(): void {
       },
     },
     { label: t('debug.skipRoom'), icon: 'check', run: nextNode },
+    {
+      label: t(revealMap ? 'debug.hideRooms' : 'debug.revealRooms'),
+      icon: 'watchEye',
+      run: () => {
+        revealMap = !revealMap;
+        goJourney();
+      },
+    },
     ...(nextAct ? [nextAct] : []),
   ]);
 }
