@@ -1099,7 +1099,9 @@ ${shadow}
 <path d="M66 44c0-24 14-38 34-38s34 14 34 38c0 20-14 38-34 42-20-4-34-22-34-42z" fill="#f6f0e4"/>
 <rect x="76" y="-2" width="48" height="12" rx="2" fill="#1b1830"/><rect x="84" y="-14" width="32" height="20" fill="#1b1830"/><path d="M84 -6h32" stroke="#ff3d9a" stroke-width="5"/>
 </g>
-${eyes(88, 112, 40, 4, '#ffd900', 'tb-g')}
+<g class="eye"><circle cx="88" cy="40" r="10" fill="url(#tb-g)"/><circle cx="112" cy="40" r="10" fill="url(#tb-g)"/>
+<g fill="#ffd900" stroke="#120e18" stroke-width="3.5"><circle cx="87" cy="40" r="8"/><circle cx="113" cy="40" r="8"/></g>
+<path d="M87 34v12M113 34v12" stroke="#120e18" stroke-width="4.5" stroke-linecap="round"/></g>
 <path d="M86 64q14 8 28 0" fill="none" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
 ${eyes(38, 62, 52, 3, '#ff3d9a', 'tb-r')}
 <path d="M38 70h24" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
