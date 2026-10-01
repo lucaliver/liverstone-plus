@@ -461,7 +461,10 @@
 /* (the finger is still down when it fires, so it must also beat the pressed look of a CTA) */
 .sign-btn.signed,
 .btn.cta.sign-btn.signed:active:not(:disabled) { animation: sign-fade 0.2s steps(3) forwards; pointer-events: none; }
+/* and it stays gone: not only the animation's end state, the resting style is hidden too */
+.splash .sign-btn.signed { opacity: 0; }
 @keyframes sign-fade {
+  from { opacity: 1; }
   to { opacity: 0; }
 }
 .splash .btn { width: min(100%, 300px); }
