@@ -158,7 +158,11 @@ export function splashScreen(onStart: () => void): Screen {
     terms,
     h('div', { class: 'contract-fine', 'aria-hidden': 'true', html: SCRIBBLES }),
     line,
-    h('div', { class: 'contract-hand', 'aria-hidden': 'true', html: propArt('hand') }),
+    h('div', {
+      class: 'contract-hand',
+      'aria-hidden': 'true',
+      html: propArt('hand') + propArt('sleeve', 'sleeve') + propArt('sleeve', 'sleeve far'),
+    }),
   );
   /** The contract has landed: the sign button fades in. */
   const landed = (e: Event): void => {

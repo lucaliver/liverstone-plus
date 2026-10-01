@@ -434,6 +434,9 @@
 }
 /* the pinch is a fifth in and a fifth down from the sprite's corner */
 .contract-hand .riso { position: absolute; left: -27px; top: -30px; width: 150px; height: 150px; }
+/* the rest of the sleeve: the same band, shifted along its diagonal by a whole number of sprite pixels (41 of 64, just past the cuff) so the pixels line up */
+.contract-hand .riso.sleeve { left: calc(-27px + 150px * 41 / 64); top: calc(-30px + 150px * 41 / 64); }
+.contract-hand .riso.far { left: calc(-27px + 150px * 82 / 64); top: calc(-30px + 150px * 82 / 64); }
 @keyframes hand-away {
   to { translate: 150px 200px; visibility: hidden; }
 }

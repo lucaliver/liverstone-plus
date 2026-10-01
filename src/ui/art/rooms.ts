@@ -153,16 +153,23 @@ ${shadow}
 <path d="M42 134v10l6 8 6-8 6 8 6-8 6 8 6-8 6 8 6-8 6 8 6-8 6 8 6-8v-10z" fill="${PAPER}" ${OUT}/>
 <path d="M44 174h92" stroke="#ff3d9a" stroke-width="3"/>`;
 
-/** The contract screen's hand: a skeleton's hand in a pink sleeve with a white cuff, pinching the corner of the paper (the pinch is at the top left). */
+/**
+ * The contract screen's hand: a skeleton's hand in a pink sleeve with a white cuff, pinching the corner of the paper (the pinch is at the top left).
+ * The sleeve runs out of the box on purpose (no closed end), and `contractSleeve` continues it (see `.contract-hand` in title.css).
+ */
 const contractHand = `
-<path d="M144 108l56 56v36h-36l-56-56z" fill="#ff3d9a" ${OUT}/>
-<path d="M164 146l16 16M150 164l16 16" stroke="#a01060" stroke-width="3" stroke-linecap="round"/>
+<path d="M144 108L300 264L264 300L108 144z" fill="#ff3d9a" ${OUT}/>
 <path d="M130 94l14 14-36 36-14-14z" fill="${PAPER}" ${OUT}/><circle cx="123" cy="115" r="5" fill="#ffd900" ${OUT}/>
 <path d="M94 130L58 108l4-34 36-18 28 10 4 28z" fill="${PAPER}" ${OUT}/>
 <g fill="${PAPER}" ${OUT}><circle cx="108" cy="58" r="10"/><circle cx="124" cy="70" r="10"/><circle cx="128" cy="88" r="10"/></g>
 <path d="M76 74L46 40M62 108L32 68" stroke="${INK}" stroke-width="24" stroke-linecap="round"/>
 <path d="M76 74L46 40M62 108L32 68" stroke="${PAPER}" stroke-width="17" stroke-linecap="round"/>
 <circle cx="62" cy="58" r="5" fill="${INK}"/><circle cx="47" cy="88" r="5" fill="${INK}"/>`;
+
+/** More sleeve for the hand's arm: the same diagonal band, laid over the hand sprite's from a diagonal shift on (so the arm leaves the screen). */
+const contractSleeve = `
+<path d="M-100 -136L300 264L264 300L-136 -100z" fill="#ff3d9a" ${OUT}/>
+<path d="M64 46l16 16M50 64l16 16" stroke="#a01060" stroke-width="3" stroke-linecap="round"/>`;
 
 /** The pen that signs: a fountain pen, nib at the bottom left (about a fifth in from the left and a fifth up from the bottom). */
 const contractPen = `
@@ -186,7 +193,7 @@ export const ROOM_SPRITES: Record<string, string> = {
 };
 
 /** Sprites of the contract screen's props, keyed like the rooms'. */
-export const PROP_SPRITES: Record<string, string> = { 'contract.hand': contractHand, 'contract.pen': contractPen };
+export const PROP_SPRITES: Record<string, string> = { 'contract.hand': contractHand, 'contract.sleeve': contractSleeve, 'contract.pen': contractPen };
 
 /** Riso-pixel sprite of a contract prop (see riso.ts). */
 export const propArt = (id: string, cls = ''): string => sprite(`contract.${id}`, cls);
