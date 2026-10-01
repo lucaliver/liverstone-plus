@@ -73,13 +73,13 @@
   place-items: center;
   border-bottom: var(--bw) solid var(--k);
   background-color: var(--paper);
-  background-image: radial-gradient(circle, var(--art-dot, #9bb8ea) 30%, transparent 33%);
+  background-image: radial-gradient(circle, var(--art-dot, var(--cat-defense-dot)) 30%, transparent 33%);
   background-size: 7cqw 7cqw;
 }
-.card[data-cat='attack'] .c-art { background-color: #ffc2de; --art-dot: #ff6fb2; --art-ink2: var(--y); }
-.card[data-cat='defense'] .c-art { background-color: #c6d9f8; --art-dot: #6f9be6; --art-ink2: var(--y); }
-.card[data-cat='utility'] .c-art { background-color: #fff0a0; --art-dot: #f0c800; --art-ink2: var(--b); }
-.card[data-cat='curse'] .c-art { background-color: #bfe38a; --art-dot: #5aa04a; --art-ink2: var(--p); }
+.card[data-cat='attack'] .c-art { background-color: var(--cat-attack); --art-dot: var(--cat-attack-dot); --art-ink2: var(--y); }
+.card[data-cat='defense'] .c-art { background-color: var(--cat-defense); --art-dot: var(--cat-defense-dot); --art-ink2: var(--y); }
+.card[data-cat='utility'] .c-art { background-color: var(--cat-utility); --art-dot: var(--cat-utility-dot); --art-ink2: var(--b); }
+.card[data-cat='curse'] .c-art { background-color: var(--cat-curse); --art-dot: var(--cat-curse-dot); --art-ink2: var(--p); }
 .c-art .pico {
   font-size: 34cqw;
   color: var(--k);

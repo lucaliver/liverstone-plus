@@ -1,5 +1,5 @@
 /** Ambient pixel decorations for the dark dungeon: drifting ink motes and eyes in the dark. */
-const INKS = ['var(--p)', 'var(--y)', '#5a8ef0'];
+const INKS = ['var(--p)', 'var(--y)', 'var(--mana)'];
 
 export function motes(n: number, inks: string[] = INKS): string {
   let out = '';

@@ -373,8 +373,8 @@
 .fx[data-tone='blue'] .pico { color: var(--b); }
 .fx-curse { color: var(--purple); }
 .fx-curse .pico { color: var(--purple); }
-.fx-steal { color: #a07000; }
-.fx-steal .pico { color: #a07000; }
+.fx-steal { color: var(--intent-steal-lo); }
+.fx-steal .pico { color: var(--intent-steal-lo); }
 
 /* card anatomy: a sample card with numbered spots, then the legend */
 .anatomy {

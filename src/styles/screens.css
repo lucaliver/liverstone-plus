@@ -547,7 +547,7 @@
   top: 0;
   height: 8px;
   z-index: 3;
-  background: #1cffc0;
+  background: var(--mint);
   box-shadow: 0 0 0 2px var(--k);
   animation: copy-scan 0.5s steps(6) both;
 }

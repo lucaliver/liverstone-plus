@@ -283,7 +283,7 @@
   top: 0;
   height: 6px;
   z-index: 2;
-  background: #1cffc0;
+  background: var(--mint);
   box-shadow: 0 0 0 2px var(--k);
   animation: scanline 1s steps(10) infinite;
 }
@@ -372,19 +372,19 @@
   border-left: 2px solid var(--void);
 }
 .threat[data-intent='attack'],
-.threat[data-intent='charge'] { --t-ink: var(--red); --t-ink2: #ff8a2a; }
+.threat[data-intent='charge'] { --t-ink: var(--red); --t-ink2: var(--intent-charge-hi); }
 .threat[data-intent='attack'] .t-ico,
 .threat[data-intent='charge'] .t-ico { color: var(--red); }
 .threat[data-intent='defend'] .t-ico { color: var(--steel); }
 .threat[data-intent='buff'] .t-ico,
 .threat[data-intent='curse'] .t-ico { color: var(--purple); }
 .threat[data-intent='curse'],
-.threat[data-intent='buff'] { --t-ink: #9a7ae0; --t-ink2: #b89af0; }
-.threat[data-intent='defend'] { --t-ink: var(--steel); --t-ink2: #a3adc4; }
-.threat[data-intent='steal'] { --t-ink: #d09000; --t-ink2: var(--y); }
-.threat[data-intent='idle'] { --t-ink: var(--muted); --t-ink2: #9a94ac; }
-.threat[data-intent='absorb'] { --t-ink: #1cc0a0; --t-ink2: #8ae8d0; }
-.threat[data-intent='absorb'] .t-ico { color: #1a9a80; }
+.threat[data-intent='buff'] { --t-ink: var(--intent-buff); --t-ink2: var(--intent-buff-hi); }
+.threat[data-intent='defend'] { --t-ink: var(--steel); --t-ink2: var(--steel-hi); }
+.threat[data-intent='steal'] { --t-ink: var(--intent-steal); --t-ink2: var(--y); }
+.threat[data-intent='idle'] { --t-ink: var(--muted); --t-ink2: var(--intent-idle-hi); }
+.threat[data-intent='absorb'] { --t-ink: var(--intent-absorb); --t-ink2: var(--intent-absorb-hi); }
+.threat[data-intent='absorb'] .t-ico { color: var(--intent-absorb-lo); }
 .threat[data-intent='charge'] { background-color: var(--y); }
 .threat.pop { animation: pop 0.2s steps(2); }
 @keyframes pop {

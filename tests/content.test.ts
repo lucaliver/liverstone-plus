@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import enStrings from '../src/i18n/en';
 
@@ -12,6 +13,7 @@ import { PERK_LIST } from '../src/data/perks';
 import { STATUS_ORDER, STATUSES } from '../src/data/statuses';
 import { GLYPHS, TAG_ICON } from '../src/ui/components/cardView';
 import { ICONS, INTENT_ICON } from '../src/ui/art/icons';
+import { INK_HEX } from '../src/ui/art/riso';
 import { HEXES } from '../src/data/hexes';
 import { MODIFIER_LIST } from '../src/data/modifiers';
 import { ENEMIES } from '../src/data/enemies';
@@ -163,5 +165,14 @@ describe('content integrity', () => {
   it('every perk and status has a name and a description', () => {
     for (const p of PERK_LIST) expect(en[`perk.${p.id}`] && en[`perk.${p.id}.d`], p.id).toBeTruthy();
     for (const id of STATUS_ORDER) expect(en[`status.${id}`] && en[`status.${id}.d`], id).toBeTruthy();
+  });
+});
+
+describe('colours', () => {
+  const tokens = readFileSync('src/styles/tokens.css', 'utf8');
+  const token = (name: string): string | undefined => new RegExp(`${name}:\\s*(#[0-9a-fA-F]{6})`).exec(tokens)?.[1];
+
+  it('the pixel renderer prints with the inks of the stylesheet', () => {
+    expect(INK_HEX).toEqual({ Y: token('--y'), P: token('--p'), B: token('--b'), K: token('--k') });
   });
 });

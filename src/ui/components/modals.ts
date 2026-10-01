@@ -443,10 +443,10 @@ export function openCardAnatomy(): ModalHandle {
     [
       t('anatomy.art'),
       `${t('anatomy.art.d')}<br>${inks([
-        ['#ffc2de', 'anatomy.art.attack'],
-        ['#c6d9f8', 'anatomy.art.defense'],
-        ['#fff0a0', 'anatomy.art.utility'],
-        ['#bfe38a', 'anatomy.art.curse'],
+        ['var(--cat-attack)', 'anatomy.art.attack'],
+        ['var(--cat-defense)', 'anatomy.art.defense'],
+        ['var(--cat-utility)', 'anatomy.art.utility'],
+        ['var(--cat-curse)', 'anatomy.art.curse'],
       ])}`,
     ],
     [t('anatomy.face'), t('anatomy.face.d')],

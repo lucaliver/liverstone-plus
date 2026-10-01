@@ -161,7 +161,7 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 
 - Partials in cascade order via `styles/index.css`; **`responsive.css` stays last**. Shared decor in `decor.css`.
 - Tokens in `tokens.css`, act themes in `acts.css` (inks `--p --b --y --k`, `--paper`, night `--bg --bg2 --void`, brass/paper helpers). Use a token,
-  not a raw hex. Paper panels: `--line` borders, hard `--off` shadows.
+  not a raw hex (scripts read tokens with `cssColor`; the pixel renderer's inks in `art/riso.ts` are checked against them by a test). Paper panels: `--line` borders, hard `--off` shadows.
 - Every act has a colour theme (`styles/acts.css`): the night tokens (`--bg`, `--bg2`, `--bg-dot`, `--night-dot`, the belt stream `--belt`) and the map's (`--map-*`) are re-set under `[data-act='N']`. A screen opts in with `data-act`: the map and the fight set it themselves (the fight by its enemy's act), rooms and rewards get it from `inAct` in `main.ts`; a new act needs its block there and an `actArt` scene.
 - Fonts: `--font-display` (Silkscreen) for title words only; numbers use `--font-ui` (Jersey 10); long text `--font`.
 - Motion is stepped (`steps(n)`); modals are the exception. Respect `reduce-motion`. Shared keyframes live once.

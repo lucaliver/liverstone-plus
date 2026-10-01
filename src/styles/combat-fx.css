@@ -106,10 +106,10 @@
     3px 3px 0 var(--k);
   animation: floatfast 0.7s steps(7) forwards;
 }
-.floater.dmg { --splat: #d8121e; }
-.floater.hurt { --splat: #8a0a24; }
+.floater.dmg { --splat: var(--splat-dmg); }
+.floater.hurt { --splat: var(--splat-hurt); }
 .floater.k-poison { --splat: var(--green); }
-.floater.k-burn { --splat: #b8420c; }
+.floater.k-burn { --splat: var(--splat-burn); }
 .floater.dmg::before,
 .floater.hurt::before {
   content: '';
@@ -171,7 +171,7 @@
 .floater.status.bad { background: var(--p); }
 .floater.mana { color: var(--b); font-size: 26px; }
 /* damage the Printer copies instead of taking */
-.floater.copied { color: #1a9a80; font-size: 30px; }
+.floater.copied { color: var(--intent-absorb-lo); font-size: 30px; }
 @keyframes float {
   0% { transform: translateY(8px) scale(0.6); opacity: 0; }
   15% { transform: translateY(-6px) scale(1.1); opacity: 1; }

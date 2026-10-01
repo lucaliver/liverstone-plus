@@ -1,4 +1,5 @@
 import { settings } from '../../game/settings';
+import { cssColor } from '../dom';
 
 /** Canvas particle bursts + DOM floating numbers + screen shake + haptics. */
 interface P {
@@ -45,34 +46,50 @@ export function initFx(root: HTMLElement): void {
   requestAnimationFrame(loop);
 }
 
-const Y = '#ffd900';
-const P = '#ff3d9a';
-const B = '#1c5fd0';
-const K = '#1b1830';
-const PALETTES: Record<string, string[]> = {
-  slash: [K, P, Y],
-  blunt: [K, Y],
-  claw: [P, K],
-  fire: [Y, P, '#f63a1e'],
-  burn: [Y, P],
-  ice: [B, '#8fc0f0'],
-  arcane: [P, B],
-  heal: [P, Y],
-  block: ['#7b86a3', '#a3adc4', K],
-  mana: [B, P],
-  blood: [P, K],
-  poison: ['#2a8a4a', Y],
-  thorns: ['#2a8a4a', K],
-  curse: [K, P, '#4a2aa0'],
-  ash: [K, '#6d6680', P],
-  gold: [Y, P, B],
-  hit: [K, Y],
-};
+/** Particle colours by effect, taken from the stylesheet's tokens the first time they are needed. */
+let palettes: Record<string, string[]> | null = null;
+function paletteOf(kind: string): string[] {
+  if (!palettes) {
+    const [Y, P, B, K, red, green, purple, muted, steel, steelHi, ice] = [
+      '--y',
+      '--p',
+      '--b',
+      '--k',
+      '--red',
+      '--green',
+      '--purple',
+      '--muted',
+      '--steel',
+      '--steel-hi',
+      '--ice',
+    ].map(cssColor);
+    palettes = {
+      slash: [K, P, Y],
+      blunt: [K, Y],
+      claw: [P, K],
+      fire: [Y, P, red],
+      burn: [Y, P],
+      ice: [B, ice],
+      arcane: [P, B],
+      heal: [P, Y],
+      block: [steel, steelHi, K],
+      mana: [B, P],
+      blood: [P, K],
+      poison: [green, Y],
+      thorns: [green, K],
+      curse: [K, P, purple],
+      ash: [K, muted, P],
+      gold: [Y, P, B],
+      hit: [K, Y],
+    };
+  }
+  return palettes[kind] ?? palettes.hit;
+}
 
 /** Chunky square "ink" pixels, snapped to a 4px grid; the ring around them grows `reach` px. */
 export function burst(kind: string, x: number, y: number, n = 16, spread = 1, reach = 70): void {
   if (settings.reduceMotion) n = Math.ceil(n / 3);
-  const pal = PALETTES[kind] ?? PALETTES.hit;
+  const pal = paletteOf(kind);
   const up = kind === 'heal' || kind === 'mana' || kind === 'fire' || kind === 'burn' || kind === 'ash';
   for (let i = 0; i < n; i++) {
     const a = Math.random() * Math.PI * 2;

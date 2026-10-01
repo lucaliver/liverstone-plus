@@ -7,7 +7,7 @@
 }
 .mana-row > .pico {
   font-size: 26px;
-  color: #5a8ef0;
+  color: var(--mana);
   --ink2: var(--p);
 }
 .mana-pips {
@@ -30,7 +30,7 @@
   inset: 0;
   transform-origin: left;
   transform: scaleX(var(--f, 0));
-  background-image: radial-gradient(circle, #5a8ef0 40%, transparent 44%);
+  background-image: radial-gradient(circle, var(--mana) 40%, transparent 44%);
   background-size: 4px 4px;
 }
 .pip.full::before {
@@ -56,7 +56,7 @@
 }
 .mana-num {
   min-width: 56px;
-  color: #8fb6ff;
+  color: var(--mana-hi);
   text-align: right;
   font-family: var(--font-ui);
   font-size: 26px;

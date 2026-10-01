@@ -23,8 +23,36 @@
   --rust: #c25a1c;
   --green: #2a8a4a;
   --purple: #4a2aa0;
-  /* Block and shields (mana keeps the blue ink) */
+  /* Meanings: Block is steel, mana is bright blue, the scanner and the copy flash are mint, ice is pale blue */
   --steel: #7b86a3;
+  --steel-hi: #a3adc4;
+  --mana: #5a8ef0;
+  --mana-hi: #8fb6ff;
+  --ice: #8fc0f0;
+  --mint: #1cffc0;
+  /* Card art by category: the background and its halftone dot */
+  --cat-attack: #ffc2de;
+  --cat-attack-dot: #ff6fb2;
+  --cat-defense: #c6d9f8;
+  --cat-defense-dot: #6f9be6;
+  --cat-utility: #fff0a0;
+  --cat-utility-dot: #f0c800;
+  --cat-curse: #bfe38a;
+  --cat-curse-dot: #5aa04a;
+  /* Enemy intents (the threat bar): a base ink and a lighter one, where they differ from the plain inks */
+  --intent-charge-hi: #ff8a2a;
+  --intent-buff: #9a7ae0;
+  --intent-buff-hi: #b89af0;
+  --intent-steal: #d09000;
+  --intent-steal-lo: #a07000;
+  --intent-idle-hi: #9a94ac;
+  --intent-absorb: #1cc0a0;
+  --intent-absorb-hi: #8ae8d0;
+  --intent-absorb-lo: #1a9a80;
+  /* Splats behind damage numbers */
+  --splat-dmg: #d8121e;
+  --splat-hurt: #8a0a24;
+  --splat-burn: #b8420c;
   /* Card name bands: light enough for black text */
   --band-warrior: #ff8cc4;
   --band-mage: #8db3f2;

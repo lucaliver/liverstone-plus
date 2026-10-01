@@ -36,6 +36,9 @@ export function toggle(el: Element, cls: string, on: boolean): void {
   if (el.classList.contains(cls) !== on) el.classList.toggle(cls, on);
 }
 
+/** A colour token of the stylesheet (`--steel`), so scripts paint with the same inks as the CSS. */
+export const cssColor = (token: string): string => getComputedStyle(document.documentElement).getPropertyValue(token).trim();
+
 /** Center of an element in viewport coordinates. */
 export function centerOf(el: Element): { x: number; y: number } {
   const r = el.getBoundingClientRect();
