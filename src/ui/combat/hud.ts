@@ -155,6 +155,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
         const left = s.v > 0 ? Math.min(1, Math.max(0, s.t / sd.span)) : 0;
         const fill = Math.ceil(left * BAR_STEPS) / BAR_STEPS;
         b.querySelector<HTMLElement>('.drain')!.style.setProperty('--fill', String(fill));
+        toggle(b, 'live', fill > 0);
         toggle(b, 'low', fill > 0 && fill <= BAR_LOW);
       }
     }

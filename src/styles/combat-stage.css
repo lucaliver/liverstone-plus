@@ -555,10 +555,11 @@
 }
 .status .pico { font-size: 26px; }
 .status .pico { color: var(--tone, var(--k)); --ink2: var(--y); }
-/* a status drawn as a bar: the box is a dark slot, the coloured fill (the status's tone) drains left to right as its timer runs out */
-.status.draining { position: relative; min-width: 56px; overflow: hidden; color: var(--paper); background: var(--bg2); }
+/* a status drawn as a bar: while it is up the box is a dark slot, the coloured fill (the status's tone) drains left to right as its timer runs out; empty, it is a plain paper chip */
+.status.draining { position: relative; min-width: 56px; overflow: hidden; }
 .status.draining > * { position: relative; }
-.status.draining .pico { color: var(--paper); --ink2: var(--y); }
+.status.draining.live { color: var(--paper); background: var(--bg2); }
+.status.draining.live .pico { color: var(--paper); --ink2: var(--y); }
 .status.draining .drain {
   position: absolute;
   inset: 0;

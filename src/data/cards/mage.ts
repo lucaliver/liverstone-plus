@@ -23,7 +23,7 @@ export const mageCards: CardDef[] = [
     cost: 2,
     vals: [8],
     upVals: [11],
-    art: 'ward',
+    art: 'fireDoor',
     play: (c, v) => c.gainBlock('hero', v[0]),
   },
   {

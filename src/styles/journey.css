@@ -66,6 +66,11 @@
   0% { visibility: hidden; }
   50% { visibility: visible; }
 }
+/* the first act's sun on the intro: it comes up from behind the ground in steps while the curtain is shown */
+.rise { animation: rise calc(2.2s * var(--pace, 1)) steps(11) 0.2s both; }
+@keyframes rise {
+  from { transform: translateY(12px); }
+}
 .puff { opacity: 0; transform: translate(var(--x), var(--y)); animation: puff 3.4s steps(8) var(--dl) infinite; }
 @keyframes puff {
   10% { opacity: 0.9; }

@@ -93,7 +93,7 @@
   display: none;
   position: absolute;
   /* a little smaller than the belt: its edges stay in view, so the stream is seen running on, but the cards (from 11px down) are all covered */
-  inset: 8px 8px 12px;
+  inset: 6px 8px 8px;
   z-index: var(--z-belt-window);
   flex-direction: column;
   color: var(--k);
@@ -115,35 +115,44 @@
   flex: 1;
   min-height: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 4px 8px;
+  gap: 2px;
+  padding: 3px 8px 5px;
+  text-align: center;
 }
 .up-ico {
   flex: none;
-  font-size: 44px;
+  font-size: 26px;
   color: var(--b);
   --ink2: var(--paper);
 }
+/* the message under the icon, the answer (buttons or progress bar) at the bottom, like a system warning */
 .up-main {
   flex: 1;
-  min-width: 0;
+  min-height: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: space-between;
+  gap: 2px;
 }
 .up-text {
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.15;
 }
 .up-btns { display: flex; gap: 8px; }
-.up-btns .btn { flex: 1; }
+.up-btns .btn {
+  flex: 1;
+  min-height: 44px;
+  padding-block: 4px;
+}
 .up-progress {
   display: none;
   align-items: center;
   gap: 8px;
-  min-height: 46px;
+  min-height: 44px;
 }
 .up-track {
   flex: 1;
