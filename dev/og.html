@@ -4,7 +4,6 @@ body { margin: 0; background: var(--void); }
 /* the link preview: 1200x630, built from the game's own sprites, cards and tokens (dev server: /dev/og.html) */
 #og { position: relative; width: 1200px; height: 630px; overflow: hidden; background-color: var(--bg); background-image: radial-gradient(var(--night-dot) 2px, transparent 2.5px); background-size: 14px 14px; }
 .og-band { position: absolute; inset: 0; background: var(--y); clip-path: polygon(0 20%, 100% 4%, 100% 36%, 0 52%); }
-.og-desk { position: absolute; left: 0; right: 0; bottom: 0; height: 110px; background: repeating-linear-gradient(90deg, var(--wood-edge) 0 96px, var(--k) 96px 100px); border-top: 8px solid var(--k); }
 #og .og-logo { margin: 0; padding: 12px 34px 20px; font-size: 124px; line-height: 1; letter-spacing: 6px; color: var(--k); background: var(--paper); border: 8px solid var(--k); box-shadow: 12px 12px 0 var(--p); text-shadow: 6px 6px 0 var(--p); animation: none; white-space: nowrap; }
 .og-sign { position: absolute; left: 50%; top: 52px; translate: -50% 0; rotate: -4deg; display: flex; flex-direction: column; align-items: center; gap: 22px; }
 .og-tag { padding: 8px 22px; font: 700 30px/1 var(--font-display); letter-spacing: 3px; text-transform: uppercase; color: var(--paper); background: var(--k); white-space: nowrap; }
@@ -12,10 +11,10 @@ body { margin: 0; background: var(--void); }
 .og-who .riso { width: 100%; height: 100%; }
 .og-shadow { position: absolute; height: 22px; background: var(--k); opacity: 0.55; border-radius: 50%; }
 .og-hand { position: absolute; left: 50%; bottom: 26px; display: flex; translate: -50% 0; }
-.og-hand .card { --cw: 112px; margin: 0 -12px; transform-origin: 50% 120%; }
+.og-hand .card { --cw: 104px; margin: 0 -12px; transform-origin: 50% 120%; }
 .vs { position: absolute; left: 50%; top: 330px; translate: -50% 0; font: 44px/1 var(--font-ui); color: var(--p); }
 </style></head><body><div id="og">
-<div class="og-band"></div><div class="og-desk"></div>
+<div class="og-band"></div>
 <div class="og-sign"><h1 class="logo og-logo">PUNCHCARD</h1><div class="og-tag">A deckbuilder on the clock</div></div>
 <div id="stage"></div>
 </div>
@@ -28,16 +27,16 @@ import { cardView } from '/src/ui/components/cardView.ts';
 await preloadArt({ creatures: CREATURES, icons: ICONS });
 await Promise.all([document.fonts.load('700 100px Silkscreen'), document.fonts.load('30px Jersey')]);
 await document.fonts.ready;
-const who = (id, x, y, flip = false, size = 270) =>
-  `<div class="og-shadow" style="left:${x + size * 0.18}px;top:${y + size * 0.86}px;width:${size * 0.64}px"></div><div class="og-who" style="left:${x}px;top:${y}px;width:${size}px;height:${size}px;${flip ? 'scale:-1 1' : ''}">${sprite(id)}</div>`;
+// feet on the bottom edge: the sprite's own shadow sits ~5% above the bottom of its box
+const who = (id, x, size, flip = false) => `<div class="og-who" style="left:${x}px;top:${632 - size * 0.95}px;width:${size}px;height:${size}px;${flip ? 'scale:-1 1' : ''}">${sprite(id)}</div>`;
 // heroes on the left facing the coworkers on the right
 document.getElementById('stage').innerHTML = [
-  who('necromancer', -25, 340, false, 230),
-  who('warrior', 100, 345, false, 250),
-  who('mage', 240, 345, false, 230),
-  who('toxicCoworker', 735, 345, true, 230),
-  who('hrBitch', 855, 345, true, 250),
-  who('slavesCeo', 990, 310, true, 270),
+  who('necromancer', -40, 260),
+  who('warrior', 75, 295),
+  who('mage', 215, 255),
+  who('toxicCoworker', 735, 255, true),
+  who('hrBitch', 850, 295, true),
+  who('slavesCeo', 960, 320, true),
 ].join('');
 const hand = document.createElement('div');
 hand.className = 'og-hand';
