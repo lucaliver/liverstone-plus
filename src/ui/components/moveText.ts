@@ -132,6 +132,7 @@ export function enemyTraits(e: EnemyDef, withHalf = true): { icon: string; name:
     const { id, share } = e.startHex;
     traits.push({ icon: HEXES[id].icon, name: t(`hex.${id}`), desc: t('enemy.startHex', { n: Math.round(share * 100) }) });
   }
+  if (e.deepBelt !== undefined) traits.push({ icon: 'conveyorLine', name: '', desc: keywordHtml(t(`enemy.${e.id}.deep`)) });
   if (e.onHalf && withHalf) traits.push({ icon: HALF_ICON, name: t('status.half'), desc: keywordHtml(t(`enemy.${e.id}.half`)) });
   return traits;
 }

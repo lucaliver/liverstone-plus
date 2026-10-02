@@ -1,4 +1,4 @@
-import { HALF } from './enemies';
+import { ENEMIES, HALF } from './enemies';
 import { CONFIG } from './config';
 import { CARDS } from './cards';
 import { JUST_CAUSE_HP } from './cards/warrior';
@@ -76,6 +76,7 @@ export const VALUES = {
   inflationCost: CONFIG.inflationCost,
   kamikazeDamage: CARDS.kamikaze.vals[1],
   // Half-HP moves (the Paper Cuts it starts with count 1)
+  deepBeltSecs: ENEMIES.exaggeratedGirl.deepBelt ?? 0,
   paperCutsX: 1 + HALF.paperCuts,
   securityBlock: HALF.securityBlock,
   slavesStall: HALF.slavesStall,

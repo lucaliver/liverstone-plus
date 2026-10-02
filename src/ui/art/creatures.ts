@@ -742,6 +742,36 @@ const wellnessCoach = `
 <g class="eye"><path d="M84 68c4 4 9 4 13 0M103 68c4 4 9 4 13 0" stroke="#120e18" stroke-width="3.5" fill="none"/></g>
 <path d="M93 78c4 3 10 3 14 0" stroke="#120e18" stroke-width="3" fill="none"/>`;
 
+/** Exaggerated Girl: a sleek, impossibly elegant colleague in a red pencil skirt and heels, long glossy hair, one hand on her hip, a phone for the next selfie, and a pose that is a little too much. */
+const exaggeratedGirl = `
+<defs>${lg('eg-s', '#ff4a3a', '#a01028')}${lg('eg-k', '#6a4a9a', '#1b1830')}${lg('eg-f', '#fff0e0', '#f4c8b0')}${glow('eg-g', '#ff3d9a')}</defs>
+${shadow}
+<!-- heels -->
+<path d="M72 168l-6 20h-8l2-6 8-14zM128 168l6 20h8l-2-6-8-14z" fill="#1b1830" ${OUT}/>
+<!-- legs -->
+<path d="M78 130h18l-4 44H76zM104 130h18l2 44h-16z" fill="url(#eg-f)" ${OUT}/>
+<!-- pencil skirt -->
+<path d="M70 96h60l8 38H62z" fill="url(#eg-s)" ${OUT}/><path d="M100 100v34" stroke="#120e18" stroke-width="3"/>
+<!-- long glossy hair behind -->
+<path d="M62 50c-10 30-6 70 8 90 4-14 6-30 4-44zM138 50c10 30 6 70-8 90-4-14-6-30-4-44z" fill="url(#eg-k)" ${OUT}/>
+<!-- blouse and a belt of brass -->
+<path d="M74 60h52l4 40H70z" fill="#f6f0e4" ${OUT}/><path d="M92 60l8 14 8-14" fill="none" stroke="#120e18" stroke-width="3"/>
+<rect x="68" y="94" width="64" height="8" fill="#ffd900" ${OUT}/><rect x="95" y="92" width="10" height="12" fill="#ffd900" ${OUT}/>
+<!-- hand on hip (left) -->
+<path d="M76 66c-14 8-20 22-12 32 4 4 8 0 6-6 8 2 12-2 10-8z" fill="url(#eg-f)" ${OUT}/>
+<!-- phone arm, held up for a selfie (right) -->
+<g class="limb"><path d="M124 66c14-4 26-16 30-34l8 2c-2 22-16 38-34 46z" fill="url(#eg-f)" ${OUT}/><rect x="152" y="10" width="22" height="36" fill="#1b1830" ${OUT}/><rect x="155" y="14" width="16" height="26" fill="#ff8ac8"/><circle cx="163" cy="27" r="5" fill="#fff0e0"/></g>
+<path d="M176 8l4-8 4 8 8 4-8 4-4 8-4-8-8-4zM140 18l2-4 2 4 4 2-4 2-2 4-2-4-4-2z" fill="#ffd900"/>
+<!-- head -->
+<path d="M68 40c0-22 14-34 32-34s32 12 32 34c0 22-14 38-32 38S68 62 68 40z" fill="url(#eg-f)" ${OUT}/>
+<path d="M64 44c-2-26 10-42 36-42s38 16 36 42c-6-14-14-22-26-24-10 6-22 12-46 24z" fill="url(#eg-k)" ${OUT}/>
+<!-- lashes, glowing eyes, glossy red lips -->
+<g class="eye"><circle cx="86" cy="46" r="8" fill="url(#eg-g)"/><circle cx="114" cy="46" r="8" fill="url(#eg-g)"/><ellipse cx="86" cy="47" rx="4" ry="5" fill="#ff3d9a"/><ellipse cx="114" cy="47" rx="4" ry="5" fill="#ff3d9a"/><circle cx="85" cy="45" r="1.6" fill="#fff"/><circle cx="113" cy="45" r="1.6" fill="#fff"/></g>
+<path d="M78 42l-6-5M82 39l-4-6M118 39l4-6M122 42l6-5" stroke="#120e18" stroke-width="3" stroke-linecap="round"/>
+<path d="M78 40c4-4 14-4 18 0M104 40c4-4 14-4 18 0" stroke="#120e18" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M88 62c4-6 8-6 12-3 4-3 8-3 12 3-4 8-20 8-24 0z" fill="#e0183a" ${OUT}/><path d="M92 62h16" stroke="#120e18" stroke-width="2"/>
+<circle cx="76" cy="56" r="4" fill="#ff8ac8"/><circle cx="124" cy="56" r="4" fill="#ff8ac8"/>`;
+
 /** Bean Counter: a mole in shirtsleeves and a green visor, thick glasses, punching an adding machine that spits a long receipt. */
 const beanCounter = `
 <defs>${rg('bc-b', '#b09080', '#4a3028')}${lg('bc-s', '#f8f2e2', '#d8d0c0')}</defs>
@@ -1166,6 +1196,7 @@ ${eyes(138, 162, 52, 3, '#ff3d9a', 'tb-r')}
 export const CREATURES: Record<string, string> = {
   leaver,
   workWife,
+  exaggeratedGirl,
   snitch,
   seniorBoomer,
   toxicCoworker,

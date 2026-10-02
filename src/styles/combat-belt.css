@@ -1,8 +1,9 @@
 /* belt */
 .belt {
+  --rows: 1;
   position: relative;
   flex: none;
-  height: calc(var(--cw-belt) * 1.4 + 30px);
+  height: calc(var(--belt-row-h) * (var(--rows) - 1) + var(--cw-belt) * 1.4 + 30px);
   touch-action: none;
   z-index: 2;
 }
@@ -186,11 +187,17 @@
   left: 0;
   right: 0;
   top: 11px;
-  height: calc(var(--cw-belt) * 1.4);
+  height: calc(var(--belt-row-h) * (var(--rows) - 1) + var(--cw-belt) * 1.4);
 }
-/* two-row belt (experimental setting): one more row of cards, `--belt-row-h` apart (set by the combat screen) */
-.belt.rows-2 { height: calc(var(--belt-row-h) + var(--cw-belt) * 1.4 + 30px); }
-.belt.rows-2 .belt-cards { height: calc(var(--belt-row-h) + var(--cw-belt) * 1.4); }
+/* more rows: each one `--belt-row-h` below the last (set by the combat screen) */
+/* The Exaggerated Girl: everything under the belt (the mana bar included) slides down, the sleeve and the ability off the screen;
+   the freed room is the next row, which grows in steps once the engine opens it (`.deep`) while the slide's margins give way at the same pace */
+.combat.sunk .belt { margin-bottom: var(--belt-row-h); transition: margin-bottom var(--sink-time) steps(10); }
+.combat.sunk .action-row { margin-bottom: calc(var(--action-h) * -1); pointer-events: none; transition: margin-bottom var(--sink-time) steps(10); }
+.combat.sunk .mana-row { padding-bottom: calc(var(--safe-b) + 6px); }
+.combat.deep .belt,
+.combat.deep .belt-cards { transition: height var(--dur-row-grow) steps(6), margin-bottom var(--dur-row-grow) steps(6); }
+.combat.deep .belt { margin-bottom: 0; }
 .belt-cards .card {
   --cw: var(--cw-belt);
   position: absolute;

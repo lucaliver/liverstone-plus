@@ -328,6 +328,18 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         v.toast(t('combat.beltReversed'), false, QUIP_MS - CONFIG.beltTurnPause * 1000);
         sfx('machinery');
         break;
+      case 'lowerSink':
+        // The mana bar rides down to the bottom edge; the sleeve and the ability go with the rest (see `.sunk` in combat-belt.css).
+        cards.cancelDrag();
+        v.el.classList.add('sunk');
+        speak(t(`enemy.${v.combat.enemy.def.id}.speech`));
+        sfx('machinery');
+        break;
+      case 'rowAdded':
+        v.el.classList.add('deep');
+        r.belt.style.setProperty('--rows', String(v.combat.beltRows));
+        sfx('machinery');
+        break;
       case 'rowsOpen':
       case 'rowsClose':
         r.belt.classList.remove('row-opening', 'row-closing');

@@ -107,9 +107,13 @@ export class Combat {
   discard: CombatCard[] = [];
   exhaust: CombatCard[] = [];
   belt: BeltCard[] = [];
-  readonly beltRows: number;
+  /** Belt rows the fight has (an enemy may add one: `EnemyDef.deepBelt`). */
+  beltRows: number;
   /** Belt rows cards can spawn on right now (an enemy may keep some shut for a while). */
   rowsOpen: number;
+  /** The sleeve and the ability are out of reach (`EnemyDef.deepBelt`): nothing can be stashed, the ability can't be used. */
+  lowerHidden = false;
+  private rowAdded = false;
   sleeve: (CombatCard | null)[];
 
   /** Time accumulated towards the next regular draw onto the belt. */
@@ -426,6 +430,7 @@ export class Combat {
     if (this.result) return;
     this.tickEnemy(dt);
     if (this.result) return;
+    this.tickDeepBelt();
     this.tickBeltTurn(dt);
     this.tickBelt(dt);
     for (const id of this.relics) RELICS[id]?.hooks?.tick?.(this, dt);
@@ -591,6 +596,23 @@ export class Combat {
     if (n <= 0) return;
     this.enemy.block -= n;
     this.gainBlock('hero', n);
+  }
+
+  /** `EnemyDef.deepBelt`: the lower part of the screen sinks away, then an extra belt row opens in its place. */
+  private tickDeepBelt(): void {
+    const at = this.enemy.def.deepBelt;
+    if (at === undefined || this.time < at) return;
+    if (!this.lowerHidden) {
+      this.lowerHidden = true;
+      this.events.emit({ type: 'lowerSink' });
+      return;
+    }
+    if (this.rowAdded || this.time < at + CONFIG.sinkTime) return;
+    this.rowAdded = true;
+    const wasOpen = this.rowsOpen === this.beltRows;
+    this.beltRows++;
+    if (wasOpen) this.rowsOpen = this.beltRows;
+    this.events.emit({ type: 'rowAdded' });
   }
 
   /** Opens every belt row (the ones an enemy kept shut). */
@@ -797,7 +819,7 @@ export class Combat {
 
   /** Plays a card from the belt or sleeve. Returns false if it couldn't be played. */
   playCard(uid: number, free = false): boolean {
-    if (this.result || this.intro > 0) return false;
+    if (this.result || this.intro > 0 || this.lowerHidden) return false;
     const beltIdx = this.beltIndex(uid);
     const sleeveIdx = this.sleeveIndex(uid);
     const card = beltIdx >= 0 ? this.belt[beltIdx].card : sleeveIdx >= 0 ? this.sleeve[sleeveIdx] : null;
@@ -918,7 +940,7 @@ export class Combat {
   }
 
   abilityReady(): boolean {
-    return !this.result && this.intro <= 0 && !this.has('hero', 'stun') && this.hero.mana >= this.abilityCost();
+    return !this.result && this.intro <= 0 && !this.lowerHidden && !this.has('hero', 'stun') && this.hero.mana >= this.abilityCost();
   }
 
   useAbility(): boolean {

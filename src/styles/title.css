@@ -262,7 +262,7 @@
 }
 
 /* ------------------------------------------------------------------ studio card (shown once, right after the contract is signed) */
-.studio { align-items: center; justify-content: center; gap: 14px; text-align: center; cursor: pointer; }
+.studio { background: var(--void); align-items: center; justify-content: center; gap: 14px; text-align: center; cursor: pointer; }
 .studio-mark { width: clamp(120px, 42vw, 180px); aspect-ratio: 1; animation: studio-pop 0.4s steps(5) both; }
 .studio-mark .riso { width: 100%; height: 100%; }
 .studio-name {
@@ -278,7 +278,8 @@
 .studio-name .word:last-child { color: var(--b); }
 .studio-name .word { display: inline-block; white-space: nowrap; }
 .studio-name .word span { display: inline-block; animation: letter-drop 0.24s steps(6) both; animation-delay: calc(0.35s + var(--i) * 0.05s); }
-.studio-tag { margin: 0; font-family: var(--font-display); font-size: 14px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--paper); animation: studio-pop 0.3s steps(4) 1s both; }
+.studio-tag { margin: 0; font-family: var(--font-display); font-size: clamp(20px, 6.4vw, 28px); letter-spacing: 0.3em; text-transform: uppercase; color: var(--paper); animation: studio-pop 0.3s steps(4) 1s both; }
+.studio-presents { margin: 10px 0 0; font-family: var(--font-ui); font-size: 20px; color: var(--muted); animation: studio-pop 0.3s steps(4) 1.5s both; }
 @keyframes studio-pop { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: none; } }
 
 /* ------------------------------------------------------------------ splash (the first tap also unlocks audio) */

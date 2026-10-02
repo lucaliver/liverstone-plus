@@ -5,7 +5,7 @@ import { dropLetters } from '../components/decor';
 import { h } from '../dom';
 
 /** How long the studio card stays up before the title (a tap skips it). */
-const STUDIO_MS = 1800;
+const STUDIO_MS = 2600;
 
 /** The developer's card, a beat before the title: the mark pops in, the name drops letter by letter. */
 export function studioScreen(onDone: () => void): Screen {
@@ -22,6 +22,7 @@ export function studioScreen(onDone: () => void): Screen {
     h('div', { class: 'studio-mark', 'aria-hidden': 'true', html: studioArt() }),
     h('h1', { class: 'studio-name', 'aria-label': `${t('studio.name')} ${t('studio.tag')}`, html: dropLetters(t('studio.name')) }),
     h('p', { class: 'studio-tag' }, t('studio.tag')),
+    h('p', { class: 'studio-presents' }, t('studio.presents')),
   );
   return {
     el,

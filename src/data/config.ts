@@ -48,6 +48,8 @@ export const CONFIG = {
   maxHandBelt: 7,
   /** Belt rows: two is the standard layout (cards alternate between them). */
   beltRows: 2,
+  /** Seconds between the lower part of the screen sinking (`EnemyDef.deepBelt`) and the extra belt row opening in its place. */
+  sinkTime: 1,
   /** With two rows each row runs at this fraction of the one-row speed. */
   twoRowSpeed: 0.8,
   /** Share of the belt's speed-up (Rush, Hurry, Slowdown) the music follows: 1 = the same change (a 1.5× rush, 1.5× music). */

@@ -390,6 +390,18 @@ const defs: EnemyDef[] = [
     ],
   },
   {
+    // Walks in like it's a runway: the whole office stops. After a few seconds your sleeves and ability slip out of sight and a third belt row opens: more cards, nowhere to stash them.
+    id: 'exaggeratedGirl',
+    act: 2,
+    tier: 'normal',
+    hp: 90,
+    art: 'exaggeratedGirl',
+    main: atk('hairFlip', 6, 6),
+    every: 2,
+    specials: [{ id: 'overreaction', intent: 'buff', windup: 5, status: [gainStrength] }, atk('highHeels', 15, 10, { intent: 'charge' })],
+    deepBelt: 5,
+  },
+  {
     // Streamlines your workflow: at half HP one belt row is let go, with the cards on it.
     id: 'changeManager',
     act: 2,
@@ -725,6 +737,7 @@ export const DIFFICULTY = [
   'happinessOfficer',
   'dave',
   'officeChair',
+  'exaggeratedGirl',
   'overthinker',
   'changeManager',
   'leaver',

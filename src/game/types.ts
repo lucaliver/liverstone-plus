@@ -299,6 +299,8 @@ export interface EnemyDef {
   halfSecret?: boolean;
   /** Belt rows open at the start of the fight (the rest stay shut until `openBeltRows`). */
   startRows?: number;
+  /** Seconds into the fight when the part of the screen under the belt slides away (the sleeve and the ability go with it, the mana bar stays) and, `CONFIG.sinkTime` later, a third belt row opens in its place (`enemy.<id>.deep`, `enemy.<id>.speech`). */
+  deepBelt?: number;
   /** Only met as the very first fight of the very first run (never dealt at random). */
   firstRunOnly?: boolean;
 }
@@ -450,6 +452,9 @@ export type CombatEvent =
   | { type: 'beltReversed' }
   | { type: 'beltPinned' }
   | { type: 'rowsOpen' }
+  /** `deepBelt`: the lower part of the screen slides down, out of reach (the extra row opens `CONFIG.sinkTime` later: `rowAdded`). */
+  | { type: 'lowerSink' }
+  | { type: 'rowAdded' }
   | { type: 'rowsClose' }
   | { type: 'weakSpot'; x: number; y: number }
   | { type: 'rust' }

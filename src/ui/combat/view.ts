@@ -95,7 +95,7 @@ function markup(run: RunState, combat: Combat): string {
         <div class="statuses js-hstatus"></div>
       </div>
     </section>
-    <section class="belt rows-${combat.beltRows} ${settings.rightToLeft ? '' : 'ltr'}">
+    <section class="belt ${settings.rightToLeft ? '' : 'ltr'}" style="--rows: ${combat.beltRows}">
       <div class="belt-track"></div>
       <div class="belt-alarm"></div>
       <div class="belt-rust"></div>

@@ -17,7 +17,7 @@ import { spriteBox } from '../art/riso';
 import { icon } from '../art/icons';
 import { coach } from '../components/coach';
 import { bindMoveDetails, enemyTraits, moveEffect, moveIcon, movePattern } from '../components/moveText';
-import { $, h, onPress, onTapOrHold } from '../dom';
+import { $, SLACK_MS, cssMs, h, onPress, onTapOrHold } from '../dom';
 import { burst, haptic, shake } from '../fx/fx';
 import { bindMop } from './mop';
 import { clockText } from '../screens/journey';
@@ -122,7 +122,15 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     // A win waits for the enemy to finish dying (longer for a boss).
     later(() => cb.onEnd(combat), result === 'lose' ? END_MS.lose : boss ? END_MS.boss : END_MS.win);
   };
-  const unsubscribe = bindCombatFx(v, cards, finish);
+  const unsubFx = bindCombatFx(v, cards, finish);
+  // The belt has grown into the room the lower part left: the enemy's room changed, so it is measured again once the row is in.
+  const unsubRow = combat.events.on((e) => {
+    if (e.type === 'rowAdded') later(layout, cssMs('--dur-row-grow') + SLACK_MS);
+  });
+  const unsubscribe = (): void => {
+    unsubFx();
+    unsubRow();
+  };
 
   // ------------------------------------------------------------------ layout
   const layout = (): void => {
@@ -133,6 +141,9 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     state.rowH = Math.round(cw * 1.4) + BELT_ROW_GAP;
     el.style.setProperty('--cw-belt', `${cw}px`);
     el.style.setProperty('--belt-row-h', `${state.rowH}px`);
+    // What `.sunk` slides away (see combat-belt.css): the action row's height, and how long the slide takes.
+    el.style.setProperty('--action-h', `${$('.action-row', el).offsetHeight}px`);
+    el.style.setProperty('--sink-time', `${CONFIG.sinkTime}s`);
     // Measure the enemy's room once (with the belt size applied) and lock the sprite size. The wrapper is flex: 1 with
     // min-height 0, so its box is the free room, independent of the sprite; the enemy stands lower, on its pixel shadow.
     requestAnimationFrame(() => {
