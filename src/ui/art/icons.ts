@@ -1059,6 +1059,106 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<rect x="4" y="4" width="56" height="38" rx="1"/><rect x="9" y="9" width="46" height="28" fill="#16121f"/><path fill="#fff" opacity=".75" d="M14 14h16v3H14zM14 21h26v3H14zM14 28h12v3H14zM42 13h9v9h-9z"/><path d="M12 42h6v18h-6zM46 42h6v18h-6zM10 40h44v4H10z"/>`,
   },
+  masochist: {
+    el: 'blood',
+    svg: `<rect x="29" y="34" width="6" height="26"/><circle cx="32" cy="22" r="12"/><path d="M32 2l3 8h-6zM48 8l-3 8-5-5zM54 22l-8 3v-6zM16 8l3 8 5-5zM10 22l8 3v-6z"/><circle cx="32" cy="22" r="4" fill="#16121f"/>`,
+  },
+  voodooPin: {
+    el: 'curse',
+    svg: `<circle cx="28" cy="14" r="9"/><path d="M14 28h28l6 14-8 2-4-8v24H20V36l-4 8-8-2z"/><path d="M44 6l14 14-4 4L40 10z"/><circle cx="55" cy="9" r="6" fill="#16121f"/>`,
+  },
+  flowState: {
+    el: 'arcane',
+    svg: `<path d="M4 18q7-10 14 0t14 0 14 0 14 0v8q-7-10-14 0t-14 0-14 0-14 0z"/><path d="M4 32q7-10 14 0t14 0 14 0 14 0v8q-7-10-14 0t-14 0-14 0-14 0z"/><path d="M4 46q7-10 14 0t14 0 14 0 14 0v8q-7-10-14 0t-14 0-14 0-14 0z"/>`,
+  },
+  allNighter: {
+    el: 'arcane',
+    svg: `<path d="M8 24h34v16a14 14 0 0 1-14 14H22A14 14 0 0 1 8 40z"/><path d="M42 28h6a8 8 0 0 1 0 16h-6v-5h5a3 3 0 0 0 0-6h-5z"/><path d="M16 4h4v14h-4zM28 8h4v10h-4z"/><path fill="#16121f" d="M14 32h22v4H14z"/>`,
+  },
+  diminishingReturns: {
+    el: 'steel',
+    svg: `<rect x="6" y="8" width="10" height="48"/><rect x="20" y="20" width="10" height="36"/><rect x="34" y="32" width="10" height="24"/><rect x="48" y="44" width="10" height="12"/>`,
+  },
+  wellnessSeminar: {
+    el: 'holy',
+    svg: `<path d="M32 46C14 34 10 24 15 17c5-7 13-6 17 1 4-7 12-8 17-1 5 7 1 17-17 29z"/><rect x="6" y="52" width="52" height="6"/>`,
+  },
+  hustleCulture: {
+    el: 'arcane',
+    svg: `<path d="M22 14V8h20v6h14v38H8V14z"/><path fill="#16121f" d="M36 20L24 36h8l-3 12 13-18h-8z"/>`,
+  },
+  walkInFreezer: {
+    el: 'ice',
+    svg: `<rect x="12" y="4" width="40" height="56"/><rect x="18" y="10" width="28" height="44" fill="#16121f"/><rect x="40" y="26" width="4" height="14"/><path fill="none" stroke="currentColor" stroke-width="3" d="M30 18v28M22 24l16 16M22 40l16-16"/>`,
+  },
+  passiveAggressive: {
+    el: 'curse',
+    svg: `<path d="M8 8h48v36L44 56H8z"/><path fill="#16121f" opacity=".4" d="M44 56V44h12z"/><circle cx="22" cy="22" r="3.5" fill="#16121f"/><circle cx="38" cy="22" r="3.5" fill="#16121f"/><path fill="none" stroke="#16121f" stroke-width="3" d="M16 32q11 10 22 0"/>`,
+  },
+  coldSweat: {
+    el: 'ice',
+    svg: `<path d="M32 4c10 14 18 24 18 34a18 18 0 0 1-36 0c0-10 8-20 18-34z"/><path fill="none" stroke="#16121f" stroke-width="3" d="M32 28v22M23 33l18 12M23 45l18-12"/>`,
+  },
+  revolvingDoor: {
+    el: 'steel',
+    svg: `<circle cx="32" cy="32" r="28"/><path stroke="#16121f" stroke-width="4" d="M32 8v48M8 32h48"/><circle cx="32" cy="32" r="6" fill="#16121f"/>`,
+  },
+  stopTheLine: {
+    el: 'blood',
+    svg: `<path d="M20 4h24l16 16v24L44 60H20L4 44V20z"/><rect x="16" y="26" width="32" height="12" fill="#16121f"/>`,
+  },
+  hardshipCase: {
+    el: 'holy',
+    svg: `<path d="M4 12h20l6 6h30v38H4z"/><path fill="#16121f" d="M32 50C21 43 19 37 22 33c3-4 8-3 10 1 2-4 7-5 10-1 3 4 1 10-10 16z"/>`,
+  },
+  indexFund: {
+    el: 'holy',
+    svg: `<path d="M28 36V8A26 26 0 1 0 56 36z"/><path d="M36 28V4a26 26 0 0 1 24 24z"/>`,
+  },
+  braceForImpact: {
+    el: 'steel',
+    svg: `<circle cx="32" cy="16" r="10"/><path d="M12 58l10-26h20l10 26z"/><path stroke="#16121f" stroke-width="6" d="M18 36l28 14M46 36L18 50"/>`,
+  },
+  step1: {
+    el: 'holy',
+    svg: `<path d="M4 60V46h16v14z"/>`,
+  },
+  step2: {
+    el: 'holy',
+    svg: `<path d="M4 60V46h16V32h16v28z"/>`,
+  },
+  step3: {
+    el: 'holy',
+    svg: `<path d="M4 60V46h14V32h14V18h14v42z"/>`,
+  },
+  step4: {
+    el: 'holy',
+    svg: `<path d="M4 60V46h12V32h12V18h12V8h12v52z"/><path d="M52 8V2l10 3z"/>`,
+  },
+  creditCard: {
+    el: 'curse',
+    svg: `<rect x="4" y="12" width="56" height="40" rx="5"/><rect x="4" y="20" width="56" height="8" fill="#16121f"/><rect x="10" y="36" width="14" height="10" fill="#16121f"/>`,
+  },
+  safetyDrill: {
+    el: 'steel',
+    svg: `<path d="M8 44a24 24 0 0 1 48 0z"/><rect x="4" y="44" width="56" height="8"/><rect x="27" y="14" width="10" height="30" fill="#16121f" opacity=".35"/>`,
+  },
+  roomba: {
+    el: 'steel',
+    svg: `<circle cx="32" cy="34" r="26"/><circle cx="32" cy="34" r="9" fill="#16121f"/><path fill="none" stroke="#16121f" stroke-width="3" d="M12 22a26 26 0 0 1 40 0"/>`,
+  },
+  cleaningOutTheDesk: {
+    el: 'steel',
+    svg: `<path d="M6 24h52v34H6z"/><path d="M6 24l8-14h36l8 14z"/><rect x="24" y="30" width="16" height="6" fill="#16121f"/>`,
+  },
+  suggestionBox: {
+    el: 'steel',
+    svg: `<rect x="22" y="4" width="20" height="24"/><rect x="10" y="22" width="44" height="38"/><rect x="18" y="30" width="28" height="5" fill="#16121f"/>`,
+  },
+  shieldOff: {
+    el: 'steel',
+    svg: `<g ${S} stroke-width="5"><path d="M32 6l22 8c0 20-7 34-22 44C17 48 10 34 10 14z"/><path d="M12 8l42 48"/></g>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {

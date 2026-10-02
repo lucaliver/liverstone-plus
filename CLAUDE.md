@@ -50,7 +50,7 @@ This file is the technical guide: read it before changing code. Field-by-field d
 
 - Adding a card, enemy, hero, status or relic touches data, i18n and art only. If it needs `if (id === …)` in engine or UI,
   add a generic field or hook instead. Statuses already work this way (`StatusDef`: `timeMul`, `beltMul`, `dealtMul`,
-  `takenMul`, `holdsBlock`, `immune`, `ignoresRules`, `autoplay`, `heals`, `strength`, `cutsHits`, `regenMul`, `manaCap`, hooks…).
+  `takenMul`, `holdsBlock`, `immune`, `ignoresRules`, `autoplay`, `heals`, `strength`, `cutsHits`, `regenMul`, `manaCap`, `keeps`, hooks…).
 - No hard-coded hero/enemy ids in UI; lists and icons come from data maps (`HEROES`, `ENEMIES`, `CARDS`, `STATUSES`,
   `ABILITY_ICON`). Tunable numbers live in `data/config.ts` or the records, never inline in UI or engine.
 - Every player-facing string goes through `t()`; use `{placeholders}` and plurals, never English word order.

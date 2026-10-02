@@ -496,6 +496,95 @@ export const neutralCards: CardDef[] = [
     play: (c) => c.pinBelt(),
   },
 
+  // Defensive twins of the attacks
+  {
+    // Hold it and drag it over the belt: every card it knocks off adds Block, and it is played the moment you let go.
+    id: 'roomba',
+    face: '{block:0}|{sweep:1}',
+    cls: 'neutral',
+    type: 'defense',
+    rarity: 'epic',
+    cost: 2,
+    vals: [3, 2, 16],
+    upVals: [4, 2, 24],
+    sweep: { by: 1, max: 2 },
+    bonusIdx: 0,
+    art: 'roomba',
+    play: (c, v) => c.gainBlock('hero', v[0]),
+  },
+  {
+    id: 'cleaningOutTheDesk',
+    face: '{regen:0}×{cards}',
+    cls: 'neutral',
+    type: 'defense',
+    rarity: 'legendary',
+    cost: 3,
+    upCost: 2,
+    vals: [1],
+    keywords: ['exhaust', 'pending'],
+    art: 'cleaningOutTheDesk',
+    play: (c, v) => c.applyStatus('hero', 'regen', c.exhaustBelt() * v[0]),
+  },
+  {
+    id: 'suggestionBox',
+    face: '{block:0}|{?crystal}{grow}',
+    cls: 'neutral',
+    type: 'defense',
+    rarity: 'rare',
+    cost: 3,
+    vals: [5],
+    upVals: [8],
+    // Every second of wasted (overflowing) mana is another suggestion in the box.
+    onOverflow: 1,
+    bonusIdx: 0,
+    art: 'suggestionBox',
+    play: (c, v) => c.gainBlock('hero', v[0]),
+  },
+  {
+    id: 'diminishingReturns',
+    face: '{dmg:0}|{shrink:1}',
+    cls: 'neutral',
+    type: 'attack',
+    rarity: 'epic',
+    cost: 3,
+    vals: [24, 6],
+    upVals: [30, 6],
+    art: 'diminishingReturns',
+    play: (c, v, card) => {
+      c.hit(v[0]);
+      card.bonus -= v[1];
+    },
+  },
+  {
+    id: 'safetyDrill',
+    face: '{block}{pile}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'legendary',
+    cost: 4,
+    upCost: 3,
+    vals: [],
+    art: 'safetyDrill',
+    play: (c) => c.playBelt('defense'),
+  },
+  {
+    id: 'creditCard',
+    face: '{block:0}|{hp:1}|{addCard}',
+    cls: 'neutral',
+    type: 'defense',
+    rarity: 'rare',
+    cost: 1,
+    vals: [30, 15],
+    upVals: [40, 15],
+    keywords: ['exhaust'],
+    art: 'creditCard',
+    play: (c, v) => {
+      c.gainBlock('hero', v[0]);
+      c.loseHp(v[1]);
+      c.addTempCard('debt', 'draw');
+    },
+  },
+
   // Generated during a fight (never offered as rewards).
   {
     id: 'alreadyDone',

@@ -115,6 +115,20 @@ const defs: StatusDef[] = [
   crossOver('lifeWorkBalance', 'defense', 'red', (c, v) => void c.hit(v)),
   // Autopilot (Severance): cards slipping off the belt play themselves when they can.
   { id: 'autopilot', tone: 'blue', kind: 'timed', good: true, icon: 'autopilot', autoplay: true },
+  // Flow State: Multitasking doesn't run out. Hustle Culture: a Multitasking charge every second.
+  { id: 'flowState', tone: 'purple', kind: 'timed', good: true, icon: 'lotus', keeps: 'multitasking' },
+  { id: 'hustle', tone: 'purple', kind: 'timed', good: true, icon: 'bolt2', tick: everySecond((c) => c.chargeMultitasking()) },
+  // Cold Sweat (a power): every Poison the hero applies also chills the enemy for `v` seconds.
+  {
+    id: 'coldSweat',
+    tone: 'blue',
+    kind: 'stacks',
+    good: true,
+    icon: 'snow',
+    onEnemyStatus: (c, id, s) => {
+      if (id === 'poison') c.applyStatus('enemy', 'chill', 1, s.v);
+    },
+  },
   // Root access (sudo): no rule can stop the hero's cards.
   { id: 'rootAccess', tone: 'blue', kind: 'timed', good: true, icon: 'terminal', ignoresRules: true },
   { id: 'multitasking', tone: 'purple', kind: 'timed', good: true, icon: 'bolt2', showStacks: true, span: CONFIG.multitaskingWindow },

@@ -66,6 +66,13 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   pin: { icon: 'pushpin' },
   sweep: { icon: 'windKey', sign: '+' },
   manaRegen: { icon: 'crystalUp', unit: 's' },
+  /** Multitasking, for seconds or as charges. */
+  multi: { icon: 'bolt2', unit: 's' },
+  dark: { icon: 'bulbOff', unit: 's' },
+  stop: { icon: 'pause', unit: 's' },
+  shrink: { icon: 'growth', sign: '-' },
+  /** Condition: no Block. */
+  bare: { icon: 'shieldOff' },
   /** The card's own cost goes down. */
   cheaper: { icon: 'priceTag', sign: '-' },
 };

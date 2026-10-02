@@ -503,6 +503,7 @@ export class Combat {
         if (f.statuses[id] !== s) continue;
       }
       if (def.kind === 'timed' && s.t > 0) {
+        if (this.isKept(side, id)) continue;
         s.t -= dt;
         if (s.t <= 0) delete f.statuses[id];
       } else if (def.kind === 'dot' && s.v > 0) {
@@ -527,6 +528,11 @@ export class Combat {
       if (s.v <= 0) delete f.statuses[id];
       if (this.result) return;
     }
+  }
+
+  /** A status another one holds up (`StatusDef.keeps`) doesn't run out. */
+  private isKept(side: Side, id: string): boolean {
+    return Object.keys(this.fighter(side).statuses).some((k) => STATUSES[k].keeps === id && this.has(side, k));
   }
 
   private tickEnemy(dt: number): void {
@@ -1184,7 +1190,16 @@ export class Combat {
       if (s.v <= 0) delete f.statuses[id];
     }
     if (!silent) this.events.emit({ type: 'status', target: side, id, amount: def.kind === 'timed' ? t || v : v });
-    if (side === 'enemy' && v > 0) this.heroDef.hooks.onEnemyStatus?.(this, id, v);
+    if (side === 'enemy' && v > 0) {
+      this.heroDef.hooks.onEnemyStatus?.(this, id, v);
+      for (const [k, own] of Object.entries(this.hero.statuses)) if (this.has('hero', k)) STATUSES[k].onEnemyStatus?.(this, id, own);
+    }
+  }
+
+  /** One more Multitasking charge (up to the cap), with a fresh window. */
+  chargeMultitasking(): void {
+    const v = Math.min(CONFIG.multitaskingMax, this.stacks('hero', 'multitasking') + 1);
+    this.hero.statuses.multitasking = { v, t: CONFIG.multitaskingWindow };
   }
 
   removeStatus(side: Side, id: string): void {
@@ -1443,6 +1458,16 @@ export class Combat {
     };
     for (const card of [...some(this.belt.map((b) => b.card)), ...some([...this.draw, ...this.discard])]) {
       card.hex = { id, left: hex.taps, t: hex.thaw };
+      this.events.emit({ type: 'hexed', card });
+    }
+  }
+
+  /** Voodoo Pin: `n` random cards (belt first, then the rest of the deck) are hexed, and cost `cheaper` less for the rest of the fight. */
+  pinCards(id: string, n: number, cheaper: number): void {
+    const hex = HEXES[id];
+    for (const card of this.pickCards((c) => !isCurse(c) && !c.hex && this.cardCost(c) > 0, n)) {
+      card.hex = { id, left: hex.taps, t: hex.thaw };
+      card.cut = (card.cut ?? 0) + cheaper;
       this.events.emit({ type: 'hexed', card });
     }
   }

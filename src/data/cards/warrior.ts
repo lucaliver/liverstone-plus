@@ -3,6 +3,9 @@ import type { CardDef } from '../../game/types';
 /** Just Cause hits harder once the enemy is at or under this share of its max HP. */
 export const JUST_CAUSE_HP = 0.3;
 
+/** Hardship Case gives its bigger Block at or under this share of the hero's max HP. */
+export const HARDSHIP_HP = 0.5;
+
 export const warriorCards: CardDef[] = [
   // Starters
   {
@@ -431,5 +434,130 @@ export const warriorCards: CardDef[] = [
     art: 'harold',
     // The more it hurts, the wider the smile: +1 Block per v[1] HP missing.
     play: (c, v) => c.gainBlock('hero', v[0] + Math.floor((c.hero.maxHp - c.hero.hp) / v[1])),
+  },
+  {
+    id: 'masochist',
+    face: '{thorns:0}|{tickUp:1}',
+    cls: 'warrior',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 1,
+    vals: [4, 3],
+    upVals: [6, 3],
+    art: 'masochist',
+    // Pain makes you hard to hit: it also brings the enemy's next attack closer.
+    play: (c, v) => {
+      c.applyStatus('hero', 'thorns', v[0]);
+      c.hurryEnemy(v[1]);
+    },
+  },
+  {
+    id: 'stopTheLine',
+    face: '{block:0}|{stop:1}',
+    cls: 'warrior',
+    type: 'defense',
+    rarity: 'rare',
+    cost: 2,
+    vals: [18, 3],
+    upVals: [24, 3],
+    art: 'stopTheLine',
+    play: (c, v) => {
+      c.gainBlock('hero', v[0]);
+      c.applyStatus('hero', 'stalled', 1, v[1]);
+    },
+  },
+  {
+    id: 'hardshipCase',
+    face: '{block:0}|{?hp}{block:1}',
+    cls: 'warrior',
+    type: 'defense',
+    rarity: 'epic',
+    cost: 2,
+    vals: [8, 24],
+    upVals: [10, 32],
+    art: 'hardshipCase',
+    play: (c, v) => c.gainBlock('hero', c.hero.hp <= c.hero.maxHp * HARDSHIP_HP ? v[1] : v[0]),
+  },
+  {
+    id: 'indexFund',
+    face: '{block:0}|{grow:1}',
+    cls: 'warrior',
+    type: 'defense',
+    rarity: 'epic',
+    cost: 3,
+    vals: [5, 2],
+    upVals: [6, 3],
+    bonusIdx: 0,
+    art: 'indexFund',
+    play: (c, v, card) => {
+      c.gainBlock('hero', v[0]);
+      card.bonus += v[1];
+    },
+  },
+  {
+    id: 'braceForImpact',
+    face: '{dmg:0}|{?bare}{dmg:1}',
+    cls: 'warrior',
+    type: 'attack',
+    rarity: 'common',
+    cost: 2,
+    vals: [6, 16],
+    upVals: [8, 22],
+    art: 'braceForImpact',
+    play: (c, v) => void c.hit(c.hero.block > 0 ? v[0] : v[1]),
+  },
+  {
+    id: 'step1',
+    face: '{addCard}Step 2',
+    cls: 'warrior',
+    type: 'skill',
+    rarity: 'epic',
+    cost: 1,
+    upCost: 0,
+    vals: [],
+    keywords: ['exhaust'],
+    art: 'step1',
+    play: (c) => c.addTempCard('step2', 'draw'),
+  },
+  // Generated during a fight (never offered as rewards).
+  {
+    id: 'step2',
+    face: '{addCard}Step 3',
+    cls: 'warrior',
+    type: 'skill',
+    rarity: 'special',
+    cost: 2,
+    vals: [],
+    keywords: ['exhaust'],
+    art: 'step2',
+    play: (c) => c.addTempCard('step3', 'draw'),
+  },
+  {
+    id: 'step3',
+    face: '{addCard}Step 4',
+    cls: 'warrior',
+    type: 'skill',
+    rarity: 'special',
+    cost: 3,
+    vals: [],
+    keywords: ['exhaust'],
+    art: 'step3',
+    play: (c) => c.addTempCard('step4', 'draw'),
+  },
+  {
+    id: 'step4',
+    face: '{regen:0}|{thorns:1}|{block:2}',
+    cls: 'warrior',
+    type: 'skill',
+    rarity: 'special',
+    cost: 4,
+    vals: [8, 5, 20],
+    keywords: ['exhaust'],
+    art: 'step4',
+    play: (c, v) => {
+      c.applyStatus('hero', 'regen', v[0]);
+      c.applyStatus('hero', 'thorns', v[1]);
+      c.gainBlock('hero', v[2]);
+    },
   },
 ];

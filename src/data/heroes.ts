@@ -1,4 +1,3 @@
-import { CONFIG } from './config';
 import type { HeroDef, HeroId } from '../game/types';
 
 const rep = (id: string, n: number): string[] => new Array(n).fill(id);
@@ -73,8 +72,7 @@ const mage: HeroDef = {
     // Multitasking: each attack played within the window adds a stack (+1 attack damage each).
     onCardPlayed: (c, _card, def) => {
       if (def.type !== 'attack') return;
-      const stacks = Math.min(CONFIG.multitaskingMax, c.stacks('hero', 'multitasking') + 1);
-      c.hero.statuses.multitasking = { v: stacks, t: CONFIG.multitaskingWindow };
+      c.chargeMultitasking();
     },
     bonusDamage: (c, def) => (def?.type === 'attack' ? c.stacks('hero', 'multitasking') : 0),
   },

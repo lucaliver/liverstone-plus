@@ -2210,4 +2210,47 @@ describe('act 3 elites and boss', () => {
     c.damage('hero', 'enemy', Math.ceil(c.enemy.maxHp / 3), { raw: true }, 'hero');
     expect(c.has('enemy', 'haste')).toBe(true);
   });
+
+  it('Flow State keeps Multitasking up, Cold Sweat chills with every Poison, Voodoo Pin petrifies and discounts', () => {
+    const c = setup({ deck: deckOf(['punch', 'punch', 'punch', 'punch']) });
+    run(c, CONFIG.introTime);
+    const dummy = { uid: 99, id: 'flowState', up: false, bonus: 0, temp: true };
+    c.chargeMultitasking();
+    CARDS.flowState.play!(c, [8], dummy);
+    run(c, CONFIG.multitaskingWindow * 2);
+    expect(c.stacks('hero', 'multitasking')).toBe(1);
+    run(c, 8);
+    expect(c.has('hero', 'multitasking')).toBe(false);
+
+    c.applyStatus('hero', 'coldSweat', 2);
+    c.applyStatus('enemy', 'poison', 3);
+    expect(c.has('enemy', 'chill')).toBe(true);
+
+    const cards = [...c.draw, ...c.discard, ...c.belt.map((b) => b.card)].filter((x) => c.cardCost(x) > 0);
+    const costs = new Map(cards.map((x) => [x.uid, c.cardCost(x)]));
+    c.pinCards('petrify', 2, 1);
+    const pinned = cards.filter((x) => x.hex);
+    expect(pinned).toHaveLength(2);
+    for (const x of pinned) expect(c.cardCost(x)).toBe(costs.get(x.uid)! - 1);
+  });
+
+  it('Diminishing Returns shrinks to nothing, Roomba sweeps Block, Credit Card shuffles in a Debt', () => {
+    const c = setup({ deck: deckOf(['roomba', 'punch', 'punch']) });
+    run(c, CONFIG.introTime + 0.01);
+    const dr = { uid: 98, id: 'diminishingReturns', up: false, bonus: 0, temp: true };
+    for (let i = 0; i < 6; i++) CARDS.diminishingReturns.play!(c, c.cardVals(dr), dr);
+    expect(c.cardVals(dr)[0]).toBe(0);
+
+    const roomba = c.belt.find((b) => b.card.id === 'roomba')!.card;
+    const victim = c.belt.find((b) => b.card.id === 'punch')!.card;
+    expect(c.sweepCard(roomba.uid, victim.uid)).toBe(true);
+    expect(c.cardVals(roomba)[0]).toBe(CARDS.roomba.vals[0] + CARDS.roomba.vals[1]);
+
+    const hp = c.hero.hp;
+    const cc = { uid: 97, id: 'creditCard', up: false, bonus: 0, temp: true };
+    CARDS.creditCard.play!(c, c.cardVals(cc), cc);
+    expect(c.hero.hp).toBe(hp - 15);
+    expect(c.hero.block).toBeGreaterThanOrEqual(30);
+    expect([...c.draw, ...c.discard].some((x) => x.id === 'debt')).toBe(true);
+  });
 });

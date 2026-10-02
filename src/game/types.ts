@@ -202,6 +202,10 @@ export interface StatusDef {
   onHurt?: (c: Combat, side: Side, s: StatusVal, lost: number) => void;
   /** The side carrying it just attacked: one of its moves dealt damage (Burn). */
   onAttack?: (c: Combat, side: Side, s: StatusVal) => void;
+  /** While active, the carrier's status with this id doesn't run out (Flow State keeps Multitasking up). */
+  keeps?: string;
+  /** The hero just put a status on the enemy (`id`, `v` = amount): reacts while this one is active (Cold Sweat). */
+  onEnemyStatus?: (c: Combat, id: string, s: StatusVal) => void;
   /** The enemy carrying it just took a lethal hit: return true to survive it (the status removes itself if it was a one-off). */
   onDeath?: (c: Combat, side: Side, s: StatusVal) => boolean;
   /** A card of the hero's just left the belt unplayed. */

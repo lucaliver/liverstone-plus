@@ -1,7 +1,7 @@
 import { ENEMIES, HALF } from './enemies';
 import { CONFIG } from './config';
 import { CARDS } from './cards';
-import { JUST_CAUSE_HP } from './cards/warrior';
+import { HARDSHIP_HP, JUST_CAUSE_HP } from './cards/warrior';
 import { HEROES, OVERTIME_MULT, OVERTIME_TIME, TIME_THEFT, VIRULENCE_AT, VIRULENCE_BONUS } from './heroes';
 import { PERKS } from './perks';
 import { CLOCK_BLOCK, MUG_MANA, STAPLER_DAMAGE } from './relics';
@@ -102,4 +102,5 @@ export const VALUES = {
   staplerDamage: STAPLER_DAMAGE,
   budgetCut: -(PERKS.budgetCut.costDelta ?? 0),
   justCausePct: pct(JUST_CAUSE_HP),
+  hardshipPct: pct(HARDSHIP_HP),
 };

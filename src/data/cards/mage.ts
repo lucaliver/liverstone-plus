@@ -416,6 +416,75 @@ export const mageCards: CardDef[] = [
       if (shock) c.removeStatus('enemy', 'chill');
     },
   },
+  // Multitasking and mana
+  {
+    id: 'flowState',
+    face: '{multi:0}',
+    cls: 'mage',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 2,
+    vals: [8],
+    upVals: [12],
+    art: 'flowState',
+    play: (c, v) => c.applyStatus('hero', 'flowState', 1, v[0]),
+  },
+  {
+    id: 'hustleCulture',
+    face: '{hp:0}|{multi:1}',
+    cls: 'mage',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 1,
+    vals: [5, 5],
+    upVals: [3, 5],
+    art: 'hustleCulture',
+    play: (c, v) => {
+      c.loseHp(v[0]);
+      c.applyStatus('hero', 'hustle', 1, v[1]);
+    },
+  },
+  {
+    id: 'wellnessSeminar',
+    face: '{heal:0}×{multi}',
+    cls: 'mage',
+    type: 'skill',
+    rarity: 'epic',
+    cost: 2,
+    vals: [3],
+    upVals: [4],
+    keywords: ['exhaust'],
+    art: 'wellnessSeminar',
+    play: (c, v) => void c.heal('hero', v[0] * c.stacks('hero', 'multitasking')),
+  },
+  {
+    id: 'allNighter',
+    face: '{manaRegen:0}|{dark:1}',
+    cls: 'mage',
+    type: 'skill',
+    rarity: 'rare',
+    cost: 1,
+    vals: [8, 6],
+    upVals: [12, 6],
+    art: 'allNighter',
+    play: (c, v) => {
+      c.applyStatus('hero', 'brownNosing', 1, v[0]);
+      c.applyStatus('hero', 'blackout', 1, v[1]);
+    },
+  },
+  {
+    id: 'walkInFreezer',
+    face: '{chill:0}×X',
+    cls: 'mage',
+    type: 'attack',
+    rarity: 'rare',
+    cost: -1,
+    vals: [5],
+    upVals: [7],
+    art: 'walkInFreezer',
+    // X cost: the engine appends the mana spent as the last value.
+    play: (c, v) => c.applyStatus('enemy', 'chill', 1, v[0] * v[v.length - 1]),
+  },
   // Generated during a fight (never offered as rewards).
   {
     id: 'turnItOn',

@@ -47,7 +47,7 @@ export function cardValsOf(card: CardInst & { bonus?: number; age?: number }): n
   const def = CARDS[card.id];
   const vals = [...(card.up ? (def.upVals ?? def.vals) : def.vals)];
   const grows = def.bonusIdx ?? def.dmg?.[0];
-  if (card.bonus && grows !== undefined) vals[grows] += card.bonus;
+  if (card.bonus && grows !== undefined) vals[grows] = Math.max(0, vals[grows] + card.bonus);
   if (def.ride && card.age) {
     const { i, by, to } = def.ride;
     const step = Math.floor(card.age) * vals[by];
