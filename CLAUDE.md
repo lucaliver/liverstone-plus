@@ -78,7 +78,7 @@ Deploy: a push to `master` publishes to GitHub Pages (`.github/workflows/pages.y
 ```text
 src/
   core/        rng (seeded), emitter, i18n (typed keys), save (safe localStorage), util
-  i18n/en.ts   every player-facing string
+  i18n/        en.ts (every player-facing string, the source), it.ts (Italian: `Record<EnKey, string>`, same placeholders)
   data/        config (all tuning), acts, statuses, heroes, enemies, perks, hexes, relics, modifiers, cards/<class>.ts
   game/        combat (engine), run (map graph, rewards, save), meta (discoveries, unlocks, records, act stamps), settings, types
   ui/          app (screens, modals), dom
@@ -142,7 +142,7 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 ### i18n
 
 `t(key)` is typed: literal ids must exist in `en.ts`. Runtime-built keys use known prefixes (`card.`, `enemy.`, `move.`,
-`status.`, `kw.`, `hero.`…), covered by the content test. Plurals: `{n|one|other}`. New language: copy `en.ts`, register in `core/i18n.ts`.
+`status.`, `kw.`, `hero.`…), covered by the content test. Plurals: `{n|one|other}`. Languages: `en` (default) and `it`, picked in Settings (`settings.locale`, reloads the page). A new string goes in **both** files (a test checks same keys and placeholders: `{n}`, `{$name}`, `[kw]`); a new language: copy `en.ts`, register in `core/i18n.ts`. Italian keeps game words translated (Blocco, Veleno, Forza…) and the workplace-satire tone.
 
 **Never type a game number in a string.** A number rules text quotes (a duration, a percentage, a threshold) goes in as `{$name}`, read from `VALUES` in `data/values.ts`, which takes it from the constant, status or record that makes the rule work (export the constant, don't copy it). Card values stay `{0}`/`{1}`, relic/perk numbers `{n}`. A test checks every `{$name}` has a value and every value is used.
 
@@ -157,6 +157,7 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 - Move descriptions (`moveEffect`) tag curses, statuses, hexes and rules with `data-*`; `bindMoveDetails` makes them pressable.
 - The belt has two rows by default (`CONFIG.beltRows`); tests needing one pass `beltRows: 1`.
 - `EnemyDef.deepBelt` (the Exaggerated Girl): at that second the engine sets `Combat.lowerHidden` (no stash, no sleeve play, no ability; `lowerSink` event → `.sunk` on the screen: everything under the belt slides down, only the mana bar stays) and `CONFIG.sinkTime` later adds a belt row (`rowAdded` → `.deep`, `--rows` on the belt, the row grows in steps). `Combat.beltRows` is therefore mutable.
+- `EnemyDef.beltOff` (the Power Socket, a surprise): at that second the engine sets `Combat.beltDead` (`beltBoost` is 0, `beltDead` event → `.belt-dead`, its speech) and the belt only moves through `Combat.dragBelt(move)`, in belt widths (negative = back, stopped by the rearmost card; new cards still arrive with the travel, `settleBelt`). `cardLayer` turns a mostly-horizontal swipe that starts on the belt (cards or bare belt) into that call from the touch point, so every row follows the finger exactly; a vertical swipe still carries the card. The track stripes follow `Combat.beltDragged`.
 
 ### CSS
 

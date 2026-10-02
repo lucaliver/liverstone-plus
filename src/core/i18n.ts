@@ -1,4 +1,5 @@
 import en, { type EnKey } from '../i18n/en';
+import it from '../i18n/it';
 
 export type Dict = Record<string, string>;
 
@@ -30,6 +31,7 @@ export type Params = Record<string, string | number>;
 /** Registered locales. Add a new language by creating `src/i18n/<code>.ts` and registering it here. */
 const locales: Record<string, { name: string; dict: Dict }> = {
   en: { name: 'English', dict: en as Dict },
+  it: { name: 'Italiano', dict: it },
 };
 
 let current = 'en';

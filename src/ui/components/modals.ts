@@ -62,7 +62,7 @@ export function openSettings(extra: ModalAction[] = [], home = false): ModalHand
         { class: 'version' },
         t('settings.version', {
           v: __APP_VERSION__,
-          d: new Date(__BUILD_TIME__).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }),
+          d: new Date(__BUILD_TIME__).toLocaleString(getLocale(), { dateStyle: 'medium', timeStyle: 'short' }),
         }),
       )
     : null;

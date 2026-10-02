@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import enStrings from '../src/i18n/en';
+import itStrings from '../src/i18n/it';
 
 /** Indexed as a plain dictionary: these tests check keys that are built at runtime. */
 const en: Record<string, string> = enStrings;
@@ -226,5 +227,15 @@ describe('numbers in rules text', () => {
 
   it('every value is a plain number', () => {
     for (const [name, v] of Object.entries(VALUES)) expect(Number.isFinite(v), name).toBe(true);
+  });
+});
+
+describe('translations', () => {
+  const holes = (text: string): string[] => [...text.matchAll(/\{\$?\w+(?=[|}])|\[\w+\]/g)].map((m) => m[0]).sort();
+
+  it('Italian has the same keys and the same placeholders, values and keywords as English', () => {
+    const it: Record<string, string> = itStrings;
+    expect(Object.keys(it).sort()).toEqual(Object.keys(en).sort());
+    for (const [key, text] of Object.entries(en)) expect(holes(it[key]), key).toEqual(holes(text));
   });
 });
