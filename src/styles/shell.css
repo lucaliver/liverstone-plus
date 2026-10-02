@@ -89,3 +89,32 @@
   60% { transform: translateX(-5px); }
   80% { transform: translateX(3px); }
 }
+
+/* ------------------------------------------------------------------ desktop: the phone-shaped column sits centred in a frame */
+@media (min-width: 560px) {
+  body {
+    background-color: var(--void);
+    background-image: radial-gradient(circle, var(--bg-dot) 30%, transparent 34%);
+    background-size: 8px 8px;
+  }
+  #app {
+    /* paper edge, ink edge, then a hard shadow: a printed poster pinned on the wall */
+    box-shadow: 0 0 0 var(--line) var(--paper), 0 0 0 calc(var(--line) * 2) var(--k), calc(var(--off) * 3) 0 0 calc(var(--line) * 2) var(--shadow);
+  }
+}
+
+/* mouse: a pointer cursor and a little feedback under it (cards are moved by inline transforms, so they get an outline instead) */
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover:not(:disabled):not(.locked),
+  .ability-btn:hover { filter: brightness(1.08); }
+  .belt-cards .card,
+  .sleeve .card { cursor: pointer; }
+  .belt-cards .card:hover,
+  .sleeve .card:hover { outline: var(--line) solid var(--y); outline-offset: 1px; }
+}
+
+/* the keyboard hint only helps where there is a keyboard */
+.kbd-hint { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .kbd-hint { display: block; text-align: center; font-size: 15px; opacity: 0.8; }
+}

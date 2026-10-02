@@ -170,6 +170,25 @@ test('pausing switches to the pause theme and resuming restores the fight music'
   expect(await track()).toBe('combat');
 });
 
+test('keyboard: Space starts the fight, then pauses and resumes it; D opens the deck and Esc closes it', async ({ page }) => {
+  await freshGame(page);
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  await page.getByRole('button', { name: /enter floor 1/i }).click();
+  await page.keyboard.press('Space');
+  await expect(page.locator('.js-start')).toHaveCount(0);
+  await page.keyboard.press('Space');
+  await expect(page.locator('.modal-back')).toBeVisible();
+  expect(await page.evaluate('window.__game.musicTrack()')).toBe('pause');
+  await page.keyboard.press('Space');
+  await expect(page.locator('.modal-back')).toHaveCount(0);
+  expect(await page.evaluate('window.__game.musicTrack()')).toBe('combat');
+  await page.keyboard.press('d');
+  await expect(page.locator('.modal-back')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.modal-back')).toHaveCount(0);
+});
+
 test('pause → main menu keeps the run: Continue restarts the same floor', async ({ page }) => {
   await freshGame(page);
   await startFight(page);

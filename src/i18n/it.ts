@@ -263,6 +263,7 @@ const it: Record<EnKey, string> = {
   'combat.startHint': 'Tieni premuto su qualsiasi cosa per capire cosa fa',
   'combat.paused': 'In pausa',
   'combat.resume': 'Riprendi',
+  'combat.keys': 'Tasti: Spazio pausa · A abilità · D mazzo · 1, 2… manica',
   'combat.quit': 'Mettiti in malattia',
   'combat.toMenu': 'Menu principale',
   'combat.toMenuConfirm': 'Tornare al menu principale? La giornata è salvata, ma questo lavoro ricomincerà da capo.',

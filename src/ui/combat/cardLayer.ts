@@ -155,7 +155,7 @@ export function createCardLayer(v: CombatView): CardLayer {
 
   const onDown = (ev: PointerEvent, from: 'belt' | 'sleeve'): void => {
     // While waiting for Start, cards can still be held to read them (playing is blocked by the engine intro).
-    if ((state.paused && !state.waiting) || state.ended || drag) return;
+    if ((state.paused && !state.waiting) || state.ended || drag || ev.button !== 0) return;
     const cardEl = (ev.target as Element).closest<HTMLElement>('.card');
     if (!cardEl) return;
     const uid = Number(cardEl.dataset.uid);
@@ -180,19 +180,23 @@ export function createCardLayer(v: CombatView): CardLayer {
       path: 0,
       timer: window.setTimeout(() => {
         if (!drag || drag.moved) return;
-        const card = findCard(uid);
         cancelDrag();
-        if (!card) return;
-        // In a blackout what the cards do can't be read, not even up close.
-        if (combat.has('hero', 'blackout')) {
-          v.toast(t('combat.blackout'));
-          return;
-        }
-        sfx('tap');
-        v.inspect(true);
-        openCardDetail(card, () => v.inspect(false));
+        inspectCard(uid);
       }, LONG_PRESS_MS),
     };
+  };
+
+  const inspectCard = (uid: number): void => {
+    const card = findCard(uid);
+    if (!card) return;
+    // In a blackout what the cards do can't be read, not even up close.
+    if (combat.has('hero', 'blackout')) {
+      v.toast(t('combat.blackout'));
+      return;
+    }
+    sfx('tap');
+    v.inspect(true);
+    openCardDetail(card, () => v.inspect(false));
   };
 
   const onMove = (ev: PointerEvent): void => {
@@ -253,7 +257,13 @@ export function createCardLayer(v: CombatView): CardLayer {
   el.addEventListener('pointermove', onMove);
   el.addEventListener('pointerup', onUp);
   el.addEventListener('pointercancel', () => cancelDrag());
-  el.addEventListener('contextmenu', (e) => e.preventDefault());
+  // Mouse: a right click inspects a card, like a long press.
+  el.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    const cardEl = (e.target as Element).closest<HTMLElement>('.belt-cards .card, .sleeve .card');
+    // (touch long presses send one too, and already inspect)
+    if (cardEl && (e as PointerEvent).pointerType === 'mouse' && !state.ended && !state.paused) inspectCard(Number(cardEl.dataset.uid));
+  });
 
   // ------------------------------------------------------------------ render
 

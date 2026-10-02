@@ -261,6 +261,7 @@ const en = {
   'combat.startHint': 'Hold anything to learn what it does',
   'combat.paused': 'Paused',
   'combat.resume': 'Resume',
+  'combat.keys': 'Keys: Space pause · A ability · D deck · 1, 2… sleeve',
   'combat.quit': 'Call in sick',
   'combat.toMenu': 'Main menu',
   'combat.toMenuConfirm': 'Leave to the main menu? Your workday is saved, but this job will start over.',

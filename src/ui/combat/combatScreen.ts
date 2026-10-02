@@ -260,6 +260,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     playTemporaryMusic('pause');
     pauseModal = openModal({
       title: t('combat.paused'),
+      body: h('p', { class: 'kbd-hint' }, t('combat.keys')),
       actions: [
         { label: t('combat.resume'), icon: 'play' },
         {
@@ -319,6 +320,32 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     });
   };
   r.pause.addEventListener('click', openPause);
+
+  // Keyboard (desktop): Space/P/Esc pause, A ability, D deck, 1… play the sleeve slot. Open windows keep the keys to themselves,
+  // except Space/P, which also resume from the pause menu.
+  const onKey = (e: KeyboardEvent): void => {
+    if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || state.ended) return;
+    const key = e.key.toLowerCase();
+    const pauseKey = key === ' ' || key === 'p';
+    if (pauseModal) {
+      if (!pauseKey) return;
+      pauseModal.close();
+    } else if (document.querySelector('.modal-back, .coach')) return;
+    else if (state.waiting) {
+      if (key !== ' ' && key !== 'enter') return;
+      $<HTMLButtonElement>('.js-start', el).click();
+    } else if (pauseKey || key === 'escape') openPause();
+    else if (key === 'a') r.ability.click();
+    else if (key === 'd') deckInfo();
+    else if (/^[1-9]$/.test(key)) {
+      const card = combat.sleeve[Number(key) - 1];
+      if (card && !state.paused) combat.playCard(card.uid);
+    } else return;
+    e.preventDefault();
+    // A button left focused by a click would take the Space as its own press.
+    (document.activeElement as HTMLElement | null)?.blur();
+  };
+  document.addEventListener('keydown', onKey);
 
   /** Temporary debug tool: cheats for the fight. The fight waits while the window is open. */
   const openDebug = (): void => {
@@ -502,6 +529,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       unsubscribe();
       removeEventListener('resize', onResize);
       document.removeEventListener('visibilitychange', onVisibility);
+      document.removeEventListener('keydown', onKey);
     },
     frame(dt) {
       if (state.stop > 0) state.stop -= dt;

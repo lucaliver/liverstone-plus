@@ -203,8 +203,8 @@ export const mageCards: CardDef[] = [
     type: 'spell',
     rarity: 'epic',
     cost: 4,
-    vals: [20, 12],
-    upVals: [25, 18],
+    vals: [16, 12],
+    upVals: [22, 16],
     art: 'blizzard',
     play: (c, v) => {
       c.hit(v[0], { kind: 'ice' });
@@ -281,7 +281,7 @@ export const mageCards: CardDef[] = [
     rarity: 'legendary',
     cost: 5,
     upCost: 4,
-    vals: [35],
+    vals: [30],
     keywords: ['pending'],
     art: 'blastFurnace',
     play: (c, v) => void c.hit(v[0], { kind: 'fire' }),

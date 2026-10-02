@@ -273,7 +273,7 @@ export const neutralCards: CardDef[] = [
     face: '{block:0}|{tickDown:1}',
     cls: 'neutral',
     type: 'skill',
-    rarity: 'common',
+    rarity: 'rare',
     cost: 2,
     vals: [18, 1, 3],
     upVals: [22, 1, 7],
