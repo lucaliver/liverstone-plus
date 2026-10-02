@@ -1,7 +1,5 @@
 import '@fontsource/silkscreen/400.css';
 import '@fontsource/silkscreen/700.css';
-import '@fontsource/space-grotesk/500.css';
-import '@fontsource/space-grotesk/700.css';
 import './styles/index.css';
 
 import { setLocale, setStringValues, t } from './core/i18n';

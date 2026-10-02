@@ -94,7 +94,7 @@ function stamp(g: CanvasRenderingContext2D, text: string, x: number, y: number, 
 
 /** A shareable portrait image of the run's payslip: the hero, the slip, the final deck and where to play. */
 export async function payslipImage(s: ShareSlip): Promise<Blob | null> {
-  await Promise.all(['64px Silkscreen', '40px "Pixel UI"', '600 30px "Space Grotesk"'].map((f) => document.fonts.load(f)));
+  await Promise.all(['64px Silkscreen', '40px "Pixel UI"', '30px "Pixel Text"'].map((f) => document.fonts.load(f)));
   const c = tokens();
   const slipH = 150 + s.rows.length * 40;
   const deckY = SLIP_Y + slipH + 50;
