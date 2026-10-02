@@ -119,6 +119,7 @@ function markup(run: RunState, combat: Combat): string {
     </section>
     <section class="mana-row">${icon('crystal')}<div class="mana-pips"></div><div class="mana-num"></div></section>
     <section class="action-row">
+      <div class="crank" aria-hidden="true">${icon('crank')}</div>
       <div class="sleeve js-sleeve"></div>
       <button class="ability-btn js-ability" aria-label="${t(`hero.${heroId}.ability`)}">
         <div class="charge"></div>${icon(ABILITY_ICON[heroId])}<span class="acost">${icon('crystal')}${combat.abilityCost()}</span><span class="albl">${t(`hero.${heroId}.ability`)}</span>
@@ -155,6 +156,7 @@ function queryRefs(el: HTMLElement) {
     manaRow: $('.mana-row', el),
     pips: $('.mana-pips', el),
     manaNum: $('.mana-num', el),
+    crank: $('.crank', el),
     sleeve: $('.js-sleeve', el),
     belt: $('.belt', el),
     track: $('.belt-track', el),

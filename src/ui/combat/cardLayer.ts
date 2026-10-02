@@ -13,8 +13,6 @@ import type { CombatView } from './view';
 const DRAG_THRESHOLD = 10;
 /** A card with `wind` winds up one step for every swipe of this many belt widths dragged around the screen. */
 const WIND_SWIPE = 0.5;
-/** Scrolling the shut-off belt buzzes a little for every this many pixels of travel, like the links of a drive belt going by. */
-const BELT_BUZZ_PX = 18;
 
 export type Removal = 'played' | 'expired' | 'stolen' | 'stashed';
 
@@ -50,14 +48,10 @@ interface Drag {
   offX: number;
   offY: number;
   moved: boolean;
-  /** The finger is scrolling a shut-off belt (`Combat.dragBelt`), not carrying a card. */
-  scroll: boolean;
   /** Where the finger was at the last move and the path length not yet turned into a wind-up step (cards with `wind`). */
   lastX: number;
   lastY: number;
   path: number;
-  /** Pixels of belt scroll not yet turned into a buzz. */
-  buzz: number;
   timer: number;
 }
 
@@ -162,11 +156,9 @@ export function createCardLayer(v: CombatView): CardLayer {
   const onDown = (ev: PointerEvent, from: 'belt' | 'sleeve'): void => {
     // While waiting for Start, cards can still be held to read them (playing is blocked by the engine intro).
     if ((state.paused && !state.waiting) || state.ended || drag) return;
-    // With the belt shut off (`EnemyDef.beltOff`) it can be grabbed anywhere, between the cards too.
-    const grabBelt = from === 'belt' && combat.beltDead;
-    const cardEl = (ev.target as Element).closest<HTMLElement>('.card') ?? (grabBelt ? r.beltCards : null);
+    const cardEl = (ev.target as Element).closest<HTMLElement>('.card');
     if (!cardEl) return;
-    const uid = Number(cardEl.dataset.uid ?? -1);
+    const uid = Number(cardEl.dataset.uid);
     const rc = cardEl.getBoundingClientRect();
     try {
       cardEl.setPointerCapture(ev.pointerId);
@@ -183,13 +175,11 @@ export function createCardLayer(v: CombatView): CardLayer {
       offX: ev.clientX - rc.left,
       offY: ev.clientY - rc.top,
       moved: false,
-      scroll: false,
       lastX: ev.clientX,
       lastY: ev.clientY,
       path: 0,
-      buzz: 0,
       timer: window.setTimeout(() => {
-        if (!drag || drag.moved || uid < 0) return;
+        if (!drag || drag.moved) return;
         const card = findCard(uid);
         cancelDrag();
         if (!card) return;
@@ -212,23 +202,9 @@ export function createCardLayer(v: CombatView): CardLayer {
     if (!drag.moved && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
       drag.moved = true;
       clearTimeout(drag.timer);
-      // A swipe along the shut-off belt scrolls it (from where the finger first touched, so it follows exactly); a swipe up or down still carries the card.
-      drag.scroll = drag.from === 'belt' && combat.beltDead && (drag.uid < 0 || Math.abs(dx) > Math.abs(dy));
-      if (drag.scroll) drag.lastX = drag.startX;
-      else drag.el.classList.add('dragging');
+      drag.el.classList.add('dragging');
     }
     if (!drag.moved) return;
-    if (drag.scroll) {
-      const step = ev.clientX - drag.lastX;
-      if (!state.paused && !state.ended) combat.dragBelt(((state.ltr ? 1 : -1) * step) / state.beltW);
-      drag.buzz += Math.abs(step);
-      if (drag.buzz >= BELT_BUZZ_PX) {
-        drag.buzz %= BELT_BUZZ_PX;
-        haptic('belt');
-      }
-      drag.lastX = ev.clientX;
-      return;
-    }
     if (CARDS[findCard(drag.uid)?.id ?? '']?.wind) {
       drag.path += Math.hypot(ev.clientX - drag.lastX, ev.clientY - drag.lastY);
       for (; drag.path >= state.beltW * WIND_SWIPE; drag.path -= state.beltW * WIND_SWIPE) {
@@ -260,10 +236,6 @@ export function createCardLayer(v: CombatView): CardLayer {
     if (!d.moved) {
       cancelDrag();
       playUid(d.uid);
-      return;
-    }
-    if (d.scroll) {
-      cancelDrag();
       return;
     }
     const slot = d.from === 'belt' ? slotAt(ev.clientX, ev.clientY) : -1;
@@ -382,7 +354,7 @@ export function createCardLayer(v: CombatView): CardLayer {
       // Blink on the way out only when leaving the belt does something (curses that explode, drain…).
       toggle(ce.el, 'leaving', !b.pinned && b.pos > 0.86 && !!CARDS[b.card.id].onExpire);
       if (refreshFaces) setHtml(ce.face, cardFace(b.card, combat));
-      if (drag?.uid === b.card.uid && drag.moved && !drag.scroll) continue;
+      if (drag?.uid === b.card.uid && drag.moved) continue;
       // Snap to whole pixels: crisp pixel art and a slightly stepped, printed feel.
       // Left-to-right belt (the default): the same run mirrored, entering on the left.
       const x = Math.round(state.ltr ? state.beltW * b.pos - state.cardW : state.beltW * (1 - b.pos));

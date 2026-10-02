@@ -48,6 +48,10 @@ export const CONFIG = {
   maxHandBelt: 7,
   /** Belt rows: two is the standard layout (cards alternate between them). */
   beltRows: 2,
+  /** Belt widths the belt moves for one full clockwise turn of the crank knob (`EnemyDef.beltOff`): small, so it takes many turns. */
+  crankTurn: 0.1,
+  /** Degrees of crank turn between two buzzes of the phone. */
+  crankBuzz: 24,
   /** Seconds between the lower part of the screen sinking (`EnemyDef.deepBelt`) and the extra belt row opening in its place. */
   sinkTime: 1,
   /** With two rows each row runs at this fraction of the one-row speed. */

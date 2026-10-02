@@ -301,7 +301,7 @@ export interface EnemyDef {
   startRows?: number;
   /** Seconds into the fight when the part of the screen under the belt slides away (the sleeve and the ability go with it, the mana bar stays) and, `CONFIG.sinkTime` later, a third belt row opens in its place (`enemy.<id>.deep`, `enemy.<id>.speech`). */
   deepBelt?: number;
-  /** A surprise (no pre-fight line): seconds into the fight when the belt shuts off for good; from then on the player scrolls it by hand, holding and swiping (`Combat.dragBelt`). It says `enemy.<id>.speech`. */
+  /** A surprise (no pre-fight line): seconds into the fight when the belt shuts off for good; from then on the player turns it by hand with a crank knob (`Combat.crankBelt`). It says `enemy.<id>.speech`. */
   beltOff?: number;
   /** Only met as the very first fight of the very first run (never dealt at random). */
   firstRunOnly?: boolean;

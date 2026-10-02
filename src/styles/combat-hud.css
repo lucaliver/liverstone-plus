@@ -75,6 +75,21 @@
   gap: 10px;
   padding: 6px 12px calc(var(--safe-b) + 10px);
 }
+.crank {
+  /* the Power Socket's hand crank: only there once the belt is dead; as tall as the sleeve slots, so the row never changes height */
+  display: none;
+  flex: none;
+  place-items: center;
+  width: calc(var(--cw) * 1.4);
+  height: calc(var(--cw) * 1.4);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  color: var(--paper);
+}
+.crank .pico { font-size: calc(var(--cw) * 1.4); transform: rotate(var(--turn, 0deg)); }
+.combat.belt-dead .crank { display: grid; }
+.crank.turning { color: var(--y); }
 .sleeve {
   /* centred in the room left of the ability button */
   flex: 1;

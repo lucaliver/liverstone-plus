@@ -1002,7 +1002,7 @@ const en = {
   'enemy.exaggeratedGirl.deep': 'After {$deepBeltSecs} seconds your sleeves and ability slide off the screen and a third belt row opens.',
   'enemy.exaggeratedGirl.speech': "Everyone, look! Isn't it all so much? Let me make some room for you.",
   'enemy.powerSocket.name': 'Power Socket',
-  'enemy.powerSocket.speech': "Power's out! Budget cuts. Push the belt yourself today, hold and swipe. Cardio is free.",
+  'enemy.powerSocket.speech': "Power's out! Budget cuts. Turn the crank yourself today. Cardio is free.",
   'enemy.changeManager.name': 'Change Manager',
   'enemy.changeManager.half': 'Shuts down one belt row.',
   'enemy.changeManager.speech': "Exciting news: we're streamlining. Your second line has been let go.",

@@ -1024,6 +1024,11 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M3 6h58L39 32v22l-14 6V32z"/><path ${HI} d="M8 10h24L22 24z"/><path fill="#16121f" opacity=".4" d="M25 40h14v4H25z"/>`,
   },
+  /** The big knob that turns a dead belt by hand: a toothed rim around a flat face, a dark pointer to show how far it has turned. */
+  crank: {
+    el: 'steel',
+    svg: `<rect x="28" y="2" width="8" height="10" transform="rotate(0 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(30 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(60 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(90 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(120 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(150 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(180 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(210 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(240 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(270 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(300 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(330 32 32)"/><circle cx="32" cy="32" r="25"/><circle cx="32" cy="32" r="18" fill="none" stroke="#16121f" stroke-width="3"/><path fill="#16121f" d="M29 9h6v22h-6z"/><circle cx="32" cy="32" r="5" fill="#16121f"/>`,
+  },
   conveyorLine: {
     el: 'steel',
     svg: `<path d="M4 44h56v10H4z"/><g fill="#16121f"><circle cx="12" cy="49" r="3"/><circle cx="26" cy="49" r="3"/><circle cx="40" cy="49" r="3"/><circle cx="54" cy="49" r="3"/></g><rect x="6" y="24" width="16" height="18"/><rect x="28" y="30" width="14" height="12"/><path d="M46 20h8v-6l10 10-10 10v-6h-8z"/>`,

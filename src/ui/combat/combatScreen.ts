@@ -19,6 +19,7 @@ import { coach } from '../components/coach';
 import { bindMoveDetails, enemyTraits, moveEffect, moveIcon, movePattern } from '../components/moveText';
 import { $, SLACK_MS, cssMs, h, onPress, onTapOrHold } from '../dom';
 import { burst, haptic, shake } from '../fx/fx';
+import { bindCrank } from './crank';
 import { bindMop } from './mop';
 import { clockText } from '../screens/journey';
 import { createCardLayer } from './cardLayer';
@@ -234,6 +235,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   onPress(r.intentNext, moveInfo);
   // The weak spot answers on touch-down, not on release: it only stays up for a couple of seconds.
   bindMop(v);
+  bindCrank(v);
   r.weakSpot.addEventListener('pointerdown', () => {
     if (state.paused || state.waiting || state.ended || !combat.hitWeakSpot()) return;
     haptic('hit');
@@ -400,10 +402,10 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     hud.render();
     cards.render();
     const draggedSeen = lastDragged;
-    lastDragged = combat.beltDragged;
+    lastDragged = combat.beltCranked;
     if (!state.paused && !state.ended && state.stop <= 0 && combat.intro <= 0) {
       beltOffset -= (dt * settings.speed * combat.beltRate() * state.beltW) / CONFIG.beltTime;
-      beltOffset -= (combat.beltDragged - draggedSeen) * state.beltW;
+      beltOffset -= (combat.beltCranked - draggedSeen) * state.beltW;
       r.track.style.setProperty('--belt-x', `${Math.round(beltOffset % TRACK_PERIOD)}px`);
     }
   };

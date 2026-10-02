@@ -336,9 +336,9 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         sfx('machinery');
         break;
       case 'beltDead':
-        // The belt stops for good; from now on a finger on it scrolls it (see `.belt-dead`).
+        // The belt stops for good; the crank knob comes up in the action row (see `.belt-dead`).
         cards.cancelDrag();
-        r.belt.classList.add('belt-dead');
+        v.el.classList.add('belt-dead');
         speak(t(`enemy.${v.combat.enemy.def.id}.speech`));
         sfx('machinery');
         break;

@@ -1011,7 +1011,7 @@ const it: Record<EnKey, string> = {
     'Dopo {$deepBeltSecs} secondi le tue maniche e la tua abilità scivolano fuori dallo schermo e si apre una terza corsia del nastro.',
   'enemy.exaggeratedGirl.speech': "Guardate tutti! Non è tutto così tanto? Lasciate che vi faccia un po' di spazio.",
   'enemy.powerSocket.name': 'Presa di Corrente',
-  'enemy.powerSocket.speech': 'Manca la corrente! Tagli al budget. Oggi il nastro lo spingi tu, tieni premuto e scorri. Il cardio è gratis.',
+  'enemy.powerSocket.speech': 'Manca la corrente! Tagli al budget. Oggi la manovella la giri tu. Il cardio è gratis.',
   'enemy.changeManager.name': 'Responsabile del Cambiamento',
   'enemy.changeManager.half': 'Chiude una corsia del nastro.',
   'enemy.changeManager.speech': 'Notizie entusiasmanti: stiamo snellendo. La tua seconda linea è stata lasciata a casa.',

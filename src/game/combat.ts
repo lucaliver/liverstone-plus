@@ -114,10 +114,10 @@ export class Combat {
   /** The sleeve and the ability are out of reach (`EnemyDef.deepBelt`): nothing can be stashed, the ability can't be used. */
   lowerHidden = false;
   private rowAdded = false;
-  /** The belt is shut off (`EnemyDef.beltOff`): it only moves when the player drags it (`dragBelt`). */
+  /** The belt is shut off (`EnemyDef.beltOff`): it only moves when the player turns the crank (`crankBelt`). */
   beltDead = false;
-  /** Total belt travel the player has dragged by hand, in belt widths (the UI scrolls the track stripes by it). */
-  beltDragged = 0;
+  /** Total belt travel the player has cranked by hand, in belt widths (the UI scrolls the track stripes by it). */
+  beltCranked = 0;
   sleeve: (CombatCard | null)[];
 
   /** Time accumulated towards the next regular draw onto the belt. */
@@ -629,10 +629,10 @@ export class Combat {
   }
 
   /**
-   * The player drags a shut-off belt by `move` belt widths (negative: back towards the entry, as far as the rearmost card allows):
-   * every row follows the finger, and new cards arrive as if the belt had run that far.
+   * The player cranks a shut-off belt by `move` belt widths (negative: back towards the entry, as far as the rearmost card allows):
+   * every row moves together, and new cards arrive as if the belt had run that far.
    */
-  dragBelt(move: number): void {
+  crankBelt(move: number): void {
     if (!this.beltDead || this.result || this.intro > 0 || move === 0) return;
     let travel = move;
     if (move > 0) {
@@ -645,7 +645,7 @@ export class Combat {
         b.stuck = false;
       }
     }
-    this.beltDragged += travel;
+    this.beltCranked += travel;
     this.settleBelt(travel);
   }
 

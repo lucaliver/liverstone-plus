@@ -863,7 +863,7 @@ test('vending machine: a card drops into the deck and costs HP', async ({ page }
   expect(await page.evaluate('window.__game.run.hp < window.__game.run.maxHp')).toBe(true);
 });
 
-test('Power Socket: the belt goes dead and follows the finger, both rows', async ({ page }) => {
+test('Power Socket: the belt goes dead and a crank knob turns it, both rows', async ({ page }) => {
   await freshGame(page, { veteran: true });
   await page.getByRole('button', { name: /new run/i }).click();
   await page.getByRole('button', { name: /start shift/i }).click();
@@ -872,12 +872,12 @@ test('Power Socket: the belt goes dead and follows the finger, both rows', async
   const start = page.locator('.js-start');
   if (await start.count()) await start.click();
   await expect.poll(() => combat(page, 'return c.intro <= 0')).toBe(true);
+  await expect(page.locator('.crank')).toBeHidden();
   // Fast-forward past the blackout, long enough for both rows to carry cards.
   await combat(page, 'for (let i = 0; i < 60 * 14; i++) c.tick(1 / 60);');
-  await expect(page.locator('.belt.belt-dead')).toBeVisible();
+  await expect(page.locator('.crank')).toBeVisible();
   await expect(page.locator('.speech')).toBeVisible();
-  const rows = (await combat(page, 'return new Set(c.belt.map((b) => b.row)).size')) as number;
-  expect(rows).toBe(2);
+  expect(await combat(page, 'return new Set(c.belt.map((b) => b.row)).size')).toBe(2);
   // The newest card of each row (free to move), followed by uid.
   const uids = (await combat(
     page,
@@ -887,28 +887,24 @@ test('Power Socket: the belt goes dead and follows the finger, both rows', async
     page.evaluate((u) => document.querySelector(`.belt-cards .card[data-uid="${u}"]`)?.getBoundingClientRect().left ?? NaN, uids[i]);
   await page.waitForTimeout(500);
   const before = [await left(0), await left(1)];
-  const box = (await page.locator('.belt-cards').boundingBox())!;
-  // Grab the belt on its bare top edge (above the cards' row gap), swipe 60px.
-  const y = box.y + 2;
+  const beltW = (await page.locator('.belt-cards').boundingBox())!.width;
+  const knob = (await page.locator('.crank').boundingBox())!;
+  const cx = knob.x + knob.width / 2;
+  const cy = knob.y + knob.height / 2;
+  const radius = knob.width * 0.4;
+  // One full clockwise turn (screen y points down, so a growing angle is clockwise).
+  const at = (deg: number): [number, number] => [cx + radius * Math.cos((deg * Math.PI) / 180), cy + radius * Math.sin((deg * Math.PI) / 180)];
+  await page.mouse.move(...at(-90));
+  await page.mouse.down();
+  for (let d = -90; d <= 270; d += 15) await page.mouse.move(...at(d));
+  await page.waitForTimeout(150);
+  const cranked = (await combat(page, 'return c.beltCranked')) as number;
+  expect(cranked).toBeCloseTo(0.1, 2);
   const way = (await page.locator('.belt.ltr').count()) ? 1 : -1;
-  await page.mouse.move(box.x + box.width / 2, y);
-  await page.mouse.down();
-  await page.mouse.move(box.x + box.width / 2 + way * 20, y, { steps: 4 });
-  await page.mouse.move(box.x + box.width / 2 + way * 60, y, { steps: 4 });
-  await page.waitForTimeout(150);
   const during = [await left(0), await left(1)];
+  for (const i of [0, 1]) expect(Math.abs(during[i] - before[i] - way * cranked * beltW)).toBeLessThan(1.5);
+  // Turning back takes the belt back (as far as the newest card allows).
+  for (let d = 270; d >= 90; d -= 15) await page.mouse.move(...at(d));
   await page.mouse.up();
-  for (const i of [0, 1]) expect(Math.abs(during[i] - before[i] - way * 60)).toBeLessThan(1.5);
-  await page.waitForTimeout(300);
-  expect(await left(0)).toBeCloseTo(during[0], 0);
-  // A swipe that starts on a card scrolls the belt too, the card under the finger included.
-  const card = (await page.locator(`.belt-cards .card[data-uid="${uids[1]}"]`).boundingBox())!;
-  const from = await left(1);
-  await page.mouse.move(card.x + card.width / 2, card.y + card.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(card.x + card.width / 2 + way * 20, card.y + card.height / 2, { steps: 4 });
-  await page.mouse.move(card.x + card.width / 2 + way * 40, card.y + card.height / 2, { steps: 4 });
-  await page.waitForTimeout(150);
-  expect(Math.abs((await left(1)) - from - way * 40)).toBeLessThan(1.5);
-  await page.mouse.up();
+  expect((await combat(page, 'return c.beltCranked')) as number).toBeLessThan(cranked);
 });

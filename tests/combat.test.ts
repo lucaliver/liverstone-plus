@@ -80,7 +80,7 @@ describe('combat engine', () => {
     const c = setup({ enemy: ENEMIES.powerSocket, hp: 999, maxHp: 999 });
     const seen: string[] = [];
     c.events.on((e) => void (e.type === 'beltDead' ? seen.push(e.type) : null));
-    c.dragBelt(0.1);
+    c.crankBelt(0.1);
     run(c, CONFIG.introTime + 9);
     expect(c.beltDead).toBe(false);
     run(c, 2);
@@ -90,14 +90,14 @@ describe('combat engine', () => {
     run(c, 3);
     expect(Math.max(...c.belt.map((b) => b.pos))).toBe(front);
     expect(c.belt.length).toBeGreaterThan(0);
-    c.dragBelt(0.05);
+    c.crankBelt(0.05);
     expect(Math.max(...c.belt.map((b) => b.pos))).toBeCloseTo(front + 0.05);
-    expect(c.beltDragged).toBeCloseTo(0.05);
+    expect(c.beltCranked).toBeCloseTo(0.05);
     // Back towards the entry: stops once the rearmost card is at the entry.
-    c.dragBelt(-5);
+    c.crankBelt(-5);
     expect(Math.min(...c.belt.map((b) => b.pos))).toBeCloseTo(0);
     // Dragging the belt far deals new cards on both rows.
-    for (let i = 0; i < 200; i++) c.dragBelt(0.01);
+    for (let i = 0; i < 200; i++) c.crankBelt(0.01);
     expect(new Set(c.belt.map((b) => b.row)).size).toBe(2);
   });
 

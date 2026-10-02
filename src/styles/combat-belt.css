@@ -189,9 +189,8 @@
   top: 11px;
   height: calc(var(--belt-row-h, 0px) * (var(--rows) - 1) + var(--cw-belt) * 1.4);
 }
-/* The Power Socket shuts the belt off: the stream dims and a finger on it scrolls it by hand */
-.belt.belt-dead .belt-track { opacity: 0.55; }
-.belt.belt-dead .belt-cards { cursor: grab; }
+/* The Power Socket shuts the belt off: the stream dims and the crank knob (combat-hud.css) turns it by hand */
+.combat.belt-dead .belt-track { opacity: 0.55; }
 /* more rows: each one `--belt-row-h` below the last (set by the combat screen) */
 /* The Exaggerated Girl: everything under the belt (the mana bar included) slides down, the sleeve and the ability off the screen;
    the freed room is the next row, which grows in steps once the engine opens it (`.deep`) while the slide's margins give way at the same pace */
