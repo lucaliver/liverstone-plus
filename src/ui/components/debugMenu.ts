@@ -150,6 +150,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
   renderCards();
   handle = openModal({
     title: t('debug.title'),
+    cls: 'debug-modal',
     body: h('div', { class: 'debug-fight' }, heroSeg, tabs, foesPane, cardsPane),
     actions: [
       {
@@ -163,6 +164,10 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
           );
           sfx('ability');
           haptic('ability');
+          const toast = h('div', { class: 'hint-toast debug-toast' }, t('debug.unlocked'));
+          document.body.append(toast);
+          toast.addEventListener('animationend', () => toast.remove());
+          return false;
         },
       },
       {

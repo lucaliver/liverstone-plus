@@ -417,7 +417,11 @@
 /* debug menus (fight, map) */
 .debug-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .debug-menu .btn { min-height: 52px; padding: 6px 8px; font-size: 15px; }
-/* debug fight picker */
+/* debug fight picker: its three actions share one row */
+.debug-modal .actions { flex-direction: row; gap: 8px; }
+.debug-modal .actions .btn { flex: 1; min-width: 0; min-height: 44px; padding: 6px 4px; font-size: 14px; gap: 4px; }
+.debug-modal .actions .btn .riso { width: 20px; height: 20px; }
+.debug-toast { position: fixed; width: max-content; z-index: var(--z-modal); top: 12%; }
 .debug-fight { display: flex; flex-direction: column; gap: 10px; }
 .debug-heroes button {
   flex: 1;
