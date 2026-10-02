@@ -57,6 +57,7 @@ test('a fight can be played and won, then a reward is offered', async ({ page })
   const problems = await freshGame(page);
   await startFight(page);
   await expect(page.locator('.belt-cards .card').first()).toBeVisible();
+  await combat(page, 'c.gainMana(3);');
   const before = (await combat(page, 'return c.enemy.hp;')) as number;
   const uid = (await combat(page, "return c.belt.find((b) => b.card.id === 'punch')?.card.uid ?? null;")) as number | null;
   if (uid !== null) {

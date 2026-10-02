@@ -143,11 +143,12 @@ describe('combat engine', () => {
   it('plays a card: spends mana, deals damage, discards it', () => {
     const c = setup({ deck: deckOf(['punch', 'punch']) });
     run(c, CONFIG.introTime + 0.01);
+    c.gainMana(3);
     const card = c.belt[0].card;
     const hp = c.enemy.hp;
     expect(c.playCard(card.uid)).toBe(true);
     expect(c.enemy.hp).toBe(hp - 6);
-    expect(c.hero.mana).toBe(CONFIG.startMana - c.cardCost(card));
+    expect(c.hero.mana).toBe(3 - c.cardCost(card));
     expect(c.discard.map((x) => x.uid)).toContain(card.uid);
   });
 
@@ -306,6 +307,7 @@ describe('combat engine', () => {
   it('a hexed card needs its taps, then thaws, then plays normally', () => {
     const c = setup({ deck: deckOf(new Array(8).fill('punch')) });
     run(c, CONFIG.introTime + 0.01);
+    c.gainMana(3);
     c.hexCards('petrify', 0.01);
     const card = c.belt.find((b) => b.card.hex)!.card;
     for (let i = 0; i < 5; i++) expect(c.playCard(card.uid)).toBe(false);
@@ -489,6 +491,7 @@ describe('combat engine', () => {
   it('Light Sleeper: every card played brings his hit 1s closer', () => {
     const c = setup({ enemy: ENEMIES.guyAsleep, deck: deckOf(new Array(8).fill('punch')) });
     run(c, CONFIG.introTime + 0.01);
+    c.gainMana(3);
     const before = c.enemy.timer;
     c.playCard(c.belt[0].card.uid);
     expect(c.enemy.timer).toBeCloseTo(before + 1, 5);
@@ -657,6 +660,7 @@ describe('combat engine', () => {
   it('mana crystals raise the cap empty', () => {
     const c = setup({ deck: deckOf(['italianEspresso', 'punch']) });
     run(c, CONFIG.introTime + 0.01);
+    c.gainMana(3);
     const max = c.hero.maxMana;
     const card = c.belt.find((b) => b.card.id === 'italianEspresso')!.card;
     const mana = c.hero.mana;

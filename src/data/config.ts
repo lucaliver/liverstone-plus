@@ -36,7 +36,7 @@ export const CONFIG = {
   critMult: 2,
   /** Seconds a virus card rides the belt before it infects the card behind it. */
   virusDelay: 4,
-  startMana: 3,
+  startMana: 0,
   dotInterval: 1.5,
   multitaskingWindow: 2.5,
   multitaskingMax: 5,
