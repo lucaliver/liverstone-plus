@@ -90,6 +90,11 @@
 .crank .pico { font-size: calc(var(--cw) * 1.4); transform: rotate(var(--turn, 0deg)); }
 .combat.belt-dead .crank { display: grid; }
 .crank.turning { color: var(--y); }
+/* untouched for 3 s (since it came up, or since the last turn): it blinks to say "turn me"; a touch (.turning) stops it */
+.combat.belt-dead .crank:not(.turning) { animation: crank-blink 0.8s steps(1) 3s infinite; }
+@keyframes crank-blink {
+  50% { color: var(--y); }
+}
 .sleeve {
   /* centred in the room left of the ability button */
   flex: 1;
