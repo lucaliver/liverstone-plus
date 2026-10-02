@@ -41,11 +41,10 @@
   font-weight: 700;
   font-size: 24cqw;
   line-height: 1;
-  color: var(--k);
-  background: var(--y);
+  color: var(--paper);
+  background: var(--b);
   border-right: var(--bw) solid var(--k);
 }
-.card[data-cls='neutral'] .c-cost { background: var(--paper); }
 .c-name {
   flex: 1;
   min-width: 0;
@@ -185,4 +184,4 @@
 .card[data-rarity='legendary'] { box-shadow: var(--sh) var(--sh) 0 var(--p); }
 
 /* cost lowered by a perk (Budget Cut) */
-.card .c-cost.cheap { color: var(--green); }
+.card .c-cost.cheap { color: var(--y); }

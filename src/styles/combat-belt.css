@@ -210,7 +210,7 @@
 .card.poor .c-top,
 .card.poor .c-art,
 .card.poor .c-face { opacity: 0.38; }
-.card.poor .c-cost { background: var(--paper2); }
+.card.poor .c-cost { color: var(--k); background: var(--paper2); }
 /* waiting for mana: the card refills from the bottom as mana comes back (the dimmed part is what's still missing) */
 .card.charging .c-top,
 .card.charging .c-art,
