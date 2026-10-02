@@ -416,7 +416,7 @@ const defs: EnemyDef[] = [
     every: 2,
     specials: [
       { id: 'surge', intent: 'buff', windup: 5, status: [gainStrength] },
-      { id: 'brownout', intent: 'debuff', windup: 5, status: [{ id: 'slowdown', t: 12, target: 'hero' }] },
+      { id: 'brownout', intent: 'drain', windup: 5, drainMana: 2 },
       atk('overload', 14, 10, { intent: 'charge' }),
     ],
     beltOff: 10,
