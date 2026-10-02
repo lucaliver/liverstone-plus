@@ -406,6 +406,22 @@ const defs: EnemyDef[] = [
     deepBelt: 5,
   },
   {
+    // A wall socket with a temper: ten seconds in, the belt goes dead. Any card that gets moving does it by your hand.
+    id: 'powerSocket',
+    act: 2,
+    tier: 'normal',
+    hp: 85,
+    art: 'powerSocket',
+    main: atk('shortCircuit', 6, 6),
+    every: 2,
+    specials: [
+      { id: 'surge', intent: 'buff', windup: 5, status: [gainStrength] },
+      { id: 'brownout', intent: 'debuff', windup: 5, status: [{ id: 'slowdown', t: 12, target: 'hero' }] },
+      atk('overload', 14, 10, { intent: 'charge' }),
+    ],
+    beltOff: 10,
+  },
+  {
     // Streamlines your workflow: at half HP one belt row is let go, with the cards on it.
     id: 'changeManager',
     act: 2,
@@ -742,6 +758,7 @@ export const DIFFICULTY = [
   'dave',
   'officeChair',
   'exaggeratedGirl',
+  'powerSocket',
   'overthinker',
   'changeManager',
   'leaver',

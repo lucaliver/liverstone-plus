@@ -335,6 +335,13 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         speak(t(`enemy.${v.combat.enemy.def.id}.speech`));
         sfx('machinery');
         break;
+      case 'beltDead':
+        // The belt stops for good; from now on a finger on it scrolls it (see `.belt-dead`).
+        cards.cancelDrag();
+        r.belt.classList.add('belt-dead');
+        speak(t(`enemy.${v.combat.enemy.def.id}.speech`));
+        sfx('machinery');
+        break;
       case 'rowAdded':
         v.el.classList.add('deep');
         r.belt.style.setProperty('--rows', String(v.combat.beltRows));

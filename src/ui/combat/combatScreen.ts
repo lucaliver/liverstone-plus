@@ -60,6 +60,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
   const { el, r, state } = v;
   let pauseModal: ModalHandle | null = null;
   let beltOffset = 0;
+  let lastDragged = 0;
   let lastTempo = 1;
   let acc = 0;
   const timers: number[] = [];
@@ -398,8 +399,11 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     }
     hud.render();
     cards.render();
+    const draggedSeen = lastDragged;
+    lastDragged = combat.beltDragged;
     if (!state.paused && !state.ended && state.stop <= 0 && combat.intro <= 0) {
       beltOffset -= (dt * settings.speed * combat.beltRate() * state.beltW) / CONFIG.beltTime;
+      beltOffset -= (combat.beltDragged - draggedSeen) * state.beltW;
       r.track.style.setProperty('--belt-x', `${Math.round(beltOffset % TRACK_PERIOD)}px`);
     }
   };

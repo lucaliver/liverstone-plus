@@ -1193,10 +1193,40 @@ ${eyes(138, 162, 52, 3, '#ff3d9a', 'tb-r')}
 <path d="M30 40l16 4M70 40l-16 4M130 40l16 4M170 40l-16 4" stroke="#120e18" stroke-width="3" stroke-linecap="round"/>
 </g>`;
 
+/** Power Socket: a cheeky two-prong plug with a rubber cable tail, cream body, big eyes, stubby arms, yellow sparks arcing all around it. */
+const powerSocket = `
+<defs>${lg('ps-b', '#fff0e0', '#d8c8b0')}${lg('ps-m', '#e8e4f0', '#8a84a0')}${glow('ps-g', '#ffd900')}${glow('ps-e', '#ff3d9a')}</defs>
+${shadow}
+<!-- rubber cable tail -->
+<path d="M100 150c0 22-30 20-30 34 0 8 22 6 40 4" fill="none" stroke="#120e18" stroke-width="14" stroke-linecap="round"/><path d="M100 150c0 22-30 20-30 34 0 8 22 6 40 4" fill="none" stroke="#1b1830" stroke-width="8" stroke-linecap="round"/>
+<!-- prongs -->
+<rect x="72" y="14" width="14" height="34" fill="url(#ps-m)" ${OUT}/><rect x="114" y="14" width="14" height="34" fill="url(#ps-m)" ${OUT}/>
+<rect x="76" y="20" width="6" height="8" fill="#120e18"/><rect x="118" y="20" width="6" height="8" fill="#120e18"/>
+<!-- plug body -->
+<path d="M56 56c0-8 6-12 14-12h60c8 0 14 4 14 12v70c0 14-10 26-24 26H80c-14 0-24-12-24-26z" fill="url(#ps-b)" ${OUT}/>
+<path d="M66 134h68" stroke="#120e18" stroke-width="3"/><rect x="82" y="148" width="36" height="12" fill="#1b1830" ${OUT}/>
+<!-- stubby arms -->
+<g class="limb"><path d="M58 90c-14 2-26 10-30 22 4 2 8 0 10-4 4 4 10 4 14 0 8-6 12-12 12-18z" fill="url(#ps-b)" ${OUT}/></g>
+<g class="limb"><path d="M142 90c14 2 26 10 30 22-4 2-8 0-10-4-4 4-10 4-14 0-8-6-12-12-12-18z" fill="url(#ps-b)" ${OUT}/></g>
+<!-- face -->
+${eyes(82, 118, 80, 8, '#ffd900', 'ps-e')}
+<circle cx="82" cy="81" r="3.5" fill="#120e18"/><circle cx="118" cy="81" r="3.5" fill="#120e18"/>
+<path d="M72 64l16 6M128 64l-16 6" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
+<path d="M86 108c8 8 20 8 28 0" fill="none" stroke="#120e18" stroke-width="4" stroke-linecap="round"/><path d="M92 110v5M100 112v6M108 110v5" stroke="#120e18" stroke-width="3"/>
+<!-- electricity -->
+<g class="eye" fill="#ffd900" ${OUT}>
+<path d="M32 40l14 10-8 4 14 12-6 2 10 10-18-8 6-4-12-10 8-2z"/>
+<path d="M168 36l-14 12 8 2-14 12 6 2-10 10 18-10-6-2 12-10-8-2z"/>
+<path d="M170 128l-12 6 6 4-12 8 16-4-4-4 10-4z"/>
+<path d="M30 132l12 6-6 4 12 8-16-4 4-4-10-4z"/>
+<path d="M92 4l-8 10 6 2-8 10 14-8-6-2 8-6z"/>
+</g>`;
+
 export const CREATURES: Record<string, string> = {
   leaver,
   workWife,
   exaggeratedGirl,
+  powerSocket,
   snitch,
   seniorBoomer,
   toxicCoworker,

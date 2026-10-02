@@ -76,6 +76,31 @@ describe('combat engine', () => {
     expect(c.belt.every((b) => b.row === 0)).toBe(true);
   });
 
+  it('the Power Socket shuts the belt off and it then only moves when dragged', () => {
+    const c = setup({ enemy: ENEMIES.powerSocket, hp: 999, maxHp: 999 });
+    const seen: string[] = [];
+    c.events.on((e) => void (e.type === 'beltDead' ? seen.push(e.type) : null));
+    c.dragBelt(0.1);
+    run(c, CONFIG.introTime + 9);
+    expect(c.beltDead).toBe(false);
+    run(c, 2);
+    expect(seen).toEqual(['beltDead']);
+    expect(c.beltRate()).toBe(0);
+    const front = Math.max(...c.belt.map((b) => b.pos));
+    run(c, 3);
+    expect(Math.max(...c.belt.map((b) => b.pos))).toBe(front);
+    expect(c.belt.length).toBeGreaterThan(0);
+    c.dragBelt(0.05);
+    expect(Math.max(...c.belt.map((b) => b.pos))).toBeCloseTo(front + 0.05);
+    expect(c.beltDragged).toBeCloseTo(0.05);
+    // Back towards the entry: stops once the rearmost card is at the entry.
+    c.dragBelt(-5);
+    expect(Math.min(...c.belt.map((b) => b.pos))).toBeCloseTo(0);
+    // Dragging the belt far deals new cards on both rows.
+    for (let i = 0; i < 200; i++) c.dragBelt(0.01);
+    expect(new Set(c.belt.map((b) => b.row)).size).toBe(2);
+  });
+
   it('the Exaggerated Girl sinks the sleeve and the ability, then opens a third belt row', () => {
     const c = setup({ enemy: ENEMIES.exaggeratedGirl, hp: 999, maxHp: 999 });
     const seen: string[] = [];

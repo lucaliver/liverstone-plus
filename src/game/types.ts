@@ -301,6 +301,8 @@ export interface EnemyDef {
   startRows?: number;
   /** Seconds into the fight when the part of the screen under the belt slides away (the sleeve and the ability go with it, the mana bar stays) and, `CONFIG.sinkTime` later, a third belt row opens in its place (`enemy.<id>.deep`, `enemy.<id>.speech`). */
   deepBelt?: number;
+  /** A surprise (no pre-fight line): seconds into the fight when the belt shuts off for good; from then on the player scrolls it by hand, holding and swiping (`Combat.dragBelt`). It says `enemy.<id>.speech`. */
+  beltOff?: number;
   /** Only met as the very first fight of the very first run (never dealt at random). */
   firstRunOnly?: boolean;
 }
@@ -455,6 +457,8 @@ export type CombatEvent =
   /** `deepBelt`: the lower part of the screen slides down, out of reach (the extra row opens `CONFIG.sinkTime` later: `rowAdded`). */
   | { type: 'lowerSink' }
   | { type: 'rowAdded' }
+  /** `beltOff`: the belt is shut off; it only moves under the player's finger now. */
+  | { type: 'beltDead' }
   | { type: 'rowsClose' }
   | { type: 'weakSpot'; x: number; y: number }
   | { type: 'rust' }

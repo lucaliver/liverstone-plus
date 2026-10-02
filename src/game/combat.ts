@@ -114,6 +114,10 @@ export class Combat {
   /** The sleeve and the ability are out of reach (`EnemyDef.deepBelt`): nothing can be stashed, the ability can't be used. */
   lowerHidden = false;
   private rowAdded = false;
+  /** The belt is shut off (`EnemyDef.beltOff`): it only moves when the player drags it (`dragBelt`). */
+  beltDead = false;
+  /** Total belt travel the player has dragged by hand, in belt widths (the UI scrolls the track stripes by it). */
+  beltDragged = 0;
   sleeve: (CombatCard | null)[];
 
   /** Time accumulated towards the next regular draw onto the belt. */
@@ -397,7 +401,7 @@ export class Combat {
   beltBoost(): number {
     let r = this.mul('hero', 'beltMul');
     r *= this.rustSpeed();
-    if (this.beltHalt > 0) r = 0;
+    if (this.beltHalt > 0 || this.beltDead) r = 0;
     return r;
   }
 
@@ -431,6 +435,7 @@ export class Combat {
     this.tickEnemy(dt);
     if (this.result) return;
     this.tickDeepBelt();
+    this.tickBeltOff();
     this.tickBeltTurn(dt);
     this.tickBelt(dt);
     for (const id of this.relics) RELICS[id]?.hooks?.tick?.(this, dt);
@@ -615,6 +620,35 @@ export class Combat {
     this.events.emit({ type: 'rowAdded' });
   }
 
+  /** `EnemyDef.beltOff`: the belt is shut off for good; from now on the player scrolls it by hand. */
+  private tickBeltOff(): void {
+    const at = this.enemy.def.beltOff;
+    if (at === undefined || this.beltDead || this.time < at) return;
+    this.beltDead = true;
+    this.events.emit({ type: 'beltDead' });
+  }
+
+  /**
+   * The player drags a shut-off belt by `move` belt widths (negative: back towards the entry, as far as the rearmost card allows):
+   * every row follows the finger, and new cards arrive as if the belt had run that far.
+   */
+  dragBelt(move: number): void {
+    if (!this.beltDead || this.result || this.intro > 0 || move === 0) return;
+    let travel = move;
+    if (move > 0) {
+      for (let row = 0; row < this.beltRows; row++) this.moveRow(row, move);
+    } else {
+      const free = this.belt.filter((b) => !b.pinned);
+      travel = -Math.min(-move, Math.max(0, Math.min(...free.map((b) => b.pos))));
+      for (const b of free) {
+        b.pos += travel;
+        b.stuck = false;
+      }
+    }
+    this.beltDragged += travel;
+    this.settleBelt(travel);
+  }
+
   /** Opens every belt row (the ones an enemy kept shut). */
   openBeltRows(): void {
     if (this.rowsOpen === this.beltRows) return;
@@ -703,6 +737,11 @@ export class Combat {
         this.events.emit({ type: 'hexBroken', card: b.card });
       }
     }
+    this.settleBelt(move);
+  }
+
+  /** After the belt has travelled `move` belt widths: cards that fell off the end expire and the draw clock may deal a new one. */
+  private settleBelt(move: number): void {
     // Expire cards that fell off the left edge.
     for (let i = this.belt.length - 1; i >= 0; i--) {
       const b = this.belt[i];
@@ -717,7 +756,7 @@ export class Combat {
     // playing cards quickly never makes new ones arrive sooner. Each row keeps the one-row spacing, so a
     // two-row belt shows twice the cards (more to choose from, mana decides) and each stays in view longer.
     const every = (CONFIG.spacing * CONFIG.beltTime) / this.rowsOpen;
-    this.spawnClock = Math.min(every, this.spawnClock + dt * rate);
+    this.spawnClock = Math.max(0, Math.min(every, this.spawnClock + move * CONFIG.beltTime));
     const row = this.freeRow();
     if (row < 0 || this.spawnClock < every || this.rowGap(row) < CONFIG.minGap) return;
     this.spawnClock -= every;

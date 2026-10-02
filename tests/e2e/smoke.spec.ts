@@ -862,3 +862,43 @@ test('vending machine: a card drops into the deck and costs HP', async ({ page }
   expect(await page.evaluate('window.__game.run.deck.length')).toBe(deck + 1);
   expect(await page.evaluate('window.__game.run.hp < window.__game.run.maxHp')).toBe(true);
 });
+
+test('Power Socket: the belt goes dead and follows the finger, both rows', async ({ page }) => {
+  await freshGame(page, { veteran: true });
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  await page.evaluate('(() => { const g = window.__game; g.run.nodes[g.run.current].enemy = "powerSocket"; })()');
+  await page.getByRole('button', { name: /enter floor 1/i }).click();
+  const start = page.locator('.js-start');
+  if (await start.count()) await start.click();
+  await expect.poll(() => combat(page, 'return c.intro <= 0')).toBe(true);
+  // Fast-forward past the blackout, long enough for both rows to carry cards.
+  await combat(page, 'for (let i = 0; i < 60 * 14; i++) c.tick(1 / 60);');
+  await expect(page.locator('.belt.belt-dead')).toBeVisible();
+  await expect(page.locator('.speech')).toBeVisible();
+  const rows = (await combat(page, 'return new Set(c.belt.map((b) => b.row)).size')) as number;
+  expect(rows).toBe(2);
+  // The newest card of each row (free to move), followed by uid.
+  const uids = (await combat(
+    page,
+    'return [0, 1].map((r) => c.belt.filter((b) => b.row === r).sort((a, b) => a.pos - b.pos)[0].card.uid)',
+  )) as number[];
+  const left = (i: number): Promise<number> =>
+    page.evaluate((u) => document.querySelector(`.belt-cards .card[data-uid="${u}"]`)?.getBoundingClientRect().left ?? NaN, uids[i]);
+  await page.waitForTimeout(500);
+  const before = [await left(0), await left(1)];
+  const box = (await page.locator('.belt-cards').boundingBox())!;
+  // Grab the belt on its bare top edge (above the cards' row gap), swipe 60px.
+  const y = box.y + 2;
+  const way = (await page.locator('.belt.ltr').count()) ? 1 : -1;
+  await page.mouse.move(box.x + box.width / 2, y);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2 + way * 20, y, { steps: 4 });
+  await page.mouse.move(box.x + box.width / 2 + way * 60, y, { steps: 4 });
+  await page.waitForTimeout(150);
+  const during = [await left(0), await left(1)];
+  await page.mouse.up();
+  for (const i of [0, 1]) expect(Math.abs(during[i] - before[i] - way * 60)).toBeLessThan(1.5);
+  await page.waitForTimeout(300);
+  expect(await left(0)).toBeCloseTo(during[0], 0);
+});

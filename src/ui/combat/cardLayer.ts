@@ -48,6 +48,8 @@ interface Drag {
   offX: number;
   offY: number;
   moved: boolean;
+  /** The finger is scrolling a shut-off belt (`Combat.dragBelt`), not carrying a card. */
+  scroll: boolean;
   /** Where the finger was at the last move and the path length not yet turned into a wind-up step (cards with `wind`). */
   lastX: number;
   lastY: number;
@@ -156,9 +158,11 @@ export function createCardLayer(v: CombatView): CardLayer {
   const onDown = (ev: PointerEvent, from: 'belt' | 'sleeve'): void => {
     // While waiting for Start, cards can still be held to read them (playing is blocked by the engine intro).
     if ((state.paused && !state.waiting) || state.ended || drag) return;
-    const cardEl = (ev.target as Element).closest<HTMLElement>('.card');
+    // With the belt shut off (`EnemyDef.beltOff`) it can be grabbed anywhere, between the cards too.
+    const grabBelt = from === 'belt' && combat.beltDead;
+    const cardEl = (ev.target as Element).closest<HTMLElement>('.card') ?? (grabBelt ? r.beltCards : null);
     if (!cardEl) return;
-    const uid = Number(cardEl.dataset.uid);
+    const uid = Number(cardEl.dataset.uid ?? -1);
     const rc = cardEl.getBoundingClientRect();
     try {
       cardEl.setPointerCapture(ev.pointerId);
@@ -175,11 +179,12 @@ export function createCardLayer(v: CombatView): CardLayer {
       offX: ev.clientX - rc.left,
       offY: ev.clientY - rc.top,
       moved: false,
+      scroll: false,
       lastX: ev.clientX,
       lastY: ev.clientY,
       path: 0,
       timer: window.setTimeout(() => {
-        if (!drag || drag.moved) return;
+        if (!drag || drag.moved || uid < 0) return;
         const card = findCard(uid);
         cancelDrag();
         if (!card) return;
@@ -202,9 +207,17 @@ export function createCardLayer(v: CombatView): CardLayer {
     if (!drag.moved && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
       drag.moved = true;
       clearTimeout(drag.timer);
-      drag.el.classList.add('dragging');
+      // A swipe along the shut-off belt scrolls it (from where the finger first touched, so it follows exactly); a swipe up or down still carries the card.
+      drag.scroll = drag.from === 'belt' && combat.beltDead && (drag.uid < 0 || Math.abs(dx) > Math.abs(dy));
+      if (drag.scroll) drag.lastX = drag.startX;
+      else drag.el.classList.add('dragging');
     }
     if (!drag.moved) return;
+    if (drag.scroll) {
+      if (!state.paused && !state.ended) combat.dragBelt(((state.ltr ? 1 : -1) * (ev.clientX - drag.lastX)) / state.beltW);
+      drag.lastX = ev.clientX;
+      return;
+    }
     if (CARDS[findCard(drag.uid)?.id ?? '']?.wind) {
       drag.path += Math.hypot(ev.clientX - drag.lastX, ev.clientY - drag.lastY);
       for (; drag.path >= state.beltW * WIND_SWIPE; drag.path -= state.beltW * WIND_SWIPE) {
@@ -236,6 +249,10 @@ export function createCardLayer(v: CombatView): CardLayer {
     if (!d.moved) {
       cancelDrag();
       playUid(d.uid);
+      return;
+    }
+    if (d.scroll) {
+      cancelDrag();
       return;
     }
     const slot = d.from === 'belt' ? slotAt(ev.clientX, ev.clientY) : -1;
