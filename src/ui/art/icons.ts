@@ -665,6 +665,8 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<path d="M44 4l16 16-26 26-16-16z"/><path fill="#16121f" d="M40 8l16 16-4 4-16-16z"/><path d="M18 30l16 16L4 60z"/><path d="M4 60l18-18" stroke="#16121f" stroke-width="3"/><circle cx="23" cy="41" r="3.5" fill="#16121f"/>`,
   },
   share: { el: 'holy', svg: `<path d="M24 40V18H12L32 0l20 18H40v22z"/><path d="M4 30h12v20h32V30h12v32H4z"/>` },
+  // A plain cross, the sign of first aid (Regen).
+  redCross: { el: 'blood', svg: `<path d="M22 4h20v18h18v20H42v18H22V42H4V22h18z"/><path ${HI} d="M26 8h8v14h-8z"/>` },
   plus: { el: 'holy', svg: `<path d="M25 6h14v19h19v14H39v19H25V39H6V25h19z"/>` },
   book: {
     el: 'holy',

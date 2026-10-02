@@ -46,7 +46,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   poison: { icon: 'drop' },
   thorns: { icon: 'thorns', sign: '+' },
   spell: { icon: 'wand', sign: '+' },
-  regen: { icon: 'leaf', sign: '+' },
+  regen: { icon: 'redCross', sign: '+' },
   vuln: { icon: 'crack', unit: 's' },
   weak: { icon: 'broken', unit: 's' },
   fort: { icon: 'fortress', unit: 's' },

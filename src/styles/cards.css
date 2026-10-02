@@ -132,6 +132,7 @@
 .gk-rush .pico,
 .gk-dodge .pico { color: var(--b); --ink2: var(--p); }
 .gk-heal .pico,
+.gk-regen .pico,
 .gk-hp .pico,
 .gk-str .pico,
 .gk-burn .pico { color: var(--p); --ink2: var(--y); }
