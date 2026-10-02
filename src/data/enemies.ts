@@ -40,7 +40,7 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 50,
     art: 'snitch',
-    main: atk('snitchesGetStitches', 7, 5),
+    main: atk('snitchesGetStitches', 6, 5),
     every: 2,
     specials: [atk('ratOut', 14, 10, { intent: 'charge' })],
     // Tells the boss: from half HP on, your belt is rushed for the rest of the fight.
@@ -53,7 +53,7 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 80,
     art: 'seniorBoomer',
-    main: atk('boxCutter', 13, 11),
+    main: atk('boxCutter', 11, 11),
     every: 2,
     specials: [
       atk('seniority', 17, 13, { intent: 'charge' }),
@@ -583,7 +583,7 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 80,
     art: 'miningRig',
-    main: atk('hashRate', 9, 4),
+    main: atk('hashRate', 8, 4),
     every: 3,
     specials: [
       {

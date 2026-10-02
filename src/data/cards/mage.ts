@@ -189,9 +189,8 @@ export const mageCards: CardDef[] = [
     type: 'spell',
     rarity: 'legendary',
     cost: 4,
-    upCost: 3,
-    vals: [10],
-    upVals: [16],
+    vals: [7],
+    upVals: [9],
     keywords: ['pending'],
     art: 'beetle',
     play: (c, v) => c.applyStatus('enemy', 'stun', 1, v[0]),
@@ -262,8 +261,8 @@ export const mageCards: CardDef[] = [
     type: 'spell',
     rarity: 'rare',
     cost: 3,
-    vals: [8, 8],
-    upVals: [13, 13],
+    vals: [8, 7],
+    upVals: [11, 10],
     art: 'blueScreen',
     play: (c, v) => {
       const chilled = c.has('enemy', 'chill');

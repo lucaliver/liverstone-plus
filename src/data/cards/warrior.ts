@@ -133,9 +133,8 @@ export const warriorCards: CardDef[] = [
     type: 'skill',
     rarity: 'rare',
     cost: 3,
-    upCost: 2,
-    vals: [4, 10, 3],
-    upVals: [6, 15, 6],
+    vals: [4, 12, 3],
+    upVals: [6, 20, 6],
     art: 'youShallNotPass',
     play: (c, v) => {
       c.gainBlock('hero', v[0]);
@@ -193,7 +192,7 @@ export const warriorCards: CardDef[] = [
     rarity: 'epic',
     cost: 3,
     vals: [4, 2],
-    upVals: [6, 3],
+    upVals: [5, 3],
     art: 'stonks',
     play: (c, v, card) => {
       c.hit(v[0]);
@@ -297,8 +296,8 @@ export const warriorCards: CardDef[] = [
     rarity: 'legendary',
     cost: 5,
     upCost: 5,
-    vals: [20, 8],
-    upVals: [30, 12],
+    vals: [20, 6],
+    upVals: [25, 9],
     keywords: ['pending'],
     art: 'quake',
     play: (c, v) => {

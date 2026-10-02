@@ -3,14 +3,6 @@
 
 # NEXT STEPS (ignore for now):
 
-
-
 > aggiungere uso della paga
 
-> Desktop. Chi apre il gioco su itch.io spesso è al computer. Controlla che la colonna verticale sia centrata e con una cornice decente, che il mouse funzioni bene e magari aggiungi qualche tasto rapido (spazio = pausa).
-
 > URL. Il sito vive su liverstone- [ ]plus: per il lancio servono un nome coerente (itch.io/punchcard o un dominio) e un'immagine og aggiornata.
-
-> Feedback. Un link "Send feedback" in Impostazioni. Se vuoi dei dati, GoatCounter o Plausible non usano cookie (niente banner GDPR) e ti dicono dove la gente abbandona.
-
-> Traduzione italiana. Ti costa poco, verifica davvero la pipeline i18n (testi più lunghi, plurali) e ti apre un pubblico.

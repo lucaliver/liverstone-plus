@@ -67,7 +67,7 @@ export const necromancerCards: CardDef[] = [
     rarity: 'common',
     cost: 2,
     vals: [3],
-    upVals: [5],
+    upVals: [4],
     art: 'nail',
     play: (c, v) => c.applyStatus('enemy', 'poison', v[0]),
   },
@@ -319,7 +319,7 @@ export const necromancerCards: CardDef[] = [
     rarity: 'epic',
     cost: 4,
     vals: [6, 8],
-    upVals: [8, 10],
+    upVals: [8, 12],
     art: 'moon',
     play: (c, v) => {
       c.applyStatus('enemy', 'poison', v[0]);
