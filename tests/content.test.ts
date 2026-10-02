@@ -33,8 +33,10 @@ describe('content integrity', () => {
       expect(en[`card.${c.id}.name`], c.id).toBeTruthy();
       expect(en[`card.${c.id}.desc`], c.id).toBeTruthy();
       if (c.tip) expect(en[`card.${c.id}.tip` as keyof typeof en], `${c.id}: tip`).toBeTruthy();
-      for (const m of c.face.matchAll(/\{\??([\w+]+)(?::\d)?\}/g)) {
-        for (const g of m[1].split('+')) {
+      for (const m of c.face.matchAll(/\{([?*])?([\w+]+)(?::\d)?\}/g)) {
+        // A condition or a trigger names what to look for: it carries no value.
+        if (m[1]) expect(m[0], `${c.id}: ${m[0]} carries a value`).not.toContain(':');
+        for (const g of m[2].split('+')) {
           if (/^\d$/.test(g)) continue;
           expect(GLYPHS[g], `${c.id}: ${g}`).toBeTruthy();
         }

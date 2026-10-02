@@ -274,7 +274,7 @@ export const warriorCards: CardDef[] = [
   },
   {
     id: 'forklift',
-    face: '{?block}{dmg:0}',
+    face: '{*block}{dmg:0}',
     // Raw damage from the power, not modified by Strength/Weak: no live preview.
     dmg: [],
     cls: 'warrior',
@@ -396,7 +396,7 @@ export const warriorCards: CardDef[] = [
   },
   {
     id: 'steelToes',
-    face: '{?dmg}{block:0}',
+    face: '{*dmg}{block:0}',
     cls: 'warrior',
     type: 'power',
     rarity: 'epic',

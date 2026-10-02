@@ -706,6 +706,11 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'arcane',
     svg: `<rect x="4" y="8" width="56" height="48" rx="3"/><g fill="#16121f"><path d="M12 20l12 9-12 9v-6l5-3-5-3z"/><rect x="28" y="36" width="16" height="5"/></g>`,
   },
+  // Two arrows chasing each other: "every time" (a card face's `{*kind}` trigger).
+  loop: {
+    el: 'steel',
+    svg: `<g ${S} stroke-width="8"><path d="M14.3 28.9A18 18 0 0 1 46.7 21.7"/><path d="M49.7 35.1A18 18 0 0 1 17.3 42.3"/></g><path d="M56 31L54.5 12.5L35.5 26z"/><path d="M8 33L9.5 51.5L28.5 38z"/>`,
+  },
   undo: {
     el: 'steel',
     svg: `<g ${S} stroke-width="8"><path d="M20 22h20a16 16 0 0 1 0 32H22"/></g><path d="M4 22l18-16v32z"/>`,

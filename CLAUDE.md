@@ -109,7 +109,7 @@ tests/         combat, content, balance.sim (+ bot), balance.stats, e2e/
 
 ### Cards (`data/cards/<class>.ts` + `card.<id>.name`/`.desc` in `en.ts`)
 
-- `face` grammar: `{kind:i}` icon + value · `{kind}` icon · `{?kind}` condition · `{i}` bare value · `|` new line. Kinds in
+- `face` grammar: `{kind:i}` icon + value · `{kind}` icon · `{?kind}` condition ("if", in brackets) · `{*kind}` trigger ("every time", a loop icon) · `{i}` bare value · `|` new line. Kinds in
   `GLYPHS` (`cardView.ts`). `desc`: `{i}` values, `[kw]` keywords (need `kw.<kw>` and `kw.<kw>.d`).
 - Keywords that change the engine are in `Keyword` (`types.ts`); glossary-only ones just need `kw.*` strings.
 - Cost, keywords and values of a copy always come from `cardCostOf`/`cardKeywordsOf`/`cardValsOf` (upgrades and **perks**

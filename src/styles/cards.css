@@ -112,15 +112,17 @@
 .gl .upg { color: var(--green); }
 .gl .nerf { color: var(--red); }
 .gl .op { font-size: 0.8em; }
-/* condition: "(icon) effect" — the effect only applies if the condition holds */
-.gl .cond {
+/* condition: "(icon) effect" — the effect only applies if the condition holds; trigger: "loop icon, icon, effect" — it happens every time */
+.gl .cond,
+.gl .each {
   display: inline-flex;
   align-items: center;
   margin-right: 0.5cqw;
   font-size: 0.75em;
   color: var(--muted);
 }
-.gl .cond .pico { font-size: 1.1em; color: var(--k); --ink2: var(--y); }
+.gl .cond .pico,
+.gl .each .pico { font-size: 1.1em; color: var(--k); --ink2: var(--y); }
 .gk { display: contents; }
 .gk-dmg .pico { color: var(--p); --ink2: var(--y); }
 .gk-block .pico { color: var(--shield); --ink2: var(--p); }

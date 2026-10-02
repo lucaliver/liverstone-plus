@@ -301,7 +301,7 @@ export const neutralCards: CardDef[] = [
   },
   {
     id: 'workLifeBalance',
-    face: '{dmg:0}|{?dmg}{block:1}|{timer:2}',
+    face: '{dmg:0}|{*dmg}{block:1}|{timer:2}',
     cls: 'neutral',
     type: 'attack',
     rarity: 'epic',
@@ -316,7 +316,7 @@ export const neutralCards: CardDef[] = [
   },
   {
     id: 'lifeWorkBalance',
-    face: '{block:0}|{?block}{dmg:1}|{timer:2}',
+    face: '{block:0}|{*block}{dmg:1}|{timer:2}',
     cls: 'neutral',
     type: 'skill',
     rarity: 'epic',
