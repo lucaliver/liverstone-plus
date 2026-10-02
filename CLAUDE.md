@@ -67,7 +67,7 @@ npm run dev      # dev server on the LAN
 npm run check    # tsc + biome + vitest (before every commit)
 npm run e2e      # Playwright smoke tests (own server on :5174)
 npm run sim      # balance bot win rates
-npm run stats    # static balance numbers from the data (no bot): rewrites BALANCE.md
+npm run stats    # static balance numbers from the data (no bot): writes BALANCE.md (git-ignored, not kept in the repo)
 npm run build    # typecheck + production build
 ```
 
@@ -190,7 +190,7 @@ Icons (`ICONS`) and creatures (`CREATURES`) are SVG written for the ink palette 
 ## Testing
 
 - `combat.test.ts`: engine rules (add one per mechanic). `content.test.ts`: data integrity. `balance.sim.test.ts` + `bot.ts`:
-  bot win rates, relative only. `balance.stats.test.ts`: per-mana card output and enemy threat computed from the data (`npm run stats` writes `BALANCE.md`; rerun it after a balance change). `tests/e2e/smoke.spec.ts`: flows on a mobile viewport with real touch where it matters;
+  bot win rates, relative only. `balance.stats.test.ts`: per-mana card output and enemy threat computed from the data (`npm run stats` writes a git-ignored `BALANCE.md` to read: generate it when you need the numbers, never commit it). `tests/e2e/smoke.spec.ts`: flows on a mobile viewport with real touch where it matters;
   `freshGame` unlocks every hero unless `locked`.
 - Other browsers: `npx playwright test --browser=webkit` passes; Firefox needs a config without `isMobile`.
 - Screenshot scripts go in the git-ignored `screenshots/`.
