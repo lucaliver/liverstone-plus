@@ -409,46 +409,41 @@ describe('combat engine', () => {
   });
 
   describe('On a Roll', () => {
-    /** A quiet fight with On a Roll on the belt and attacks behind it, run until they've piled up at the exit. */
-    const piled = (): Combat => {
+    /** A quiet fight with an empty belt, to put the cards under test on it. */
+    const quiet = (): Combat => {
       const c = setup({ deck: deckOf(new Array(8).fill('punch')) });
       c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
       c.enemy.hp = c.enemy.maxHp = 500;
       c.hero.maxMana = c.hero.mana = 10;
       run(c, CONFIG.introTime + 0.01);
       c.belt.length = 0;
-      c.addTempCard('onARoll', 'belt');
-      run(c, 14);
       return c;
     };
+    const add = (c: Combat, id: string): number => {
+      c.addTempCard(id, 'belt');
+      return c.belt[c.belt.length - 1].card.uid;
+    };
 
-    it('stops at the exit, and the attacks that reach it pile up behind it, out of reach', () => {
-      const c = piled();
-      const roll = c.belt.find((b) => b.card.id === 'onARoll')!;
-      expect(roll.stuck).toBe(true);
-      expect(roll.pos).toBeCloseTo(CONFIG.anchorPos);
-      const pile = c.belt.filter((b) => b.stuck && b !== roll);
-      expect(pile.length).toBeGreaterThan(1);
-      expect(pile.every((b) => b.pos < roll.pos && c.isCovered(b.card.uid))).toBe(true);
-      expect(c.playCard(pile[0].card.uid)).toBe(false);
-    });
-
-    it('playing it plays the whole pile for free', () => {
-      const c = piled();
-      const pile = c.belt.filter((b) => b.stuck && b.card.id === 'punch').length;
+    it('plays every attack on the belt for free, and only the attacks', () => {
+      const c = quiet();
+      const roll = add(c, 'onARoll');
+      for (const id of ['punch', 'bobTheBuilder', 'punch', 'punch']) add(c, id);
       const mana = c.hero.mana;
-      expect(c.playCard(c.belt.find((b) => b.card.id === 'onARoll')!.card.uid)).toBe(true);
+      expect(c.playCard(roll)).toBe(true);
       expect(mana - c.hero.mana).toBe(CARDS.onARoll.cost);
-      expect(500 - c.enemy.hp).toBe(pile * CARDS.punch.vals[0]);
-      expect(c.belt.some((b) => b.stuck)).toBe(false);
+      expect(500 - c.enemy.hp).toBe(3 * CARDS.punch.vals[0]);
+      expect(c.belt.map((b) => b.card.id)).toEqual(['bobTheBuilder']);
     });
 
-    it('any other card reaching the pile sends it all off the belt', () => {
-      const c = piled();
-      c.addTempCard('bobTheBuilder', 'belt');
-      run(c, 10);
-      expect(c.belt.some((b) => b.stuck || b.card.id === 'onARoll')).toBe(false);
-      expect([...c.draw, ...c.discard].some((x) => x.id === 'onARoll')).toBe(true);
+    it('leaves alone an attack that cannot be played right now (hexed)', () => {
+      const c = quiet();
+      const roll = add(c, 'onARoll');
+      add(c, 'punch');
+      const hexed = add(c, 'punch');
+      c.belt.find((b) => b.card.uid === hexed)!.card.hex = { id: 'petrify', left: 2, t: 99 };
+      c.playCard(roll);
+      expect(500 - c.enemy.hp).toBe(CARDS.punch.vals[0]);
+      expect(c.belt.some((b) => b.card.uid === hexed)).toBe(true);
     });
   });
 

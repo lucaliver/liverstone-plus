@@ -2,7 +2,7 @@ import { Emitter } from '../core/emitter';
 import { Rng } from '../core/rng';
 import { CONFIG, EXPIRE_POS } from '../data/config';
 import { STATUSES } from '../data/statuses';
-import { CARDS, cardCategory, cardCostOf, cardKeywordsOf, cardValsOf } from '../data/cards';
+import { CARDS, type CardCategory, cardCategory, cardCostOf, cardKeywordsOf, cardValsOf } from '../data/cards';
 import { HEXES } from '../data/hexes';
 import { RELICS } from '../data/relics';
 import type { TKey } from '../core/i18n';
@@ -343,8 +343,7 @@ export class Combat {
   }
 
   /**
-   * True when this belt card is out of reach: piled behind an anchor card (only playing that plays the pile), or barred
-   * by a curse: a wide card (Gatekeeping) stretches left of its face over the cards ahead of it (on both rows if it's
+   * True when this belt card is out of reach, barred by a curse: a wide card (Gatekeeping) stretches left of its face over the cards ahead of it (on both rows if it's
    * tall), and a row lock (Priority Task) holds its whole row, until paid off. An enemy's window over the belt (`popup`) covers every card.
    */
   isCovered(uid: number): boolean {
@@ -352,7 +351,6 @@ export class Combat {
     if (!b) return false;
     // The enemy's window is over the whole belt.
     if (this.popup) return true;
-    if (b.stuck && !CARDS[b.card.id].anchor) return true;
     return this.belt.some((w) => {
       if (w === b) return false;
       const def = CARDS[w.card.id];
@@ -571,12 +569,11 @@ export class Combat {
 
   /**
    * The exit becomes the entry. Every card keeps its place on the belt and now heads the other way
-   * (its position is mirrored, but never past the new exit, `reverseMaxPos`); a pile at the exit goes on.
+   * (its position is mirrored, but never past the new exit, `reverseMaxPos`).
    */
   private turnBelt(): void {
     for (const b of this.belt) {
       b.pos = Math.min(1 + CONFIG.cardWidth - b.pos, CONFIG.reverseMaxPos);
-      b.stuck = false;
     }
     this.events.emit({ type: 'beltReversed' });
   }
@@ -588,10 +585,7 @@ export class Combat {
 
   /** Pins every card on the belt where it is (Team Change): they stay until played, while new cards ride past them. */
   pinBelt(): void {
-    for (const b of this.belt) {
-      b.pinned = true;
-      b.stuck = false;
-    }
+    for (const b of this.belt) b.pinned = true;
     this.events.emit({ type: 'beltPinned' });
   }
 
@@ -640,10 +634,7 @@ export class Combat {
     } else {
       const free = this.belt.filter((b) => !b.pinned);
       travel = -Math.min(-move, Math.max(0, Math.min(...free.map((b) => b.pos))));
-      for (const b of free) {
-        b.pos += travel;
-        b.stuck = false;
-      }
+      for (const b of free) b.pos += travel;
     }
     this.beltCranked += travel;
     this.settleBelt(travel);
@@ -763,42 +754,9 @@ export class Combat {
     this.spawnCard(0, undefined, row);
   }
 
-  /**
-   * Moves a row's cards forward, the one nearest the exit first. An `anchor` card stops at the exit and attack cards
-   * pile up behind it; any other card reaching the pile sends it off the belt (they all start moving again).
-   */
+  /** Moves a row's cards forward (a pinned card stays where it is). */
   private moveRow(row: number, move: number): void {
-    const cards = this.belt.filter((b) => b.row === row && !b.pinned).sort((a, b) => b.pos - a.pos);
-    /** The last card of the pile stopped at the exit, if any. */
-    let tail: BeltCard | null = null;
-    for (const b of cards) {
-      const def = CARDS[b.card.id];
-      if (b.stuck) {
-        // A pile needs its anchor: without one (played, stolen, stashed) the cards go on.
-        if (tail || def.anchor) {
-          tail = b;
-          continue;
-        }
-        b.stuck = false;
-      }
-      const next = b.pos + move;
-      const attack = cardCategory(b.card.id) === 'attack';
-      if (tail && !attack && next >= tail.pos - CONFIG.cardWidth) {
-        for (const c of cards) c.stuck = false;
-        tail = null;
-      }
-      const stop = tail ? (attack ? tail.pos - CONFIG.pileStep : Infinity) : def.anchor ? CONFIG.anchorPos : Infinity;
-      // (An anchor sent off the belt is already past its stop: it leaves.)
-      if (next < stop || (def.anchor && b.pos >= stop)) {
-        b.pos = next;
-        continue;
-      }
-      b.pos = stop;
-      b.stuck = true;
-      // Having reached the end, it has ridden the whole belt.
-      b.card.passed = true;
-      tail = b;
-    }
+    for (const b of this.belt) if (b.row === row && !b.pinned) b.pos += move;
   }
 
   /** Distance from the entry to the newest card of a row (Infinity if the row is empty). */
@@ -947,14 +905,21 @@ export class Combat {
     }
   }
 
-  /** Plays, for free, every card piled behind the `anchor` card being played (skipping any that can't be played). The rest move on. */
-  playPile(): void {
-    const row = this.current?.row ?? -1;
-    const pile = this.belt.filter((b) => b.row === row && b.stuck).sort((a, b) => b.pos - a.pos);
-    for (const b of pile) b.stuck = false;
-    for (const b of pile) {
+  /** Plays, for free, every card of a colour that is on the belt now, the one nearest the exit first (skipping any that can't be played right now). */
+  playBelt(category: CardCategory): void {
+    const cards = this.belt.filter((b) => cardCategory(b.card.id) === category).sort((a, b) => b.pos - a.pos);
+    for (const { card } of cards) {
       if (this.result) return;
-      if (!b.card.hex && this.isPlayable(b.card)) this.resolvePlay(b.card, true);
+      if (
+        this.beltIndex(card.uid) < 0 ||
+        card.hex ||
+        this.isCovered(card.uid) ||
+        this.isPending(card) ||
+        !this.isPlayable(card) ||
+        this.ruleBlock(card)
+      )
+        continue;
+      this.resolvePlay(card, true);
     }
   }
 
@@ -1423,7 +1388,7 @@ export class Combat {
 
   /**
    * The hero drags a card with `sweep` over another card of the belt: that one is knocked off (it counts as lost, as if it had
-   * fallen off the end) and the sweeper grows. False when there is nothing to sweep (a hexed, pinned or piled-up card stays put).
+   * fallen off the end) and the sweeper grows. False when there is nothing to sweep (a hexed or pinned card stays put).
    */
   sweepCard(uid: number, victim: number): boolean {
     const card = this.belt[this.beltIndex(uid)]?.card ?? this.sleeve[this.sleeveIndex(uid)];
@@ -1431,7 +1396,7 @@ export class Combat {
     const i = this.beltIndex(victim);
     if (!card || !sweep || i < 0 || victim === uid || this.result || this.intro > 0) return false;
     const b = this.belt[i];
-    if (b.card.hex || b.pinned || b.stuck) return false;
+    if (b.card.hex || b.pinned) return false;
     const vals = this.cardVals(card);
     card.bonus = Math.min(vals[sweep.max], card.bonus + vals[sweep.by]);
     this.belt.splice(i, 1);

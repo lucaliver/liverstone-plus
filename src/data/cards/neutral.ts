@@ -377,19 +377,17 @@ export const neutralCards: CardDef[] = [
   },
 
   {
-    // Stops at the exit: the attacks that reach it pile up behind it, and playing it plays the whole pile.
+    // Plays every attack that is on the belt right now, for free.
     id: 'onARoll',
     face: '{pile}',
     cls: 'neutral',
     type: 'skill',
     rarity: 'legendary',
     cost: 4,
-    upCost: 2,
+    upCost: 3,
     vals: [],
-    anchor: true,
-    tip: true,
     art: 'paperRoll',
-    play: (c) => c.playPile(),
+    play: (c) => c.playBelt('attack'),
   },
 
   {

@@ -114,7 +114,7 @@ tests/         combat, content, balance.sim (+ bot), balance.stats, e2e/
 - Keywords that change the engine are in `Keyword` (`types.ts`); glossary-only ones just need `kw.*` strings.
 - Cost, keywords and values of a copy always come from `cardCostOf`/`cardKeywordsOf`/`cardValsOf` (upgrades and **perks**
   included). Set `dmg: []` only for raw damage that ignores modifiers.
-- Special mechanics (`ride`, `onOverflow`, `tip`, `sweep`, `costDrop`, `inSleeve`, `anchor`, `span`/`tall`/`lockRow`, `pack`) are
+- Special mechanics (`ride`, `onOverflow`, `tip`, `sweep`, `costDrop`, `inSleeve`, `span`/`tall`/`lockRow`, `pack`) are
   documented on `CardDef`. Curse *cards* live in `neutral.ts` (their rarity is a power level: common = a nuisance, rare = hurts or clogs, epic = shuts down belt space or can't be cleared; they never drop as rewards and can't be upgraded); **hexes** (`hexes.ts`) are a different thing (a curse on one
   belt card, chipped away by taps).
 - Every card has its own art; rule icons (glyphs, statuses, intents, map nodes) are shared only within one concept.

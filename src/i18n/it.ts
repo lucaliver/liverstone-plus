@@ -888,10 +888,7 @@ const it: Record<EnKey, string> = {
   'card.complaintBox.desc':
     'Fai {0} danni. Questa carta ottiene +1 danno per ogni secondo in cui il tuo mana è pieno e va sprecato (ovunque si trovi).',
   'card.onARoll.name': 'In Corsa',
-  'card.onARoll.desc':
-    'Non lascia il nastro: si ferma in fondo. Gli attacchi che la raggiungono si accumulano dietro di lei, mentre qualsiasi altra carta che raggiunge la pila la manda tutta giù dal nastro. Giocala per giocare gratis tutta la pila.',
-  'card.onARoll.tip':
-    'In Corsa si ferma in fondo al nastro. Gli attacchi si accumulano dietro di lei: giocala per sparare gratis tutta la pila. Qualsiasi altra carta che tocca la pila la manda tutta giù dal nastro.',
+  'card.onARoll.desc': 'Gioca gratis tutti gli attacchi che sono sul nastro.',
   'card.mrRoboto.name': 'Mr. Roboto',
   'card.mrRoboto.desc':
     'Fai {0} danni. Trascinala sul nastro per spazzare via le altre carte (andranno perse): +{1} danni per ciascuna, fino a +{2}. Rilasciala sopra il nastro per giocarla.',

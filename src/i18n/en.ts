@@ -881,10 +881,7 @@ const en = {
   'card.complaintBox.name': 'Complaint Box',
   'card.complaintBox.desc': 'Deal {0} damage. This card gains +1 damage for every second your mana is full and going to waste (wherever it is).',
   'card.onARoll.name': 'On a Roll',
-  'card.onARoll.desc':
-    "Doesn't leave the belt: it stops at the end. Attacks that reach it pile up behind it, while any other card that reaches the pile sends it all off the belt. Play it to play the whole pile for free.",
-  'card.onARoll.tip':
-    'On a Roll stops at the end of the belt. Attacks pile up behind it: play it to fire the whole pile for free. Any other card that touches the pile sends it all off the belt.',
+  'card.onARoll.desc': 'Play every attack that is on the belt for free.',
   'card.mrRoboto.name': 'Mr. Roboto',
   'card.mrRoboto.desc':
     'Deal {0} damage. Drag it over the belt to knock the other cards off it (they are lost): +{1} damage for each, up to +{2}. Let go above the belt to play it.',

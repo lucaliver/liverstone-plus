@@ -17,10 +17,6 @@ export const CONFIG = {
   reverseMaxPos: 1,
   /** The belt stands still this long before it turns around, so no card seems to jump (Paradigm Shift). */
   beltTurnPause: 0.5,
-  /** Where a card that stops at the exit (`anchor`) stays: its leading edge at the belt's end. */
-  anchorPos: 1,
-  /** How far each attack card piled behind it sits from the one ahead (belt widths; less than a card, so the pile overlaps). */
-  pileStep: 0.05,
   /** A card expires once its left edge is this far past the belt's left edge (fraction of card width). */
   expireOverhang: 0.45,
   /** Belt speed multiplier while rushed (Time Slip, Time Warp). */

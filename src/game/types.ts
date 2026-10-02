@@ -75,8 +75,6 @@ export interface BeltCard {
   row: number;
   /** Pinned where it is (Team Change): it doesn't move or leave until played or stashed; other cards ride past it. */
   pinned?: boolean;
-  /** Stopped at the exit as part of a pile (an `anchor` card and the attacks behind it). */
-  stuck?: boolean;
 }
 
 export interface CardDef {
@@ -114,11 +112,6 @@ export interface CardDef {
   tall?: boolean;
   /** While on the belt, every other card of its row is out of reach (Priority Task). */
   lockRow?: boolean;
-  /**
-   * Stops at the exit instead of leaving. Attack cards reaching it pile up behind it (out of reach); any other card
-   * reaching the pile sends it all off the belt. Resolving it should call `playPile` (On a Roll).
-   */
-  anchor?: true;
   /**
    * The value at `vals[i]` changes by `vals[by]` for every second the card rides the belt, until it reaches `vals[to]`
    * (it grows when `to` is above the base, decays when below). Frozen while the card waits in the sleeve.
