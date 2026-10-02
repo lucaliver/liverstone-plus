@@ -187,6 +187,7 @@ const HAPTICS = {
   tap: 8,
   play: 10,
   stash: [6, 40, 6],
+  belt: 6,
   error: 15,
   hexTap: 8,
   hit: 25,

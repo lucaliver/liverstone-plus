@@ -901,4 +901,14 @@ test('Power Socket: the belt goes dead and follows the finger, both rows', async
   for (const i of [0, 1]) expect(Math.abs(during[i] - before[i] - way * 60)).toBeLessThan(1.5);
   await page.waitForTimeout(300);
   expect(await left(0)).toBeCloseTo(during[0], 0);
+  // A swipe that starts on a card scrolls the belt too, the card under the finger included.
+  const card = (await page.locator(`.belt-cards .card[data-uid="${uids[1]}"]`).boundingBox())!;
+  const from = await left(1);
+  await page.mouse.move(card.x + card.width / 2, card.y + card.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(card.x + card.width / 2 + way * 20, card.y + card.height / 2, { steps: 4 });
+  await page.mouse.move(card.x + card.width / 2 + way * 40, card.y + card.height / 2, { steps: 4 });
+  await page.waitForTimeout(150);
+  expect(Math.abs((await left(1)) - from - way * 40)).toBeLessThan(1.5);
+  await page.mouse.up();
 });
