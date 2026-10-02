@@ -14,7 +14,7 @@ This file is the technical guide: read it before changing code. Field-by-field d
 - Tone: a run is a **workday**, each act a **shift**. Cards, enemies, moves, curses and UI words use workplace names, media or pop or history or political references; satire hits management and coworkers alike. Heroes stay fantasy with a
   light job touch. Statuses and keywords keep plain game names (Poison, Block, Rush…).
 - Before handing over: `npm run check` and `npm run e2e` pass. Only for important UI changes, look at the screens you touched with one
-  Playwright screenshot at 390×844 (375×620 only if the layout is tight), taken once at the end. Don't keep images in the folder.
+  Playwright screenshot at 390×844 (375×620 only if the layout is tight), taken once at the end. **Delete every screenshot right after looking at it** (scratchpad ones too): no image is left around, ever.
 - Balance: one quick `npm run sim` pass is enough while design moves.
 - Bump `version` in `package.json` after every big batch (shown in the home screen's Settings only, with the build time, `__BUILD_TIME__`).
 - Keep this file true: fix any line a change makes stale, in the same commit.
