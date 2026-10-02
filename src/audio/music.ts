@@ -7,7 +7,7 @@
  */
 import { audioGraph, onAudioUnlock, resumeAudio } from './sfx';
 
-export type TrackId = 'menu' | 'map' | 'combat' | 'combat2' | 'combat3' | 'map3' | 'elite' | 'boss' | 'rest' | 'pause' | 'victory';
+export type TrackId = 'menu' | 'map' | 'combat' | 'combat2' | 'combat3' | 'map2' | 'map3' | 'elite' | 'boss' | 'rest' | 'pause' | 'victory';
 
 /** [step (0-15), midi note, length in 16th steps] */
 type NoteEv = [number, number, number];
@@ -41,6 +41,7 @@ interface Track {
 const m = (x: number): number => 440 * 2 ** ((x - 69) / 12);
 const MIN = [0, 3, 7];
 const MAJ = [0, 4, 7];
+const MIN7 = [0, 3, 7, 10];
 const MAJ7 = [0, 4, 7, 11];
 const DOM7 = [0, 4, 7, 10];
 const _ = null;
@@ -370,6 +371,49 @@ const TRACKS: Record<TrackId, Track> = {
     drums: ['k...k...k...k...', '....s.......s...', 't.......t.t.....', '..h...h...h...hh'],
     pad: true,
     gain: 0.8,
+  },
+  // The afternoon map: sunlight through the blinds, a lazy coffee-break walk in F major with a soft bell tune.
+  map2: {
+    bpm: 84,
+    chords: [
+      { root: 41, tones: MAJ7 }, // Fmaj7
+      { root: 38, tones: MIN7 }, // Dm7
+      { root: 34, tones: MAJ7 }, // Bbmaj7
+      { root: 36, tones: MAJ }, // C
+    ],
+    bass: [0, _, _, _, 7, _, _, _, 0, _, _, 7, _, _, 12, _],
+    bassWave: 'triangle',
+    arp: [0, _, 1, _, 2, _, 3, _, 2, _, 1, _, 2, _, 1, _],
+    arpOctave: 4,
+    lead: [
+      [
+        [0, A4, 4],
+        [4, C5, 4],
+        [8, E5, 6],
+        [14, D5, 2],
+      ],
+      [
+        [0, D5, 4],
+        [4, F5, 4],
+        [8, A5, 8],
+      ],
+      [
+        [0, D5, 4],
+        [4, F5, 4],
+        [8, E5, 4],
+        [12, D5, 4],
+      ],
+      [
+        [0, E5, 6],
+        [6, G5, 2],
+        [8, C5, 8],
+      ],
+    ],
+    leadOn: (p) => p % 2 === 1,
+    leadVoice: 'bell',
+    drums: ['k.......k.......', '....h.......h...'],
+    pad: true,
+    gain: 0.75,
   },
   // The night map: empty corridors under emergency lights, a slow bell over a low drone.
   map3: {

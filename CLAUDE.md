@@ -129,7 +129,7 @@ tests/         combat, content, balance.sim (+ bot), e2e/
 
 ### Act 3 rules (night shift)
 
-New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHits`), `assemblyLine` (`canPlay`), `overtimeCreep`, `lowBattery`, `machineLearning`, `pressure`, `boardroom`, `understudy`; their numbers are constants at the top of the file. `music.ts` has `combat3`/`map3` for the act; its clock runs past midnight (`shift: [22, 30]`).
+New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHits`), `assemblyLine` (`canPlay`), `overtimeCreep`, `lowBattery`, `machineLearning`, `pressure`, `boardroom`, `understudy`; their numbers are constants at the top of the file. `music.ts` has `combat3`/`map3` for the act (act 2's map is the sunny `map2`); its clock runs past midnight (`shift: [22, 30]`).
 
 ### Relics
 

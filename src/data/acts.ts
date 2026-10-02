@@ -19,7 +19,7 @@ export interface ActDef {
 
 export const ACT_DEFS: readonly ActDef[] = [
   { shift: [8, 12], music: 'combat', mapMusic: 'map', door: 'door', bossClock: true },
-  { shift: [13, 17], music: 'combat2', mapMusic: 'map', door: 'doorOffice', bossIcon: 'watchEye' },
+  { shift: [13, 17], music: 'combat2', mapMusic: 'map2', door: 'doorOffice', bossIcon: 'watchEye' },
   // The night shift runs past midnight to the dawn: the clock shows 22:00 to 06:00.
   { shift: [22, 30], music: 'combat3', mapMusic: 'map3', door: 'doorShutter', bossIcon: 'gavel' },
 ];
