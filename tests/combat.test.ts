@@ -1176,6 +1176,42 @@ describe('pop culture cards', () => {
     return c.belt.slice(before).map((b) => b.card.uid);
   };
 
+  /** Puts a card on the belt and returns its uid. */
+  const onBelt = (c: Combat, id: string): number => {
+    c.addTempCard(id, 'belt');
+    return c.belt[c.belt.length - 1].card.uid;
+  };
+
+  it('Work-Life Balance: for a while, every attack you play also gives Block (not skills, and not for ever)', () => {
+    const { c, uid } = ready('workLifeBalance');
+    const [dmg, block, time] = CARDS.workLifeBalance.vals;
+    c.playCard(uid);
+    expect(c.enemy.maxHp - c.enemy.hp).toBe(dmg);
+    expect(c.hero.block).toBe(0);
+    c.hero.block = 0;
+    c.playCard(onBelt(c, 'bobTheBuilder'));
+    expect(c.hero.block).toBe(CARDS.bobTheBuilder.vals[0]);
+    c.hero.block = 0;
+    c.playCard(onBelt(c, 'punch'));
+    expect(c.hero.block).toBe(block);
+    run(c, time + 0.5);
+    c.hero.block = 0;
+    c.playCard(onBelt(c, 'punch'));
+    expect(c.hero.block).toBe(0);
+  });
+
+  it('Life-Work Balance: you gain Block, then every skill you play also deals damage (not attacks)', () => {
+    const { c, uid } = ready('lifeWorkBalance');
+    const [block, dmg] = CARDS.lifeWorkBalance.vals;
+    c.playCard(uid);
+    expect(c.hero.block).toBe(block);
+    expect(c.enemy.hp).toBe(c.enemy.maxHp);
+    c.playCard(onBelt(c, 'punch'));
+    const afterPunch = c.enemy.hp;
+    c.playCard(onBelt(c, 'bobTheBuilder'));
+    expect(afterPunch - c.enemy.hp).toBe(dmg);
+  });
+
   it('Mr. Roboto knocks cards off the belt (they are lost) and grows for each, up to its cap, then hits for it', () => {
     const { c, uid } = ready('mrRoboto');
     const [base, by, max] = CARDS.mrRoboto.vals;
@@ -1564,27 +1600,6 @@ describe('the Overthinker', () => {
     run(c, 4.1);
     expect(c.hero.hp).toBe(hp);
     expect(c.enemy.move.id).toBe('bigIdea');
-  });
-});
-
-describe('Work-Life Balance', () => {
-  it('hits again with every card played until two of the same colour come in a row', () => {
-    const c = setup({ deck: deckOf(Array(6).fill('punch')) });
-    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
-    run(c, CONFIG.introTime + 0.01);
-    c.hero.mana = c.hero.maxMana = 10;
-    const play = (id: string): void => {
-      c.addTempCard(id, 'belt');
-      c.playCard(c.belt[c.belt.length - 1].card.uid);
-    };
-    play('workLifeBalance');
-    let hp = c.enemy.hp;
-    play('bobTheBuilder');
-    expect(hp - c.enemy.hp).toBe(3);
-    hp = c.enemy.hp;
-    play('bobTheBuilder');
-    expect(hp - c.enemy.hp).toBe(0);
-    expect(c.has('hero', 'workLifeBalance')).toBe(false);
   });
 });
 

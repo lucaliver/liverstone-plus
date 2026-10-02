@@ -12,6 +12,8 @@ const HI = 'fill="#fff" opacity=".28"';
 
 const sword = `<path d="M52 5h7v7L30 41l-7-7z"/><path ${HI} d="M55 6l3 1-26 26-2-2z"/><path d="M13 33l18 18-4 4L9 37z"/><path d="M17 45l4 4-9 9-4-4z"/><circle cx="7" cy="57" r="3.5"/>`;
 const swordMirror = `<g transform="translate(64 0) scale(-1 1)">${sword}</g>`;
+const scales = `<rect x="30" y="8" width="4" height="46"/><rect x="18" y="54" width="28" height="6"/><rect x="8" y="12" width="48" height="4"/><path d="M4 36h20c0 6-4 10-10 10S4 42 4 36zM40 30h20c0 6-4 10-10 10s-10-4-10-10z"/><path d="M14 16L6 36h2l6-16 6 16h2zM50 16l-8 14h2l6-10 6 10h2z"/><g fill="#16121f"><rect x="9" y="30" width="10" height="5"/><path d="M45 26h10v4H45z"/></g>`;
+const scalesMirror = `<g transform="translate(64 0) scale(-1 1)">${scales}</g>`;
 const shield = `<path d="M32 5l23 8c0 22-8 37-23 46C17 50 9 35 9 13z"/><path ${HI} d="M32 11l17 6c0 16-6 28-17 35z"/>`;
 const flame = `<path d="M32 4c4 12 18 18 18 34a18 18 0 0 1-36 0c0-9 5-14 8-18 1 6 4 9 7 9-3-9 0-18 3-25z"/><path fill="#fff" opacity=".35" d="M32 32c3 5 8 7 8 14a8 8 0 0 1-16 0c0-4 3-6 4-8 1 2 2 3 3 3-1-4 0-6 1-9z"/>`;
 const snowflake = `<g ${S} stroke-width="4.5"><path d="M32 6v52M9.5 19l45 26M9.5 45l45-26"/><path d="M26 10l6 6 6-6M26 54l6-6 6 6M8 27l8-2-2-8M56 37l-8 2 2 8M8 37l8 2-2 8M56 27l-8-2 2-8"/></g>`;
@@ -503,10 +505,8 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<path d="M10 8h44v48H10v-8a6 6 0 0 0 0-12v-8a6 6 0 0 0 0-12z"/><g fill="#16121f"><rect x="18" y="16" width="28" height="4"/><path d="M22 28h8v20h-6V34h-2zM34 28h12v5h-7v3h7v12H34v-5h7v-3h-7z"/></g>`,
   },
-  scales: {
-    el: 'holy',
-    svg: `<rect x="30" y="8" width="4" height="46"/><rect x="18" y="54" width="28" height="6"/><rect x="8" y="12" width="48" height="4"/><path d="M4 36h20c0 6-4 10-10 10S4 42 4 36zM40 30h20c0 6-4 10-10 10s-10-4-10-10z"/><path d="M14 16L6 36h2l6-16 6 16h2zM50 16l-8 14h2l6-10 6 10h2z"/><g fill="#16121f"><rect x="9" y="30" width="10" height="5"/><path d="M45 26h10v4H45z"/></g>`,
-  },
+  scales: { el: 'holy', svg: scales },
+  scalesMirror: { el: 'holy', svg: scalesMirror },
   complaintBox: {
     el: 'blood',
     svg: `<rect x="8" y="20" width="48" height="40"/><rect x="4" y="14" width="56" height="8"/><rect x="18" y="16" width="28" height="4" fill="#16121f"/><path d="M26 2h14l2 12H24z" fill="#fff" opacity=".85"/><g fill="#16121f"><rect x="16" y="32" width="32" height="4"/><rect x="16" y="40" width="24" height="4"/><rect x="16" y="48" width="28" height="4"/></g>`,

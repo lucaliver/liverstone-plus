@@ -62,7 +62,6 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   tickDown: { icon: 'timer', sign: '-' },
   undo: { icon: 'undo' },
   auto: { icon: 'autopilot', unit: 's' },
-  balance: { icon: 'seesaw' },
   pile: { icon: 'pile' },
   snatch: { icon: 'snatch', unit: '%' },
   pin: { icon: 'pushpin' },

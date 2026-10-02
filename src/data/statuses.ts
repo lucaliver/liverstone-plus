@@ -1,6 +1,6 @@
 import type { Combat } from '../game/combat';
-import type { MoveDef, Side, StatusDef, StatusVal } from '../game/types';
-import { type CardCategory, cardCategory } from './cards';
+import type { CardType, MoveDef, Side, StatusDef, StatusVal, Tone } from '../game/types';
+import { cardCategory } from './cards';
 import { CONFIG } from './config';
 
 /** How long every card played brings the Light Sleeper's hit closer (seconds). */
@@ -15,8 +15,17 @@ export const CHILL_GAP = 2;
 export const IDLE_LIMIT = 3;
 /** Seconds since a card was last played or he last cut in. */
 const idleFor = (c: Combat, s: StatusVal): number => c.time - Math.max(c.lastPlayedAt, s.e ?? 0);
-/** Card colours, by index (a status's free number `e` remembers one). */
-const CATEGORIES: CardCategory[] = ['attack', 'defense', 'utility', 'curse'];
+/** Work-Life Balance and its mirror: for a while, every card of one type also does what the other type is for (`v` of it). */
+const crossOver = (id: string, type: CardType, tone: Tone, run: (c: Combat, v: number) => void): StatusDef => ({
+  id,
+  tone,
+  kind: 'timed',
+  good: true,
+  icon: 'seesaw',
+  onCardPlayed: (c, side, def) => {
+    if (def.type === type) run(c, c.stacks(side, id));
+  },
+});
 /** Golden Parachute: the share of its max HP the enemy is back on its feet with, the Block it retires with and the Strength it gains. */
 const PARACHUTE_HP = 0.4;
 const PARACHUTE_BLOCK = 20;
@@ -103,25 +112,9 @@ const defs: StatusDef[] = [
   { id: 'parry', tone: 'red', kind: 'timed', good: true, icon: 'crossed' },
   { id: 'haste', tone: 'amber', kind: 'timed', good: true, icon: 'gauge', timeMul: 1.5, look: 'enraged' },
   { id: 'rush', tone: 'amber', kind: 'timed', good: true, icon: 'speedCards', beltMul: CONFIG.beltRush },
-  // Work-Life Balance: every card played hits again (for v), until two cards of the same colour come one after the
-  // other; `e` is the colour of the last one.
-  {
-    id: 'workLifeBalance',
-    tone: 'red',
-    kind: 'stacks',
-    good: true,
-    icon: 'seesaw',
-    onCardPlayed: (c, side, def) => {
-      const s = c.fighter(side).statuses.workLifeBalance;
-      const cat = CATEGORIES.indexOf(cardCategory(def.id));
-      if (s.e === cat) {
-        c.removeStatus(side, 'workLifeBalance');
-        return;
-      }
-      s.e = cat;
-      c.hit(s.v);
-    },
-  },
+  // Work-Life Balance: every attack gives Block too. Life-Work Balance: every skill deals damage too.
+  crossOver('workLifeBalance', 'attack', 'teal', (c, v) => c.gainBlock('hero', v)),
+  crossOver('lifeWorkBalance', 'skill', 'red', (c, v) => void c.hit(v)),
   // Autopilot (Severance): cards slipping off the belt play themselves when they can.
   { id: 'autopilot', tone: 'blue', kind: 'timed', good: true, icon: 'autopilot', autoplay: true },
   // Root access (sudo): no rule can stop the hero's cards.

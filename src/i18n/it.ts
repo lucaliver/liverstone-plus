@@ -143,7 +143,7 @@ const it: Record<EnKey, string> = {
   'settings.rightToLeft': 'Nastro da dx a sx',
   'settings.nextFight': 'Ha effetto dal prossimo scontro.',
   'settings.analytics': 'Condividi statistiche',
-  'settings.analyticsHint': 'Solo contatori anonimi (scontri, scelte, esiti): niente nome, niente ID.',
+  'settings.analyticsHint': 'Dati anonimi senza id.',
   'settings.debugMenus': 'Debug',
   'settings.language': 'Lingua',
 
@@ -556,7 +556,9 @@ const it: Record<EnKey, string> = {
   'status.rush': 'Fretta',
   'status.rush.d': 'Il tuo nastro va più veloce: le carte arrivano prima.',
   'status.workLifeBalance': 'Equilibrio Vita-Lavoro',
-  'status.workLifeBalance.d': 'Ogni carta che giochi fa anche {v} danni, finché non arrivano due carte dello stesso colore di fila.',
+  'status.workLifeBalance.d': 'Ogni attacco che giochi dà anche {v} di [block].',
+  'status.lifeWorkBalance': 'Equilibrio Lavoro-Vita',
+  'status.lifeWorkBalance.d': 'Ogni abilità che giochi fa anche {v} danni.',
   'status.autopilot': 'Pilota Automatico',
   'status.autopilot.d': 'Le carte che scivolano giù dal nastro si giocano da sole, gratis.',
   'status.rootAccess': 'Accesso Root',
@@ -879,7 +881,9 @@ const it: Record<EnKey, string> = {
   'card.severance.desc':
     'Ottieni {0} di [strength]. Per {1}s il lavoro si fa da solo: le carte che scivolano giù dal nastro si giocano da sole, gratis.',
   'card.workLifeBalance.name': 'Equilibrio Vita-Lavoro',
-  'card.workLifeBalance.desc': 'Fai {0} danni, poi di nuovo con ogni carta che giochi, finché non giochi due carte dello stesso colore di fila.',
+  'card.workLifeBalance.desc': 'Fai {0} danni. Per {2}s, ogni attacco che giochi dà anche {1} di [block].',
+  'card.lifeWorkBalance.name': 'Equilibrio Lavoro-Vita',
+  'card.lifeWorkBalance.desc': 'Ottieni {0} di [block]. Per {2}s, ogni abilità che giochi fa anche {1} danni.',
   'card.complaintBox.name': 'Cassetta dei Reclami',
   'card.complaintBox.desc':
     'Fai {0} danni. Questa carta ottiene +1 danno per ogni secondo in cui il tuo mana è pieno e va sprecato (ovunque si trovi).',

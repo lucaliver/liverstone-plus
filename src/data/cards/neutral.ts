@@ -301,20 +301,32 @@ export const neutralCards: CardDef[] = [
   },
   {
     id: 'workLifeBalance',
-    face: '{dmg:0}|{balance}',
+    face: '{dmg:0}|{?dmg}{block:1}|{timer:2}',
     cls: 'neutral',
     type: 'attack',
     rarity: 'epic',
     cost: 3,
-    vals: [3],
-    upVals: [4],
+    vals: [4, 4, 10],
+    upVals: [5, 5, 12],
     art: 'scales',
     play: (c, v) => {
       c.hit(v[0]);
-      c.applyStatus('hero', 'workLifeBalance', v[0]);
-      // The balance starts from this card: another attack right after breaks it (no status if that hit won the fight).
-      const s = c.fighter('hero').statuses.workLifeBalance;
-      if (s) s.e = 0;
+      c.applyStatus('hero', 'workLifeBalance', v[1], v[2]);
+    },
+  },
+  {
+    id: 'lifeWorkBalance',
+    face: '{block:0}|{?block}{dmg:1}|{timer:2}',
+    cls: 'neutral',
+    type: 'skill',
+    rarity: 'epic',
+    cost: 3,
+    vals: [4, 4, 10],
+    upVals: [5, 5, 12],
+    art: 'scalesMirror',
+    play: (c, v) => {
+      c.gainBlock('hero', v[0]);
+      c.applyStatus('hero', 'lifeWorkBalance', v[1], v[2]);
     },
   },
   {
