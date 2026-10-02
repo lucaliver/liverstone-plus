@@ -55,7 +55,7 @@ export const PRESSURE_STEP = 6;
 export const PRESSURE_LIMIT = 30;
 const PRESSURE_BLAST = 12;
 /** Flickering Lights: the lights go out on the hero this often (s), for this long (s); the belt reddens for the last `FLICKER_WARN` seconds before. */
-export const FLICKER_EVERY = 25;
+export const FLICKER_EVERY = 16;
 export const FLICKER_TIME = 8;
 const FLICKER_WARN = 3;
 /** Forced Smile: HP it heals every second. */
