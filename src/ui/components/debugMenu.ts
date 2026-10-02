@@ -8,8 +8,8 @@ import { unlockAll } from '../../game/meta';
 import { settings } from '../../game/settings';
 import type { HeroId } from '../../game/types';
 import { openModal, type ModalHandle } from '../app';
-import { openResetConfirm } from './modals';
-import { h } from '../dom';
+import { openCardDetail, openResetConfirm } from './modals';
+import { h, onTapOrHold } from '../dom';
 import { creature } from '../art/creatures';
 import { haptic } from '../fx/fx';
 import { icon } from '../art/icons';
@@ -70,7 +70,6 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
           'aria-pressed': String(hd.id === hero),
           onclick: () => {
             hero = hd.id;
-            extra.length = 0;
             sfx('tap');
             renderHeroes();
             renderCards();
@@ -80,7 +79,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
       ),
     );
   };
-  // Cards of the hero (and the neutral ones), filtered as you type; a tap adds a copy, the count says how many.
+  // Every card, filtered as you type; a tap adds a copy (the count says how many), a hold shows the card.
   const search = h('input', { class: 'debug-search', type: 'search', placeholder: t('debug.cards'), 'aria-label': t('debug.cards') });
   const cardList = h('div', { class: 'debug-cards' });
   const tabs = h('div', { class: 'debug-tabs', role: 'tablist' });
@@ -111,18 +110,23 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
     const q = search.value.trim().toLowerCase();
     cardList.replaceChildren(
       ...Object.values(CARDS)
-        .filter((c) => (c.cls === hero || c.cls === 'neutral') && t(`card.${c.id}.name`).toLowerCase().includes(q))
+        .filter((c) => t(`card.${c.id}.name`).toLowerCase().includes(q))
         .map((c) => {
           const n = extra.filter((id) => id === c.id).length;
-          return h('button', {
+          const btn = h('button', {
             class: 'debug-card',
-            onclick: () => {
+            html: `<span>${t(`card.${c.id}.name`)}</span>${n ? `<b>×${n}</b>` : ''}`,
+          });
+          onTapOrHold(
+            btn,
+            () => {
               extra.push(c.id);
               sfx('tap');
               renderCards();
             },
-            html: `<span>${t(`card.${c.id}.name`)}</span>${n ? `<b>×${n}</b>` : ''}`,
-          });
+            () => openCardDetail({ uid: -1, id: c.id, up: false }),
+          );
+          return btn;
         }),
     );
   };
