@@ -25,11 +25,12 @@ const tabLabel = (c: CardClass): string => t(`compendium.tab.${c}`);
 const TIERS: EnemyDef['tier'][] = ['normal', 'elite', 'boss'];
 
 function foeView(e: EnemyDef): HTMLElement {
+  const met = enemyMet(e.id);
   const el = h('article', {
-    class: 'foe',
-    html: `<div class="foe-head"><div class="foe-art">${creature(e.art)}</div><div class="foe-id"><h3>${enemyMet(e.id) ? t(`enemy.${e.id}.name`) : UNKNOWN}</h3>${
+    class: `foe${met ? '' : ' undiscovered'}`,
+    html: `<div class="foe-head"><div class="foe-art">${creature(e.art)}</div><div class="foe-id"><h3>${met ? t(`enemy.${e.id}.name`) : UNKNOWN}</h3>${
       e.tier !== 'normal' ? `<span class="tier ${e.tier}">${t(`journey.node.${e.tier}`)}</span>` : ''
-    }<span class="foe-hp">${icon('heart')}${Math.round(e.hp * CONFIG.enemyHp)}${e.block ? `<i class="foe-block">${icon('shield')}${e.block}</i>` : ''}</span></div></div>${movePattern(e)}`,
+    }<span class="foe-hp">${icon('heart')}${Math.round(e.hp * CONFIG.enemyHp)}${e.block ? `<i class="foe-block">${icon('shield')}${e.block}</i>` : ''}</span></div></div>${met ? movePattern(e) : ''}`,
   });
   bindMoveDetails(el);
   return el;

@@ -65,6 +65,7 @@
   border: 2px solid var(--void);
 }
 .foe-art .riso { width: 100%; height: 100%; }
+.foe.undiscovered .foe-art .riso { filter: brightness(0); }
 .foe-id {
   display: flex;
   flex-wrap: wrap;

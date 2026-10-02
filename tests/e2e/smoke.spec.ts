@@ -1,4 +1,5 @@
 import { expect, type Page, test } from '@playwright/test';
+import { ENEMY_LIST } from '../../src/data/enemies';
 import { combat, freshGame, signAndStart, startFight } from './helpers';
 
 test('title, hero select and journey render without errors', async ({ page }) => {
@@ -758,8 +759,16 @@ test('holding the version in Settings opens the reset confirmation', async ({ pa
   await expect(page.locator('.splash')).toBeVisible();
 });
 
-test('handbook: pressing a status in a move pattern explains it', async ({ page }) => {
+test('handbook: enemies not met yet are silhouettes with no move pattern', async ({ page }) => {
   await freshGame(page);
+  await page.getByRole('button', { name: /handbook/i }).click();
+  await page.getByRole('tab', { name: /personnel/i }).click();
+  await expect(page.locator('.foe.undiscovered').first()).toBeVisible();
+  await expect(page.locator('.foe.undiscovered .move, .foe.undiscovered [data-status]')).toHaveCount(0);
+});
+
+test('handbook: pressing a status in a move pattern explains it', async ({ page }) => {
+  await freshGame(page, { met: ENEMY_LIST.map((e) => e.id) });
   await page.getByRole('button', { name: /handbook/i }).click();
   await page.getByRole('tab', { name: /personnel/i }).click();
   await page.locator('.foe [data-status]').first().click();
