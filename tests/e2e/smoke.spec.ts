@@ -415,6 +415,23 @@ test('skipping a reward adds max HP', async ({ page }) => {
   expect(await page.evaluate('window.__game.run.maxHp')).toBe(max + 3);
 });
 
+test('closing the game on the reward screen keeps the same offers for Continue, and taking one clears them', async ({ page }) => {
+  await freshGame(page);
+  await startFight(page);
+  await combat(page, "c.damage('hero', 'enemy', 999, { raw: true }, 'hero');");
+  await expect(page.locator('.reward')).toBeVisible({ timeout: 5000 });
+  const offers = (): Promise<unknown> => page.evaluate('JSON.stringify(window.__game.run.reward)');
+  const before = await offers();
+  expect(before).toBeDefined();
+  await page.reload();
+  await page.getByRole('button', { name: /back to work/i }).click();
+  await expect(page.locator('.reward')).toBeVisible();
+  expect(await offers()).toBe(before);
+  await page.locator('.skip-btn').click();
+  await expect(page.locator('.journey')).toBeVisible();
+  expect(await offers()).toBeUndefined();
+});
+
 test('debug menus are off by default, and the Settings switch shows them at once', async ({ page }) => {
   await freshGame(page, { debug: false });
   await expect(page.locator('.debug-fab')).toBeHidden();

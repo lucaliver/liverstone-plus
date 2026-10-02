@@ -102,6 +102,7 @@ tests/         combat, content, balance.sim (+ bot), balance.stats, e2e/
   `VISION` doors are fogged. The first run has a scripted act 1 (`newRun(…, scripted)`, `FIRST_RUN_*`); its later acts are dealt like any run's. Room types (`NodeType`):
   fight, elite, boss, rest, promotion, copy, each a screen in `ROOMS` (`main.ts`). A new room = `NodeType`, `LANES` entry,
   `ROOMS` screen, `NODE_ICON`, `journey.node.*`/`journey.info.*` strings, and a picture: a sprite `room.<type>` in `art/rooms.ts` plus a `ROOM_SCENE` entry (its motion is a class in `rooms.css`) that the screen shows with `roomScene(type)`.
+- **The reward on offer is saved** (`RunState.reward`, set by `offerReward` after a fight, dropped by `nextNode`): Continue reopens the reward screen with the same cards instead of the map.
 - **Rendering is diff-based**: `setText`/`setHtml`/`toggle` write only on change; status chips rebuild only when the set changes.
 
 ## Conventions
@@ -197,4 +198,3 @@ Icons (`ICONS`) and creatures (`CREATURES`) are SVG written for the ink palette 
 - Pixel-art caching (deferred: generation is fast).
 - Biome covers lint and format (no ESLint with TS 7).
 - The balance bot underplays the Mage's chaining and spends abilities as soon as it can.
-- The reward choice is not saved: closing the game on the reward screen loses it.

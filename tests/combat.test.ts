@@ -1652,6 +1652,16 @@ describe('saved runs', () => {
     };
     expect(loadWith({})).toEqual(JSON.parse(JSON.stringify(good)));
     expect(loadWith({ money: undefined })?.money).toBe(0);
+    expect(
+      loadWith({
+        cleared: true,
+        reward: [
+          { id: 'bogus', up: false },
+          { id: Object.keys(CARDS)[0], up: true },
+        ],
+      })?.reward,
+    ).toEqual([{ id: Object.keys(CARDS)[0], up: true }]);
+    expect(loadWith({ cleared: false, reward: [{ id: Object.keys(CARDS)[0], up: true }] })?.reward).toBeUndefined();
     expect(loadWith({ nodes: undefined })).toBeNull();
     expect(loadWith({ current: 999 })).toBeNull();
     expect(loadWith({ path: [0, 999] })).toBeNull();

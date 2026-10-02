@@ -27,8 +27,11 @@ import {
   mapAct,
   newRun,
   type NodeType,
+  offerReward,
+  pendingReward,
   rollRewards,
   saveRun,
+  type RewardOffer,
   type RunState,
 } from './game/run';
 import { chosenMemos, contractSigned, memosOpen, startingFirstRun } from './game/meta';
@@ -92,8 +95,10 @@ function goTitle(): void {
           goTitle();
           return;
         }
-        // A saved run whose node was already completed resumes on the map, choosing the next one.
-        goJourney();
+        // A saved run whose node was already completed resumes on the map, choosing the next one (or on its reward, if it was left open).
+        const pending = pendingReward(run);
+        if (pending) showReward(run, pending);
+        else goJourney();
       },
       onNewRun: () => {
         if (loadRun()) confirmModal(t('menu.abandonConfirm'), t('common.confirm'), goHeroSelect, t('common.cancel'));
@@ -153,9 +158,7 @@ function debugMap(): void {
     },
   }));
   // As if the boss of the act on the map had just fallen: a new shift starts rested (the last act has nothing after it).
-  const cur = currentNode(r);
-  const debugAct = r.cleared && cur.type === 'boss' && cur.next.length ? r.nodes[cur.next[0]].act : cur.act;
-  const boss = r.nodes.find((n) => n.act === debugAct && n.type === 'boss');
+  const boss = r.nodes.find((n) => n.act === mapAct(r) && n.type === 'boss');
   const nextAct = boss?.next.length
     ? {
         label: t('debug.nextAct'),
@@ -227,7 +230,12 @@ function afterCombat(combat: Combat): void {
   }
   // Elites and act bosses pay better (bosses in legendary cards only).
   const picks = rollRewards(r, node.type === 'fight' ? 'fight' : node.type === 'boss' ? 'boss' : 'elite');
+  offerReward(r, picks);
   saveRun(r);
+  showReward(r, picks);
+}
+
+function showReward(r: RunState, picks: RewardOffer[]): void {
   show(inAct(rewardScreen(r, picks, nextNode), r));
 }
 
@@ -235,6 +243,7 @@ function afterCombat(combat: Combat): void {
 function nextNode(): void {
   if (!run) return;
   run.cleared = true;
+  delete run.reward;
   if (!currentNode(run).next.length) {
     endRun(run, true);
     return;

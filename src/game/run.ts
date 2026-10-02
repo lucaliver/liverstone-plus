@@ -40,7 +40,7 @@ export interface RunStats {
 }
 
 /** Shape of the saved run; a save of another version is dropped. */
-const SAVE_VERSION = 3;
+const SAVE_VERSION = 4;
 
 export interface RunState {
   version: number;
@@ -69,6 +69,8 @@ export interface RunState {
   mods: string[];
   /** The very first run: act 1's map is fixed and its first rewards are picked (`HeroDef.firstRewards`); later acts are dealt as usual. */
   scripted?: boolean;
+  /** The card reward on offer after a fight, until it is taken or skipped: kept in the save so closing the game on that screen doesn't lose it. */
+  reward?: { id: string; up: boolean }[];
 }
 
 const SAVE_KEY = 'run';
@@ -336,6 +338,14 @@ export function rollRewards(run: RunState, kind: RewardKind): RewardOffer[] {
   return picks.map((def, i) => ({ def, up: i === upgraded }));
 }
 
+/** Remembers the offers shown to the player (see `RunState.reward`). */
+export function offerReward(run: RunState, picks: RewardOffer[]): void {
+  run.reward = picks.map((p) => ({ id: p.def.id, up: p.up }));
+}
+
+/** The offers of a reward the player left unanswered, if any. */
+export const pendingReward = (run: RunState): RewardOffer[] | undefined => run.reward?.map(({ id, up }) => ({ def: CARDS[id], up }));
+
 function newCard(run: RunState, id: string): CardInst {
   resetUid(run.uid);
   const card = { uid: nextUid(), id, up: false };
@@ -564,7 +574,8 @@ const isNode = (n: unknown, i: number, len: number): n is RunNode => {
 /** Saved data is untrusted: a run that doesn't have the exact shape (or names content that no longer exists) is dropped. */
 function parseRun(raw: unknown): RunState | null {
   if (!isObj(raw) || raw.version !== SAVE_VERSION) return null;
-  const { hero, hp, maxHp, seed, rng, uid, current, cleared, deck, relics, relicFlags, nodes, path, stats, money, skips, mods, scripted } = raw;
+  const { hero, hp, maxHp, seed, rng, uid, current, cleared, deck, relics, relicFlags, nodes, path, stats, money, skips, mods, scripted, reward } =
+    raw;
   const heroId = HERO_LIST.find((hd) => hd.id === hero)?.id;
   if (!heroId || !isNum(hp) || !isNum(maxHp) || !isNum(seed) || !isNum(rng) || !isNum(uid) || typeof cleared !== 'boolean') return null;
   if (!Array.isArray(deck) || !deck.every(isCard) || !isStrings(relics)) return null;
@@ -574,6 +585,9 @@ function parseRun(raw: unknown): RunState | null {
   const { kills, elites, cardsPlayed, damageTaken } = stats;
   if (!isNum(kills) || !isNum(elites) || !isNum(cardsPlayed) || !isNum(damageTaken)) return null;
   if (Math.max(...nodes.map((n) => n.act)) !== ACTS) return null;
+  const offers = Array.isArray(reward)
+    ? reward.filter((o): o is { id: string; up: boolean } => isObj(o) && typeof o.id === 'string' && !!CARDS[o.id] && typeof o.up === 'boolean')
+    : [];
   return {
     version: SAVE_VERSION,
     seed,
@@ -594,6 +608,7 @@ function parseRun(raw: unknown): RunState | null {
     uid,
     mods: isStrings(mods) ? mods.filter((id) => id in MODIFIERS) : [],
     scripted: scripted === true,
+    reward: cleared && offers.length ? offers.map(({ id, up }) => ({ id, up })) : undefined,
   };
 }
 
