@@ -2,21 +2,19 @@
 
 Real-time conveyor-belt deckbuilder for mobile browsers (portrait): a fantasy adventure run as a factory job, with a bit
 of social satire. [README.md](README.md) is the owner's feature overview (Italian, no numbers: balancing never touches it).
-This file is the technical guide: read it before changing code. Field-by-field details live in the doc comments of
-`src/game/types.ts`; read those, not a copy here.
+This file is the technical guide: read it before changing code. Field-by-field details live are in the doc comments of
+`src/game/types.ts`.
 
 ## Working agreement
 
 - Reply to the owner in **Italian**. Game text is **English** (i18n-ready).
 - One task, one commit (git history is the task log). Small tweaks can share a commit.
-- Style: **riso pop inks + pixel art, a bit dark/scary**. No gradients for shading, glows, fake 3D, decorative background
-  circles, emoji or Unicode symbols as icons (pixel icons only). Industrial/robotic/steampunk touches grow act by act
-  (act 1: a factory inside a crypt: bones, candles, a little brass).
-- Tone: a run is a **workday**, each act a **shift**. Cards, enemies, moves, curses and UI words use workplace names
-  (*Punch*, *Toxic Coworker*, *Deadline*, *Clock in*); satire hits management and coworkers alike. Heroes stay fantasy with a
+- Style: **riso pop inks + pixel art, a bit dark/scary**. NO gradients for shading, glows, fake 3D, decorative background
+  circles, emoji or Unicode symbols as icons (pixel icons only). Industrial/robotic/steampunk/chill/strange vibes change act by act.
+- Tone: a run is a **workday**, each act a **shift**. Cards, enemies, moves, curses and UI words use workplace names, media or pop or history or political references; satire hits management and coworkers alike. Heroes stay fantasy with a
   light job touch. Statuses and keywords keep plain game names (Poison, Block, Rush…).
-- Before handing over: `npm run check` and `npm run e2e` pass. Only for UI changes, look at the screens you touched with one
-  Playwright screenshot at 390×844 (375×620 only if the layout is tight), taken once at the end. Every image stays in the context.
+- Before handing over: `npm run check` and `npm run e2e` pass. Only for important UI changes, look at the screens you touched with one
+  Playwright screenshot at 390×844 (375×620 only if the layout is tight), taken once at the end. Don't keep images in the folder.
 - Balance: one quick `npm run sim` pass is enough while design moves.
 - Bump `version` in `package.json` after every big batch (shown in the home screen's Settings only, with the build time, `__BUILD_TIME__`).
 - Keep this file true: fix any line a change makes stale, in the same commit.
@@ -56,6 +54,7 @@ This file is the technical guide: read it before changing code. Field-by-field d
   `ABILITY_ICON`). Tunable numbers live in `data/config.ts` or the records, never inline in UI or engine.
 - Every player-facing string goes through `t()`; use `{placeholders}` and plurals, never English word order.
 - Layout survives phones from 375×620 up and longer text: no fixed text widths, no positions that depend on string length.
+- Use best practice, centralised stuff, no repetition, no hardcoded.
 
 ## Stack and commands
 
@@ -128,7 +127,7 @@ tests/         combat, content, balance.sim (+ bot), e2e/
 
 ### Act 3 rules (night shift)
 
-New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHits`), `assemblyLine` (`canPlay`), `overtimeCreep`, `lowBattery`, `machineLearning`, `pressure`, `boardroom`; their numbers are constants at the top of the file. `music.ts` has `combat3`/`map3` for the act; its clock runs past midnight (`shift: [22, 30]`).
+New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHits`), `assemblyLine` (`canPlay`), `overtimeCreep`, `lowBattery`, `machineLearning`, `pressure`, `boardroom`, `understudy`; their numbers are constants at the top of the file. `music.ts` has `combat3`/`map3` for the act; its clock runs past midnight (`shift: [22, 30]`).
 
 ### Relics
 
@@ -144,6 +143,8 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 `status.`, `kw.`, `hero.`…), covered by the content test. Plurals: `{n|one|other}`. Languages: `en` (default) and `it`, picked in Settings (`settings.locale`, reloads the page). A new string goes in **both** files (a test checks same keys and placeholders: `{n}`, `{$name}`, `[kw]`); a new language: copy `en.ts`, register in `core/i18n.ts`. Italian keeps game words translated (Blocco, Veleno, Forza…) and the workplace-satire tone.
 
 **Never type a game number in a string.** A number rules text quotes (a duration, a percentage, a threshold) goes in as `{$name}`, read from `VALUES` in `data/values.ts`, which takes it from the constant, status or record that makes the rule work (export the constant, don't copy it). Card values stay `{0}`/`{1}`, relic/perk numbers `{n}`. A test checks every `{$name}` has a value and every value is used.
+
+NOTE: italian translations may not be litteral english translation, or could keep the international term.
 
 ### UI and interaction
 

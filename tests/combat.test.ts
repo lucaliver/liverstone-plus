@@ -3,7 +3,7 @@ import { Combat, type CombatSetup } from '../src/game/combat';
 import { CONFIG, EXPIRE_POS, rewardUpgradeChance } from '../src/data/config';
 import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
-import { STATUSES } from '../src/data/statuses';
+import { FLICKER_EVERY, SMILE_HEAL, STATUSES, UNDERSTUDY_BLOCK, UNDERSTUDY_EVERY } from '../src/data/statuses';
 import { CARD_LIST, CARDS } from '../src/data/cards';
 import { RELICS } from '../src/data/relics';
 import { hasStamp, memosOpen, stampAct } from '../src/game/meta';
@@ -2076,6 +2076,35 @@ describe('act 3 rules, second batch', () => {
     expect(c.hero.mana).toBe(5);
     run(c, 2);
     expect(c.hero.mana).toBeLessThan(5);
+  });
+
+  it("Flickering Lights: the hero's cards go dark on their own now and then", () => {
+    const c = setup({ enemy: { ...ENEMIES.nightJanitor, main: { ...ENEMIES.nightJanitor.main, windup: 999 } } });
+    run(c, CONFIG.introTime + FLICKER_EVERY - 2);
+    expect(c.has('hero', 'blackout')).toBe(false);
+    run(c, 3);
+    expect(c.has('hero', 'blackout')).toBe(true);
+  });
+
+  it('Forced Smile heals the enemy every second', () => {
+    const c = setup({ enemy: { ...ENEMIES.happinessOfficer, main: { ...ENEMIES.happinessOfficer.main, windup: 999 } } });
+    c.enemy.hp -= 10;
+    const hp = c.enemy.hp;
+    run(c, CONFIG.introTime + 3.5);
+    expect(c.enemy.hp).toBe(hp + 3 * SMILE_HEAL);
+  });
+
+  it('Understudy: every few cards you play, the enemy copies the work and gains Block', () => {
+    const c = setup({ enemy: { ...ENEMIES.replacement, main: { ...ENEMIES.replacement.main, windup: 999 } } });
+    run(c, CONFIG.introTime + 8);
+    c.enemy.block = 0;
+    const play = (): void => {
+      c.playCard(c.belt.find((b) => c.isPlayable(b.card))!.card.uid, true);
+    };
+    for (let i = 0; i < UNDERSTUDY_EVERY - 1; i++) play();
+    expect(c.enemy.block).toBe(0);
+    play();
+    expect(c.enemy.block).toBe(UNDERSTUDY_BLOCK);
   });
 
   it('the Withered Ficus stings back when an attack card hits it', () => {

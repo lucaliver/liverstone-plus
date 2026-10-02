@@ -54,6 +54,15 @@ export const PRESSURE_EVERY = 5;
 export const PRESSURE_STEP = 6;
 export const PRESSURE_LIMIT = 30;
 const PRESSURE_BLAST = 12;
+/** Flickering Lights: the lights go out on the hero this often (s), for this long (s); the belt reddens for the last `FLICKER_WARN` seconds before. */
+export const FLICKER_EVERY = 25;
+export const FLICKER_TIME = 8;
+const FLICKER_WARN = 3;
+/** Forced Smile: HP it heals every second. */
+export const SMILE_HEAL = 1;
+/** Understudy: every this many cards the hero plays it copies the work and gains this much Block. */
+export const UNDERSTUDY_EVERY = 4;
+export const UNDERSTUDY_BLOCK = 6;
 /** Paradigm Shift: the belt turns around each time the enemy loses another 1/this of its max HP. */
 export const PARADIGM_TURNS = 4;
 /** The Board: what the first director to leave brings (Block, Strength); the second one speeds the whole board up. */
@@ -430,6 +439,47 @@ const defs: StatusDef[] = [
     tick: everySecond((c, _side, n, s) => {
       if (n % CHIRP_EVERY === 0 && c.hero.mana > 0) c.drainMana(s.v);
     }),
+  },
+  // Flickering lights: every so often the hero's cards go dark (a Blackout), with a little warning.
+  {
+    id: 'flickeringLights',
+    tone: 'purple',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'bulbOff',
+    tick: everySecond((c, _side, n) => {
+      if (n % FLICKER_EVERY === 0) c.applyStatus('hero', 'blackout', 1, FLICKER_TIME);
+    }),
+    warning: (_c, s) => {
+      const left = FLICKER_EVERY - ((s.e ?? 0) % FLICKER_EVERY);
+      return left < FLICKER_WARN ? 1 - left / FLICKER_WARN : 0;
+    },
+  },
+  // Forced smile: `v` HP back every second, for good.
+  {
+    id: 'forcedSmile',
+    tone: 'green',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'leaf',
+    tick: everySecond((c, side, _n, s) => c.heal(side, s.v * SMILE_HEAL)),
+  },
+  // Understudy: it copies your work, a few cards at a time. `mem.understudy` counts them.
+  {
+    id: 'understudy',
+    tone: 'teal',
+    kind: 'stacks',
+    good: true,
+    passive: true,
+    icon: 'copy',
+    onCardPlayed: (c, side) => {
+      if (side !== 'enemy') return;
+      const n = (c.enemy.mem.understudy ?? 0) + 1;
+      c.enemy.mem.understudy = n % UNDERSTUDY_EVERY;
+      if (n >= UNDERSTUDY_EVERY) c.gainBlock(side, UNDERSTUDY_BLOCK);
+    },
   },
   // Machine learning: `e` counts the cards you let slip.
   {

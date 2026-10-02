@@ -216,7 +216,6 @@ const defs: EnemyDef[] = [
     specials: [
       atk('goldenHandshake', 10, 8, { intent: 'steal', steal: 2 }),
       { id: 'stockBuyback', intent: 'buff', windup: 5, block: 10, status: [{ id: 'strength', v: 2, target: 'enemy' }] },
-      { id: 'legacyProject', intent: 'curse', windup: 5, curse: [{ id: 'debt', n: 1, to: 'belt' }] },
     ],
     start: [{ id: 'goldenParachute' }],
   },
@@ -230,8 +229,15 @@ const defs: EnemyDef[] = [
     main: atk('taylorsStopwatch', 8, 6, ramp),
     every: 2,
     specials: [
-      { id: 'writeUps', intent: 'curse', windup: 7, curse: [{ id: 'writeUp', n: 2, to: 'draw' }] },
-      { id: 'deadlines', intent: 'curse', windup: 7, curse: [{ id: 'deadline', n: 2, to: 'belt' }] },
+      {
+        id: 'writeUpsAndDeadlines',
+        intent: 'curse',
+        windup: 7,
+        curse: [
+          { id: 'writeUp', n: 1, to: 'draw' },
+          { id: 'deadline', n: 1, to: 'belt' },
+        ],
+      },
       { id: 'crunchTime', intent: 'debuff', windup: 5, status: [{ id: 'crunch', t: 10, target: 'hero' }] },
       atk('youreFired', 24, 12, { intent: 'charge' }),
     ],
@@ -304,6 +310,7 @@ const defs: EnemyDef[] = [
       { id: 'pizzaParty', intent: 'curse', windup: 5, curse: [{ id: 'freePizza', n: 4, to: 'draw' }] },
       { id: 'positiveVibes', intent: 'buff', windup: 5, status: [gainStrength, { id: 'regen', v: 5, target: 'enemy' }] },
     ],
+    start: [{ id: 'forcedSmile' }],
   },
   {
     id: 'wellnessCoach',
@@ -371,10 +378,9 @@ const defs: EnemyDef[] = [
     art: 'nightJanitor',
     main: atk('wetMop', 3, 3),
     every: 6,
-    specials: [
-      { id: 'lightsOut', intent: 'debuff', windup: 5, status: [gainStrength, { id: 'blackout', t: 10, target: 'hero' }] },
-      { id: 'fuseBox', intent: 'curse', windup: 6, curse: [{ id: 'pcLoadLetter', n: 1, to: 'belt' }], status: [gainStrength] },
-    ],
+    specials: [{ id: 'fuseBox', intent: 'curse', windup: 6, curse: [{ id: 'pcLoadLetter', n: 1, to: 'belt' }], status: [gainStrength] }],
+    // The lights go out on their own now and then: no move to read for it.
+    start: [{ id: 'flickeringLights' }],
   },
   {
     // The office chair nobody claims: spins, sinks, and swears the RGB strip adds performance.
@@ -653,13 +659,10 @@ const defs: EnemyDef[] = [
     tier: 'normal',
     hp: 120,
     art: 'microwave',
-    main: atk('reheat', 8, 7),
-    every: 3,
-    specials: [
-      atk('beepBeepBeep', 4, 9, { hits: 3 }),
-      { id: 'leftoverFish', intent: 'debuff', windup: 6, status: [gainStrength, { id: 'poison', v: 4, target: 'hero' }] },
-      atk('metalForkIncident', 22, 14, { intent: 'charge' }),
-    ],
+    // Five quick dings, then the smell.
+    main: atk('beepBeepBeep', 5, 3),
+    every: 5,
+    specials: [{ id: 'leftoverFish', intent: 'debuff', windup: 6, status: [gainStrength, { id: 'poison', v: 3, target: 'hero' }] }],
   },
   {
     // Nobody watered it since spring: every attack you land with a card stings back.
@@ -702,6 +705,7 @@ const defs: EnemyDef[] = [
       { id: 'safetyInterlock', intent: 'curse', windup: 6, curse: [{ id: 'lockout', n: 1, to: 'belt' }] },
       atk('crush', 18, 11, { intent: 'charge' }),
     ],
+    start: [{ id: 'understudy' }],
     halfSpeech: true,
     onHalf: (c) => c.applyStatus('enemy', 'haste', 1, 9999),
   },
