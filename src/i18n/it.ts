@@ -394,7 +394,7 @@ const it: Record<EnKey, string> = {
   'relic.unionArmband.name': 'Fascia Sindacale',
   'relic.unionArmband.d': 'Inizia ogni scontro con {n} di Forza.',
   'relic.inboxZero.name': 'Inbox Zero',
-  'relic.inboxZero.d': 'Inizia ogni scontro con {n} di mana in più.',
+  'relic.inboxZero.d': 'Inizia ogni scontro con {n} di mana in più. La barra del mana ne contiene uno in più.',
   'relic.heavyStapler.name': 'Pinzatrice Pesante',
   'relic.heavyStapler.d': 'Ogni {n}ª carta che giochi fa anche {$staplerDamage} danni.',
   'relic.spareBadge.name': 'Badge di Scorta',

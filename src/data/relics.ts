@@ -81,6 +81,7 @@ const defs: RelicDef[] = [
     id: 'inboxZero',
     rarity: 'rare',
     n: BOOT_MANA,
+    mods: { maxMana: 1 },
     hooks: {
       onCombatStart: (c) => {
         c.gainMana(BOOT_MANA);

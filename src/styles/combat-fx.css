@@ -110,6 +110,14 @@
 .floater.hurt { --splat: var(--splat-hurt); }
 .floater.k-poison { --splat: var(--green); }
 .floater.k-burn { --splat: var(--splat-burn); }
+/* burn: a flame-shaped blot with no drips, so fire reads differently from blood */
+.floater.k-burn::before {
+  clip-path: polygon(
+    0 70%, 10% 40%, 18% 55%, 28% 18%, 38% 42%, 50% 0, 62% 40%, 72% 14%, 82% 50%, 90% 30%, 100% 68%,
+    90% 100%, 10% 100%
+  );
+}
+.floater.k-burn::after { display: none; }
 .floater.dmg::before,
 .floater.hurt::before {
   content: '';

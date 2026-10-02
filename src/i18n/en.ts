@@ -392,7 +392,7 @@ const en = {
   'relic.unionArmband.name': 'Union Armband',
   'relic.unionArmband.d': 'Start every fight with {n} Strength.',
   'relic.inboxZero.name': 'Inbox Zero',
-  'relic.inboxZero.d': 'Start every fight with {n} extra mana.',
+  'relic.inboxZero.d': 'Start every fight with {n} extra mana. Your mana bar holds one more.',
   'relic.heavyStapler.name': 'Heavy Stapler',
   'relic.heavyStapler.d': 'Every {n}th card you play also deals {$staplerDamage} damage.',
   'relic.spareBadge.name': 'Spare Badge',
