@@ -1,5 +1,5 @@
 import { t } from '../../core/i18n';
-import { CARDS, cardCategory, cardCostOf, cardKeywordsOf, cardValsOf } from '../../data/cards';
+import { CARDS, cardCostOf, cardKeywordsOf, cardValsOf } from '../../data/cards';
 import { PERKS } from '../../data/perks';
 import { STATUSES } from '../../data/statuses';
 import type { Combat } from '../../game/combat';
@@ -45,7 +45,6 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   crystal: { icon: 'crystalSlot', sign: '+' },
   poison: { icon: 'drop' },
   thorns: { icon: 'thorns', sign: '+' },
-  spell: { icon: 'wand', sign: '+' },
   regen: { icon: 'redCross', sign: '+' },
   vuln: { icon: 'crack', unit: 's' },
   weak: { icon: 'broken', unit: 's' },
@@ -186,7 +185,6 @@ export function cardView(card: CardInst & { bonus?: number }, opts: CardViewOpts
     'data-cls': def.cls,
     'data-type': def.type,
     'data-rarity': def.rarity,
-    'data-cat': cardCategory(def.id),
     'data-uid': card.uid,
     'aria-label': cardName(card),
   });

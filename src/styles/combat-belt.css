@@ -243,10 +243,11 @@
 .card.ruled .c-top,
 .card.ruled .c-art,
 .card.ruled .c-face { opacity: 0.7; }
-.card[data-cat='attack'] { --rule-ink: var(--p); }
-.card[data-cat='defense'] { --rule-ink: var(--b); }
-.card[data-cat='utility'] { --rule-ink: var(--cat-utility-ink); }
-.card[data-cat='curse'] { --rule-ink: var(--green); }
+.card[data-type='attack'] { --rule-ink: var(--p); }
+.card[data-type='defense'] { --rule-ink: var(--b); }
+.card[data-type='skill'] { --rule-ink: var(--cat-skill-ink); }
+.card[data-type='power'] { --rule-ink: var(--k); }
+.card[data-type='curse'] { --rule-ink: var(--green); }
 .pin-badge {
   position: absolute;
   right: -8cqw;

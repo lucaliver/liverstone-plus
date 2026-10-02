@@ -3,7 +3,8 @@ import type { Combat } from './combat';
 
 export type HeroId = 'warrior' | 'mage' | 'necromancer';
 export type CardClass = HeroId | 'neutral' | 'curse';
-export type CardType = 'attack' | 'spell' | 'skill' | 'power' | 'potion' | 'curse';
+/** A card's type is the colour of its background: attack pink, defense blue, skill yellow, power grey, curse green. */
+export type CardType = 'attack' | 'defense' | 'skill' | 'power' | 'curse';
 export type Rarity = 'starter' | 'common' | 'rare' | 'epic' | 'legendary' | 'special';
 export type Keyword = 'exhaust' | 'consume' | 'fleeting' | 'unplayable' | 'volatile' | 'innate' | 'pending' | 'bulky';
 export type Side = 'hero' | 'enemy';
@@ -102,8 +103,6 @@ export interface CardDef {
    * `|` starts a new line. The full rules text lives in i18n (`card.<id>.desc`).
    */
   face: string;
-  /** Art colour family override (otherwise derived from the face). */
-  cat?: 'attack' | 'defense' | 'utility' | 'curse';
   /** Unlock pack id; cards without a pack are always available. */
   pack?: string;
   /** Card widths it covers on the belt (default 1): wider cards ride over the ones ahead of them. */

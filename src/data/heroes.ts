@@ -70,13 +70,13 @@ const mage: HeroDef = {
     },
   },
   hooks: {
-    // Multitasking: each spell cast within the window adds a stack (+1 spell damage each).
+    // Multitasking: each attack played within the window adds a stack (+1 attack damage each).
     onCardPlayed: (c, _card, def) => {
-      if (def.type !== 'spell') return;
+      if (def.type !== 'attack') return;
       const stacks = Math.min(CONFIG.multitaskingMax, c.stacks('hero', 'multitasking') + 1);
       c.hero.statuses.multitasking = { v: stacks, t: CONFIG.multitaskingWindow };
     },
-    bonusDamage: (c, def) => (def?.type === 'spell' ? c.stacks('hero', 'multitasking') : 0),
+    bonusDamage: (c, def) => (def?.type === 'attack' ? c.stacks('hero', 'multitasking') : 0),
   },
 };
 

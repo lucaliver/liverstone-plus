@@ -297,13 +297,7 @@ export function createCardLayer(v: CombatView): CardLayer {
     const swept = flings.get(ce.card.uid);
     flings.delete(ce.card.uid);
     const target =
-      reason === 'swept'
-        ? null
-        : reason === 'stolen' || def.type === 'attack' || def.type === 'spell' || (def.type === 'potion' && def.dmg)
-          ? v.enemyPoint()
-          : reason === 'expired'
-            ? null
-            : v.heroPoint();
+      reason === 'swept' ? null : reason === 'stolen' || def.type === 'attack' ? v.enemyPoint() : reason === 'expired' ? null : v.heroPoint();
     const base = (el2.style.transform || '').replace(/scale\([^)]*\)|rotate\([^)]*\)/g, '');
     if (swept) {
       el2.classList.add('fall-out');
@@ -316,8 +310,8 @@ export function createCardLayer(v: CombatView): CardLayer {
       const dy = target.y - (rc.top + rc.height / 2);
       el2.classList.add('fly-out');
       el2.style.transform = `${base} translate3d(${dx}px, ${dy}px, 0) scale(.35) rotate(${dx > 0 ? 20 : -20}deg)`;
-      // Skills have their own effects (Block, heal, mana…): only the other cards land with a hit.
-      if (reason === 'played' && def.type !== 'skill') setTimeout(() => burst('hit', target.x, target.y, 8), cssMs('--dur-fly'));
+      // Only attacks land with a hit: the other cards have their own effects (Block, heal, mana…).
+      if (reason === 'played' && def.type === 'attack') setTimeout(() => burst('hit', target.x, target.y, 8), cssMs('--dur-fly'));
     }
     setTimeout(() => el2.remove(), cssMs(el2.classList.contains('fall-out') ? '--dur-fall' : '--dur-fly') + SLACK_MS);
   };

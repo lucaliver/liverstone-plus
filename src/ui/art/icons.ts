@@ -644,7 +644,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     svg: `<path d="M30 56C8 41 3 27 10 17c6-9 16-8 20 0l-4 10 6 8-4 10 2 11zM34 56c23-15 28-29 21-39-6-9-16-8-20 0l-3 10 6 8-4 10z"/>`,
   },
   check: { el: 'holy', svg: `<path d="M4 34l10-10 12 12L50 12l10 10-34 34z"/>` },
-  wand: { el: 'arcane', svg: `<path d="M6 52l30-30 7 7-30 30z"/>${star4(46, 18, 15)}` },
   gauge: {
     el: 'steel',
     svg: `<path d="M4 46a28 28 0 0 1 56 0z"/><path d="M32 46l16-20" stroke="#16121f" stroke-width="5"/><circle cx="32" cy="46" r="5" fill="#16121f"/><rect x="4" y="48" width="56" height="7"/>`,

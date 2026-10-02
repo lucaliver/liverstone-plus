@@ -76,7 +76,7 @@ mosse. Tra uno scontro e l'altro migliori il mazzo.
 | | Guerriero | Mago | Negromante |
 | --- | --- | --- | --- |
 | Mestiere | Ha perso un braccio all'ora di punta | Il tecnico I.T. che sa la tua password | Leader di un culto sindacale |
-| Archetipo | Blocco e attacchi pesanti | Catene di incantesimi, gelo, fuoco | Veleno |
+| Archetipo | Blocco e attacchi pesanti | Catene di attacchi, gelo, fuoco | Veleno |
 | Sblocco | Subito | Finisci una run col Guerriero | Arriva al boss dell'Atto 1 |
 
 Ognuno ha una passiva, un'abilità a mana e un numero diverso di slot sleeve. I mazzi iniziali hanno solo carte base e

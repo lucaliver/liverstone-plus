@@ -112,6 +112,7 @@ tests/         combat, content, balance.sim (+ bot), balance.stats, e2e/
 - `face` grammar: `{kind:i}` icon + value · `{kind}` icon · `{?kind}` condition ("if", in brackets) · `{*kind}` trigger ("every time", a loop icon) · `{i}` bare value · `|` new line. Kinds in
   `GLYPHS` (`cardView.ts`). `desc`: `{i}` values, `[kw]` keywords (need `kw.<kw>` and `kw.<kw>.d`).
 - Keywords that change the engine are in `Keyword` (`types.ts`); glossary-only ones just need `kw.*` strings.
+- **A card's `type` is the colour of its background**: attack pink, defense blue, skill yellow, power grey, curse green (`--cat-*` tokens, `data-type` on the card). There are no other types (no spell, no potion): rules and effects name a type ("every attack", "every defence card") and the player sees it on the card.
 - Cost, keywords and values of a copy always come from `cardCostOf`/`cardKeywordsOf`/`cardValsOf` (upgrades and **perks**
   included). Set `dmg: []` only for raw damage that ignores modifiers.
 - Special mechanics (`ride`, `onOverflow`, `tip`, `sweep`, `costDrop`, `inSleeve`, `span`/`tall`/`lockRow`, `pack`) are

@@ -1,9 +1,9 @@
 import { availableLocales, getLocale, setLocale, type TKey, t } from '../../core/i18n';
 import { setSfxVolume, sfx } from '../../audio/sfx';
 import { setMusicVolume } from '../../audio/music';
-import { CARDS, type CardCategory, cardCategory, cardCostOf } from '../../data/cards';
+import { CARDS, cardCostOf } from '../../data/cards';
 import { saveSettings, settings } from '../../game/settings';
-import type { CardInst, Rarity } from '../../game/types';
+import type { CardInst, CardType, Rarity } from '../../game/types';
 import { clearAll } from '../../core/save';
 import { confirmModal, type ModalAction, openModal, type ModalHandle } from '../app';
 import { cssMs, h, onPress, onTapOrHold, stagger } from '../dom';
@@ -271,11 +271,11 @@ export function openCardDetail(card: CardInst, onClose?: () => void): ModalHandl
 }
 
 /** Sorting by type goes by the art's colour family, the only type the player sees. */
-const TYPE_ORDER: CardCategory[] = ['attack', 'defense', 'utility', 'curse'];
+const TYPE_ORDER: CardType[] = ['attack', 'defense', 'skill', 'power', 'curse'];
 const RARITY_ORDER: Rarity[] = ['starter', 'common', 'rare', 'epic', 'legendary', 'special'];
 const SORT_KEYS = {
   cost: (c: CardInst): number => cardCostOf(c),
-  type: (c: CardInst): number => TYPE_ORDER.indexOf(cardCategory(c.id)),
+  type: (c: CardInst): number => TYPE_ORDER.indexOf(CARDS[c.id].type),
   rarity: (c: CardInst): number => RARITY_ORDER.indexOf(CARDS[c.id].rarity),
 };
 const DECK_SORTS = ['cost', 'type', 'rarity'] as const;
@@ -460,7 +460,8 @@ export function openCardAnatomy(): ModalHandle {
       `${t('anatomy.art.d')}<br>${inks([
         ['var(--cat-attack)', 'anatomy.art.attack'],
         ['var(--cat-defense)', 'anatomy.art.defense'],
-        ['var(--cat-utility)', 'anatomy.art.utility'],
+        ['var(--cat-skill)', 'anatomy.art.skill'],
+        ['var(--cat-power)', 'anatomy.art.power'],
         ['var(--cat-curse)', 'anatomy.art.curse'],
       ])}`,
     ],

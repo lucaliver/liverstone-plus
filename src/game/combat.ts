@@ -2,7 +2,7 @@ import { Emitter } from '../core/emitter';
 import { Rng } from '../core/rng';
 import { CONFIG, EXPIRE_POS } from '../data/config';
 import { STATUSES } from '../data/statuses';
-import { CARDS, type CardCategory, cardCategory, cardCostOf, cardKeywordsOf, cardValsOf } from '../data/cards';
+import { CARDS, CLASS_HIT, cardCostOf, cardKeywordsOf, cardValsOf } from '../data/cards';
 import { HEXES } from '../data/hexes';
 import { RELICS } from '../data/relics';
 import type { TKey } from '../core/i18n';
@@ -10,6 +10,7 @@ import type {
   BeltCard,
   CardDef,
   CardInst,
+  CardType,
   CombatCard,
   CombatEvent,
   CombatResult,
@@ -908,9 +909,9 @@ export class Combat {
     }
   }
 
-  /** Plays, for free, every card of a colour that is on the belt now, the one nearest the exit first (skipping any that can't be played right now). */
-  playBelt(category: CardCategory): void {
-    const cards = this.belt.filter((b) => cardCategory(b.card.id) === category).sort((a, b) => b.pos - a.pos);
+  /** Plays, for free, every card of a type that is on the belt now, the one nearest the exit first (skipping any that can't be played right now). */
+  playBelt(type: CardType): void {
+    const cards = this.belt.filter((b) => CARDS[b.card.id].type === type).sort((a, b) => b.pos - a.pos);
     for (const { card } of cards) {
       if (this.result) return;
       if (
@@ -977,7 +978,7 @@ export class Combat {
   /** Hero deals card damage to the enemy. Returns total unblocked damage. */
   hit(base: number, opts: DamageOpts = {}): number {
     const def = this.current?.def ?? null;
-    const kind = opts.kind ?? (def?.type === 'spell' ? 'arcane' : def?.type === 'attack' ? 'slash' : 'blunt');
+    const kind = opts.kind ?? (def ? (CLASS_HIT[def.cls] ?? (def.type === 'attack' ? 'slash' : 'blunt')) : 'blunt');
     let total = 0;
     for (let i = 0; i < (opts.hits ?? 1) && !this.result; i++) {
       total += this.damage('hero', 'enemy', base, { ...opts, kind }, 'hero', i);
@@ -1001,7 +1002,6 @@ export class Combat {
     let dmg = base;
     if (from === 'hero') {
       if (def?.type === 'attack') dmg += this.strengthOf('hero');
-      if (def?.type === 'spell') dmg += this.stacks('hero', 'spellPower');
       dmg += this.heroDef.hooks.bonusDamage?.(this, def) ?? 0;
       for (const [held, hd] of this.held()) dmg += hd.inSleeve?.bonusDamage?.(this, this.cardVals(held), def) ?? 0;
       dmg *= this.heroDef.hooks.damageMult?.(this, def) ?? 1;

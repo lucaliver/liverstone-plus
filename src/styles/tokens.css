@@ -35,8 +35,10 @@
   --cat-attack-dot: #ff6fb2;
   --cat-defense: #c6d9f8;
   --cat-defense-dot: #6f9be6;
-  --cat-utility: #fff0a0;
-  --cat-utility-dot: #f0c800;
+  --cat-skill: #fff0a0;
+  --cat-skill-dot: #f0c800;
+  --cat-power: #d6d3e0;
+  --cat-power-dot: #a29db6;
   --cat-curse: #bfe38a;
   --cat-curse-dot: #5aa04a;
   /* Tones, the colour of what a status, a keyword or an enemy move does (`Tone` in types.ts): the ink, then a light partner for bar stripes and dark grounds */
@@ -50,7 +52,7 @@
   --tone-blue-hi: var(--mana-hi);
   --tone-teal: var(--shield);
   --tone-teal-hi: var(--shield-hi);
-  --tone-amber: var(--cat-utility-ink);
+  --tone-amber: var(--cat-skill-ink);
   --tone-amber-hi: var(--y);
   --tone-mint: #1a9a80;
   --tone-mint-hi: #8ae8d0;
@@ -75,7 +77,7 @@
   --maw-eye: #b0306e;
   --hazard-light: #3a3450;
   --wood-edge: #5a3a28;
-  --cat-utility-ink: #c08a00;
+  --cat-skill-ink: #c08a00;
   /* Splats behind damage numbers */
   --splat-dmg: #d8121e;
   --splat-hurt: #8a0a24;

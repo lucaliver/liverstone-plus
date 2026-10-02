@@ -85,12 +85,11 @@ export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
       case 'curse':
         if (card.id === 'gatekeeping') return 30;
         return card.id === 'writeUp' && pos > 0.6 ? 50 : c.hero.mana >= c.hero.maxMana - 1 ? 2 : -1;
-      case 'potion':
-        if (card.id === 'firstAidKit') return c.hero.hp < c.hero.maxHp * 0.5 ? 40 : -1;
-        return 8;
       case 'power':
         return 30;
+      case 'defense':
       case 'skill': {
+        if (card.id === 'firstAidKit') return c.hero.hp < c.hero.maxHp * 0.5 ? 40 : -1;
         if (CRYSTALS.includes(card.id)) return 40;
         const blockish = BLOCKISH.includes(card.id);
         if (blockish) {
@@ -181,7 +180,7 @@ export function simulateRun(hero: HeroId, seed: number, opts: BotOpts): RunOutco
     } else if (node.type === 'rest') {
       if (run.hp < run.maxHp * 0.65) rest(run);
       else {
-        const up = run.deck.find((c) => canUpgrade(c) && CARDS[c.id].type !== 'skill') ?? run.deck.find(canUpgrade);
+        const up = run.deck.find((c) => canUpgrade(c) && !['defense', 'skill'].includes(CARDS[c.id].type)) ?? run.deck.find(canUpgrade);
         if (up) upgradeCard(run, up.uid);
         run.cleared = true;
       }

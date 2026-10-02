@@ -22,19 +22,8 @@ export function rewardPool(cls: CardClass, rarity: Rarity): CardDef[] {
 
 // Card rules shared by the engine and the UI, so what a card shows is what it does.
 
-export type CardCategory = 'attack' | 'defense' | 'utility' | 'curse';
-
-/** Colour family of the card art: attack (incl. burn/poison), defense (block/heal/dodge), utility, curse. Rules such as
- * the No Repeats Policy go by it, since it's what the player sees. */
-export function cardCategory(id: string): CardCategory {
-  const def = CARDS[id];
-  if (def.cat) return def.cat;
-  if (def.type === 'curse') return 'curse';
-  const f = def.face;
-  if (/\{(dmg|burn|poison)/.test(f) && !/^\{(block|heal|dodge)/.test(f)) return 'attack';
-  if (/\{(block|heal|dodge|parry)/.test(f)) return 'defense';
-  return 'utility';
-}
+/** How a class's card damage looks and sounds when the card says nothing (`hit(v, { kind })`): the magic classes are arcane, the rest slash (attacks) or hit blunt. */
+export const CLASS_HIT: Partial<Record<CardClass, string>> = { mage: 'arcane', necromancer: 'arcane' };
 
 /** Keywords of a card copy: its definition (base or upgraded) plus its perks. */
 export function cardKeywordsOf(card: CardInst): Keyword[] {

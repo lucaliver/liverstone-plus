@@ -1,6 +1,5 @@
 import type { Combat } from '../game/combat';
 import type { CardType, MoveDef, Side, StatusDef, StatusVal, Tone } from '../game/types';
-import { cardCategory } from './cards';
 import { CONFIG } from './config';
 
 /** How long every card played brings the Light Sleeper's hit closer (seconds). */
@@ -102,7 +101,6 @@ const defs: StatusDef[] = [
   // Workaholic: `v` Strength, for a while only.
   { id: 'workaholic', tone: 'red', kind: 'timed', good: true, icon: 'muscle', strength: true },
   { id: 'brownNosing', tone: 'blue', kind: 'timed', good: true, icon: 'crystalUp', regenMul: 2 },
-  { id: 'spellPower', tone: 'blue', kind: 'stacks', good: true, icon: 'wand' },
   { id: 'thorns', tone: 'red', kind: 'stacks', good: true, icon: 'thorns' },
   { id: 'dodge', tone: 'teal', kind: 'timed', good: true, icon: 'dodge', immune: true },
   { id: 'juggernaut', tone: 'teal', kind: 'stacks', good: true, icon: 'helm' },
@@ -112,9 +110,9 @@ const defs: StatusDef[] = [
   { id: 'parry', tone: 'red', kind: 'timed', good: true, icon: 'crossed' },
   { id: 'haste', tone: 'amber', kind: 'timed', good: true, icon: 'gauge', timeMul: 1.5, look: 'enraged' },
   { id: 'rush', tone: 'amber', kind: 'timed', good: true, icon: 'speedCards', beltMul: CONFIG.beltRush },
-  // Work-Life Balance: every attack gives Block too. Life-Work Balance: every skill deals damage too.
+  // Work-Life Balance: every attack gives Block too. Life-Work Balance: every defence card deals damage too.
   crossOver('workLifeBalance', 'attack', 'teal', (c, v) => c.gainBlock('hero', v)),
-  crossOver('lifeWorkBalance', 'skill', 'red', (c, v) => void c.hit(v)),
+  crossOver('lifeWorkBalance', 'defense', 'red', (c, v) => void c.hit(v)),
   // Autopilot (Severance): cards slipping off the belt play themselves when they can.
   { id: 'autopilot', tone: 'blue', kind: 'timed', good: true, icon: 'autopilot', autoplay: true },
   // Root access (sudo): no rule can stop the hero's cards.
@@ -214,9 +212,7 @@ const defs: StatusDef[] = [
     icon: 'rulebook',
     // Same colour as the card before (attack, defense, utility, curse): the card's art tells.
     canPlay: (c, side, def) =>
-      side === 'enemy' && c.lastPlayed && cardCategory(c.lastPlayed.id) === cardCategory(def.id) && c.time - c.lastPlayedAt < POLICY_WINDOW
-        ? 'combat.policy'
-        : null,
+      side === 'enemy' && c.lastPlayed && c.lastPlayed.type === def.type && c.time - c.lastPlayedAt < POLICY_WINDOW ? 'combat.policy' : null,
   },
   {
     id: 'meticulous',

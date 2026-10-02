@@ -664,7 +664,7 @@ describe('combat engine', () => {
     expect(c.hero.mana).toBe(mana - 2);
   });
 
-  it('mage Multitasking adds damage to chained spells', () => {
+  it('mage Multitasking adds damage to chained attacks', () => {
     const c = setup({ hero: HEROES.mage, hp: 70, maxHp: 70, deck: deckOf(['clippy', 'clippy']), enemy: ENEMIES.toxicCoworker });
     run(c, CONFIG.introTime + 0.01);
     c.hero.maxMana = c.hero.mana = 10;
@@ -1571,7 +1571,7 @@ describe('sleeve cards', () => {
     expect(c.hero.block).toBe(4);
   });
 
-  it('Cache: every spell played while it waits is cached into its damage, spent when played', () => {
+  it('Cache: every attack played while it waits is cached into its damage, spent when played', () => {
     const c = held('clearCache');
     c.addTempCard('clippy', 'belt');
     c.playCard(c.belt[c.belt.length - 1].card.uid);
@@ -1799,7 +1799,7 @@ describe('cards that fill the classes out', () => {
     expect(c.hero.block).toBe(CARDS.overstock.vals[0] * 4);
   });
 
-  it('Continuing Education: spells hit harder for good', () => {
+  it('Continuing Education: attacks hit harder for good', () => {
     const c = quiet({ hero: HEROES.mage });
     cast(c, 'continuingEducation');
     const hp = c.enemy.hp;
