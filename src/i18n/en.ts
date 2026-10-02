@@ -1107,6 +1107,7 @@ const en = {
   'move.hairFlip': 'Hair Flip',
   'move.overreaction': 'Overreaction',
   'move.highHeels': 'High Heels',
+  'move.catwalk': 'Catwalk',
   'move.audit': 'Audit',
   'move.expenseReport': 'Expense Report',
   'move.costCutting': 'Cost Cutting',
