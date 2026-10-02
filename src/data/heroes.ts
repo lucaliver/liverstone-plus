@@ -91,7 +91,7 @@ const necromancer: HeroDef = {
   startUpgraded: ['skeletonCrew', 'karlMarx'],
   firstRewards: [
     ['bloodMoney', 'rust', 'barricade', 'macGyver'],
-    ['unionDues', 'zombieShift', 'fika', 'snowden'],
+    ['unionDues', 'zombieShift', 'fika', 'chainSmoking'],
     ['deadLetter', 'sickLeave', 'sabotage', 'slowdown'],
   ],
   sleeve: 3,

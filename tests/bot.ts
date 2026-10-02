@@ -46,7 +46,7 @@ const BLOCKISH = [
   'secondBreakfast',
   'lookBusy',
 ];
-const DEBUFFS = ['rust', 'snowden', 'chainSmoking', 'slowdown', 'blackFriday', 'walkout'];
+const DEBUFFS = ['rust', 'chainSmoking', 'slowdown', 'blackFriday', 'walkout'];
 
 export function botDecide(c: Combat, rnd: () => number, opts: BotOpts): void {
   if (rnd() < opts.sloppiness) return;

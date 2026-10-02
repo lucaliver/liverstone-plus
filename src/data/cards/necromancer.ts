@@ -5,15 +5,18 @@ export const necromancerCards: CardDef[] = [
   // Starters
   {
     id: 'skeletonCrew',
-    face: '{dmg:0}',
+    face: '{dmg:0}|{chill:1}',
     cls: 'necromancer',
     type: 'attack',
     rarity: 'starter',
     cost: 2,
-    vals: [6],
-    upVals: [9],
+    vals: [5, 1],
+    upVals: [8, 2],
     art: 'bone',
-    play: (c, v) => void c.hit(v[0]),
+    play: (c, v) => {
+      c.hit(v[0]);
+      c.applyStatus('enemy', 'chill', 1, v[1]);
+    },
   },
   {
     id: 'karlMarx',
@@ -85,19 +88,6 @@ export const necromancerCards: CardDef[] = [
       c.hit(v[0]);
       c.heal('hero', v[1]);
     },
-  },
-  {
-    id: 'snowden',
-    face: '{stun:0}',
-    cls: 'necromancer',
-    type: 'skill',
-    rarity: 'common',
-    cost: 2,
-    vals: [3],
-    upVals: [5],
-    art: 'whistle',
-    // Buys time: the enemy stands still while the Poison keeps ticking.
-    play: (c, v) => c.applyStatus('enemy', 'stun', 1, v[0]),
   },
   {
     id: 'chainSmoking',

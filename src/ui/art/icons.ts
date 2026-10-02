@@ -418,10 +418,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'necro',
     svg: `<rect x="14" y="4" width="36" height="12" rx="2"/><path d="M16 18h32v40H16z"/><rect x="16" y="28" width="32" height="20" fill="#16121f"/><path d="M28 31h8v5h5v7h-5v5h-8v-5h-5v-7h5z"/>`,
   },
-  whistle: {
-    el: 'necro',
-    svg: `<path d="M4 26h30a16 16 0 1 1-10 28A16 16 0 0 1 4 38z"/><circle cx="36" cy="40" r="7" fill="#16121f"/><g ${S} stroke-width="5"><path d="M34 26V12h14"/></g>`,
-  },
   zombieHand: {
     el: 'necro',
     svg: `<path d="M20 60V34l-6-8V10h6v14h4V6h6v18h4V8h6v18h4v-8h6v16l-4 10v26z"/><rect x="8" y="58" width="48" height="5"/><g fill="#16121f"><rect x="26" y="40" width="7" height="3"/><rect x="34" y="48" width="7" height="3"/></g>`,
@@ -962,10 +958,6 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   overstock: {
     el: 'steel',
     svg: `<rect x="4" y="54" width="56" height="8"/><rect x="6" y="32" width="24" height="20"/><rect x="34" y="32" width="24" height="20"/><rect x="18" y="8" width="28" height="22"/><path d="M18 19h28M18 41h12M34 41h24" stroke="#16121f" stroke-width="3"/>`,
-  },
-  gradCap: {
-    el: 'arcane',
-    svg: `<path d="M32 6L2 20l30 14 30-14z"/><path d="M14 30v14c0 5 8 10 18 10s18-5 18-10V30L32 38z"/><path d="M56 24v22" stroke="#16121f" stroke-width="3"/><circle cx="56" cy="50" r="5"/>`,
   },
   nigerianPrince: {
     el: 'arcane',

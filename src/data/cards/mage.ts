@@ -386,19 +386,7 @@ export const mageCards: CardDef[] = [
       c.rushBelt(v[1]);
     },
   },
-  // Filling the class out: Spell Power, a cheap ward, and a Burn + Chill payoff
-  {
-    id: 'continuingEducation',
-    face: '{str:0}',
-    cls: 'mage',
-    type: 'power',
-    rarity: 'epic',
-    cost: 3,
-    vals: [2],
-    upVals: [3],
-    art: 'gradCap',
-    play: (c, v) => c.applyStatus('hero', 'strength', v[0]),
-  },
+  // Filling the class out: a cheap ward, and a Burn + Chill payoff
   {
     id: 'nigerianPrince',
     face: '{block:0}',

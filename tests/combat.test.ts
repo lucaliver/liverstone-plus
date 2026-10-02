@@ -1799,12 +1799,12 @@ describe('cards that fill the classes out', () => {
     expect(c.hero.block).toBe(CARDS.overstock.vals[0] * 4);
   });
 
-  it('Continuing Education: attacks hit harder for good', () => {
-    const c = quiet({ hero: HEROES.mage });
-    cast(c, 'continuingEducation');
-    const hp = c.enemy.hp;
-    cast(c, 'staticShock');
-    expect(hp - c.enemy.hp).toBe(CARDS.staticShock.vals[0] + CARDS.continuingEducation.vals[0]);
+  it('Skeleton Crew hits and chills the enemy for a moment', () => {
+    const c = quiet({ hero: HEROES.necromancer });
+    const [dmg, chill] = CARDS.skeletonCrew.vals;
+    cast(c, 'skeletonCrew');
+    expect(c.enemy.maxHp - c.enemy.hp).toBe(dmg);
+    expect(c.fighter('enemy').statuses.chill.t).toBeCloseTo(chill);
   });
 
   it('Thermal Shock: only a Chilled and Burning enemy takes the big hit, and the Chill is spent', () => {
