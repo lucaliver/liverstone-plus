@@ -241,6 +241,20 @@
 }
 .desk-clock .riso { width: 100%; height: 100%; }
 
+/* a tab left open for a day: a paper note above the poster */
+.stale-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(100%, 360px);
+  padding: 8px 10px;
+  font-size: 13px;
+  background: var(--y);
+  color: var(--k);
+  border: var(--line) solid var(--k);
+  box-shadow: var(--off) var(--off) 0 var(--shadow);
+}
+.stale-banner[hidden] { display: none; }
 .menu {
   display: grid;
   grid-template-columns: 1fr 1fr;

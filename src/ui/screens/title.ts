@@ -1,4 +1,5 @@
 import { t } from '../../core/i18n';
+import { CONFIG } from '../../data/config';
 import { sfx } from '../../audio/sfx';
 import { ENEMY_LIST } from '../../data/enemies';
 import { enemyMet, neverPlayed, signContract } from '../../game/meta';
@@ -22,6 +23,9 @@ export interface TitleCallbacks {
   /** Temporary: fight any enemy with any hero. */
   onDebugFight: () => void;
 }
+
+/** When this page was opened: a tab left open for days keeps an old copy of the game. */
+const OPENED_AT = Date.now();
 
 /** Holes the logo takes before it's swapped for a fresh one. */
 const LOGO_HOLES = 7;
@@ -102,9 +106,21 @@ export function titleScreen(cb: TitleCallbacks): Screen {
     timer = window.setTimeout(save ? cb.onContinue : cb.onNewRun, PUNCH_MS);
   });
 
+  // A forgotten tab: after a day, ask for a reload (checked again whenever the tab comes back to the front).
+  const stale = h(
+    'div',
+    { class: 'stale-banner', hidden: true },
+    h('span', null, t('menu.stale')),
+    h('button', { class: 'btn small', onclick: () => location.reload() }, t('menu.staleReload')),
+  );
+  const checkStale = (): void => {
+    stale.hidden = Date.now() - OPENED_AT < CONFIG.staleHours * 3600_000;
+  };
+
   const el = h(
     'div',
     { class: 'screen title-screen' },
+    stale,
     poster,
     h('div', { class: 'desk' }, card, h('div', { class: 'desk-clock', html: creature('timeClock') })),
     h(
@@ -120,8 +136,13 @@ export function titleScreen(cb: TitleCallbacks): Screen {
   );
   return {
     el,
+    enter() {
+      checkStale();
+      document.addEventListener('visibilitychange', checkStale);
+    },
     leave() {
       clearTimeout(timer);
+      document.removeEventListener('visibilitychange', checkStale);
     },
   };
 }

@@ -13,6 +13,9 @@ const en = {
   'menu.compendium': 'Handbook',
   'menu.slogan': 'Work. Obey. Repeat.',
   'menu.plate': 'Punchcard Inc. · est. 1887',
+  'menu.stale':
+    'This page has been open for over a day, so it may be out of date. Reload it to get the latest version, but only if you have no run in progress.',
+  'menu.staleReload': 'Reload',
   'menu.freshDay': 'A fresh workday',
   'menu.tapHint': 'Tap to clock in',
   'contract.title': 'Employment Contract',

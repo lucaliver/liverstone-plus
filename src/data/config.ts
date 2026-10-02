@@ -70,6 +70,8 @@ export const CONFIG = {
   popupArm: 0.4,
   /** The Weak Spot target shows at least this far (share of the sprite) from every edge. */
   weakSpotMargin: 0.25,
+  /** Hours a page can stay open before the home asks for a reload (the game runs offline, so a forgotten tab misses updates). */
+  staleHours: 24,
   /** Each floor of an act makes normal enemies this much tougher (HP, damage). */
   floorHp: 0.06,
   floorDmg: 0.04,

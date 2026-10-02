@@ -14,6 +14,9 @@ const it: Record<EnKey, string> = {
   'menu.compendium': 'Manuale',
   'menu.slogan': 'Lavora. Obbedisci. Ripeti.',
   'menu.plate': 'Punchcard S.p.A. · dal 1887',
+  'menu.stale':
+    "Questa pagina è aperta da più di un giorno e potrebbe essere vecchia. Ricaricala per avere l'ultima versione, ma solo se non hai una partita in corso.",
+  'menu.staleReload': 'Ricarica',
   'menu.freshDay': 'Una nuova giornata',
   'menu.tapHint': 'Tocca per timbrare',
   'contract.title': 'Contratto di assunzione',

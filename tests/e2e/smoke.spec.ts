@@ -16,6 +16,20 @@ test('title, hero select and journey render without errors', async ({ page }) =>
   expect(problems).toEqual([]);
 });
 
+test('a tab left open for a day asks for a reload on the home', async ({ page }) => {
+  const problems = await freshGame(page);
+  const banner = page.locator('.stale-banner');
+  await expect(banner).toBeHidden();
+  await page.evaluate(() => {
+    const now = Date.now();
+    Date.now = () => now + 25 * 3600_000;
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  await expect(banner).toBeVisible();
+  await expect(banner).toContainText(/no run in progress/i);
+  expect(problems).toEqual([]);
+});
+
 test('a hero who has won a full day can pin up management memos before a run', async ({ page }) => {
   const problems = await freshGame(page, { stamps: ['warrior:3'] });
   await page.getByRole('button', { name: /new run/i }).click();
