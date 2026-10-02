@@ -418,6 +418,8 @@ export interface RelicDef {
   /** Static modifiers applied to combat setup. */
   mods?: Partial<{ maxMana: number; sleeve: number; regen: number; maxHp: number; gold: number }>;
   hooks?: RelicHooks;
+  /** For a relic that triggers every so often: how full its bar is (0..1) in the fight. It gets a chip with a filling bar. */
+  progress?: (c: Combat) => number;
   /** Runs once when the relic is obtained. */
   onGain?: (run: import('./run').RunState) => void;
 }

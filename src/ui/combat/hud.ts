@@ -1,10 +1,12 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
+import { RELICS } from '../../data/relics';
 import { STATUS_ORDER, STATUSES, statusIcon } from '../../data/statuses';
 import type { Fighter } from '../../game/combat';
 import type { MoveDef, Side } from '../../game/types';
 import { icon } from '../art/icons';
+import { relicArt } from '../art/relics';
 import { keywordHtml } from '../components/cardView';
 import { openInfo } from '../components/modals';
 import { HALF_ICON, moveIcon, moveTone } from '../components/moveText';
@@ -124,8 +126,39 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
           );
         });
       }
+      // The hero's relics that trigger every so often: a chip whose bar fills up to the next trigger.
+      const relics =
+        side === 'hero'
+          ? combat.relics
+              .filter((id) => RELICS[id]?.progress)
+              .map((id) => {
+                const b = h('button', {
+                  class: 'status relic draining',
+                  'data-relic': id,
+                  html: `<i class="drain"></i>${relicArt(id)}`,
+                  'aria-label': t(`relic.${id}.name`),
+                });
+                onPress(b, () => {
+                  sfx('tap');
+                  v.inspect(true);
+                  openInfo(
+                    {
+                      art: relicArt(id),
+                      title: t(`relic.${id}.name`),
+                      tag: t('status.onYou'),
+                      tagCls: 'good',
+                      desc: t(`relic.${id}.d`, { n: RELICS[id].n }),
+                      ink: 'good',
+                    },
+                    () => v.inspect(false),
+                  );
+                });
+                return b;
+              })
+          : [];
       box.replaceChildren(
         ...(passive ? [passive] : []),
+        ...relics,
         ...list.map((id) => {
           const def = STATUSES[id];
           const b = h('button', {
@@ -145,6 +178,12 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
       if (half) toggle(half, 'fired', combat.enemy.halfTriggered);
     }
     for (const b of box.children) {
+      const relic = (b as HTMLElement).dataset.relic;
+      if (relic) {
+        const fill = Math.floor(Math.min(1, Math.max(0, RELICS[relic].progress?.(combat) ?? 0)) * BAR_STEPS) / BAR_STEPS;
+        b.querySelector<HTMLElement>('.drain')!.style.setProperty('--fill', String(fill));
+        continue;
+      }
       const id = (b as HTMLElement).dataset.status;
       if (!id) continue;
       // A status that is always shown (a hero's passive) reads as empty while it isn't up.

@@ -43,6 +43,7 @@ const defs: RelicDef[] = [
     id: 'coffeeMug',
     rarity: 'common',
     n: MUG_EVERY,
+    progress: (c) => ((c.mem.mug ?? 0) % MUG_EVERY) / MUG_EVERY,
     hooks: {
       onCardPlayed: (c) => {
         c.mem.mug = (c.mem.mug ?? 0) + 1;
@@ -56,6 +57,7 @@ const defs: RelicDef[] = [
     id: 'wallClock',
     rarity: 'common',
     n: CLOCK_EVERY,
+    progress: (c) => (c.mem.clock ?? 0) / CLOCK_EVERY,
     hooks: {
       tick: (c, dt) => {
         c.mem.clock = (c.mem.clock ?? 0) + dt;
@@ -93,6 +95,7 @@ const defs: RelicDef[] = [
     id: 'heavyStapler',
     rarity: 'rare',
     n: STAPLER_EVERY,
+    progress: (c) => ((c.mem.stapler ?? 0) % STAPLER_EVERY) / STAPLER_EVERY,
     hooks: {
       onCardPlayed: (c) => {
         c.mem.stapler = (c.mem.stapler ?? 0) + 1;
