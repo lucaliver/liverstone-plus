@@ -8,6 +8,7 @@ import { unlockAll } from '../../game/meta';
 import { settings } from '../../game/settings';
 import type { HeroId } from '../../game/types';
 import { openModal, type ModalHandle } from '../app';
+import { keywordText } from './cardView';
 import { openCardDetail, openResetConfirm } from './modals';
 import { h, onTapOrHold } from '../dom';
 import { creature } from '../art/creatures';
@@ -79,7 +80,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
       ),
     );
   };
-  // Every card, filtered as you type; a tap adds a copy (the count says how many), a hold shows the card.
+  // Every card, filtered as you type by name or rules text (keywords by their name); a tap adds a copy (the count says how many), a hold shows the card.
   const search = h('input', { class: 'debug-search', type: 'search', placeholder: t('debug.cards'), 'aria-label': t('debug.cards') });
   const cardList = h('div', { class: 'debug-cards' });
   const tabs = h('div', { class: 'debug-tabs', role: 'tablist' });
@@ -110,7 +111,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
     const q = search.value.trim().toLowerCase();
     cardList.replaceChildren(
       ...Object.values(CARDS)
-        .filter((c) => t(`card.${c.id}.name`).toLowerCase().includes(q))
+        .filter((c) => `${t(`card.${c.id}.name`)} ${keywordText(t(`card.${c.id}.desc`))}`.toLowerCase().includes(q))
         .map((c) => {
           const n = extra.filter((id) => id === c.id).length;
           const btn = h('button', {
