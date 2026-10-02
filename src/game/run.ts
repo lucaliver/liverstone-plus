@@ -227,6 +227,13 @@ function buildNodes(rng: Rng, scripted: boolean): RunNode[] {
 
 export const currentNode = (run: RunState): RunNode => run.nodes[run.current];
 
+/** The act the map shows: right after an act boss has fallen it already turns to the next act. */
+export function mapAct(run: RunState): number {
+  const cur = currentNode(run);
+  const next = run.cleared ? cur.next.find((id) => !run.path.includes(id)) : undefined;
+  return next === undefined ? cur.act : run.nodes[next].act;
+}
+
 /** Workday clock (minutes after midnight) when a node's floor starts: the floors share the act's shift evenly, so the
  * shift ends as its boss floor does. */
 export function clockAt(run: RunState, node: RunNode): number {

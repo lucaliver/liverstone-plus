@@ -24,6 +24,7 @@ import {
   FIRST_RUN_SEED,
   finishRun,
   loadRun,
+  mapAct,
   newRun,
   type NodeType,
   rollRewards,
@@ -128,7 +129,7 @@ function goJourney(): void {
     goTitle();
     return;
   }
-  playMusic(actDef(currentNode(run).act).mapMusic);
+  playMusic(actDef(mapAct(run)).mapMusic);
   saveRun(run);
   show(journeyScreen(run, enterNode, goTitle, debugMap, revealMap));
 }
@@ -153,8 +154,8 @@ function debugMap(): void {
   }));
   // As if the boss of the act on the map had just fallen: a new shift starts rested (the last act has nothing after it).
   const cur = currentNode(r);
-  const mapAct = r.cleared && cur.type === 'boss' && cur.next.length ? r.nodes[cur.next[0]].act : cur.act;
-  const boss = r.nodes.find((n) => n.act === mapAct && n.type === 'boss');
+  const debugAct = r.cleared && cur.type === 'boss' && cur.next.length ? r.nodes[cur.next[0]].act : cur.act;
+  const boss = r.nodes.find((n) => n.act === debugAct && n.type === 'boss');
   const nextAct = boss?.next.length
     ? {
         label: t('debug.nextAct'),

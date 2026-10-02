@@ -2,7 +2,7 @@ import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
 import { actDef, isFinalAct } from '../../data/acts';
-import { clockAt, currentNode, type RunNode, type RunState } from '../../game/run';
+import { clockAt, currentNode, mapAct, type RunNode, type RunState } from '../../game/run';
 import type { Screen } from '../app';
 import { h, onPress, onTapOrHold } from '../dom';
 import { icon } from '../art/icons';
@@ -72,8 +72,7 @@ export function runHud(run: RunState, extra?: HTMLElement): HTMLElement {
 export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onHome: () => void, onDebug: () => void, revealAll = false): Screen {
   const cur = currentNode(run);
   const options = run.cleared ? cur.next.filter((id) => !run.path.includes(id)) : [];
-  // After an act boss the map turns to the next act.
-  const act = options.length ? run.nodes[options[0]].act : cur.act;
+  const act = mapAct(run);
   const nodes = run.nodes.filter((n) => n.act === act);
   const floors = Math.max(...nodes.map((n) => n.floor));
   const minFloor = Math.min(...nodes.map((n) => n.floor));
