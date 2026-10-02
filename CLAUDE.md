@@ -67,6 +67,7 @@ npm run dev      # dev server on the LAN
 npm run check    # tsc + biome + vitest (before every commit)
 npm run e2e      # Playwright smoke tests (own server on :5174)
 npm run sim      # balance bot win rates
+npm run stats    # static balance numbers from the data (no bot): rewrites BALANCE.md
 npm run build    # typecheck + production build
 ```
 
@@ -89,7 +90,7 @@ src/
   analytics/   anonymous play counters: `index.ts` (what is counted and when), `goatcounter.ts` (the only file that knows the service)
   audio/       sfx (synth), music (sequencer + tracks)
   styles/      index.css imports partials in order; responsive.css stays last
-tests/         combat, content, balance.sim (+ bot), e2e/
+tests/         combat, content, balance.sim (+ bot), balance.stats, e2e/
 ```
 
 - **The engine is pure and deterministic.** `Combat` never touches the DOM: fixed 1/60 s ticks from a seed, typed
@@ -186,7 +187,7 @@ Icons (`ICONS`) and creatures (`CREATURES`) are SVG written for the ink palette 
 ## Testing
 
 - `combat.test.ts`: engine rules (add one per mechanic). `content.test.ts`: data integrity. `balance.sim.test.ts` + `bot.ts`:
-  bot win rates, relative only. `tests/e2e/smoke.spec.ts`: flows on a mobile viewport with real touch where it matters;
+  bot win rates, relative only. `balance.stats.test.ts`: per-mana card output and enemy threat computed from the data (`npm run stats` writes `BALANCE.md`; rerun it after a balance change). `tests/e2e/smoke.spec.ts`: flows on a mobile viewport with real touch where it matters;
   `freshGame` unlocks every hero unless `locked`.
 - Other browsers: `npx playwright test --browser=webkit` passes; Firefox needs a config without `isMobile`.
 - Screenshot scripts go in the git-ignored `screenshots/`.

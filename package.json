@@ -10,6 +10,7 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "sim": "vitest run tests/balance.sim.test.ts",
+    "stats": "BALANCE_MD=1 vitest run tests/balance.stats.test.ts",
     "e2e": "playwright test",
     "lint": "biome check",
     "format": "biome format --write",
