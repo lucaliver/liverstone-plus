@@ -11,6 +11,7 @@ import { openModal, type ModalHandle } from '../app';
 import { keywordText } from './cardView';
 import { openCardDetail, openResetConfirm } from './modals';
 import { h, onTapOrHold } from '../dom';
+import { foeView } from './moveText';
 import { creature } from '../art/creatures';
 import { haptic } from '../fx/fx';
 import { icon } from '../art/icons';
@@ -85,7 +86,8 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
   const cardList = h('div', { class: 'debug-cards' });
   const tabs = h('div', { class: 'debug-tabs', role: 'tablist' });
   const cardsPane = h('div', { class: 'debug-pane' }, search, cardList);
-  const foesPane = h('div', { class: 'debug-pane' });
+  const foeSearch = h('input', { class: 'debug-search', type: 'search', placeholder: t('debug.foes'), 'aria-label': t('debug.foes') });
+  const foesPane = h('div', { class: 'debug-pane' }, foeSearch);
   let tab: 'foes' | 'cards' = 'foes';
   const renderTabs = (): void => {
     const tabBtn = (id: 'foes' | 'cards', label: string): HTMLButtonElement =>
@@ -134,23 +136,32 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
   search.addEventListener('input', renderCards);
   renderHeroes();
   let handle: ModalHandle | null = null;
-  const list = h(
-    'div',
-    { class: 'debug-foes' },
-    ...ENEMY_LIST.map((e) =>
-      h('button', {
-        class: 'debug-foe',
-        'data-enemy': e.id,
-        onclick: () => {
-          sfx('button');
-          haptic('tap');
-          handle?.close();
-          onPick(hero, e.id, extra);
-        },
-        html: `${creature(e.art)}<span>${t(`enemy.${e.id}.name`)}</span><small>${t('journey.title', { n: e.act })}${e.tier !== 'normal' ? ` · ${t(`journey.node.${e.tier}`)}` : ''}</small>`,
-      }),
-    ),
-  );
+  const list = h('div', { class: 'debug-foes' });
+  // A tap starts the fight, a hold shows the enemy's sheet.
+  const foeButtons = ENEMY_LIST.map((e) => {
+    const btn = h('button', {
+      class: 'debug-foe',
+      'data-enemy': e.id,
+      html: `${creature(e.art)}<span>${t(`enemy.${e.id}.name`)}</span><small>${t('journey.title', { n: e.act })}${e.tier !== 'normal' ? ` · ${t(`journey.node.${e.tier}`)}` : ''}</small>`,
+    });
+    onTapOrHold(
+      btn,
+      () => {
+        sfx('button');
+        haptic('tap');
+        handle?.close();
+        onPick(hero, e.id, extra);
+      },
+      () => openModal({ title: t(`enemy.${e.id}.name`), body: foeView(e, true), actions: [{ label: t('common.close'), cls: 'secondary' }] }),
+    );
+    return { id: e.id, btn };
+  });
+  const renderFoes = (): void => {
+    const q = foeSearch.value.trim().toLowerCase();
+    list.replaceChildren(...foeButtons.filter((f) => t(`enemy.${f.id}.name`).toLowerCase().includes(q)).map((f) => f.btn));
+  };
+  foeSearch.addEventListener('input', renderFoes);
+  renderFoes();
   foesPane.append(list);
   renderCards();
   handle = openModal({

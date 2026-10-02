@@ -1,7 +1,6 @@
 import { type TKey, t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { CARD_LIST } from '../../data/cards';
-import { CONFIG } from '../../data/config';
 import { ACT_DEFS } from '../../data/acts';
 import { ENEMY_LIST } from '../../data/enemies';
 import type { EnemyDef, RelicDef } from '../../game/types';
@@ -13,9 +12,8 @@ import type { Screen } from '../app';
 import { h, onPress, stagger } from '../dom';
 import { icon } from '../art/icons';
 import { relicArt } from '../art/relics';
-import { creature } from '../art/creatures';
 import { cardView, UNKNOWN } from '../components/cardView';
-import { bindMoveDetails, movePattern } from '../components/moveText';
+import { foeView } from '../components/moveText';
 import { openCardAnatomy, openCardDetail, sortCards, sortControl } from '../components/modals';
 
 const TABS: CardClass[] = [...HERO_LIST.map((hd) => hd.id), 'neutral', 'curse'];
@@ -23,18 +21,6 @@ const TABS: CardClass[] = [...HERO_LIST.map((hd) => hd.id), 'neutral', 'curse'];
 const tabLabel = (c: CardClass): string => t(`compendium.tab.${c}`);
 
 const TIERS: EnemyDef['tier'][] = ['normal', 'elite', 'boss'];
-
-function foeView(e: EnemyDef): HTMLElement {
-  const met = enemyMet(e.id);
-  const el = h('article', {
-    class: `foe${met ? '' : ' undiscovered'}`,
-    html: `<div class="foe-head"><div class="foe-art">${creature(e.art)}</div><div class="foe-id"><h3>${met ? t(`enemy.${e.id}.name`) : UNKNOWN}</h3>${
-      e.tier !== 'normal' ? `<span class="tier ${e.tier}">${t(`journey.node.${e.tier}`)}</span>` : ''
-    }<span class="foe-hp">${icon('heart')}${Math.round(e.hp * CONFIG.enemyHp)}${e.block ? `<i class="foe-block">${icon('shield')}${e.block}</i>` : ''}</span></div></div>${met ? movePattern(e) : ''}`,
-  });
-  bindMoveDetails(el);
-  return el;
-}
 
 function relicView(r: RelicDef): HTMLElement {
   const seen = relicSeen(r.id);
@@ -104,7 +90,9 @@ export function compendiumScreen(onBack: () => void): Screen {
   const grid = h('div', { class: 'deck-grid comp-grid print' });
 
   const sectionSwitch = h('div', { class: 'seg section-switch', role: 'tablist' });
-  const foeViews = [...ENEMY_LIST].sort((a, b) => TIERS.indexOf(a.tier) - TIERS.indexOf(b.tier)).map((e) => ({ act: e.act, el: foeView(e) }));
+  const foeViews = [...ENEMY_LIST]
+    .sort((a, b) => TIERS.indexOf(a.tier) - TIERS.indexOf(b.tier))
+    .map((e) => ({ act: e.act, el: foeView(e, enemyMet(e.id)) }));
   const actTabs = h('div', { class: 'tabs', role: 'tablist' });
   const foes = h('div', { class: 'foes' });
   const foesWrap = h('div', null, actTabs, h('div', { style: { height: '12px' } }), foes);

@@ -96,6 +96,7 @@ const en = {
   'debug.tab.foes': 'Enemies',
   'debug.tab.cards': 'Cards ({n})',
   'debug.cards': 'Add cards to the deck…',
+  'debug.foes': 'Search enemies…',
   'debug.unlocked': 'Everything unlocked',
   'debug.unlockAll': 'Unlock all',
   'debug.menu': 'Debug menu',

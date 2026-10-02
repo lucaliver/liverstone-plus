@@ -4,9 +4,10 @@ import { HEXES } from '../../data/hexes';
 import { STATUSES } from '../../data/statuses';
 import { sfx } from '../../audio/sfx';
 import type { EnemyDef, MoveDef, Tone } from '../../game/types';
+import { creature } from '../art/creatures';
 import { icon, INTENT_ICON } from '../art/icons';
-import { onPress } from '../dom';
-import { keywordHtml } from './cardView';
+import { h, onPress } from '../dom';
+import { keywordHtml, UNKNOWN } from './cardView';
 import { openCardDetail, openInfo } from './modals';
 
 /**
@@ -165,4 +166,16 @@ export function bindMoveDetails(root: HTMLElement): void {
         openInfo({ icon: RULES[rule].icon, title: t(RULES[rule].title), desc: keywordHtml(t(RULES[rule].desc)), ink: 'bad' });
     });
   }
+}
+
+/** An enemy's sheet: portrait, tier, HP and its move pattern; an unmet enemy (`met` false) stays a blank silhouette. */
+export function foeView(e: EnemyDef, met: boolean): HTMLElement {
+  const el = h('article', {
+    class: `foe${met ? '' : ' undiscovered'}`,
+    html: `<div class="foe-head"><div class="foe-art">${creature(e.art)}</div><div class="foe-id"><h3>${met ? t(`enemy.${e.id}.name`) : UNKNOWN}</h3>${
+      e.tier !== 'normal' ? `<span class="tier ${e.tier}">${t(`journey.node.${e.tier}`)}</span>` : ''
+    }<span class="foe-hp">${icon('heart')}${Math.round(e.hp * CONFIG.enemyHp)}${e.block ? `<i class="foe-block">${icon('shield')}${e.block}</i>` : ''}</span></div></div>${met ? movePattern(e) : ''}`,
+  });
+  bindMoveDetails(el);
+  return el;
 }
