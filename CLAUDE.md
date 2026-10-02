@@ -140,7 +140,7 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 
 ### Analytics
 
-`src/analytics/`: anonymous counters (no id, no deck, no seed), sent as GoatCounter events (`<version>/fight/<enemy>/<hero>/win|lose`, `offered/<card>`, `pick/<card>`, `cut/<card>`, `skip`, `run/<hero>/win|lose|abandon[-memo]`, `death/act<N>-floor<M>`). Called only from the flow (`main.ts`, the reward screen), never from the engine. Runs under a memo send only their tagged run result. The endpoint is `VITE_STATS_URL` (repository variable `STATS_URL` in the Pages workflow); unset = nothing is sent (dev, tests). Settings switch `analytics` (on by default) turns it off. Sampled data: ad blockers hide some players. To swap the service rewrite `goatcounter.ts`; to remove it delete the folder, the call sites, the setting and its strings.
+`src/analytics/`: anonymous counters (no id, no deck, no seed), sent as GoatCounter events (`<version>/fight/<enemy>/<hero>/win|lose`, `offered/<card>`, `pick/<card>`, `cut/<card>`, `skip`, `run/<hero>/win|lose|abandon[-memo]`, `death/act<N>-floor<M>`). Called only from the flow (`main.ts`, the reward screen), never from the engine. Runs under a memo send only their tagged run result. The endpoint is `VITE_STATS_URL` (repository variable `STATS_URL` in the Pages workflow); unset = nothing is sent (dev, tests). Settings switch `analytics` (on by default) turns it off; turning on the debug menus switches it off too. Sampled data: ad blockers hide some players. To swap the service rewrite `goatcounter.ts`; to remove it delete the folder, the call sites, the setting and its strings.
 
 ### i18n
 
