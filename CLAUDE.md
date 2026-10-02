@@ -60,7 +60,7 @@ This file is the technical guide: read it before changing code. Field-by-field d
 ## Stack and commands
 
 Vite + TypeScript (strict), plain DOM through `h()`, CSS, one canvas for particles. Vitest (unit, content, balance sim),
-Playwright (mobile viewport, touch), Biome (width 150, single quotes). Fonts: `@fontsource` (Silkscreen, Jersey 10, VT323). Audio is WebAudio only. Static build, `localStorage` (prefix `cardstone+:`: keep it).
+Playwright (mobile viewport, touch), Biome (width 150, single quotes). Fonts: `@fontsource` (Silkscreen, Jersey 10, Chakra Petch). Audio is WebAudio only. Static build, `localStorage` (prefix `cardstone+:`: keep it).
 
 ```bash
 npm run dev      # dev server on the LAN

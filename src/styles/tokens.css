@@ -5,13 +5,6 @@
   font-display: block;
   size-adjust: 128%;
 }
-@font-face {
-  font-family: 'Pixel Text';
-  src: url('../../node_modules/@fontsource/vt323/files/vt323-latin-400-normal.woff2') format('woff2');
-  font-weight: 400;
-  font-display: block;
-  size-adjust: 130%;
-}
 
 /* =====================================================================
    Punchcard — riso-pixel design system
@@ -148,7 +141,7 @@
   /* Silkscreen for words in titles only; anything with numbers uses Jersey 10 (--font-ui): clearer digits. */
   --font-display: 'Silkscreen', monospace;
   --font-ui: 'Pixel UI', 'Silkscreen', monospace;
-  --font: 'Pixel Text', monospace;
+  --font: 'Chakra Petch', system-ui, sans-serif;
   --safe-t: env(safe-area-inset-top, 0px);
   --safe-b: env(safe-area-inset-bottom, 0px);
   --app-w: min(100vw, 520px);

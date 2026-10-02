@@ -112,5 +112,5 @@ cristalli; il resto arriva come ricompensa.
   automi crescono atto dopo atto.
 - **Pixel art** generata all'avvio da disegni vettoriali. Animazioni a scatti (tranne le finestre).
 - **Colori delle carte:** banda del nome = classe; illustrazione = categoria; gemma = rarità.
-- **Font:** Silkscreen per i titoli, Jersey 10 per interfaccia e numeri, VT323 per i testi lunghi.
+- **Font:** Silkscreen per i titoli, Jersey 10 per interfaccia e numeri, Chakra Petch per i testi lunghi.
 - **Musica chiptune procedurale** (una traccia per turno, più élite, boss, pausa, vittoria) ed effetti sintetizzati.
