@@ -70,6 +70,32 @@ export function openSettings(extra: ModalAction[] = [], home = false): ModalHand
   const body = h(
     'div',
     null,
+    locales.length > 1
+      ? h(
+          'div',
+          { class: 'setting' },
+          h('span', null, t('settings.language')),
+          h(
+            'div',
+            { class: 'seg' },
+            ...locales.map((l) =>
+              h(
+                'button',
+                {
+                  'aria-pressed': String(getLocale() === l.code),
+                  onclick: () => {
+                    setLocale(l.code);
+                    settings.locale = l.code;
+                    saveSettings();
+                    location.reload();
+                  },
+                },
+                l.code.toUpperCase(),
+              ),
+            ),
+          ),
+        )
+      : null,
     volumeRow(
       t('settings.music'),
       () => settings.musicVolume,
@@ -116,32 +142,6 @@ export function openSettings(extra: ModalAction[] = [], home = false): ModalHand
         for (const b of document.querySelectorAll<HTMLElement>('.debug-fab')) b.hidden = !v;
       },
     ),
-    locales.length > 1
-      ? h(
-          'div',
-          { class: 'setting' },
-          h('span', null, t('settings.language')),
-          h(
-            'div',
-            { class: 'seg' },
-            ...locales.map((l) =>
-              h(
-                'button',
-                {
-                  'aria-pressed': String(getLocale() === l.code),
-                  onclick: () => {
-                    setLocale(l.code);
-                    settings.locale = l.code;
-                    saveSettings();
-                    location.reload();
-                  },
-                },
-                l.code.toUpperCase(),
-              ),
-            ),
-          ),
-        )
-      : null,
     version,
   );
   return openModal({
