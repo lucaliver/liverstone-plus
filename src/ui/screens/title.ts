@@ -254,4 +254,4 @@ const SCRIBBLES = (() => {
 })();
 
 /** A hand-written scribble for the signature line (drawn in steps when signing). */
-const SIGNATURE = `<svg viewBox="0 0 200 50" aria-hidden="true"><path d="M8 34c10-22 18-26 20-14s-6 22 2 18 12-26 18-24-2 26 6 22 8-16 14-14 0 12 6 10 10-12 16-12 2 10 8 10 16-8 22-10 6 6 12 6 18-4 24-6" fill="none" stroke="#1c5fd0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const SIGNATURE = `<svg viewBox="0 0 200 50" aria-hidden="true"><path d="M8 34c10-22 18-26 20-14s-6 22 2 18 12-26 18-24-2 26 6 22 8-16 14-14 0 12 6 10 10-12 16-12 2 10 8 10 16-8 22-10 6 6 12 6 18-4 24-6" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;

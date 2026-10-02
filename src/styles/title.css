@@ -419,6 +419,7 @@
 }
 .contract-sig { position: absolute; left: 8px; bottom: 2px; width: 70%; height: 44px; clip-path: inset(0 100% 0 0); }
 .contract-sig svg { width: 100%; height: 100%; }
+.contract-sig path { stroke: var(--b); }
 /* held: the signature is written as the hold goes on, and the pen travels with it (letting go snaps both back) */
 .contract-line.signing .contract-sig { clip-path: inset(0 0 0 0); transition: clip-path 0.9s steps(9); }
 .contract-sig.done { clip-path: inset(0 0 0 0); }
