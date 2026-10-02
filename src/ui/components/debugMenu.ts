@@ -83,7 +83,31 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
   // Cards of the hero (and the neutral ones), filtered as you type; a tap adds a copy, the count says how many.
   const search = h('input', { class: 'debug-search', type: 'search', placeholder: t('debug.cards'), 'aria-label': t('debug.cards') });
   const cardList = h('div', { class: 'debug-cards' });
+  const tabs = h('div', { class: 'debug-tabs', role: 'tablist' });
+  const cardsPane = h('div', { class: 'debug-pane' }, search, cardList);
+  const foesPane = h('div', { class: 'debug-pane' });
+  let tab: 'foes' | 'cards' = 'foes';
+  const renderTabs = (): void => {
+    const tabBtn = (id: 'foes' | 'cards', label: string): HTMLButtonElement =>
+      h(
+        'button',
+        {
+          role: 'tab',
+          'aria-selected': String(tab === id),
+          onclick: () => {
+            tab = id;
+            sfx('tap');
+            renderTabs();
+          },
+        },
+        label,
+      );
+    tabs.replaceChildren(tabBtn('foes', t('debug.tab.foes')), tabBtn('cards', t('debug.tab.cards', { n: extra.length })));
+    foesPane.hidden = tab !== 'foes';
+    cardsPane.hidden = tab !== 'cards';
+  };
   const renderCards = (): void => {
+    renderTabs();
     const q = search.value.trim().toLowerCase();
     cardList.replaceChildren(
       ...Object.values(CARDS)
@@ -104,7 +128,6 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
   };
   search.addEventListener('input', renderCards);
   renderHeroes();
-  renderCards();
   let handle: ModalHandle | null = null;
   const list = h(
     'div',
@@ -123,9 +146,11 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
       }),
     ),
   );
+  foesPane.append(list);
+  renderCards();
   handle = openModal({
     title: t('debug.title'),
-    body: h('div', { class: 'debug-fight' }, heroSeg, search, cardList, list),
+    body: h('div', { class: 'debug-fight' }, heroSeg, tabs, foesPane, cardsPane),
     actions: [
       {
         label: t('debug.unlockAll'),

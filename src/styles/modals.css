@@ -437,7 +437,21 @@
   background: var(--paper2);
   border: 2px solid var(--k);
 }
-.debug-cards { display: flex; flex-wrap: wrap; gap: 6px; max-height: 132px; overflow-y: auto; }
+.debug-cards { display: flex; flex-wrap: wrap; gap: 6px; max-height: 38vh; overflow-y: auto; }
+.debug-pane { display: flex; flex-direction: column; gap: 10px; }
+.debug-pane[hidden] { display: none; }
+.debug-tabs { display: flex; gap: 4px; border-bottom: var(--line) solid var(--k); }
+.debug-tabs button {
+  flex: 1;
+  min-height: 44px;
+  font-family: var(--font-ui);
+  font-size: 18px;
+  color: var(--k);
+  background: var(--paper2);
+  border: var(--line) solid var(--k);
+  border-bottom: 0;
+}
+.debug-tabs button[aria-selected='true'] { background: var(--y); }
 .debug-card {
   display: flex;
   gap: 6px;

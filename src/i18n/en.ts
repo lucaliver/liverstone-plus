@@ -90,6 +90,8 @@ const en = {
   'debug.button': 'Debug fight',
   'debug.title': 'Debug fight',
   'debug.hero': 'Hero',
+  'debug.tab.foes': 'Enemies',
+  'debug.tab.cards': 'Cards ({n})',
   'debug.cards': 'Add cards to the deck…',
   'debug.unlockAll': 'Unlock all',
   'debug.menu': 'Debug menu',
