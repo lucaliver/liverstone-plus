@@ -891,9 +891,9 @@ const it: Record<EnKey, string> = {
   'card.onARoll.desc': 'Gioca gratis tutti gli attacchi che sono sul nastro.',
   'card.mrRoboto.name': 'Mr. Roboto',
   'card.mrRoboto.desc':
-    'Fai {0} danni. Trascinala sul nastro per spazzare via le altre carte (andranno perse): +{1} danni per ciascuna, fino a +{2}. Rilasciala sopra il nastro per giocarla.',
+    'Fai {0} danni. Trascinala sul nastro per spazzare via le altre carte (andranno perse): +{1} danni per ciascuna, fino a +{2}. Viene giocata appena la rilasci.',
   'card.mrRoboto.tip':
-    'Lo Stagista a Molla cresce mentre spazzi il nastro con lui: ogni carta che butta giù va persa, come se fosse caduta in fondo, e aggiunge danni. Rilascialo sopra il nastro per giocarlo; il bonus sparisce appena è giocato.',
+    'Lo Stagista a Molla cresce mentre spazzi il nastro con lui: ogni carta che butta giù va persa, come se fosse caduta in fondo, e aggiunge danni. Resta sul nastro finché lo tieni, viene giocato appena lo rilasci e il bonus sparisce appena è giocato.',
   'card.stakhanov.name': 'Stachanov',
   'card.stakhanov.desc': 'Ottieni {0} di [strength] per {1}s.',
   'card.brownNoser.name': 'Leccapiedi',

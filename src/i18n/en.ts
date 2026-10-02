@@ -884,9 +884,9 @@ const en = {
   'card.onARoll.desc': 'Play every attack that is on the belt for free.',
   'card.mrRoboto.name': 'Mr. Roboto',
   'card.mrRoboto.desc':
-    'Deal {0} damage. Drag it over the belt to knock the other cards off it (they are lost): +{1} damage for each, up to +{2}. Let go above the belt to play it.',
+    'Deal {0} damage. Drag it over the belt to knock the other cards off it (they are lost): +{1} damage for each, up to +{2}. It is played the moment you let go.',
   'card.mrRoboto.tip':
-    'Wind-Up Intern grows as you sweep the belt with it: every card it knocks off is lost, as if it had fallen off the end, and adds damage. Let go above the belt to play it; the bonus is gone once it is played.',
+    'Wind-Up Intern grows as you sweep the belt with it: every card it knocks off is lost, as if it had fallen off the end, and adds damage. It stays on the belt while you hold it, is played the moment you let go, and the bonus is gone once it is played.',
   'card.stakhanov.name': 'Stakhanov',
   'card.stakhanov.desc': 'Gain {0} [strength] for {1}s.',
   'card.brownNoser.name': 'Brown Noser',

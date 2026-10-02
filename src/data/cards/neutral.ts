@@ -391,7 +391,7 @@ export const neutralCards: CardDef[] = [
   },
 
   {
-    // Hold it and drag it over the belt: every card it knocks off makes it hit harder, then let go above the belt to play it.
+    // Hold it and drag it over the belt: every card it knocks off makes it hit harder, and it is played the moment you let go.
     id: 'mrRoboto',
     face: '{dmg:0}|{sweep:1}',
     cls: 'neutral',

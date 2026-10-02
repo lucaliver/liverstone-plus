@@ -170,6 +170,7 @@ export function createCardLayer(v: CombatView): CardLayer {
   const cancelDrag = (): void => {
     if (!drag) return;
     clearTimeout(drag.timer);
+    combat.endDrag();
     drag.el.classList.remove('dragging');
     drag.el.style.scale = '';
     if (drag.from === 'sleeve') drag.el.style.transform = '';
@@ -229,6 +230,7 @@ export function createCardLayer(v: CombatView): CardLayer {
       drag.moved = true;
       clearTimeout(drag.timer);
       drag.el.classList.add('dragging');
+      combat.startDrag(drag.uid);
     }
     if (!drag.moved) return;
     if (drag.from === 'belt') {
@@ -250,7 +252,8 @@ export function createCardLayer(v: CombatView): CardLayer {
     if (!drag || ev.pointerId !== drag.pointerId) return;
     const d = drag;
     clearTimeout(d.timer);
-    if (!d.moved) {
+    // A card that sweeps the belt is played the moment it is let go, wherever that is.
+    if (!d.moved || CARDS[findCard(d.uid)?.id ?? '']?.sweep) {
       cancelDrag();
       playUid(d.uid);
       return;

@@ -113,6 +113,8 @@ export class Combat {
   rowsOpen: number;
   /** The sleeve and the ability are out of reach (`EnemyDef.deepBelt`): nothing can be stashed, the ability can't be used. */
   lowerHidden = false;
+  /** The card the hero is dragging around the screen (`sweep`): it can't fall off the belt while held. */
+  private dragged: number | null = null;
   private rowAdded = false;
   /** The belt is shut off (`EnemyDef.beltOff`): it only moves when the player turns the crank (`crankBelt`). */
   beltDead = false;
@@ -736,6 +738,7 @@ export class Combat {
     // Expire cards that fell off the left edge.
     for (let i = this.belt.length - 1; i >= 0; i--) {
       const b = this.belt[i];
+      if (b.card.uid === this.dragged) b.pos = Math.min(b.pos, EXPIRE_POS - move);
       if (b.pos < EXPIRE_POS) continue;
       // On autopilot, a card slipping off plays itself for free if it can (rules…); otherwise it's lost as usual.
       if (this.flag('hero', 'autoplay') && this.playCard(b.card.uid, true)) continue;
@@ -1384,6 +1387,17 @@ export class Combat {
   private syncRustStatus(): void {
     if (this.rustSpots.length) this.hero.statuses.rustedBelt = { v: this.rustSpots.length, t: 0 };
     else delete this.hero.statuses.rustedBelt;
+  }
+
+  /** The hero starts dragging a card around (only a `sweep` card is held on the belt: the others carry on and may fall off). */
+  startDrag(uid: number): void {
+    const card = this.belt[this.beltIndex(uid)]?.card;
+    this.dragged = card && CARDS[card.id].sweep ? uid : null;
+  }
+
+  /** The hero lets go of the card (or it is gone). */
+  endDrag(): void {
+    this.dragged = null;
   }
 
   /**

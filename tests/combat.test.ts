@@ -1222,6 +1222,21 @@ describe('pop culture cards', () => {
     expect(c.enemy.maxHp - c.enemy.hp).toBe(base + max);
   });
 
+  it('Mr. Roboto stays on the belt while it is held, even past the exit, and is lost once let go', () => {
+    const { c, uid } = ready('mrRoboto');
+    let lost = false;
+    c.events.on((e) => {
+      if (e.type === 'cardExpired' && e.card.uid === uid) lost = true;
+    });
+    c.startDrag(uid);
+    run(c, CONFIG.beltTime * 2);
+    expect(lost).toBe(false);
+    expect(c.belt.some((b) => b.card.uid === uid)).toBe(true);
+    c.endDrag();
+    run(c, 1);
+    expect(lost).toBe(true);
+  });
+
   it("Mr. Roboto's bonus is gone as soon as it is played (or lost), and only a card on the belt can be swept", () => {
     const { c, uid } = ready('mrRoboto');
     const [victim] = crowd(c, 1);

@@ -516,7 +516,7 @@ test("the Boss's Son's weak spot: a touch on the target makes your next attack c
   expect(problems).toEqual([]);
 });
 
-test('Mr. Roboto: dragging it over the belt knocks the other cards off and grows it, letting go above the belt plays it', async ({ page }) => {
+test('Mr. Roboto: dragging it over the belt knocks the other cards off and grows it, letting go plays it on the spot', async ({ page }) => {
   const problems = await freshGame(page);
   await startFight(page);
   const uid = (await combat(
@@ -544,8 +544,8 @@ test('Mr. Roboto: dragging it over the belt knocks the other cards off and grows
   expect(((await combat(page, `return c.belt.find((b) => b.card.uid === ${uid})?.card.bonus ?? 0;`)) as number) > 0).toBe(true);
   expect(await others.count()).toBeLessThan(before);
   const hp = (await combat(page, 'return c.enemy.hp;')) as number;
-  await page.mouse.move(x, 120, { steps: 6 });
-  await page.locator('.combat').dispatchEvent('pointerup', { pointerId: 1, clientX: x, clientY: 120 });
+  await page.mouse.move(x, y, { steps: 6 });
+  await page.locator('.combat').dispatchEvent('pointerup', { pointerId: 1, clientX: x, clientY: y });
   await expect.poll(() => combat(page, 'return c.enemy.hp;')).toBeLessThan(hp - 3);
   expect(problems).toEqual([]);
 });

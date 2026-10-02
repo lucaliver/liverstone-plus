@@ -119,7 +119,7 @@ export interface CardDef {
   ride?: { i: number; by: number; to: number };
   /**
    * Dragging the card over the belt sweeps the other cards off it (they count as lost, as if they had fallen off the end):
-   * each one adds `vals[by]` to its bonus (the damage it deals), up to `vals[max]`. The bonus is gone once the card is played or lost.
+   * each one adds `vals[by]` to its bonus (the damage it deals), up to `vals[max]`. The bonus is gone once the card is played or lost. While held it stays on the belt, and it is played the moment it is let go.
    */
   sweep?: { by: number; max: number };
   /** Damage this card gains for every second the hero's mana is full and overflowing, wherever the card is. */
