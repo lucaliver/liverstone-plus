@@ -194,6 +194,15 @@ Icons (`ICONS`) and creatures (`CREATURES`) are SVG written for the ink palette 
 - Other browsers: `npx playwright test --browser=webkit` passes; Firefox needs a config without `isMobile`.
 - Screenshot scripts go in the git-ignored `screenshots/`.
 
+### Running tests without wasting time
+
+- The full `npm run e2e` takes 2-3 minutes: run it **once**, at the very end. While working, loop on `npm run check` (about 10 s) and on the one related e2e test (`npx playwright test -g "<part of the title>"`).
+- Read the result with `npx playwright test --reporter=list 2>&1 | grep -E "✘|failed|flaky|passed"`: a `tail` of the default output shows slow tests and misleading counts.
+- A test that fails in the full run: run **that test alone** first. If it passes alone it is machine load (many workers, another Playwright or dev server running): rerun the full suite once with `--workers=2`, don't dig into the code and don't loop reruns. Never start two Playwright runs at once (one shared server on :5174).
+- Before the first run after a rename or a removed field, `grep` for the old name in `src`, `tests` and `dev`: `tsc` already points at the stale tests, so fix them in the same pass instead of finding them one run at a time.
+- A screenshot is a throw-away spec (in `tests/e2e/` if `screenshots/` is not covered by the config) that you **delete before committing** (`git status` must not list it). Pitfalls that cost reruns: never overwrite `c.enemy.move` with a partial move (the HUD throws and the Machine jam window sends the page back to the title); `addTempCard(…, 'belt')` drops the card to the discard pile when the belt has no room, so add the card you want to see first, on an empty belt (`c.belt.length = 0`), and wait before adding the next; when the picture looks wrong, listen to `pageerror` before guessing; clip the shot to the area you changed.
+- Unrelated edits of the owner in the working tree (balancing, notes) are theirs: stage your own files by path, never `git add -A` unless they ask for it.
+
 ## Known technical debt
 
 - Pixel-art caching (deferred: generation is fast).
