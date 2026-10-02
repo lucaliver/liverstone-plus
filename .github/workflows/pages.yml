@@ -26,6 +26,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          # Count endpoint of the stats service (repository variable); empty = no stats.
+          VITE_STATS_URL: ${{ vars.STATS_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

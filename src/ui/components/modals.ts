@@ -134,6 +134,12 @@ export function openSettings(extra: ModalAction[] = [], home = false): ModalHand
       t('settings.nextFight'),
     ),
     toggleRow(
+      t('settings.analytics'),
+      () => settings.analytics,
+      (v) => (settings.analytics = v),
+      t('settings.analyticsHint'),
+    ),
+    toggleRow(
       t('settings.debugMenus'),
       () => settings.debugMenus,
       (v) => {

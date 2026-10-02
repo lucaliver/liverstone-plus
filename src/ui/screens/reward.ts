@@ -1,3 +1,4 @@
+import { trackReward } from '../../analytics';
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
@@ -34,6 +35,7 @@ function selectable(el: HTMLElement, card: CardInst, onSelect: () => void): void
 export function rewardScreen(run: RunState, picks: RewardOffer[], onDone: () => void): Screen {
   let fromDeck: CardInst | null = null;
   let offer: RewardOffer | null = null;
+  const offered = picks.map((p) => p.def.id);
 
   const swapBtn = h('button', { class: 'btn', disabled: true }, t('reward.swap'));
   const skipBtn = h(
@@ -43,6 +45,7 @@ export function rewardScreen(run: RunState, picks: RewardOffer[], onDone: () => 
       onclick: (e: Event) => {
         sfx('tap');
         const pay = skipPay(run);
+        trackReward(run, offered, null, null);
         skipReward(run);
         // Max HP goes up: hearts rise, the HUD shows the new total, then on to the map.
         swapBtn.disabled = true;
@@ -107,6 +110,7 @@ export function rewardScreen(run: RunState, picks: RewardOffer[], onDone: () => 
     haptic('tap');
     const old = deckEls.find((d) => d.card.uid === fromDeck?.uid)?.el;
     const flyer = offerEls.find((o) => o.pick === offer)?.el;
+    trackReward(run, offered, offer.def.id, fromDeck.id);
     swapCard(run, fromDeck.uid, offer.def.id, offer.up);
     swapBtn.disabled = true;
     skipBtn.disabled = true;

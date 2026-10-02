@@ -2,6 +2,8 @@ import type { Rarity } from '../game/types';
 
 /** Global tuning constants. Times are in seconds at 1× speed. */
 export const CONFIG = {
+  /** Seconds between two stats hits (`src/analytics/`): a burst is spread out instead of sent at once. */
+  statsGap: 0.4,
   /** Seconds for a card to cross one full belt width. */
   beltTime: 7.7,
   /** Card width as a fraction of the belt width (the UI mirrors this). */

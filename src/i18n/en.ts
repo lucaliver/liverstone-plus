@@ -140,6 +140,8 @@ const en = {
   'settings.haptics': 'Vibration',
   'settings.rightToLeft': 'Belt runs right to left',
   'settings.nextFight': 'Takes effect from the next fight.',
+  'settings.analytics': 'Share play stats',
+  'settings.analyticsHint': 'Anonymous counters only (fights, picks, results): no name, no ID.',
   'settings.debugMenus': 'Debug menus',
   'settings.language': 'Language',
 

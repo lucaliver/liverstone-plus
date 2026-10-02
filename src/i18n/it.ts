@@ -141,6 +141,8 @@ const it: Record<EnKey, string> = {
   'settings.haptics': 'Vibrazione',
   'settings.rightToLeft': 'Nastro da dx a sx',
   'settings.nextFight': 'Ha effetto dal prossimo scontro.',
+  'settings.analytics': 'Condividi statistiche',
+  'settings.analyticsHint': 'Solo contatori anonimi (scontri, scelte, esiti): niente nome, niente ID.',
   'settings.debugMenus': 'Debug',
   'settings.language': 'Lingua',
 

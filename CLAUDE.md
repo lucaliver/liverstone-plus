@@ -85,6 +85,7 @@ src/
     components/ cardView, cardShow, coach, modals, memos, debugMenu, room, moveText, heroSheet, shareSlip, decor
     fx/        particles, floating text, shake, haptics
     screens/   title, studio (the developer card after the contract), heroSelect, journey, reward, rest, promotion, copyRoom, tailor, lostFound, vending, crossTraining, end, compendium
+  analytics/   anonymous play counters: `index.ts` (what is counted and when), `goatcounter.ts` (the only file that knows the service)
   audio/       sfx (synth), music (sequencer + tracks)
   styles/      index.css imports partials in order; responsive.css stays last
 tests/         combat, content, balance.sim (+ bot), e2e/
@@ -136,6 +137,10 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 ### Management memos (run modifiers)
 
 `ModifierDef` (`data/modifiers.ts`): optional handicaps, open to a hero once the last act's stamp is theirs (`memosOpen` in `meta.ts`). Fields are multipliers (`enemyHp`, `enemyDmg`, `beltMul`, `heroHp`, `restHeal`) or a sum (`rewardCards`); `resolveMods` combines the active ones and `run.ts`/`combat.ts` read the result, never a memo id. The pinned ones are `run.mods` (saved; unknown ids dropped on load) and `meta.memos` (the choice for the next run, set from the hero select's `openMemos`). A new memo = a record + `memo.<id>.name`/`.d` (`{n}` = its `n`); a new kind of effect = a new field read where it applies. The first (scripted) run never has memos.
+
+### Analytics
+
+`src/analytics/`: anonymous counters (no id, no deck, no seed), sent as GoatCounter events (`<version>/fight/<enemy>/<hero>/win|lose`, `offered/<card>`, `pick/<card>`, `cut/<card>`, `skip`, `run/<hero>/win|lose|abandon[-memo]`, `death/act<N>-floor<M>`). Called only from the flow (`main.ts`, the reward screen), never from the engine. Runs under a memo send only their tagged run result. The endpoint is `VITE_STATS_URL` (repository variable `STATS_URL` in the Pages workflow); unset = nothing is sent (dev, tests). Settings switch `analytics` (on by default) turns it off. Sampled data: ad blockers hide some players. To swap the service rewrite `goatcounter.ts`; to remove it delete the folder, the call sites, the setting and its strings.
 
 ### i18n
 

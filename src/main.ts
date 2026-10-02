@@ -8,6 +8,7 @@ import { setLocale, setStringValues, t } from './core/i18n';
 import { randomSeed } from './core/rng';
 import { setSfxVolume, unlockAudio } from './audio/sfx';
 import { musicTrack, playMusic, setMusicVolume, suspendMusic } from './audio/music';
+import { trackFight, trackRun } from './analytics';
 import { actDef } from './data/acts';
 import type { RewardKind } from './data/config';
 import { ENEMIES } from './data/enemies';
@@ -218,12 +219,9 @@ function afterCombat(combat: Combat): void {
   applyCombat(r, combat);
   playMusic('menu');
   const node = currentNode(r);
-  if (combat.result === 'lose') {
-    show(endScreen(r, false, finishRun(r, false), goHeroSelect, goTitle));
-    return;
-  }
-  if (combat.result === 'win' && node.next.length === 0) {
-    show(endScreen(r, true, finishRun(r, true), goHeroSelect, goTitle));
+  trackFight(r, combat.enemy.def.id, combat.result === 'win');
+  if (combat.result === 'lose' || (combat.result === 'win' && node.next.length === 0)) {
+    endRun(r, combat.result === 'win');
     return;
   }
   // Elites and act bosses pay better (bosses in legendary cards only).
@@ -237,13 +235,19 @@ function nextNode(): void {
   if (!run) return;
   run.cleared = true;
   if (!currentNode(run).next.length) {
-    show(endScreen(run, true, finishRun(run, true), goHeroSelect, goTitle));
+    endRun(run, true);
     return;
   }
   goJourney();
 }
 
+function endRun(r: RunState, won: boolean): void {
+  trackRun(r, won ? 'win' : 'lose');
+  show(endScreen(r, won, finishRun(r, won), goHeroSelect, goTitle));
+}
+
 function abandon(): void {
+  if (run) trackRun(run, 'abandon');
   clearRun();
   run = null;
   goTitle();

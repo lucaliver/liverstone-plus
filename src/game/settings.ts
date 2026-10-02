@@ -16,6 +16,8 @@ export interface Settings {
   rightToLeft: boolean;
   /** Shows the floating debug buttons (title, fight, map). */
   debugMenus: boolean;
+  /** Sends anonymous play counters (`src/analytics/`). */
+  analytics: boolean;
 }
 
 const defaults: Settings = {
@@ -29,6 +31,7 @@ const defaults: Settings = {
   seenTips: [],
   rightToLeft: false,
   debugMenus: false,
+  analytics: true,
 };
 
 export const settings: Settings = load('settings', defaults);
@@ -38,7 +41,7 @@ for (const k of ['sfxVolume', 'musicVolume'] as const) {
   settings[k] = typeof v === 'number' && Number.isFinite(v) ? Math.min(1, Math.max(0, v)) : defaults[k];
 }
 
-for (const k of ['reduceMotion', 'haptics', 'seenTutorial', 'rightToLeft', 'debugMenus'] as const)
+for (const k of ['reduceMotion', 'haptics', 'seenTutorial', 'rightToLeft', 'debugMenus', 'analytics'] as const)
   if (typeof settings[k] !== 'boolean') settings[k] = defaults[k];
 if (!GAME_SPEEDS.some((s) => s === settings.speed)) settings.speed = defaults.speed;
 if (typeof settings.locale !== 'string') settings.locale = defaults.locale;
