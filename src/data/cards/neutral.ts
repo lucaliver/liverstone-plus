@@ -438,8 +438,8 @@ export const neutralCards: CardDef[] = [
     type: 'defense',
     rarity: 'legendary',
     cost: 2,
-    vals: [2, 4],
-    upVals: [3, 8],
+    vals: [1, 3],
+    upVals: [3, 6],
     keywords: ['exhaust'],
     art: 'runner',
     // Over the desks and out of reach, but the belt keeps up with you.

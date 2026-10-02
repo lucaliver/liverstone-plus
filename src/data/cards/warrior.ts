@@ -151,7 +151,6 @@ export const warriorCards: CardDef[] = [
     upCost: 2,
     vals: [2],
     upVals: [3],
-    keywords: ['exhaust'],
     art: 'drum',
     play: (c, v) => c.applyStatus('hero', 'strength', v[0]),
   },
