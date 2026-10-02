@@ -18,6 +18,7 @@ This file is the technical guide: read it before changing code. Field-by-field d
 - Balance: one quick `npm run sim` pass is enough while design moves.
 - Bump `version` in `package.json` after every big batch (shown in the home screen's Settings only, with the build time, `__BUILD_TIME__`).
 - Keep this file true: fix any line a change makes stale, in the same commit.
+- The shell is macOS (BSD tools, zsh): never `sed -i` or other GNU-only flags. Edit files with the Edit tool (or a short Python script), and check that an edit really landed before committing.
 
 ## Writing code
 
