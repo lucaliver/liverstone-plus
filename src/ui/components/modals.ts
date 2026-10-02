@@ -67,6 +67,12 @@ export function openSettings(extra: ModalAction[] = [], home = false): ModalHand
       )
     : null;
   if (version) onTapOrHold(version, () => {}, openResetConfirm, cssMs('--dur-hold'));
+  const analyticsRow = toggleRow(
+    t('settings.analytics'),
+    () => settings.analytics,
+    (v) => (settings.analytics = v),
+    t('settings.analyticsHint'),
+  );
   const body = h(
     'div',
     null,
@@ -133,17 +139,17 @@ export function openSettings(extra: ModalAction[] = [], home = false): ModalHand
       (v) => (settings.rightToLeft = v),
       t('settings.nextFight'),
     ),
-    toggleRow(
-      t('settings.analytics'),
-      () => settings.analytics,
-      (v) => (settings.analytics = v),
-      t('settings.analyticsHint'),
-    ),
+    analyticsRow,
     toggleRow(
       t('settings.debugMenus'),
       () => settings.debugMenus,
       (v) => {
         settings.debugMenus = v;
+        // Testing must not pollute the stats: debug turns them off (the switch can still be turned back on).
+        if (v) {
+          settings.analytics = false;
+          analyticsRow.querySelector('.switch')?.setAttribute('aria-checked', 'false');
+        }
         // The screens behind this window are already built: show or hide their debug buttons now.
         for (const b of document.querySelectorAll<HTMLElement>('.debug-fab')) b.hidden = !v;
       },
