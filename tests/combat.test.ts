@@ -76,6 +76,29 @@ describe('combat engine', () => {
     expect(c.belt.every((b) => b.row === 0)).toBe(true);
   });
 
+  it('the Exaggerated Girl sinks the sleeve and the ability, then opens a third belt row', () => {
+    const c = setup({ enemy: ENEMIES.exaggeratedGirl, hp: 999, maxHp: 999 });
+    const seen: string[] = [];
+    c.events.on((e) => void (e.type === 'lowerSink' || e.type === 'rowAdded' ? seen.push(e.type) : null));
+    run(c, CONFIG.introTime + 4.5);
+    c.hero.mana = c.abilityCost();
+    expect(c.lowerHidden).toBe(false);
+    expect(c.abilityReady()).toBe(true);
+    run(c, 1);
+    expect(c.lowerHidden).toBe(true);
+    expect(c.beltRows).toBe(2);
+    c.hero.mana = c.abilityCost();
+    expect(c.abilityReady()).toBe(false);
+    expect(c.stash(c.belt[0].card.uid)).toBe(false);
+    run(c, CONFIG.sinkTime + 0.1);
+    expect(seen).toEqual(['lowerSink', 'rowAdded']);
+    expect(c.beltRows).toBe(3);
+    expect(c.rowsOpen).toBe(3);
+    run(c, 30);
+    expect(c.belt.some((b) => b.row === 2)).toBe(true);
+    expect(seen).toHaveLength(2);
+  });
+
   it('prewarms only the right half of the belt and waits for the intro', () => {
     const c = setup();
     const pos = c.belt.map((b) => b.pos);
@@ -1497,7 +1520,7 @@ describe('Complaint Box', () => {
   it('grows by 1 for every second of overflowing mana, even in the draw pile', () => {
     const c = setup({ deck: deckOf(['punch', 'punch', 'complaintBox']) });
     run(c, CONFIG.introTime + 0.01);
-    c.hero.mana = c.hero.maxMana;
+    c.hero.mana = c.abilityCost();
     run(c, 3.05);
     const box = [...c.draw, ...c.discard, ...c.belt.map((b) => b.card)].find((x) => x.id === 'complaintBox')!;
     expect(c.cardVals(box)[0]).toBeGreaterThanOrEqual(1 + 3);

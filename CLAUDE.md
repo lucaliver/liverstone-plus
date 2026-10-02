@@ -156,6 +156,7 @@ New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHi
 - Debug menus (`ui/components/debugMenu.ts`) show only with the Settings switch `debugMenus`; they are temporary.
 - Move descriptions (`moveEffect`) tag curses, statuses, hexes and rules with `data-*`; `bindMoveDetails` makes them pressable.
 - The belt has two rows by default (`CONFIG.beltRows`); tests needing one pass `beltRows: 1`.
+- `EnemyDef.deepBelt` (the Exaggerated Girl): at that second the engine sets `Combat.lowerHidden` (no stash, no sleeve play, no ability; `lowerSink` event → `.sunk` on the screen: everything under the belt slides down, only the mana bar stays) and `CONFIG.sinkTime` later adds a belt row (`rowAdded` → `.deep`, `--rows` on the belt, the row grows in steps). `Combat.beltRows` is therefore mutable.
 
 ### CSS
 

@@ -761,7 +761,7 @@ ${shadow}
 <path d="M76 66c-14 8-20 22-12 32 4 4 8 0 6-6 8 2 12-2 10-8z" fill="url(#eg-f)" ${OUT}/>
 <!-- phone arm, held up for a selfie (right) -->
 <g class="limb"><path d="M124 66c14-4 26-16 30-34l8 2c-2 22-16 38-34 46z" fill="url(#eg-f)" ${OUT}/><rect x="152" y="10" width="22" height="36" fill="#1b1830" ${OUT}/><rect x="155" y="14" width="16" height="26" fill="#ff8ac8"/><circle cx="163" cy="27" r="5" fill="#fff0e0"/></g>
-<path d="M176 8l4-8 4 8 8 4-8 4-4 8-4-8-8-4zM140 18l2-4 2 4 4 2-4 2-2 4-2-4-4-2z" fill="#ffd900"/>
+<path d="M176 12l4-8 4 8 8 4-8 4-4 8-4-8-8-4z" fill="#ffd900" ${OUT}/><path d="M142 20l3-6 3 6 6 3-6 3-3 6-3-6-6-3z" fill="#ffd900" ${OUT}/>
 <!-- head -->
 <path d="M68 40c0-22 14-34 32-34s32 12 32 34c0 22-14 38-32 38S68 62 68 40z" fill="url(#eg-f)" ${OUT}/>
 <path d="M64 44c-2-26 10-42 36-42s38 16 36 42c-6-14-14-22-26-24-10 6-22 12-46 24z" fill="url(#eg-k)" ${OUT}/>

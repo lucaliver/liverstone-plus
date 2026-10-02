@@ -819,9 +819,11 @@ export class Combat {
 
   /** Plays a card from the belt or sleeve. Returns false if it couldn't be played. */
   playCard(uid: number, free = false): boolean {
-    if (this.result || this.intro > 0 || this.lowerHidden) return false;
+    if (this.result || this.intro > 0) return false;
     const beltIdx = this.beltIndex(uid);
     const sleeveIdx = this.sleeveIndex(uid);
+    // The sleeve is out of reach while it is sunk.
+    if (sleeveIdx >= 0 && this.lowerHidden) return false;
     const card = beltIdx >= 0 ? this.belt[beltIdx].card : sleeveIdx >= 0 ? this.sleeve[sleeveIdx] : null;
     if (!card) return false;
     if (beltIdx >= 0 && this.isCovered(uid)) {
@@ -917,7 +919,7 @@ export class Combat {
 
   /** Moves a belt card into the sleeve. If the slot is taken, the two cards swap places. */
   stash(uid: number, slot?: number): boolean {
-    if (this.result || this.intro > 0) return false;
+    if (this.result || this.intro > 0 || this.lowerHidden) return false;
     const beltIdx = this.beltIndex(uid);
     if (beltIdx < 0) return false;
     const target = slot ?? this.sleeve.indexOf(null);

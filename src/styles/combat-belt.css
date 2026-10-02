@@ -3,7 +3,7 @@
   --rows: 1;
   position: relative;
   flex: none;
-  height: calc(var(--belt-row-h) * (var(--rows) - 1) + var(--cw-belt) * 1.4 + 30px);
+  height: calc(var(--belt-row-h, 0px) * (var(--rows) - 1) + var(--cw-belt) * 1.4 + 30px);
   touch-action: none;
   z-index: 2;
 }
@@ -187,7 +187,7 @@
   left: 0;
   right: 0;
   top: 11px;
-  height: calc(var(--belt-row-h) * (var(--rows) - 1) + var(--cw-belt) * 1.4);
+  height: calc(var(--belt-row-h, 0px) * (var(--rows) - 1) + var(--cw-belt) * 1.4);
 }
 /* more rows: each one `--belt-row-h` below the last (set by the combat screen) */
 /* The Exaggerated Girl: everything under the belt (the mana bar included) slides down, the sleeve and the ability off the screen;
