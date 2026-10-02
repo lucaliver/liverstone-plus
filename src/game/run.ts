@@ -160,7 +160,9 @@ function addAct(nodes: RunNode[], rng: Rng, act: number, last: RunNode[], script
       if (scripted) enemy = FIRST_RUN_ENEMIES[floor];
       else {
         if (!bag.length) bag = rng.shuffle(enemiesFor(act, 'normal'));
-        enemy = bag.pop()!.id;
+        // Act 2 opens on a rule-breaker (the bag is fresh here, so one is always in it).
+        const opener = act === 2 && floor === 1 ? bag.findIndex((e) => e.ruleBreaker) : -1;
+        enemy = (opener >= 0 ? bag.splice(opener, 1)[0] : bag.pop()!).id;
       }
     } else if (!enemy && (type === 'elite' || type === 'boss')) {
       enemy = scripted ? enemiesFor(act, type)[0].id : rng.pick(enemiesFor(act, type)).id;

@@ -854,8 +854,7 @@ const en = {
   'card.clearCache.name': 'Clear Cache',
   'card.clearCache.desc': 'Deal {0} damage. While it waits in your sleeve, this card gains +{1} damage for every spell you play.',
   'card.burnBook.name': 'Burn Book',
-  'card.burnBook.desc':
-    'Apply {0} [poison]. While it waits in your sleeve, this card gains +{1} [poison] for every hit you take.',
+  'card.burnBook.desc': 'Apply {0} [poison]. While it waits in your sleeve, this card gains +{1} [poison] for every hit you take.',
   'card.unpaidOvertime.name': 'Unpaid Overtime',
   'card.unpaidOvertime.desc': 'Deal {0} damage. +{1} for every second it rides the belt (up to {2}). Frozen in your sleeve.',
   'card.patience.name': 'Patience',
@@ -967,8 +966,7 @@ const en = {
   'card.hazmatSuit.name': 'Hazmat Suit',
   'card.hazmatSuit.desc': "Gain [block] equal to the enemy's [poison].",
   'card.petriDish.name': 'Petri Dish',
-  'card.petriDish.desc':
-    'Apply {0} [poison]. While it waits in your sleeve, this card gains +{1} [poison] for every card you play.',
+  'card.petriDish.desc': 'Apply {0} [poison]. While it waits in your sleeve, this card gains +{1} [poison] for every card you play.',
   'card.sisyphus.name': 'Sisyphus',
   'card.sisyphus.desc': 'Shuffle {0} random exhausted cards back into your draw pile.',
 

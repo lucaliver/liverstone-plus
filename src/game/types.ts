@@ -305,6 +305,8 @@ export interface EnemyDef {
   beltOff?: number;
   /** Only met as the very first fight of the very first run (never dealt at random). */
   firstRunOnly?: boolean;
+  /** Bends the rules of the belt or of what you may play (not just numbers): every act 2 opens on one of these, so the act's fun shows at once. */
+  ruleBreaker?: boolean;
 }
 
 export interface HeroHooks {

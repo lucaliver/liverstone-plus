@@ -120,7 +120,7 @@ tests/         combat, content, balance.sim (+ bot), e2e/
 
 - `EnemyDef` (`enemies.ts`): `act`, `main` + `specials[]` + `every`, optional `onHalf`, `start`, `block`, belt/virus/rust
   options (all documented on the type). Needs a sprite in `creatures.ts`, `enemy.<id>.name`, `move.<id>` per move,
-  `enemy.<id>.half` if it has `onHalf`. Global difficulty: `CONFIG.enemyHp`/`enemyDmg`; floor scaling `CONFIG.floorHp`/`floorDmg`.
+  `enemy.<id>.half` if it has `onHalf`. Global difficulty: `CONFIG.enemyHp`/`enemyDmg`; floor scaling `CONFIG.floorHp`/`floorDmg`. Elites and bosses climb by act (elite HP 90/115/140, boss 190/220/260). `ruleBreaker` marks enemies that bend belt or play rules: act 2's first fight is always one (`addAct`, `run.ts`).
 - `HeroDef` (`heroes.ts`): hp, mana, sleeve, starter deck (`startUpgraded`: one attack and one defense copy start upgraded), `ability`, hooks, optional `unlock` (checked by `progress()` in
   `meta.ts`), a card file, a sprite, `hero.<id>.*` strings, `ABILITY_ICON`/`PASSIVE_ICON` entries (`ui/combat/view.ts`).
 - `StatusDef` (`statuses.ts`) + `status.<id>` and `status.<id>.d` (`{v}` = amount). Its `tone` (required: red force, green poison and healing, teal defence, amber speed and time, purple rules and control, blue mana and tech) is its colour everywhere: chip, drain bar, floater, keyword text, move chips. An enemy move takes its own from what it does (`moveTone`, `moveText.ts`: Snark poisons, so it is green). Inks are `--tone-*` in `tokens.css`, read through `[data-tone]` as `var(--tone)`/`var(--tone-hi)`: tag the element, never name a colour per status or intent. `chip` (`icon`/`short`) says how a move chip names it. Effects are fields or hooks on the def;

@@ -1395,6 +1395,13 @@ describe('run pay and rewards', () => {
     expect(fightPay('boss', 0)).toBe(CONFIG.pay.boss + CONFIG.pay.par * CONFIG.pay.perSecond);
   });
 
+  it('act 2 always opens on a rule-breaker, and its other fights are dealt as usual', () => {
+    for (let seed = 1; seed <= 30; seed++) {
+      const nodes = newRun('warrior', seed).nodes.filter((n) => n.act === 2);
+      expect(ENEMIES[nodes.find((n) => n.floor === 1)!.enemy!].ruleBreaker, `seed ${seed}`).toBe(true);
+    }
+  });
+
   it('an elite offers at least two Legendary cards and a boss only Legendary ones', () => {
     const run = newRun('warrior', 7);
     for (let i = 0; i < 20; i++) {
