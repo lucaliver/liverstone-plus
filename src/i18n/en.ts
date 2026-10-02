@@ -882,9 +882,9 @@ const en = {
     'On a Roll stops at the end of the belt. Attacks pile up behind it: play it to fire the whole pile for free. Any other card that touches the pile sends it all off the belt.',
   'card.mrRoboto.name': 'Mr. Roboto',
   'card.mrRoboto.desc':
-    'Deal {0} damage. Drag it around the screen to wind it up: +{1} damage per swipe, up to +{2}. Let go above the belt to play it.',
+    'Deal {0} damage. Drag it over the belt to knock the other cards off it (they are lost): +{1} damage for each, up to +{2}. Let go above the belt to play it.',
   'card.mrRoboto.tip':
-    'Wind-Up Intern powers up while you drag it around the screen. Keep dragging before it reaches the end of the belt, then let go above the belt to play it.',
+    'Wind-Up Intern grows as you sweep the belt with it: every card it knocks off is lost, as if it had fallen off the end, and adds damage. Let go above the belt to play it; the bonus is gone once it is played.',
   'card.stakhanov.name': 'Stakhanov',
   'card.stakhanov.desc': 'Gain {0} [strength] for {1}s.',
   'card.brownNoser.name': 'Brown Noser',

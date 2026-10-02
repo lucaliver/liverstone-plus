@@ -844,6 +844,7 @@ export class Combat {
     // A hex stays on the card through the piles until it's broken; one already cracked is gone.
     this.shedHex(card);
     card.passed = true;
+    if (def.sweep) card.bonus = 0;
     this.events.emit({ type: 'cardExpired', card });
     this.withCard(card, def, () => def.onExpire?.(this, this.cardVals(card), card));
     this.heroDef.hooks.onCardExpired?.(this, card);
@@ -919,6 +920,7 @@ export class Combat {
     );
     this.replaying = false;
     this.withCard(card, def, () => def.play!(this, vals, card), row);
+    if (def.sweep) card.bonus = 0;
     if (def.type === 'attack') this.removeStatus('hero', 'crit');
     if (this.result === 'lose') return;
 
@@ -1419,14 +1421,21 @@ export class Combat {
     else delete this.hero.statuses.rustedBelt;
   }
 
-  /** The hero dragged a card one more swipe around the screen: a card with `wind` grows. False when there's nothing (more) to wind. */
-  windCard(uid: number): boolean {
+  /**
+   * The hero drags a card with `sweep` over another card of the belt: that one is knocked off (it counts as lost, as if it had
+   * fallen off the end) and the sweeper grows. False when there is nothing to sweep (a hexed, pinned or piled-up card stays put).
+   */
+  sweepCard(uid: number, victim: number): boolean {
     const card = this.belt[this.beltIndex(uid)]?.card ?? this.sleeve[this.sleeveIndex(uid)];
-    const wind = card && CARDS[card.id].wind;
-    if (!card || !wind || this.result) return false;
+    const sweep = card && CARDS[card.id].sweep;
+    const i = this.beltIndex(victim);
+    if (!card || !sweep || i < 0 || victim === uid || this.result || this.intro > 0) return false;
+    const b = this.belt[i];
+    if (b.card.hex || b.pinned || b.stuck) return false;
     const vals = this.cardVals(card);
-    if (card.bonus >= vals[wind.max]) return false;
-    card.bonus = Math.min(vals[wind.max], card.bonus + vals[wind.by]);
+    card.bonus = Math.min(vals[sweep.max], card.bonus + vals[sweep.by]);
+    this.belt.splice(i, 1);
+    this.expire(b.card);
     return true;
   }
 

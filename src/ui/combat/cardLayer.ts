@@ -1,6 +1,6 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
-import { CARDS } from '../../data/cards';
+import { CARDS, cardValsOf } from '../../data/cards';
 import { statusIcon } from '../../data/statuses';
 import type { CombatCard } from '../../game/types';
 import { icon } from '../art/icons';
@@ -11,10 +11,12 @@ import { burst, haptic } from '../fx/fx';
 import type { CombatView } from './view';
 
 const DRAG_THRESHOLD = 10;
-/** A card with `wind` winds up one step for every swipe of this many belt widths dragged around the screen. */
-const WIND_SWIPE = 0.5;
+/** How much bigger a card with `sweep` looks in the hand once it has swept up all it can (1 = twice its size). */
+const SWEEP_GROW = 0.6;
+/** How far (px) a card knocked off by a sweep is thrown. */
+const SWEEP_THROW = 150;
 
-export type Removal = 'played' | 'expired' | 'stolen' | 'stashed';
+export type Removal = 'played' | 'expired' | 'stolen' | 'stashed' | 'swept';
 
 interface CardEl {
   el: HTMLDivElement;
@@ -48,10 +50,6 @@ interface Drag {
   offX: number;
   offY: number;
   moved: boolean;
-  /** Where the finger was at the last move and the path length not yet turned into a wind-up step (cards with `wind`). */
-  lastX: number;
-  lastY: number;
-  path: number;
   timer: number;
 }
 
@@ -123,6 +121,32 @@ export function createCardLayer(v: CombatView): CardLayer {
   const findCard = (uid: number): CombatCard | null =>
     combat.belt.find((b) => b.card.uid === uid)?.card ?? combat.sleeve.find((c) => c?.uid === uid) ?? null;
 
+  /** Where the cards a sweep knocks off fly (belt-relative offsets), and what to do with them when their element goes. */
+  const flings = new Map<number, { dx: number; dy: number }>();
+
+  /** The held card, grown by what it has swept up so far (`sweep`), knocks off every belt card its body now covers. */
+  const sweepUnder = (d: Drag): void => {
+    const held = findCard(d.uid);
+    if (!held) return;
+    const rc = d.el.getBoundingClientRect();
+    const cx = rc.left + rc.width / 2;
+    const cy = rc.top + rc.height / 2;
+    for (const [uid, ce] of beltEls) {
+      if (uid === d.uid) continue;
+      const vr = ce.el.getBoundingClientRect();
+      const vx = vr.left + vr.width / 2;
+      const vy = vr.top + vr.height / 2;
+      if (vx < rc.left || vx > rc.right || vy < rc.top || vy > rc.bottom || !combat.sweepCard(d.uid, uid)) continue;
+      const len = Math.hypot(vx - cx, vy - cy) || 1;
+      flings.set(uid, { dx: ((vx - cx) / len) * SWEEP_THROW, dy: ((vy - cy) / len) * SWEEP_THROW });
+      removals.set(uid, 'swept');
+      sfx('ratchet');
+      haptic('hit');
+    }
+    const def = CARDS[held.id].sweep;
+    d.el.style.scale = def ? String(1 + SWEEP_GROW * Math.min(1, held.bonus / cardValsOf(held)[def.max])) : '';
+  };
+
   const playUid = (uid: number): void => {
     if (state.paused || state.ended) return;
     combat.playCard(uid);
@@ -147,6 +171,7 @@ export function createCardLayer(v: CombatView): CardLayer {
     if (!drag) return;
     clearTimeout(drag.timer);
     drag.el.classList.remove('dragging');
+    drag.el.style.scale = '';
     if (drag.from === 'sleeve') drag.el.style.transform = '';
     for (const s of slotEls) s.classList.remove('target');
     r.stage.classList.remove('drop-play');
@@ -175,9 +200,6 @@ export function createCardLayer(v: CombatView): CardLayer {
       offX: ev.clientX - rc.left,
       offY: ev.clientY - rc.top,
       moved: false,
-      lastX: ev.clientX,
-      lastY: ev.clientY,
-      path: 0,
       timer: window.setTimeout(() => {
         if (!drag || drag.moved) return;
         cancelDrag();
@@ -209,16 +231,6 @@ export function createCardLayer(v: CombatView): CardLayer {
       drag.el.classList.add('dragging');
     }
     if (!drag.moved) return;
-    if (CARDS[findCard(drag.uid)?.id ?? '']?.wind) {
-      drag.path += Math.hypot(ev.clientX - drag.lastX, ev.clientY - drag.lastY);
-      for (; drag.path >= state.beltW * WIND_SWIPE; drag.path -= state.beltW * WIND_SWIPE) {
-        if (!combat.windCard(drag.uid)) break;
-        sfx('ratchet');
-        haptic('hit');
-      }
-    }
-    drag.lastX = ev.clientX;
-    drag.lastY = ev.clientY;
     if (drag.from === 'belt') {
       const base = r.beltCards.getBoundingClientRect();
       const tilt = Math.max(-8, Math.min(8, Math.round(ev.movementX)));
@@ -230,6 +242,7 @@ export function createCardLayer(v: CombatView): CardLayer {
     } else {
       drag.el.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.08)`;
     }
+    if (CARDS[findCard(drag.uid)?.id ?? '']?.sweep) sweepUnder(drag);
     toggle(r.stage, 'drop-play', ev.clientY < r.belt.getBoundingClientRect().top);
   };
 
@@ -278,14 +291,21 @@ export function createCardLayer(v: CombatView): CardLayer {
       setTimeout(() => el2.remove(), cssMs('--dur-exhaust') + SLACK_MS);
       return;
     }
+    const swept = flings.get(ce.card.uid);
+    flings.delete(ce.card.uid);
     const target =
-      reason === 'stolen' || def.type === 'attack' || def.type === 'spell' || (def.type === 'potion' && def.dmg)
-        ? v.enemyPoint()
-        : reason === 'expired'
-          ? null
-          : v.heroPoint();
+      reason === 'swept'
+        ? null
+        : reason === 'stolen' || def.type === 'attack' || def.type === 'spell' || (def.type === 'potion' && def.dmg)
+          ? v.enemyPoint()
+          : reason === 'expired'
+            ? null
+            : v.heroPoint();
     const base = (el2.style.transform || '').replace(/scale\([^)]*\)|rotate\([^)]*\)/g, '');
-    if (reason === 'expired' || !target) {
+    if (swept) {
+      el2.classList.add('fall-out');
+      el2.style.transform = `${base} translate3d(${swept.dx}px, ${swept.dy}px, 0) rotate(${swept.dx > 0 ? 40 : -40}deg)`;
+    } else if (reason === 'expired' || !target) {
       el2.classList.add('fall-out');
       el2.style.transform = state.ltr ? `${base} translate3d(40px, 60px, 0) rotate(25deg)` : `${base} translate3d(-40px, 60px, 0) rotate(-25deg)`;
     } else {

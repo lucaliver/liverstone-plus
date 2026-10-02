@@ -89,9 +89,8 @@ export const neutralCards: CardDef[] = [
     type: 'skill',
     rarity: 'rare',
     cost: 3,
-    upCost: 2,
-    vals: [6],
-    upVals: [19],
+    vals: [4],
+    upVals: [6],
     art: 'smoke',
     play: (c, v) => c.applyStatus('enemy', 'stun', 1, v[0]),
   },
@@ -382,16 +381,16 @@ export const neutralCards: CardDef[] = [
   },
 
   {
-    // Hold it and drag it around the screen: every swipe winds it up, then let go above the belt to play it.
+    // Hold it and drag it over the belt: every card it knocks off makes it hit harder, then let go above the belt to play it.
     id: 'mrRoboto',
-    face: '{dmg:0}|{wind:1}',
+    face: '{dmg:0}|{sweep:1}',
     cls: 'neutral',
     type: 'attack',
     rarity: 'legendary',
     cost: 2,
     vals: [3, 2, 18],
     upVals: [4, 2, 28],
-    wind: { by: 1, max: 2 },
+    sweep: { by: 1, max: 2 },
     tip: true,
     art: 'windUp',
     play: (c, v) => void c.hit(v[0]),

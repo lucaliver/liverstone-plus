@@ -1169,16 +1169,52 @@ describe('pop culture cards', () => {
     expect(c.beltRate()).toBeCloseTo(base);
   });
 
-  it('Mr. Roboto grows by a step for every swipe, up to its cap, and hits for what it has wound up to', () => {
+  /** Puts `n` more cards on the belt next to the ready one and returns their uids. */
+  const crowd = (c: Combat, n: number): number[] => {
+    const before = c.belt.length;
+    for (let i = 0; i < n; i++) c.addTempCard('punch', 'belt');
+    return c.belt.slice(before).map((b) => b.card.uid);
+  };
+
+  it('Mr. Roboto knocks cards off the belt (they are lost) and grows for each, up to its cap, then hits for it', () => {
     const { c, uid } = ready('mrRoboto');
-    const { vals } = CARDS.mrRoboto;
-    const [base, by, max] = vals;
-    for (let i = 0; i < 20; i++) c.windCard(uid);
-    expect(c.windCard(uid)).toBe(false);
+    const [base, by, max] = CARDS.mrRoboto.vals;
+    const victims = crowd(c, 12);
+    const discarded = c.discard.length;
+    expect(c.sweepCard(uid, victims[0])).toBe(true);
+    expect(c.belt.some((b) => b.card.uid === victims[0])).toBe(false);
+    expect(c.discard.length).toBe(discarded + 1);
+    expect(c.belt.find((b) => b.card.uid === uid)!.card.bonus).toBe(by);
+    for (const v of victims.slice(1)) c.sweepCard(uid, v);
+    expect(c.belt.find((b) => b.card.uid === uid)!.card.bonus).toBe(max);
     c.playCard(uid);
     expect(c.enemy.maxHp - c.enemy.hp).toBe(base + max);
-    expect(by).toBeGreaterThan(0);
-    expect(c.windCard(uid)).toBe(false);
+  });
+
+  it("Mr. Roboto's bonus is gone as soon as it is played (or lost), and only a card on the belt can be swept", () => {
+    const { c, uid } = ready('mrRoboto');
+    const [victim] = crowd(c, 1);
+    const roboto = c.belt.find((b) => b.card.uid === uid)!.card;
+    c.sweepCard(uid, victim);
+    expect(roboto.bonus).toBeGreaterThan(0);
+    c.playCard(uid);
+    expect(roboto.bonus).toBe(0);
+    expect(c.sweepCard(uid, victim)).toBe(false);
+    expect(c.sweepCard(victim, uid)).toBe(false);
+  });
+
+  it('Mr. Roboto cannot sweep a hexed or a pinned card, and a swept curse still bites as it falls', () => {
+    const { c, uid } = ready('mrRoboto');
+    const [hexed, pinned] = crowd(c, 2);
+    c.belt.find((b) => b.card.uid === hexed)!.card.hex = { id: 'petrify', left: 2, t: 99 };
+    c.belt.find((b) => b.card.uid === pinned)!.pinned = true;
+    expect(c.sweepCard(uid, hexed)).toBe(false);
+    expect(c.sweepCard(uid, pinned)).toBe(false);
+    c.addTempCard('writeUp', 'belt');
+    const writeUp = c.belt[c.belt.length - 1].card.uid;
+    const hp = c.hero.hp;
+    expect(c.sweepCard(uid, writeUp)).toBe(true);
+    expect(hp - c.hero.hp).toBe(CARDS.writeUp.vals[0]);
   });
 
   it('Payday Loan hits hard, costs HP and shuffles a First Aid Kit in', () => {

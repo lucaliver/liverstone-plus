@@ -889,9 +889,9 @@ const it: Record<EnKey, string> = {
     'In Corsa si ferma in fondo al nastro. Gli attacchi si accumulano dietro di lei: giocala per sparare gratis tutta la pila. Qualsiasi altra carta che tocca la pila la manda tutta giù dal nastro.',
   'card.mrRoboto.name': 'Mr. Roboto',
   'card.mrRoboto.desc':
-    'Fai {0} danni. Trascinala per lo schermo per caricarla: +{1} danni a ogni passata, fino a +{2}. Rilasciala sopra il nastro per giocarla.',
+    'Fai {0} danni. Trascinala sul nastro per spazzare via le altre carte (andranno perse): +{1} danni per ciascuna, fino a +{2}. Rilasciala sopra il nastro per giocarla.',
   'card.mrRoboto.tip':
-    'Lo Stagista a Molla si potenzia mentre lo trascini per lo schermo. Continua a trascinarlo prima che arrivi in fondo al nastro, poi rilascialo sopra il nastro per giocarlo.',
+    'Lo Stagista a Molla cresce mentre spazzi il nastro con lui: ogni carta che butta giù va persa, come se fosse caduta in fondo, e aggiunge danni. Rilascialo sopra il nastro per giocarlo; il bonus sparisce appena è giocato.',
   'card.stakhanov.name': 'Stachanov',
   'card.stakhanov.desc': 'Ottieni {0} di [strength] per {1}s.',
   'card.brownNoser.name': 'Leccapiedi',

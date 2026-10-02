@@ -516,7 +516,7 @@ test("the Boss's Son's weak spot: a touch on the target makes your next attack c
   expect(problems).toEqual([]);
 });
 
-test('Mr. Roboto: dragging it around the screen winds it up, letting go above the belt plays it', async ({ page }) => {
+test('Mr. Roboto: dragging it over the belt knocks the other cards off and grows it, letting go above the belt plays it', async ({ page }) => {
   const problems = await freshGame(page);
   await startFight(page);
   const uid = (await combat(
@@ -530,18 +530,23 @@ test('Mr. Roboto: dragging it around the screen winds it up, letting go above th
   const box = (await card.boundingBox())!;
   const x = box.x + box.width / 2;
   const y = box.y + box.height / 2;
-  // Press this very card (another one may ride over it), then drag with the mouse.
+  // Press this very card (another one may ride over it), then drag it over the other cards with the mouse.
   await card.dispatchEvent('pointerdown', { pointerId: 1, clientX: x, clientY: y });
   await page.mouse.move(x, y);
-  for (let i = 0; i < 6; i++) {
-    await page.mouse.move(x - 120, y - 40, { steps: 6 });
-    await page.mouse.move(x + 120, y + 40, { steps: 6 });
+  const others = page.locator(`.belt-cards .card:not(.fall-out):not([data-uid="${uid}"])`);
+  const before = await others.count();
+  expect(before).toBeGreaterThan(0);
+  for (let i = 0; i < 3; i++) {
+    const b = await others.first().boundingBox();
+    if (!b) break;
+    await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 6 });
   }
   expect(((await combat(page, `return c.belt.find((b) => b.card.uid === ${uid})?.card.bonus ?? 0;`)) as number) > 0).toBe(true);
-  const before = (await combat(page, 'return c.enemy.hp;')) as number;
+  expect(await others.count()).toBeLessThan(before);
+  const hp = (await combat(page, 'return c.enemy.hp;')) as number;
   await page.mouse.move(x, 120, { steps: 6 });
   await page.locator('.combat').dispatchEvent('pointerup', { pointerId: 1, clientX: x, clientY: 120 });
-  await expect.poll(() => combat(page, 'return c.enemy.hp;')).toBeLessThan(before - 3);
+  await expect.poll(() => combat(page, 'return c.enemy.hp;')).toBeLessThan(hp - 3);
   expect(problems).toEqual([]);
 });
 

@@ -125,9 +125,10 @@ export interface CardDef {
    */
   ride?: { i: number; by: number; to: number };
   /**
-   * Dragging the card around the screen winds it up: every swipe adds `vals[by]` to its bonus (the damage it deals), up to `vals[max]`.
+   * Dragging the card over the belt sweeps the other cards off it (they count as lost, as if they had fallen off the end):
+   * each one adds `vals[by]` to its bonus (the damage it deals), up to `vals[max]`. The bonus is gone once the card is played or lost.
    */
-  wind?: { by: number; max: number };
+  sweep?: { by: number; max: number };
   /** Damage this card gains for every second the hero's mana is full and overflowing, wherever the card is. */
   onOverflow?: number;
   /** The first time ever it rides onto the belt, the fight stops and a note (`card.<id>.tip`) says how to handle it. */
