@@ -32,7 +32,8 @@ export function coach(root: HTMLElement, steps: CoachStep[], onDone: () => void)
       right: Math.max(...rects.map((x) => x.right)),
       bottom: Math.max(...rects.map((x) => x.bottom)),
     };
-    text.textContent = steps[i].text;
+    // `**word**` is bold: the odd pieces of the split.
+    text.replaceChildren(...steps[i].text.split('**').map((s, n) => (n % 2 ? h('b', null, s) : s)));
     count.textContent = `${i + 1}/${steps.length}`;
     next.textContent = i === steps.length - 1 ? t('howto.gotIt') : t('common.next');
     Object.assign(hole.style, {

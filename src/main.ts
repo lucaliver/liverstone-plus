@@ -53,6 +53,7 @@ import { lostFoundScreen } from './ui/screens/lostFound';
 import { vendingScreen } from './ui/screens/vending';
 import { crossTrainingScreen } from './ui/screens/crossTraining';
 import { rewardScreen } from './ui/screens/reward';
+import { studioScreen } from './ui/screens/studio';
 import { splashScreen, titleScreen } from './ui/screens/title';
 import { compendiumScreen } from './ui/screens/compendium';
 
@@ -306,9 +307,9 @@ async function boot(): Promise<void> {
   addEventListener('keydown', unlockAudio);
   // Pixel art is generated from the vector sources once, before the first screen.
   await preloadArt({ creatures: { ...CREATURES, ...RELIC_SPRITES, ...ROOM_SPRITES, ...PROP_SPRITES }, icons: ICONS });
-  // The employment contract only until it's signed; afterwards the game opens on the title.
+  // The employment contract only until it's signed (then the studio's card); afterwards the game opens on the title.
   if (contractSigned()) goTitle();
-  else show(splashScreen(goTitle));
+  else show(splashScreen(() => show(studioScreen(goTitle))));
   if (import.meta.env.DEV)
     Object.assign(window, {
       __game: {

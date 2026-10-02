@@ -24,6 +24,7 @@ import {
   UPDATE_EVERY,
   UPDATE_PATCH,
   UPDATE_POSTPONE,
+  UPDATE_POSTPONE_MUL,
   UPDATE_TIME,
   WAKE_PER_CARD,
   WEAK_SPOT_TIME,
@@ -67,6 +68,7 @@ export const VALUES = {
   updatePatch: UPDATE_PATCH,
   postponeMin: UPDATE_POSTPONE[0],
   postponeMax: UPDATE_POSTPONE[1],
+  postponeMul: UPDATE_POSTPONE_MUL,
   wakePerCard: WAKE_PER_CARD,
   // Rules on cards
   virusDelay: CONFIG.virusDelay,

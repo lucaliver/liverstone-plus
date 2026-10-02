@@ -147,6 +147,8 @@ export class Combat {
   /** The enemy's window over the belt: `ask` waits for a tap, `install` is the fake progress bar (`t` seconds in). Seconds until the next one while none is up (null: not yet counted). */
   popup: { phase: 'ask' | 'install'; t: number } | null = null;
   private popupWait: number | null = null;
+  /** The hero has sat through an update: Postpone now takes longer. */
+  private updated = false;
   /** Free-form per-combat state for relics and powers. */
   mem: Record<string, number> = {};
   private tempUid = 0;
@@ -1307,6 +1309,7 @@ export class Combat {
     this.popup.t += dt;
     if (this.popup.phase !== 'install' || this.popup.t < def.install * 2) return;
     this.popup = null;
+    this.updated = true;
     this.popupWait = def.every;
     this.applyStatus('enemy', def.patch.id, def.patch.v);
     this.events.emit({ type: 'popup', phase: 'close' });
@@ -1323,7 +1326,7 @@ export class Combat {
     const def = this.popupDef();
     if (!def || !this.canAnswerUpdate()) return false;
     this.popup = null;
-    this.popupWait = def.postpone[0] + this.rng.next() * (def.postpone[1] - def.postpone[0]);
+    this.popupWait = (def.postpone[0] + this.rng.next() * (def.postpone[1] - def.postpone[0])) * (this.updated ? def.postponeMul : 1);
     this.events.emit({ type: 'popup', phase: 'close' });
     return true;
   }

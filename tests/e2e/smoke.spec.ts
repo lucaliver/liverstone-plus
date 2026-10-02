@@ -1,5 +1,5 @@
 import { expect, type Page, test } from '@playwright/test';
-import { combat, freshGame, startFight } from './helpers';
+import { combat, freshGame, signAndStart, startFight } from './helpers';
 
 test('title, hero select and journey render without errors', async ({ page }) => {
   const problems = await freshGame(page);
@@ -616,6 +616,7 @@ test('debug: Unlock all hires every hero and reveals every card and enemy in the
   await freshGame(page, { locked: true });
   await page.getByRole('button', { name: /debug/i }).click();
   await page.getByRole('button', { name: /unlock all/i }).click();
+  await page.getByRole('button', { name: 'Close' }).click();
   await page.getByRole('button', { name: /handbook/i }).click();
   await expect(page.locator('.card.undiscovered')).toHaveCount(0);
   await page.getByRole('tab', { name: /personnel/i }).click();
@@ -687,6 +688,15 @@ test('once signed, the contract is never shown again: the game opens on the titl
   await page.reload();
   await expect(page.locator('.title-screen')).toBeVisible();
   await expect(page.locator('.splash')).toHaveCount(0);
+});
+
+test('signing the contract leads to the studio card, then to the title', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await signAndStart(page);
+  await expect(page.locator('.studio')).toBeVisible();
+  await expect(page.locator('.title-screen')).toBeVisible({ timeout: 5000 });
 });
 
 test('reset progress wipes saves after a confirmation', async ({ page }) => {

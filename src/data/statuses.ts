@@ -30,10 +30,11 @@ const WEAK_SPOT_GAP = [5, 9];
 const RUST_EVERY = 2;
 const RUST_MAX = 20;
 const RUST_WARN = 0.75;
-/** Update Needed: the window first covers the belt after `UPDATE_FIRST`s and again `UPDATE_EVERY`s after each update; Postpone brings it back in `UPDATE_POSTPONE` (min, max) seconds; Update takes `UPDATE_TIME`s (eased out) to 90% and as many more for the rest, and the enemy gets `UPDATE_PATCH` Strength. */
+/** Update Needed: the window first covers the belt after `UPDATE_FIRST`s and again `UPDATE_EVERY`s after each update; Postpone brings it back in `UPDATE_POSTPONE` (min, max) seconds, `UPDATE_POSTPONE_MUL` times longer once the hero has updated; Update takes `UPDATE_TIME`s (eased out) to 90% and as many more for the rest, and the enemy gets `UPDATE_PATCH` Strength. */
 const UPDATE_FIRST = 5;
 export const UPDATE_EVERY = 20;
 export const UPDATE_POSTPONE: [number, number] = [1, 3];
+export const UPDATE_POSTPONE_MUL = 2;
 export const UPDATE_TIME = 6;
 export const UPDATE_PATCH = 1;
 /** Spending Freeze: the hero's max mana. */
@@ -295,7 +296,14 @@ const defs: StatusDef[] = [
     passive: true,
     hidden: true,
     icon: 'update',
-    popup: { first: UPDATE_FIRST, every: UPDATE_EVERY, postpone: UPDATE_POSTPONE, install: UPDATE_TIME, patch: { id: 'strength', v: UPDATE_PATCH } },
+    popup: {
+      first: UPDATE_FIRST,
+      every: UPDATE_EVERY,
+      postpone: UPDATE_POSTPONE,
+      postponeMul: UPDATE_POSTPONE_MUL,
+      install: UPDATE_TIME,
+      patch: { id: 'strength', v: UPDATE_PATCH },
+    },
   },
   // Weak spot: now and then a target shows on his sprite; `e` counts down to the next one.
   {

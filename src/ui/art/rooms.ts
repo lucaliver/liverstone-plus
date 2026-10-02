@@ -192,8 +192,29 @@ export const ROOM_SPRITES: Record<string, string> = {
   'room.vending': vending,
 };
 
-/** Sprites of the contract screen's props, keyed like the rooms'. */
-export const PROP_SPRITES: Record<string, string> = { 'contract.hand': contractHand, 'contract.sleeve': contractSleeve, 'contract.pen': contractPen };
+/** The studio's mark: a ring, a blue L behind the Aries glyph (a pink ram's horns over a V), the horns ribbed like the studio's old sketch. */
+const horn = 'M100 96C92 54 54 44 41 70C32 92 54 108 67 95';
+const studioLogo = `
+<circle cx="100" cy="100" r="94" fill="${INK}" stroke="${PAPER}" stroke-width="4"/>
+<path d="M80 18h28v104h62v30H80z" fill="#1c5fd0" ${OUT}/>
+<g fill="none" stroke-linecap="round">
+<path d="${horn}" stroke="#120e18" stroke-width="28"/><path d="${horn}" stroke="#ff3d9a" stroke-width="20"/>
+<g transform="translate(200 0) scale(-1 1)"><path d="${horn}" stroke="#120e18" stroke-width="28"/><path d="${horn}" stroke="#ff3d9a" stroke-width="20"/></g>
+</g>
+<path d="M74 84L100 72l26 12-26 88z" fill="#ff3d9a" ${OUT}/>
+<path d="M70 62l7 12M52 52l4 14M40 82l12 4M130 62l-7 12M148 52l-4 14M160 82l-12 4" stroke="#120e18" stroke-width="3" stroke-linecap="round"/>
+<path d="M100 76v40" stroke="#120e18" stroke-width="3" stroke-linecap="round"/>`;
+
+/** Sprites of the contract screen's props and the studio's mark, keyed like the rooms'. */
+export const PROP_SPRITES: Record<string, string> = {
+  'contract.hand': contractHand,
+  'contract.sleeve': contractSleeve,
+  'contract.pen': contractPen,
+  'studio.logo': studioLogo,
+};
+
+/** Riso-pixel sprite of the studio's mark (see riso.ts). */
+export const studioArt = (): string => sprite('studio.logo');
 
 /** Riso-pixel sprite of a contract prop (see riso.ts). */
 export const propArt = (id: string, cls = ''): string => sprite(`contract.${id}`, cls);

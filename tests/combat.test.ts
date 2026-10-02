@@ -594,6 +594,11 @@ describe('combat engine', () => {
     run(c, 0.5);
     expect(c.popup?.phase).toBe('ask');
     expect(phases).toEqual(['open', 'close', 'open', 'install', 'close', 'open']);
+    // Having updated once, Postpone keeps it away `postponeMul` times longer.
+    run(c, CONFIG.popupArm);
+    expect(c.postponeUpdate()).toBe(true);
+    run(c, def.postpone[0] * def.postponeMul - 0.1);
+    expect(c.popup).toBeNull();
   });
 
   it('sleeve slots come from the hero', () => {

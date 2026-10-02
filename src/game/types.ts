@@ -217,10 +217,10 @@ export interface StatusDef {
   rust?: { every: number; max: number; warn: number };
   /**
    * While active on the enemy, an "UPDATE NEEDED" window covers the belt (no belt card can be played): the first one after `first` seconds, then one every `every` seconds
-   * after each update. Postpone brings it back after a random `postpone` ([min, max]) seconds; Update runs a fake progress bar (`install` seconds up to 90%, as many
+   * after each update. Postpone brings it back after a random `postpone` ([min, max]) seconds, times `postponeMul` once the hero has updated at least once; Update runs a fake progress bar (`install` seconds up to 90%, as many
    * more for the rest, easing out), and when it's done the enemy gets the `patch` status.
    */
-  popup?: { first: number; every: number; postpone: [number, number]; install: number; patch: { id: string; v: number } };
+  popup?: { first: number; every: number; postpone: [number, number]; postponeMul: number; install: number; patch: { id: string; v: number } };
   /** Runs every simulation step while the status is active. */
   tick?: (c: Combat, side: Side, s: StatusVal, dt: number) => void;
   /** The particles that burst when the status lands (`kind` is a palette of `ui/fx/fx.ts`). */
