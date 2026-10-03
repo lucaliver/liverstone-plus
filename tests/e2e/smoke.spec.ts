@@ -826,8 +826,8 @@ test('the very first fight opens on a tour of the board, one step at a time, bef
   await page.getByRole('button', { name: /new run/i }).click();
   await page.getByRole('button', { name: /start shift/i }).click();
   await page.getByRole('button', { name: /enter floor 1/i }).click();
-  await expect(page.locator('.coach-count')).toHaveText('1/8');
-  for (let i = 0; i < 7; i++) await page.locator('.coach .btn').click();
+  await expect(page.locator('.coach-count')).toHaveText('1/7');
+  for (let i = 0; i < 6; i++) await page.locator('.coach .btn').click();
   await page.getByRole('button', { name: 'Got it!' }).click();
   await expect(page.locator('.coach')).toHaveCount(0);
   await expect(page.locator('.js-start')).toBeVisible();
