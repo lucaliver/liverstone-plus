@@ -187,6 +187,7 @@ const en = {
   'coach.belt': "You don't draw. Your deck comes through this **belt**.\n**Tap** a card to play it.",
   'coach.mana': 'Your **mana** crystals.\nCards cost mana, but luckily it **refills over time**.',
   'coach.sleeve': 'Your **sleeve**: **drag** a card down here to save it for whenever you need it.',
+  'coach.ability': 'Your **ability**. It is a big move that costs a lot of mana.',
   'coach.start': 'Remember: you can **hold** on anything to read what it does.\nWhen you are ready, **clock in** to start.',
 
   // ------------------------------------------------------------- heroes

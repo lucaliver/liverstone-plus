@@ -189,6 +189,7 @@ const it: Record<EnKey, string> = {
   'coach.belt': 'Non peschi. Il tuo mazzo arriva su questo **nastro**.\n**Tocca** una carta per giocarla.',
   'coach.mana': 'I tuoi cristalli di **mana**.\nLe carte costano mana, ma per fortuna si **ricarica col tempo**.',
   'coach.sleeve': 'La tua **manica**: **trascina** qui una carta per tenerla da parte per quando ti serve.',
+  'coach.ability': 'La tua **abilità**. È una mossa potente che costa molto mana.',
   'coach.start': 'Ricorda: puoi **tenere premuto** su qualsiasi cosa per leggere cosa fa.\nQuando sei pronto, **timbra** per iniziare.',
 
   // ------------------------------------------------------------- heroes

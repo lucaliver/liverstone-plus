@@ -381,6 +381,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         { target: r.belt, text: t('coach.belt') },
         { target: r.manaRow, text: t('coach.mana') },
         { target: r.sleeve, text: t('coach.sleeve') },
+        { target: r.ability, text: t('coach.ability') },
         { target: $('.js-start', el), text: t('coach.start'), before: () => (startWrap.hidden = false) },
       ],
       () => {
