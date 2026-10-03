@@ -1,4 +1,4 @@
-import { type TKey, t } from '../../core/i18n';
+import { getLocale, type TKey, t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { CARD_LIST } from '../../data/cards';
 import { ACT_DEFS } from '../../data/acts';
@@ -6,10 +6,11 @@ import { ENEMY_LIST } from '../../data/enemies';
 import type { EnemyDef, RelicDef } from '../../game/types';
 import { HERO_LIST } from '../../data/heroes';
 import { RELIC_LIST } from '../../data/relics';
-import { enemyMet, hasStamp, isDiscovered, records, relicSeen } from '../../game/meta';
-import type { CardClass } from '../../game/types';
+import { enemyMet, hasStamp, isDiscovered, records, relicSeen, runHistory } from '../../game/meta';
+import type { CardClass, RunLog } from '../../game/types';
 import type { Screen } from '../app';
 import { h, onPress, stagger } from '../dom';
+import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { relicArt } from '../art/relics';
 import { cardView, UNKNOWN } from '../components/cardView';
@@ -19,6 +20,26 @@ import { openCardAnatomy, openCardDetail, sortCards, sortControl } from '../comp
 const TABS: CardClass[] = [...HERO_LIST.map((hd) => hd.id), 'neutral', 'curse'];
 
 const tabLabel = (c: CardClass): string => t(`compendium.tab.${c}`);
+
+type Section = 'cards' | 'enemies' | 'relics' | 'records' | 'history';
+const SECTIONS: Section[] = ['cards', 'enemies', 'relics', 'records', 'history'];
+
+/** Every page of the handbook in the order a swipe turns through them: a class of cards, an act of enemies, then the single pages. */
+interface Page {
+  section: Section;
+  tab?: CardClass;
+  act?: number;
+}
+const PAGES: Page[] = [
+  ...TABS.map((tab): Page => ({ section: 'cards', tab })),
+  ...ACT_DEFS.map((_, i): Page => ({ section: 'enemies', act: i + 1 })),
+  { section: 'relics' },
+  { section: 'records' },
+  { section: 'history' },
+];
+/** A swipe has to go this far across (px) and be this much more sideways than up or down. */
+const SWIPE_PX = 60;
+const SWIPE_SLOPE = 1.5;
 
 const TIERS: EnemyDef['tier'][] = ['normal', 'elite', 'boss'];
 
@@ -48,6 +69,32 @@ function stampGrid(): HTMLElement {
       ),
     ),
   );
+}
+
+/** The runs played, newest first, one line each. */
+function historyList(): HTMLElement {
+  const runs = runHistory();
+  if (!runs.length) return h('p', { class: 'sub' }, t('history.empty'));
+  const line = (r: RunLog): HTMLElement =>
+    h(
+      'article',
+      { class: `run-log ${r.result}` },
+      h('div', { class: 'rl-art', html: creature(r.hero) }),
+      h(
+        'div',
+        { class: 'rl-main' },
+        h('b', null, t(`hero.${r.hero}.name`)),
+        h('span', null, t('history.where', { a: r.act, n: r.floor })),
+        h('span', { html: `${t('history.stats', { k: r.kills, c: r.cards })} · ${icon('coin')}${r.pay}` }),
+      ),
+      h(
+        'div',
+        { class: 'rl-end' },
+        h('em', null, t(`history.${r.result}`)),
+        h('small', null, new Date(r.at).toLocaleDateString(getLocale(), { dateStyle: 'medium' })),
+      ),
+    );
+  return h('div', { class: 'run-logs' }, ...runs.map(line));
 }
 
 /** Lifetime records, printed like the end of a run's payslip. */
@@ -80,7 +127,7 @@ function recordSlip(): HTMLElement {
 export function compendiumScreen(onBack: () => void): Screen {
   let tab: CardClass = TABS[0];
   let act = 1;
-  let section: 'cards' | 'enemies' | 'relics' | 'records' = 'cards';
+  let section: Section = 'cards';
   const total = CARD_LIST.length;
   const found = CARD_LIST.filter((c) => isDiscovered(c.id)).length;
   const met = ENEMY_LIST.filter((e) => enemyMet(e.id)).length;
@@ -100,10 +147,11 @@ export function compendiumScreen(onBack: () => void): Screen {
   const cardsWrap = h('div', null);
   const sub = h('p', { class: 'sub' });
   const slip = recordSlip();
+  const history = h('div', null);
 
   const render = (): void => {
     sectionSwitch.replaceChildren(
-      ...(['cards', 'enemies', 'relics', 'records'] as const).map((sct) =>
+      ...SECTIONS.map((sct) =>
         h(
           'button',
           {
@@ -128,11 +176,15 @@ export function compendiumScreen(onBack: () => void): Screen {
           : section === 'relics'
             ? t('compendium.relicsFound', { n: relicsSeen, total: RELIC_LIST.length })
             : '';
-    sub.hidden = section === 'records';
+    sub.hidden = section === 'records' || section === 'history';
     cardsWrap.hidden = section !== 'cards';
     foesWrap.hidden = section !== 'enemies';
     relics.hidden = section !== 'relics';
     slip.hidden = section !== 'records';
+    history.hidden = section !== 'history';
+    if (section === 'history') history.replaceChildren(historyList());
+    // The switch can be wider than the screen: the open section scrolls into view.
+    sectionSwitch.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     actTabs.replaceChildren(
       ...ACT_DEFS.map((_, i) =>
         h(
@@ -187,9 +239,22 @@ export function compendiumScreen(onBack: () => void): Screen {
     );
     grid.scrollTop = 0;
   };
+  /** A swipe turns the page: along the tabs of the section, then on to the next section. */
+  const turn = (by: number): void => {
+    const now = PAGES.findIndex((p) => p.section === section && (p.tab ?? tab) === tab && (p.act ?? act) === act);
+    const page = PAGES[now + by];
+    if (!page) return;
+    sfx('tap');
+    section = page.section;
+    tab = page.tab ?? tab;
+    act = page.act ?? act;
+    render();
+    scroller.scrollTop = 0;
+  };
   cardsWrap.append(tabs, h('div', { style: { height: '12px' } }), sortControl(render), grid);
   render();
 
+  const scroller = h('div', { class: 'scroll', style: { flex: '1' } }, sub, cardsWrap, foesWrap, relics, slip, history);
   const el = h(
     'div',
     { class: 'screen compendium' },
@@ -217,7 +282,27 @@ export function compendiumScreen(onBack: () => void): Screen {
       }),
     ),
     sectionSwitch,
-    h('div', { class: 'scroll', style: { flex: '1' } }, sub, cardsWrap, foesWrap, relics, slip),
+    scroller,
+  );
+  let touch: { x: number; y: number } | null = null;
+  scroller.addEventListener(
+    'touchstart',
+    (e) => {
+      touch = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null;
+    },
+    { passive: true },
+  );
+  scroller.addEventListener(
+    'touchend',
+    (e) => {
+      const from = touch;
+      touch = null;
+      if (!from) return;
+      const dx = e.changedTouches[0].clientX - from.x;
+      const dy = e.changedTouches[0].clientY - from.y;
+      if (Math.abs(dx) >= SWIPE_PX && Math.abs(dx) > Math.abs(dy) * SWIPE_SLOPE) turn(dx < 0 ? 1 : -1);
+    },
+    { passive: true },
   );
   return { el };
 }

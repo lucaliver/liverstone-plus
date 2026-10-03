@@ -344,6 +344,19 @@ export interface Records {
   fastest: number;
 }
 
+/** One line of the handbook's run history. */
+export interface RunLog {
+  hero: HeroId;
+  result: 'win' | 'lose' | 'abandon';
+  act: number;
+  floor: number;
+  kills: number;
+  cards: number;
+  pay: number;
+  /** When the run ended (ms since the epoch). */
+  at: number;
+}
+
 /** How a hero is unlocked: finish a run (win or lose) with another hero, or reach the boss of an act. */
 export type HeroUnlock = { finishRun: HeroId } | { reachBoss: number };
 

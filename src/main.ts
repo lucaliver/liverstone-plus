@@ -15,6 +15,7 @@ import { ENEMIES } from './data/enemies';
 import { VALUES } from './data/values';
 import { Combat } from './game/combat';
 import {
+  abandonRun,
   addCard,
   advance,
   applyCombat,
@@ -260,8 +261,10 @@ function endRun(r: RunState, won: boolean): void {
 }
 
 function abandon(): void {
-  if (run) trackRun(run, 'abandon');
-  clearRun();
+  if (run) {
+    trackRun(run, 'abandon');
+    abandonRun(run);
+  } else clearRun();
   run = null;
   goTitle();
 }

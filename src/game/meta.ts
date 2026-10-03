@@ -5,7 +5,8 @@ import { ENEMIES } from '../data/enemies';
 import { HERO_LIST, HEROES } from '../data/heroes';
 import { MODIFIERS } from '../data/modifiers';
 import { RELICS } from '../data/relics';
-import type { EnemyDef, HeroId, HeroUnlock, Records } from './types';
+import { CONFIG } from '../data/config';
+import type { EnemyDef, HeroId, HeroUnlock, Records, RunLog } from './types';
 
 /** Progress kept across runs. */
 interface Meta {
@@ -28,6 +29,8 @@ interface Meta {
   /** Management memos switched on for the next run (`MODIFIERS` ids); they only apply to a hero who has won a full day. */
   memos: string[];
   records: Records;
+  /** The runs played, newest first (`CONFIG.historyMax` of them). */
+  history: RunLog[];
 }
 
 const NO_RECORDS: Records = {
@@ -56,6 +59,7 @@ const meta: Meta = load('meta', {
   stamps: [],
   memos: [],
   records: { ...NO_RECORDS },
+  history: [],
 });
 // Saved data is untrusted: keep only known hero ids.
 for (const k of ['heroes', 'fresh'] as const) meta[k] = Array.isArray(meta[k]) ? meta[k].filter((id) => id in HEROES) : [];
@@ -81,6 +85,20 @@ meta.memos = Array.isArray(meta.memos) ? [...new Set(meta.memos.filter((id) => t
     const v = saved[k];
     if (typeof v === 'number' && Number.isFinite(v)) meta.records[k] = v;
   }
+}
+
+{
+  const isNum = (x: unknown): x is number => typeof x === 'number' && Number.isFinite(x);
+  const valid = (l: unknown): l is RunLog =>
+    typeof l === 'object' &&
+    l !== null &&
+    'hero' in l &&
+    typeof l.hero === 'string' &&
+    l.hero in HEROES &&
+    'result' in l &&
+    (l.result === 'win' || l.result === 'lose' || l.result === 'abandon') &&
+    ['act', 'floor', 'kills', 'cards', 'pay', 'at'].every((k) => k in l && isNum((l as Record<string, unknown>)[k]));
+  meta.history = Array.isArray(meta.history) ? meta.history.filter(valid).slice(0, CONFIG.historyMax) : [];
 }
 
 export const contractSigned = (): boolean => meta.signed;
@@ -191,6 +209,13 @@ export function recordRun(f: { won: boolean; fullDay: boolean; act: number; floo
   store('meta', meta);
   return beaten;
 }
+
+/** A run ended (won, lost or abandoned): it goes on top of the handbook's history. */
+export function logRun(entry: RunLog): void {
+  meta.history = [entry, ...meta.history].slice(0, CONFIG.historyMax);
+  store('meta', meta);
+}
+export const runHistory = (): readonly RunLog[] => meta.history;
 
 export const records = (): Readonly<Records & { runs: number }> => ({ ...meta.records, runs: meta.runs });
 

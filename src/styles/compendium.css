@@ -31,11 +31,62 @@
 }
 /* the counter scrolls with the content, right under the switch */
 .compendium .scroll > .sub { margin: 12px 0; }
+.section-switch {
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.section-switch::-webkit-scrollbar { display: none; }
 .section-switch button {
+  flex: none;
   min-width: 0;
   padding: 0 8px;
   color: var(--k);
 }
+/* the run history: one paper line per run, a stamp for how it ended */
+.run-logs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 4px 16px 2px;
+  animation: screen-in 0.24s steps(4) both;
+}
+.run-log {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  color: var(--k);
+  background: var(--paper);
+  border: var(--line) solid var(--void);
+  box-shadow: 3px 3px 0 var(--shadow);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.1;
+}
+.rl-art {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  background: var(--bg2);
+  border: 2px solid var(--void);
+}
+.rl-art .riso { width: 100%; height: 100%; }
+.rl-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.rl-main b { font-weight: 400; font-size: 19px; }
+.rl-main span { display: flex; align-items: center; gap: 4px; color: var(--muted); }
+.rl-main .pico { font-size: 16px; --ink2: var(--y); }
+.rl-end { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right; }
+.rl-end small { color: var(--muted); font-size: 14px; }
+.rl-end em {
+  padding: 1px 6px 2px;
+  font-style: normal;
+  color: var(--paper);
+  background: var(--b);
+  border: 2px solid var(--k);
+}
+.run-log.lose .rl-end em { background: var(--p); }
+.run-log.abandon .rl-end em { color: var(--k); background: var(--y); }
 .payslip.records { margin: 12px auto 16px; }
 .records .slip-head { margin-bottom: 4px; padding-bottom: 6px; border-bottom: 2px dashed var(--k); }
 .foes {

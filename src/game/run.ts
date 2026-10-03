@@ -10,8 +10,8 @@ import { MODIFIERS, resolveMods } from '../data/modifiers';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HERO_LIST, HEROES, starterCards } from '../data/heroes';
 import type { Combat, CombatSetup } from './combat';
-import { discover, progress, type RunRecord, recordFight, recordRun, seeRelics, stampAct } from './meta';
-import type { CardDef, CardInst, EnemyDef, HeroId } from './types';
+import { discover, logRun, progress, type RunRecord, recordFight, recordRun, seeRelics, stampAct } from './meta';
+import type { CardDef, CardInst, EnemyDef, HeroId, RunLog } from './types';
 
 export const NODE_TYPES = ['fight', 'elite', 'rest', 'promotion', 'copy', 'tailor', 'lostFound', 'vending', 'crossTraining', 'boss'] as const;
 export type NodeType = (typeof NODE_TYPES)[number];
@@ -540,9 +540,31 @@ export interface RunEnd {
   beaten: RunRecord[];
 }
 
+/** The history line of a run that ends now. */
+const runLog = (run: RunState, result: RunLog['result']): RunLog => {
+  const node = currentNode(run);
+  return {
+    hero: run.hero,
+    result,
+    act: node.act,
+    floor: node.floor,
+    kills: run.stats.kills,
+    cards: run.stats.cardsPlayed,
+    pay: run.money,
+    at: Date.now(),
+  };
+};
+
+/** The run is thrown away: it only goes in the history. */
+export function abandonRun(run: RunState): void {
+  logRun(runLog(run, 'abandon'));
+  clearRun();
+}
+
 /** Ends the run (won or lost): records it and unlocks the heroes that finishing a run with this hero brings. */
 export function finishRun(run: RunState, won: boolean): RunEnd {
   clearRun();
+  logRun(runLog(run, won ? 'win' : 'lose'));
   const node = currentNode(run);
   const beaten = recordRun({
     won,
