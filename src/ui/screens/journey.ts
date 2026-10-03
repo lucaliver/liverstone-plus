@@ -33,13 +33,14 @@ export const nodeIcon = (n: RunNode): string => (n.type === 'boss' ? (actDef(n.a
 /** Height of one floor on the map (px); a room takes most of it, the rest is corridor. */
 const ROW_H = 92;
 const laneX = (lane: number): number => 22 + lane * 56;
-/** Rooms more than this many doors ahead are lost in fog. */
-const VISION = 2;
+/** Rooms more than this many doors ahead are lost in fog: only the ones the player can go to next are in sight. */
+const VISION = 1;
 /** Footsteps along a walked corridor: one every so many px. The map is about this wide (px), to measure the turns. */
 const STEP_PX = 12;
 const MAP_W = 350;
-/** Delay between the steps of the newest walked stretch (ms). */
+/** Delay between the steps of the newest walked stretch (ms), and between the lamps that light up the roads just opened. */
 const STEP_MS = 70;
+const LAMP_MS = 45;
 
 /** A point on the map: x in % of its width, y in px. */
 type Pt = [number, number];
@@ -102,6 +103,8 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   const before =
     run.cleared && run.path.length > 1 && run.nodes[run.path[run.path.length - 2]].act === cur.act ? seenFrom(run.path[run.path.length - 2]) : null;
   let walkMs = 0;
+  /** When the walk and the roads lighting up are over: the new rooms are stamped then. */
+  let revealMs = 0;
   const foggy = (n: RunNode): boolean => !revealAll && n.type !== 'boss' && !run.path.includes(n.id) && !dist.has(n.id);
 
   /** The corridor between two rooms: straight along a lane or across a floor, else up, across and up again. */
@@ -183,18 +186,13 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   const path = h('div', { class: 'path', style: { height: `${(floors - minFloor + 1) * ROW_H}px` } });
   path.innerHTML = `<svg class="links" viewBox="0 0 100 ${(floors - minFloor + 1) * ROW_H}" preserveAspectRatio="none" aria-hidden="true">${hallSvg('hall')}${hallSvg('hall-mid')}</svg>`;
   for (let f = minFloor; f <= floors; f++) path.append(h('span', { class: 'num', style: { top: `${(floors - f + 0.5) * ROW_H}px` } }, f));
-  // The way walked so far, as footsteps along the corridors; back from a job, its last stretch is walked again step by step.
-  run.path.forEach((id, i) => {
-    const a = run.nodes[run.path[i - 1]];
-    const b = run.nodes[id];
-    if (!a || a.act !== act || b.act !== act) return;
-    const fresh = run.cleared && i === run.path.length - 1;
+  /** Dots along the corridor from a to b, one every STEP_PX, appearing one after the other from `after` ms (`gap` ms apart). Returns when the last one is in. */
+  const trail = (a: RunNode, b: RunNode, cls: string, after: number, gap: number): number => {
     const pts = route(a, b);
     const px = (p: Pt): Pt => [(p[0] * MAP_W) / 100, p[1]];
     const lens = pts.slice(1).map((p, k) => Math.hypot(px(p)[0] - px(pts[k])[0], p[1] - pts[k][1]));
     const total = lens.reduce((sum, l) => sum + l, 0);
     const n = Math.max(4, Math.round(total / STEP_PX));
-    if (fresh) walkMs = n * STEP_MS;
     for (let k = 0; k < n; k++) {
       let d = ((k + 0.5) / n) * total;
       let seg = 0;
@@ -203,12 +201,24 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       const [p, q] = [pts[seg], pts[seg + 1]];
       path.append(
         h('i', {
-          class: `step ${k % 2 ? 'odd' : ''} ${p[1] === q[1] ? 'flat' : ''} ${fresh ? 'fresh' : ''}`,
-          style: { left: `${p[0] + (q[0] - p[0]) * f}%`, top: `${p[1] + (q[1] - p[1]) * f}px`, animationDelay: `${k * STEP_MS}ms` },
+          class: `step ${k % 2 ? 'odd' : ''} ${p[1] === q[1] ? 'flat' : ''} ${cls}`,
+          style: { left: `${p[0] + (q[0] - p[0]) * f}%`, top: `${p[1] + (q[1] - p[1]) * f}px`, animationDelay: `${after + k * gap}ms` },
         }),
       );
     }
+    return after + n * gap;
+  };
+  // The way walked so far, as footsteps along the corridors; back from a job, its last stretch is walked again step by step.
+  run.path.forEach((id, i) => {
+    const a = run.nodes[run.path[i - 1]];
+    const b = run.nodes[id];
+    if (!a || a.act !== act || b.act !== act) return;
+    const fresh = run.cleared && i === run.path.length - 1;
+    const end = trail(a, b, fresh ? 'fresh' : '', 0, STEP_MS);
+    if (fresh) walkMs = end;
   });
+  // Then the roads that just opened light up from this room to each new one, and the rooms are stamped where they end.
+  if (before) for (const id of options) revealMs = Math.max(revealMs, trail(cur, run.nodes[id], 'lamp', walkMs, LAMP_MS));
   for (const n of nodes) {
     const past = run.path.includes(n.id) && (n.id !== cur.id || run.cleared);
     const open = n.id === cur.id ? !run.cleared : options.includes(n.id);
@@ -232,7 +242,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       h('span', { class: 'label' }, label),
       ...[...(doors.get(n.id) ?? [])].map((side) => h('i', { class: `door ${side}` })),
     );
-    if (revealed) el.style.setProperty('--reveal', `${walkMs}ms`);
+    if (revealed) el.style.setProperty('--reveal', `${revealMs}ms`);
     const dot = el.querySelector<HTMLElement>('.dot')!;
     if (!past && !fog && n.type === 'boss' && actDef(n.act).bossClock) dot.append(clockFace());
     // Tap an open node to pick it (again to go in); hold any node to learn what it is.
@@ -322,10 +332,16 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     haptic('ability');
   };
 
+  let revealTimer = 0;
   return {
     el,
+    leave() {
+      clearTimeout(revealTimer);
+    },
     enter() {
       el.querySelector('.node.current, .node.open')?.scrollIntoView({ block: 'center' });
+      // The new rooms come out of the fog with a chime.
+      if (revealMs) revealTimer = window.setTimeout(() => sfx('ding'), revealMs);
       // A new shift: after an act's boss, or on the first floor of the run.
       if (act !== cur.act || (run.path.length === 1 && !run.cleared)) actIntro();
     },

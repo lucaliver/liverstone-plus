@@ -168,6 +168,8 @@
 .path .step.flat { width: 8px; height: 6px; translate: -50% calc(-50% - 3px); }
 .path .step.flat.odd { translate: -50% calc(-50% + 3px); }
 .path .step.fresh { animation: step-in 0.05s steps(1) backwards; }
+/* the roads that just opened: pink lamps light up one after the other towards the new room */
+.path .step.lamp { background: var(--p); animation: step-in 0.05s steps(1) backwards; }
 @keyframes step-in {
   from { visibility: hidden; }
 }
@@ -181,6 +183,20 @@
 }
 /* a room that just came out of the fog is stamped on the map when the walk reaches it */
 .node.revealed { animation: stamp-in 0.2s steps(2) var(--reveal, 0s) backwards; }
+.node.revealed::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 62px;
+  border: 4px solid var(--y);
+  pointer-events: none;
+  opacity: 0;
+  animation: reveal-ring 0.4s steps(4) var(--reveal, 0s);
+}
+@keyframes reveal-ring {
+  0% { scale: 0.8; opacity: 1; }
+  100% { scale: 1.3; opacity: 0; }
+}
 /* a room: its icon on top, its name plate at the bottom */
 .node {
   position: absolute;
