@@ -309,20 +309,21 @@
   pointer-events: none;
 }
 
-/* a card that slips off the belt tips over its outer corner and drops off the screen, faster and faster (the positions follow t squared) */
+/* a card that slips off the end of the belt tips over onto its far side, then plummets faster and faster off the screen, still turning (stepped) */
 .card.drop-out {
-  transform-origin: var(--drop-pivot, 100%) 100%;
+  transform-origin: var(--drop-pivot, 0%) 100%;
   pointer-events: none;
   animation: card-drop var(--dur-drop) steps(1) forwards;
 }
 @keyframes card-drop {
   0% { translate: 0 0; rotate: 0deg; }
-  17% { translate: calc(var(--dx) * 0.03) calc(var(--dy) * 0.03); rotate: calc(var(--tilt) * 0.17); }
-  33% { translate: calc(var(--dx) * 0.11) calc(var(--dy) * 0.11); rotate: calc(var(--tilt) * 0.4); }
-  50% { translate: calc(var(--dx) * 0.25) calc(var(--dy) * 0.25); rotate: calc(var(--tilt) * 0.65); }
-  67% { translate: calc(var(--dx) * 0.45) calc(var(--dy) * 0.45); rotate: calc(var(--tilt) * 0.85); }
-  83% { translate: calc(var(--dx) * 0.7) calc(var(--dy) * 0.7); rotate: var(--tilt); }
-  100% { translate: var(--dx) var(--dy); rotate: var(--tilt); }
+  14% { translate: calc(var(--dx) * 0.1) 0; rotate: calc(var(--tilt) * 0.3); }
+  29% { translate: calc(var(--dx) * 0.25) calc(var(--dy) * 0.02); rotate: calc(var(--tilt) * 0.55); }
+  43% { translate: calc(var(--dx) * 0.45) calc(var(--dy) * 0.07); rotate: calc(var(--tilt) * 0.75); }
+  57% { translate: calc(var(--dx) * 0.65) calc(var(--dy) * 0.18); rotate: calc(var(--tilt) * 0.9); }
+  71% { translate: calc(var(--dx) * 0.8) calc(var(--dy) * 0.38); rotate: var(--tilt); }
+  86% { translate: calc(var(--dx) * 0.92) calc(var(--dy) * 0.68); rotate: calc(var(--tilt) * 1.1); }
+  100% { translate: var(--dx) var(--dy); rotate: calc(var(--tilt) * 1.2); }
 }
 
 /* Hexed card (petrified): stone over the card, a tap counter, a knock on each tap; then it thaws half-transparent. */

@@ -303,13 +303,13 @@ export function createCardLayer(v: CombatView): CardLayer {
       el2.classList.add('fall-out');
       el2.style.transform = `${base} translate3d(${swept.dx}px, ${swept.dy}px, 0) rotate(${swept.dx > 0 ? 40 : -40}deg)`;
     } else if (reason === 'expired') {
-      // A card that slips off the end tips over its outer corner and plummets off the screen.
+      // A card that slips off the end tips over its far side and plummets off the screen.
       const side = state.ltr ? 1 : -1;
       el2.classList.add('drop-out');
-      el2.style.setProperty('--dx', `${side * 70}px`);
-      el2.style.setProperty('--dy', `${window.innerHeight - rc.top + 40}px`);
-      el2.style.setProperty('--drop-pivot', side > 0 ? '100%' : '0%');
-      el2.style.setProperty('--tilt', `${side * 55}deg`);
+      el2.style.setProperty('--dx', `${side * 30}px`);
+      el2.style.setProperty('--dy', `${window.innerHeight - rc.top + 80}px`);
+      el2.style.setProperty('--drop-pivot', side > 0 ? '0%' : '100%');
+      el2.style.setProperty('--tilt', `${side * 60}deg`);
     } else if (!target) {
       el2.classList.add('fall-out');
       el2.style.transform = state.ltr ? `${base} translate3d(40px, 60px, 0) rotate(25deg)` : `${base} translate3d(-40px, 60px, 0) rotate(-25deg)`;
