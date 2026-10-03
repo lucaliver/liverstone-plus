@@ -90,9 +90,11 @@ describe('combat engine', () => {
     run(c, 3);
     expect(Math.max(...c.belt.map((b) => b.pos))).toBe(front);
     expect(c.belt.length).toBeGreaterThan(0);
-    c.crankBelt(0.05);
-    expect(Math.max(...c.belt.map((b) => b.pos))).toBeCloseTo(front + 0.05);
-    expect(c.beltCranked).toBeCloseTo(0.05);
+    // Half way to where the front card would fall off.
+    const step = (EXPIRE_POS - front) / 2;
+    c.crankBelt(step);
+    expect(Math.max(...c.belt.map((b) => b.pos))).toBeCloseTo(front + step);
+    expect(c.beltCranked).toBeCloseTo(step);
     // Back towards the entry: stops once the rearmost card is at the entry.
     c.crankBelt(-5);
     expect(Math.min(...c.belt.map((b) => b.pos))).toBeCloseTo(0);

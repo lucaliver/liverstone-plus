@@ -309,6 +309,22 @@
   pointer-events: none;
 }
 
+/* a card that slips off the belt tips over its outer corner and drops off the screen, faster and faster (the positions follow t squared) */
+.card.drop-out {
+  transform-origin: var(--drop-pivot, 100%) 100%;
+  pointer-events: none;
+  animation: card-drop var(--dur-drop) steps(1) forwards;
+}
+@keyframes card-drop {
+  0% { translate: 0 0; rotate: 0deg; }
+  17% { translate: calc(var(--dx) * 0.03) calc(var(--dy) * 0.03); rotate: calc(var(--tilt) * 0.17); }
+  33% { translate: calc(var(--dx) * 0.11) calc(var(--dy) * 0.11); rotate: calc(var(--tilt) * 0.4); }
+  50% { translate: calc(var(--dx) * 0.25) calc(var(--dy) * 0.25); rotate: calc(var(--tilt) * 0.65); }
+  67% { translate: calc(var(--dx) * 0.45) calc(var(--dy) * 0.45); rotate: calc(var(--tilt) * 0.85); }
+  83% { translate: calc(var(--dx) * 0.7) calc(var(--dy) * 0.7); rotate: var(--tilt); }
+  100% { translate: var(--dx) var(--dy); rotate: var(--tilt); }
+}
+
 /* Hexed card (petrified): stone over the card, a tap counter, a knock on each tap; then it thaws half-transparent. */
 .hex-cover {
   position: absolute;

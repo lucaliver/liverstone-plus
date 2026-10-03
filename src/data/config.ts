@@ -20,7 +20,7 @@ export const CONFIG = {
   /** The belt stands still this long before it turns around, so no card seems to jump (Paradigm Shift). */
   beltTurnPause: 0.5,
   /** A card expires once its left edge is this far past the belt's left edge (fraction of card width). */
-  expireOverhang: 0.45,
+  expireOverhang: 0.1,
   /** Belt speed multiplier while rushed (Time Slip, Time Warp). */
   beltRush: 1.5,
   /** Belt speed multipliers imposed by enemies: Hurry (faster) and Slowdown. */
