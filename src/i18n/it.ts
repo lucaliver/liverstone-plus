@@ -435,7 +435,7 @@ const it: Record<EnKey, string> = {
   'relic.paperShredder.name': 'Distruggidocumenti',
   'relic.paperShredder.d': 'Ogni carta che scivola via dal nastro ti dà {n} di Blocco.',
   'relic.lanyard.name': 'Cordino Portabadge',
-  'relic.lanyard.d': 'Il nastro va il {n}% più piano.',
+  'relic.lanyard.d': 'Il nastro va il {n}% più veloce.',
   'relic.companyCard.name': 'Carta Aziendale',
   'relic.companyCard.d': 'Ogni ricompensa offre {n} {n|carta|carte} in più tra cui scegliere.',
   'perk.fastTrack': 'Raccomandazione',

@@ -2090,7 +2090,7 @@ describe('relics', () => {
     expect(m.hero.mana).toBeGreaterThan(0);
   });
 
-  it('Sticky Notes fill the belt, a Lanyard slows it and a Company Card adds a reward card', () => {
+  it('Sticky Notes fill the belt, a Lanyard speeds it up and a Company Card adds a reward card', () => {
     expect(setup({ relics: ['stickyNotes'] }).belt.length).toBeGreaterThan(setup().belt.length + 3);
     expect(setup({ relics: ['lanyard'] }).beltRate()).toBeCloseTo(setup().beltRate() * 0.9);
     const r = newRun('warrior', 3);

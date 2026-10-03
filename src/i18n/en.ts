@@ -433,7 +433,7 @@ const en = {
   'relic.paperShredder.name': 'Paper Shredder',
   'relic.paperShredder.d': 'Every card that slips off the belt gives you {n} Block.',
   'relic.lanyard.name': 'Lanyard',
-  'relic.lanyard.d': 'The belt runs {n}% slower.',
+  'relic.lanyard.d': 'The belt runs {n}% faster.',
   'relic.companyCard.name': 'Company Card',
   'relic.companyCard.d': 'Every reward offers {n} more {n|card|cards} to choose from.',
   'perk.fastTrack': 'Fast Track',

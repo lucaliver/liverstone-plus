@@ -20,7 +20,7 @@ const DUCK_BLOCK = 12;
 const DUCK_HP = 0.5;
 const SHREDDER_BLOCK = 3;
 /** The belt's speed with a Lanyard. */
-const LANYARD_SPEED = 0.9;
+const LANYARD_SPEED = 1.15;
 /** Share of max HP the Emergency Exit gets you back on your feet with. */
 const EXIT_HP = 0.35;
 
@@ -153,7 +153,7 @@ const defs: RelicDef[] = [
       },
     },
   },
-  { id: 'lanyard', rarity: 'rare', n: Math.round((1 - LANYARD_SPEED) * 100), mods: { beltSpeed: LANYARD_SPEED } },
+  { id: 'lanyard', rarity: 'rare', n: Math.round((LANYARD_SPEED - 1) * 100), mods: { beltSpeed: LANYARD_SPEED } },
   { id: 'companyCard', rarity: 'epic', n: 1, mods: { rewardCards: 1 } },
   // The Tailor's: not found in the Lost & Found.
   { id: 'cargoPants', rarity: 'special', n: 1, mods: { sleeve: 1 } },
