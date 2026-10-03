@@ -179,7 +179,11 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'shadow',
     svg: `<path d="M18 58c-6-6-10-14-10-22V22c0-3 2-5 4-5s4 2 4 5v10h2V12c0-3 2-5 4-5s4 2 4 5v18h2V8c0-3 2-5 4-5s4 2 4 5v22h2V12c0-3 2-5 4-5s4 2 4 5v28c0 10-6 18-14 18z"/>`,
   },
-  burst: { el: 'shadow', svg: `<path d="M32 2l6 16 16-8-8 16 16 6-16 6 8 16-16-8-6 16-6-16-16 8 8-16-16-6 16-6-8-16 16 8z"/>` },
+  /** The charge intent (a heavy hit on its way): an anvil about to drop. */
+  burst: {
+    el: 'shadow',
+    svg: `<path d="M4 14h52c0 10-6 14-16 14h-2v8l8 6v10H18V42l8-6v-8h-4C12 28 6 24 4 14z"/><path ${HI} d="M10 18h38c-2 3-5 5-10 5H18c-4 0-7-2-8-5z"/>`,
+  },
   bolt2: { el: 'arcane', svg: bolt },
   cards: {
     el: 'steel',
