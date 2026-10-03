@@ -273,6 +273,7 @@ export function combatSetup(run: RunState): CombatSetup {
     enemy: ENEMIES[node.enemy!],
     scale: enemyScale(node, run.mods),
     beltMul: resolveMods(run.mods).beltMul,
+    canBeg: true,
     seed,
   };
 }

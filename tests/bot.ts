@@ -185,7 +185,8 @@ export function simulateRun(hero: HeroId, seed: number, opts: BotOpts): RunOutco
         run.cleared = true;
       }
     } else {
-      const c = new Combat(combatSetup(run));
+      // The bot never begs: a defeat is a defeat, so win rates stay comparable.
+      const c = new Combat({ ...combatSetup(run), canBeg: false });
       simulateCombat(c, rnd, opts);
       combatTimes.push(c.time);
       applyCombat(run, c);

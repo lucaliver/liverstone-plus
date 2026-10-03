@@ -5,6 +5,8 @@ export const CONFIG = {
   /** The made-up voice that reads a speech bubble: base pitch range (Hz, picked per speaker) and ms per letter. */
   voicePitch: [150, 420],
   voiceMs: 42,
+  /** Beg to stay (the first time a run's hero would be let go): the Dodge seconds, the Strength and the mana crystals it brings back. */
+  beg: { dodge: 5, strength: 5, crystals: 1 },
   /** Runs the handbook's history keeps (the newest). */
   historyMax: 30,
   /** Debug fight option: the hero's HP. */
@@ -163,6 +165,9 @@ export const rewardUpgradeChance = (act: number): number => REWARD_UPGRADE_CHANC
 export const REWARD_MIN_LEGENDARY: Record<RewardKind, number> = { fight: 0, elite: 2, boss: 0 };
 
 /** Where cards enter (0) and expire, in belt-distance units. */
+/** The per-run flag (`CombatSetup.relicFlags`) set once the hero has begged to stay. */
+export const BEG_FLAG = 'begToStay';
+
 export const EXPIRE_POS = 1 + CONFIG.cardWidth * CONFIG.expireOverhang;
 
 export const GAME_SPEEDS = [1, 1.5, 2] as const;

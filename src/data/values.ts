@@ -103,4 +103,7 @@ export const VALUES = {
   budgetCut: -(PERKS.budgetCut.costDelta ?? 0),
   justCausePct: pct(JUST_CAUSE_HP),
   hardshipPct: pct(HARDSHIP_HP),
+  begDodge: CONFIG.beg.dodge,
+  begStrength: CONFIG.beg.strength,
+  begCrystals: CONFIG.beg.crystals,
 };

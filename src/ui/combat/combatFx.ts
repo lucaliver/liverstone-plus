@@ -2,6 +2,7 @@ import { t } from '../../core/i18n';
 import { type SoundId, sfx, voice } from '../../audio/sfx';
 import { CARDS } from '../../data/cards';
 import { CONFIG } from '../../data/config';
+import { openModal } from '../app';
 import { HEXES } from '../../data/hexes';
 import { STATUSES } from '../../data/statuses';
 import { discover } from '../../game/meta';
@@ -375,6 +376,30 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         r.belt.classList.add(e.type === 'rowsOpen' ? 'row-opening' : 'row-closing');
         sfx('machinery');
         break;
+      case 'beg': {
+        // The fight waits on the answer.
+        sfx('defeat');
+        v.inspect(true);
+        openModal({
+          title: t('beg.title'),
+          body: h('p', null, t('beg.body')),
+          dismissable: false,
+          actions: [
+            { label: t('beg.yes'), icon: 'heart', cls: 'cta', onClick: () => v.combat.beg(true) },
+            { label: t('beg.no'), cls: 'secondary', onClick: () => v.combat.beg(false) },
+          ],
+          onClose: () => v.inspect(false),
+        });
+        break;
+      }
+      case 'begged': {
+        const p = v.pointOf('hero');
+        floatText(p.x, p.y - 50, t('beg.done'), 'status good');
+        burst('gold', p.x, p.y, 30, 1.3);
+        sfx('levelUp');
+        haptic('ability');
+        break;
+      }
       case 'end':
         onEnd(e.result);
         break;

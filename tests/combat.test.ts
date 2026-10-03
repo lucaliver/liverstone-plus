@@ -2280,4 +2280,35 @@ describe('act 3 elites and boss', () => {
     expect(cues).toEqual(['lowBattery']);
     expect(bar()).toBeLessThan(0.2);
   });
+  it('Beg to stay: the first defeat waits for an answer, then the hero is back; a second defeat is final', () => {
+    const flags: Record<string, number> = {};
+    const c = setup({ canBeg: true, relicFlags: flags });
+    run(c, CONFIG.introTime + 0.01);
+    c.hero.mana = 0;
+    const crystals = c.hero.maxMana;
+    c.damage('enemy', 'hero', 999, { raw: true }, 'enemy');
+    expect(c.begging).toBe(true);
+    expect(c.result).toBeNull();
+    const time = c.time;
+    run(c, 1);
+    expect(c.time).toBe(time);
+    c.beg(true);
+    expect(c.hero.hp).toBe(c.hero.maxHp);
+    expect(c.hero.maxMana).toBe(crystals + CONFIG.beg.crystals);
+    expect(c.hero.mana).toBe(c.hero.maxMana);
+    expect(c.stacks('hero', 'strength')).toBe(CONFIG.beg.strength);
+    expect(c.has('hero', 'dodge')).toBe(true);
+    expect(flags.begToStay).toBe(1);
+    delete c.hero.statuses.dodge;
+    c.damage('enemy', 'hero', 999, { raw: true, ignoreBlock: true }, 'enemy');
+    expect(c.result).toBe('lose');
+  });
+
+  it('Beg to stay: declining loses the fight', () => {
+    const c = setup({ canBeg: true });
+    run(c, CONFIG.introTime + 0.01);
+    c.damage('enemy', 'hero', 999, { raw: true }, 'enemy');
+    c.beg(false);
+    expect(c.result).toBe('lose');
+  });
 });

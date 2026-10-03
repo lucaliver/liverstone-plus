@@ -1,6 +1,6 @@
 import { Emitter } from '../core/emitter';
 import { Rng } from '../core/rng';
-import { CONFIG, EXPIRE_POS } from '../data/config';
+import { BEG_FLAG, CONFIG, EXPIRE_POS } from '../data/config';
 import { STATUSES } from '../data/statuses';
 import { CARDS, CLASS_HIT, cardCostOf, cardKeywordsOf, cardValsOf } from '../data/cards';
 import { HEXES } from '../data/hexes';
@@ -80,6 +80,8 @@ export interface CombatSetup {
   beltRows?: number;
   /** Run-wide belt speed multiplier (memos). */
   beltMul?: number;
+  /** The hero may beg to stay once if this fight is lost (needs the run's flag `BEG_FLAG` unset too). */
+  canBeg?: boolean;
 }
 
 interface DamageOpts {
@@ -162,6 +164,9 @@ export class Combat {
   private updated = false;
   /** Free-form per-combat state for relics and powers. */
   mem: Record<string, number> = {};
+  /** The hero is down and the fight waits for the answer to the offer to beg (`beg`). */
+  begging = false;
+  private canBeg: boolean;
   private tempUid = 0;
 
   constructor(setup: CombatSetup) {
@@ -185,6 +190,7 @@ export class Combat {
     }
     this.regenMul = regenMul;
     this.runBeltMul = setup.beltMul ?? 1;
+    this.canBeg = !!setup.canBeg && !this.relicFlags[BEG_FLAG];
 
     this.hero = {
       hp: setup.hp,
@@ -409,7 +415,7 @@ export class Combat {
   // ------------------------------------------------------------------ loop
 
   tick(dt: number): void {
-    if (this.result) return;
+    if (this.result || this.begging) return;
     if (this.intro > 0) {
       this.intro -= dt;
       return;
@@ -1084,7 +1090,7 @@ export class Combat {
   }
 
   private checkDeaths(): void {
-    if (this.result) return;
+    if (this.result || this.begging) return;
     const e = this.enemy;
     if (e.hp <= 0 && !this.reprieve()) {
       this.end('win');
@@ -1104,6 +1110,11 @@ export class Combat {
           return;
         }
       }
+      if (this.canBeg) {
+        this.begging = true;
+        this.events.emit({ type: 'beg' });
+        return;
+      }
       this.end('lose');
     }
   }
@@ -1112,6 +1123,24 @@ export class Combat {
   private reprieve(): boolean {
     for (const [id, s] of Object.entries(this.enemy.statuses)) if (this.has('enemy', id) && STATUSES[id].onDeath?.(this, 'enemy', s)) return true;
     return false;
+  }
+
+  /** The answer to the offer to beg to stay: yes, and the hero is back on their feet (full HP and mana, a spare crystal, Dodge and Strength) for the rest of the fight; no, and it is lost. */
+  beg(accept: boolean): void {
+    if (!this.begging) return;
+    this.begging = false;
+    if (!accept) {
+      this.end('lose');
+      return;
+    }
+    this.canBeg = false;
+    this.relicFlags[BEG_FLAG] = 1;
+    this.hero.hp = this.hero.maxHp;
+    this.addManaCrystals(CONFIG.beg.crystals);
+    this.hero.mana = this.hero.maxMana;
+    this.applyStatus('hero', 'dodge', 1, CONFIG.beg.dodge);
+    this.applyStatus('hero', 'strength', CONFIG.beg.strength);
+    this.events.emit({ type: 'begged' });
   }
 
   private end(result: CombatResult): void {

@@ -42,6 +42,12 @@ const it: Record<EnKey, string> = {
   'crash.restart': 'Riavvia',
   'crash.copy': 'Copia errore',
   'crash.copied': 'Copiato',
+  'beg.title': 'Supplica di restare',
+  'beg.body':
+    "Stai per essere licenziato. Implora un'altra possibilità: HP e mana al massimo, {$begCrystals} cristallo di mana in più, {$begStrength} Forza e {$begDodge}s di Schivata. Si può fare una sola volta per giornata.",
+  'beg.yes': 'Supplica',
+  'beg.no': 'Accetta il destino',
+  'beg.done': 'Supplicato',
   'compendium.title': "Manuale d'uso",
   'compendium.progress': '{n}/{total} scoperte',
   'compendium.cards': 'Carte',

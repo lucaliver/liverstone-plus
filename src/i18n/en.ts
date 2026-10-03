@@ -41,6 +41,12 @@ const en = {
   'crash.restart': 'Restart',
   'crash.copy': 'Copy error',
   'crash.copied': 'Copied',
+  'beg.title': 'Beg to stay',
+  'beg.body':
+    'You are about to be let go. Plead for one more chance: full HP and mana, {$begCrystals} more mana crystal, {$begStrength} Strength and {$begDodge}s of Dodge. You can only do this once per workday.',
+  'beg.yes': 'Beg',
+  'beg.no': 'Accept your fate',
+  'beg.done': 'Begged',
   'compendium.title': 'Employee Handbook',
   'compendium.progress': '{n}/{total} discovered',
   'compendium.cards': 'Cards',

@@ -469,6 +469,9 @@ export type CombatEvent =
   | { type: 'relic'; id: string }
   /** A status with a trigger just went off (its chip empties and it plays its `cue`). */
   | { type: 'cue'; side: Side; id: string }
+  /** The hero is down: the fight waits to know whether they beg to stay. */
+  | { type: 'beg' }
+  | { type: 'begged' }
   | { type: 'enrage' }
   | { type: 'speech'; key: TKey }
   | { type: 'beltReversed' }
