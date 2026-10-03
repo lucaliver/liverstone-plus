@@ -11,10 +11,10 @@ const KEYWORD_LINE = ['innate', 'pending', 'exhaust', 'consume', 'fleeting', 'vo
 export const TAG_ICON: Record<string, string> = {
   innate: 'flag',
   pending: 'pending',
-  exhaust: 'cross',
+  exhaust: 'spentMatch',
   consume: 'trash',
   fleeting: 'wing',
-  volatile: 'combust',
+  volatile: 'feather',
 };
 
 /** Glyph kind → icon and the unit shown after its value. */
