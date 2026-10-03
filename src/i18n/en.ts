@@ -328,6 +328,9 @@ const en = {
   // ------------------------------------------------------------ results
   'reward.cleared': 'Problem solved',
   'reward.title': 'Pick your bonus',
+  'reward.add': 'Add',
+  'reward.pickAdd': 'Pick the card to add to your deck',
+  'reward.readyAdd': 'Ready to add',
   'reward.swap': 'Swap',
   'reward.skip': 'Skip',
   'reward.skipHp': '+{n} max HP',

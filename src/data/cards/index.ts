@@ -13,6 +13,9 @@ const all = [...warriorCards, ...mageCards, ...necromancerCards, ...neutralCards
 for (const c of all) c.dmg ??= [...c.face.matchAll(/\{dmg:(\d)\}/g)].map((m) => Number(m[1]));
 
 export const CARDS: Record<string, CardDef> = Object.fromEntries(all.map((c) => [c.id, c]));
+/** Rarities from the weakest to the strongest: how cards are sorted. */
+export const RARITY_ORDER: Rarity[] = ['starter', 'common', 'rare', 'epic', 'legendary', 'special'];
+
 export const CARD_LIST: readonly CardDef[] = all;
 
 /** Cards that can appear as rewards for a class (cards from a pack stay out: no pack can be unlocked yet). */

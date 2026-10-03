@@ -1,8 +1,8 @@
 import { trackReward } from '../../analytics';
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
-import { haptic } from '../fx/fx';
-import { type RewardOffer, type RunState, skipPay, skipReward, swapCard } from '../../game/run';
+import { burst, haptic } from '../fx/fx';
+import { addCard, type RewardOffer, type RunState, skipPay, skipReward, swapCard } from '../../game/run';
 import type { CardInst } from '../../game/types';
 import type { Screen } from '../app';
 import { icon } from '../art/icons';
@@ -10,7 +10,6 @@ import { cardView } from '../components/cardView';
 import { openCardDetail, sortCards, sortControl } from '../components/modals';
 import { SLACK_MS, cssMs, h, onTapOrHold } from '../dom';
 import { dropLetters } from '../components/decor';
-import { runHud } from './journey';
 import { HEAL_FAST_MS, playHealing } from './rest';
 
 /** How long the chosen card takes to fly onto the one it replaces, and to be seen sitting there (ms): the CSS plays it, this waits for it. */
@@ -29,15 +28,15 @@ function selectable(el: HTMLElement, card: CardInst, onSelect: () => void): void
 }
 
 /**
- * Post-fight reward, Cardstone style: the deck never grows. Pick a card of your deck (top) and one of the
- * offered cards (bottom), then Swap them, or Skip.
+ * Post-fight reward. A normal fight swaps: pick a card of your deck (top) and one of the offered cards (bottom), then
+ * Swap them, or Skip. An elite or a boss (`adds`) pays one more card: pick an offer and Add it.
  */
-export function rewardScreen(run: RunState, picks: RewardOffer[], onDone: () => void): Screen {
+export function rewardScreen(run: RunState, picks: RewardOffer[], adds: boolean, onDone: () => void): Screen {
   let fromDeck: CardInst | null = null;
   let offer: RewardOffer | null = null;
   const offered = picks.map((p) => p.def.id);
 
-  const swapBtn = h('button', { class: 'btn', disabled: true }, t('reward.swap'));
+  const swapBtn = h('button', { class: 'btn', disabled: true }, t(adds ? 'reward.add' : 'reward.swap'));
   const skipBtn = h(
     'button',
     {
@@ -47,12 +46,10 @@ export function rewardScreen(run: RunState, picks: RewardOffer[], onDone: () => 
         const pay = skipPay(run);
         trackReward(run, offered, null, null);
         skipReward(run);
-        // Max HP goes up: hearts rise, the HUD shows the new total, then on to the map.
+        // Max HP goes up: hearts rise, then on to the map.
         swapBtn.disabled = true;
         skipBtn.disabled = true;
         (e.currentTarget as HTMLElement).blur();
-        const hp = el.querySelector('.run-hud .chip.hp span');
-        if (hp) hp.textContent = `${run.hp}/${run.maxHp}`;
         playHealing(el, pay, t('reward.maxHp'), true);
         setTimeout(onDone, HEAL_FAST_MS);
       },
@@ -69,10 +66,17 @@ export function rewardScreen(run: RunState, picks: RewardOffer[], onDone: () => 
   const renderDeck = (): void => {
     deckEls = sortCards(run.deck).map((card) => {
       const el = cardView(card);
-      selectable(el, card, () => {
-        fromDeck = fromDeck?.uid === card.uid ? null : card;
-        refresh();
-      });
+      if (adds)
+        onTapOrHold(
+          el,
+          () => openCardDetail(card),
+          () => openCardDetail(card),
+        );
+      else
+        selectable(el, card, () => {
+          fromDeck = fromDeck?.uid === card.uid ? null : card;
+          refresh();
+        });
       return { el, card };
     });
     deckGrid.replaceChildren(...deckEls.map((d) => d.el));
@@ -99,38 +103,52 @@ export function rewardScreen(run: RunState, picks: RewardOffer[], onDone: () => 
     for (const o of offerEls) o.el.classList.toggle('sel', o.pick === offer);
     deckGrid.classList.toggle('has-sel', !!fromDeck);
     offerRow.classList.toggle('has-sel', !!offer);
-    swapBtn.disabled = !(fromDeck && offer);
-    hint.textContent =
-      !fromDeck && !offer ? t('reward.pickBoth') : !fromDeck ? t('reward.pickDeck') : !offer ? t('reward.pickOffer') : t('reward.ready');
+    swapBtn.disabled = !offer || !(adds || fromDeck);
+    hint.textContent = adds
+      ? t(offer ? 'reward.readyAdd' : 'reward.pickAdd')
+      : !fromDeck && !offer
+        ? t('reward.pickBoth')
+        : !fromDeck
+          ? t('reward.pickDeck')
+          : !offer
+            ? t('reward.pickOffer')
+            : t('reward.ready');
   }
 
   swapBtn.addEventListener('click', () => {
-    if (!fromDeck || !offer) return;
-    sfx('button');
+    if (!offer || !(adds || fromDeck)) return;
+    sfx('cardPlay');
     haptic('tap');
-    const old = deckEls.find((d) => d.card.uid === fromDeck?.uid)?.el;
     const flyer = offerEls.find((o) => o.pick === offer)?.el;
-    trackReward(run, offered, offer.def.id, fromDeck.id);
-    swapCard(run, fromDeck.uid, offer.def.id, offer.up);
+    const old = adds ? deckGrid : deckEls.find((d) => d.card.uid === fromDeck?.uid)?.el;
+    trackReward(run, offered, offer.def.id, fromDeck?.id ?? null);
+    if (adds) addCard(run, offer.def.id);
+    else if (fromDeck) swapCard(run, fromDeck.uid, offer.def.id, offer.up);
     swapBtn.disabled = true;
     skipBtn.disabled = true;
     if (!old || !flyer) return onDone();
-    // The offered card flies over the old one and lands on top of it.
-    old.scrollIntoView({ block: 'nearest' });
+    // The offered card flies over the old one (or into the deck) and lands with a stamp and a spray of paper.
+    if (!adds) old.scrollIntoView({ block: 'nearest' });
     const from = flyer.getBoundingClientRect();
     const to = old.getBoundingClientRect();
-    flyer.style.setProperty('--dx', `${to.left - from.left}px`);
-    flyer.style.setProperty('--dy', `${to.top - from.top}px`);
-    flyer.style.setProperty('--fit', String(to.width / from.width));
+    const fit = adds ? 0.3 : to.width / from.width;
+    flyer.style.setProperty('--dx', `${to.left + to.width / 2 - from.left - from.width / 2}px`);
+    flyer.style.setProperty('--dy', `${to.top + to.height / 2 - from.top - from.height / 2}px`);
+    flyer.style.setProperty('--fit', String(fit));
     flyer.classList.add('flying');
-    old.classList.add('replaced');
+    if (adds) flyer.classList.add('into-deck');
+    if (!adds) old.classList.add('replaced');
+    setTimeout(() => {
+      burst('paper', to.left + to.width / 2, to.top + to.height / 2, 22, 1.2);
+      sfx(adds ? 'deckAdd' : 'stamp');
+      haptic('ability');
+    }, cssMs('--dur-swap-fly') * 0.8);
     setTimeout(onDone, swapMs());
   });
 
   const el = h(
     'div',
     { class: 'screen reward' },
-    runHud(run),
     h('h1', {
       class: 'h1 reward-title',
       'aria-label': t('reward.title'),

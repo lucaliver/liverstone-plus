@@ -1,7 +1,7 @@
 import { Rng } from '../core/rng';
 import { loadRaw, remove, store } from '../core/save';
 import { nextUid, peekUid, resetUid } from '../core/util';
-import { CARD_LIST, CARDS, cardCostOf, cardKeywordsOf, rewardPool } from '../data/cards';
+import { CARD_LIST, CARDS, RARITY_ORDER, cardCostOf, cardKeywordsOf, rewardPool } from '../data/cards';
 import { PERKS } from '../data/perks';
 import { RELIC_LIST, RELICS } from '../data/relics';
 import { ACT_DEFS, actDef } from '../data/acts';
@@ -322,7 +322,7 @@ export function rollRewards(run: RunState, kind: RewardKind): RewardOffer[] {
   const firsts = run.scripted ? HEROES[run.hero].firstRewards?.[run.stats.kills - 1] : undefined;
   if (firsts) {
     discover(firsts);
-    return firsts.map((id) => ({ def: CARDS[id], up: false }));
+    return byRarity(firsts.map((id) => ({ def: CARDS[id], up: false })));
   }
   const rng = rngOf(run);
   const picks: CardDef[] = [];
@@ -335,8 +335,21 @@ export function rollRewards(run: RunState, kind: RewardKind): RewardOffer[] {
   const upgraded = picks.length && rng.next() < rewardUpgradeChance(currentNode(run).act) ? rng.int(0, picks.length - 1) : -1;
   run.rng = rng.state;
   discover(picks.map((p) => p.id));
-  return picks.map((def, i) => ({ def, up: i === upgraded }));
+  return byRarity(picks.map((def, i) => ({ def, up: i === upgraded })));
 }
+
+/** Offers always come in rising rarity (a stable sort: the dealt order breaks ties). */
+const byRarity = (offers: RewardOffer[]): RewardOffer[] =>
+  offers.sort((a, b) => RARITY_ORDER.indexOf(a.def.rarity) - RARITY_ORDER.indexOf(b.def.rarity));
+
+/** Elites and act bosses add a card to the deck; a normal fight swaps one. */
+export const rewardAdds = (kind: RewardKind): boolean => kind !== 'fight';
+
+/** The kind of reward the room the player is in pays. */
+export const rewardKindOf = (run: RunState): RewardKind => {
+  const { type } = currentNode(run);
+  return type === 'boss' ? 'boss' : type === 'elite' ? 'elite' : 'fight';
+};
 
 /** Remembers the offers shown to the player (see `RunState.reward`). */
 export function offerReward(run: RunState, picks: RewardOffer[]): void {

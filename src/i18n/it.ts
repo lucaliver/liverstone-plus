@@ -330,6 +330,9 @@ const it: Record<EnKey, string> = {
   // ------------------------------------------------------------ results
   'reward.cleared': 'Problema risolto',
   'reward.title': 'Scegli ricompensa',
+  'reward.add': 'Aggiungi',
+  'reward.pickAdd': 'Scegli la carta da aggiungere al mazzo',
+  'reward.readyAdd': 'Pronto ad aggiungere',
   'reward.swap': 'Scambia',
   'reward.skip': 'Salta',
   'reward.skipHp': '+{n} HP massimi',

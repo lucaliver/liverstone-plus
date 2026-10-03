@@ -78,6 +78,14 @@
   80% { transform: translate(var(--dx), var(--dy)) scale(var(--fit)); }
   100% { transform: translate(var(--dx), var(--dy)) scale(var(--fit)); }
 }
+/* an added card sinks into the deck instead of covering a card */
+.swap-offer .card.sel.flying.into-deck { animation-name: swap-sink; }
+@keyframes swap-sink {
+  0% { transform: none; }
+  45% { transform: translate(calc(var(--dx) * 0.5), calc(var(--dy) * 0.5 - 40px)) scale(1.15); }
+  80% { transform: translate(var(--dx), var(--dy)) scale(var(--fit)); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(var(--fit)); opacity: 0; }
+}
 .swap-deck .card.sel.replaced { outline: none; animation: swap-gone var(--dur-swap-gone) steps(2) var(--delay-swap-gone) forwards; }
 @keyframes swap-gone {
   to { transform: scale(0.85) rotate(-6deg); opacity: 0; }

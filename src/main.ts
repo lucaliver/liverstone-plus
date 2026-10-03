@@ -29,6 +29,8 @@ import {
   type NodeType,
   offerReward,
   pendingReward,
+  rewardAdds,
+  rewardKindOf,
   rollRewards,
   saveRun,
   type RewardOffer,
@@ -149,7 +151,7 @@ function debugMap(): void {
     r.cleared = cleared;
     goJourney();
   };
-  const reward = (kind: RewardKind) => (): void => show(inAct(rewardScreen(r, rollRewards(r, kind), back), r));
+  const reward = (kind: RewardKind) => (): void => show(inAct(rewardScreen(r, rollRewards(r, kind), rewardAdds(kind), back), r));
   const rooms = Object.entries(ROOMS).map(([type, screen]) => ({
     label: t(`journey.node.${type as NodeType}`),
     icon: NODE_ICON[type as NodeType],
@@ -230,14 +232,14 @@ function afterCombat(combat: Combat): void {
     return;
   }
   // Elites and act bosses pay better (bosses in legendary cards only).
-  const picks = rollRewards(r, node.type === 'fight' ? 'fight' : node.type === 'boss' ? 'boss' : 'elite');
+  const picks = rollRewards(r, rewardKindOf(r));
   offerReward(r, picks);
   saveRun(r);
   showReward(r, picks);
 }
 
 function showReward(r: RunState, picks: RewardOffer[]): void {
-  show(inAct(rewardScreen(r, picks, nextNode), r));
+  show(inAct(rewardScreen(r, picks, rewardAdds(rewardKindOf(r)), nextNode), r));
 }
 
 /** After a node: back to the map to choose the next one, or the victory screen at the end of the run. */
