@@ -8,7 +8,7 @@
   .threat { height: 34px; }
   .threat .t-val { font-size: 22px; }
   .mana-row { padding-top: 6px; }
-  .pip { height: 22px; }
+  .pip { height: 18px; }
   .action-row { padding: 4px 12px calc(var(--safe-b) + 6px); }
   .ability-btn { width: 70px; height: 70px; }
   .ability-btn .pico { font-size: 32px; margin-top: -20px; }
