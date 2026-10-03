@@ -1,5 +1,5 @@
 import { t } from '../../core/i18n';
-import { type SoundId, sfx } from '../../audio/sfx';
+import { type SoundId, sfx, voice } from '../../audio/sfx';
 import { CARDS } from '../../data/cards';
 import { CONFIG } from '../../data/config';
 import { HEXES } from '../../data/hexes';
@@ -55,10 +55,27 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
   /** An enemy's speech bubble over the stage (one at a time); it lasts `ms`, then goes by itself. */
   const speak = (text: string, ms = SPEECH_MS): void => {
     r.stage.querySelector('.speech')?.remove();
-    const bubble = h('div', { class: 'speech', style: { animationDuration: `${ms}ms` } }, text);
+    clearInterval(typing);
+    // The line is typed out letter by letter (the unsaid part keeps the bubble's size) while the enemy's voice reads it, in a pitch of its own.
+    const said = h('span', null);
+    const unsaid = h('span', { class: 'unsaid' }, text);
+    const bubble = h('div', { class: 'speech', style: { animationDuration: `${ms}ms` }, 'aria-label': text }, said, unsaid);
     bubble.addEventListener('animationend', () => bubble.remove());
     r.stage.append(bubble);
+    const letters = [...text];
+    const gap = Math.min(CONFIG.voiceMs, (ms * 0.7) / Math.max(1, letters.length));
+    const [lo, hi] = CONFIG.voicePitch;
+    const id = v.combat.enemy.def.id;
+    voice(text, lo + ([...id].reduce((sum, c) => sum + c.charCodeAt(0) * 7, 0) % (hi - lo)), gap);
+    let n = 0;
+    typing = window.setInterval(() => {
+      n++;
+      said.textContent = letters.slice(0, n).join('');
+      unsaid.textContent = letters.slice(n).join('');
+      if (n >= letters.length) clearInterval(typing);
+    }, gap);
   };
+  let typing = 0;
 
   const onEvent = (e: CombatEvent): void => {
     switch (e.type) {
@@ -365,5 +382,9 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         break;
     }
   };
-  return v.combat.events.on(onEvent);
+  const unsubscribe = v.combat.events.on(onEvent);
+  return () => {
+    clearInterval(typing);
+    unsubscribe();
+  };
 }

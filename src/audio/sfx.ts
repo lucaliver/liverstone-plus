@@ -386,6 +386,21 @@ const SOUNDS = {
 
 export type SoundId = keyof typeof SOUNDS;
 
+/** Semitones above the speaker's pitch that a letter's blip can take: a pentatonic scale, so any line sounds cheerful. */
+const VOICE_STEPS = [0, 2, 4, 7, 9, 12];
+
+/**
+ * Reads a line in the manner of Animal Crossing: one short blip per letter (the pitch comes from the letter, so a line always sounds the same),
+ * `gapMs` apart, and silence for spaces and signs. `pitch` is the speaker's base note in Hz.
+ */
+export function voice(text: string, pitch: number, gapMs: number): void {
+  [...text].forEach((ch, i) => {
+    if (!/\p{L}|\d/u.test(ch)) return;
+    const freq = pitch * 2 ** (VOICE_STEPS[(ch.toLowerCase().charCodeAt(0) * 5 + i) % VOICE_STEPS.length] / 12);
+    tone(freq, 0.07, { type: 'triangle', vol: 0.09, to: freq * 1.1, delay: (i * gapMs) / 1000 });
+  });
+}
+
 const lastPlayed: Partial<Record<SoundId, number>> = {};
 
 export function sfx(id: SoundId): void {

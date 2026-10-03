@@ -2,6 +2,9 @@ import type { Rarity } from '../game/types';
 
 /** Global tuning constants. Times are in seconds at 1× speed. */
 export const CONFIG = {
+  /** The made-up voice that reads a speech bubble: base pitch range (Hz, picked per speaker) and ms per letter. */
+  voicePitch: [150, 420],
+  voiceMs: 42,
   /** Runs the handbook's history keeps (the newest). */
   historyMax: 30,
   /** Debug fight option: the hero's HP. */

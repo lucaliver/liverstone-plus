@@ -613,6 +613,8 @@
   background: var(--k);
   clip-path: polygon(0 100%, 50% 0, 100% 100%);
 }
+/* the part of the line not typed yet takes its room without showing */
+.speech .unsaid { visibility: hidden; }
 @keyframes speech {
   0% { scale: 0.6; opacity: 0; }
   4%, 92% { scale: 1; opacity: 1; }
