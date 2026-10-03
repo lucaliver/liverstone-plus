@@ -4,7 +4,7 @@ import { CONFIG, EXPIRE_POS, rewardUpgradeChance } from '../src/data/config';
 import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
 import { FLICKER_EVERY, SMILE_HEAL, STATUSES, UNDERSTUDY_BLOCK, UNDERSTUDY_EVERY } from '../src/data/statuses';
-import { CARD_LIST, CARDS } from '../src/data/cards';
+import { CARD_LIST, CARDS, RARITY_ORDER, cardCostOf } from '../src/data/cards';
 import { RELICS } from '../src/data/relics';
 import { hasStamp, memosOpen, stampAct } from '../src/game/meta';
 import { ACT_DEFS } from '../src/data/acts';
@@ -554,7 +554,7 @@ describe('combat engine', () => {
   });
 
   it('rust spots land on the belt, the belt slows down along an ease-in-out sine until they stop it, and scrubbing a spot takes it off', () => {
-    const c = setup({ enemy: ENEMIES.facilitiesManager, hp: 900, maxHp: 900 });
+    const c = setup({ enemy: ENEMIES.nightJanitor, hp: 900, maxHp: 900 });
     const { every, max, warn } = STATUSES.deferredMaintenance.rust!;
     const said: string[] = [];
     c.events.on((e) => {
@@ -1104,7 +1104,7 @@ describe('combat engine', () => {
       expect(c.cardCost(card)).toBe(2);
     });
 
-    it('Dave idles three times, then hits hard and adds four different curses', () => {
+    it('Dave idles three times, then hits hard and adds two different curses', () => {
       const c = vs('dave');
       const acts: string[] = [];
       c.events.on((e) => {
@@ -1118,7 +1118,7 @@ describe('combat engine', () => {
       expect(acts[3]).toBe('lastMinute');
       expect(c.hero.hp).toBeLessThan(hp);
       const everywhere = [...c.draw, ...c.discard, ...c.belt.map((b) => b.card)];
-      expect(new Set(everywhere.filter((x) => CARDS[x.id].type === 'curse').map((x) => x.id)).size).toBe(4);
+      expect(new Set(everywhere.filter((x) => CARDS[x.id].type === 'curse').map((x) => x.id)).size).toBe(2);
     });
   });
 });
@@ -1134,12 +1134,12 @@ describe('pop culture cards', () => {
     return { c, uid: c.belt[c.belt.length - 1].card.uid };
   };
 
-  it("Take Credit: Block for you, and most of the enemy's Block becomes yours", () => {
+  it("Take Credit: Block for you, and all of the enemy's Block becomes yours", () => {
     const { c, uid } = ready('mrBurnsEmpire');
     c.enemy.block = 20;
     c.playCard(uid);
-    expect(c.enemy.block).toBe(4);
-    expect(c.hero.block).toBe(CARDS.mrBurnsEmpire.vals[0] + 16);
+    expect(c.enemy.block).toBe(0);
+    expect(c.hero.block).toBe(CARDS.mrBurnsEmpire.vals[0] + 20);
   });
 
   it('Team Change pins the cards on the belt where they are; new cards ride past them', () => {
@@ -1357,11 +1357,11 @@ describe('pop culture cards', () => {
     expect(c.hero.block).toBe(5 + 5);
   });
 
-  it('You Shall Not Pass reflects damage for 3s, 6s once upgraded', () => {
+  it('You Shall Not Pass reflects damage for 5s, 8s once upgraded', () => {
     const { c, uid } = ready('youShallNotPass');
     c.playCard(uid);
-    expect(c.hero.statuses.parry.t).toBeCloseTo(3, 1);
-    expect(c.cardVals({ uid: 0, id: 'youShallNotPass', up: true })[2]).toBe(6);
+    expect(c.hero.statuses.parry.t).toBeCloseTo(5, 1);
+    expect(c.cardVals({ uid: 0, id: 'youShallNotPass', up: true })[2]).toBe(8);
   });
 
   it('Turn It Off stuns you for 3s and shuffles Turn It On into the deck, which gives 4 mana', () => {
@@ -1498,6 +1498,30 @@ describe('run pay and rewards', () => {
       expect(boss).toHaveLength(4);
       expect(boss.every((o) => o.def.rarity === 'legendary')).toBe(true);
       expect(new Set(boss.map((o) => o.def)).size).toBe(4);
+    }
+  });
+
+  it('a fight reward guarantees a Rare in act 1, an Epic from act 2 and two Epics in act 3, sorted by rarity then cost', () => {
+    const run = newRun('warrior', 7);
+    const need: Record<number, [string[], number]> = {
+      1: [['rare', 'epic', 'legendary'], 1],
+      2: [['epic', 'legendary'], 1],
+      3: [['epic', 'legendary'], 2],
+    };
+    for (const act of [1, 2, 3]) {
+      run.current = run.nodes.find((n) => n.act === act)!.id;
+      const [rarities, count] = need[act];
+      for (let i = 0; i < 100; i++) {
+        const offer = rollRewards(run, 'fight');
+        expect(offer.filter((o) => rarities.includes(o.def.rarity)).length).toBeGreaterThanOrEqual(count);
+        for (let j = 1; j < offer.length; j++) {
+          const [a, b] = [offer[j - 1], offer[j]];
+          const [ra, rb] = [RARITY_ORDER.indexOf(a.def.rarity), RARITY_ORDER.indexOf(b.def.rarity)];
+          expect(ra < rb || (ra === rb && cardCostOf({ uid: 0, id: a.def.id, up: a.up }) <= cardCostOf({ uid: 0, id: b.def.id, up: b.up }))).toBe(
+            true,
+          );
+        }
+      }
     }
   });
 
@@ -1649,6 +1673,14 @@ describe('run maps', () => {
         expect(new Set(specials).size).toBe(specials.length);
         const boss = nodes.find((n) => n.act === act && n.type === 'boss')!;
         for (const n of nodes.filter((m) => m.next.includes(boss.id))) expect(n.type).toBe('rest');
+      }
+  });
+
+  it('never offer two choices of the same kind of room', () => {
+    for (const nodes of [...maps, newRun('warrior', 1, true).nodes])
+      for (const n of nodes.filter((m) => m.next.length > 1)) {
+        const types = n.next.map((id) => nodes[id].type);
+        expect(new Set(types).size).toBe(types.length);
       }
   });
 
@@ -1853,7 +1885,16 @@ describe('cards that fill the classes out', () => {
     expect(c.stacks('hero', 'regen')).toBe(CARDS.healthcarePlan.vals[0]);
   });
 
-  it('Petri Dish: every card played while it waits in the sleeve grows its Poison, spent when played', () => {
+  it('an upgraded Step 1 brings an upgraded Step 2, and so on up the stairs', () => {
+    const c = quiet();
+    cast(c, 'step1', true);
+    const next = c.draw.find((x) => x.id === 'step2');
+    expect(next?.up).toBe(true);
+    cast(c, 'step1');
+    expect(c.draw.filter((x) => x.id === 'step2').some((x) => !x.up)).toBe(true);
+  });
+
+  it('Petri Dish: every attack played while it waits in the sleeve grows its Poison, spent when played', () => {
     const c = quiet({ hero: HEROES.necromancer });
     c.addTempCard('petriDish', 'belt');
     c.stash(c.belt[c.belt.length - 1].card.uid, 0);
@@ -2077,14 +2118,14 @@ describe('relics', () => {
 });
 
 describe('Factory Siren', () => {
-  it('her song ties your hands, stops stashing, and the belt plays the cards that slip off, for free', () => {
+  it('her song ties your hands (stashing still works), and the belt plays the cards that slip off, for free', () => {
     const c = setup({ enemy: ENEMIES.factorySiren, deck: deckOf(['punch', 'punch', 'punch', 'punch', 'punch', 'punch']) });
     run(c, CONFIG.introTime + 0.01);
     c.applyStatus('hero', 'stun', 1, 8);
     c.applyStatus('hero', 'autopilot', 1, 8);
     const first = c.belt[0].card.uid;
     expect(c.playCard(first)).toBe(false);
-    expect(c.stash(first, 0)).toBe(false);
+    expect(c.stash(c.belt[c.belt.length - 1].card.uid, 0)).toBe(true);
     const hp = c.enemy.hp;
     run(c, 8);
     expect(c.hero.mana).toBeLessThanOrEqual(c.hero.maxMana);
@@ -2222,7 +2263,7 @@ describe('act 3 rules, second batch', () => {
   });
 
   it("Flickering Lights: the hero's cards go dark on their own now and then", () => {
-    const c = setup({ enemy: { ...ENEMIES.nightJanitor, main: { ...ENEMIES.nightJanitor.main, windup: 999 } } });
+    const c = setup({ enemy: { ...ENEMIES.facilitiesManager, main: { ...ENEMIES.facilitiesManager.main, windup: 999 } } });
     run(c, CONFIG.introTime + FLICKER_EVERY - 2);
     expect(c.has('hero', 'blackout')).toBe(false);
     run(c, 3);

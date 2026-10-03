@@ -87,6 +87,7 @@
 }
 
 .c-face {
+  position: relative;
   flex: 1;
   min-height: 0;
   display: flex;
@@ -203,7 +204,9 @@
   to { background-position: -93.43cqw -130cqw; }
 }
 /* the foil is for looking at cards (deck, rewards, handbook): in a fight it would only distract */
-.combat .card[data-rarity='legendary']::after { content: none; }
+.combat .card[data-rarity='legendary']:not(.charging)::after { content: none; }
+/* ...but a legendary waiting for mana still shows its charge veil (combat-belt.css), without the foil */
+.combat .card[data-rarity='legendary'].charging::after { opacity: 1; background-image: none; animation: none; }
 
 /* cost lowered by a perk (Budget Cut) */
 .card .c-cost.cheap { color: var(--y); }

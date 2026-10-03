@@ -190,6 +190,8 @@ const HAPTICS = {
   belt: 6,
   error: 15,
   hexTap: 8,
+  /** The mop over rust: a weak, half-hearted buzz. */
+  scrub: 4,
   hit: 25,
   heavy: 60,
   alarm: [30, 60, 30],

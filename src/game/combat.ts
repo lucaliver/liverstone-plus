@@ -294,6 +294,11 @@ export class Combat {
     return this.flag(side, 'immune');
   }
 
+  /** Whether the belt plays the hero's cards by itself as they slip off (Autopilot). */
+  isAutoplay(): boolean {
+    return this.flag('hero', 'autoplay');
+  }
+
   /** Whether any active status of the side carries this rule flag. */
   private flag(side: Side, key: 'holdsBlock' | 'immune' | 'ignoresRules' | 'autoplay' | 'handsTied'): boolean {
     return Object.keys(this.fighter(side).statuses).some((id) => STATUSES[id][key] && this.has(side, id));
@@ -955,7 +960,7 @@ export class Combat {
 
   /** Moves a belt card into the sleeve. If the slot is taken, the two cards swap places. */
   stash(uid: number, slot?: number): boolean {
-    if (this.result || this.intro > 0 || this.lowerHidden || this.flag('hero', 'handsTied')) return false;
+    if (this.result || this.intro > 0 || this.lowerHidden) return false;
     const beltIdx = this.beltIndex(uid);
     if (beltIdx < 0) return false;
     const target = slot ?? this.sleeve.indexOf(null);

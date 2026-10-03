@@ -1,66 +1,55 @@
 # TASKS
 
-- [x] rendi i pulsanti di debug (in home, mappa, combat) più grandi e allenati col resto
+- [x] aumenta rarità di tutte le carte cura (e nerfale)
 
-- [x] in menu debug da home: aggiungi opzione per aggiungere al mazzo 1 copia di tutte le carte (non speciali); e una opzione per partire con 500hp
+- [x] BUG: durante il combattimento non mi appare il caricamento sulle legendary anche se non ho il mana per pagarla
 
-- [x] nella schermata di reward carte, nascondi la barra con il portrait, salute e numero di carte. Così c'è più spazio per il Deck nella schermata. migliora l'animazione di quando si conferma un reward e aggiungi un suono (come per le altre stanze)
-- [x] le carte proposte nei reward, mettile sempre in ordine di rarità crescente
-- [x] dopo elite e boss il reward non dovrebbe essere uno "swap" di carta ma proprio "aggiungi" 1 carta
+- [x] nel combattimento con facilities manager: quando passi il mop vorrei un feedback apatico di vibrazione
 
-- [x] nelle porte (l'animazione intro ai combattimenti) il nome dovrebbe stare sopra all'immagine del nemico non sotto; vorrei anche che ci fosse un secondo in più di tempo per leggerla
+- [x] safety regs: aumenta tempo
 
-- [x] carta clear cache: dovrebbe aumentare il danno solo mentre è nella sleeve (al momento lo fa anche nella belt)
+- [x] enemy Dave: da troppe maledizioni
 
-- [x] quando ho troppi status durante il combattimento finiscono fuori schermo; lasciagli lo spazio per andare su una seconda riga invece
+- [x] pc load letter curse: dovrebbe costare 4 e stunnare per 3sec
 
-- [x] "low battery" indicatore status dovrebbe comportarsi da barra e riempirsi per mostrare quando si triggera (e dovrebbe anche fare il suono beep da smoke detector); così tutti gli altri indicatori con trigger
+- [x] nell'atto 1 le ricompense dovrebbero garantire 1 rara; dall'atto 2, le ricompense dovrebbero garantire almeno una epica, nell'atto 3 almeno 2 epiche (o superiori)
 
-- [x] per ogni stationery fanne una versione stilizzata da usare nello status indicator in combattimento
+- [x] da stordito dovresti poter comunque spostare le carte in sleeve
 
-- [x] cambiamo la logica: le stanze rivelate dovrebbero essere solo le prossime raggiungibili; e quando torni sulla mappa dopo un combattimento, vorrei una animazione migliore delle strade e stanze sbloccate
+- [x] you shall not pass: buffala
 
-- [x] cambia il glifo del doge in un fantasmino. Mentre hai dodge il tuo pupino nel portrait dovrebbe diventare semitrasparente
+- [x] quando generi i nodi di una mappa, non dovrebbe capitare che da un nodo ho due scelte uguali
 
-- [x] nella belt fai cadere le carte un po' prima rispetto ad ora e con una animazione migliore (tipo si inclinano e cadono veloci verso fuori schermo)
+- [x] carta Step 1: rendila leggendaria; da upgraded dovrebbe darti una versione upgraded della Step 2 (e così via sempre upgraded)
 
-- [x] nella animazione dell'intro di act 1, rimuovi la luna e migliora il sole all'alba
+- [x] nella schermata di victory, c'è questa scritta, trasformala in un banner più intrigante: "Management has memos for Warrior. Find them on the hire screen"
 
-- [x] vorrei fare che LA PRIMA VOLTA PER RUN che si perde uno scontro, si ha la possibilità di fare "beg to stay", che ti cura del tutto (e ti da dodge 5sec, strength +5 e +1 crystal e full mana refill) e ti fa continuare la battaglia (usabile solo 1 volta per nemico, prima del game over)
+- [x] inverti mosse e passive di night janitor e facilities manager
 
-> trova un glifo diverso per "quando questa carta lascia la belt", al momento son due simboli separati, io voglio un simbolo unico e intuitivo. Che proposte hai?
+- [x] l'effetto blackout dovrebbe mostrare nelle carte la zona dell'effetto nera con un glifo bianco di una lampadina rotta
 
-> il simbolo di exhaust e quello di volatile non mi piacciono molto, voglio cambiarli. che proposte hai?
+- [x] carta clear cache: dovrebbe costare 5
 
-- [x] nel menu di debug nella barra di ricerca oltre a cercare nella descrizione e nome cerca anche nelle keyword della carta.
+- [x] petri dish: dovrebbe costare 5 ed essere epica e dire "ogni attacco" non "ogni carta"
 
-- [x] rimuovi l'opzione "belt runs right to left" dalle settings
+- [x] mr burns empire: dovrebbe rubare tutto il block avversario
 
-- [x] rimuovi button "how to play" dalla pausa
+- [x] brown noser: dovrebbe essere 7 secondi, 14 da upgraded
 
-- [x] rimuovi quel margine magenta che hanno le carte leggendarie; dagli invece un effetto foil leggero ma bello
+- [x] quando c'è "autoplay" attivo come status, dovrebbe esserci un effetto blu sfumato animato a bordo schermo dove finisce la belt
 
-- [x] nell'handbook permetti lo swipe laterale per cambiare tab
+- [x] i reward dopo essere ordinati per rarità crescente dovrebbero essere ordinati per costo crescente
 
-- [x] rinomina "sabotaggio" in "Boris" e mettigli l'art di un pesciolino
+- [x] cambia passiva del necromante in "il nemico parte con 3 di veleno"
 
-- [x] vorrei che i dialoghi venissero "letti" (per finta) da una vocina in stile animal crossing o giochi simili, in cui i personaggi parlano per suoni
-
-- [x] nell'handbook aggiungi una sezione per lo storico delle run giocate; nell'handbook cominciano ad esserci tante sezioni, vedi tu come gestire le tab in alto ora che sono tante e non stanno in una riga
-
-- [x] nella carta "fika" metti come art una bandiera svedese
 
 # NEXT STEPS (ignore for now)
 
-> aggiungere uso della paga
+> aggiungere uso della paga (intra-run upgrades?)
 
-> URL. Il sito vive su liverstone- [ ] [ ]plus: per il lancio servono un nome coerente (itch.io/punchcard o un dominio) e un'immagine og aggiornata.
-
-- poi pensavo di semplificare i nemici, le mosse diventano solo attacchi normali (lunghi) e ogni tot atk normali uno speciale (corto e pesante), mentre tutte le altre mosse e cose speciali vengono spostate nelle passive (es. Passiva che ogni tot sec mescola una curse o altro); e dato che i nemici hanno tante passive e peculiarità, non ci stanno più a mostrarli con i box con testo prima del combattimento, quindi pensavo prima del combattimento di mostrare un fascicolo che li presenta in breve
+- pensavo di semplificare i nemici, le mosse diventano solo attacchi normali (lunghi) e ogni tot atk normali uno speciale (corto e pesante), mentre tutte le altre mosse e cose speciali vengono spostate nelle passive (es. Passiva che ogni tot sec mescola una curse o altro); e dato che i nemici hanno tante passive e peculiarità, non ci stanno più a mostrarli con i box con testo prima del combattimento, quindi pensavo prima del combattimento di mostrare un fascicolo che li presenta in breve
 
 # IDEE
-
-... Nemico con mossa di Stun + autoplay: ti stunna e la belt continua a scorrere con Autopilot forzato. Per 8s non puoi scegliere nulla, ma le carte che passano si giocano da sole. È una mossa di rischio/beneficio in base al tuo mazzo.
 
 ... dodge sui nemici: un nemico con mossa "No accountability" che schiva per Xs.
 

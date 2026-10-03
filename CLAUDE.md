@@ -104,6 +104,7 @@ tests/         combat, content, balance.sim (+ bot), balance.stats, e2e/
   `ROOMS` screen, `NODE_ICON`, `journey.node.*`/`journey.info.*` strings, and a picture: a sprite `room.<type>` in `art/rooms.ts` plus a `ROOM_SCENE` entry (its motion is a class in `rooms.css`) that the screen shows with `roomScene(type)`.
 - **Beg to stay**: the first time a run's hero would lose a fight (`CombatSetup.canBeg`, once per run through the saved `relicFlags[BEG_FLAG]`) the engine freezes (`Combat.begging`, event `beg`) and the UI asks; `Combat.beg(accept)` answers (`CONFIG.beg`). The balance bot never begs.
 - **Run history**: `meta.history` (`RunLog`, newest `CONFIG.historyMax`), written by `finishRun`/`abandonRun`; the handbook's History page lists it. The handbook turns pages with a sideways swipe (`PAGES` in `compendium.ts`).
+- **Rewards**: `rollRewards` deals each card from `rewardOdds`, but the first `rewardGuarantee(kind, act)` cards come from that rarity or above (a fight: a Rare in act 1, an Epic in act 2, two in act 3); the offer is sorted by rarity, then cost. **Map layouts** are dealt again (`dealLayout`, `run.ts`) until no room offers two choices of the same kind.
 - **The reward on offer is saved** (`RunState.reward`, set by `offerReward` after a fight, dropped by `nextNode`): Continue reopens the reward screen with the same cards instead of the map.
 - **Rendering is diff-based**: `setText`/`setHtml`/`toggle` write only on change; status chips rebuild only when the set changes.
 
@@ -134,7 +135,7 @@ tests/         combat, content, balance.sim (+ bot), balance.stats, e2e/
 
 ### Act 3 rules (night shift)
 
-New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHits`), `assemblyLine` (`canPlay`), `overtimeCreep`, `lowBattery`, `machineLearning`, `pressure`, `boardroom`, `understudy`, `vipTreatment` (`critOnDrag`: the VIP Client turns an attack the hero drags onto the stage critical, a tap doesn't: `Combat.playCard(uid, 'tap' | 'drag' | 'auto')`; `handsTied` on Stun: no play, stash or ability by hand, while a card slipping off still plays itself under Autopilot: the Factory Siren's song puts both on you); their numbers are constants at the top of the file. `music.ts` has `combat3`/`map3` for the act (act 2's map is the sunny `map2`); its clock runs past midnight (`shift: [22, 30]`).
+New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHits`), `assemblyLine` (`canPlay`), `overtimeCreep`, `lowBattery`, `machineLearning`, `pressure`, `boardroom`, `understudy`, `vipTreatment` (`critOnDrag`: the VIP Client turns an attack the hero drags onto the stage critical, a tap doesn't: `Combat.playCard(uid, 'tap' | 'drag' | 'auto')`; `handsTied` on Stun: no play or ability by hand, stashing still works, while a card slipping off still plays itself under Autopilot: the Factory Siren's song puts both on you); their numbers are constants at the top of the file. `music.ts` has `combat3`/`map3` for the act (act 2's map is the sunny `map2`); its clock runs past midnight (`shift: [22, 30]`).
 
 ### Relics
 

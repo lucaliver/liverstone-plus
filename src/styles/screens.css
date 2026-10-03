@@ -587,6 +587,9 @@
   animation: nudge 0.8s steps(2) infinite;
 }
 .new-hire .go .pico { transform: scaleX(-1); }
+.new-hire.memo-note { background: var(--paper); box-shadow: 6px 6px 0 var(--b); }
+.new-hire.memo-note:active { box-shadow: 2px 2px 0 var(--b); }
+.new-hire .lead { flex: none; font-size: 40px; --ink2: var(--p); }
 .new-hire .riso { flex: none; width: 52px; height: 52px; animation: bob 0.8s steps(2) infinite; }
 .new-hire b { display: block; font-family: var(--font-display); font-size: 15px; text-transform: uppercase; }
-.new-hire span { font-size: 15px; font-weight: 600; }
+.new-hire span { font-size: 15px; font-weight: 600; white-space: pre-line; }

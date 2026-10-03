@@ -251,17 +251,16 @@ const defs: EnemyDef[] = [
 
   // ------------------------------------------------------------- Act 2
   {
-    // Never fixes anything: rust builds up on the belt until it crawls, and then stops. The mop beside him scrubs it off.
     id: 'facilitiesManager',
     act: 2,
     tier: 'normal',
     hp: 90,
     art: 'facilitiesManager',
-    main: atk('clipboardSmack', 7, 6),
-    every: 2,
-    specials: [atk('wetFloor', 14, 9, { intent: 'charge' }), { id: 'submitATicket', intent: 'buff', windup: 5, status: [gainStrength] }],
-    start: [{ id: 'deferredMaintenance' }],
-    ruleBreaker: true,
+    main: atk('wetMop', 3, 3),
+    every: 6,
+    specials: [{ id: 'fuseBox', intent: 'curse', windup: 6, curse: [{ id: 'pcLoadLetter', n: 1, to: 'belt' }], status: [gainStrength] }],
+    // The lights go out on their own now and then: no move to read for it.
+    start: [{ id: 'flickeringLights' }],
   },
   {
     // Everything in its lane: you have to alternate the rows of the belt.
@@ -293,8 +292,6 @@ const defs: EnemyDef[] = [
         intent: 'charge',
         status: [gainStrength],
         curse: [
-          { id: 'godfathersFavour', n: 1, to: 'draw' },
-          { id: 'officePlant', n: 1, to: 'draw' },
           { id: 'pcLoadLetter', n: 1, to: 'draw' },
           { id: 'writeUp', n: 1, to: 'draw' },
         ],
@@ -374,16 +371,17 @@ const defs: EnemyDef[] = [
     start: [{ id: 'finePrint', v: 2 }],
   },
   {
+    // Never fixes anything: rust builds up on the belt until it crawls, and then stops. The mop beside him scrubs it off.
     id: 'nightJanitor',
     act: 2,
     tier: 'normal',
     hp: 90,
     art: 'nightJanitor',
-    main: atk('wetMop', 3, 3),
-    every: 6,
-    specials: [{ id: 'fuseBox', intent: 'curse', windup: 6, curse: [{ id: 'pcLoadLetter', n: 1, to: 'belt' }], status: [gainStrength] }],
-    // The lights go out on their own now and then: no move to read for it.
-    start: [{ id: 'flickeringLights' }],
+    main: atk('clipboardSmack', 7, 6),
+    every: 2,
+    specials: [atk('wetFloor', 14, 9, { intent: 'charge' }), { id: 'submitATicket', intent: 'buff', windup: 5, status: [gainStrength] }],
+    start: [{ id: 'deferredMaintenance' }],
+    ruleBreaker: true,
   },
   {
     // The office chair nobody claims: spins, sinks, and swears the RGB strip adds performance.

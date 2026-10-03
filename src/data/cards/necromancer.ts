@@ -50,10 +50,10 @@ export const necromancerCards: CardDef[] = [
     face: '{dmg:0}|{heal:1}',
     cls: 'necromancer',
     type: 'attack',
-    rarity: 'common',
+    rarity: 'rare',
     cost: 2,
-    vals: [4, 3],
-    upVals: [6, 4],
+    vals: [4, 2],
+    upVals: [6, 3],
     art: 'bloodMoney',
     play: (c, v) => {
       c.hit(v[0], { kind: 'arcane' });
@@ -79,7 +79,7 @@ export const necromancerCards: CardDef[] = [
     face: '{dmg:0}|{heal:1}',
     cls: 'necromancer',
     type: 'attack',
-    rarity: 'common',
+    rarity: 'rare',
     cost: 0,
     vals: [3, 1],
     upVals: [5, 2],
@@ -229,7 +229,7 @@ export const necromancerCards: CardDef[] = [
     face: '{heal}={poison}',
     cls: 'necromancer',
     type: 'defense',
-    rarity: 'rare',
+    rarity: 'epic',
     cost: 3,
     upCost: 2,
     vals: [],
@@ -259,10 +259,10 @@ export const necromancerCards: CardDef[] = [
     face: '{weak:0}|{heal:1}',
     cls: 'necromancer',
     type: 'defense',
-    rarity: 'common',
+    rarity: 'rare',
     cost: 2,
-    vals: [3, 4],
-    upVals: [4, 6],
+    vals: [3, 3],
+    upVals: [4, 5],
     art: 'smiley',
     play: (c, v) => {
       c.applyStatus('enemy', 'weak', 1, v[0]);
@@ -370,8 +370,8 @@ export const necromancerCards: CardDef[] = [
     rarity: 'legendary',
     cost: 3,
     upCost: 2,
-    vals: [5],
-    upVals: [6],
+    vals: [4],
+    upVals: [5],
     keywords: ['exhaust'],
     art: 'healthPlan',
     play: (c, v) => c.applyStatus('hero', 'regen', v[0]),
@@ -388,21 +388,21 @@ export const necromancerCards: CardDef[] = [
     art: 'gasMask',
     play: (c) => c.gainBlock('hero', c.stacks('enemy', 'poison')),
   },
-  // Sleeve card: while it waits there, every card you play goes in the dish (more Poison on the card)
+  // Sleeve card: while it waits there, every attack you play goes in the dish (more Poison on the card)
   {
     id: 'petriDish',
     face: '{poison:0}|{?sleeve}{grow:1}',
     cls: 'necromancer',
     type: 'attack',
-    rarity: 'rare',
-    cost: 3,
+    rarity: 'epic',
+    cost: 5,
     vals: [2, 1],
     upVals: [4, 1],
     art: 'petriDish',
     bonusIdx: 0,
     inSleeve: {
-      onCardPlayed: (_c, v, card) => {
-        card.bonus += v[1];
+      onCardPlayed: (_c, v, card, played) => {
+        if (played.type === 'attack') card.bonus += v[1];
       },
     },
     play: (c, v, card) => {

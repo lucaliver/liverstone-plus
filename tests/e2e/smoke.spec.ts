@@ -575,10 +575,10 @@ test("the Sick Coworker's virus shows on the cards it infects and goes away when
   expect(problems).toEqual([]);
 });
 
-test("the Facilities Manager's rust spots slow the belt, and only dragging the mop over a spot scrubs it off", async ({ page }) => {
+test("the Night Janitor's rust spots slow the belt, and only dragging the mop over a spot scrubs it off", async ({ page }) => {
   const problems = await freshGame(page);
   await page.getByRole('button', { name: /debug/i }).click();
-  await page.locator('.debug-foe[data-enemy="facilitiesManager"]').click();
+  await page.locator('.debug-foe[data-enemy="nightJanitor"]').click();
   await expect(page.locator('.combat')).toBeVisible();
   const start = page.locator('.js-start');
   if (await start.count()) await start.click();

@@ -5,7 +5,7 @@ import { CARD_LIST, CARDS, RARITY_ORDER, cardCostOf, cardKeywordsOf, rewardPool 
 import { PERKS } from '../data/perks';
 import { RELIC_LIST, RELICS, relicSum } from '../data/relics';
 import { ACT_DEFS, actDef } from '../data/acts';
-import { CONFIG, REWARD_MIN_LEGENDARY, type RewardKind, rewardOdds, rewardUpgradeChance } from '../data/config';
+import { CONFIG, type RewardKind, rewardGuarantee, rewardOdds, rewardUpgradeChance } from '../data/config';
 import { MODIFIERS, resolveMods } from '../data/modifiers';
 import { ENEMIES, enemiesFor, firstRunEnemy } from '../data/enemies';
 import { HERO_LIST, HEROES, starterCards } from '../data/heroes';
@@ -81,7 +81,7 @@ const SAVE_KEY = 'run';
  */
 const LANES: Slot[][] = [
   ['fight', 'special', 'rest', 'fight', 'elite', 'special', 'fight', 'rest'],
-  ['fight', 'promotion', 'special', 'fight', 'rest', 'special', 'fight', 'rest'],
+  ['promotion', 'fight', 'special', 'fight', 'rest', 'special', 'fight', 'rest'],
 ];
 /** A `special` slot of a lane becomes one of these when the act is built; one act never deals the same room twice. */
 export const SPECIALS: NodeType[] = ['copy', 'tailor', 'lostFound', 'vending', 'crossTraining'];
@@ -89,6 +89,8 @@ export const SPECIALS: NodeType[] = ['copy', 'tailor', 'lostFound', 'vending', '
 const ACT1_OPENING = 3;
 /** Links between the lanes per act: diagonal (to the other lane one floor up) or flat (across the same floor, both ways). */
 const LINKS = 2;
+/** Times an act's layout is dealt again looking for one with no two equal choices. */
+const MAX_DEALS = 200;
 export const ACTS = ACT_DEFS.length;
 
 /** Seed of the very first run: its map is always the same, with the enemies in order of difficulty. */
@@ -145,6 +147,84 @@ export function newRun(hero: HeroId, seed: number, scripted = false, mods: strin
   };
 }
 
+/** A room of a lane: its floor (row) and side. */
+type Cell = [row: number, side: number];
+/** A one-way road between two rooms of the lanes. */
+type Road = [from: Cell, to: Cell];
+
+/**
+ * The lanes of an act and the roads between their rooms: both lanes' floors, a few one-way links between the lanes, and now and then a cut road.
+ * Dealt again until no room offers two choices of the same kind (a special slot is always a different room from any other).
+ */
+function dealLayout(rng: Rng, opening: number, scripted: boolean): { lanes: Slot[][]; roads: Road[] } {
+  const deal = (): { lanes: Slot[][]; roads: Road[] } => {
+    const lanes = scripted ? FIRST_RUN_LANES : rng.shuffle(LANES.map((l) => l.slice(opening - 1)));
+    if (!scripted)
+      for (let i = 0; i < lanes[0].length - 1; i++) if (rng.next() < CONFIG.laneSwap) [lanes[0][i], lanes[1][i]] = [lanes[1][i], lanes[0][i]];
+    const n = lanes[0].length;
+    const roads: Road[] = [];
+    for (let i = 1; i < n; i++)
+      for (const side of [0, 1])
+        roads.push([
+          [i - 1, side],
+          [i, side],
+        ]);
+    // A few one-way links between the lanes, never on neighbouring floors, so no two lines ever cross or touch.
+    const floors: number[] = [];
+    for (const i of rng.shuffle([...Array(n - 1).keys()])) if (floors.length < LINKS && floors.every((f) => Math.abs(f - i) > 1)) floors.push(i);
+    for (const i of floors) {
+      const side = rng.next() < 0.5 ? 0 : 1;
+      if (rng.next() < 0.5)
+        roads.push([
+          [i, side],
+          [i + 1, 1 - side],
+        ]);
+      else {
+        // Flat: across the floor either way (a node already visited can't be entered again).
+        roads.push(
+          [
+            [i, side],
+            [i, 1 - side],
+          ],
+          [
+            [i, 1 - side],
+            [i, side],
+          ],
+        );
+      }
+    }
+    // Now and then one road between two floors is cut: its lane is crossed over, down the other lane and back (the long way round).
+    // Both crossings are one-way, so no room is ever a dead end.
+    if (!scripted && rng.next() < CONFIG.roadCut) {
+      const i = rng.shuffle([...Array(n - 1).keys()]).find((f) => floors.every((l) => Math.abs(l - f) > 1));
+      if (i !== undefined) {
+        const side = rng.next() < 0.5 ? 0 : 1;
+        const cut = roads.findIndex(([f, t]) => f[0] === i && f[1] === side && t[0] === i + 1 && t[1] === side);
+        roads.splice(cut, 1);
+        roads.push(
+          [
+            [i, side],
+            [i, 1 - side],
+          ],
+          [
+            [i + 1, 1 - side],
+            [i + 1, side],
+          ],
+        );
+      }
+    }
+    return { lanes, roads };
+  };
+  const clashes = ({ lanes, roads }: { lanes: Slot[][]; roads: Road[] }): boolean => {
+    const same = (a: Cell, b: Cell): boolean => lanes[a[1]][a[0]] === lanes[b[1]][b[0]] && lanes[a[1]][a[0]] !== 'special';
+    if (same([0, 0], [0, 1])) return true;
+    return roads.some(([from, to], i) => roads.some(([f2, t2], j) => j > i && f2[0] === from[0] && f2[1] === from[1] && same(to, t2)));
+  };
+  let layout = deal();
+  for (let tries = 0; tries < MAX_DEALS && clashes(layout); tries++) layout = deal();
+  return layout;
+}
+
 /**
  * One act appended to `nodes`: a shared road (one fight; three floors in act 1, four in the very first run), two lanes linked a couple of times, and the
  * boss where they meet. `last` are the nodes of the act before (they lead to its first fight). Returns the boss.
@@ -174,9 +254,7 @@ function addAct(nodes: RunNode[], rng: Rng, act: number, last: RunNode[], script
     return node;
   };
   const opening = scripted ? FIRST_RUN_ROAD.length : act === 1 ? ACT1_OPENING : 1;
-  const lanes = scripted ? FIRST_RUN_LANES : rng.shuffle(LANES.map((l) => l.slice(opening - 1)));
-  if (!scripted)
-    for (let i = 0; i < lanes[0].length - 1; i++) if (rng.next() < CONFIG.laneSwap) [lanes[0][i], lanes[1][i]] = [lanes[1][i], lanes[0][i]];
+  const { lanes, roads } = dealLayout(rng, opening, scripted);
 
   // The shared road: one fight per floor, then the two lanes. The very first run opens on its orientation fight.
   let road = add(1, 0.5, 'fight', act === 1 && scripted ? firstRunEnemy()?.id : undefined);
@@ -188,33 +266,7 @@ function addAct(nodes: RunNode[], rng: Rng, act: number, last: RunNode[], script
   }
   const rows = lanes[0].map((_, i) => [add(i + opening + 1, 0, lanes[0][i]), add(i + opening + 1, 1, lanes[1][i])]);
   road.next.push(rows[0][0].id, rows[0][1].id);
-  for (let i = 1; i < rows.length; i++) {
-    for (const side of [0, 1]) rows[i - 1][side].next.push(rows[i][side].id);
-  }
-  // A few one-way links between the lanes, never on neighbouring floors, so no two lines ever cross or touch.
-  const floors: number[] = [];
-  for (const i of rng.shuffle([...Array(rows.length - 1).keys()]))
-    if (floors.length < LINKS && floors.every((f) => Math.abs(f - i) > 1)) floors.push(i);
-  for (const i of floors) {
-    const side = rng.next() < 0.5 ? 0 : 1;
-    if (rng.next() < 0.5) rows[i][side].next.push(rows[i + 1][1 - side].id);
-    else {
-      // Flat: across the floor either way (a node already visited can't be entered again).
-      rows[i][side].next.push(rows[i][1 - side].id);
-      rows[i][1 - side].next.push(rows[i][side].id);
-    }
-  }
-  // Now and then one road between two floors is cut: its lane is crossed over, down the other lane and back (the long way round).
-  // Both crossings are one-way, so no room is ever a dead end.
-  if (!scripted && rng.next() < CONFIG.roadCut) {
-    const i = rng.shuffle([...Array(rows.length - 1).keys()]).find((f) => floors.every((l) => Math.abs(l - f) > 1));
-    if (i !== undefined) {
-      const side = rng.next() < 0.5 ? 0 : 1;
-      rows[i][side].next = rows[i][side].next.filter((id) => id !== rows[i + 1][side].id);
-      rows[i][side].next.push(rows[i][1 - side].id);
-      rows[i + 1][1 - side].next.push(rows[i + 1][side].id);
-    }
-  }
+  for (const [[fr, fs], [tr, ts]] of roads) rows[fr][fs].next.push(rows[tr][ts].id);
   const boss = add(lanes[0].length + opening + 1, 0.5, 'boss');
   for (const n of rows[rows.length - 1]) n.next.push(boss.id);
   return [boss];
@@ -326,9 +378,13 @@ export function rollRewards(run: RunState, kind: RewardKind): RewardOffer[] {
   }
   const rng = rngOf(run);
   const picks: CardDef[] = [];
-  const odds = rewardOdds(kind, currentNode(run).act);
+  const act = currentNode(run).act;
+  const odds = rewardOdds(kind, act);
+  const { rarity: floor, count } = rewardGuarantee(kind, act);
+  // The first cards dealt follow the odds of the guaranteed rarity and above.
+  const atLeast = odds.filter(([r]) => RARITY_ORDER.indexOf(r) >= RARITY_ORDER.indexOf(floor));
   for (let tries = 0; picks.length < rewardChoices(run) && tries < 80; tries++) {
-    const rarity = picks.length < REWARD_MIN_LEGENDARY[kind] ? 'legendary' : rng.weighted(odds, ([, w]) => w)[0];
+    const rarity = rng.weighted(picks.length < count ? atLeast : odds, ([, w]) => w)[0];
     const pool = rewardPool(run.hero, rarity).filter((c) => !picks.includes(c));
     if (pool.length) picks.push(rng.pick(pool));
   }
@@ -338,9 +394,11 @@ export function rollRewards(run: RunState, kind: RewardKind): RewardOffer[] {
   return byRarity(picks.map((def, i) => ({ def, up: i === upgraded })));
 }
 
-/** Offers always come in rising rarity (a stable sort: the dealt order breaks ties). */
-const byRarity = (offers: RewardOffer[]): RewardOffer[] =>
-  offers.sort((a, b) => RARITY_ORDER.indexOf(a.def.rarity) - RARITY_ORDER.indexOf(b.def.rarity));
+/** Offers always come in rising rarity, then rising cost (a stable sort: the dealt order breaks ties). */
+const byRarity = (offers: RewardOffer[]): RewardOffer[] => {
+  const cost = (o: RewardOffer): number => cardCostOf({ uid: 0, id: o.def.id, up: o.up });
+  return offers.sort((a, b) => RARITY_ORDER.indexOf(a.def.rarity) - RARITY_ORDER.indexOf(b.def.rarity) || cost(a) - cost(b));
+};
 
 /** Elites and act bosses add a card to the deck; a normal fight swaps one. */
 export const rewardAdds = (kind: RewardKind): boolean => kind !== 'fight';

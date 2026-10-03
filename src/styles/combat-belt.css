@@ -65,6 +65,28 @@
   0%, 92%, 100% { opacity: 1; }
   94%, 98% { opacity: 0; }
 }
+.belt-auto {
+  /* Autopilot: blue bands fading out from the exit, stepped (no gradient), pulsing in two steps */
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+  width: 24%;
+  pointer-events: none;
+  animation: auto-pulse 0.9s steps(2) infinite;
+}
+.belt-auto i { flex: 1; background: var(--b); }
+.belt-auto i:nth-child(1) { opacity: 0.55; }
+.belt-auto i:nth-child(2) { opacity: 0.36; }
+.belt-auto i:nth-child(3) { opacity: 0.2; }
+.belt-auto i:nth-child(4) { opacity: 0.08; }
+.belt.autoplay .belt-auto { display: flex; }
+.belt.ltr .belt-auto { left: auto; right: 0; flex-direction: row-reverse; }
+@keyframes auto-pulse {
+  50% { opacity: 0.55; }
+}
 .belt-alarm {
   /* a flat red wash over the stream, stronger as an enemy's countdown nears its end (`--alarm`, 0 to 1, set in steps) */
   position: absolute;
@@ -424,9 +446,18 @@
 /* Inflation: the cost went up for this fight */
 .card .c-cost.taxed { color: var(--paper); background: var(--red); }
 
-/* Blackout: the cards keep their art, name and cost, but their effect can't be read */
-.combat.blackout .belt-cards .card :is(.c-face, .c-tags, .rule-badge),
-.combat.blackout .sleeve .card :is(.c-face, .c-tags, .rule-badge) { visibility: hidden; }
+/* Blackout: the cards keep their art, name and cost, but their effect zone goes black with a broken bulb */
+.c-dark {
+  display: none;
+  position: absolute;
+  inset: 0;
+  place-items: center;
+  background: var(--k);
+}
+.c-dark .pico { font-size: 22cqw; color: var(--paper); --ink2: transparent; }
+.combat.blackout .card .c-dark { display: grid; }
+.combat.blackout .belt-cards .card :is(.c-face > :not(.c-dark), .c-tags, .rule-badge),
+.combat.blackout .sleeve .card :is(.c-face > :not(.c-dark), .c-tags, .rule-badge) { visibility: hidden; }
 
 /* a belt row an enemy keeps shut: barred with hazard stripes; when it opens, the shutter grinds slowly off towards the
    exit (the stripes crawl as it goes), so the row's first cards show first */

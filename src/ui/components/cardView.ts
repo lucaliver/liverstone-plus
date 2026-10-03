@@ -62,7 +62,7 @@ export const GLYPHS: Record<string, { icon: string; unit?: string; sign?: string
   undo: { icon: 'undo' },
   auto: { icon: 'autopilot', unit: 's' },
   pile: { icon: 'pile' },
-  snatch: { icon: 'snatch', unit: '%' },
+  snatch: { icon: 'snatch' },
   pin: { icon: 'pushpin' },
   sweep: { icon: 'windKey', sign: '+' },
   manaRegen: { icon: 'crystalUp', unit: 's' },
@@ -133,7 +133,8 @@ export function cardFace(card: CardInst & { bonus?: number }, combat?: Combat | 
     );
     return `<div class="gl">${html}</div>`;
   });
-  return lines.join('');
+  // In a fight the face also holds the blackout cover (the HUD shows it while the lights are out).
+  return lines.join('') + (combat ? `<div class="c-dark">${icon('bulbOff')}</div>` : '');
 }
 
 /** Keywords that are not statuses but still have a colour: Block is teal. */

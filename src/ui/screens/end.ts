@@ -81,7 +81,18 @@ export function endScreen(run: RunState, won: boolean, end: RunEnd, onAgain: (he
         }),
       ),
       h('p', { class: 'sub' }, won ? t('end.victoryDesc') : t('end.defeatDesc', { n: node.floor })),
-      won && node.act === ACTS ? h('p', { class: 'sub' }, t('end.memosOpen', { hero: t(`hero.${run.hero}.name`) })) : null,
+      // Management's reply to a full day: tapping it opens the hire screen on this hero, where the memos are pinned up.
+      won && node.act === ACTS
+        ? h('button', {
+            class: 'new-hire memo-note',
+            html: `<i class="lead">${icon('clipboard')}</i><div><b>${t('end.memosTitle')}</b><span>${t('end.memosOpen', { hero: t(`hero.${run.hero}.name`) })}</span></div><i class="go">${icon('left')}</i>`,
+            onclick: () => {
+              sfx('button');
+              haptic('tap');
+              onAgain(run.hero);
+            },
+          })
+        : null,
       // The run's stats as a dot-matrix payslip: all that work, and the net pay is still zero.
       h(
         'div',

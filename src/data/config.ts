@@ -161,8 +161,19 @@ const REWARD_UPGRADE_CHANCE = [0.1, 0.3, 0.6];
 
 export const rewardUpgradeChance = (act: number): number => REWARD_UPGRADE_CHANCE[Math.min(act, REWARD_UPGRADE_CHANCE.length) - 1];
 
-/** Legendary cards an offer always holds (the rest of it follows `rewardOdds`). */
-export const REWARD_MIN_LEGENDARY: Record<RewardKind, number> = { fight: 0, elite: 2, boss: 0 };
+/** Cards an offer always holds of at least a rarity, per act (later acts use the last); the rest of it follows `rewardOdds`. */
+const REWARD_GUARANTEE: Record<RewardKind, { rarity: Rarity; count: number }[]> = {
+  fight: [
+    { rarity: 'rare', count: 1 },
+    { rarity: 'epic', count: 1 },
+    { rarity: 'epic', count: 2 },
+  ],
+  elite: [{ rarity: 'legendary', count: 2 }],
+  boss: [{ rarity: 'legendary', count: 0 }],
+};
+
+export const rewardGuarantee = (kind: RewardKind, act: number): { rarity: Rarity; count: number } =>
+  REWARD_GUARANTEE[kind][Math.min(act, REWARD_GUARANTEE[kind].length) - 1];
 
 /** Where cards enter (0) and expire, in belt-distance units. */
 /** The per-run flag (`CombatSetup.relicFlags`) set once the hero has begged to stay. */

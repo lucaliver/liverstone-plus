@@ -98,6 +98,7 @@ function markup(run: RunState, combat: Combat): string {
       <div class="belt-track"></div>
       <div class="belt-alarm"></div>
       <div class="belt-rust"></div>
+      <div class="belt-auto" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       <div class="maw-eyes" aria-hidden="true"><i></i><i></i></div>
       <div class="belt-cards"></div>
       <!-- the IT guy's window: it covers the whole belt (shown by the HUD while the engine has one up) -->

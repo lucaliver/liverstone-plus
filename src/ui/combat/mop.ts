@@ -1,4 +1,5 @@
 import { sfx } from '../../audio/sfx';
+import { haptic } from '../fx/fx';
 import type { CombatView } from './view';
 
 /** Grime a stroke of the mop as long as the belt is wide takes off a rust spot under it (a spot is 1). */
@@ -56,7 +57,10 @@ export function bindMop(v: CombatView): void {
       combat.scrubRust(Number((spot as HTMLElement).dataset.id), amount);
       scrubbed = true;
     }
-    if (scrubbed) sfx('scrub');
+    if (scrubbed) {
+      sfx('scrub');
+      haptic('scrub');
+    }
   });
   v.el.addEventListener('pointerup', drop);
   v.el.addEventListener('pointercancel', drop);

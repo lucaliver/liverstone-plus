@@ -444,7 +444,8 @@ const it: Record<EnKey, string> = {
   'end.defeat': 'Licenziato',
   'end.defeatDesc': 'Portato via in barella dal piano {n}.',
   'end.victory': 'Turno finito',
-  'end.memosOpen': 'La direzione ha delle circolari per {hero}. Le trovi nella schermata di assunzione.',
+  'end.memosTitle': 'Riservata',
+  'end.memosOpen': 'La direzione ha lasciato delle circolari per {hero}.\nRenderanno il prossimo turno più duro. Tocca per leggerle.',
   'end.victoryDesc': "Il Consiglio è sciolto. Il sole è alto e la linea è silenziosa. Timbra l'uscita e torna a casa. Stessa ora domani.",
   'end.slip.title': 'Busta paga',
   'end.newRecord': 'Nuovo record',
@@ -931,7 +932,7 @@ const it: Record<EnKey, string> = {
   'card.brownNoser.name': 'Leccapiedi',
   'card.brownNoser.desc': 'Il tuo mana si ricarica il {$brownPct}% più in fretta per {0}s.',
   'card.mrBurnsEmpire.name': 'Signor Burns',
-  'card.mrBurnsEmpire.desc': 'Ottieni {0} di [block] e prendi per te il {1}% del [block] del nemico.',
+  'card.mrBurnsEmpire.desc': 'Ottieni {0} di [block] e prendi per te tutto il [block] del nemico.',
   'card.teamChange.name': 'Cambio di Squadra',
   'card.teamChange.desc':
     "Ogni carta sul nastro resta bloccata dov'è: ci rimane finché non la giochi. Le nuove carte continuano a scorrerle accanto.",
@@ -1067,7 +1068,7 @@ const it: Record<EnKey, string> = {
   'card.hazmatSuit.desc': 'Ottieni [block] pari al [poison] del nemico.',
   'card.petriDish.name': 'Piastra di Petri',
   'card.petriDish.desc':
-    'Applica {0} di [poison]. Mentre aspetta nella manica, questa carta ottiene +{1} di [poison] per ogni carta che giochi (si azzera quando la giochi).',
+    'Applica {0} di [poison]. Mentre aspetta nella manica, questa carta ottiene +{1} di [poison] per ogni attacco che giochi (si azzera quando la giochi).',
   'card.sisyphus.name': 'Sisifo',
   'card.sisyphus.desc': 'Rimescola {0} carte esaurite a caso nel tuo mazzo.',
 
