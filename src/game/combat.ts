@@ -295,7 +295,7 @@ export class Combat {
   }
 
   /** Whether any active status of the side carries this rule flag. */
-  private flag(side: Side, key: 'holdsBlock' | 'immune' | 'ignoresRules' | 'autoplay'): boolean {
+  private flag(side: Side, key: 'holdsBlock' | 'immune' | 'ignoresRules' | 'autoplay' | 'handsTied'): boolean {
     return Object.keys(this.fighter(side).statuses).some((id) => STATUSES[id][key] && this.has(side, id));
   }
 
@@ -375,12 +375,14 @@ export class Combat {
   }
 
   /** The status whose rule forbids playing this card now (an enemy passive, a stun…) and why, or null. */
-  ruleBlock(card: CardInst): { status: string; key: TKey } | null {
+  ruleBlock(card: CardInst, auto = false): { status: string; key: TKey } | null {
     // Root access (sudo): no rule applies.
     if (this.flag('hero', 'ignoresRules')) return null;
     const def = CARDS[card.id];
     for (const side of ['hero', 'enemy'] as const) {
       for (const id of Object.keys(this.fighter(side).statuses)) {
+        // A card playing itself (autopilot) isn't stopped by what ties the hero's hands.
+        if (auto && STATUSES[id].handsTied) continue;
         const key = this.has(side, id) ? STATUSES[id].canPlay?.(this, side, def, card.uid) : null;
         if (key) return { status: id, key };
       }
@@ -758,7 +760,7 @@ export class Combat {
       if (b.card.uid === this.dragged) b.pos = Math.min(b.pos, EXPIRE_POS - move);
       if (b.pos < EXPIRE_POS) continue;
       // On autopilot, a card slipping off plays itself for free if it can (rules…); otherwise it's lost as usual.
-      if (this.flag('hero', 'autoplay') && this.playCard(b.card.uid, true)) continue;
+      if (this.flag('hero', 'autoplay') && this.playCard(b.card.uid, 'auto')) continue;
       this.belt.splice(i, 1);
       this.expire(b.card);
       if (this.result) return;
@@ -836,8 +838,9 @@ export class Combat {
 
   // --------------------------------------------------------- player actions
 
-  /** Plays a card from the belt or sleeve (`dragged`: the hero dragged it onto the stage instead of tapping it). Returns false if it couldn't be played. */
-  playCard(uid: number, free = false, dragged = false): boolean {
+  /** Plays a card from the belt or sleeve. `how`: tapped, dragged onto the stage, or played itself for free (autopilot). Returns false if it couldn't be played. */
+  playCard(uid: number, how: 'tap' | 'drag' | 'auto' = 'tap'): boolean {
+    const free = how === 'auto';
     if (this.result || this.intro > 0) return false;
     const beltIdx = this.beltIndex(uid);
     const sleeveIdx = this.sleeveIndex(uid);
@@ -861,7 +864,7 @@ export class Combat {
       this.events.emit({ type: 'text', target: 'hero', key: 'combat.pending', tone: 'neutral' });
       return false;
     }
-    const rule = this.ruleBlock(card);
+    const rule = this.ruleBlock(card, free);
     if (rule) {
       this.events.emit({ type: 'text', target: 'hero', key: rule.key, tone: 'bad' });
       return false;
@@ -870,7 +873,7 @@ export class Combat {
       this.events.emit({ type: 'cantAfford', card });
       return false;
     }
-    if (dragged && CARDS[card.id].type === 'attack' && this.dragCrits()) this.applyStatus('hero', 'crit', 1);
+    if (how === 'drag' && CARDS[card.id].type === 'attack' && this.dragCrits()) this.applyStatus('hero', 'crit', 1);
     this.resolvePlay(card, free);
     return true;
   }
@@ -952,7 +955,7 @@ export class Combat {
 
   /** Moves a belt card into the sleeve. If the slot is taken, the two cards swap places. */
   stash(uid: number, slot?: number): boolean {
-    if (this.result || this.intro > 0 || this.lowerHidden) return false;
+    if (this.result || this.intro > 0 || this.lowerHidden || this.flag('hero', 'handsTied')) return false;
     const beltIdx = this.beltIndex(uid);
     if (beltIdx < 0) return false;
     const target = slot ?? this.sleeve.indexOf(null);
@@ -977,7 +980,7 @@ export class Combat {
   }
 
   abilityReady(): boolean {
-    return !this.result && this.intro <= 0 && !this.lowerHidden && !this.has('hero', 'stun') && this.hero.mana >= this.abilityCost();
+    return !this.result && this.intro <= 0 && !this.lowerHidden && !this.flag('hero', 'handsTied') && this.hero.mana >= this.abilityCost();
   }
 
   useAbility(): boolean {

@@ -134,7 +134,7 @@ tests/         combat, content, balance.sim (+ bot), balance.stats, e2e/
 
 ### Act 3 rules (night shift)
 
-New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHits`), `assemblyLine` (`canPlay`), `overtimeCreep`, `lowBattery`, `machineLearning`, `pressure`, `boardroom`, `understudy`, `vipTreatment` (`critOnDrag`: the VIP Client turns an attack the hero drags onto the stage critical, a tap doesn't: `Combat.playCard(uid, free, dragged)`); their numbers are constants at the top of the file. `music.ts` has `combat3`/`map3` for the act (act 2's map is the sunny `map2`); its clock runs past midnight (`shift: [22, 30]`).
+New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHits`), `assemblyLine` (`canPlay`), `overtimeCreep`, `lowBattery`, `machineLearning`, `pressure`, `boardroom`, `understudy`, `vipTreatment` (`critOnDrag`: the VIP Client turns an attack the hero drags onto the stage critical, a tap doesn't: `Combat.playCard(uid, 'tap' | 'drag' | 'auto')`; `handsTied` on Stun: no play, stash or ability by hand, while a card slipping off still plays itself under Autopilot: the Factory Siren's song puts both on you); their numbers are constants at the top of the file. `music.ts` has `combat3`/`map3` for the act (act 2's map is the sunny `map2`); its clock runs past midnight (`shift: [22, 30]`).
 
 ### Relics
 

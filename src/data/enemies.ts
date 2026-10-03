@@ -5,6 +5,9 @@ const atk = (id: string, dmg: number, windup: number, extra: Partial<MoveDef> = 
 const gainStrength = { id: 'strength', v: 1, target: 'enemy' } as const;
 const ramp: Partial<MoveDef> = { status: [gainStrength] };
 
+/** Seconds the Factory Siren's song holds you (stunned, on autopilot). */
+const SIREN_SONG = 8;
+
 /** What the half-HP moves bring (their texts quote these, see `data/values.ts`). */
 export const HALF = { paperCuts: 2, securityBlock: 30, slavesStall: 8, complianceSlow: 20 } as const;
 
@@ -669,17 +672,22 @@ const defs: EnemyDef[] = [
     start: [{ id: 'thorns', v: 1 }],
   },
   {
-    // Every call it patches through turns some of your cards to stone.
-    id: 'switchboard',
+    // Her song ties your hands and the belt keeps running: for a few seconds your cards play themselves, for free, wanted or not.
+    id: 'factorySiren',
     act: 3,
     tier: 'normal',
     hp: 110,
-    art: 'switchboard',
-    main: atk('pleaseHold', 7, 6),
+    art: 'factorySiren',
+    main: atk('shiftWhistle', 7, 6),
     every: 2,
     specials: [
-      { id: 'transferCall', intent: 'curse', windup: 6, hex: { id: 'petrify', share: 0.35 }, status: [gainStrength] },
-      atk('pressZero', 15, 9, { intent: 'charge' }),
+      {
+        id: 'sirenSong',
+        intent: 'debuff',
+        windup: 7,
+        status: [{ id: 'stun', t: SIREN_SONG, target: 'hero' }, { id: 'autopilot', t: SIREN_SONG, target: 'hero' }, gainStrength],
+      },
+      atk('foghornBlast', 15, 9, { intent: 'charge' }),
     ],
   },
   {
@@ -782,7 +790,7 @@ export const DIFFICULTY = [
   'smokeDetector',
   'microwave',
   'witheredFicus',
-  'switchboard',
+  'factorySiren',
   'replacement',
   'oldBoiler',
   'theBoard',

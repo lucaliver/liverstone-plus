@@ -1762,7 +1762,7 @@ describe('cards that fill the classes out', () => {
   /** Puts a card on the belt and plays it, free. */
   const cast = (c: Combat, id: string, up = false): void => {
     c.addTempCard(id, 'belt', up);
-    expect(c.playCard(c.belt[c.belt.length - 1].card.uid, true)).toBe(true);
+    expect(c.playCard(c.belt[c.belt.length - 1].card.uid, 'auto')).toBe(true);
   };
 
   it('Rivet Gun: Strength counts on every rivet', () => {
@@ -2076,6 +2076,22 @@ describe('relics', () => {
   });
 });
 
+describe('Factory Siren', () => {
+  it('her song ties your hands, stops stashing, and the belt plays the cards that slip off, for free', () => {
+    const c = setup({ enemy: ENEMIES.factorySiren, deck: deckOf(['punch', 'punch', 'punch', 'punch', 'punch', 'punch']) });
+    run(c, CONFIG.introTime + 0.01);
+    c.applyStatus('hero', 'stun', 1, 8);
+    c.applyStatus('hero', 'autopilot', 1, 8);
+    const first = c.belt[0].card.uid;
+    expect(c.playCard(first)).toBe(false);
+    expect(c.stash(first, 0)).toBe(false);
+    const hp = c.enemy.hp;
+    run(c, 8);
+    expect(c.hero.mana).toBeLessThanOrEqual(c.hero.maxMana);
+    expect(c.enemy.hp).toBeLessThan(hp);
+  });
+});
+
 describe('VIP Client', () => {
   it('takes a critical hit from an attack dragged onto the stage, not from a tapped one', () => {
     const hit = (dragged: boolean): number => {
@@ -2083,7 +2099,7 @@ describe('VIP Client', () => {
       run(c, CONFIG.introTime + 0.01);
       c.gainMana(3);
       const before = c.enemy.hp;
-      expect(c.playCard(c.belt[0].card.uid, false, dragged)).toBe(true);
+      expect(c.playCard(c.belt[0].card.uid, dragged ? 'drag' : 'tap')).toBe(true);
       return before - c.enemy.hp;
     };
     expect(hit(true)).toBe(hit(false) * CONFIG.critMult);
@@ -2226,7 +2242,7 @@ describe('act 3 rules, second batch', () => {
     run(c, CONFIG.introTime + 8);
     c.enemy.block = 0;
     const play = (): void => {
-      c.playCard(c.belt.find((b) => c.isPlayable(b.card))!.card.uid, true);
+      c.playCard(c.belt.find((b) => c.isPlayable(b.card))!.card.uid, 'auto');
     };
     for (let i = 0; i < UNDERSTUDY_EVERY - 1; i++) play();
     expect(c.enemy.block).toBe(0);

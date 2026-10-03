@@ -213,6 +213,7 @@ const defs: StatusDef[] = [
     look: 'stunned',
     selfIcon: 'ko',
     timeMul: 0,
+    handsTied: true,
     canPlay: (_c, side) => (side === 'hero' ? 'combat.stunned' : null),
   },
   { id: 'hurry', tone: 'purple', kind: 'timed', good: false, icon: 'stopwatch', beltMul: CONFIG.beltHurry },

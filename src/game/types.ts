@@ -194,6 +194,8 @@ export interface StatusDef {
   immune?: true;
   /** While active on the enemy, an attack card the hero drags onto the stage (instead of tapping it) is critical (VIP Treatment). */
   critOnDrag?: true;
+  /** While active on the hero, the hero can't act: no card played by hand, no stash, no ability. Cards still play themselves under `autoplay` (Stun). */
+  handsTied?: true;
   /** While active on the hero, no card rule (`canPlay`) applies (Root access). */
   ignoresRules?: true;
   /** While active on the hero, a card slipping off the belt plays itself for free if it can (Autopilot). */

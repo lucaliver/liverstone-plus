@@ -149,7 +149,7 @@ export function createCardLayer(v: CombatView): CardLayer {
 
   const playUid = (uid: number, dragged = false): void => {
     if (state.paused || state.ended) return;
-    combat.playCard(uid, false, dragged);
+    combat.playCard(uid, dragged ? 'drag' : 'tap');
   };
 
   // ------------------------------------------------------------------ input

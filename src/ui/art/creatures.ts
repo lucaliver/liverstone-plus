@@ -1108,30 +1108,30 @@ ${eyes(82, 118, 160, 6, '#ffd900', 'wf-g')}
 <path d="M84 176c10-8 22-8 32 0" fill="none" stroke="#120e18" stroke-width="5" stroke-linecap="round"/>
 <g fill="none" stroke="#120e18" stroke-width="3" stroke-linecap="round"><path d="M30 92l-8-6M170 92l8-6M84 52l-6-8M116 52l6-8"/></g>`;
 
-/** The Switchboard: an old operator's cabinet, two lamp eyes over a grid of jacks, a headset on top and patch cables for arms. */
-const switchboard = `
-<defs>${glow('sb-g', '#1c5fd0')}</defs>
+/** The Factory Siren: a mermaid with an alarm beacon for a crown and loudspeaker horns for ears, singing the end-of-shift song through a megaphone. */
+const factorySiren = `
+<defs>${rg('fs-b', '#5ad0e0', '#1c5fd0')}${glow('fs-g', '#ff3b3b')}</defs>
 ${shadow}
-<path d="M56 180v8h-10v-8zM144 180v8h10v-8z" fill="#1b1830" ${OUT}/>
-<rect x="40" y="48" width="120" height="134" rx="8" fill="#3a3450" ${OUT}/>
-<rect x="50" y="58" width="100" height="42" rx="4" fill="#120e18" ${OUT}/>
-${eyes(78, 122, 79, 6, '#7aa7ff', 'sb-g')}
-<path d="M88 92c8 4 16 4 24 0" fill="none" stroke="#f6f0e4" stroke-width="3" stroke-linecap="round"/>
-<g fill="#120e18" stroke="#c9c4d6" stroke-width="2.5">
-<circle cx="64" cy="118" r="6"/><circle cx="82" cy="118" r="6"/><circle cx="100" cy="118" r="6"/><circle cx="118" cy="118" r="6"/><circle cx="136" cy="118" r="6"/>
-<circle cx="64" cy="138" r="6"/><circle cx="82" cy="138" r="6"/><circle cx="100" cy="138" r="6"/><circle cx="118" cy="138" r="6"/><circle cx="136" cy="138" r="6"/>
-<circle cx="64" cy="158" r="6"/><circle cx="82" cy="158" r="6"/><circle cx="100" cy="158" r="6"/><circle cx="118" cy="158" r="6"/><circle cx="136" cy="158" r="6"/>
-</g>
-<path d="M60 146l8 0M96 126l8 0" stroke="#ffd900" stroke-width="3"/>
-<g fill="#ffd900"><circle cx="64" cy="118" r="3"/><circle cx="118" cy="158" r="3"/></g>
-<path d="M82 138C60 140 36 148 32 170M118 158C130 150 134 140 136 138" fill="none" stroke="#ff3d9a" stroke-width="6" stroke-linecap="round"/>
-<path d="M136 118C170 116 178 90 168 70" fill="none" stroke="#ffd900" stroke-width="6" stroke-linecap="round"/>
-<g class="limb"><path d="M64 158C40 166 20 150 22 126" fill="none" stroke="#1c5fd0" stroke-width="6" stroke-linecap="round"/><g ${OUT}><rect x="14" y="108" width="16" height="22" rx="3" fill="#f6f0e4"/><rect x="18" y="100" width="8" height="10" fill="#c9c4d6"/></g></g>
-<g ${OUT}><rect x="160" y="52" width="16" height="22" rx="3" fill="#f6f0e4"/><rect x="164" y="44" width="8" height="10" fill="#c9c4d6"/></g>
-<path d="M54 54C54 20 146 20 146 54" fill="none" stroke="#120e18" stroke-width="8" stroke-linecap="round"/>
-<g ${OUT}><rect x="42" y="42" width="16" height="28" rx="5" fill="#ff3d9a"/><rect x="142" y="42" width="16" height="28" rx="5" fill="#ff3d9a"/></g>
-<path d="M50 68c-4 22 10 34 34 36" fill="none" stroke="#120e18" stroke-width="4" stroke-linecap="round"/>
-<circle cx="86" cy="104" r="6" fill="#ff3d9a" ${OUT}/>`;
+<path d="M64 120h72c6 26-2 44-24 54-8 4-16 6-24 6z" fill="url(#fs-b)" ${OUT}/>
+<path d="M92 180c-12 4-32 12-54 6 12-8 14-20 12-34 16 8 34 14 42 28z" fill="#ff3d9a" ${OUT}/>
+<path d="M76 132q8 8 16 0M104 132q8 8 16 0M88 148q8 8 16 0M112 150q8 8 14 0M96 164q8 8 14 0" stroke="#120e18" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<path d="M66 124c-2-26 10-42 34-42s36 16 34 42z" fill="#d8c8f8" ${OUT}/>
+<path d="M68 106h64v16H68z" fill="#8a84a0" ${OUT}/><circle cx="78" cy="114" r="3" fill="#f6f0e4"/><circle cx="100" cy="114" r="3" fill="#f6f0e4"/><circle cx="122" cy="114" r="3" fill="#f6f0e4"/>
+<path d="M66 54c-12 30-8 62 4 76 2-14 4-28 8-40zM134 54c12 30 8 62-4 76-2-14-4-28-8-40z" fill="#1b1830" ${OUT}/>
+<path d="M70 70c-4 18-2 36 2 50M130 70c4 18 2 36-2 50" stroke="#ff3d9a" stroke-width="4" fill="none" stroke-linecap="round"/>
+<g class="limb"><path d="M132 108c14 2 22 10 26 20l-10 8c-4-8-10-12-18-14z" fill="#d8c8f8" ${OUT}/><path d="M148 122l38-26v52z" fill="#ffd900" ${OUT}/><path d="M158 118l14-8M158 128l16-2" stroke="#e0a800" stroke-width="3" stroke-linecap="round"/><rect x="142" y="116" width="10" height="16" rx="2" fill="#3a3450" ${OUT}/></g>
+<path d="M68 108c-12 4-14 16-10 26l12-4z" fill="#d8c8f8" ${OUT}/>
+<path d="M62 52l-30-14v46l30-14z" fill="#8a84a0" ${OUT}/><path d="M50 50q-6 8 0 16M42 46q-12 14 0 28" stroke="#3a3450" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M138 52l30-14v46l-30-14z" fill="#8a84a0" ${OUT}/><path d="M150 50q6 8 0 16M158 46q12 14 0 28" stroke="#3a3450" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M66 60c0-22 14-34 34-34s34 12 34 34c0 22-14 38-34 38S66 82 66 60z" fill="#d8c8f8" ${OUT}/>
+<path d="M62 52c4-24 22-34 38-34s34 10 38 34c-12-10-24-14-38-14s-26 4-38 14z" fill="#1b1830" ${OUT}/>
+<g class="eye"><circle cx="100" cy="10" r="30" fill="url(#fs-g)"/></g>
+<path d="M80 30c0-16 8-24 20-24s20 8 20 24z" fill="#ff3b3b" ${OUT}/><rect x="74" y="28" width="52" height="9" fill="#3a3450" ${OUT}/><path d="M90 14c2-4 6-6 10-6" stroke="#ffd0d0" stroke-width="4" stroke-linecap="round" fill="none"/>
+<path d="M76 56q8-8 16 0M108 56q8-8 16 0" stroke="#120e18" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M74 46l18 6M126 46l-18 6" stroke="#120e18" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="78" cy="72" rx="7" ry="4.5" fill="#ff3d9a" opacity=".6"/><ellipse cx="122" cy="72" rx="7" ry="4.5" fill="#ff3d9a" opacity=".6"/>
+<ellipse cx="100" cy="80" rx="10" ry="12" fill="#120e18" ${OUT}/><ellipse cx="100" cy="86" rx="6" ry="5" fill="#ff3d9a"/>
+<g fill="none" stroke="#ff3d9a" stroke-width="4" stroke-linecap="round"><path d="M22 100q-8 10 0 20M10 92q-14 18 0 36"/></g>`;
 
 /** The Replacement: a lanky factory robot with a smiling screen for a face, a welding torch for one hand and a gripper for the other. */
 const replacement = `
@@ -1280,7 +1280,7 @@ export const CREATURES: Record<string, string> = {
   smokeDetector,
   microwave,
   witheredFicus,
-  switchboard,
+  factorySiren,
   graveyardIntern,
   rateLimiter,
   lineLead,
