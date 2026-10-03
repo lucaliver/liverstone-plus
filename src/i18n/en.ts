@@ -176,8 +176,6 @@ const en = {
   'howto.block.d': 'Block prevents damage, but fades over time. Play it right before a hit.',
   'howto.sleeve.t': 'Sleeves',
   'howto.sleeve.d': 'Drag a card down into your sleeve to keep it for later.',
-  'howto.ability.t': 'Hero ability',
-  'howto.ability.d': "Your big button. It costs a lot of mana: it's your hero's ultimate.",
   'howto.inspect.t': 'Hold to learn',
   'howto.inspect.d': 'Not sure what something does? Press and hold it: cards, statuses, moves, stats.',
   'howto.gotIt': 'Got it!',

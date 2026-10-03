@@ -164,7 +164,6 @@ export function openHowTo(): ModalHandle {
     ['burst', 'intent'],
     ['shield', 'block'],
     ['hand', 'sleeve'],
-    ['star', 'ability'],
     ['magnifier', 'inspect'],
   ];
   const body = h(

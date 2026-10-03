@@ -177,8 +177,6 @@ const it: Record<EnKey, string> = {
   'howto.block.d': 'Il Blocco previene i danni, ma svanisce col tempo. Giocalo appena prima di un colpo.',
   'howto.sleeve.t': 'Maniche',
   'howto.sleeve.d': 'Trascina una carta giù nella manica per tenerla da parte.',
-  'howto.ability.t': "Abilità dell'eroe",
-  'howto.ability.d': 'Il tuo pulsantone. Costa molto mana ed è la mossa finale del tuo eroe.',
   'howto.inspect.t': 'Tieni premuto per capire',
   'howto.inspect.d': 'Non sai cosa fa qualcosa? Tieni premuto per info su carte, stati, mosse, statistiche, etc.',
   'howto.gotIt': 'Capito!',
