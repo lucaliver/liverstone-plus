@@ -3,7 +3,7 @@ import { Combat, type CombatSetup } from '../src/game/combat';
 import { CONFIG, EXPIRE_POS, rewardUpgradeChance } from '../src/data/config';
 import { ENEMIES, enemiesFor } from '../src/data/enemies';
 import { HEROES } from '../src/data/heroes';
-import { FLICKER_EVERY, SMILE_HEAL, STATUSES, UNDERSTUDY_BLOCK, UNDERSTUDY_EVERY } from '../src/data/statuses';
+import { COFFEE_EVERY, FLICKER_EVERY, SMILE_HEAL, STATUSES, TABS_EVERY, UNDERSTUDY_BLOCK, UNDERSTUDY_EVERY } from '../src/data/statuses';
 import { CARD_LIST, CARDS, RARITY_ORDER, cardCostOf } from '../src/data/cards';
 import { RELICS } from '../src/data/relics';
 import { hasStamp, memosOpen, stampAct } from '../src/game/meta';
@@ -1856,6 +1856,31 @@ describe('cards that fill the classes out', () => {
     expect(c.hero.block).toBe(per + CARDS.bobTheBuilder.vals[0]);
   });
 
+  it("Cold Open chills on every attack, Forty Tabs Open charges Multitasking, Free Coffee pours mana, Workers' Comp blocks after a hurt", () => {
+    const c = quiet();
+    cast(c, 'coldOpen');
+    expect(c.has('enemy', 'chill')).toBe(false);
+    cast(c, 'punch');
+    expect(c.has('enemy', 'chill')).toBe(true);
+
+    cast(c, 'fortyTabs');
+    expect(c.stacks('hero', 'multitasking')).toBe(0);
+    run(c, TABS_EVERY + 0.1);
+    expect(c.stacks('hero', 'multitasking')).toBe(1);
+
+    cast(c, 'freeCoffee');
+    c.hero.mana = 0;
+    run(c, COFFEE_EVERY + 0.1);
+    expect(c.hero.mana).toBeGreaterThanOrEqual(CARDS.freeCoffee.vals[0]);
+
+    cast(c, 'workersComp');
+    const hp = c.hero.hp;
+    c.hero.block = 0;
+    c.damage('enemy', 'hero', 5, {}, 'enemy');
+    expect(c.hero.hp).toBe(hp - 5);
+    expect(c.hero.block).toBe(CARDS.workersComp.vals[0]);
+  });
+
   it('Overstock: Block for every mana spent', () => {
     const c = quiet();
     c.hero.mana = 4;
@@ -2090,9 +2115,15 @@ describe('relics', () => {
     expect(m.hero.mana).toBeGreaterThan(0);
   });
 
+  it('Inbox Zero adds a crystal and opens the fight with the mana full', () => {
+    const c = setup({ relics: ['inboxZero'] });
+    expect(c.hero.maxMana).toBe(setup().hero.maxMana + 1);
+    expect(c.hero.mana).toBe(c.hero.maxMana);
+  });
+
   it('Sticky Notes fill the belt, a Lanyard speeds it up and a Company Card adds a reward card', () => {
     expect(setup({ relics: ['stickyNotes'] }).belt.length).toBeGreaterThan(setup().belt.length + 3);
-    expect(setup({ relics: ['lanyard'] }).beltRate()).toBeCloseTo(setup().beltRate() * 0.9);
+    expect(setup({ relics: ['lanyard'] }).beltRate()).toBeCloseTo(setup().beltRate() * 1.15);
     const r = newRun('warrior', 3);
     gainRelic(r, 'companyCard');
     expect(rewardChoices(r)).toBe(5);
@@ -2115,12 +2146,6 @@ describe('relics', () => {
   });
 
   it('the Emergency Exit saves you once per run, then never again', () => {
-  it('Inbox Zero adds a crystal and opens the fight with the mana full', () => {
-    const c = setup({ relics: ['inboxZero'] });
-    expect(c.hero.maxMana).toBe(setup().hero.maxMana + 1);
-    expect(c.hero.mana).toBe(c.hero.maxMana);
-  });
-
     const flags: Record<string, number> = {};
     const c = setup({ relics: ['emergencyExit'], relicFlags: flags });
     c.loseHp(999);

@@ -14,10 +14,10 @@ const CLOCK_EVERY = 10;
 export const CLOCK_BLOCK = 4;
 /** How far in the belt has run when a fight with Sticky Notes starts (belt widths): most of its length, so it opens full. */
 const STICKY_BELT = 0.8;
-const DUCK_BLOCK = 12;
+const DUCK_BLOCK = 18;
 /** Share of max HP the Rubber Duck squeaks at. */
 const DUCK_HP = 0.5;
-const SHREDDER_BLOCK = 3;
+const SHREDDER_BLOCK = 2;
 /** The belt's speed with a Lanyard. */
 const LANYARD_SPEED = 1.15;
 /** Share of max HP the Emergency Exit gets you back on your feet with. */

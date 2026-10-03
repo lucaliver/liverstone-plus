@@ -502,6 +502,44 @@ export const mageCards: CardDef[] = [
       c.rushBelt(v[1]);
     },
   },
+  // Powers
+  {
+    id: 'coldOpen',
+    face: '{*dmg}{chill:0}',
+    cls: 'mage',
+    type: 'power',
+    rarity: 'rare',
+    cost: 2,
+    vals: [1],
+    upVals: [2],
+    art: 'coldOpen',
+    play: (c, v) => c.applyStatus('hero', 'coldOpen', v[0]),
+  },
+  {
+    id: 'fortyTabs',
+    face: '{*timer}{multi}',
+    cls: 'mage',
+    type: 'power',
+    rarity: 'epic',
+    cost: 3,
+    upCost: 2,
+    vals: [],
+    art: 'fortyTabs',
+    play: (c) => c.applyStatus('hero', 'fortyTabs', 1),
+  },
+  {
+    id: 'freeCoffee',
+    face: '{*timer}{mana:0}',
+    cls: 'mage',
+    type: 'power',
+    rarity: 'legendary',
+    cost: 4,
+    upCost: 3,
+    vals: [1],
+    art: 'freeCoffee',
+    play: (c, v) => c.applyStatus('hero', 'freeCoffee', v[0]),
+  },
+
   // Generated during a fight (never offered as rewards).
   {
     id: 'turnItOn',

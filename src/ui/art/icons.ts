@@ -1118,6 +1118,22 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'ice',
     svg: `<path d="M32 4c10 14 18 24 18 34a18 18 0 0 1-36 0c0-10 8-20 18-34z"/><path fill="none" stroke="#16121f" stroke-width="3" d="M32 28v22M23 33l18 12M23 45l18-12"/>`,
   },
+  coldOpen: {
+    el: 'ice',
+    svg: `<path d="M4 24h56v34H4z"/><path d="M4 10l52-6 4 12L8 22z"/><g fill="#16121f"><path d="M16 8l8-1-6 13h-8zM34 6l8-1-6 13h-8z"/></g><path fill="none" stroke="#16121f" stroke-width="3.5" stroke-linecap="round" d="M32 30v22M22 36l20 10M22 46l20-10"/>`,
+  },
+  fortyTabs: {
+    el: 'arcane',
+    svg: `<path d="M4 20h56v40H4z"/><path d="M4 8h15v12H4zM22 8h15v12H22zM40 8h15v12H40z"/><g fill="#16121f"><rect x="10" y="28" width="44" height="6"/><rect x="10" y="40" width="30" height="4"/><rect x="10" y="50" width="38" height="4"/></g>`,
+  },
+  freeCoffee: {
+    el: 'fire',
+    svg: `<path d="M12 20h40l-5 40H17z"/><rect x="8" y="12" width="48" height="10"/><path fill="#16121f" d="M14 34h36l-1.5 12h-33z"/><g fill="none" stroke="#fff" stroke-width="3"><circle cx="32" cy="40" r="4"/></g><g ${S} stroke-width="4"><path d="M22 8c-3-3 3-5 0-8M32 8c-3-3 3-5 0-8M42 8c-3-3 3-5 0-8"/></g>`,
+  },
+  workersComp: {
+    el: 'holy',
+    svg: `<path d="M8 42a24 24 0 0 1 48 0z"/><rect x="4" y="42" width="56" height="9"/><rect x="26" y="10" width="12" height="32" fill="#16121f" opacity=".35"/><path fill="#16121f" d="M24 22h16v6H24z"/><path fill="#16121f" d="M29 17h6v16h-6z"/><rect x="8" y="55" width="48" height="4"/>`,
+  },
   revolvingDoor: {
     el: 'steel',
     svg: `<circle cx="32" cy="32" r="28"/><path stroke="#16121f" stroke-width="4" d="M32 8v48M8 32h48"/><circle cx="32" cy="32" r="6" fill="#16121f"/>`,

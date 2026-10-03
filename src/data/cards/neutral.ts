@@ -493,6 +493,18 @@ export const neutralCards: CardDef[] = [
       c.applyStatus('enemy', 'vulnerable', 1, v[1]);
     },
   },
+  {
+    id: 'workersComp',
+    face: '{*hp}{block:0}',
+    cls: 'neutral',
+    type: 'power',
+    rarity: 'rare',
+    cost: 2,
+    vals: [4],
+    upVals: [6],
+    art: 'workersComp',
+    play: (c, v) => c.applyStatus('hero', 'workersComp', v[0]),
+  },
 
   // Defensive twins of the attacks
   {

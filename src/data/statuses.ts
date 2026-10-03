@@ -77,6 +77,11 @@ export const PARADIGM_TURNS = 4;
 const BOARD_BLOCK = 30;
 const BOARD_STRENGTH = 2;
 
+/** Forty Tabs Open: seconds between two Multitasking charges. */
+export const TABS_EVERY = 4;
+/** Free Coffee: seconds between two cups (each one gives its stacks in mana). */
+export const COFFEE_EVERY = 6;
+
 /** A status tick that runs `fn` once per whole second the status has been up (n = 1, 2, 3…). */
 const everySecond =
   (fn: (c: Combat, side: Side, n: number, s: StatusVal) => void): NonNullable<StatusDef['tick']> =>
@@ -134,6 +139,50 @@ const defs: StatusDef[] = [
     onEnemyStatus: (c, id, s) => {
       if (id === 'poison') c.applyStatus('enemy', 'chill', 1, s.v);
     },
+  },
+  // Cold Open (a power): every attack the hero plays chills the enemy for `v` seconds.
+  {
+    id: 'coldOpen',
+    tone: 'blue',
+    kind: 'stacks',
+    good: true,
+    icon: 'snow',
+    onCardPlayed: (c, side, def) => {
+      if (def.type === 'attack') c.applyStatus('enemy', 'chill', 1, c.stacks(side, 'coldOpen'));
+    },
+  },
+  // Forty Tabs Open (a power): a Multitasking charge every few seconds, whatever you play.
+  {
+    id: 'fortyTabs',
+    tone: 'purple',
+    kind: 'stacks',
+    good: true,
+    icon: 'bolt2',
+    progress: cycle(TABS_EVERY),
+    tick: everySecond((c, _side, n) => {
+      if (n % TABS_EVERY === 0) c.chargeMultitasking();
+    }),
+  },
+  // Free Coffee (a power): `v` mana every few seconds.
+  {
+    id: 'freeCoffee',
+    tone: 'blue',
+    kind: 'stacks',
+    good: true,
+    icon: 'coffee',
+    progress: cycle(COFFEE_EVERY),
+    tick: everySecond((c, _side, n, s) => {
+      if (n % COFFEE_EVERY === 0) c.gainMana(s.v);
+    }),
+  },
+  // Workers' Comp (a power): every time the hero loses HP it gains `v` Block.
+  {
+    id: 'workersComp',
+    tone: 'teal',
+    kind: 'stacks',
+    good: true,
+    icon: 'redCross',
+    onHurt: (c, side, s) => c.gainBlock(side, s.v),
   },
   // Root access (sudo): no rule can stop the hero's cards.
   { id: 'rootAccess', tone: 'blue', kind: 'timed', good: true, icon: 'terminal', ignoresRules: true },
