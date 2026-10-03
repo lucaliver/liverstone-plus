@@ -185,7 +185,23 @@
 .card[data-rarity='epic'] .c-gem { --gem: var(--p); }
 .card[data-rarity='legendary'] .c-gem { --gem: var(--y); }
 .card[data-rarity='special'] .c-gem { --gem: var(--k); }
-.card[data-rarity='legendary'] { box-shadow: var(--sh) var(--sh) 0 var(--p); }
+/* legendary: a light foil, hard-edged rainbow bands that slide across the card in steps */
+.card[data-rarity='legendary']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.2;
+  background-image: repeating-linear-gradient(135deg, var(--y) 0 8cqw, var(--p) 8cqw 16cqw, var(--b) 16cqw 24cqw, var(--paper) 24cqw 40cqw);
+  /* a tile much bigger than the card, moved by exactly one band period (40cqw along the 45deg line = 56.57cqw across) so the loop is seamless */
+  background-size: 400cqw 400cqw;
+  background-position: -150cqw -130cqw;
+  animation: foil 3.2s steps(16) infinite;
+}
+@keyframes foil {
+  to { background-position: -93.43cqw -130cqw; }
+}
 
 /* cost lowered by a perk (Budget Cut) */
 .card .c-cost.cheap { color: var(--y); }
