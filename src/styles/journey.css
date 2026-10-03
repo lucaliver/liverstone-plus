@@ -57,8 +57,10 @@
 @keyframes drift {
   to { transform: translate(102px, var(--y)); }
 }
-.drift .up { animation: wing-up 0.6s steps(1) infinite; }
-.drift .down { animation: wing-down 0.6s steps(1) infinite; }
+.drift .up,
+.sun-rays .a { animation: wing-up 0.6s steps(1) infinite; }
+.drift .down,
+.sun-rays .b { animation: wing-down 0.6s steps(1) infinite; }
 @keyframes wing-up {
   50% { visibility: hidden; }
 }

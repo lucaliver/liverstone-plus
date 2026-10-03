@@ -16,10 +16,19 @@ const disc = (cx: number, cy: number, r: number): Rect[] =>
     return [cx - half, cy + dy, 2 * half, 1];
   });
 
-/** Act 1: a crypt at dawn: tombstones, crosses, an iron fence, bats and candles, with the sun coming up behind the stones on the right (on the intro it really rises). */
+/** Act 1: a crypt at dawn: tombstones, crosses, an iron fence, bats and candles, with the sun coming up behind the stones on the right (on the intro it really rises, its rays flipping). */
 // biome-ignore format: pixel rects read best in rows
 const crypt = (tall: boolean): string => {
-  const sun = parts('l', [...disc(86, 21, 8), [86, 10, 1, 2], [78, 10, 1, 1], [94, 10, 1, 1]]);
+  // A flat two-tone sun; on the intro it has rays that flip between two sets as it comes up.
+  const dot = ([x, y]: [number, number]): Rect => [x, y, 1, 1];
+  const rays = (cells: [number, number][]): string => parts('l', cells.map(dot));
+  const sun =
+    parts('l', disc(86, 21, 8)) +
+    parts('w', disc(86, 21, 5)) +
+    (tall
+      ? `<g class="sun-rays"><g class="a">${rays([[86, 8], [86, 9], [86, 10], [79, 14], [78, 13], [77, 12], [93, 14], [94, 13], [95, 12]])}</g>` +
+        `<g class="b">${rays([[76, 17], [75, 17], [74, 16], [82, 11], [81, 10], [81, 9], [90, 11], [91, 10], [91, 9], [96, 17]])}</g></g>`
+      : '');
   return (
     (tall ? `<g class="rise">${sun}</g>` : sun) +
     parts('w', [[0, 19, 28, 1], [0, 17, 14, 1], [64, 19, 32, 1]]) +
@@ -241,12 +250,12 @@ const crescent = (cx: number, cy: number, r: number, cx2: number, cy2: number, r
 };
 
 /**
- * The sky above each scene (rows -16 to 0), drawn only on the act intro: a moon with bats flying by, a low sun with clouds and a blimp drifting, a crescent moon with
+ * The sky above each scene (rows -16 to 0), drawn only on the act intro: bats flying by, a low sun with clouds and a blimp drifting, a crescent moon with
  * twinkling stars and a plane. Everything runs faster than on the map: the intro only lasts a few seconds.
  */
 // biome-ignore format: pixel rects read best in rows
 const SKIES = [
-  parts('c', disc(78, -9, 6)) + parts('a', [[75, -11, 2, 2], [80, -8, 3, 2], [77, -6, 1, 1]]) + bat(-13, 9, -2) + bat(-8, 12, -7) + bat(-4, 10, -4.5),
+  bat(-13, 9, -2) + bat(-8, 12, -7) + bat(-4, 10, -4.5),
   parts('w', disc(22, -7, 6)) + cloud(-13, 40, -12, true) + cloud(-8, 30, -22) + blimp(-5, 56, -30),
   parts('c', crescent(74, -9, 6, 78, -10, 5)) +
     [[8, -13], [20, -9], [30, -14], [42, -7], [52, -12], [60, -5], [14, -4], [88, -5], [90, -14]]
