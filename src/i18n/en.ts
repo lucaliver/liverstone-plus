@@ -512,7 +512,7 @@ const en = {
   'kw.rush': 'Rush',
   'kw.rush.d': 'Your belt runs faster: cards arrive sooner. Play them before they slip away!',
   'kw.pending': 'Pending',
-  'kw.pending.d': "Awaiting approval: can't be played until it has ridden the belt once.",
+  'kw.pending.d': "Awaiting approval: can't be played until it has ridden the belt once, and again after every play.",
   'kw.innate': 'Innate',
   'kw.innate.d': 'Always among the first cards on the belt each fight.',
   'kw.exhaust': 'Exhaust',

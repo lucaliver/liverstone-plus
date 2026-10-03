@@ -48,7 +48,7 @@ export interface CombatCard extends CardInst {
   /** Temporary cards don't belong to the run deck. */
   temp: boolean;
   hex?: CardHex;
-  /** True once the card has ridden the whole belt this fight (a Pending card becomes playable). */
+  /** True once the card has ridden the whole belt this fight (a Pending card becomes playable), until it is played. */
   passed?: boolean;
   /** Infected (Sick Coworker): costs 1 more until played, and once `t` (seconds on the belt) reaches `CONFIG.virusDelay` it infects the next card behind it, once (`spread`). */
   virus?: { t: number; spread: boolean };

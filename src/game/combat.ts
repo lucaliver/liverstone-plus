@@ -929,6 +929,8 @@ export class Combat {
     // Inflation lasts until the card is paid for once.
     delete card.tax;
     delete card.virus;
+    // Played, a Pending card is back in the approval queue: it must ride the whole belt again before it can be played.
+    delete card.passed;
     const kw = this.keywords(card);
     if (kw.includes('consume')) {
       if (!card.temp) this.consumed.push(card.uid);

@@ -515,7 +515,7 @@ const it: Record<EnKey, string> = {
   'kw.rush': 'Fretta',
   'kw.rush.d': 'Il tuo nastro va più veloce: le carte arrivano prima. Giocale prima che scappino!',
   'kw.pending': 'In attesa',
-  'kw.pending.d': 'In attesa di approvazione: non si può giocare finché non cade dal nastro una volta.',
+  'kw.pending.d': 'In attesa di approvazione: non si può giocare finché non cade dal nastro una volta, e di nuovo dopo ogni uso.',
   'kw.innate': 'Innata',
   'kw.innate.d': 'Sempre tra le prime carte sul nastro a ogni scontro.',
   'kw.exhaust': 'Esaurisci',

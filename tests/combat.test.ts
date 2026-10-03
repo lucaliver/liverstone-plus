@@ -838,6 +838,8 @@ describe('combat engine', () => {
     expect(back).toBeTruthy();
     c.hero.mana = 10;
     expect(c.playCard(card.uid)).toBe(true);
+    // Played, it must be approved again.
+    expect(card.passed).toBeFalsy();
   });
 
   it('the Security Monitor raises 30 Block the first time it falls under half HP', () => {

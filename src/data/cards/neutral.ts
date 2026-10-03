@@ -378,7 +378,7 @@ export const neutralCards: CardDef[] = [
   {
     // Plays every attack that is on the belt right now, for free.
     id: 'onARoll',
-    face: '{pile}',
+    face: '{dmg}{pile}',
     cls: 'neutral',
     type: 'skill',
     rarity: 'legendary',
