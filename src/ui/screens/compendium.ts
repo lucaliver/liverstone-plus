@@ -61,7 +61,7 @@ function stampGrid(): HTMLElement {
         hasStamp(hd.id, i + 1)
           ? h(
               'div',
-              { class: `stamp act${i + 1}`, 'aria-label': t('records.stamp', { hero: t(`hero.${hd.id}.name`), a: i + 1 }) },
+              { class: 'stamp', 'data-act': String(i + 1), 'aria-label': t('records.stamp', { hero: t(`hero.${hd.id}.name`), a: i + 1 }) },
               h('b', null, tabLabel(hd.id)),
               h('span', null, t('journey.title', { n: i + 1 })),
             )

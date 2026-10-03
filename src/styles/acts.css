@@ -2,7 +2,9 @@
 /* Each act has its own colours: the crypt's violet, the afternoon office's wine red, the night shift's deep teal. A screen takes them with
    `data-act` (the map, the fight by its enemy's act, rooms and rewards by the act they are in); without it the first act's show.
    They re-set the night tokens (`--bg`, `--bg2`, the halftone dots, the belt stream) and the map's own (`--map-*`). */
-:root {
+:root,
+[data-act='1'] {
+  --stamp-ink: var(--map-trod);
   --bg-dot: #2f2450;
   --belt: #2c2345;
   --belt-dot: #362b54;
@@ -30,6 +32,7 @@
   --door-bar: #c9ccd6;
 }
 [data-act='2'] {
+  --stamp-ink: var(--tc-accent);
   --bg: #35101f;
   --bg2: #260a15;
   --bg-dot: #431729;
@@ -57,6 +60,7 @@
   --door-hi: #f4ecdf;
 }
 [data-act='3'] {
+  --stamp-ink: var(--tc-accent);
   --bg: #082a33;
   --bg2: #051e26;
   --bg-dot: #0e3a46;

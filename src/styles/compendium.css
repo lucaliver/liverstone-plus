@@ -239,7 +239,7 @@
   text-transform: uppercase;
 }
 .relic-line.undiscovered .riso { filter: grayscale(0.7); }
-/* the service record's stamps: a row per hero, a column per act; ink by act, like a time card's rubber stamps */
+/* the service record's stamps: a row per hero, a column per act; ink is the act's palette (`--stamp-ink`), like a time card's rubber stamps */
 .stamps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 6px; padding: 8px 0 4px; }
 .stamp,
 .stamp-slot { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 52px; }
@@ -249,13 +249,11 @@
   font-family: var(--font-display);
   text-transform: uppercase;
   line-height: 1.2;
-  color: var(--p);
-  border: 3px solid var(--p);
+  color: var(--stamp-ink);
+  border: 3px solid var(--stamp-ink);
   mix-blend-mode: multiply;
   rotate: -4deg;
 }
 .stamp:nth-child(even) { rotate: 3deg; }
 .stamp b { font-size: 13px; font-weight: 700; }
 .stamp span { font-size: 13px; }
-.stamp.act2 { color: var(--b); border-color: var(--b); }
-.stamp.act3 { color: var(--k); border-color: var(--k); }
