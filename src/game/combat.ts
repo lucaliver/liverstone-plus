@@ -947,6 +947,8 @@ export class Combat {
     // A bulky card can't be swapped out of the sleeve: it has to be played.
     if (old && this.keywords(old).includes('bulky')) return false;
     this.sleeve[target] = b.card;
+    // What a card grew while it waited in the sleeve stays there.
+    if (old && CARDS[old.id].inSleeve) old.bonus = 0;
     if (old) this.belt[beltIdx] = { card: old, pos: b.pos, row: b.row };
     else this.belt.splice(beltIdx, 1);
     this.events.emit({ type: 'cardStashed', card: b.card, slot: target });

@@ -1584,6 +1584,18 @@ describe('sleeve cards', () => {
     expect(cache.bonus).toBe(0);
   });
 
+  it('Cache: what it cached is lost when a swap sends it back to the belt', () => {
+    const c = held('clearCache');
+    const cache = c.sleeve[0]!;
+    c.addTempCard('clippy', 'belt');
+    c.playCard(c.belt[c.belt.length - 1].card.uid);
+    expect(cache.bonus).toBe(CARDS.clearCache.vals[1]);
+    c.addTempCard('clippy', 'belt');
+    c.stash(c.belt[c.belt.length - 1].card.uid, 0);
+    expect(c.belt.some((b) => b.card === cache)).toBe(true);
+    expect(cache.bonus).toBe(0);
+  });
+
   it('Burn Book: every hit you take while it waits adds Poison to the card, spent when played', () => {
     const c = held('burnBook');
     const [base, grow] = CARDS.burnBook.vals;
