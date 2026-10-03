@@ -331,9 +331,9 @@
   pointer-events: none;
 }
 
-/* a card that slips off the end of the belt drops down in steps, then fades out over the last half of the fall */
+/* a card that slips off the end of the belt tips out past it in a few quick steps, fading over the last half */
 .card.slip-out {
-  transition: transform var(--dur-slip) steps(7), opacity calc(var(--dur-slip) * 0.5) steps(3) calc(var(--dur-slip) * 0.5);
+  transition: transform var(--dur-slip) steps(4), opacity calc(var(--dur-slip) * 0.5) steps(2) calc(var(--dur-slip) * 0.5);
   opacity: 0;
   pointer-events: none;
 }

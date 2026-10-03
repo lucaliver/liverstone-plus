@@ -303,10 +303,10 @@ export function createCardLayer(v: CombatView): CardLayer {
       el2.classList.add('fall-out');
       el2.style.transform = `${base} translate3d(${swept.dx}px, ${swept.dy}px, 0) rotate(${swept.dx > 0 ? 40 : -40}deg)`;
     } else if (reason === 'expired') {
-      // A card that slips off the end drops straight down, leaning back toward the belt (the belt's end is the screen's edge: tipping outwards would leave the screen at once), then shrinks and fades.
+      // A card that slips off the end is quickly pushed out past the belt's end, tipping over, shrinking and fading: short, to keep the screen quiet.
       const side = state.ltr ? 1 : -1;
       el2.classList.add('slip-out');
-      el2.style.transform = `${base} translate3d(${-side * 14}px, ${rc.height * 2.2}px, 0) rotate(${-side * 24}deg) scale(.65)`;
+      el2.style.transform = `${base} translate3d(${side * rc.width * 0.9}px, ${rc.height * 0.6}px, 0) rotate(${side * 40}deg) scale(.6)`;
     } else if (!target) {
       el2.classList.add('fall-out');
       el2.style.transform = state.ltr ? `${base} translate3d(40px, 60px, 0) rotate(25deg)` : `${base} translate3d(-40px, 60px, 0) rotate(-25deg)`;
