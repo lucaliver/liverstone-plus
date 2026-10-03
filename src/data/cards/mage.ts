@@ -485,6 +485,23 @@ export const mageCards: CardDef[] = [
     // X cost: the engine appends the mana spent as the last value.
     play: (c, v) => c.applyStatus('enemy', 'chill', 1, v[0] * v[v.length - 1]),
   },
+  {
+    id: 'parkour',
+    face: '{dodge:0}|{rush:1}',
+    cls: 'mage',
+    type: 'defense',
+    rarity: 'legendary',
+    cost: 2,
+    vals: [1, 3],
+    upVals: [3, 6],
+    keywords: ['exhaust'],
+    art: 'runner',
+    // Over the desks and out of reach, but the belt keeps up with you.
+    play: (c, v) => {
+      c.applyStatus('hero', 'dodge', 1, v[0]);
+      c.rushBelt(v[1]);
+    },
+  },
   // Generated during a fight (never offered as rewards).
   {
     id: 'turnItOn',

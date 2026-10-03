@@ -62,18 +62,6 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0]),
   },
   {
-    id: 'wallStreet',
-    face: '{block:0}',
-    cls: 'warrior',
-    type: 'defense',
-    rarity: 'rare',
-    cost: 4,
-    vals: [20],
-    upVals: [25],
-    art: 'wall',
-    play: (c, v) => c.gainBlock('hero', v[0]),
-  },
-  {
     id: 'shoulderCheck',
     face: '{dmg}={block}',
     cls: 'warrior',
@@ -130,21 +118,6 @@ export const warriorCards: CardDef[] = [
 
   // Rares
   {
-    id: 'youShallNotPass',
-    face: '{block:0}|{parry:1}',
-    cls: 'warrior',
-    type: 'defense',
-    rarity: 'rare',
-    cost: 3,
-    vals: [8, 15, 5],
-    upVals: [12, 25, 8],
-    art: 'youShallNotPass',
-    play: (c, v) => {
-      c.gainBlock('hero', v[0]);
-      c.applyStatus('hero', 'parry', v[1], v[2]);
-    },
-  },
-  {
     id: 'picketDrums',
     face: '{str:0}',
     cls: 'warrior',
@@ -171,22 +144,6 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => void c.hit(v[0], { hits: v[v.length - 1] }),
   },
   {
-    id: 'secondBreakfast',
-    face: '{heal:0}|{block:1}',
-    cls: 'warrior',
-    type: 'defense',
-    rarity: 'epic',
-    cost: 3,
-    vals: [9, 8],
-    upVals: [12, 11],
-    keywords: ['exhaust', 'pending'],
-    art: 'sandwich',
-    play: (c, v) => {
-      c.heal('hero', v[0]);
-      c.gainBlock('hero', v[1]);
-    },
-  },
-  {
     id: 'stonks',
     face: '{dmg:0}|{grow:1}',
     cls: 'warrior',
@@ -203,20 +160,6 @@ export const warriorCards: CardDef[] = [
   },
 
   // Epics
-  {
-    id: 'employeeOfTheMonth',
-    face: '{block:0}',
-    cls: 'warrior',
-    type: 'defense',
-    rarity: 'legendary',
-    cost: 5,
-    upCost: 4,
-    vals: [30],
-    upVals: [40],
-    keywords: ['exhaust', 'pending'],
-    art: 'employeeOfTheMonth',
-    play: (c, v) => c.gainBlock('hero', v[0]),
-  },
   {
     id: 'justCause',
     face: '{dmg:0}|{?skull}{dmg:1}',
@@ -422,19 +365,6 @@ export const warriorCards: CardDef[] = [
     play: (c, v) => c.gainBlock('hero', v[0] * v[v.length - 1]),
   },
   // Pop culture
-  {
-    id: 'hideThePain',
-    face: '{block:0}|+{block}/{1}{hp}',
-    cls: 'warrior',
-    type: 'defense',
-    rarity: 'common',
-    cost: 2,
-    vals: [5, 4],
-    upVals: [7, 3],
-    art: 'harold',
-    // The more it hurts, the wider the smile: +1 Block per v[1] HP missing.
-    play: (c, v) => c.gainBlock('hero', v[0] + Math.floor((c.hero.maxHp - c.hero.hp) / v[1])),
-  },
   {
     id: 'masochist',
     face: '{thorns:0}|{tickUp:1}',

@@ -432,23 +432,6 @@ export const neutralCards: CardDef[] = [
   },
 
   {
-    id: 'parkour',
-    face: '{dodge:0}|{rush:1}',
-    cls: 'neutral',
-    type: 'defense',
-    rarity: 'legendary',
-    cost: 2,
-    vals: [1, 3],
-    upVals: [3, 6],
-    keywords: ['exhaust'],
-    art: 'runner',
-    // Over the desks and out of reach, but the belt keeps up with you.
-    play: (c, v) => {
-      c.applyStatus('hero', 'dodge', 1, v[0]);
-      c.rushBelt(v[1]);
-    },
-  },
-  {
     id: 'paydayLoan',
     face: '{dmg:0}|{hp:1}|{addCard}',
     cls: 'neutral',
@@ -583,6 +566,77 @@ export const neutralCards: CardDef[] = [
       c.loseHp(v[1]);
       c.addTempCard('debt', 'draw');
     },
+  },
+
+  {
+    id: 'wallStreet',
+    face: '{block:0}',
+    cls: 'neutral',
+    type: 'defense',
+    rarity: 'rare',
+    cost: 4,
+    vals: [20],
+    upVals: [25],
+    art: 'wall',
+    play: (c, v) => c.gainBlock('hero', v[0]),
+  },
+  {
+    id: 'youShallNotPass',
+    face: '{block:0}|{parry:1}',
+    cls: 'neutral',
+    type: 'defense',
+    rarity: 'rare',
+    cost: 3,
+    vals: [8, 15, 5],
+    upVals: [12, 25, 8],
+    art: 'youShallNotPass',
+    play: (c, v) => {
+      c.gainBlock('hero', v[0]);
+      c.applyStatus('hero', 'parry', v[1], v[2]);
+    },
+  },
+  {
+    id: 'secondBreakfast',
+    face: '{heal:0}|{block:1}',
+    cls: 'neutral',
+    type: 'defense',
+    rarity: 'epic',
+    cost: 3,
+    vals: [9, 8],
+    upVals: [12, 11],
+    keywords: ['exhaust', 'pending'],
+    art: 'sandwich',
+    play: (c, v) => {
+      c.heal('hero', v[0]);
+      c.gainBlock('hero', v[1]);
+    },
+  },
+  {
+    id: 'employeeOfTheMonth',
+    face: '{block:0}',
+    cls: 'neutral',
+    type: 'defense',
+    rarity: 'legendary',
+    cost: 5,
+    upCost: 4,
+    vals: [30],
+    upVals: [40],
+    keywords: ['exhaust', 'pending'],
+    art: 'employeeOfTheMonth',
+    play: (c, v) => c.gainBlock('hero', v[0]),
+  },
+  {
+    id: 'hideThePain',
+    face: '{block:0}|+{block}/{1}{hp}',
+    cls: 'neutral',
+    type: 'defense',
+    rarity: 'common',
+    cost: 2,
+    vals: [5, 4],
+    upVals: [7, 3],
+    art: 'harold',
+    // The more it hurts, the wider the smile: +1 Block per v[1] HP missing.
+    play: (c, v) => c.gainBlock('hero', v[0] + Math.floor((c.hero.maxHp - c.hero.hp) / v[1])),
   },
 
   // Generated during a fight (never offered as rewards).
