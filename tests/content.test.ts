@@ -145,10 +145,11 @@ describe('content integrity', () => {
     for (const d of ACT_DEFS) if (d.bossIcon) expect(ICONS[d.bossIcon], d.bossIcon).toBeTruthy();
   });
 
-  it('every relic has a name, a text and a sprite of its own', () => {
+  it('every relic has a name, a text, a sprite and a chip icon of its own', () => {
     for (const r of RELIC_LIST) {
       expect(en[`relic.${r.id}.name`] && en[`relic.${r.id}.d`], r.id).toBeTruthy();
       expect(RELIC_SPRITES[`relic.${r.id}`], `${r.id}: missing sprite`).toBeTruthy();
+      expect(ICONS[`relic.${r.id}`], `${r.id}: missing chip icon`).toBeTruthy();
     }
     expect(Object.keys(RELIC_SPRITES).length).toBe(RELIC_LIST.length);
   });

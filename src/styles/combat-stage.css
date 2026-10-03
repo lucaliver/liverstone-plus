@@ -567,7 +567,6 @@
   transform-origin: left;
 }
 .status.relic { min-width: 44px; padding: 0 3px; }
-.status.relic .riso { position: relative; width: 26px; height: 26px; }
 .status.draining.low .drain { animation: drain-low 0.5s steps(1) infinite; }
 @keyframes drain-low {
   50% { opacity: 0.35; }

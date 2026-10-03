@@ -135,7 +135,7 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
                 const b = h('button', {
                   class: 'status relic draining',
                   'data-relic': id,
-                  html: `<i class="drain"></i>${relicArt(id)}`,
+                  html: `<i class="drain"></i>${icon(`relic.${id}`)}`,
                   'aria-label': t(`relic.${id}.name`),
                 });
                 onPress(b, () => {

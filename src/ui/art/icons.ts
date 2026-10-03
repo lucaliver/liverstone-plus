@@ -1159,6 +1159,48 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<g ${S} stroke-width="5"><path d="M32 6l22 8c0 20-7 34-22 44C17 48 10 34 10 14z"/><path d="M12 8l42 48"/></g>`,
   },
+  // ---- stationery: the plain versions of the relics' sprites, small enough for a status chip
+  'relic.stressBall': {
+    el: 'steel',
+    svg: `<circle cx="32" cy="33" r="26"/><path fill="none" stroke="#16121f" stroke-width="3" stroke-linecap="round" opacity=".5" d="M10 26c6 4 8 10 6 18M54 26c-6 4-8 10-6 18"/><path ${HI} d="M18 18c4-5 10-8 16-8-8 2-12 8-13 14z"/>`,
+  },
+  'relic.thermos': {
+    el: 'steel',
+    svg: `<rect x="22" y="4" width="20" height="12" rx="3"/><rect x="14" y="18" width="36" height="42" rx="5"/><path fill="#16121f" d="M14 28h36v4H14zM14 48h36v4H14z"/><path ${HI} d="M18 20h5v38h-5z"/>`,
+  },
+  'relic.ergoChair': {
+    el: 'steel',
+    svg: `<path d="M18 4h28c4 0 7 3 6 7l-3 24H15L12 11c-1-4 2-7 6-7z"/><path d="M6 38h52v10H6z"/><rect x="28" y="48" width="8" height="8"/><path d="M8 60l24-6 24 6v2H8z"/>`,
+  },
+  'relic.coffeeMug': {
+    el: 'steel',
+    svg: `<path d="M20 2c-3 4 3 5 0 10M30 2c-3 4 3 5 0 10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M8 18h38v28c0 8-6 14-14 14H22c-8 0-14-6-14-14z"/><path fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" d="M46 26h4c6 0 8 4 8 9s-2 9-8 9h-4"/><path fill="#16121f" d="M8 24h38v4H8z"/>`,
+  },
+  'relic.wallClock': {
+    el: 'steel',
+    svg: `<circle cx="32" cy="32" r="28"/><circle cx="32" cy="32" r="22" fill="#fff" opacity=".25"/><path fill="none" stroke="#16121f" stroke-width="5" stroke-linecap="round" d="M32 16v16l11 7"/><circle cx="32" cy="32" r="3" fill="#16121f"/>`,
+  },
+  'relic.unionArmband': { el: 'steel', svg: `<path d="M6 16h52l-4 32H10z"/><path fill="#16121f" d="M32 22l4 9h10l-8 6 3 10-9-6-9 6 3-10-8-6h10z"/>` },
+  'relic.inboxZero': {
+    el: 'steel',
+    svg: `<path d="M6 14h52v36H6z"/><path fill="none" stroke="#16121f" stroke-width="4" stroke-linejoin="round" d="M6 16l26 20 26-20"/><path ${HI} d="M6 14h52v4H6z"/>`,
+  },
+  'relic.heavyStapler': {
+    el: 'steel',
+    svg: `<path d="M4 34c0-8 6-12 14-12h38v10H8z"/><path d="M4 36h56v6c0 2-2 4-4 4H8c-2 0-4-2-4-4z"/><rect x="14" y="48" width="36" height="8" rx="2"/><path fill="#16121f" d="M44 38h8v4h-8z"/><path ${HI} d="M12 26h30v3H12z"/>`,
+  },
+  'relic.spareBadge': {
+    el: 'steel',
+    svg: `<rect x="10" y="12" width="44" height="50" rx="4"/><path fill="#16121f" d="M24 6h16v10H24z"/><rect x="28" y="2" width="8" height="8" rx="2"/><circle cx="32" cy="32" r="9" fill="#16121f"/><path fill="#16121f" d="M18 54c0-8 6-12 14-12s14 4 14 12z"/>`,
+  },
+  'relic.emergencyExit': {
+    el: 'steel',
+    svg: `<path d="M8 4h48v56H8z"/><path fill="#16121f" d="M14 10h36v44H14z"/><circle cx="26" cy="22" r="4" fill="#fff"/><path fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M24 44l4-12 6 4 4 8M28 32l-6 4M34 36l4-6 6 2"/>`,
+  },
+  'relic.cargoPants': {
+    el: 'steel',
+    svg: `<path d="M12 4h40l4 22-6 34H35l-3-30-3 30H18L12 26z"/><path fill="#16121f" d="M12 12h40v3H12z"/><path fill="none" stroke="#16121f" stroke-width="3" d="M16 34h10v10H16zM38 34h10v10H38z"/>`,
+  },
 };
 
 export const INTENT_ICON: Record<string, string> = {
