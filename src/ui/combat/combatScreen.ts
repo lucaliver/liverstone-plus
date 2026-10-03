@@ -441,7 +441,7 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
     el,
     enter() {
       layout();
-      // The way in: seen from the corridor, one office door with the enemy framed on it above a brass plate; three knocks, the latch,
+      // The way in: seen from the corridor, one office door with a brass plate and the enemy framed under it; three knocks, the latch,
       // the leaf swings open on its hinge onto the lit room, and we walk through into the fight.
       const node = currentNode(run);
       const door = h(
@@ -461,14 +461,14 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
               { class: 'door-leaf' },
               h(
                 'div',
-                { class: 'door-pic' },
-                h('div', { class: 'door-frame' }, h('div', { class: 'door-art', html: creature(combat.enemy.def.art) })),
-              ),
-              h(
-                'div',
                 { class: 'door-plate' },
                 h('b', null, t(`enemy.${combat.enemy.def.id}.name`)),
                 h('span', null, t('common.floorOf', { a: node.act, n: node.floor, total: totalFloors(run) })),
+              ),
+              h(
+                'div',
+                { class: 'door-pic' },
+                h('div', { class: 'door-frame' }, h('div', { class: 'door-art', html: creature(combat.enemy.def.art) })),
               ),
               h('div', { class: 'door-kick' }),
               h('i', { class: 'door-hinge a' }),
@@ -488,7 +488,8 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
         if (!settings.seenTutorial) firstFightTour();
       });
       el.append(door);
-      sfx(actDef(combat.enemy.def.act).door);
+      // The sound is the knocking: it waits while the name is read.
+      later(() => sfx(actDef(combat.enemy.def.act).door), cssMs('--dur-door-read'));
       addEventListener('resize', onResize);
       document.addEventListener('visibilitychange', onVisibility);
       render(0);

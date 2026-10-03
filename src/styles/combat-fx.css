@@ -262,8 +262,8 @@
   animation: stamp-in 0.12s steps(2) 0.3s both;
 }
 .timecard.out .tc-stamp { color: var(--b); border-color: var(--b); animation-delay: 0.35s; }
-/* the way into a fight: one office door seen from the corridor, in the act's colours. The enemy hangs framed on it, above a brass plate.
-   Three knocks shake the door (sfx 'door'), the latch turns, the leaf swings open on its left hinge onto the lit room (it narrows towards the
+/* the way into a fight: one office door seen from the corridor, in the act's colours. The enemy hangs framed on it, under a brass plate.
+   The door waits `--dur-door-read` for the name to be read, then three knocks shake the door (sfx 'door'), the latch turns, the leaf swings open on its left hinge onto the lit room (it narrows towards the
    hinge, stepped), then we walk through: the whole scene grows and fades. */
 .office-door {
   position: absolute;
@@ -276,7 +276,7 @@
   background-image: radial-gradient(circle, var(--bg-dot) 30%, transparent 34%);
   background-size: 6px 6px;
   transform-origin: 50% 58%;
-  animation: door-walk 0.5s steps(5) 1.27s forwards;
+  animation: door-walk 0.5s steps(5) calc(var(--dur-door-read) + 1.27s) forwards;
 }
 @keyframes door-walk {
   to { transform: scale(3.2); opacity: 0; visibility: hidden; }
@@ -315,7 +315,7 @@
   border: 10px solid var(--door-shade);
   border-bottom: 0;
   box-shadow: 0 0 0 4px var(--void);
-  animation: door-knock 0.5s steps(1) both;
+  animation: door-knock 0.5s steps(1) var(--dur-door-read) both;
 }
 /* lintel above the doorway, a little wider than it */
 .door-way::before {
@@ -363,7 +363,7 @@
   border-right: 4px solid var(--door-shade);
   box-shadow: inset 4px 0 0 var(--door-hi);
   transform-origin: left center;
-  animation: door-swing 0.5s steps(5) 0.72s forwards;
+  animation: door-swing 0.5s steps(5) calc(var(--dur-door-read) + 0.72s) forwards;
 }
 /* swinging inwards: the leaf narrows towards its hinge, tilts a little and darkens as it turns away */
 @keyframes door-swing {
@@ -461,7 +461,7 @@
   background-position: center;
   background-repeat: no-repeat;
   border: 3px solid var(--void);
-  animation: door-latch 0.12s steps(2) 0.6s both;
+  animation: door-latch 0.12s steps(2) calc(var(--dur-door-read) + 0.6s) both;
 }
 @keyframes door-latch {
   to { transform: rotate(45deg); }
@@ -499,7 +499,7 @@
   position: absolute;
   background: var(--red);
   border: 2px solid var(--void);
-  animation: door-led 0.8s steps(1) both;
+  animation: door-led 0.8s steps(1) var(--dur-door-read) both;
 }
 @keyframes door-led {
   0%, 21%, 42%, 58% { background: var(--red); }
@@ -510,7 +510,7 @@
 [data-act='2'] .door-way { animation: none; }
 [data-act='2'] .door-leaf {
   padding-right: 32px;
-  animation: door-slide 0.5s steps(5) 0.72s forwards;
+  animation: door-slide 0.5s steps(5) calc(var(--dur-door-read) + 0.72s) forwards;
 }
 @keyframes door-slide {
   to { transform: translateX(104%); }
