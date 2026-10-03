@@ -431,9 +431,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'necro',
     svg: `<rect x="2" y="40" width="16" height="14"/><rect x="21" y="40" width="30" height="14"/><rect x="52" y="40" width="10" height="14"/><rect x="56" y="44" width="4" height="4" fill="#16121f"/><g ${S} stroke-width="5"><path d="M42 36l-6-7 6-7-6-7M56 36l-6-7 6-7-6-7"/></g>`,
   },
-  sabot: {
+  // Boris, a little fish
+  fish: {
     el: 'necro',
-    svg: `<path d="M4 46c0-10 8-16 20-18l8-14h20c6 0 8 4 8 10v28c0 4-2 6-6 6H12c-6 0-8-4-8-12z"/><rect x="34" y="20" width="18" height="8" fill="#16121f"/>`,
+    svg: `<path d="M4 18l16 10c4-5 10-8 18-8 12 0 22 7 24 14-2 7-12 14-24 14-8 0-14-3-18-8L4 50l5-18z"/><circle cx="48" cy="32" r="4" fill="#16121f"/><path fill="none" stroke="#16121f" stroke-width="3" stroke-linecap="round" d="M34 24c3 5 3 11 0 16M42 44c2 0 4-1 5-2"/><path ${HI} d="M26 28c4-3 9-4 14-3-5 1-9 3-12 6z"/>`,
   },
   nail: {
     el: 'necro',

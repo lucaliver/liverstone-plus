@@ -158,7 +158,7 @@ export const necromancerCards: CardDef[] = [
     },
   },
   {
-    id: 'sabotage',
+    id: 'boris',
     face: '{dmg}{poison:0}',
     cls: 'necromancer',
     type: 'power',
@@ -167,7 +167,7 @@ export const necromancerCards: CardDef[] = [
     upCost: 3,
     vals: [2],
     upVals: [3],
-    art: 'sabot',
+    art: 'fish',
     play: (c, v) => c.applyStatus('hero', 'plague', v[0]),
   },
   {

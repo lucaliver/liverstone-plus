@@ -90,7 +90,7 @@ const necromancer: HeroDef = {
   firstRewards: [
     ['bloodMoney', 'rust', 'barricade', 'macGyver'],
     ['unionDues', 'zombieShift', 'fika', 'chainSmoking'],
-    ['deadLetter', 'sickLeave', 'sabotage', 'slowdown'],
+    ['deadLetter', 'sickLeave', 'boris', 'slowdown'],
   ],
   sleeve: 3,
   ink: 'var(--green)',
