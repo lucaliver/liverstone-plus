@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { CREATURES } from '../src/ui/art/creatures';
 import enStrings from '../src/i18n/en';
 import itStrings from '../src/i18n/it';
 
@@ -22,7 +23,7 @@ import { ROOM_SCENE } from '../src/ui/components/room';
 import { INK_HEX } from '../src/ui/art/riso';
 import { HEXES } from '../src/data/hexes';
 import { MODIFIER_LIST } from '../src/data/modifiers';
-import { ENEMIES } from '../src/data/enemies';
+import { DEBUG_ENEMY, ENEMIES } from '../src/data/enemies';
 import { RELIC_LIST } from '../src/data/relics';
 import { ABILITY_ICON, PASSIVE_ICON } from '../src/ui/combat/view';
 import { NODE_ICON } from '../src/ui/screens/journey';
@@ -86,6 +87,17 @@ describe('content integrity', () => {
         expect(share('elite', act)).toBeGreaterThan(share('elite', act - 1));
       }
     }
+  });
+
+  it('the Debug Enemy can be fought and is named, but is in no list', () => {
+    expect(ENEMIES[DEBUG_ENEMY.id]).toBe(DEBUG_ENEMY);
+    expect(ENEMY_LIST).not.toContain(DEBUG_ENEMY);
+    expect(DIFFICULTY).not.toContain(DEBUG_ENEMY.id);
+    for (const strings of [enStrings, itStrings] as Record<string, string>[]) {
+      expect(strings[`enemy.${DEBUG_ENEMY.id}.name`]).toBeTruthy();
+      expect(strings[`move.${DEBUG_ENEMY.main.id}`]).toBeTruthy();
+    }
+    expect(CREATURES[DEBUG_ENEMY.art]).toBeTruthy();
   });
 
   it('every enemy past the first three can grow stronger, except the ones with nothing to hit with or a single move', () => {

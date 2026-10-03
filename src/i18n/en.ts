@@ -1081,6 +1081,7 @@ const en = {
 
   // ------------------------------------------------------------- enemies
   'enemy.snitch.name': 'The Snitch',
+  'enemy.debugEnemy.name': 'Debug Enemy',
   'enemy.seniorBoomer.name': 'Senior Boomer',
   'enemy.toxicCoworker.name': 'Toxic Coworker',
   'enemy.teamLeader.name': 'Team Leader',
@@ -1148,6 +1149,7 @@ const en = {
 
   'move.snitchesGetStitches': 'Snitches Get Stitches',
   'move.ratOut': 'Rat Out',
+  'move.debugHit': 'Debug Hit',
   'move.boxCutter': 'Box Cutter',
   'move.stirDrama': 'Stir Drama',
   'move.snark': 'Snark',

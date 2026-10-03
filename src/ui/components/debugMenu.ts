@@ -2,7 +2,7 @@ import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { CARD_LIST, CARDS } from '../../data/cards';
 import { CONFIG } from '../../data/config';
-import { ENEMY_LIST } from '../../data/enemies';
+import { DEBUG_ENEMY, ENEMY_LIST } from '../../data/enemies';
 import { HERO_LIST } from '../../data/heroes';
 import { RELIC_LIST } from '../../data/relics';
 import { unlockAll } from '../../game/meta';
@@ -173,7 +173,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
   let handle: ModalHandle | null = null;
   const list = h('div', { class: 'debug-foes' });
   // A tap starts the fight, a hold shows the enemy's sheet.
-  const foeButtons = ENEMY_LIST.map((e) => {
+  const foeButtons = [...ENEMY_LIST, DEBUG_ENEMY].map((e) => {
     const btn = h('button', {
       class: 'debug-foe',
       'data-enemy': e.id,

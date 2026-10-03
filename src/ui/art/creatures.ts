@@ -1239,7 +1239,13 @@ ${eyes(82, 118, 80, 8, '#ffd900', 'ps-e')}
 <path d="M92 4l-8 10 6 2-8 10 14-8-6-2 8-6z"/>
 </g>`;
 
+/** The Debug Enemy: an empty square, nothing in it. */
+const debugEnemy = `
+${shadow}
+<path fill-rule="evenodd" d="M40 40h120v120H40zM54 54v92h92V54z" fill="#f6f0e4" ${OUT}/>`;
+
 export const CREATURES: Record<string, string> = {
+  debugEnemy,
   leaver,
   workWife,
   exaggeratedGirl,

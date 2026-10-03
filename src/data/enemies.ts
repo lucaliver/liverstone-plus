@@ -794,7 +794,19 @@ export const DIFFICULTY = [
   'theBoard',
 ];
 
-export const ENEMIES: Record<string, EnemyDef> = Object.fromEntries(defs.map((e) => [e.id, e]));
+/** A dummy for tests in the debug fight menu (200 HP, 10 damage every 10 s): in `ENEMIES` so a fight can load it, but in no list, map, handbook or reward. */
+export const DEBUG_ENEMY: EnemyDef = {
+  id: 'debugEnemy',
+  act: 1,
+  tier: 'normal',
+  hp: 200,
+  art: 'debugEnemy',
+  main: atk('debugHit', 10, 10),
+  every: 1,
+  specials: [],
+};
+
+export const ENEMIES: Record<string, EnemyDef> = Object.fromEntries([...defs, DEBUG_ENEMY].map((e) => [e.id, e]));
 export const ENEMY_LIST: readonly EnemyDef[] = [...defs].sort((a, b) => DIFFICULTY.indexOf(a.id) - DIFFICULTY.indexOf(b.id));
 
 /** Main attack followed by the specials, for lists such as the compendium. */

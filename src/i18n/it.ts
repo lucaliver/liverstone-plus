@@ -1091,6 +1091,7 @@ const it: Record<EnKey, string> = {
 
   // ------------------------------------------------------------- enemies
   'enemy.snitch.name': 'Lo snitch',
+  'enemy.debugEnemy.name': 'Nemico di Debug',
   'enemy.seniorBoomer.name': 'Anziano Boomer',
   'enemy.toxicCoworker.name': 'Collega Tossico',
   'enemy.teamLeader.name': 'Caposquadra',
@@ -1159,6 +1160,7 @@ const it: Record<EnKey, string> = {
 
   'move.snitchesGetStitches': 'Chi Fa la Spia Paga',
   'move.ratOut': 'Soffiata',
+  'move.debugHit': 'Colpo di Debug',
   'move.boxCutter': 'Taglierino',
   'move.stirDrama': 'Alimenta il Dramma',
   'move.snark': 'Sarcasmo',
