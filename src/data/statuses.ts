@@ -157,7 +157,7 @@ const defs: StatusDef[] = [
     tone: 'purple',
     kind: 'stacks',
     good: true,
-    icon: 'bolt2',
+    icon: 'fortyTabs',
     progress: cycle(TABS_EVERY),
     tick: everySecond((c, _side, n) => {
       if (n % TABS_EVERY === 0) c.chargeMultitasking();
