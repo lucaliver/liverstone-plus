@@ -10,7 +10,7 @@ import { setSfxVolume, unlockAudio } from './audio/sfx';
 import { musicTrack, playMusic, setMusicVolume, suspendMusic } from './audio/music';
 import { trackFight, trackRun } from './analytics';
 import { actDef } from './data/acts';
-import type { RewardKind } from './data/config';
+import { CONFIG, type RewardKind } from './data/config';
 import { ENEMIES } from './data/enemies';
 import { VALUES } from './data/values';
 import { Combat } from './game/combat';
@@ -122,8 +122,9 @@ function startRun(hero: HeroId): void {
 }
 
 /** Debug: a fresh run whose first fight is against the chosen enemy. */
-function debugFight(hero: HeroId, enemy: string, cards: string[]): void {
+function debugFight(hero: HeroId, enemy: string, cards: string[], bigHp: boolean): void {
   run = newRun(hero, randomSeed());
+  if (bigHp) run.hp = run.maxHp = CONFIG.debugHp;
   for (const id of cards) addCard(run, id);
   run.nodes[run.current].enemy = enemy;
   enterNode();

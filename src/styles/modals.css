@@ -433,6 +433,9 @@
   padding: 6px 8px 8px;
 }
 .debug-heroes .riso { width: 44px; height: 44px; }
+.debug-options { display: flex; gap: 8px; }
+.debug-options .btn { flex: 1; min-width: 0; min-height: 44px; font-size: 14px; }
+.debug-options .btn[aria-pressed='true'] { background: var(--y); }
 .debug-search {
   width: 100%;
   padding: 8px 10px;

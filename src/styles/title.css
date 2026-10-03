@@ -269,10 +269,6 @@
   top: calc(var(--safe-t) + 6px);
   right: 6px;
   z-index: var(--z-debug);
-  width: 36px;
-  height: 36px;
-  font-size: 20px;
-  opacity: 0.7;
 }
 
 /* ------------------------------------------------------------------ studio card (shown once, right after the contract is signed) */

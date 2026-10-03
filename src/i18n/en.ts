@@ -102,6 +102,8 @@ const en = {
   'debug.cards': 'Add cards to the deck…',
   'debug.foes': 'Search enemies…',
   'debug.unlocked': 'Everything unlocked',
+  'debug.bigHp': 'Start with {n} HP',
+  'debug.allCards': 'Add 1 of every card',
   'debug.unlockAll': 'Unlock all',
   'debug.menu': 'Debug menu',
   'debug.fightMenu': 'Debug: fight',

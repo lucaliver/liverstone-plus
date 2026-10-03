@@ -87,7 +87,7 @@
 }
 .combat .debug-fab {
   top: calc(var(--safe-t) + 12px);
-  right: 64px;
+  right: 68px;
 }
 .dark-eyes {
   position: absolute;

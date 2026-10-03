@@ -1,6 +1,7 @@
 import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
-import { CARDS } from '../../data/cards';
+import { CARD_LIST, CARDS } from '../../data/cards';
+import { CONFIG } from '../../data/config';
 import { ENEMY_LIST } from '../../data/enemies';
 import { HERO_LIST } from '../../data/heroes';
 import { RELIC_LIST } from '../../data/relics';
@@ -9,6 +10,7 @@ import { settings } from '../../game/settings';
 import type { HeroId } from '../../game/types';
 import { openModal, type ModalHandle } from '../app';
 import { keywordText } from './cardView';
+import type { CardDef } from '../../game/types';
 import { openCardDetail, openResetConfirm } from './modals';
 import { h, onTapOrHold } from '../dom';
 import { foeView } from './moveText';
@@ -59,12 +61,45 @@ export function openDebugMenu(title: string, items: { label: string; icon: strin
   return handle;
 }
 
+/** The names of a card's keywords (base and upgraded), so the search finds them even when the text only shows their icon. */
+function cardKeywords(c: CardDef): string {
+  return [...new Set([...(c.keywords ?? []), ...(c.upKeywords ?? [])])].map((k) => t(`kw.${k}`)).join(' ');
+}
+
 /** Temporary debug tool: fight any enemy with any hero (a fresh run on floor 1), with extra cards added to the deck to try them. */
-export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: string[]) => void): ModalHandle {
+export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: string[], bigHp: boolean) => void): ModalHandle {
   let hero: HeroId = HERO_LIST[0].id;
   const extra: string[] = [];
+  let bigHp = false;
   // The heroes across the whole width, each with its portrait.
   const heroSeg = h('div', { class: 'seg debug-heroes', role: 'group', 'aria-label': t('debug.hero') });
+  const hpBtn = h(
+    'button',
+    {
+      class: 'btn small secondary',
+      'aria-pressed': 'false',
+      onclick: () => {
+        bigHp = !bigHp;
+        hpBtn.setAttribute('aria-pressed', String(bigHp));
+        sfx('tap');
+      },
+    },
+    t('debug.bigHp', { n: CONFIG.debugHp }),
+  );
+  // One copy of every card the hero can play (its class and the neutral ones, no curses).
+  const allBtn = h(
+    'button',
+    {
+      class: 'btn small secondary',
+      onclick: () => {
+        extra.push(...CARD_LIST.filter((c) => c.type !== 'curse' && (c.cls === hero || c.cls === 'neutral')).map((c) => c.id));
+        sfx('tap');
+        renderCards();
+      },
+    },
+    t('debug.allCards'),
+  );
+  const options = h('div', { class: 'debug-options' }, hpBtn, allBtn);
   const renderHeroes = (): void => {
     heroSeg.replaceChildren(
       ...HERO_LIST.map((hd) =>
@@ -81,7 +116,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
       ),
     );
   };
-  // Every card, filtered as you type by name or rules text (keywords by their name); a tap adds a copy (the count says how many), a hold shows the card.
+  // Every card, filtered as you type by name, rules text or keyword; a tap adds a copy (the count says how many), a hold shows the card.
   const search = h('input', { class: 'debug-search', type: 'search', placeholder: t('debug.cards'), 'aria-label': t('debug.cards') });
   const cardList = h('div', { class: 'debug-cards' });
   const tabs = h('div', { class: 'debug-tabs', role: 'tablist' });
@@ -113,7 +148,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
     const q = search.value.trim().toLowerCase();
     cardList.replaceChildren(
       ...Object.values(CARDS)
-        .filter((c) => `${t(`card.${c.id}.name`)} ${keywordText(t(`card.${c.id}.desc`))}`.toLowerCase().includes(q))
+        .filter((c) => `${t(`card.${c.id}.name`)} ${keywordText(t(`card.${c.id}.desc`))} ${cardKeywords(c)}`.toLowerCase().includes(q))
         .map((c) => {
           const n = extra.filter((id) => id === c.id).length;
           const btn = h('button', {
@@ -150,7 +185,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
         sfx('button');
         haptic('tap');
         handle?.close();
-        onPick(hero, e.id, extra);
+        onPick(hero, e.id, extra, bigHp);
       },
       () => openModal({ title: t(`enemy.${e.id}.name`), body: foeView(e, true), actions: [{ label: t('common.close'), cls: 'secondary' }] }),
     );
@@ -167,7 +202,7 @@ export function openDebugFight(onPick: (hero: HeroId, enemy: string, cards: stri
   handle = openModal({
     title: t('debug.title'),
     cls: 'debug-modal',
-    body: h('div', { class: 'debug-fight' }, heroSeg, tabs, foesPane, cardsPane),
+    body: h('div', { class: 'debug-fight' }, heroSeg, options, tabs, foesPane, cardsPane),
     actions: [
       {
         label: t('debug.unlockAll'),
