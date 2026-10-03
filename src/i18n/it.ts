@@ -134,6 +134,7 @@ const it: Record<EnKey, string> = {
   'debug.rewardBoss': 'Ricompensa carta capo',
   'debug.skipRoom': 'Completa questa stanza',
   'debug.nextAct': 'Salta al prossimo atto',
+  'debug.victory': 'Attiva la vittoria',
   'debug.revealRooms': 'Mostra tutte le stanze',
   'debug.hideRooms': 'Torna alla nebbia',
   'menu.abandonConfirm': 'Una nuova partita butterà via la tua giornata di lavoro attuale. Continuare?',

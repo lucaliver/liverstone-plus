@@ -43,6 +43,7 @@
 - [x] cambia passiva del necromante in "il nemico parte con 3 di veleno"
 
 
+
 # NEXT STEPS (ignore for now)
 
 > aggiungere uso della paga (intra-run upgrades?)

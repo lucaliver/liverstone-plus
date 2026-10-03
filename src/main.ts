@@ -25,6 +25,7 @@ import {
   FIRST_RUN_SEED,
   finishRun,
   loadRun,
+  ACTS,
   mapAct,
   newRun,
   type NodeType,
@@ -176,6 +177,8 @@ function debugMap(): void {
         },
       }
     : null;
+  // In the last act: end the run as a win right away.
+  const victory = mapAct(r) === ACTS ? { label: t('debug.victory'), icon: 'medal', run: () => endRun(r, true) } : null;
   openDebugMenu(t('debug.mapMenu'), [
     { label: t('debug.rewardFight'), icon: 'cards', run: reward('fight') },
     { label: t('debug.rewardElite'), icon: 'medal', run: reward('elite') },
@@ -199,6 +202,7 @@ function debugMap(): void {
       },
     },
     ...(nextAct ? [nextAct] : []),
+    ...(victory ? [victory] : []),
   ]);
 }
 
