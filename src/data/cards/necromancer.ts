@@ -285,21 +285,6 @@ export const necromancerCards: CardDef[] = [
     },
   },
   {
-    id: 'deadWeight',
-    face: '{dmg:0}|{vuln:1}',
-    cls: 'necromancer',
-    type: 'attack',
-    rarity: 'rare',
-    cost: 3,
-    vals: [12, 12],
-    upVals: [18, 18],
-    art: 'kettlebell',
-    play: (c, v) => {
-      c.hit(v[0]);
-      c.applyStatus('enemy', 'vulnerable', 1, v[1]);
-    },
-  },
-  {
     id: 'nightShift',
     face: '{poison:0}|{block:1}',
     cls: 'necromancer',

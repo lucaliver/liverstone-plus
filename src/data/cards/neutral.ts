@@ -478,6 +478,21 @@ export const neutralCards: CardDef[] = [
     keywords: ['exhaust'],
     play: (c) => c.pinBelt(),
   },
+  {
+    id: 'deadWeight',
+    face: '{dmg:0}|{vuln:1}',
+    cls: 'neutral',
+    type: 'attack',
+    rarity: 'rare',
+    cost: 3,
+    vals: [12, 12],
+    upVals: [18, 18],
+    art: 'kettlebell',
+    play: (c, v) => {
+      c.hit(v[0]);
+      c.applyStatus('enemy', 'vulnerable', 1, v[1]);
+    },
+  },
 
   // Defensive twins of the attacks
   {
