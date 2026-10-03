@@ -473,9 +473,10 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'arcane',
     svg: `<path d="M3 28h24v14c0 7-5 12-12 12S3 49 3 42z"/><path d="M35 28h24v14c0 7-5 12-12 12s-12-5-12-12z"/><rect x="1" y="56" width="62" height="5"/><g ${S} stroke-width="4"><path d="M13 22c-3-4 3-6 0-11M45 22c-3-4 3-6 0-11"/></g>`,
   },
-  donut: {
+  // Swedish flag on a pole: a Nordic cross, off-centre towards the pole
+  flagSweden: {
     el: 'nature',
-    svg: `<circle cx="32" cy="34" r="27"/><circle cx="32" cy="34" r="9" fill="#16121f"/><g fill="#16121f"><rect x="14" y="20" width="7" height="3"/><rect x="42" y="18" width="7" height="3"/><rect x="45" y="42" width="7" height="3"/><rect x="16" y="45" width="7" height="3"/><rect x="30" y="12" width="7" height="3"/></g>`,
+    svg: `<rect x="8" y="4" width="5" height="58"/><path d="M13 8h46v36H13z"/><path fill="#16121f" d="M13 21h46v8H13z"/><path fill="#16121f" d="M24 8h8v36h-8z"/><path ${HI} d="M13 8h46v3H13z"/>`,
   },
   stapler: {
     el: 'steel',

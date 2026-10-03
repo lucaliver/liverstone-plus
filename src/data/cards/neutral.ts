@@ -119,7 +119,7 @@ export const neutralCards: CardDef[] = [
     vals: [8, 1],
     upVals: [12, 2],
     keywords: ['exhaust'],
-    art: 'donut',
+    art: 'flagSweden',
     play: (c, v) => {
       c.heal('hero', v[0]);
       c.gainMana(v[1]);
