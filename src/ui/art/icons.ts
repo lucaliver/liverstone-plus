@@ -1126,6 +1126,11 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'arcane',
     svg: `<path d="M4 20h56v40H4z"/><path d="M4 8h15v12H4zM22 8h15v12H22zM40 8h15v12H40z"/><g fill="#16121f"><rect x="10" y="28" width="44" height="6"/><rect x="10" y="40" width="30" height="4"/><rect x="10" y="50" width="38" height="4"/></g>`,
   },
+  /** Forty Tabs Open's chip: browser windows piled on each other. */
+  tabs: {
+    el: 'arcane',
+    svg: `<path d="M22 4h38v32H22z"/><path d="M4 18h40v42H4z"/><g fill="#16121f"><rect x="4" y="18" width="40" height="8"/><rect x="10" y="34" width="26" height="4"/><rect x="10" y="44" width="18" height="4"/></g>`,
+  },
   freeCoffee: {
     el: 'fire',
     svg: `<path d="M12 20h40l-5 40H17z"/><rect x="8" y="12" width="48" height="10"/><path fill="#16121f" d="M14 34h36l-1.5 12h-33z"/><g fill="none" stroke="#fff" stroke-width="3"><circle cx="32" cy="40" r="4"/></g><g ${S} stroke-width="4"><path d="M22 8c-3-3 3-5 0-8M32 8c-3-3 3-5 0-8M42 8c-3-3 3-5 0-8"/></g>`,
