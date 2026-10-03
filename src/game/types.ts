@@ -192,6 +192,8 @@ export interface StatusDef {
   holdsBlock?: true;
   /** While active, the carrier takes no damage at all (Dodge). */
   immune?: true;
+  /** While active on the enemy, an attack card the hero drags onto the stage (instead of tapping it) is critical (VIP Treatment). */
+  critOnDrag?: true;
   /** While active on the hero, no card rule (`canPlay`) applies (Root access). */
   ignoresRules?: true;
   /** While active on the hero, a card slipping off the belt plays itself for free if it can (Autopilot). */
@@ -420,6 +422,8 @@ export interface RelicHooks {
   tick?: (c: Combat, dt: number) => void;
   /** Return true to cancel death (once-per-run relics flag themselves). */
   onDeath?: (c: Combat) => boolean;
+  /** A card of the hero's just left the belt unplayed. */
+  onCardExpired?: (c: Combat, card: CombatCard) => void;
 }
 
 export interface RelicDef {
@@ -430,7 +434,19 @@ export interface RelicDef {
   /** The number its text shows (`{n}`). */
   n: number;
   /** Static modifiers applied to combat setup. */
-  mods?: Partial<{ maxMana: number; sleeve: number; regen: number; maxHp: number; gold: number }>;
+  mods?: Partial<{
+    maxMana: number;
+    sleeve: number;
+    regen: number;
+    maxHp: number;
+    gold: number;
+    /** Multiplies the belt's speed. */
+    beltSpeed: number;
+    /** The fight starts with the belt run until its first card is this far in (belt widths), if that is further than `CONFIG.prewarm`. */
+    startBelt: number;
+    /** Extra cards on offer after a fight. */
+    rewardCards: number;
+  }>;
   hooks?: RelicHooks;
   /** For a relic that triggers every so often: how full its bar is (0..1) in the fight. It gets a chip with a filling bar. */
   progress?: (c: Combat) => number;

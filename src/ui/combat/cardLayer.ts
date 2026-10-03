@@ -147,9 +147,9 @@ export function createCardLayer(v: CombatView): CardLayer {
     d.el.style.scale = def ? String(1 + SWEEP_GROW * Math.min(1, held.bonus / cardValsOf(held)[def.max])) : '';
   };
 
-  const playUid = (uid: number): void => {
+  const playUid = (uid: number, dragged = false): void => {
     if (state.paused || state.ended) return;
-    combat.playCard(uid);
+    combat.playCard(uid, false, dragged);
   };
 
   // ------------------------------------------------------------------ input
@@ -255,7 +255,7 @@ export function createCardLayer(v: CombatView): CardLayer {
     // A card that sweeps the belt is played the moment it is let go, wherever that is.
     if (!d.moved || CARDS[findCard(d.uid)?.id ?? '']?.sweep) {
       cancelDrag();
-      playUid(d.uid);
+      playUid(d.uid, d.moved);
       return;
     }
     const slot = d.from === 'belt' ? slotAt(ev.clientX, ev.clientY) : -1;
@@ -265,7 +265,7 @@ export function createCardLayer(v: CombatView): CardLayer {
     const play = d.from === 'sleeve' ? outOfSleeve : ev.clientY < r.belt.getBoundingClientRect().top;
     cancelDrag();
     if (slot >= 0) combat.stash(d.uid, slot);
-    else if (play) playUid(d.uid);
+    else if (play) playUid(d.uid, true);
   };
 
   r.beltCards.addEventListener('pointerdown', (e) => onDown(e, 'belt'));

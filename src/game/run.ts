@@ -3,7 +3,7 @@ import { loadRaw, remove, store } from '../core/save';
 import { nextUid, peekUid, resetUid } from '../core/util';
 import { CARD_LIST, CARDS, RARITY_ORDER, cardCostOf, cardKeywordsOf, rewardPool } from '../data/cards';
 import { PERKS } from '../data/perks';
-import { RELIC_LIST, RELICS } from '../data/relics';
+import { RELIC_LIST, RELICS, relicSum } from '../data/relics';
 import { ACT_DEFS, actDef } from '../data/acts';
 import { CONFIG, REWARD_MIN_LEGENDARY, type RewardKind, rewardOdds, rewardUpgradeChance } from '../data/config';
 import { MODIFIERS, resolveMods } from '../data/modifiers';
@@ -310,7 +310,8 @@ export function applyCombat(run: RunState, combat: Combat): void {
 
 /** Distinct reward cards for the current node (the player swaps one into the deck). */
 export const REWARD_CHOICES = 4;
-export const rewardChoices = (run: RunState): number => Math.max(1, REWARD_CHOICES + resolveMods(run.mods).rewardCards);
+export const rewardChoices = (run: RunState): number =>
+  Math.max(1, REWARD_CHOICES + resolveMods(run.mods).rewardCards + relicSum(run.relics, 'rewardCards'));
 
 /** A card on offer: one of the offered cards may come already upgraded. */
 export interface RewardOffer {

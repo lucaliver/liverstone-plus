@@ -181,15 +181,19 @@ export class Combat {
     let maxMana = h.maxMana + (setup.bonusMaxMana ?? 0);
     let sleeve = h.sleeve;
     let regenMul = 1;
+    let beltMul = setup.beltMul ?? 1;
+    let prewarm: number = CONFIG.prewarm;
     for (const id of this.relics) {
       const m = RELICS[id]?.mods;
       if (!m) continue;
       maxMana += m.maxMana ?? 0;
       sleeve += m.sleeve ?? 0;
       regenMul *= m.regen ?? 1;
+      beltMul *= m.beltSpeed ?? 1;
+      prewarm = Math.max(prewarm, m.startBelt ?? 0);
     }
     this.regenMul = regenMul;
-    this.runBeltMul = setup.beltMul ?? 1;
+    this.runBeltMul = beltMul;
     this.canBeg = !!setup.canBeg && !this.relicFlags[BEG_FLAG];
 
     this.hero = {
@@ -246,7 +250,7 @@ export class Combat {
     // the right side filled at the normal spacing (and a second row alternating) without crowding it.
     this.spawnClock = Infinity;
     const step = 1 / 60;
-    for (let t = 0; t < (CONFIG.prewarm * CONFIG.beltTime) / this.beltRate(); t += step) this.tickBelt(step);
+    for (let t = 0; t < (prewarm * CONFIG.beltTime) / this.beltRate(); t += step) this.tickBelt(step);
     if (e.startHex) this.hexCards(e.startHex.id, e.startHex.share);
   }
 
@@ -822,6 +826,7 @@ export class Combat {
     this.events.emit({ type: 'cardExpired', card });
     this.withCard(card, def, () => def.onExpire?.(this, this.cardVals(card), card));
     this.heroDef.hooks.onCardExpired?.(this, card);
+    for (const id of this.relics) RELICS[id]?.hooks?.onCardExpired?.(this, card);
     for (const side of ['hero', 'enemy'] as const) {
       for (const [id, s] of Object.entries(this.fighter(side).statuses)) if (this.has(side, id)) STATUSES[id].onExpire?.(this, side, s);
     }
@@ -831,8 +836,8 @@ export class Combat {
 
   // --------------------------------------------------------- player actions
 
-  /** Plays a card from the belt or sleeve. Returns false if it couldn't be played. */
-  playCard(uid: number, free = false): boolean {
+  /** Plays a card from the belt or sleeve (`dragged`: the hero dragged it onto the stage instead of tapping it). Returns false if it couldn't be played. */
+  playCard(uid: number, free = false, dragged = false): boolean {
     if (this.result || this.intro > 0) return false;
     const beltIdx = this.beltIndex(uid);
     const sleeveIdx = this.sleeveIndex(uid);
@@ -865,8 +870,14 @@ export class Combat {
       this.events.emit({ type: 'cantAfford', card });
       return false;
     }
+    if (dragged && CARDS[card.id].type === 'attack' && this.dragCrits()) this.applyStatus('hero', 'crit', 1);
     this.resolvePlay(card, free);
     return true;
+  }
+
+  /** Whether something on the enemy turns a dragged attack critical. */
+  private dragCrits(): boolean {
+    return Object.keys(this.enemy.statuses).some((id) => this.has('enemy', id) && STATUSES[id].critOnDrag);
   }
 
   /** Pays for a card and plays it from wherever it is (belt or sleeve): the checks are already done. */

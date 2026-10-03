@@ -1041,6 +1041,11 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
     el: 'steel',
     svg: `<rect x="28" y="2" width="8" height="10" transform="rotate(0 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(30 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(60 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(90 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(120 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(150 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(180 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(210 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(240 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(270 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(300 32 32)"/><rect x="28" y="2" width="8" height="10" transform="rotate(330 32 32)"/><circle cx="32" cy="32" r="25"/><circle cx="32" cy="32" r="18" fill="none" stroke="#16121f" stroke-width="3"/><path fill="#16121f" d="M29 9h6v22h-6z"/><circle cx="32" cy="32" r="5" fill="#16121f"/>`,
   },
+  // VIP Treatment: a velvet rope between two posts.
+  vipRope: {
+    el: 'steel',
+    svg: `<circle cx="14" cy="10" r="7"/><circle cx="50" cy="10" r="7"/><rect x="11" y="16" width="6" height="40"/><rect x="47" y="16" width="6" height="40"/><rect x="6" y="54" width="16" height="6" rx="2"/><rect x="42" y="54" width="16" height="6" rx="2"/><path fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" d="M17 24c10 14 20 14 30 0"/>`,
+  },
   conveyorLine: {
     el: 'steel',
     svg: `<path d="M4 44h56v10H4z"/><g fill="#16121f"><circle cx="12" cy="49" r="3"/><circle cx="26" cy="49" r="3"/><circle cx="40" cy="49" r="3"/><circle cx="54" cy="49" r="3"/></g><rect x="6" y="24" width="16" height="18"/><rect x="28" y="30" width="14" height="12"/><path d="M46 20h8v-6l10 10-10 10v-6h-8z"/>`,
@@ -1214,6 +1219,26 @@ export const ICONS: Record<string, { el: Element; svg: string }> = {
   'relic.cargoPants': {
     el: 'steel',
     svg: `<path d="M12 4h40l4 22-6 34H35l-3-30-3 30H18L12 26z"/><path fill="#16121f" d="M12 12h40v3H12z"/><path fill="none" stroke="#16121f" stroke-width="3" d="M16 34h10v10H16zM38 34h10v10H38z"/>`,
+  },
+  'relic.stickyNotes': {
+    el: 'steel',
+    svg: `<path d="M10 10h44v44H10z"/><path fill="#16121f" d="M10 10h44v8H10zM18 28h28v3H18zM18 38h20v3H18z"/>`,
+  },
+  'relic.rubberDuck': {
+    el: 'steel',
+    svg: `<ellipse cx="28" cy="44" rx="24" ry="14"/><circle cx="42" cy="22" r="13"/><path fill="#16121f" d="M53 20h10l-3 7H53z"/><circle cx="43" cy="19" r="2.5" fill="#16121f"/>`,
+  },
+  'relic.paperShredder': {
+    el: 'steel',
+    svg: `<rect x="6" y="10" width="52" height="22" rx="4"/><path fill="#16121f" d="M12 18h40v4H12z"/><path d="M12 36h6v22h-6zM24 36h6v26h-6zM36 36h6v20h-6zM48 36h6v24h-6z"/>`,
+  },
+  'relic.lanyard': {
+    el: 'steel',
+    svg: `<path d="M12 2h10l14 26-6 4zM52 2H42L28 28l6 4z"/><rect x="26" y="28" width="12" height="8" rx="2"/><rect x="16" y="38" width="32" height="24" rx="3"/><path fill="#16121f" d="M28 42h8v3h-8zM24 52h16v3H24z"/>`,
+  },
+  'relic.companyCard': {
+    el: 'steel',
+    svg: `<rect x="4" y="12" width="56" height="40" rx="5"/><path fill="#16121f" d="M4 20h56v8H4z"/><rect x="10" y="36" width="14" height="10" rx="2" fill="#16121f"/><path fill="#16121f" d="M30 40h24v3H30z"/>`,
   },
 };
 

@@ -134,11 +134,11 @@ tests/         combat, content, balance.sim (+ bot), balance.stats, e2e/
 
 ### Act 3 rules (night shift)
 
-New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHits`), `assemblyLine` (`canPlay`), `overtimeCreep`, `lowBattery`, `machineLearning`, `pressure`, `boardroom`, `understudy`; their numbers are constants at the top of the file. `music.ts` has `combat3`/`map3` for the act (act 2's map is the sunny `map2`); its clock runs past midnight (`shift: [22, 30]`).
+New enemy rules are statuses (`statuses.ts`): `microsleep`, `rateLimit` (`capsHits`), `assemblyLine` (`canPlay`), `overtimeCreep`, `lowBattery`, `machineLearning`, `pressure`, `boardroom`, `understudy`, `vipTreatment` (`critOnDrag`: the VIP Client turns an attack the hero drags onto the stage critical, a tap doesn't: `Combat.playCard(uid, free, dragged)`); their numbers are constants at the top of the file. `music.ts` has `combat3`/`map3` for the act (act 2's map is the sunny `map2`); its clock runs past midnight (`shift: [22, 30]`).
 
 ### Relics
 
-`RelicDef` (`data/relics.ts`): `mods` (sleeve, maxMana, beltSpeed, regen) and `hooks` (`onCombatStart`, `onCardPlayed`, `onDeath`…), `n` = the number its text shows. A relic that triggers every so often has `progress` (0..1): the fight shows it as a chip with a filling bar in the hero's status row. A hook shows itself with a `relic` event (floating name). Needs a sprite in `art/relics.ts` (keyed by its id, drawn like a creature, most with a cute face), `relic.<id>.name`/`.d`. Run state: `run.relics` (ids) and `run.relicFlags` (once-per-run flags); the hero sheet lists them.
+`RelicDef` (`data/relics.ts`): `mods` (sleeve, maxMana, regen, `beltSpeed` a multiplier, `startBelt` how far in the belt has run when the fight opens, `rewardCards` extra cards on offer: the reward grid widens with `--swap-n`) and `hooks` (`onCombatStart`, `onCardPlayed`, `onCardExpired`, `onDeath`…), `n` = the number its text shows. A relic that triggers every so often has `progress` (0..1): the fight shows it as a chip with a filling bar in the hero's status row. A hook shows itself with a `relic` event (floating name). Needs a sprite in `art/relics.ts` (keyed by its id, drawn like a creature, most with a cute face), `relic.<id>.name`/`.d`. Run state: `run.relics` (ids) and `run.relicFlags` (once-per-run flags); the hero sheet lists them.
 
 ### Management memos (run modifiers)
 

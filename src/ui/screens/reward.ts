@@ -96,6 +96,7 @@ export function rewardScreen(run: RunState, picks: RewardOffer[], adds: boolean,
     });
     return { el, pick };
   });
+  offerRow.style.setProperty('--swap-n', String(Math.max(4, offerEls.length)));
   offerRow.append(...offerEls.map((o) => o.el));
 
   function refresh(): void {

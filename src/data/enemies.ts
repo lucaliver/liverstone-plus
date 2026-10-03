@@ -577,27 +577,19 @@ const defs: EnemyDef[] = [
     start: [{ id: 'assemblyLine' }],
   },
   {
-    // A glass cannon: it hits fast and hard, and every attack burns it too.
-    id: 'miningRig',
+    // Wants to be served in person: attacks dragged onto the stage are critical, and there is a lot of him to serve.
+    id: 'vipClient',
     act: 3,
     tier: 'normal',
-    hp: 80,
-    art: 'miningRig',
-    main: atk('hashRate', 8, 4),
-    every: 3,
+    hp: 170,
+    art: 'vipClient',
+    main: atk('stronglyWorded', 7, 6),
+    every: 2,
     specials: [
-      {
-        id: 'overclock',
-        intent: 'buff',
-        windup: 4,
-        status: [
-          { id: 'strength', v: 2, target: 'enemy' },
-          { id: 'haste', t: 6, target: 'enemy' },
-        ],
-      },
-      atk('thermalThrottling', 14, 5, { intent: 'charge' }),
+      { id: 'lifetimeCustomer', intent: 'defend', windup: 5, block: 10, status: [gainStrength] },
+      atk('askForTheManager', 15, 9, { intent: 'charge' }),
     ],
-    start: [{ id: 'burn', v: 2 }],
+    start: [{ id: 'vipTreatment' }],
   },
   {
     // Learns from every card you let slip.
@@ -784,7 +776,7 @@ export const DIFFICULTY = [
   'graveyardIntern',
   'rateLimiter',
   'lineLead',
-  'miningRig',
+  'vipClient',
   'helpdeskChatbot',
   'punchClock',
   'smokeDetector',

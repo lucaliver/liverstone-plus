@@ -994,20 +994,37 @@ ${eyes(82, 118, 76, 5, '#1b1830', 'll-g')}
 <path d="M70 92c10-8 20-4 30 0 10-4 20-8 30 0-4 12-18 12-30 8-12 4-26 4-30-8z" fill="#3a2a2a" ${OUT}/>
 <rect x="94" y="98" width="12" height="10" rx="3" fill="#ffd900" ${OUT}/><path d="M100 98v-4" stroke="#1b1830" stroke-width="2"/>`;
 
-/** The Mining Rig: a bare-frame rack of graphics cards, three fans for a face, an RGB strip on and its cables hanging like arms. */
-const miningRig = `
-<defs>${glow('mr-g', '#ff3d9a')}${lg('mr-b', '#5a5470', '#1b1830')}</defs>
+/** The VIP Client: a pompous elven noble in a green velvet robe, crown on, monocle glinting, scepter raised in one hand and a purse of coins in the other. */
+const vipClient = `
+<defs>${rg('vc-b', '#5acb7a', '#1f7a3e')}${glow('vc-g', '#ffd900')}</defs>
 ${shadow}
-<path d="M54 22c-8-10-2-18 4-20 0 8 4 12 8 14zM100 16c-8-12-2-20 6-22 0 10 6 14 10 18zM146 24c-6-10 0-16 6-18 0 8 4 10 6 14z" fill="#ff3d9a" ${OUT}/>
-<rect x="30" y="28" width="140" height="150" rx="6" fill="url(#mr-b)" ${OUT}/>
-<path d="M30 76h140M30 124h140" stroke="#120e18" stroke-width="4"/>
-<g ${OUT}><circle cx="70" cy="52" r="20" fill="#120e18"/><circle cx="130" cy="52" r="20" fill="#120e18"/><circle cx="100" cy="100" r="22" fill="#120e18"/></g>
-<g class="limb" stroke="#ff3d9a" stroke-width="5" stroke-linecap="round"><path d="M70 36v32M54 52h32M59 41l22 22M81 41l-22 22"/><path d="M130 36v32M114 52h32M119 41l22 22M141 41l-22 22" stroke="#ffd900"/><path d="M100 82v36M82 100h36M88 88l24 24M112 88l-24 24" stroke="#1c5fd0"/></g>
-${eyes(70, 130, 52, 4, '#ffd900', 'mr-g')}
-<path d="M70 140c0 10 60 10 60 0" fill="none" stroke="#f6f0e4" stroke-width="6" stroke-linecap="round"/><path d="M82 142v6M96 146v6M110 146v6M122 142v6" stroke="#f6f0e4" stroke-width="4"/>
-<rect x="36" y="160" width="128" height="10" fill="#120e18"/><path d="M36 165h32" stroke="#ff3d9a" stroke-width="8"/><path d="M68 165h32" stroke="#ffd900" stroke-width="8"/><path d="M100 165h32" stroke="#1c5fd0" stroke-width="8"/><path d="M132 165h32" stroke="#c8b4f4" stroke-width="8"/>
-<path d="M30 110c-18 4-22 24-14 40M170 100c18 6 20 28 10 46" fill="none" stroke="#1b1830" stroke-width="7" stroke-linecap="round"/><circle cx="16" cy="152" r="8" fill="#ffd900" ${OUT}/><circle cx="180" cy="148" r="8" fill="#ff3d9a" ${OUT}/>
-<path d="M44 186l-2-8h16l-2 8zM142 186l-2-8h16l-2 8z" fill="#1b1830"/>`;
+<path d="M40 186c-8-52 6-90 60-92 54 2 68 40 60 92z" fill="url(#vc-b)" ${OUT}/>
+<path d="M90 98l-8 88h36l-8-88z" fill="#ffd900" ${OUT}/>
+<circle cx="100" cy="122" r="4" fill="#1f7a3e" ${OUT}/><circle cx="100" cy="144" r="4" fill="#1f7a3e" ${OUT}/><circle cx="100" cy="166" r="4" fill="#1f7a3e" ${OUT}/>
+<path d="M56 108c-16 6-22 24-18 42l18 4z" fill="url(#vc-b)" ${OUT}/>
+<path d="M62 104c10 16 66 16 76 0l8 16c-18 18-74 18-92 0z" fill="#fbf4df" ${OUT}/>
+<path d="M70 112l8 8M86 116l4 8M114 116l-4 8M130 112l-8 8" stroke="#c9a060" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M10 164c0-10 12-10 14-18l16 0c2 8 14 8 14 18 0 14-8 22-22 22s-22-8-22-22z" fill="#8a5a2a" ${OUT}/>
+<path d="M22 146h20" stroke="#ffd900" stroke-width="6" stroke-linecap="round"/><circle cx="32" cy="168" r="9" fill="#ffd900" ${OUT}/><path d="M32 162v12M28 165h8" stroke="#e0a800" stroke-width="3"/>
+<circle cx="46" cy="152" r="9" fill="#e8f0a8" ${OUT}/>
+<g class="limb">
+<path d="M150 112c14 4 22 14 24 30l-12 4c-2-10-6-16-14-18z" fill="url(#vc-b)" ${OUT}/>
+<rect x="170" y="44" width="7" height="116" fill="#ffd900" ${OUT}/>
+<circle cx="174" cy="148" r="9" fill="#e8f0a8" ${OUT}/>
+<path d="M162 38l12 6 12-6-4 14h-16z" fill="#e0a800" ${OUT}/><circle cx="174" cy="28" r="13" fill="#3aa05a" ${OUT}/><path d="M168 22c2-4 6-6 10-5" stroke="#d8f8a8" stroke-width="4" stroke-linecap="round" fill="none"/>
+</g>
+<path d="M66 60L36 38l6 32 26 10zM134 60l30-22-6 32-26 10z" fill="#e8f0a8" ${OUT}/>
+<path d="M46 48l10 10M154 48l-10 10" stroke="#c8d878" stroke-width="3" stroke-linecap="round"/>
+<path d="M64 62c0-22 16-34 36-34s36 12 36 34c0 24-16 44-36 44S64 86 64 62z" fill="#e8f0a8" ${OUT}/>
+<path d="M66 40l-4-30 18 14 20-22 20 22 18-14-4 30z" fill="#ffd900" ${OUT}/>
+<rect x="66" y="38" width="68" height="10" fill="#e0a800" ${OUT}/>
+<circle cx="100" cy="43" r="5" fill="#3aa05a" ${OUT}/><circle cx="62" cy="12" r="4" fill="#3aa05a" ${OUT}/><circle cx="100" cy="2" r="4" fill="#3aa05a" ${OUT}/><circle cx="138" cy="12" r="4" fill="#3aa05a" ${OUT}/>
+<path d="M72 60l22 8M128 60l-22 8" stroke="#120e18" stroke-width="6" stroke-linecap="round"/>
+${eyes(84, 116, 74, 5, '#1f7a3e', 'vc-g')}
+<circle cx="116" cy="74" r="13" fill="none" stroke="#ffd900" stroke-width="4"/><path d="M127 82c10 18 8 30 4 40" stroke="#ffd900" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M97 80l-4 12h14z" fill="#c8d878" ${OUT}/>
+<path d="M68 96c12-10 22-6 32 0 10-6 20-10 32 0-6 12-18 12-32 6-14 6-26 6-32-6z" fill="#1f7a3e" ${OUT}/>
+<path d="M90 108q10 6 20 0" stroke="#120e18" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
 
 /** The Helpdesk Chatbot: a speech bubble on wheels with a headset, a screen face and a grin that's slightly too wide. */
 const helpdeskChatbot = `
@@ -1267,7 +1284,7 @@ export const CREATURES: Record<string, string> = {
   graveyardIntern,
   rateLimiter,
   lineLead,
-  miningRig,
+  vipClient,
   helpdeskChatbot,
   contractLawyer,
   outgoingVp,

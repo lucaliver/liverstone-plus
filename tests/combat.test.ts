@@ -2031,6 +2031,30 @@ describe('relics', () => {
     expect(m.hero.mana).toBeGreaterThan(0);
   });
 
+  it('Sticky Notes fill the belt, a Lanyard slows it and a Company Card adds a reward card', () => {
+    expect(setup({ relics: ['stickyNotes'] }).belt.length).toBeGreaterThan(setup().belt.length + 3);
+    expect(setup({ relics: ['lanyard'] }).beltRate()).toBeCloseTo(setup().beltRate() * 0.9);
+    const r = newRun('warrior', 3);
+    gainRelic(r, 'companyCard');
+    expect(rewardChoices(r)).toBe(5);
+    expect(rollRewards(r, 'fight')).toHaveLength(5);
+  });
+
+  it('the Rubber Duck gives Block once per fight when HP falls under half, and the Shredder for every card lost', () => {
+    const c = setup({ relics: ['rubberDuck', 'paperShredder'] });
+    run(c, CONFIG.introTime + 0.1);
+    expect(c.hero.block).toBe(0);
+    c.loseHp(50);
+    run(c, 0.1);
+    expect(c.hero.block).toBe(RELICS.rubberDuck.n);
+    c.loseHp(1);
+    c.hero.block = 0;
+    run(c, 0.1);
+    expect(c.hero.block).toBe(0);
+    run(c, 40);
+    expect(c.hero.block).toBeGreaterThan(0);
+  });
+
   it('the Emergency Exit saves you once per run, then never again', () => {
     const flags: Record<string, number> = {};
     const c = setup({ relics: ['emergencyExit'], relicFlags: flags });
@@ -2049,6 +2073,20 @@ describe('relics', () => {
     gainRelic(r, 'thermos');
     expect(r.relics).toEqual(['thermos']);
     expect(hasRelic(r, 'thermos')).toBe(true);
+  });
+});
+
+describe('VIP Client', () => {
+  it('takes a critical hit from an attack dragged onto the stage, not from a tapped one', () => {
+    const hit = (dragged: boolean): number => {
+      const c = setup({ enemy: { ...ENEMIES.vipClient, hp: 9999 }, deck: deckOf(['punch', 'punch']) });
+      run(c, CONFIG.introTime + 0.01);
+      c.gainMana(3);
+      const before = c.enemy.hp;
+      expect(c.playCard(c.belt[0].card.uid, false, dragged)).toBe(true);
+      return before - c.enemy.hp;
+    };
+    expect(hit(true)).toBe(hit(false) * CONFIG.critMult);
   });
 });
 

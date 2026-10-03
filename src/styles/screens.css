@@ -51,9 +51,13 @@
   justify-content: space-between;
   gap: 14px 8px;
 }
-/* 10-card deck = 5 × 2; the four offered cards are a bit bigger */
+/* 10-card deck = 5 × 2; the offered cards (four, `--swap-n` says when there are more) are a bit bigger */
 .swap-deck { --swap-cw: calc((min(100vw, 520px) - 32px - 4 * 8px - 10px) / 5); grid-template-columns: repeat(5, var(--swap-cw)); }
-.swap-offer { --swap-cw: calc((min(100vw, 520px) - 32px - 2 * 10px - 2 * var(--line) - 3 * 8px) / 4); grid-template-columns: repeat(4, var(--swap-cw)); }
+.swap-offer {
+  --swap-n: 4;
+  --swap-cw: calc((min(100vw, 520px) - 32px - 2 * 10px - 2 * var(--line) - (var(--swap-n) - 1) * 8px) / var(--swap-n));
+  grid-template-columns: repeat(var(--swap-n), var(--swap-cw));
+}
 .swap-deck .card,
 .swap-offer .card {
   --cw: var(--swap-cw);

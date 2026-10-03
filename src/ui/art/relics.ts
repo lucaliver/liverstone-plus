@@ -117,6 +117,51 @@ const cargoPants = `
 <path d="M116 96h46v52h-46z" fill="#6a7626" ${OUT}/><path d="M116 96h46v16h-46z" fill="#5e6a22" ${OUT}/><circle cx="139" cy="112" r="4.5" fill="#ffd900" ${OUT}/>
 <path d="M44 168h34M122 168h34" stroke="#ff3d9a" stroke-width="5" stroke-linecap="round"/>`;
 
+const stickyNotes = `
+<path d="M42 40h118v132H42z" fill="#e0a800" ${OUT} transform="rotate(6 100 106)"/>
+<path d="M36 34h118v132H36z" fill="#ffe45a" ${OUT} transform="rotate(-5 100 100)"/>
+<path d="M30 30h124v132H30z" fill="#ffd900" ${OUT}/>
+<path d="M30 30h124v20H30z" fill="#fff2a0" ${OUT}/>
+<path d="M30 148c40 10 84 10 124-4v18H30z" fill="#e0a800"/>
+<path d="M46 126h86M46 138h56" stroke="#1c5fd0" stroke-width="4" stroke-linecap="round"/>
+${face(92, 88)}`;
+
+const rubberDuck = `
+<path d="M30 126c0-26 22-40 52-40 10 0 20 2 28 6 12 6 22 6 40 12-4 30-26 48-62 48-34 0-58-8-58-26z" fill="#ffd900" ${OUT}/>
+<circle cx="124" cy="68" r="38" fill="#ffd900" ${OUT}/>
+<path d="M156 62h28c6 0 8 6 4 10l-14 12h-18z" fill="#ff8a00" ${OUT}/>
+<path d="M60 128c10 14 40 18 52 4-12-2-26-4-52-4z" fill="#e0a800" ${OUT}/>
+<circle cx="136" cy="56" r="6" fill="${INK}"/><circle cx="134" cy="54" r="2" fill="#fff"/>
+<ellipse cx="146" cy="76" rx="8" ry="5" fill="#ff3d9a" opacity=".55"/>
+<path d="M98 42c8-8 20-12 32-10" stroke="#fff2a0" stroke-width="8" fill="none" stroke-linecap="round"/>`;
+
+const paperShredder = `
+<rect x="28" y="52" width="144" height="60" rx="8" fill="#3a3450" ${OUT}/>
+<rect x="44" y="66" width="112" height="9" rx="3" fill="#120e18"/>
+<path d="M70 66l4-34h38l-4 34z" fill="${PAPER}" ${OUT}/><path d="M80 44h22M80 54h26" stroke="#1c5fd0" stroke-width="3"/>
+<path d="M40 112h120l-10 70H50z" fill="#1c5fd0" ${OUT}/>
+<path d="M60 112v36M76 112v44M92 112v32M108 112v42M124 112v34M140 112v40" stroke="${PAPER}" stroke-width="7" stroke-linecap="round"/>
+${face(100, 92, 24, 5)}`;
+
+const lanyard = `
+<path d="M34 0h28l50 106-26 8z" fill="#ff3d9a" ${OUT}/>
+<path d="M166 0h-28L88 106l26 8z" fill="#ff3d9a" ${OUT}/>
+<rect x="80" y="100" width="40" height="20" rx="4" fill="#c9c4d6" ${OUT}/>
+<rect x="58" y="118" width="84" height="68" rx="8" fill="${PAPER}" ${OUT}/>
+<rect x="86" y="124" width="28" height="7" rx="3" fill="${INK}"/>
+<rect x="58" y="168" width="84" height="18" fill="#1c5fd0" ${OUT}/>
+${face(100, 150, 15, 4.5)}`;
+
+const companyCard = `
+<g transform="rotate(-8 100 100)">
+<rect x="14" y="44" width="172" height="112" rx="14" fill="#2e8a4a" ${OUT}/>
+<rect x="14" y="62" width="172" height="20" fill="${INK}"/>
+<rect x="30" y="96" width="34" height="26" rx="4" fill="#ffd900" ${OUT}/><path d="M30 109h34M47 96v26" stroke="#e0a800" stroke-width="3"/>
+<path d="M30 140h30M70 140h30M110 140h30" stroke="${PAPER}" stroke-width="6" stroke-linecap="round"/>
+<circle cx="154" cy="140" r="8" fill="#ffd900" ${OUT}/>
+${face(130, 106, 14, 4.5)}
+</g>`;
+
 /** Sprite sources by relic id, as the renderer wants them (`relic.` keeps them apart from creature ids). */
 export const RELIC_SPRITES: Record<string, string> = Object.fromEntries(
   Object.entries({
@@ -131,6 +176,11 @@ export const RELIC_SPRITES: Record<string, string> = Object.fromEntries(
     spareBadge,
     emergencyExit,
     cargoPants,
+    stickyNotes,
+    rubberDuck,
+    paperShredder,
+    lanyard,
+    companyCard,
   }).map(([id, svg]) => [`relic.${id}`, svg]),
 );
 

@@ -13,6 +13,14 @@ const MUG_EVERY = 5;
 export const MUG_MANA = 1;
 const CLOCK_EVERY = 10;
 export const CLOCK_BLOCK = 4;
+/** How far in the belt has run when a fight with Sticky Notes starts (belt widths): most of its length, so it opens full. */
+const STICKY_BELT = 0.8;
+const DUCK_BLOCK = 12;
+/** Share of max HP the Rubber Duck squeaks at. */
+const DUCK_HP = 0.5;
+const SHREDDER_BLOCK = 3;
+/** The belt's speed with a Lanyard. */
+const LANYARD_SPEED = 0.9;
 /** Share of max HP the Emergency Exit gets you back on your feet with. */
 const EXIT_HP = 0.35;
 
@@ -119,6 +127,34 @@ const defs: RelicDef[] = [
       },
     },
   },
+  { id: 'stickyNotes', rarity: 'common', n: 1, mods: { startBelt: STICKY_BELT } },
+  {
+    id: 'rubberDuck',
+    rarity: 'common',
+    n: DUCK_BLOCK,
+    hooks: {
+      // Once per fight, the first time the hero is under half HP.
+      tick: (c) => {
+        if (c.mem.duck || c.hero.hp > c.hero.maxHp * DUCK_HP) return;
+        c.mem.duck = 1;
+        c.gainBlock('hero', DUCK_BLOCK);
+        proc(c, 'rubberDuck');
+      },
+    },
+  },
+  {
+    id: 'paperShredder',
+    rarity: 'rare',
+    n: SHREDDER_BLOCK,
+    hooks: {
+      onCardExpired: (c) => {
+        c.gainBlock('hero', SHREDDER_BLOCK);
+        proc(c, 'paperShredder');
+      },
+    },
+  },
+  { id: 'lanyard', rarity: 'rare', n: Math.round((1 - LANYARD_SPEED) * 100), mods: { beltSpeed: LANYARD_SPEED } },
+  { id: 'companyCard', rarity: 'epic', n: 1, mods: { rewardCards: 1 } },
   // The Tailor's: not found in the Lost & Found.
   { id: 'cargoPants', rarity: 'special', n: 1, mods: { sleeve: 1 } },
 ];
@@ -127,5 +163,5 @@ export const RELICS: Record<string, RelicDef> = Object.fromEntries(defs.map((r) 
 export const RELIC_LIST: readonly RelicDef[] = defs;
 
 /** The sum of a numeric modifier over the relics a run holds (the hero sheet shows the stats as the fight will start). */
-export const relicSum = (relics: readonly string[], key: 'sleeve' | 'maxMana'): number =>
+export const relicSum = (relics: readonly string[], key: 'sleeve' | 'maxMana' | 'rewardCards'): number =>
   relics.reduce((s, id) => s + (RELICS[id]?.mods?.[key] ?? 0), 0);
