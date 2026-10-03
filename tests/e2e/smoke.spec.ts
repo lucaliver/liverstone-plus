@@ -964,3 +964,35 @@ test('Power Socket: the belt goes dead and a crank knob turns it, both rows', as
   await page.mouse.up();
   expect((await combat(page, 'return c.beltCranked')) as number).toBeLessThan(cranked);
 });
+
+test('an elite reward adds a card to the deck instead of swapping one', async ({ page }) => {
+  await freshGame(page);
+  await page.getByRole('button', { name: /new run/i }).click();
+  await page.getByRole('button', { name: /start shift/i }).click();
+  await expect(page.locator('.node.current')).toBeVisible();
+  const size = (await page.evaluate('window.__game.run.deck.length')) as number;
+  await page.locator('.journey .debug-fab').click();
+  await page.getByRole('button', { name: 'Elite card reward' }).click();
+  const add = page.getByRole('button', { name: 'Add', exact: true });
+  await expect(add).toBeDisabled();
+  await page.locator('.swap-offer .card').first().click();
+  await expect(add).toBeEnabled();
+  await add.click();
+  await expect(page.locator('.journey')).toBeVisible({ timeout: 6000 });
+  expect(await page.evaluate('window.__game.run.deck.length')).toBe(size + 1);
+});
+
+test('losing the first fight offers to beg to stay, once, and the fight goes on', async ({ page }) => {
+  await freshGame(page);
+  await startFight(page);
+  await combat(page, "c.damage('enemy', 'hero', 999, { raw: true }, 'enemy');");
+  const offer = page.locator('.modal', { hasText: /beg to stay/i });
+  await expect(offer).toBeVisible();
+  await offer.getByRole('button', { name: 'Beg', exact: true }).click();
+  await expect(offer).toBeHidden();
+  expect(await page.evaluate('window.__combat.hero.hp === window.__combat.hero.maxHp')).toBe(true);
+  expect(await page.evaluate('window.__combat.result')).toBeNull();
+  // The second time is final.
+  await combat(page, "delete c.hero.statuses.dodge; c.damage('enemy', 'hero', 9999, { raw: true, ignoreBlock: true }, 'enemy');");
+  await expect(page.locator('.end')).toBeVisible({ timeout: 8000 });
+});
