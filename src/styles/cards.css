@@ -202,6 +202,8 @@
 @keyframes foil {
   to { background-position: -93.43cqw -130cqw; }
 }
+/* the foil is for looking at cards (deck, rewards, handbook): in a fight it would only distract */
+.combat .card[data-rarity='legendary']::after { content: none; }
 
 /* cost lowered by a perk (Budget Cut) */
 .card .c-cost.cheap { color: var(--y); }
