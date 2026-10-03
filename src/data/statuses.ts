@@ -108,7 +108,7 @@ const defs: StatusDef[] = [
   { id: 'workaholic', tone: 'red', kind: 'timed', good: true, icon: 'muscle', strength: true },
   { id: 'brownNosing', tone: 'blue', kind: 'timed', good: true, icon: 'crystalUp', regenMul: 2 },
   { id: 'thorns', tone: 'red', kind: 'stacks', good: true, icon: 'thorns' },
-  { id: 'dodge', tone: 'teal', kind: 'timed', good: true, icon: 'dodge', immune: true },
+  { id: 'dodge', tone: 'teal', kind: 'timed', good: true, icon: 'dodge', immune: true, look: 'ghost' },
   { id: 'juggernaut', tone: 'teal', kind: 'stacks', good: true, icon: 'helm' },
   { id: 'fortified', tone: 'teal', kind: 'timed', good: true, icon: 'fortress', holdsBlock: true },
   { id: 'regen', tone: 'green', kind: 'dot', good: true, chip: 'short', icon: 'redCross', heals: true },

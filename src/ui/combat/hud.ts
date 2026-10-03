@@ -19,7 +19,7 @@ const LOW_HP = 0.3;
 /** A draining status bar moves in this many steps, and blinks once this share is left. */
 const BAR_STEPS = 10;
 const BAR_LOW = 0.3;
-/** The statuses that change how the enemy's sprite looks, and the looks themselves (the half-HP rage is one of them). */
+/** The statuses that change how a fighter's sprite looks, and the looks themselves (the half-HP rage is one of them). */
 const LOOKS = Object.values(STATUSES).filter((s): s is typeof s & { look: string } => !!s.look);
 const ALL_LOOKS = [...new Set([...LOOKS.map((s) => s.look), 'enraged'])];
 /** Steps of the belt's red wash (motion is stepped). */
@@ -337,6 +337,9 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
     const looks = new Set(LOOKS.filter((s) => combat.has('enemy', s.id)).map((s) => s.look));
     if (combat.enemy.halfTriggered && combat.enemy.def.onHalf) looks.add('enraged');
     for (const look of ALL_LOOKS) toggle(r.enemyArt, look, looks.has(look));
+    // The hero's portrait does too (Dodge: it turns into a ghost).
+    const heroLooks = new Set(LOOKS.filter((s) => combat.has('hero', s.id)).map((s) => s.look));
+    for (const look of ALL_LOOKS) toggle(r.portrait, look, heroLooks.has(look));
     toggle(r.enemyArt, 'absorbing', !!combat.enemy.move.absorb && combat.enemyTimeRate() > 0);
     // Blackout: the cards hide what they do (their art, name and cost stay).
     toggle(v.el, 'blackout', combat.has('hero', 'blackout'));

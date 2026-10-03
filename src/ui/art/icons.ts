@@ -24,7 +24,8 @@ const potion = (liquid: string): string =>
 const star4 = (cx: number, cy: number, r: number): string =>
   `<path d="M${cx} ${cy - r}Q${cx + r * 0.18} ${cy - r * 0.18} ${cx + r} ${cy}Q${cx + r * 0.18} ${cy + r * 0.18} ${cx} ${cy + r}Q${cx - r * 0.18} ${cy + r * 0.18} ${cx - r} ${cy}Q${cx - r * 0.18} ${cy - r * 0.18} ${cx} ${cy - r}z"/>`;
 /** Dodge: a figure darting sideways, speed lines trailing behind it. */
-const dodge = `<circle cx="46" cy="12" r="8"/><path ${S} stroke-width="13" d="M43 26l-8 15"/><path ${S} stroke-width="10" d="M35 41l12 15M35 41l-8 13"/><path ${S} stroke-width="5" d="M4 22h18M10 34h14M4 46h14"/>`;
+/** Dodge: a little ghost, the hit goes right through it. */
+const dodge = `<path d="M32 4C19 4 10 14 10 27v31l8-6 7 6 7-6 7 6 7-6 8 6V27C54 14 45 4 32 4z"/><circle cx="24" cy="26" r="4.5" fill="#16121f"/><circle cx="40" cy="26" r="4.5" fill="#16121f"/><path fill="#16121f" d="M27 36h10v4a5 5 0 0 1-10 0z"/><path ${HI} d="M16 18c3-6 8-9 14-10-6 2-10 7-11 14z"/>`;
 const bolt = `<path d="M37 4L14 36h14l-5 24 25-34H33z"/>`;
 /** Filled gem = mana (points to spend). */
 const crystal = `<path d="M32 4l16 18-16 38-16-38z"/><path ${HI} d="M32 4l16 18H32z"/><path fill="#16121f" opacity=".3" d="M32 60L16 22h16z"/>`;
