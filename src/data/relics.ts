@@ -4,11 +4,10 @@ import type { RelicDef } from '../game/types';
 /** A relic shows itself in the fight: a floating name over the hero. */
 const proc = (c: Combat, id: string): void => c.events.emit({ type: 'relic', id });
 
-const STRESS_BALL_BLOCK = 8;
+const STRESS_BALL_BLOCK = 12;
 const THERMOS_HEAL = 5;
 const STAPLER_EVERY = 6;
 export const STAPLER_DAMAGE = 6;
-const BOOT_MANA = 2;
 const MUG_EVERY = 5;
 export const MUG_MANA = 1;
 const CLOCK_EVERY = 10;
@@ -90,11 +89,11 @@ const defs: RelicDef[] = [
   {
     id: 'inboxZero',
     rarity: 'rare',
-    n: BOOT_MANA,
+    n: 1,
     mods: { maxMana: 1 },
     hooks: {
       onCombatStart: (c) => {
-        c.gainMana(BOOT_MANA);
+        c.gainMana(c.hero.maxMana);
         proc(c, 'inboxZero');
       },
     },

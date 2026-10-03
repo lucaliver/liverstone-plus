@@ -419,7 +419,7 @@ const it: Record<EnKey, string> = {
   'relic.unionArmband.name': 'Fascia Sindacale',
   'relic.unionArmband.d': 'Inizia ogni scontro con {n} di Forza.',
   'relic.inboxZero.name': 'Inbox Zero',
-  'relic.inboxZero.d': 'Inizia ogni scontro con {n} mana già caricato e 1 cristallo vuoto in più.',
+  'relic.inboxZero.d': '{n} {n|cristallo|cristalli} di mana in più, e ogni scontro inizia con il mana pieno.',
   'relic.heavyStapler.name': 'Pinzatrice Pesante',
   'relic.heavyStapler.d': 'Ogni {n}ª carta che giochi fa anche {$staplerDamage} danni.',
   'relic.spareBadge.name': 'Badge di Scorta',

@@ -2115,6 +2115,12 @@ describe('relics', () => {
   });
 
   it('the Emergency Exit saves you once per run, then never again', () => {
+  it('Inbox Zero adds a crystal and opens the fight with the mana full', () => {
+    const c = setup({ relics: ['inboxZero'] });
+    expect(c.hero.maxMana).toBe(setup().hero.maxMana + 1);
+    expect(c.hero.mana).toBe(c.hero.maxMana);
+  });
+
     const flags: Record<string, number> = {};
     const c = setup({ relics: ['emergencyExit'], relicFlags: flags });
     c.loseHp(999);
