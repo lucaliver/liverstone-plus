@@ -12,8 +12,6 @@ export interface Settings {
   seenTutorial: boolean;
   /** Cards whose first-time tip (`CardDef.tip`) has been shown. */
   seenTips: string[];
-  /** Cards enter on the right and travel left (the default is left to right). Applies from the next fight. */
-  rightToLeft: boolean;
   /** Shows the floating debug buttons (title, fight, map). */
   debugMenus: boolean;
   /** Sends anonymous play counters (`src/analytics/`). */
@@ -29,7 +27,6 @@ const defaults: Settings = {
   locale: 'en',
   seenTutorial: false,
   seenTips: [],
-  rightToLeft: false,
   debugMenus: false,
   analytics: true,
 };
@@ -41,7 +38,7 @@ for (const k of ['sfxVolume', 'musicVolume'] as const) {
   settings[k] = typeof v === 'number' && Number.isFinite(v) ? Math.min(1, Math.max(0, v)) : defaults[k];
 }
 
-for (const k of ['reduceMotion', 'haptics', 'seenTutorial', 'rightToLeft', 'debugMenus', 'analytics'] as const)
+for (const k of ['reduceMotion', 'haptics', 'seenTutorial', 'debugMenus', 'analytics'] as const)
   if (typeof settings[k] !== 'boolean') settings[k] = defaults[k];
 if (!GAME_SPEEDS.some((s) => s === settings.speed)) settings.speed = defaults.speed;
 if (typeof settings.locale !== 'string') settings.locale = defaults.locale;

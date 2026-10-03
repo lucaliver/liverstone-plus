@@ -474,15 +474,6 @@ test('debug menus are off by default, and the Settings switch shows them at once
   await expect(page.locator('.debug-fab')).toBeVisible();
 });
 
-test('touching the belt direction switch says it takes effect from the next fight', async ({ page }) => {
-  await freshGame(page);
-  await page.getByRole('button', { name: /settings/i }).click();
-  const note = page.locator('.setting', { hasText: 'Belt runs right to left' }).locator('.setting-note');
-  await expect(note).toBeHidden();
-  await page.getByRole('switch', { name: 'Belt runs right to left' }).click();
-  await expect(note).toBeVisible();
-});
-
 test('calling in sick needs a long press on the confirm button', async ({ page }) => {
   await freshGame(page);
   await startFight(page);

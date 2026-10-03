@@ -11,7 +11,7 @@ import { meetEnemy } from '../../game/meta';
 import { saveSettings, settings } from '../../game/settings';
 import { type ModalHandle, openModal, type Screen } from '../app';
 import { debugButton, openDebugMenu } from '../components/debugMenu';
-import { type InfoOpts, openDeck, openHowTo, openInfo, openSettings } from '../components/modals';
+import { type InfoOpts, openDeck, openInfo, openSettings } from '../components/modals';
 import { creature } from '../art/creatures';
 import { spriteBox } from '../art/riso';
 import { icon } from '../art/icons';
@@ -263,15 +263,6 @@ export function combatScreen(run: RunState, combat: Combat, cb: CombatCallbacks)
       body: h('p', { class: 'kbd-hint' }, t('combat.keys')),
       actions: [
         { label: t('combat.resume'), icon: 'play' },
-        {
-          label: t('menu.howTo'),
-          icon: 'question',
-          cls: 'secondary',
-          onClick: () => {
-            openHowTo();
-            return false;
-          },
-        },
         {
           label: t('menu.settings'),
           icon: 'gear',

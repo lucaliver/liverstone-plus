@@ -146,8 +146,6 @@ const it: Record<EnKey, string> = {
   'settings.music': 'Musica',
   'settings.motion': 'Riduci i movimenti',
   'settings.haptics': 'Vibrazione',
-  'settings.rightToLeft': 'Nastro da dx a sx',
-  'settings.nextFight': 'Ha effetto dal prossimo scontro.',
   'settings.analytics': 'Condividi statistiche',
   'settings.analyticsHint': 'Dati anonimi senza id.',
   'settings.debugMenus': 'Debug',

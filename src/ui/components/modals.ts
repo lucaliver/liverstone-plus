@@ -133,12 +133,6 @@ export function openSettings(extra: ModalAction[] = [], home = false): ModalHand
           (v) => (settings.haptics = v),
         )
       : null,
-    toggleRow(
-      t('settings.rightToLeft'),
-      () => settings.rightToLeft,
-      (v) => (settings.rightToLeft = v),
-      t('settings.nextFight'),
-    ),
     analyticsRow,
     toggleRow(
       t('settings.debugMenus'),

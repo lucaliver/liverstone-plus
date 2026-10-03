@@ -6,7 +6,6 @@ import { creature } from '../art/creatures';
 import { icon } from '../art/icons';
 import { darkEyes, motes } from '../components/decor';
 import { $, centerOf, h, retrigger } from '../dom';
-import { settings } from '../../game/settings';
 
 export const ABILITY_ICON: Record<string, string> = { warrior: 'overtime', mage: 'stolenClock', necromancer: 'shutdown' };
 export const PASSIVE_ICON: Record<string, string> = { warrior: 'thickSkin', mage: 'bolt2', necromancer: 'biohazard' };
@@ -21,7 +20,7 @@ export interface CombatView {
   r: ReturnType<typeof queryRefs>;
   /**
    * `waiting`: before the player presses Start; things can be inspected but not played.
-   * `ltr`: the belt runs left to right (the default setting; a Paradigm Shift turns it around mid-fight).
+   * `ltr`: the belt runs left to right (a Paradigm Shift turns it around mid-fight).
    * `stop`: seconds of hit-stop left (the fight freezes for a beat on heavy hits).
    */
   state: {
@@ -95,7 +94,7 @@ function markup(run: RunState, combat: Combat): string {
         </div>
       </div>
     </section>
-    <section class="belt ${settings.rightToLeft ? '' : 'ltr'}" style="--rows: ${combat.beltRows}">
+    <section class="belt ltr" style="--rows: ${combat.beltRows}">
       <div class="belt-track"></div>
       <div class="belt-alarm"></div>
       <div class="belt-rust"></div>
@@ -191,7 +190,7 @@ export function createCombatView(run: RunState, combat: Combat): CombatView {
     combat,
     heroId: run.hero,
     r,
-    state: { paused: true, waiting: true, ended: false, frameNo: 0, beltW: 0, cardW: 0, rowH: 0, ltr: !settings.rightToLeft, stop: 0 },
+    state: { paused: true, waiting: true, ended: false, frameNo: 0, beltW: 0, cardW: 0, rowH: 0, ltr: true, stop: 0 },
     retrigger,
     enemyPoint,
     heroPoint,

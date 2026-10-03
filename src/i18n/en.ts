@@ -145,8 +145,6 @@ const en = {
   'settings.music': 'Music',
   'settings.motion': 'Reduce motion',
   'settings.haptics': 'Vibration',
-  'settings.rightToLeft': 'Belt runs right to left',
-  'settings.nextFight': 'Takes effect from the next fight.',
   'settings.analytics': 'Share play stats',
   'settings.analyticsHint': 'Anonymous counters only: no name, no ID.',
   'settings.debugMenus': 'Debug menus',
