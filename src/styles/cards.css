@@ -192,12 +192,12 @@
   inset: 0;
   z-index: 3;
   pointer-events: none;
-  opacity: 0.2;
+  opacity: 0.11;
   background-image: repeating-linear-gradient(135deg, var(--y) 0 8cqw, var(--p) 8cqw 16cqw, var(--b) 16cqw 24cqw, var(--paper) 24cqw 40cqw);
   /* a tile much bigger than the card, moved by exactly one band period (40cqw along the 45deg line = 56.57cqw across) so the loop is seamless */
   background-size: 400cqw 400cqw;
   background-position: -150cqw -130cqw;
-  animation: foil 3.2s steps(16) infinite;
+  animation: foil 6s steps(24) infinite;
 }
 @keyframes foil {
   to { background-position: -93.43cqw -130cqw; }
