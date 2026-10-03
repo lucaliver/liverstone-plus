@@ -2265,4 +2265,17 @@ describe('act 3 elites and boss', () => {
     expect(c.hero.block).toBeGreaterThanOrEqual(30);
     expect([...c.draw, ...c.discard].some((x) => x.id === 'debt')).toBe(true);
   });
+  it('a status with a trigger fills its bar up to it and cues when it goes off', () => {
+    const c = setup({ enemy: { ...plainBoomer, start: [{ id: 'lowBattery', v: 1 }] } });
+    const cues: string[] = [];
+    c.events.on((e) => void (e.type === 'cue' ? cues.push(e.id) : null));
+    const bar = (): number => STATUSES.lowBattery.progress!(c, 'enemy', c.enemy.statuses.lowBattery);
+    run(c, CONFIG.introTime + 0.01);
+    run(c, 2.5);
+    expect(bar()).toBeCloseTo(0.5, 1);
+    expect(cues).toEqual([]);
+    run(c, 2.6);
+    expect(cues).toEqual(['lowBattery']);
+    expect(bar()).toBeLessThan(0.2);
+  });
 });

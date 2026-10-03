@@ -86,6 +86,12 @@ const everySecond =
     for (let n = before + 1; n <= Math.floor(s.e + 1e-6); n++) fn(c, side, n, s);
   };
 
+/** The progress of a status that goes off every `every` seconds of its clock `e`. */
+const cycle =
+  (every: number): NonNullable<StatusDef['progress']> =>
+  (_c, _side, s) =>
+    ((s.e ?? 0) % every) / every;
+
 /** Slacking statuses last only until the hero plays another card. */
 const endOnPlay =
   (id: string): StatusDef['onCardPlayed'] =>
@@ -392,6 +398,8 @@ const defs: StatusDef[] = [
     good: true,
     passive: true,
     icon: 'sleepMask',
+    // Awake it fills up to the nap, asleep it empties again.
+    progress: (_c, _side, s) => ((s.e ?? 0) < AWAKE ? (s.e ?? 0) / AWAKE : 1 - ((s.e ?? 0) - AWAKE) / ASLEEP),
     tick: (c, side, s, dt) => {
       const before = s.e ?? 0;
       s.e = before + dt;
@@ -427,6 +435,7 @@ const defs: StatusDef[] = [
     good: true,
     passive: true,
     icon: 'creepClock',
+    progress: cycle(CREEP_EVERY),
     tick: everySecond((c, side, n) => {
       if (n % CREEP_EVERY === 0) c.applyStatus(side, 'strength', 1);
     }),
@@ -439,8 +448,12 @@ const defs: StatusDef[] = [
     good: true,
     passive: true,
     icon: 'lowBattery',
-    tick: everySecond((c, _side, n, s) => {
-      if (n % CHIRP_EVERY === 0 && c.hero.mana > 0) c.drainMana(s.v);
+    progress: cycle(CHIRP_EVERY),
+    cue: 'smokeDetector',
+    tick: everySecond((c, side, n, s) => {
+      if (n % CHIRP_EVERY !== 0) return;
+      c.cue(side, 'lowBattery');
+      if (c.hero.mana > 0) c.drainMana(s.v);
     }),
   },
   // Flickering lights: every so often the hero's cards go dark (a Blackout), with a little warning.
@@ -451,6 +464,7 @@ const defs: StatusDef[] = [
     good: true,
     passive: true,
     icon: 'bulbOff',
+    progress: cycle(FLICKER_EVERY),
     tick: everySecond((c, _side, n) => {
       if (n % FLICKER_EVERY === 0) c.applyStatus('hero', 'blackout', 1, FLICKER_TIME);
     }),
@@ -477,6 +491,7 @@ const defs: StatusDef[] = [
     good: true,
     passive: true,
     icon: 'copy',
+    progress: (c) => (c.enemy.mem.understudy ?? 0) / UNDERSTUDY_EVERY,
     onCardPlayed: (c, side) => {
       if (side !== 'enemy') return;
       const n = (c.enemy.mem.understudy ?? 0) + 1;
@@ -492,6 +507,7 @@ const defs: StatusDef[] = [
     good: true,
     passive: true,
     icon: 'brainChip',
+    progress: (_c, _side, s) => (s.e ?? 0) / LEARN_EVERY,
     onExpire: (c, side, s) => {
       if (side !== 'enemy') return;
       s.e = (s.e ?? 0) + 1;
@@ -508,6 +524,7 @@ const defs: StatusDef[] = [
     good: true,
     passive: true,
     icon: 'steamGauge',
+    progress: cycle(PRESSURE_EVERY),
     tick: (c, side, s, dt) => {
       buildPressure(c, side, s, dt);
       const f = c.fighter(side);

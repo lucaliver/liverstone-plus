@@ -96,6 +96,11 @@ function noise(
 }
 
 const SOUNDS = {
+  /** A smoke detector with a dying battery: one shrill chirp. */
+  smokeDetector: () => {
+    tone(3100, 0.1, { type: 'square', vol: 0.07 });
+    tone(3150, 0.1, { type: 'sine', vol: 0.1 });
+  },
   tap: () => tone(660, 0.06, { type: 'triangle', vol: 0.12 }),
   button: () => {
     tone(520, 0.07, { type: 'triangle', vol: 0.15 });

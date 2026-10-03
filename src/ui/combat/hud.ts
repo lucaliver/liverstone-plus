@@ -162,10 +162,10 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
         ...list.map((id) => {
           const def = STATUSES[id];
           const b = h('button', {
-            class: `status ${def.good ? 'good' : 'bad'}${def.span ? ' draining' : ''}`,
+            class: `status ${def.good ? 'good' : 'bad'}${def.span || def.progress ? ' draining' : ''}`,
             'data-status': id,
             'data-tone': def.tone,
-            html: `${def.span ? '<i class="drain"></i>' : ''}${icon(statusIcon(id, side))}<span></span>`,
+            html: `${def.span || def.progress ? '<i class="drain"></i>' : ''}${icon(statusIcon(id, side))}<span></span>`,
             'aria-label': t(`status.${id}`),
           });
           onPress(b, () => showStatus(side, id));
@@ -197,6 +197,11 @@ export function createHud(v: CombatView, onPassive: () => void): { render(): voi
         const fill = Math.ceil(left * BAR_STEPS) / BAR_STEPS;
         b.querySelector<HTMLElement>('.drain')!.style.setProperty('--fill', String(fill));
         toggle(b, 'low', fill > 0 && fill <= BAR_LOW);
+      }
+      // A status with a trigger: its bar fills up to the moment it goes off.
+      if (sd.progress) {
+        const fill = Math.floor(Math.min(1, Math.max(0, sd.progress(combat, side, s))) * BAR_STEPS) / BAR_STEPS;
+        b.querySelector<HTMLElement>('.drain')!.style.setProperty('--fill', String(fill));
       }
     }
   };

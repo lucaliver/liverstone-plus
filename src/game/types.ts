@@ -160,6 +160,10 @@ export interface StatusDef {
   showStacks?: boolean;
   /** Seconds its chip's bar empties over: the chip is drawn as a coloured bar that drains with the timer (for a counter that runs out, like chained spells). */
   span?: number;
+  /** How far the status is from going off, 0 to 1: its chip is drawn as a bar that fills up to the trigger (the engine calls `Combat.cue` as it goes off). */
+  progress?: (c: Combat, side: Side, s: StatusVal) => number;
+  /** The sound that plays each time `Combat.cue` says the status went off. */
+  cue?: import('../audio/sfx').SoundId;
   /** A permanent trait (enemy passives): shown without a number. */
   passive?: boolean;
   /** A trait the player isn't told about: no chip in the status row, no line in the pre-fight traits or the handbook (Update Needed: the window is the surprise). */
@@ -450,6 +454,8 @@ export type CombatEvent =
   | { type: 'ability'; id: string }
   /** A relic did its thing (shows its name over the hero). */
   | { type: 'relic'; id: string }
+  /** A status with a trigger just went off (its chip empties and it plays its `cue`). */
+  | { type: 'cue'; side: Side; id: string }
   | { type: 'enrage' }
   | { type: 'speech'; key: TKey }
   | { type: 'beltReversed' }

@@ -131,6 +131,11 @@ export function bindCombatFx(v: CombatView, cards: CardLayer, onEnd: (result: 'w
         floatText(p.x, p.y - 50, t(e.key), 'text');
         break;
       }
+      case 'cue': {
+        const cue = STATUSES[e.id].cue;
+        if (cue) sfx(cue);
+        break;
+      }
       case 'relic': {
         const p = v.pointOf('hero');
         floatText(p.x, p.y - 50, t(`relic.${e.id}.name`), 'status good');

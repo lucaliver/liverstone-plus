@@ -1164,6 +1164,11 @@ export class Combat {
     if (h.mana > before) this.events.emit({ type: 'mana', amount: h.mana - before });
   }
 
+  /** A status that goes off every so often just did: the UI plays its `cue`. */
+  cue(side: Side, id: string): void {
+    this.events.emit({ type: 'cue', side, id });
+  }
+
   drainMana(n: number): void {
     const lost = Math.min(this.hero.mana, n);
     this.hero.mana -= lost;
