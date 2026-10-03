@@ -842,6 +842,22 @@ describe('combat engine', () => {
     expect(card.passed).toBeFalsy();
   });
 
+  it('a card held at the end of the belt is kept for the grace time, then falls off', () => {
+    const c = setup({ beltRows: 1, deck: deckOf(['punch', 'punch']) });
+    c.enemy.move = { id: 'wait', intent: 'defend', windup: 999 };
+    const expired: number[] = [];
+    c.events.on((e) => {
+      if (e.type === 'cardExpired') expired.push(e.card.uid);
+    });
+    run(c, CONFIG.introTime + 0.01);
+    const uid = c.belt[0].card.uid;
+    c.startDrag(uid);
+    run(c, CONFIG.beltTime);
+    expect(expired).not.toContain(uid);
+    run(c, CONFIG.dragGrace + 0.2);
+    expect(expired).toContain(uid);
+  });
+
   it('the Security Monitor raises 30 Block the first time it falls under half HP', () => {
     const c = setup({ enemy: ENEMIES.securityMonitor });
     run(c, CONFIG.introTime + 0.01);

@@ -116,8 +116,10 @@ export class Combat {
   rowsOpen: number;
   /** The sleeve and the ability are out of reach (`EnemyDef.deepBelt`): nothing can be stashed, the ability can't be used. */
   lowerHidden = false;
-  /** The card the hero is dragging around the screen (`sweep`): it can't fall off the belt while held. */
+  /** The card the hero is dragging around the screen: it can't fall off the belt while held (a `sweep` card for as long as it is held, any other for `CONFIG.dragGrace` seconds). */
   private dragged: number | null = null;
+  /** Seconds the dragged card has been held at the end of the belt. */
+  private dragEdge = 0;
   private rowAdded = false;
   /** The belt is shut off (`EnemyDef.beltOff`): it only moves when the player turns the crank (`crankBelt`). */
   beltDead = false;
@@ -754,6 +756,8 @@ export class Combat {
         this.events.emit({ type: 'hexBroken', card: b.card });
       }
     }
+    const held = this.belt.find((b) => b.card.uid === this.dragged);
+    if (held && held.pos >= EXPIRE_POS - move) this.dragEdge += dt;
     this.settleBelt(move);
   }
 
@@ -762,7 +766,7 @@ export class Combat {
     // Expire cards that fell off the left edge.
     for (let i = this.belt.length - 1; i >= 0; i--) {
       const b = this.belt[i];
-      if (b.card.uid === this.dragged) b.pos = Math.min(b.pos, EXPIRE_POS - move);
+      if (b.card.uid === this.dragged && (CARDS[b.card.id].sweep || this.dragEdge < CONFIG.dragGrace)) b.pos = Math.min(b.pos, EXPIRE_POS - move);
       if (b.pos < EXPIRE_POS) continue;
       // On autopilot, a card slipping off plays itself for free if it can (rules…); otherwise it's lost as usual.
       if (this.flag('hero', 'autoplay') && this.playCard(b.card.uid, 'auto')) continue;
@@ -1461,15 +1465,16 @@ export class Combat {
     else delete this.hero.statuses.rustedBelt;
   }
 
-  /** The hero starts dragging a card around (only a `sweep` card is held on the belt: the others carry on and may fall off). */
+  /** The hero starts dragging a card around: a card on the belt is held at its end for a while (see `dragged`). */
   startDrag(uid: number): void {
-    const card = this.belt[this.beltIndex(uid)]?.card;
-    this.dragged = card && CARDS[card.id].sweep ? uid : null;
+    this.dragged = this.beltIndex(uid) >= 0 ? uid : null;
+    this.dragEdge = 0;
   }
 
   /** The hero lets go of the card (or it is gone). */
   endDrag(): void {
     this.dragged = null;
+    this.dragEdge = 0;
   }
 
   /**

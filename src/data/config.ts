@@ -30,6 +30,8 @@ export const CONFIG = {
   expireOverhang: 0.1,
   /** Belt speed multiplier while rushed (Time Slip, Time Warp). */
   beltRush: 1.5,
+  /** Seconds a card dragged at the end of the belt is still kept in the hand before it falls off. */
+  dragGrace: 2,
   /** Belt speed multipliers imposed by enemies: Hurry (faster) and Slowdown. */
   beltHurry: 1.5,
   beltSlow: 0.6,
