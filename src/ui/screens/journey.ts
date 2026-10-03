@@ -2,9 +2,10 @@ import { t } from '../../core/i18n';
 import { sfx } from '../../audio/sfx';
 import { haptic } from '../fx/fx';
 import { actDef, isFinalAct } from '../../data/acts';
-import { clockAt, currentNode, mapAct, type RunNode, type RunState } from '../../game/run';
+import { clockAt, currentNode, mapAct, saveRun, startShift, type RunNode, type RunState } from '../../game/run';
 import type { Screen } from '../app';
-import { h, onPress, onTapOrHold } from '../dom';
+import { h, onPress, onTapOrHold, setText } from '../dom';
+import { playHealing } from './rest';
 import { icon } from '../art/icons';
 import { debugButton } from '../components/debugMenu';
 import { openDeck, openInfo, openSettings, openStatInfo } from '../components/modals';
@@ -313,7 +314,7 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
   );
 
   // A new shift begins (the act boss is down): a curtain with the act's title, its clock-in time and the factory whistle.
-  const actIntro = (): void => {
+  const actIntro = (onDone: () => void): void => {
     const title = t('journey.title', { n: act });
     const curtain = h(
       'div',
@@ -325,7 +326,9 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
     );
     curtain.addEventListener('click', () => curtain.classList.add('out'));
     curtain.addEventListener('animationend', (e) => {
-      if (e.target === curtain && e.animationName === 'act-out') curtain.remove();
+      if (e.target !== curtain || e.animationName !== 'act-out') return;
+      curtain.remove();
+      onDone();
     });
     el.append(curtain);
     sfx('siren');
@@ -343,7 +346,16 @@ export function journeyScreen(run: RunState, onEnter: (to?: number) => void, onH
       // The new rooms come out of the fog with a chime.
       if (revealMs) revealTimer = window.setTimeout(() => sfx('ding'), revealMs);
       // A new shift: after an act's boss, or on the first floor of the run.
-      if (act !== cur.act || (run.path.length === 1 && !run.cleared)) actIntro();
+      if (act !== cur.act) {
+        // The next act's first shift: the hero clocks in fully rested, hearts rising once the curtain is gone.
+        const healed = startShift(run);
+        saveRun(run);
+        actIntro(() => {
+          if (healed <= 0) return;
+          setText(el.querySelector('.chip.hp span')!, `${run.hp}/${run.maxHp}`);
+          playHealing(el, healed);
+        });
+      } else if (run.path.length === 1 && !run.cleared) actIntro(() => {});
     },
   };
 }

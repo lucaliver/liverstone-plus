@@ -302,8 +302,6 @@ export function applyCombat(run: RunState, combat: Combat): void {
     if (combat.enemy.def.tier === 'elite') run.stats.elites++;
     run.money += fightPay(combat.enemy.def.tier, combat.time);
     if (node.type === 'boss') stampAct(run.hero, node.act);
-    // A new shift starts rested: beating an act boss heals fully.
-    if (node.type === 'boss' && node.next.length) run.hp = run.maxHp;
   }
   run.cleared = true;
 }
@@ -508,6 +506,13 @@ export function photocopyCard(run: RunState, uid: number): void {
   run.deck.push(copy);
   run.hp -= CONFIG.copyHpCost;
   run.cleared = true;
+}
+
+/** A new shift starts rested: heals fully as the next act's map opens. Returns the HP gained. */
+export function startShift(run: RunState): number {
+  const gained = run.maxHp - run.hp;
+  run.hp = run.maxHp;
+  return gained;
 }
 
 /** HP a Break Room rest would heal now. */
