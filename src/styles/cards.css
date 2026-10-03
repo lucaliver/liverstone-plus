@@ -197,7 +197,7 @@
   /* a tile much bigger than the card, moved by exactly one band period (40cqw along the 45deg line = 56.57cqw across) so the loop is seamless */
   background-size: 400cqw 400cqw;
   background-position: -150cqw -130cqw;
-  animation: foil 6s steps(24) infinite;
+  animation: foil 4.5s steps(24) infinite;
 }
 @keyframes foil {
   to { background-position: -93.43cqw -130cqw; }
