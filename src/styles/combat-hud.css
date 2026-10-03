@@ -13,15 +13,18 @@
 .mana-pips {
   flex: 1;
   display: flex;
-  gap: 4px;
+  gap: 5px;
 }
+/* a pip is a cell of the same paper as the HP bar: empty = halftone paper, full = solid blue with a lighter dot screen and a glint */
 .pip {
   position: relative;
   flex: 1;
-  max-width: 34px;
-  height: 22px;
-  background: var(--bg2);
-  border: var(--line) solid var(--void);
+  max-width: 38px;
+  height: 28px;
+  background-color: var(--paper);
+  background-image: radial-gradient(circle, var(--paper-dot-light) 30%, transparent 33%);
+  background-size: 5px 5px;
+  border: var(--line) solid var(--k);
   overflow: hidden;
 }
 .pip::before {
@@ -30,16 +33,28 @@
   inset: 0;
   transform-origin: left;
   transform: scaleX(var(--f, 0));
-  background-image: radial-gradient(circle, var(--mana) 40%, transparent 44%);
-  background-size: 4px 4px;
+  background-color: var(--mana);
+  background-image: radial-gradient(circle, var(--mana-hi) 30%, transparent 33%);
+  background-size: 5px 5px;
+  transition: transform 0.12s steps(2);
 }
 .pip.full::before {
   transform: none;
-  background: var(--b);
+  background-color: var(--b);
+  background-image: radial-gradient(circle, var(--mana) 30%, transparent 33%);
 }
-.pip.gain { animation: pipgain 0.3s steps(2); }
+.pip.full::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 4px;
+  height: 4px;
+  background: var(--paper);
+}
+.pip.gain::before { animation: pipgain 0.3s steps(2); }
 @keyframes pipgain {
-  50% { background: var(--y); }
+  50% { background-color: var(--y); background-image: none; }
 }
 .mana-row.flash .pip { animation: flashpip 0.3s steps(2); }
 /* full mana: the bar blinks, spend it! */
@@ -52,15 +67,16 @@
   50% { color: var(--y); }
 }
 @keyframes flashpip {
-  50% { border-color: var(--p); background: var(--p); }
+  50% { border-color: var(--p); background-color: var(--p); background-image: none; }
 }
 .mana-num {
   min-width: 56px;
-  color: var(--mana-hi);
+  color: var(--paper);
   text-align: right;
   font-family: var(--font-ui);
-  font-size: 26px;
+  font-size: 28px;
   line-height: 1;
+  text-shadow: 2px 2px 0 var(--k);
 }
 .mana-num small {
   font-size: 18px;
