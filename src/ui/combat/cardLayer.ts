@@ -303,11 +303,10 @@ export function createCardLayer(v: CombatView): CardLayer {
       el2.classList.add('fall-out');
       el2.style.transform = `${base} translate3d(${swept.dx}px, ${swept.dy}px, 0) rotate(${swept.dx > 0 ? 40 : -40}deg)`;
     } else if (reason === 'expired') {
-      // A card that slips off the end tips over the edge it leaves by, shrinking and fading as it drops (a transition: it survives reduced motion).
+      // A card that slips off the end drops straight down, leaning back toward the belt (the belt's end is the screen's edge: tipping outwards would leave the screen at once), then shrinks and fades.
       const side = state.ltr ? 1 : -1;
-      el2.classList.add('fall-out');
-      el2.style.transformOrigin = `${side > 0 ? 100 : 0}% 100%`;
-      el2.style.transform = `${base} translate3d(${side * 24}px, ${rc.height}px, 0) rotate(${side * 70}deg) scale(.55)`;
+      el2.classList.add('slip-out');
+      el2.style.transform = `${base} translate3d(${-side * 14}px, ${rc.height * 2.2}px, 0) rotate(${-side * 24}deg) scale(.65)`;
     } else if (!target) {
       el2.classList.add('fall-out');
       el2.style.transform = state.ltr ? `${base} translate3d(40px, 60px, 0) rotate(25deg)` : `${base} translate3d(-40px, 60px, 0) rotate(-25deg)`;
@@ -319,7 +318,7 @@ export function createCardLayer(v: CombatView): CardLayer {
       // Only attacks land with a hit: the other cards have their own effects (Block, heal, mana…).
       if (reason === 'played' && def.type === 'attack') setTimeout(() => burst('hit', target.x, target.y, 8), cssMs('--dur-fly'));
     }
-    const dur = el2.classList.contains('fall-out') ? '--dur-fall' : '--dur-fly';
+    const dur = el2.classList.contains('slip-out') ? '--dur-slip' : el2.classList.contains('fall-out') ? '--dur-fall' : '--dur-fly';
     setTimeout(() => el2.remove(), cssMs(dur) + SLACK_MS);
   };
 
