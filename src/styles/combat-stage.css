@@ -445,7 +445,7 @@
 }
 /* the enemy's HP line sits right above the hero's: same left edge (past the hero portrait), same width */
 .enemy-info .hpline { padding-left: calc(var(--portrait) + 10px); }
-/* status rows start where the HP bar starts (past the Block chip): the enemy's above its bar, the hero's below */
+/* status rows start where the HP bar starts (past the Block chip), above its bar */
 .enemy-info .statuses { width: 100%; justify-content: flex-start; padding-left: calc(var(--portrait) + 10px + var(--chip-w) + 6px); }
 .tier {
   padding: 2px 6px 3px;

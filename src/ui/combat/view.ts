@@ -88,11 +88,11 @@ function markup(run: RunState, combat: Combat): string {
     <section class="hero-row">
       <div class="hero-portrait">${creature(heroId)}</div>
       <div class="hero-info">
+        <div class="statuses js-hstatus"></div>
         <div class="hpline">
           <div class="block-chip off js-hblock">${icon('shield')}<b></b></div>
           <div class="bar js-hhp"><div class="ghost"></div><div class="fill"></div><div class="incoming"></div><div class="txt"></div></div>
         </div>
-        <div class="statuses js-hstatus"></div>
       </div>
     </section>
     <section class="belt ${settings.rightToLeft ? '' : 'ltr'}" style="--rows: ${combat.beltRows}">

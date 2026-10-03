@@ -216,6 +216,9 @@
   padding: 6px 12px;
   background: var(--bg2);
   border-top: var(--line) solid var(--void);
+  /* above the stage: the hero's statuses can wrap up over it */
+  position: relative;
+  z-index: 2;
 }
 .hero-portrait {
   flex: none;
@@ -281,11 +284,12 @@
   height: 32px;
   padding-left: calc(var(--chip-w) + 6px);
 }
-/* status rows have a fixed height (one line) so they never push the layout around */
+/* status rows have a fixed height (one line) so they never push the layout around: when there are too many, the extra rows
+   wrap upwards over the stage instead (wrap-reverse keeps the first row in place) */
 .enemy-info .statuses,
 .hero-info .statuses {
-  flex-wrap: nowrap;
-  overflow: hidden;
+  flex-wrap: wrap-reverse;
+  align-content: flex-start;
 }
 .enemy-info .statuses { height: 32px; }
 /* a dead enemy's statuses are gone (hidden, so the row keeps its height) */
